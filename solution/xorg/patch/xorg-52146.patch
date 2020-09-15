@@ -1,0 +1,13 @@
+diff --git a/miext/cw/cw.h b/miext/cw/cw.h
+index 31eb9e5..e2bb9ad 100644
+--- a/miext/cw/cw.h
++++ b/miext/cw/cw.h
+@@ -106,8 +106,6 @@ typedef struct {
+ 
+     TrapezoidsProcPtr		Trapezoids;
+     TrianglesProcPtr		Triangles;
+-    TriStripProcPtr		TriStrip;
+-    TriFanProcPtr		TriFan;
+ 
+     RasterizeTrapezoidProcPtr	RasterizeTrapezoid;
+ } cwScreenRec, *cwScreenPtr;

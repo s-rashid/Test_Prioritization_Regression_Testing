@@ -1,0 +1,51 @@
+diff --git a/os/oscolor.c b/os/oscolor.c
+index 7f6b938..a7573d2 100644
+--- a/os/oscolor.c
++++ b/os/oscolor.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -807,11 +806,7 @@ static const char BuiltinColorNames[] = {
+     "WhiteSmoke\0"
+     "yellow\0"
+     "yellow green\0"
+-    "yellow1\0"
+-    "yellow2\0"
+-    "yellow3\0"
+-    "yellow4\0"
+-    "YellowGreen\0"
++        "yellow1\0" "yellow2\0" "yellow3\0" "yellow4\0" "YellowGreen\0"
+ };
+ 
+ static const BuiltinColor BuiltinColors[] = {
+@@ -1576,8 +1571,7 @@ OsLookupColor(int		screen,
+ 	      char		*name,
+ 	      unsigned int	len,
+ 	      unsigned short	*pred,
+-	      unsigned short	*pgreen,
+-	      unsigned short	*pblue)
++              unsigned short *pgreen, unsigned short *pblue)
+ {
+     const BuiltinColor	*c;
+     int			low, mid, high;
+@@ -1585,13 +1579,11 @@ OsLookupColor(int		screen,
+ 
+     low = 0;
+     high = NUM_BUILTIN_COLORS - 1;
+-    while (high >= low)
+-    {
++    while (high >= low) {
+ 	mid = (low + high) / 2;
+ 	c = &BuiltinColors[mid];
+ 	r = strncasecmp (&BuiltinColorNames[c->name], name, len);
+-	if (r == 0 && len == strlen (&BuiltinColorNames[c->name]))
+-	{
++        if (r == 0 && len == strlen(&BuiltinColorNames[c->name])) {
+ 	    *pred = c->red * 0x101;
+ 	    *pgreen = c->green * 0x101;
+ 	    *pblue = c->blue * 0x101;

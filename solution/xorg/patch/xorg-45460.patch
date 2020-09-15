@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostglx.c b/hw/kdrive/ephyr/ephyrhostglx.c
+index a05bba2..728687b 100644
+--- a/hw/kdrive/ephyr/ephyrhostglx.c
++++ b/hw/kdrive/ephyr/ephyrhostglx.c
+@@ -428,7 +428,7 @@ ephyrHostGLXSendClientInfo (int32_t a_major, int32_t a_minor,
+     req->minor = a_minor;
+ 
+     size = strlen (a_extension_list) + 1;
+-    req->length += (size + 3) >> 2;
++    req->length += bytes_to_int32(size);
+     req->numbytes = size;
+     Data (dpy, a_extension_list, size);
+ 

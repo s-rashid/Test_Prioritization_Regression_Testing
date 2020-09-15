@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/config/dmxtodmx.c b/hw/dmx/config/dmxtodmx.c
+index 0d4ee4c..6634209 100644
+--- a/hw/dmx/config/dmxtodmx.c
++++ b/hw/dmx/config/dmxtodmx.c
+@@ -40,7 +40,8 @@
+ extern int                 yyparse(void);
+ extern FILE                *yyin;
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     yydebug = 0;
+     yyparse();

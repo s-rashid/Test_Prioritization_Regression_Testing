@@ -1,0 +1,70 @@
+diff --git a/glx/xfont.c b/glx/xfont.c
+index 84a301f..037ed9e 100644
+--- a/glx/xfont.c
++++ b/glx/xfont.c
+@@ -48,7 +48,8 @@
+ /*
+ ** Make a single GL bitmap from a single X glyph
+ */
+-static int __glXMakeBitmapFromGlyph(FontPtr font, CharInfoPtr pci)
++static int
++__glXMakeBitmapFromGlyph(FontPtr font, CharInfoPtr pci)
+ {
+     int i, j;
+     int widthPadded;	/* width of glyph in bytes, as padded by X */
+@@ -58,6 +59,7 @@ static int __glXMakeBitmapFromGlyph(FontPtr font, CharInfoPtr pci)
+     register unsigned char *pglyph;
+     register unsigned char *p;
+     unsigned char *allocbuf;
++
+ #define __GL_CHAR_BUF_SIZE 2048
+     unsigned char buf[__GL_CHAR_BUF_SIZE];
+ 
+@@ -72,7 +74,8 @@ static int __glXMakeBitmapFromGlyph(FontPtr font, CharInfoPtr pci)
+     if (allocBytes <= __GL_CHAR_BUF_SIZE) {
+ 	p = buf;
+ 	allocbuf = 0;
+-    } else {
++    }
++    else {
+ 	p = (unsigned char *) malloc(allocBytes);
+ 	if (!p)
+ 	    return BadAlloc;
+@@ -116,7 +119,8 @@ MakeBitmapsFromFont(FontPtr pFont, int first, int count, int list_base)
+     int encoding = (FONTLASTROW(pFont) == 0) ? Linear16Bit : TwoD16Bit;
+     
+     CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_SWAP_BYTES, FALSE) );
+-    CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_LSB_FIRST, BITMAP_BIT_ORDER == LSBFirst) );
++    CALL_PixelStorei(GET_DISPATCH(),
++                     (GL_UNPACK_LSB_FIRST, BITMAP_BIT_ORDER == LSBFirst));
+     CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_ROW_LENGTH, 0) );
+     CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_SKIP_ROWS, 0) );
+     CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_SKIP_PIXELS, 0) );
+@@ -145,7 +149,8 @@ MakeBitmapsFromFont(FontPtr pFont, int first, int count, int list_base)
+ 
+ /************************************************************************/
+ 
+-int __glXDisp_UseXFont(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_UseXFont(__GLXclientState * cl, GLbyte * pc)
+ {
+     ClientPtr client = cl->client;
+     xGLXUseXFontReq *req;
+@@ -162,7 +167,8 @@ int __glXDisp_UseXFont(__GLXclientState *cl, GLbyte *pc)
+ 	return error;
+     }
+ 
+-    CALL_GetIntegerv( GET_DISPATCH(), (GL_LIST_INDEX, (GLint*) &currentListIndex) );
++    CALL_GetIntegerv(GET_DISPATCH(),
++                     (GL_LIST_INDEX, (GLint *) & currentListIndex));
+     if (currentListIndex != 0) {
+ 	/*
+ 	** A display list is currently being made.  It is an error
+@@ -181,6 +187,5 @@ int __glXDisp_UseXFont(__GLXclientState *cl, GLbyte *pc)
+     if (error != Success)
+ 	return error;
+ 
+-    return MakeBitmapsFromFont(pFont, req->first, req->count,
+-				    req->listBase);
++    return MakeBitmapsFromFont(pFont, req->first, req->count, req->listBase);
+ }

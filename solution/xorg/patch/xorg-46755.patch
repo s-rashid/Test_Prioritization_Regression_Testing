@@ -1,0 +1,11 @@
+diff --git a/hw/xquartz/X11Controller.h b/hw/xquartz/X11Controller.h
+index a86b20f..3d8e007 100644
+--- a/hw/xquartz/X11Controller.h
++++ b/hw/xquartz/X11Controller.h
+@@ -144,5 +144,6 @@ typedef unsigned int NSUInteger;
+ #endif /* __OBJC__ */
+ 
+ void X11ControllerMain(int argc, char **argv, char **envp);
++void launch_client(const char *cmd);
+ 
+ #endif /* X11CONTROLLER_H */

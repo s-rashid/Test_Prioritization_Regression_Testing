@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/ephyr/hostx.h b/hw/kdrive/ephyr/hostx.h
+index c1b1958..e65e0c9 100644
+--- a/hw/kdrive/ephyr/hostx.h
++++ b/hw/kdrive/ephyr/hostx.h
+@@ -149,6 +149,9 @@ void
+ hostx_use_resname (char *name, int fromcmd);
+ 
+ void 
++hostx_set_title(char *name);
++
++void 
+ hostx_handle_signal(int signum);
+ 
+ int

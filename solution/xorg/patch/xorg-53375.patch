@@ -1,0 +1,12 @@
+diff --git a/dix/eventconvert.c b/dix/eventconvert.c
+index 6ddcf9e..fa8ba9e 100644
+--- a/dix/eventconvert.c
++++ b/dix/eventconvert.c
+@@ -667,6 +667,7 @@ eventToRawEvent(RawDeviceEvent *ev, xEvent **xi)
+     raw->detail         = ev->detail.button;
+     raw->deviceid       = ev->deviceid;
+     raw->valuators_len  = vallen;
++    raw->flags          = ev->flags;
+ 
+     ptr = (char*)&raw[1];
+     axisval = (FP3232*)(ptr + raw->valuators_len * 4);

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index df51400..974b30e 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -1074,9 +1074,6 @@ xf86InitValuatorDefaults(DeviceIntPtr dev, int axnum)
+ void
+ xf86DisableDevice(DeviceIntPtr dev, Bool panic)
+ {
+-    devicePresenceNotify ev;
+-    DeviceIntRec dummyDev;
+-
+     if(!panic)
+     {
+         DisableDevice(dev, TRUE);

@@ -1,0 +1,22 @@
+diff --git a/os/strcasecmp.c b/os/strcasecmp.c
+index ad6da6a..cf100ba 100644
+--- a/os/strcasecmp.c
++++ b/os/strcasecmp.c
+@@ -34,7 +34,7 @@
+ #include <ctype.h>
+ #include "dix.h"
+ 
+-#ifdef NEED_STRCASECMP
++#ifndef HAVE_STRCASECMP
+ int
+ xstrcasecmp(const char *str1, const char *str2)
+ {
+@@ -50,7 +50,7 @@ xstrcasecmp(const char *str1, const char *str2)
+ }
+ #endif
+ 
+-#ifdef NEED_STRNCASECMP
++#ifndef HAVE_STRNCASECMP
+ int
+ xstrncasecmp(const char *s1, const char *s2, size_t n)
+ {

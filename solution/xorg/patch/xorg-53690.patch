@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86fbBus.c b/hw/xfree86/common/xf86fbBus.c
+index 059e378..4592980 100644
+--- a/hw/xfree86/common/xf86fbBus.c
++++ b/hw/xfree86/common/xf86fbBus.c
+@@ -54,8 +54,10 @@ xf86ClaimFbSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+     EntityPtr p;
+     int num;
+ 
++#ifdef XSERVER_LIBPCIACCESS
+     if (pciSlotClaimed)
+ 	return -1;
++#endif
+ #if defined(__sparc__) || defined (__sparc64__)
+     if (sbusSlotClaimed)
+ 	return -1;

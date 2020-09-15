@@ -1,0 +1,13 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 10062ad..23c34a5 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -489,7 +489,7 @@ typedef struct _DeviceIntRec {
+     int         type;                   /* MASTER_POINTER, MASTER_KEYBOARD, SLAVE */
+     Atom		xinput_type;
+     char		*name;
+-    CARD8		id;
++    int			id;
+     KeyClassPtr		key;
+     ValuatorClassPtr	valuator;
+     ButtonClassPtr	button;

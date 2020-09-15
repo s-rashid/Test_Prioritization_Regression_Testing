@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/XNGC.h b/hw/xnest/XNGC.h
+index 19535fe..9f10456 100644
+--- a/hw/xnest/XNGC.h
++++ b/hw/xnest/XNGC.h
+@@ -22,7 +22,8 @@ typedef struct {
+   int nClipRects;
+ } xnestPrivGC;
+ 
+-extern DevPrivateKey xnestGCPrivateKey;
++extern DevPrivateKeyRec xnestGCPrivateKeyRec;
++#define xnestGCPrivateKey (&xnestGCPrivateKeyRec)
+ 
+ #define xnestGCPriv(pGC) ((xnestPrivGC *) \
+     dixLookupPrivate(&(pGC)->devPrivates, xnestGCPrivateKey))

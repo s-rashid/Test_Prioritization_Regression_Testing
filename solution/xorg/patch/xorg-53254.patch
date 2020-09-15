@@ -1,0 +1,19 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 71926f8..5ee68cd 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -806,11 +806,10 @@ duplicateDevice(InputInfoPtr pInfo)
+     return dup;
+ }
+ 
+-/*
+- * InitInput --
+- *      Initialize all supported input devices.
++/**
++ * Initialize all supported input devices present and referenced in the
++ * xorg.conf.
+  */
+-
+ void
+ InitInput(int argc, char **argv)
+ {

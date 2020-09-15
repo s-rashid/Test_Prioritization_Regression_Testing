@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86AutoConfig.c b/hw/xfree86/common/xf86AutoConfig.c
+index 5b236af..167bc78 100644
+--- a/hw/xfree86/common/xf86AutoConfig.c
++++ b/hw/xfree86/common/xf86AutoConfig.c
+@@ -120,7 +120,6 @@ FreeList(const char ***list, int *lines)
+     int i;
+ 
+     for (i = 0; i < *lines; i++) {
+-	if ((*list)[i])
+ 	    free((*list)[i]);
+     }
+     free(*list);

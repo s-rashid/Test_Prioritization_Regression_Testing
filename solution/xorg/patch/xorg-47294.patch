@@ -1,0 +1,24 @@
+diff --git a/randr/rrcrtc.c b/randr/rrcrtc.c
+index 0e14b36..a9eb2d2 100644
+--- a/randr/rrcrtc.c
++++ b/randr/rrcrtc.c
+@@ -22,7 +22,6 @@
+ 
+ #include "randrstr.h"
+ #include "swaprep.h"
+-#include "registry.h"
+ 
+ RESTYPE	RRCrtcType;
+ 
+@@ -633,10 +632,9 @@ RRCrtcTransformSet (RRCrtcPtr		crtc,
+ Bool
+ RRCrtcInit (void)
+ {
+-    RRCrtcType = CreateNewResourceType (RRCrtcDestroyResource);
++    RRCrtcType = CreateNewResourceType (RRCrtcDestroyResource, "CRTC");
+     if (!RRCrtcType)
+ 	return FALSE;
+-    RegisterResourceName (RRCrtcType, "CRTC");
+     return TRUE;
+ }
+ 

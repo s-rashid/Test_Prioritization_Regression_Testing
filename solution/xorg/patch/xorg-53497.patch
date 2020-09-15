@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/os-support/xf86_OSlib.h b/hw/xfree86/os-support/xf86_OSlib.h
+index 24c92fb..cf92821 100644
+--- a/hw/xfree86/os-support/xf86_OSlib.h
++++ b/hw/xfree86/os-support/xf86_OSlib.h
+@@ -266,9 +266,6 @@
+ #  else /* __bsdi__ */
+ #   ifdef SYSCONS_SUPPORT
+ #    define COMPAT_SYSCONS
+-#    if defined(__NetBSD__) || defined(__OpenBSD__)
+-#     include <machine/console.h>
+-#    else
+ #     if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+ #        if defined(__DragonFly__)  || (__FreeBSD_kernel_version >= 410000)
+ #          include <sys/consio.h>
+@@ -279,7 +276,6 @@
+ #     else
+ #      include <sys/console.h>
+ #     endif
+-#    endif
+ #   endif /* SYSCONS_SUPPORT */
+ #   if defined(PCVT_SUPPORT)
+ #    if !defined(SYSCONS_SUPPORT)

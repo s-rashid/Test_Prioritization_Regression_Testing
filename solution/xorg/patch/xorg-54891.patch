@@ -1,0 +1,116 @@
+diff --git a/hw/xquartz/xpr/x-hash.c b/hw/xquartz/xpr/x-hash.c
+index a3ff661..26e079f 100644
+--- a/hw/xquartz/xpr/x-hash.c
++++ b/hw/xquartz/xpr/x-hash.c
+@@ -1,31 +1,32 @@
+ /* x-hash.c - basic hash tables
+-
+-   Copyright (c) 2002 Apple Computer, Inc. All rights reserved.
+-
+-   Permission is hereby granted, free of charge, to any person
+-   obtaining a copy of this software and associated documentation files
+-   (the "Software"), to deal in the Software without restriction,
+-   including without limitation the rights to use, copy, modify, merge,
+-   publish, distribute, sublicense, and/or sell copies of the Software,
+-   and to permit persons to whom the Software is furnished to do so,
+-   subject to the following conditions:
+-
+-   The above copyright notice and this permission notice shall be
+-   included in all copies or substantial portions of the Software.
+-
+-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-   NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
+-   HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+-   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+-   DEALINGS IN THE SOFTWARE.
+-
+-   Except as contained in this notice, the name(s) of the above
+-   copyright holders shall not be used in advertising or otherwise to
+-   promote the sale, use or other dealings in this Software without
+-   prior written authorization. */
++ *
++ * Copyright (c) 2002-2012 Apple Inc. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
++ * HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ * DEALINGS IN THE SOFTWARE.
++ *
++ * Except as contained in this notice, the name(s) of the above
++ * copyright holders shall not be used in advertising or otherwise to
++ * promote the sale, use or other dealings in this Software without
++ * prior written authorization.
++ */
+ 
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+@@ -56,8 +57,10 @@ struct x_hash_table_struct {
+ 
+ /* http://planetmath.org/?op=getobj&from=objects&name=GoodHashTablePrimes */
+ static const unsigned int bucket_sizes[] = {
+-    29, 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157,
+-    98317, 196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917,
++    29,       53,        97,        193,        389,        769,       1543,
++    3079,     6151, 12289, 24593, 49157,
++    98317,    196613,   393241,    786433,    1572869,   3145739,   6291469,
++    12582917,
+     25165843, 50331653, 100663319, 201326611, 402653189, 805306457,
+     1610612741
+ };
+@@ -139,7 +142,8 @@ hash_table_split(x_hash_table * h)
+     free(old);
+ }
+ 
+-X_EXTERN x_hash_table *X_PFX(hash_table_new) (x_hash_fun * hash,
++X_EXTERN x_hash_table *
++X_PFX(hash_table_new) (x_hash_fun * hash,
+                                               x_compare_fun * compare,
+                                               x_destroy_fun * key_destroy,
+                                               x_destroy_fun * value_destroy) {
+@@ -210,7 +214,8 @@ hash_table_modify(x_hash_table * h, void *k, void *v, int replace)
+ 
+         if (hash_table_compare_keys(h, ITEM_KEY(item), k)) {
+             if (replace) {
+-                hash_table_destroy_item(h, ITEM_KEY(item), ITEM_VALUE(item));
++                hash_table_destroy_item(h, ITEM_KEY(item),
++                                        ITEM_VALUE(item));
+                 item->next = k;
+                 ITEM_VALUE(item) = v;
+             }
+@@ -270,8 +275,8 @@ X_EXTERN void
+     }
+ }
+ 
+-X_EXTERN void *X_PFX(hash_table_lookup) (x_hash_table * h, void *k,
+-                                         void **k_ret) {
++X_EXTERN void *
++X_PFX(hash_table_lookup) (x_hash_table * h, void *k, void **k_ret) {
+     size_t hash_value;
+     x_list *node, *item;
+ 
+@@ -298,7 +303,6 @@ X_EXTERN void *X_PFX(hash_table_lookup) (x_hash_table * h, void *k,
+ }
+ 
+ X_EXTERN void
+-
+ X_PFX(hash_table_foreach) (x_hash_table * h,
+                            x_hash_foreach_fun * fun, void *data) {
+     int i, n;

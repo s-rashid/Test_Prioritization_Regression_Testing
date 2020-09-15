@@ -1,0 +1,33 @@
+diff --git a/miext/damage/damage.c b/miext/damage/damage.c
+index e0e96f2..b809cca 100644
+--- a/miext/damage/damage.c
++++ b/miext/damage/damage.c
+@@ -458,28 +458,6 @@ damageCreateGC(GCPtr pGC)
+     return ret;
+ }
+ 
+-#ifdef NOTUSED
+-static void
+-damageWrapGC (GCPtr pGC)
+-{
+-    damageGCPriv(pGC);
+-
+-    pGCPriv->ops = NULL;
+-    pGCPriv->funcs = pGC->funcs;
+-    pGC->funcs = &damageGCFuncs;
+-}
+-
+-static void
+-damageUnwrapGC (GCPtr pGC)
+-{
+-    damageGCPriv(pGC);
+-
+-    pGC->funcs = pGCPriv->funcs;
+-    if (pGCPriv->ops)
+-	pGC->ops = pGCPriv->ops;
+-}
+-#endif
+-
+ #define DAMAGE_GC_OP_PROLOGUE(pGC, pDrawable) \
+     damageGCPriv(pGC);  \
+     GCFuncs *oldFuncs = pGC->funcs; \

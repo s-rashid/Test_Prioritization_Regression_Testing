@@ -1,0 +1,13 @@
+diff --git a/dix/resource.c b/dix/resource.c
+index a04f49f..eb9f049 100644
+--- a/dix/resource.c
++++ b/dix/resource.c
+@@ -489,7 +489,7 @@ AddResource(XID id, RESTYPE type, pointer value)
+     rrec = &clientTable[client];
+     if (!rrec->buckets)
+     {
+-	ErrorF("[dix] AddResource(%lx, %lx, %lx), client=%d \n",
++	ErrorF("[dix] AddResource(%lx, %x, %lx), client=%d \n",
+ 		(unsigned long)id, type, (unsigned long)value, client);
+         FatalError("client not in use\n");
+     }

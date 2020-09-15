@@ -1,0 +1,16 @@
+diff --git a/hw/kdrive/linux/tslib.c b/hw/kdrive/linux/tslib.c
+index a0b989d..322ccc7 100644
+--- a/hw/kdrive/linux/tslib.c
++++ b/hw/kdrive/linux/tslib.c
+@@ -175,11 +175,9 @@ TslibInit (KdPointerInfo *pi)
+ static void
+ TslibFini (KdPointerInfo *pi)
+ {
+-    if (pi->driverPrivate) {
+         xfree(pi->driverPrivate);
+         pi->driverPrivate = NULL;
+     }
+-}
+ 
+ 
+ KdPointerDriver TsDriver = {

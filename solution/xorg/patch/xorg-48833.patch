@@ -1,0 +1,16 @@
+diff --git a/hw/dmx/glxProxy/glxscreens.c b/hw/dmx/glxProxy/glxscreens.c
+index 7be7ac4..dbd4a92 100644
+--- a/hw/dmx/glxProxy/glxscreens.c
++++ b/hw/dmx/glxProxy/glxscreens.c
+@@ -204,9 +204,9 @@ static void CalcServerVersionAndExtensions( void )
+     * release temporary storage
+     */
+    for (s=0; s<__glXNumActiveScreens; s++) {
+-      if (be_extensions[s]) Xfree(be_extensions[s]); 
++      free(be_extensions[s]);
+    }
+-   Xfree( be_extensions );
++   free( be_extensions );
+ 
+    if (dmxGLXSwapGroupSupport) {
+        if (!denied_extensions ||

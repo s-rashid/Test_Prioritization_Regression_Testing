@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaaCpyWin.c b/hw/xfree86/xaa/xaaCpyWin.c
+index d37c8ec..d58db8e 100644
+--- a/hw/xfree86/xaa/xaaCpyWin.c
++++ b/hw/xfree86/xaa/xaaCpyWin.c
+@@ -47,7 +47,7 @@ XAACopyWindow(
+     	return;
+     }
+ 
+-    pwinRoot = WindowTable[pScreen->myNum];
++    pwinRoot = pScreen->root;
+ 
+     REGION_NULL(pScreen, &rgnDst);
+ 

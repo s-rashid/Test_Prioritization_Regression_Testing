@@ -1,0 +1,20 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index 0c70660..aac90e3 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -1049,13 +1049,11 @@ createInvisibleCursor (void)
+     unsigned char *psrcbits, *pmaskbits;
+     CursorMetricRec cm;
+ 
+-    psrcbits = (unsigned char *) xalloc(4);
+-    pmaskbits = (unsigned char *) xalloc(4);
++    psrcbits = (unsigned char *) xcalloc(4, 1);
++    pmaskbits = (unsigned char *) xcalloc(4, 1);
+     if (psrcbits == NULL || pmaskbits == NULL) {
+ 	return NULL;
+     }
+-    *psrcbits = 0;
+-    *pmaskbits = 0;
+ 
+     cm.width = 1;
+     cm.height = 1;

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprCursor.c b/hw/xquartz/xpr/xprCursor.c
+index 4345bee..8c47b67 100644
+--- a/hw/xquartz/xpr/xprCursor.c
++++ b/hw/xquartz/xpr/xprCursor.c
+@@ -128,7 +128,7 @@ load_cursor(CursorPtr src, int screen)
+ 
+             while (ycount-- > 0)
+             {
+-                xcount = (src->bits->width + 7) / 8;
++                xcount = bits_to_bytes(src->bits->width);
+                 sptr = srow; mptr = mrow;
+                 dptr = drow;
+ 

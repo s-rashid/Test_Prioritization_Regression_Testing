@@ -1,0 +1,75 @@
+diff --git a/hw/xfree86/os-support/xf86_OSproc.h b/hw/xfree86/os-support/xf86_OSproc.h
+index 78ea6e6..e171146 100644
+--- a/hw/xfree86/os-support/xf86_OSproc.h
++++ b/hw/xfree86/os-support/xf86_OSproc.h
+@@ -64,7 +64,6 @@
+  *
+  */
+ 
+-
+ #ifndef _XF86_OSPROC_H
+ #define _XF86_OSPROC_H
+ 
+@@ -133,12 +132,17 @@ _XFUNCPROTOBEGIN
+ /* public functions */
+ extern _X_EXPORT Bool xf86LinearVidMem(void);
+ extern _X_EXPORT _X_DEPRECATED Bool xf86CheckMTRR(int);
+-extern _X_EXPORT _X_DEPRECATED pointer xf86MapVidMem(int, int, unsigned long, unsigned long);
+-extern _X_EXPORT _X_DEPRECATED void xf86UnMapVidMem(int, pointer, unsigned long);
+-extern _X_EXPORT _X_DEPRECATED void xf86MapReadSideEffects(int, int, pointer, unsigned long);
+-extern _X_EXPORT int xf86ReadBIOS(unsigned long, unsigned long, unsigned char *, int);
++extern _X_EXPORT _X_DEPRECATED pointer xf86MapVidMem(int, int, unsigned long,
++                                                     unsigned long);
++extern _X_EXPORT _X_DEPRECATED void xf86UnMapVidMem(int, pointer,
++                                                    unsigned long);
++extern _X_EXPORT _X_DEPRECATED void xf86MapReadSideEffects(int, int, pointer,
++                                                           unsigned long);
++extern _X_EXPORT int xf86ReadBIOS(unsigned long, unsigned long, unsigned char *,
++                                  int);
+ extern _X_EXPORT Bool xf86EnableIO(void);
+ extern _X_EXPORT void xf86DisableIO(void);
++
+ #ifdef __NetBSD__
+ extern _X_EXPORT void xf86SetTVOut(int);
+ extern _X_EXPORT void xf86SetRGBOut(void);
+@@ -177,10 +181,11 @@ extern _X_EXPORT Bool xf86AgpGARTSupported(void);
+ extern _X_EXPORT AgpInfoPtr xf86GetAGPInfo(int screenNum);
+ extern _X_EXPORT Bool xf86AcquireGART(int screenNum);
+ extern _X_EXPORT Bool xf86ReleaseGART(int screenNum);
+-extern _X_EXPORT int xf86AllocateGARTMemory(int screenNum, unsigned long size, int type,
+-				  unsigned long *physical);
++extern _X_EXPORT int xf86AllocateGARTMemory(int screenNum, unsigned long size,
++                                            int type, unsigned long *physical);
+ extern _X_EXPORT Bool xf86DeallocateGARTMemory(int screenNum, int key);
+-extern _X_EXPORT Bool xf86BindGARTMemory(int screenNum, int key, unsigned long offset);
++extern _X_EXPORT Bool xf86BindGARTMemory(int screenNum, int key,
++                                         unsigned long offset);
+ extern _X_EXPORT Bool xf86UnbindGARTMemory(int screenNum, int key);
+ extern _X_EXPORT Bool xf86EnableAGP(int screenNum, CARD32 mode);
+ extern _X_EXPORT Bool xf86GARTCloseScreen(int screenNum);
+@@ -189,7 +194,8 @@ extern _X_EXPORT Bool xf86GARTCloseScreen(int screenNum);
+    module.  These routines are small, and the code if very POSIX-signal (or
+    OS-signal) specific, so it seemed better to provide more complex
+    wrappers than to wrap each individual function called. */
+-extern _X_EXPORT int xf86InstallSIGIOHandler(int fd, void (*f)(int, void *), void *);
++extern _X_EXPORT int xf86InstallSIGIOHandler(int fd, void (*f) (int, void *),
++                                             void *);
+ extern _X_EXPORT int xf86RemoveSIGIOHandler(int fd);
+ extern _X_EXPORT int xf86BlockSIGIO (void);
+ extern _X_EXPORT void xf86UnblockSIGIO (int);
+@@ -209,13 +215,12 @@ extern _X_EXPORT int xf86ProcessArgument(int, char **, int);
+ extern _X_EXPORT void xf86UseMsg(void);
+ extern _X_EXPORT PMClose xf86OSPMOpen(void);
+ 
+-extern _X_EXPORT _X_DEPRECATED void xf86MakeNewMapping(int, int, unsigned long, unsigned long, pointer);
++extern _X_EXPORT _X_DEPRECATED void xf86MakeNewMapping(int, int, unsigned long,
++                                                       unsigned long, pointer);
+ extern _X_EXPORT void xf86InitVidMem(void);
+ 
+ #endif /* XF86_OS_PRIVS */
+ 
+-
+ _XFUNCPROTOEND
+ #endif /* NO_OSLIB_PROTOTYPES */
+-
+ #endif /* _XF86_OSPROC_H */

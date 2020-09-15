@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/i2c/uda1380_module.c b/hw/xfree86/i2c/uda1380_module.c
+index 67b623e..dca834b 100644
+--- a/hw/xfree86/i2c/uda1380_module.c
++++ b/hw/xfree86/i2c/uda1380_module.c
+@@ -4,8 +4,7 @@
+ 
+ #include "xf86Module.h"
+ 
+-static XF86ModuleVersionInfo uda1380VersRec =
+-{
++static XF86ModuleVersionInfo uda1380VersRec = {
+         "uda1380",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,

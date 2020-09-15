@@ -1,0 +1,13 @@
+diff --git a/Xext/xselinux_hooks.c b/Xext/xselinux_hooks.c
+index 43683ff..6e8c86d 100644
+--- a/Xext/xselinux_hooks.c
++++ b/Xext/xselinux_hooks.c
+@@ -230,7 +230,7 @@ SELinuxLabelResource(XaceResourceAccessRec *rec, SELinuxSubjectRec *subj,
+     security_id_t tsid;
+ 
+     /* Check for a create context */
+-    if (rec->rtype == RT_WINDOW && subj->win_create_sid) {
++    if (rec->rtype & RC_DRAWABLE && subj->win_create_sid) {
+ 	sidget(obj->sid = subj->win_create_sid);
+ 	return Success;
+     }

@@ -1,0 +1,12 @@
+diff --git a/fb/fbrop.h b/fb/fbrop.h
+index a01fdab..4362adb 100644
+--- a/fb/fbrop.h
++++ b/fb/fbrop.h
+@@ -96,6 +96,7 @@ extern _X_EXPORT const FbMergeRopRec	FbMergeRopBits[16];
+  */
+ 
+ extern _X_EXPORT const FbBits	fbStipple16Bits[256];	/* half of table */
++
+ #define FbStipple16Bits(b) \
+     (fbStipple16Bits[(b)&0xff] | fbStipple16Bits[(b) >> 8] << FB_HALFUNIT)
+ extern _X_EXPORT const FbBits	fbStipple8Bits[256];

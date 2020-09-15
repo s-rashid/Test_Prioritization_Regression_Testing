@@ -1,0 +1,163 @@
+diff --git a/hw/xquartz/xpr/appledristr.h b/hw/xquartz/xpr/appledristr.h
+index c569719..b5ffe5b 100644
+--- a/hw/xquartz/xpr/appledristr.h
++++ b/hw/xquartz/xpr/appledristr.h
+@@ -46,14 +46,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define APPLE_DRI_MINOR_VERSION	0
+ #define APPLE_DRI_PATCH_VERSION	0
+ 
+-typedef struct _AppleDRIQueryVersion {
++typedef struct _AppleDRIQueryVersion
++{
+     CARD8	reqType;		/* always DRIReqCode */
+     CARD8	driReqType;		/* always X_DRIQueryVersion */
+     CARD16	length B16;
+ } xAppleDRIQueryVersionReq;
+ #define sz_xAppleDRIQueryVersionReq	4
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE	type;			/* X_Reply */
+     BOOL	pad1;
+     CARD16	sequenceNumber B16;
+@@ -68,7 +70,8 @@ typedef struct {
+ } xAppleDRIQueryVersionReply;
+ #define sz_xAppleDRIQueryVersionReply	32
+ 
+-typedef struct _AppleDRIQueryDirectRenderingCapable {
++typedef struct _AppleDRIQueryDirectRenderingCapable
++{
+     CARD8	reqType;		/* always DRIReqCode */
+     CARD8	driReqType;		/* X_DRIQueryDirectRenderingCapable */
+     CARD16	length B16;
+@@ -76,7 +79,8 @@ typedef struct _AppleDRIQueryDirectRenderingCapable {
+ } xAppleDRIQueryDirectRenderingCapableReq;
+ #define sz_xAppleDRIQueryDirectRenderingCapableReq	8
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE	type;			/* X_Reply */
+     BOOL	pad1;
+     CARD16	sequenceNumber B16;
+@@ -93,7 +97,8 @@ typedef struct {
+ } xAppleDRIQueryDirectRenderingCapableReply;
+ #define sz_xAppleDRIQueryDirectRenderingCapableReply	32
+ 
+-typedef struct _AppleDRIAuthConnection {
++typedef struct _AppleDRIAuthConnection
++{
+     CARD8	reqType;		/* always DRIReqCode */
+     CARD8	driReqType;		/* always X_DRICloseConnection */
+     CARD16	length B16;
+@@ -102,7 +107,8 @@ typedef struct _AppleDRIAuthConnection {
+ } xAppleDRIAuthConnectionReq;
+ #define sz_xAppleDRIAuthConnectionReq	12
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE        type;
+     BOOL        pad1;
+     CARD16      sequenceNumber B16;
+@@ -116,7 +122,8 @@ typedef struct {
+ } xAppleDRIAuthConnectionReply;
+ #define zx_xAppleDRIAuthConnectionReply  32
+ 
+-typedef struct _AppleDRICreateSurface {
++typedef struct _AppleDRICreateSurface
++{
+     CARD8	reqType;		/* always DRIReqCode */
+     CARD8	driReqType;		/* always X_DRICreateSurface */
+     CARD16	length B16;
+@@ -126,7 +133,8 @@ typedef struct _AppleDRICreateSurface {
+ } xAppleDRICreateSurfaceReq;
+ #define sz_xAppleDRICreateSurfaceReq	16
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE	type;			/* X_Reply */
+     BOOL	pad1;
+     CARD16	sequenceNumber B16;
+@@ -140,7 +148,8 @@ typedef struct {
+ } xAppleDRICreateSurfaceReply;
+ #define sz_xAppleDRICreateSurfaceReply	32
+ 
+-typedef struct _AppleDRIDestroySurface {
++typedef struct _AppleDRIDestroySurface
++{
+     CARD8	reqType;		/* always DRIReqCode */
+     CARD8	driReqType;		/* always X_DRIDestroySurface */
+     CARD16	length B16;
+@@ -149,7 +158,8 @@ typedef struct _AppleDRIDestroySurface {
+ } xAppleDRIDestroySurfaceReq;
+ #define sz_xAppleDRIDestroySurfaceReq	12
+ 
+-typedef struct _AppleDRINotify {
++typedef struct _AppleDRINotify
++{
+ 	BYTE	type;		/* always eventBase + event type */
+ 	BYTE	kind;
+ 	CARD16	sequenceNumber B16;
+@@ -164,7 +174,8 @@ typedef struct _AppleDRINotify {
+ #define sz_xAppleDRINotifyEvent	32
+ 
+ 
+-typedef struct {
++typedef struct
++{
+     CARD8 reqType;
+     CARD8 driReqType;
+     CARD16 length B16;
+@@ -176,7 +187,8 @@ typedef struct {
+ 
+ #define sz_xAppleDRICreateSharedBufferReq 16
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE type;
+     BYTE data1;
+     CARD16 sequenceNumber B16;
+@@ -191,7 +203,8 @@ typedef struct {
+ 
+ #define sz_xAppleDRICreateSharedBufferReply 32
+ 
+-typedef struct {
++typedef struct
++{
+     CARD8 reqType;
+     CARD8 driReqType;
+     CARD16 length B16;
+@@ -201,7 +214,8 @@ typedef struct {
+ 
+ #define sz_xAppleDRISwapBuffersReq 12
+ 
+-typedef struct {
++typedef struct
++{
+     CARD8 reqType; /*1*/
+     CARD8 driReqType; /*2*/
+     CARD16 length B16; /*4*/
+@@ -211,7 +225,8 @@ typedef struct {
+ 
+ #define sz_xAppleDRICreatePixmapReq 12
+ 
+-typedef struct {
++typedef struct
++{
+     BYTE type; /*1*/
+     BOOL pad1; /*2*/
+     CARD16 sequenceNumber B16; /*4*/
+@@ -226,7 +241,8 @@ typedef struct {
+ 
+ #define sz_xAppleDRICreatePixmapReply 32
+ 
+-typedef struct {
++typedef struct
++{
+     CARD8 reqType; /*1*/
+     CARD8 driReqType; /*2*/
+     CARD16 length B16; /*4*/

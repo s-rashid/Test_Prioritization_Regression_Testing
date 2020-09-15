@@ -1,0 +1,14 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index b64252f..bfee385 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -48,7 +48,8 @@ extern _X_EXPORT void InitValuatorAxisStruct(
+ 	int                    /* maxval */,
+ 	int                    /* resolution */,
+ 	int                    /* min_res */,
+-	int                    /* max_res */);
++	int                    /* max_res */,
++	int                    /* mode */);
+ 
+ /* Input device properties */
+ extern _X_EXPORT void XIDeleteAllDeviceProperties(

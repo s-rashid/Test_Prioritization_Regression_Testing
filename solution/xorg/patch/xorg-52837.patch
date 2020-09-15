@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/xpr/xprEvent.c b/hw/xquartz/xpr/xprEvent.c
+index cc86c47..4e7ece6 100644
+--- a/hw/xquartz/xpr/xprEvent.c
++++ b/hw/xquartz/xpr/xprEvent.c
+@@ -44,7 +44,6 @@
+ #include   "scrnintstr.h"
+ #include   "mipointer.h"
+ 
+-#include "darwin.h"
+ #include "quartz.h"
+ #include "quartzKeyboard.h"
+ #include "darwinEvents.h"

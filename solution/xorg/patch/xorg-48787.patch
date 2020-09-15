@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index 3013321..2f93bb1 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -681,8 +681,6 @@ DoConfigure(void)
+ 	    xorgHWAccess = FALSE;
+     }
+ 
+-    xf86FindPrimaryDevice();
+- 
+     /* Create XF86Config file structure */
+     xf86config = calloc(1, sizeof(XF86ConfigRec));
+ 

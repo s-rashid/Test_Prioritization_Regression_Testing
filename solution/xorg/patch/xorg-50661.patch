@@ -1,0 +1,13 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index dfab791..cd66876 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -273,7 +273,7 @@ typedef struct _FocusClassRec {
+ 
+ typedef struct _ProximityClassRec {
+     int		sourceid;
+-    char	pad;
++    char	in_proximity;
+ } ProximityClassRec, *ProximityClassPtr;
+ 
+ typedef struct _AbsoluteClassRec {

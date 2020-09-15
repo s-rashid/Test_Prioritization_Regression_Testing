@@ -1,0 +1,51 @@
+diff --git a/dix/selection.c b/dix/selection.c
+index 87ed1ab..dfdcfdc 100644
+--- a/dix/selection.c
++++ b/dix/selection.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987, 1989 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -74,6 +73,7 @@ dixLookupSelection(Selection **result, Atom selectionName,
+ {
+     Selection *pSel;
+     int rc = BadMatch;
++
+     client->errorValue = selectionName;
+ 
+     for (pSel = CurrentSelections; pSel; pSel = pSel->next)
+@@ -182,8 +182,7 @@ ProcSetSelectionOwner(ClientPtr client)
+ 	   success. */
+ 	if (CompareTimeStamps(time, pSel->lastTimeChanged) == EARLIER)
+ 	    return Success;
+-	if (pSel->client && (!pWin || (pSel->client != client)))
+-	{
++        if (pSel->client && (!pWin || (pSel->client != client))) {
+ 	    event.u.u.type = SelectionClear;
+ 	    event.u.selectionClear.time = time.milliseconds;
+ 	    event.u.selectionClear.window = pSel->window;
+@@ -191,8 +190,7 @@ ProcSetSelectionOwner(ClientPtr client)
+ 	    WriteEventsToClient(pSel->client, 1, &event);
+ 	}
+     }
+-    else if (rc == BadMatch)
+-    {
++    else if (rc == BadMatch) {
+ 	/*
+ 	 * It doesn't exist, so add it...
+ 	 */
+@@ -293,8 +291,8 @@ ProcConvertSelection(ClientPtr client)
+ 	event.u.selectionRequest.selection = stuff->selection;
+ 	event.u.selectionRequest.target = stuff->target;
+ 	event.u.selectionRequest.property = stuff->property;
+-	if (pSel->client && pSel->client != serverClient && !pSel->client->clientGone)
+-	{
++        if (pSel->client && pSel->client != serverClient &&
++            !pSel->client->clientGone) {
+ 	    WriteEventsToClient(pSel->client, 1, &event);
+ 	    return Success;
+ 	}

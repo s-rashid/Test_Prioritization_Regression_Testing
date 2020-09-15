@@ -1,0 +1,43 @@
+diff --git a/randr/randrstr.h b/randr/randrstr.h
+index aad126f..03652ef 100644
+--- a/randr/randrstr.h
++++ b/randr/randrstr.h
+@@ -701,6 +701,12 @@ extern _X_EXPORT Bool
+ RRCrtcInit (void);
+ 
+ /*
++ * Initialize crtc type error value
++ */
++extern _X_EXPORT void
++RRCrtcInitErrorValue (void);
++
++/*
+  * Crtc dispatch
+  */
+ 
+@@ -763,6 +769,12 @@ RRModesForScreen (ScreenPtr pScreen, int *num_ret);
+ extern _X_EXPORT Bool
+ RRModeInit (void);
+     
++/*
++ * Initialize mode type error value
++ */
++extern _X_EXPORT void
++RRModeInitErrorValue (void);
++    
+ extern _X_EXPORT int
+ ProcRRCreateMode (ClientPtr client);
+ 
+@@ -857,6 +869,12 @@ ProcRRGetOutputPrimary (ClientPtr client);
+ extern _X_EXPORT Bool
+ RROutputInit (void);
+     
++/*
++ * Initialize output type error value
++ */
++extern _X_EXPORT void
++RROutputInitErrorValue (void);
++    
+ /* rrpointer.c */
+ extern _X_EXPORT void
+ RRPointerMoved (ScreenPtr pScreen, int x, int y);

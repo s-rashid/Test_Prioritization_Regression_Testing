@@ -1,0 +1,15 @@
+diff --git a/render/mirect.c b/render/mirect.c
+index 13d7fa6..6a3112a 100644
+--- a/render/mirect.c
++++ b/render/mirect.c
+@@ -64,8 +64,8 @@ miColorRects (PicturePtr    pDst,
+ 	tmpval[4].val = pDst->clipOrigin.y - yoff;
+ 	mask |= GCClipXOrigin|GCClipYOrigin;
+ 	
+-	pClip = REGION_CREATE (pScreen, NULL, 1);
+-	REGION_COPY (pScreen, pClip,
++	pClip = RegionCreate(NULL, 1);
++	RegionCopy(pClip,
+ 		     (RegionPtr) pClipPict->clientClip);
+ 	(*pGC->funcs->ChangeClip) (pGC, CT_REGION, pClip, 0);
+     }

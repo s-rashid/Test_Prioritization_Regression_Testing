@@ -1,0 +1,16 @@
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index afc44ac..c5030d0 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -63,6 +63,11 @@ xkbUnwrapProc(DeviceIntPtr device, DeviceHandleProc proc,
+ 				 backupproc,xkbUnwrapProc);
+ }
+ 
++Bool
++XkbInitPrivates(void)
++{
++    return dixRegisterPrivateKey(&xkbDevicePrivateKeyRec, PRIVATE_DEVICE, 0);
++}
+ 
+ void
+ XkbSetExtension(DeviceIntPtr device, ProcessInputProc proc)

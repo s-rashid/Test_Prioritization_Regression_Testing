@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index 91a6718..aa6ea30 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -209,7 +209,7 @@ LookupStrOption(pointer optlist, const char *name, char *deflt, Bool markUsed)
+     if (ParseOptionValue(-1, optlist, &o, markUsed))
+         deflt = o.value.str;
+     if (deflt)
+-	return xstrdup(deflt);
++	return strdup(deflt);
+     else
+ 	return NULL;
+ }

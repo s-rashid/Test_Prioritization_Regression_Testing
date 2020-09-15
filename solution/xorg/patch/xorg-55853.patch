@@ -1,0 +1,51 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index 655cdb1..4953bd0 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -35,13 +35,13 @@
+ #endif
+ #include "win.h"
+ 
+-
+ /*
+  * General global variables
+  */
+ 
+ int		g_iNumScreens = 0;
+ winScreenInfo * g_ScreenInfo = 0;
++
+ #ifdef HAS_DEVWINDOWS
+ int		g_fdMessageQueue = WIN_FD_INVALID;
+ #endif
+@@ -61,6 +61,7 @@ Bool		g_fXdmcpEnabled = FALSE;
+ Bool           g_fAuthEnabled = FALSE;
+ HICON		g_hIconX = NULL;
+ HICON		g_hSmallIconX = NULL;
++
+ #ifndef RELOCATE_PROJECTROOT
+ const char *	g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log";
+ #else
+@@ -78,7 +79,6 @@ Bool		g_fSoftwareCursor = FALSE;
+ Bool		g_fSilentDupError = FALSE;
+ Bool            g_fNativeGl = FALSE;
+ 
+-
+ #ifdef XWIN_CLIPBOARD
+ /*
+  * Wrapped DIX functions
+@@ -87,7 +87,6 @@ winDispatchProcPtr	winProcEstablishConnectionOrig = NULL;
+ winDispatchProcPtr	winProcQueryTreeOrig = NULL;
+ winDispatchProcPtr	winProcSetSelectionOwnerOrig = NULL;
+ 
+-
+ /*
+  * Clipboard variables
+  */
+@@ -103,7 +102,6 @@ Window			g_iClipboardWindow = None;
+ Atom			g_atomLastOwnedSelection = None;
+ #endif
+ 
+-
+ /*
+  * Re-initialize global variables that are invalidated
+  * by a server reset.

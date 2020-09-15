@@ -1,0 +1,12 @@
+diff --git a/xkb/xkbEvents.c b/xkb/xkbEvents.c
+index c020e5e..7f91e9a 100644
+--- a/xkb/xkbEvents.c
++++ b/xkb/xkbEvents.c
+@@ -38,7 +38,6 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include "exevents.h"
+ #include "exglobals.h"
+ #include "windowstr.h"
+-#include "exevents.h"
+ #include <xkbsrv.h>
+ #include "xkb.h"
+ 

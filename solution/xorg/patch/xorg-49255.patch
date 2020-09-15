@@ -1,0 +1,28 @@
+diff --git a/Xext/xvmc.c b/Xext/xvmc.c
+index 982fad1..8fbdfae 100644
+--- a/Xext/xvmc.c
++++ b/Xext/xvmc.c
+@@ -259,7 +259,6 @@ ProcXvMCCreateContext(ClientPtr client)
+       WriteToClient(client, dwords << 2, (char*)data); 
+     AddResource(pContext->context_id, XvMCRTContext, pContext);
+ 
+-    if(data)
+ 	free(data);
+ 
+     return Success;
+@@ -327,7 +326,6 @@ ProcXvMCCreateSurface(ClientPtr client)
+       WriteToClient(client, dwords << 2, (char*)data);
+     AddResource(pSurface->surface_id, XvMCRTSurface, pSurface);
+ 
+-    if(data)
+         free(data);
+ 
+     pContext->refcnt++;
+@@ -444,7 +442,6 @@ ProcXvMCCreateSubpicture(ClientPtr client)
+       WriteToClient(client, dwords << 2, (char*)data);
+     AddResource(pSubpicture->subpicture_id, XvMCRTSubpicture, pSubpicture);
+ 
+-    if(data)
+         free(data);
+ 
+     pContext->refcnt++;

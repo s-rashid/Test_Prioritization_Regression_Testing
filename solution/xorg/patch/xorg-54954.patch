@@ -1,0 +1,18 @@
+diff --git a/Xi/chgkmap.h b/Xi/chgkmap.h
+index 6ed6420..633af7c 100644
+--- a/Xi/chgkmap.h
++++ b/Xi/chgkmap.h
+@@ -30,10 +30,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #ifndef CHGKMAP_H
+ #define CHGKMAP_H 1
+ 
+-int SProcXChangeDeviceKeyMapping(ClientPtr	/* client */
++int SProcXChangeDeviceKeyMapping(ClientPtr      /* client */
+     );
+ 
+-int ProcXChangeDeviceKeyMapping(ClientPtr	/* client */
++int ProcXChangeDeviceKeyMapping(ClientPtr       /* client */
+     );
+ 
+-#endif /* CHGKMAP_H */
++#endif                          /* CHGKMAP_H */

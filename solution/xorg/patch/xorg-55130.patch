@@ -1,0 +1,65 @@
+diff --git a/fb/fbfillsp.c b/fb/fbfillsp.c
+index 194bfc8..4debe1e 100644
+--- a/fb/fbfillsp.c
++++ b/fb/fbfillsp.c
+@@ -28,11 +28,7 @@
+ 
+ void
+ fbFillSpans (DrawablePtr    pDrawable,
+-	     GCPtr	    pGC,
+-	     int	    n,
+-	     DDXPointPtr    ppt,
+-	     int	    *pwidth,
+-	     int	    fSorted)
++            GCPtr pGC, int n, DDXPointPtr ppt, int *pwidth, int fSorted)
+ {
+     RegionPtr	    pClip = fbGetCompositeClip(pGC);
+     BoxPtr	    pextent, pbox;
+@@ -46,8 +42,7 @@ fbFillSpans (DrawablePtr    pDrawable,
+     extentY1 = pextent->y1;
+     extentX2 = pextent->x2;
+     extentY2 = pextent->y2;
+-    while (n--)
+-    {
++    while (n--) {
+ 	fullX1 = ppt->x;
+ 	fullY1 = ppt->y;
+ 	fullX2 = fullX1 + (int) *pwidth;
+@@ -67,30 +62,22 @@ fbFillSpans (DrawablePtr    pDrawable,
+ 	    continue;
+ 	
+ 	nbox = RegionNumRects (pClip);
+-	if (nbox == 1)
+-	{
+-	    fbFill (pDrawable,
+-		    pGC,
+-		    fullX1, fullY1, fullX2-fullX1, 1);
++        if (nbox == 1) {
++            fbFill(pDrawable, pGC, fullX1, fullY1, fullX2 - fullX1, 1);
+ 	}
+-	else
+-	{
++        else {
+ 	    pbox = RegionRects(pClip);
+-	    while(nbox--)
+-	    {
+-		if (pbox->y1 <= fullY1 && fullY1 < pbox->y2)
+-		{
++            while (nbox--) {
++                if (pbox->y1 <= fullY1 && fullY1 < pbox->y2) {
+ 		    partX1 = pbox->x1;
+ 		    if (partX1 < fullX1)
+ 			partX1 = fullX1;
+ 		    partX2 = pbox->x2;
+ 		    if (partX2 > fullX2)
+ 			partX2 = fullX2;
+-		    if (partX2 > partX1)
+-		    {
++                    if (partX2 > partX1) {
+ 			fbFill (pDrawable, pGC,
+-				partX1, fullY1,
+-				partX2 - partX1, 1);
++                               partX1, fullY1, partX2 - partX1, 1);
+ 		    }
+ 		}
+ 		pbox++;

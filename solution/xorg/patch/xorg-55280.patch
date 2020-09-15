@@ -1,0 +1,251 @@
+diff --git a/hw/dmx/examples/xinput.c b/hw/dmx/examples/xinput.c
+index b12daf2..db66010 100644
+--- a/hw/dmx/examples/xinput.c
++++ b/hw/dmx/examples/xinput.c
+@@ -42,14 +42,19 @@
+ #include <X11/extensions/dmxext.h>
+ #include <sys/time.h>
+ 
+-static const char *core(DMXInputAttributes *iinf)
++static const char *
++core(DMXInputAttributes * iinf)
+ {
+-    if (iinf->isCore)         return "core";
+-    else if (iinf->sendsCore) return "extension (sends core events)";
+-    else                      return "extension";
++    if (iinf->isCore)
++        return "core";
++    else if (iinf->sendsCore)
++        return "extension (sends core events)";
++    else
++        return "extension";
+ }
+ 
+-static void printdmxinfo(Display *display, int id)
++static void
++printdmxinfo(Display * display, int id)
+ {
+     int                  event_base;
+     int                  error_base;
+@@ -58,15 +63,21 @@ static void printdmxinfo(Display *display, int id)
+     Display              *backend;
+     char                 *backendname = NULL;
+ 
+-    if (!DMXQueryExtension(display, &event_base, &error_base)) return;
++    if (!DMXQueryExtension(display, &event_base, &error_base))
++        return;
+     if (!DMXQueryVersion(display, &major_version, &minor_version,
+-                         &patch_version)) return;
+-    if (major_version == 1 && minor_version == 0) return; /* too old */
+-    if (!DMXGetInputAttributes(display, id, &iinf)) return;
++                         &patch_version))
++        return;
++    if (major_version == 1 && minor_version == 0)
++        return;                 /* too old */
++    if (!DMXGetInputAttributes(display, id, &iinf))
++        return;
+ 
+     printf("   DMX Information: ");
+-    if (iinf.detached) printf("detached ");
+-    else               printf("active   ");
++    if (iinf.detached)
++        printf("detached ");
++    else
++        printf("active   ");
+     switch (iinf.inputType) {
+     case DMXLocalInputType:
+         printf("local, %s", core(&iinf));
+@@ -78,9 +89,11 @@ static void printdmxinfo(Display *display, int id)
+         if (iinf.physicalId >= 0) {
+             if ((backend = XOpenDisplay(iinf.name))) {
+                 XExtensionVersion *ext = XGetExtensionVersion(backend, INAME);
++
+                 if (ext && ext != (XExtensionVersion *)NoSuchExtension) {
+                     int count, i;
+                     XDeviceInfo *devInfo = XListInputDevices(backend, &count);
++
+                     if (devInfo) {
+                         for (i = 0; i < count; i++) {
+                             if ((unsigned)iinf.physicalId == devInfo[i].id
+@@ -96,7 +109,8 @@ static void printdmxinfo(Display *display, int id)
+             }
+         }
+         printf("backend o%d/%s",iinf.physicalScreen,  iinf.name);
+-        if (iinf.physicalId >= 0) printf("/id%d", iinf.physicalId);
++        if (iinf.physicalId >= 0)
++            printf("/id%d", iinf.physicalId);
+         if (backendname) {
+             printf("=%s", backendname);
+             free(backendname);
+@@ -107,7 +121,8 @@ static void printdmxinfo(Display *display, int id)
+     printf("\n");
+ }
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  device   = -1;
+@@ -123,10 +138,14 @@ int main(int argc, char **argv)
+             printf("Cannot open display %s\n", argv[1]);
+             return -1;
+         }
+-        if (argc >= 3) device   = strtol(argv[2], NULL, 0);
+-        if (argc >= 4) newmouse = strtol(argv[3], NULL, 0);
+-        if (argc >= 5) newkbd   = strtol(argv[4], NULL, 0);
+-    } else {
++        if (argc >= 3)
++            device = strtol(argv[2], NULL, 0);
++        if (argc >= 4)
++            newmouse = strtol(argv[3], NULL, 0);
++        if (argc >= 5)
++            newkbd = strtol(argv[4], NULL, 0);
++    }
++    else {
+         printf("Usage: %s display [device] [newmouse] [newkbd]\n", argv[0]);
+         return -1;
+     }
+@@ -141,8 +160,7 @@ int main(int argc, char **argv)
+         printf("No XInputExtension\n");
+         return -1;
+     }
+-    printf("%s version %d.%d\n",
+-           INAME, ext->major_version, ext->minor_version);
++    printf("%s version %d.%d\n", INAME, ext->major_version, ext->minor_version);
+ 
+     if (!(devInfo = XListInputDevices(display, &count)) || !count) {
+         printf("Cannot list devices\n");
+@@ -155,9 +173,15 @@ int main(int argc, char **argv)
+         int          has_key = 0;
+         
+         switch (devInfo[i].use) {
+-        case IsXPointer:         kind = "XPointer";         break;
+-        case IsXKeyboard:        kind = "XKeyboard";        break;
+-        case IsXExtensionDevice: kind = "XExtensionDevice"; break;
++        case IsXPointer:
++            kind = "XPointer";
++            break;
++        case IsXKeyboard:
++            kind = "XKeyboard";
++            break;
++        case IsXExtensionDevice:
++            kind = "XExtensionDevice";
++            break;
+         }
+         printf("%2lu %-20.20s %-16.16s",
+                (long unsigned)devInfo[i].id,
+@@ -167,14 +191,30 @@ int main(int argc, char **argv)
+              j < devInfo[i].num_classes;
+              any = (XAnyClassPtr)((char *)any + any->length), j++) {
+             const char   *class = "unk";
++
+             switch (any->class) {
+-            case KeyClass:       class = "key"; ++has_key; break;
+-            case ButtonClass:    class = "btn"; break;
+-            case ValuatorClass:  class = "val"; break;
+-            case FeedbackClass:  class = "fdb"; break;
+-            case ProximityClass: class = "prx"; break;
+-            case FocusClass:     class = "foc"; break;
+-            case OtherClass:     class = "oth"; break;
++            case KeyClass:
++                class = "key";
++                ++has_key;
++                break;
++            case ButtonClass:
++                class = "btn";
++                break;
++            case ValuatorClass:
++                class = "val";
++                break;
++            case FeedbackClass:
++                class = "fdb";
++                break;
++            case ProximityClass:
++                class = "prx";
++                break;
++            case FocusClass:
++                class = "foc";
++                break;
++            case OtherClass:
++                class = "oth";
++                break;
+             }
+             printf(" %s", class);
+         }
+@@ -183,9 +223,9 @@ int main(int argc, char **argv)
+ 
+         if (has_key) {
+             XkbDescPtr           xkb;
++
+             if ((xkb = XkbGetKeyboard(display,
+-                                      XkbAllComponentsMask,
+-                                      devInfo[i].id))) {
++                                      XkbAllComponentsMask, devInfo[i].id))) {
+                 printf("   Xkb Information:\n");
+                 printf("      Device id = %d\n", xkb->device_spec);
+                 printf("      Min keycode = 0x%02x\n", xkb->min_key_code);
+@@ -207,8 +247,7 @@ int main(int argc, char **argv)
+ 
+         printf("Trying to make device %d core mouse\n", newmouse);
+         dev = XOpenDevice(display, devInfo[newmouse].id);
+-        printf("Status = %d\n",
+-               XChangePointerDevice(display, dev, 0, 1));
++        printf("Status = %d\n", XChangePointerDevice(display, dev, 0, 1));
+         return 0;
+     }
+ 
+@@ -217,12 +256,10 @@ int main(int argc, char **argv)
+ 
+         printf("Trying to make device %d core keyboard\n", newkbd);
+         dev = XOpenDevice(display, devInfo[newkbd].id);
+-        printf("Status = %d\n",
+-               XChangeKeyboardDevice(display, dev));
++        printf("Status = %d\n", XChangeKeyboardDevice(display, dev));
+         return 0;
+     }
+             
+-
+     if (device >=0){
+ #define MAX_EVENTS 100
+         int         cnt = 0;
+@@ -238,7 +275,6 @@ int main(int argc, char **argv)
+         type(dev, event_type[cnt], event_list[cnt]);  \
+         if (event_type[cnt]) ++cnt
+         
+-
+         dev = XOpenDevice(display, devInfo[device].id);
+         ADD(DeviceKeyPress);
+         ADD(DeviceKeyRelease);
+@@ -264,10 +300,12 @@ int main(int argc, char **argv)
+         
+         for (;;) {
+             XEvent event;
++
+             XNextEvent(display, &event);
+             for (i = 0; i < cnt; i++) {
+                 XDeviceMotionEvent *e = (XDeviceMotionEvent *)&event;
+                 XDeviceButtonEvent *b = (XDeviceButtonEvent *)&event;
++
+                 if (event.type == event_type[i]) {
+                     printf("%s id=%lu (%d @ %d,%d; s=0x%04x, d=%d, t=%lu)"
+                            " axes_count=%d first=%d %d %d %d %d %d %d\n",
+@@ -283,9 +321,7 @@ int main(int argc, char **argv)
+                            e->axis_data[0],
+                            e->axis_data[1],
+                            e->axis_data[2],
+-                           e->axis_data[3],
+-                           e->axis_data[4],
+-                           e->axis_data[5]);
++                           e->axis_data[3], e->axis_data[4], e->axis_data[5]);
+                 }
+             }
+             ++total;
+@@ -297,6 +333,7 @@ int main(int argc, char **argv)
+                 int              n, m, a;
+                 struct timeval   tv;
+                 unsigned long    ms;
++
+                 gettimeofday(&tv, NULL);
+                 ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+                 tc = XGetDeviceMotionEvents(display, dev, ms-1000, ms,

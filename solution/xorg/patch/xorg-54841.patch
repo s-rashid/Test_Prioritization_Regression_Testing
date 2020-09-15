@@ -1,0 +1,20 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index 6c4272e..9e2713e 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -71,6 +71,7 @@
+ #include "damageextint.h"
+ #include "xfixes.h"
+ #include <X11/extensions/compositeproto.h>
++#include "compositeext.h"
+ #include <assert.h>
+ 
+ /*
+@@ -182,7 +183,6 @@ extern DevPrivateKeyRec CompSubwindowsPrivateKeyRec;
+ #define GetCompSubwindows(w) ((CompSubwindowsPtr) \
+     dixLookupPrivate(&(w)->devPrivates, CompSubwindowsPrivateKey))
+ 
+-extern RESTYPE CompositeClientWindowType;
+ extern RESTYPE CompositeClientSubwindowsType;
+ extern RESTYPE CompositeClientOverlayType;
+ 

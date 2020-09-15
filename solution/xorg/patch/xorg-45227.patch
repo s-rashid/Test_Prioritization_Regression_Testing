@@ -1,0 +1,12 @@
+diff --git a/Xi/xiquerydevice.c b/Xi/xiquerydevice.c
+index b316c86..6aa1685 100644
+--- a/Xi/xiquerydevice.c
++++ b/Xi/xiquerydevice.c
+@@ -153,6 +153,7 @@ ProcXIQueryDevice(ClientPtr client)
+ 
+     WriteReplyToClient(client, sizeof(xXIQueryDeviceReply), &rep);
+     WriteToClient(client, rep.length * 4, ptr);
++    xfree(ptr);
+     return rc;
+ }
+ 

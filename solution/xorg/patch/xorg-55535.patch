@@ -1,0 +1,276 @@
+diff --git a/hw/xfree86/modes/xf86Cursors.c b/hw/xfree86/modes/xf86Cursors.c
+index 669da0d..95a7892 100644
+--- a/hw/xfree86/modes/xf86Cursors.c
++++ b/hw/xfree86/modes/xf86Cursors.c
+@@ -65,11 +65,7 @@ xf86_crtc_cursor_rotation (xf86CrtcPtr crtc)
+ static void
+ xf86_crtc_rotate_coord (Rotation    rotation,
+ 			int	    width,
+-			int	    height,
+-			int	    x_dst,
+-			int	    y_dst,
+-			int	    *x_src,
+-			int	    *y_src)
++                       int height, int x_dst, int y_dst, int *x_src, int *y_src)
+ {
+     int t;
+     
+@@ -106,10 +102,7 @@ static void
+ xf86_crtc_rotate_coord_back (Rotation    rotation,
+ 			     int	    width,
+ 			     int	    height,
+-			     int	    x_dst,
+-			     int	    y_dst,
+-			     int	    *x_src,
+-			     int	    *y_src)
++                            int x_dst, int y_dst, int *x_src, int *y_src)
+ {
+     int t;
+     
+@@ -200,6 +193,7 @@ static CARD8
+ get_bit (CARD8 *image, xf86CursorInfoPtr cursor_info, int x, int y, Bool mask)
+ {
+     struct cursor_bit bit = cursor_bitpos(image, cursor_info, x, y, mask);
++
+     return (*bit.byte >> bit.bitpos) & 1;
+ }
+ 
+@@ -210,6 +204,7 @@ static void
+ set_bit (CARD8 *image, xf86CursorInfoPtr cursor_info, int x, int y, Bool mask)
+ {
+     struct cursor_bit bit = cursor_bitpos(image, cursor_info, x, y, mask);
++
+     *bit.byte |= 1 << bit.bitpos;
+ }
+     
+@@ -234,15 +229,12 @@ xf86_crtc_convert_cursor_to_argb (xf86CrtcPtr crtc, unsigned char *src)
+ #endif
+ 
+     for (y = 0; y < cursor_info->MaxHeight; y++)
+-	for (x = 0; x < cursor_info->MaxWidth; x++) 
+-	{
++        for (x = 0; x < cursor_info->MaxWidth; x++) {
+ 	    xf86_crtc_rotate_coord (rotation,
+ 				    cursor_info->MaxWidth,
+-				    cursor_info->MaxHeight,
+-				    x, y, &xin, &yin);
++                                   cursor_info->MaxHeight, x, y, &xin, &yin);
+ 	    if (get_bit (src, cursor_info, xin, yin, TRUE) ==
+-		((flags & HARDWARE_CURSOR_INVERT_MASK) == 0))
+-	    {
++                ((flags & HARDWARE_CURSOR_INVERT_MASK) == 0)) {
+ 		if (get_bit (src, cursor_info, xin, yin, FALSE))
+ 		    bits = xf86_config->cursor_fg;
+ 		else
+@@ -273,12 +265,10 @@ xf86_set_cursor_colors (ScrnInfoPtr scrn, int bg, int fg)
+     xf86_config->cursor_fg = (CARD32) fg | 0xff000000;
+     xf86_config->cursor_bg = (CARD32) bg | 0xff000000;
+     
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+-	if (crtc->enabled && !crtc->cursor_argb)
+-	{
++        if (crtc->enabled && !crtc->cursor_argb) {
+ 	    if (crtc->funcs->load_cursor_image)
+ 		crtc->funcs->set_cursor_colors (crtc, bg, fg);
+ 	    else if (bits)
+@@ -290,8 +280,7 @@ xf86_set_cursor_colors (ScrnInfoPtr scrn, int bg, int fg)
+ static void
+ xf86_crtc_hide_cursor (xf86CrtcPtr crtc)
+ {
+-    if (crtc->cursor_shown)
+-    {
++    if (crtc->cursor_shown) {
+ 	crtc->funcs->hide_cursor (crtc);
+ 	crtc->cursor_shown = FALSE;
+     }
+@@ -304,8 +293,7 @@ xf86_hide_cursors (ScrnInfoPtr scrn)
+     int			c;
+ 
+     xf86_config->cursor_on = FALSE;
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+ 	if (crtc->enabled)
+@@ -316,8 +304,7 @@ xf86_hide_cursors (ScrnInfoPtr scrn)
+ static void
+ xf86_crtc_show_cursor (xf86CrtcPtr crtc)
+ {
+-    if (!crtc->cursor_shown && crtc->cursor_in_range)
+-    {
++    if (!crtc->cursor_shown && crtc->cursor_in_range) {
+ 	crtc->funcs->show_cursor (crtc);
+ 	crtc->cursor_shown = TRUE;
+     }
+@@ -330,8 +317,7 @@ xf86_show_cursors (ScrnInfoPtr scrn)
+     int			c;
+ 
+     xf86_config->cursor_on = TRUE;
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+ 	if (crtc->enabled)
+@@ -339,7 +325,8 @@ xf86_show_cursors (ScrnInfoPtr scrn)
+     }
+ }
+ 
+-void xf86CrtcTransformCursorPos (xf86CrtcPtr crtc, int *x, int *y)
++void
++xf86CrtcTransformCursorPos(xf86CrtcPtr crtc, int *x, int *y)
+ {
+     ScrnInfoPtr scrn = crtc->scrn;
+     ScreenPtr screen = scrn->pScreen;
+@@ -382,8 +369,7 @@ xf86_crtc_set_cursor_position (xf86CrtcPtr crtc, int x, int y)
+      */
+     if (crtc->transform_in_use && !crtc->driverIsPerformingTransform)
+ 	xf86CrtcTransformCursorPos(crtc, &x, &y);
+-    else
+-    {
++    else {
+ 	x -= crtc->x;
+ 	y -= crtc->y;
+     }
+@@ -393,8 +379,7 @@ xf86_crtc_set_cursor_position (xf86CrtcPtr crtc, int x, int y)
+      */
+     in_range = TRUE;
+     if (x >= mode->HDisplay || y >= mode->VDisplay ||
+-	x <= -cursor_info->MaxWidth || y <= -cursor_info->MaxHeight) 
+-    {
++        x <= -cursor_info->MaxWidth || y <= -cursor_info->MaxHeight) {
+ 	in_range = FALSE;
+ 	x = 0;
+ 	y = 0;
+@@ -402,8 +387,7 @@ xf86_crtc_set_cursor_position (xf86CrtcPtr crtc, int x, int y)
+ 
+     crtc->cursor_in_range = in_range;
+     
+-    if (in_range)
+-    {
++    if (in_range) {
+ 	crtc->funcs->set_cursor_position (crtc, x, y);
+ 	xf86_crtc_show_cursor (crtc);
+     }
+@@ -420,8 +404,7 @@ xf86_set_cursor_position (ScrnInfoPtr scrn, int x, int y)
+     /* undo what xf86HWCurs did to the coordinates */
+     x += scrn->frameX0;
+     y += scrn->frameY0;
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+ 	if (crtc->enabled)
+@@ -447,8 +430,7 @@ xf86_crtc_load_cursor_image (xf86CrtcPtr crtc, CARD8 *src)
+ 
+     if (rotation == RR_Rotate_0)
+ 	cursor_image = src;
+-    else
+-    {
++    else {
+         int x, y;
+     	int xin, yin;
+ 	int stride = cursor_info->MaxWidth >> 2;
+@@ -457,8 +439,7 @@ xf86_crtc_load_cursor_image (xf86CrtcPtr crtc, CARD8 *src)
+ 	memset(cursor_image, 0, cursor_info->MaxHeight * stride);
+ 	
+         for (y = 0; y < cursor_info->MaxHeight; y++)
+-	    for (x = 0; x < cursor_info->MaxWidth; x++) 
+-	    {
++            for (x = 0; x < cursor_info->MaxWidth; x++) {
+ 		xf86_crtc_rotate_coord (rotation,
+ 					cursor_info->MaxWidth,
+ 					cursor_info->MaxHeight,
+@@ -481,12 +462,10 @@ xf86_load_cursor_image (ScrnInfoPtr scrn, unsigned char *src)
+     xf86CrtcConfigPtr   xf86_config = XF86_CRTC_CONFIG_PTR(scrn);
+     int			c;
+ 
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+-	if (crtc->enabled)
+-	{
++        if (crtc->enabled) {
+ 	    if (crtc->funcs->load_cursor_image)
+ 		xf86_crtc_load_cursor_image (crtc, src);
+ 	    else if (crtc->funcs->load_cursor_argb)
+@@ -555,8 +534,7 @@ xf86_crtc_load_cursor_argb (xf86CrtcPtr crtc, CursorPtr cursor)
+     const Rotation	rotation = xf86_crtc_cursor_rotation(crtc);
+ 
+     for (y = 0; y < image_height; y++)
+-	for (x = 0; x < image_width; x++)
+-	{
++        for (x = 0; x < image_width; x++) {
+ 	    xf86_crtc_rotate_coord (rotation, image_width, image_height, x, y,
+ 				    &xin, &yin);
+ 	    if (xin < source_width && yin < source_height)
+@@ -575,8 +553,7 @@ xf86_load_cursor_argb (ScrnInfoPtr scrn, CursorPtr cursor)
+     xf86CrtcConfigPtr   xf86_config = XF86_CRTC_CONFIG_PTR(scrn);
+     int			c;
+ 
+-    for (c = 0; c < xf86_config->num_crtc; c++)
+-    {
++    for (c = 0; c < xf86_config->num_crtc; c++) {
+ 	xf86CrtcPtr crtc = xf86_config->crtc[c];
+ 
+ 	if (crtc->enabled)
+@@ -597,8 +574,7 @@ xf86_cursors_init (ScreenPtr screen, int max_width, int max_height, int flags)
+ 
+     xf86_config->cursor_image = malloc(max_width * max_height * 4);
+ 
+-    if (!xf86_config->cursor_image)
+-    {
++    if (!xf86_config->cursor_image) {
+ 	xf86DestroyCursorInfoRec (cursor_info);
+ 	return FALSE;
+     }
+@@ -616,8 +592,7 @@ xf86_cursors_init (ScreenPtr screen, int max_width, int max_height, int flags)
+     cursor_info->ShowCursor = xf86_show_cursors;
+     cursor_info->UseHWCursor = xf86_use_hw_cursor;
+ #ifdef ARGB_CURSOR
+-    if (flags & HARDWARE_CURSOR_ARGB)
+-    {
++    if (flags & HARDWARE_CURSOR_ARGB) {
+ 	cursor_info->UseHWCursorARGB = xf86_use_hw_cursor_argb;
+ 	cursor_info->LoadCursorARGB = xf86_load_cursor_argb;
+     }
+@@ -669,9 +644,10 @@ xf86_reload_cursors (ScreenPtr screen)
+     if (!(cursor_info->Flags & HARDWARE_CURSOR_UPDATE_UNHIDDEN))
+ 	(*cursor_info->HideCursor)(scrn);
+ 
+-    if (cursor)
+-    {
+-	void *src = dixLookupScreenPrivate(&cursor->devPrivates, CursorScreenKey, screen);
++    if (cursor) {
++        void *src =
++            dixLookupScreenPrivate(&cursor->devPrivates, CursorScreenKey,
++                                   screen);
+ #ifdef ARGB_CURSOR
+ 	if (cursor->bits->argb && cursor_info->LoadCursorARGB)
+ 	    (*cursor_info->LoadCursorARGB) (scrn, cursor);
+@@ -694,15 +670,13 @@ xf86_cursors_fini (ScreenPtr screen)
+     ScrnInfoPtr		scrn = xf86Screens[screen->myNum];
+     xf86CrtcConfigPtr   xf86_config = XF86_CRTC_CONFIG_PTR(scrn);
+     
+-    if (xf86_config->cursor_info)
+-    {
++    if (xf86_config->cursor_info) {
+ 	xf86DestroyCursorInfoRec (xf86_config->cursor_info);
+ 	xf86_config->cursor_info = NULL;
+     }
+     free(xf86_config->cursor_image);
+     xf86_config->cursor_image = NULL;
+-    if (xf86_config->cursor)
+-    {
++    if (xf86_config->cursor) {
+ 	FreeCursor (xf86_config->cursor, None);
+ 	xf86_config->cursor = NULL;
+     }

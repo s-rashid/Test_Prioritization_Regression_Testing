@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_video.c b/hw/xfree86/os-support/linux/lnx_video.c
+index 09d1787..e159f46 100644
+--- a/hw/xfree86/os-support/linux/lnx_video.c
++++ b/hw/xfree86/os-support/linux/lnx_video.c
+@@ -38,7 +38,6 @@
+ #include "xf86Priv.h"
+ #include "xf86_OSlib.h"
+ #include "xf86OSpriv.h"
+-#include "lnx.h"
+ #ifdef __alpha__
+ #include "shared/xf86Axp.h"
+ #endif

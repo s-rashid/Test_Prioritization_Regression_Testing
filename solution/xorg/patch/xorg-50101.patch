@@ -1,0 +1,22 @@
+diff --git a/mi/miwideline.c b/mi/miwideline.c
+index 5f3d582..b11b40b 100644
+--- a/mi/miwideline.c
++++ b/mi/miwideline.c
+@@ -717,7 +717,7 @@ miLineArcI (
+ 	    *--bwids = slw;
+ 	}
+     }
+-    return (pGC->lineWidth);
++    return pGC->lineWidth;
+ }
+ 
+ #define CLIPSTEPEDGE(edgey,edge,edgeleft) \
+@@ -911,7 +911,7 @@ miLineArcD (
+ 	    *wids++ = xcr - xcl + 1;
+ 	}
+     }
+-    return (pts - points);
++    return pts - points;
+ }
+ 
+ static int

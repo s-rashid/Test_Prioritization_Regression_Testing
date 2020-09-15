@@ -1,0 +1,13 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index a57139f..4557350 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -5883,7 +5883,7 @@ ProcXkbGetKbdByName(ClientPtr client)
+ 	    nkn.changed|= XkbNKN_GeometryMask;
+ 	XkbSendNewKeyboardNotify(dev,&nkn);
+ 
+-	if (!IsMaster(dev) && dev->u.master)
++	if (!IsMaster(dev) && !IsFloating(dev))
+ 	{
+ 	    DeviceIntPtr master = dev->u.master;
+ 	    if (master->u.lastSlave == dev)

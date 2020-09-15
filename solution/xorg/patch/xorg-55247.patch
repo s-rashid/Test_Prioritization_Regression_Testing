@@ -1,0 +1,22 @@
+diff --git a/hw/dmx/dmxinput.h b/hw/dmx/dmxinput.h
+index edfff9f..83c9c8b 100644
+--- a/hw/dmx/dmxinput.h
++++ b/hw/dmx/dmxinput.h
+@@ -108,7 +108,6 @@ struct _DMXInputInfo {
+     int                     sigioFd[DMX_MAX_SIGIO_FDS];    /**< List of fds */
+     Bool                    sigioAdded[DMX_MAX_SIGIO_FDS]; /**< Active fds */
+ 
+-    
+     /** True if a VT switch is pending, but has not yet happened. */
+     int                     vt_switch_pending;
+ 
+@@ -140,7 +139,8 @@ extern void dmxInputLogDevices(void);
+ extern void dmxUpdateWindowInfo(DMXUpdateType type, WindowPtr pWindow);
+ 
+ /* These functions are defined in input/dmxeq.c */
+-extern void dmxeqSwitchScreen(DeviceIntPtr pDev, ScreenPtr pScreen, Bool fromDIX);
++extern void dmxeqSwitchScreen(DeviceIntPtr pDev, ScreenPtr pScreen,
++                              Bool fromDIX);
+ 
+ /* This type is used in input/dmxevents.c.  Also, these functions are
+  * defined in input/dmxevents.c */

@@ -1,0 +1,13 @@
+diff --git a/include/dix.h b/include/dix.h
+index 476ec2e..76ddbb5 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -218,7 +218,7 @@ extern int AlterSaveSetForClient(
+     WindowPtr /*pWin*/,
+     unsigned /*mode*/,
+     Bool /*toRoot*/,
+-    Bool /*remap*/);
++    Bool /*map*/);
+   
+ extern void DeleteWindowFromAnySaveSet(
+     WindowPtr /*pWin*/);

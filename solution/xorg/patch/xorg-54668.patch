@@ -1,0 +1,13 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index 637526a..756aaac 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -417,7 +417,7 @@ ProcXIChangeHierarchy(ClientPtr client)
+     if (!stuff->num_changes)
+         return rc;
+ 
+-    any = (xXIAnyHierarchyChangeInfo *) & stuff[1];
++    any = (xXIAnyHierarchyChangeInfo *) &stuff[1];
+     while (stuff->num_changes--) {
+         SWAPIF(swaps(&any->type));
+         SWAPIF(swaps(&any->length));

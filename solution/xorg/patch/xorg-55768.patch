@@ -1,0 +1,23 @@
+diff --git a/hw/xquartz/darwin.h b/hw/xquartz/darwin.h
+index aafc12f..b1157ce 100644
+--- a/hw/xquartz/darwin.h
++++ b/hw/xquartz/darwin.h
+@@ -48,6 +48,7 @@ void DarwinAdjustScreenOrigins(ScreenInfo *pScreenInfo);
+  * Global variables from darwin.c
+  */
+ extern DevPrivateKeyRec darwinScreenKeyRec;
++
+ #define darwinScreenKey (&darwinScreenKeyRec)
+ extern int              darwinScreensFound;
+ extern io_connect_t     darwinParamConnect;
+@@ -77,7 +78,9 @@ extern int              darwinMainScreenY;
+ extern char *bundle_id_prefix;
+ 
+ _X_ATTRIBUTE_PRINTF(6,7)
+-extern void xq_asl_log (int level, const char *subsystem, const char *file, const char *function, int line, const char *fmt, ...);
++extern void
++xq_asl_log(int level, const char *subsystem, const char *file,
++           const char *function, int line, const char *fmt, ...);
+ 
+ #define ASL_LOG(level, subsystem, msg, args...) xq_asl_log(level, subsystem, __FILE__, __FUNCTION__, __LINE__, msg, ##args)
+ #define DEBUG_LOG(msg, args...) ASL_LOG(ASL_LEVEL_DEBUG, "XQuartz", msg, ##args)

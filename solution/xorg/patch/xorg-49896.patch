@@ -1,0 +1,21 @@
+diff --git a/Xext/xvmain.c b/Xext/xvmain.c
+index 1b80b12..12b4c51 100644
+--- a/Xext/xvmain.c
++++ b/Xext/xvmain.c
+@@ -1133,12 +1133,13 @@ XvdiSetPortAttribute(
+   Atom attribute,
+   INT32 value
+ ){
++  int status;
+ 
++  status = (* pPort->pAdaptor->ddSetPortAttribute)(client, pPort, attribute, value);
++  if (status == Success)
+     XvdiSendPortNotify(pPort, attribute, value);
+ 
+-  return 
+-    (* pPort->pAdaptor->ddSetPortAttribute)(client, pPort, attribute, value);
+-
++  return status;
+ }
+ 
+ int

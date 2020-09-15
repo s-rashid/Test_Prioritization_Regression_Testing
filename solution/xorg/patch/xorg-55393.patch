@@ -1,0 +1,47 @@
+diff --git a/hw/kdrive/linux/ps2.c b/hw/kdrive/linux/ps2.c
+index b62d769..d1522a2 100644
+--- a/hw/kdrive/linux/ps2.c
++++ b/hw/kdrive/linux/ps2.c
+@@ -38,11 +38,9 @@ Ps2ReadBytes (int fd, char *buf, int len, int min)
+     struct timeval  tv;
+ 
+     tot = 0;
+-    while (len)
+-    {
++    while (len) {
+ 	n = read (fd, buf, len);
+-	if (n > 0)
+-	{
++        if (n > 0) {
+ 	    tot += n;
+ 	    buf += n;
+ 	    len -= n;
+@@ -81,17 +79,14 @@ Ps2Read (int ps2Port, void *closure)
+ 
+ #undef SWAP_USB
+ #ifdef SWAP_USB
+-    if (id == 2)
+-    {
++    if (id == 2) {
+ 	left_button = KD_BUTTON_3;
+ 	right_button = KD_BUTTON_1;
+     }
+ #endif
+-    while ((n = Ps2ReadBytes (ps2Port, (char *) buf, sizeof (buf), 3)) > 0)
+-    {
++    while ((n = Ps2ReadBytes(ps2Port, (char *) buf, sizeof(buf), 3)) > 0) {
+ 	b = buf;
+-	while (n >= 3)
+-	{
++        while (n >= 3) {
+ 	    flags = KD_MOUSE_DELTA;
+ 	    if (b[0] & 4)
+ 		flags |= KD_BUTTON_2;
+@@ -164,7 +159,6 @@ Ps2Enable (KdPointerInfo *pi)
+     return Success;
+ }
+ 
+-
+ static void
+ Ps2Disable (KdPointerInfo *pi)
+ {

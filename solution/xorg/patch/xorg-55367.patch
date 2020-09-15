@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostproxy.h b/hw/kdrive/ephyr/ephyrhostproxy.h
+index 720c986..1372160 100644
+--- a/hw/kdrive/ephyr/ephyrhostproxy.h
++++ b/hw/kdrive/ephyr/ephyrhostproxy.h
+@@ -44,8 +44,8 @@ struct XReply {
+ };
+ 
+ Bool
++
+ ephyrHostProxyDoForward (pointer a_request_buffer,
+-                         struct XReply *a_reply,
+-                         Bool a_do_swap) ;
++                        struct XReply *a_reply, Bool a_do_swap);
+ 
+ #endif /*__EPHYRHOSTPROXY_H__*/

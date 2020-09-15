@@ -1,0 +1,23 @@
+diff --git a/randr/randrstr.h b/randr/randrstr.h
+index d8dd37d..842e0e0 100644
+--- a/randr/randrstr.h
++++ b/randr/randrstr.h
+@@ -462,9 +462,6 @@ extern _X_EXPORT Bool RRScreenInit(ScreenPtr pScreen);
+ extern _X_EXPORT RROutputPtr
+ RRFirstOutput (ScreenPtr pScreen);
+ 
+-extern _X_EXPORT Rotation
+-RRGetRotation (ScreenPtr pScreen);
+-
+ extern _X_EXPORT CARD16
+ RRVerticalRefresh (xRRModeInfo *mode);
+ 
+@@ -500,8 +497,6 @@ RRSetCurrentConfig (ScreenPtr		pScreen,
+ 		    int			rate,
+ 		    RRScreenSizePtr	pSize);
+ 
+-extern _X_EXPORT Bool RRScreenInit (ScreenPtr pScreen);
+-
+ extern _X_EXPORT Rotation
+ RRGetRotation (ScreenPtr pScreen);
+ 

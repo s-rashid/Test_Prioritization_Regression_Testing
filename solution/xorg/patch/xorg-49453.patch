@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 8016edb..4e48e65 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -55,7 +55,9 @@ static Bool
+ validDrawable(ClientPtr client, XID drawable, Mask access_mode,
+ 	      DrawablePtr *pDrawable, int *status)
+ {
+-    *status = dixLookupDrawable(pDrawable, drawable, client, 0, access_mode);
++    *status = dixLookupDrawable(pDrawable, drawable, client,
++				M_DRAWABLE_WINDOW | M_DRAWABLE_PIXMAP,
++				access_mode);
+     if (*status != Success) {
+ 	client->errorValue = drawable;
+ 	return FALSE;

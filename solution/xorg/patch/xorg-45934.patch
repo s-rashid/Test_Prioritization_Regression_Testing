@@ -1,0 +1,12 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 0bcf805..5f4ce56 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -1770,6 +1770,7 @@ ProcSyncDestroyAlarm(ClientPtr client)
+ 
+     rc = dixLookupResourceByType((pointer *)&pAlarm, stuff->alarm, RTAlarm,
+ 				 client, DixDestroyAccess);
++    if (rc != Success)
+ 	return (rc == BadValue) ? SyncErrorBase + XSyncBadAlarm : rc;
+ 
+     FreeResource(stuff->alarm, RT_NONE);

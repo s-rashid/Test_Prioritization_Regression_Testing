@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/i2c/bt829_module.c b/hw/xfree86/i2c/bt829_module.c
+index d87dfa7..c8a6ac6 100644
+--- a/hw/xfree86/i2c/bt829_module.c
++++ b/hw/xfree86/i2c/bt829_module.c
+@@ -4,8 +4,7 @@
+ 
+ #include "xf86Module.h"
+ 
+-static XF86ModuleVersionInfo bt829VersRec =
+-{
++static XF86ModuleVersionInfo bt829VersRec = {
+         "bt829",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,

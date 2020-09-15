@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/darwinfb.h b/hw/xquartz/darwinfb.h
+index 7505566..5de360d 100644
+--- a/hw/xquartz/darwinfb.h
++++ b/hw/xquartz/darwinfb.h
+@@ -51,6 +51,7 @@ typedef struct {
+ #define BM_ARGB(a,r,g,b) MASK_LH(0, (b) - 1)
+ #define GM_ARGB(a,r,g,b) MASK_LH(b, (b) + (g) - 1)
+ #define RM_ARGB(a,r,g,b) MASK_LH((b) + (g), (b) + (g) + (r) - 1)
+-#define AM_ARGB(a,r,g,b) MASK_LH((b) + (g) + (r), (b) + (g) + (r) + (a) - 1)
++#define AM_ARGB(a, r, g, b) MASK_LH((b) + (g) + (r), \
++                                    (b) + (g) + (r) + (a) - 1)
+ 
+ #endif                          /* _DARWIN_FB_H */

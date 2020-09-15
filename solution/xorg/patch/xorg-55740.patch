@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/Pointer.c b/hw/xnest/Pointer.c
+index fdc6181..a2ee900 100644
+--- a/hw/xnest/Pointer.c
++++ b/hw/xnest/Pointer.c
+@@ -54,8 +54,7 @@ xnestPointerProc(DeviceIntPtr pDev, int onoff)
+   int nmap;
+   int i;
+ 
+-  switch (onoff)
+-    {
++    switch (onoff) {
+     case DEVICE_INIT: 
+       nmap = XGetPointerMapping(xnestDisplay, map, MAXBUTTONS);
+       for (i = 0; i <= nmap; i++)

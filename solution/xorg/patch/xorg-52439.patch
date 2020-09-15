@@ -1,0 +1,21 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 3b6f0a2..00be74b 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -117,7 +117,6 @@ unsigned int            windowItemModMask = NX_COMMANDMASK;
+ // devices
+ DeviceIntPtr            darwinKeyboard = NULL;
+ DeviceIntPtr            darwinPointer = NULL;
+-DeviceIntPtr            darwinTabletCurrent = NULL;
+ DeviceIntPtr            darwinTabletStylus = NULL;
+ DeviceIntPtr            darwinTabletCursor = NULL;
+ DeviceIntPtr            darwinTabletEraser = NULL;
+@@ -492,8 +491,6 @@ void InitInput( int argc, char **argv )
+     darwinTabletEraser = AddInputDevice(serverClient, DarwinTabletProc, TRUE);
+     darwinTabletEraser->name = strdup("eraser");
+ 
+-    darwinTabletCurrent = darwinTabletStylus;
+-
+     DarwinEQInit();
+ 
+     QuartzInitInput(argc, argv);

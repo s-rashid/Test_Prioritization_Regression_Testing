@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Pointer.c b/hw/xnest/Pointer.c
+index c5d361c..4de4673 100644
+--- a/hw/xnest/Pointer.c
++++ b/hw/xnest/Pointer.c
+@@ -34,6 +34,7 @@ is" without express or implied warranty.
+ #include "Args.h"
+ 
+ #include "xserver-properties.h"
++#include "exevents.h" /* For XIGetKnownProperty */
+ 
+ DeviceIntPtr xnestPointerDevice = NULL;
+ 

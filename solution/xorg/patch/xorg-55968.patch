@@ -1,0 +1,12 @@
+diff --git a/mi/mibstore.c b/mi/mibstore.c
+index 827b9b2..6cadb2b 100644
+--- a/mi/mibstore.c
++++ b/mi/mibstore.c
+@@ -38,6 +38,6 @@
+  */
+ 
+ void
+-miInitializeBackingStore (ScreenPtr pScreen)
++miInitializeBackingStore(ScreenPtr pScreen)
+ {
+ }

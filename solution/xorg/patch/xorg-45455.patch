@@ -1,0 +1,13 @@
+diff --git a/randr/rrxinerama.c b/randr/rrxinerama.c
+index d81a857..97be7c1 100644
+--- a/randr/rrxinerama.c
++++ b/randr/rrxinerama.c
+@@ -313,7 +313,7 @@ ProcRRXineramaQueryScreens(ClientPtr client)
+     rep.type = X_Reply;
+     rep.sequenceNumber = client->sequence;
+     rep.number = RRXineramaScreenCount (pScreen);
+-    rep.length = rep.number * sz_XineramaScreenInfo >> 2;
++    rep.length = bytes_to_int32(rep.number * sz_XineramaScreenInfo);
+     if(client->swapped) {
+ 	register int n;
+ 	swaps(&rep.sequenceNumber, n);

@@ -1,0 +1,44 @@
+diff --git a/hw/xfree86/common/xf86cmap.c b/hw/xfree86/common/xf86cmap.c
+index 08f557c..edd5ae9 100644
+--- a/hw/xfree86/common/xf86cmap.c
++++ b/hw/xfree86/common/xf86cmap.c
+@@ -1004,6 +1004,7 @@ xf86ChangeGammaRamp(
+ 	xf86CrtcConfigPtr config = XF86_CRTC_CONFIG_PTR(pScrn);
+ 	RRCrtcPtr crtc = config->output[config->compat_output]->crtc->randr_crtc;
+ 
++	if (crtc) {
+ 	if (crtc->gammaSize != size)
+ 	    return BadValue;
+ 
+@@ -1011,6 +1012,7 @@ xf86ChangeGammaRamp(
+ 
+ 	return Success;
+     }
++    }
+ 
+     if(CMapScreenKey == NULL)
+         return BadImplementation;
+@@ -1077,6 +1079,7 @@ xf86GetGammaRampSize(ScreenPtr pScreen)
+ 	xf86CrtcConfigPtr config = XF86_CRTC_CONFIG_PTR(pScrn);
+ 	RRCrtcPtr crtc = config->output[config->compat_output]->crtc->randr_crtc;
+ 
++	if (crtc)
+ 	return crtc->gammaSize;
+     }
+ 
+@@ -1106,6 +1109,7 @@ xf86GetGammaRamp(
+ 	xf86CrtcConfigPtr config = XF86_CRTC_CONFIG_PTR(pScrn);
+ 	RRCrtcPtr crtc = config->output[config->compat_output]->crtc->randr_crtc;
+ 
++	if (crtc) {
+ 	if (crtc->gammaSize < size)
+ 	    return BadValue;
+ 
+@@ -1118,6 +1122,7 @@ xf86GetGammaRamp(
+ 
+ 	return Success;
+     }
++    }
+ 
+     if(CMapScreenKey == NULL) 
+ 	return BadImplementation;

@@ -1,0 +1,14 @@
+diff --git a/os/utils.c b/os/utils.c
+index f47177f..36cb46f 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -1315,6 +1315,9 @@ Popen(char *command, char *type)
+     /* Ignore the smart scheduler while this is going on */
+     old_alarm = OsSignal(SIGALRM, SIG_IGN);
+     if (old_alarm == SIG_ERR) {
++      close(pdes[0]);
++      close(pdes[1]);
++      free(cur);
+       perror("signal");
+       return NULL;
+     }

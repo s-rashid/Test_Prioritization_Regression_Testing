@@ -1,0 +1,13 @@
+diff --git a/dix/enterleave.c b/dix/enterleave.c
+index 488a943..a476f8f 100644
+--- a/dix/enterleave.c
++++ b/dix/enterleave.c
+@@ -215,8 +215,6 @@ CommonAncestor(
+  * Send enter notifies to all windows between 'ancestor' and 'child' (excluding
+  * both). Events are sent running up the window hierarchy. This function
+  * recurses.
+- *
+- * @param core If TRUE, core events are sent, otherwise XI events will be sent.
+  */
+ static void
+ DeviceEnterNotifies(DeviceIntPtr dev,

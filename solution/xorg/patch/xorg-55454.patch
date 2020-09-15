@@ -1,0 +1,164 @@
+diff --git a/hw/xfree86/common/xf86xvmc.c b/hw/xfree86/common/xf86xvmc.c
+index e6464a5..e584652 100644
+--- a/hw/xfree86/common/xf86xvmc.c
++++ b/hw/xfree86/common/xf86xvmc.c
+@@ -47,7 +47,6 @@
+ 
+ XvMCScreenInitProcPtr XvMCScreenInitProc = NULL;
+ 
+-
+ typedef struct {
+   CloseScreenProcPtr CloseScreen; 
+   int num_adaptors;
+@@ -56,27 +55,25 @@ typedef struct {
+ } xf86XvMCScreenRec, *xf86XvMCScreenPtr;
+ 
+ static DevPrivateKeyRec XF86XvMCScreenKeyRec;
++
+ #define XF86XvMCScreenKey (&XF86XvMCScreenKeyRec)
+ 
+ #define XF86XVMC_GET_PRIVATE(pScreen) (xf86XvMCScreenPtr) \
+     dixLookupPrivate(&(pScreen)->devPrivates, XF86XvMCScreenKey)
+ 
+-
+ static int 
+-xf86XvMCCreateContext (
+-  XvPortPtr pPort,
+-  XvMCContextPtr pContext,
+-  int *num_priv,
+-  CARD32 **priv
+-)
++xf86XvMCCreateContext(XvPortPtr pPort,
++                      XvMCContextPtr pContext, int *num_priv, CARD32 **priv)
+ {
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+     pContext->port_priv = (XvPortRecPrivatePtr)(pPort->devPriv.ptr);
+ 
+-    return (*pScreenPriv->adaptors[pContext->adapt_num]->CreateContext)(
+-		pScrn, pContext, num_priv, priv);
++    return (*pScreenPriv->adaptors[pContext->adapt_num]->CreateContext) (pScrn,
++                                                                         pContext,
++                                                                         num_priv,
++                                                                         priv);
+ }
+ 
+ static void 
+@@ -85,23 +82,21 @@ xf86XvMCDestroyContext ( XvMCContextPtr pContext)
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+-    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroyContext)(
+-                				pScrn, pContext);
++    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroyContext) (pScrn,
++                                                                   pContext);
+ }
+ 
+ static int 
+-xf86XvMCCreateSurface (
+-  XvMCSurfacePtr pSurface,
+-  int *num_priv,
+-  CARD32 **priv
+-)
++xf86XvMCCreateSurface(XvMCSurfacePtr pSurface, int *num_priv, CARD32 **priv)
+ {
+     XvMCContextPtr pContext = pSurface->context;
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+-    return (*pScreenPriv->adaptors[pContext->adapt_num]->CreateSurface)(
+-                pScrn, pSurface, num_priv, priv);
++    return (*pScreenPriv->adaptors[pContext->adapt_num]->CreateSurface) (pScrn,
++                                                                         pSurface,
++                                                                         num_priv,
++                                                                         priv);
+ }
+ 
+ static void 
+@@ -111,23 +106,20 @@ xf86XvMCDestroySurface (XvMCSurfacePtr pSurface)
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+-    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroySurface)(
+-                                                pScrn, pSurface);
++    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroySurface) (pScrn,
++                                                                   pSurface);
+ }
+ 
+ static int 
+-xf86XvMCCreateSubpicture (
+-  XvMCSubpicturePtr pSubpicture,
+-  int *num_priv,
+-  CARD32 **priv
+-)
++xf86XvMCCreateSubpicture(XvMCSubpicturePtr pSubpicture,
++                         int *num_priv, CARD32 **priv)
+ {
+     XvMCContextPtr pContext = pSubpicture->context;
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+-    return (*pScreenPriv->adaptors[pContext->adapt_num]->CreateSubpicture)(
+-                                  pScrn, pSubpicture, num_priv, priv);
++    return (*pScreenPriv->adaptors[pContext->adapt_num]->
++            CreateSubpicture) (pScrn, pSubpicture, num_priv, priv);
+ }
+ 
+ static void
+@@ -137,11 +129,10 @@ xf86XvMCDestroySubpicture (XvMCSubpicturePtr pSubpicture)
+     xf86XvMCScreenPtr pScreenPriv = XF86XVMC_GET_PRIVATE(pContext->pScreen);
+     ScrnInfoPtr pScrn = xf86Screens[pContext->pScreen->myNum];
+ 
+-    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroySubpicture)(
+-                                                pScrn, pSubpicture);
++    (*pScreenPriv->adaptors[pContext->adapt_num]->DestroySubpicture) (pScrn,
++                                                                      pSubpicture);
+ }
+ 
+-
+ static Bool
+ xf86XvMCCloseScreen (int i, ScreenPtr pScreen)
+ {
+@@ -155,11 +146,9 @@ xf86XvMCCloseScreen (int i, ScreenPtr pScreen)
+     return (*pScreen->CloseScreen)(i, pScreen);
+ }
+ 
+-Bool xf86XvMCScreenInit(
+-   ScreenPtr pScreen, 
+-   int num_adaptors,
+-   XF86MCAdaptorPtr *adaptors
+-)
++Bool
++xf86XvMCScreenInit(ScreenPtr pScreen,
++                   int num_adaptors, XF86MCAdaptorPtr * adaptors)
+ {
+    XvMCAdaptorPtr pAdapt;
+    xf86XvMCScreenPtr pScreenPriv;
+@@ -167,7 +156,8 @@ Bool xf86XvMCScreenInit(
+ 						    XF86XvScreenKey);
+    int i, j;
+ 
+-   if(!XvMCScreenInitProc) return FALSE;
++    if (!XvMCScreenInitProc)
++        return FALSE;
+ 
+    if(!(pAdapt = malloc(sizeof(XvMCAdaptorRec) * num_adaptors)))
+ 	return FALSE;
+@@ -221,12 +211,14 @@ Bool xf86XvMCScreenInit(
+    return TRUE;
+ }
+ 
+-XF86MCAdaptorPtr xf86XvMCCreateAdaptorRec (void)
++XF86MCAdaptorPtr
++xf86XvMCCreateAdaptorRec(void)
+ {
+    return calloc(1, sizeof(XF86MCAdaptorRec));
+ }
+ 
+-void xf86XvMCDestroyAdaptorRec(XF86MCAdaptorPtr adaptor)
++void
++xf86XvMCDestroyAdaptorRec(XF86MCAdaptorPtr adaptor)
+ {
+    free(adaptor);
+ }

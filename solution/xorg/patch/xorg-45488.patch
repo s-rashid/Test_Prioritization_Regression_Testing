@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 52960e5..1a2f736 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -34,7 +34,6 @@
+ #ifndef _XF86PRIVSTR_H
+ #define _XF86PRIVSTR_H
+ 
+-#include "xf86Pci.h"
+ #include "xf86str.h"
+ 
+ typedef enum {

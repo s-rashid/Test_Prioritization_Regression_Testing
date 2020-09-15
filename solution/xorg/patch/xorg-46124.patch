@@ -1,0 +1,13 @@
+diff --git a/include/input.h b/include/input.h
+index 548e58c..7ab5e9d 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -365,7 +365,7 @@ extern _X_EXPORT Bool InitKeyboardDeviceStruct(
+     BellProcPtr /*bellProc*/,
+     KbdCtrlProcPtr /*controlProc*/);
+ 
+-extern _X_EXPORT int ApplyPointerMapping(
++extern int ApplyPointerMapping(
+     DeviceIntPtr /* pDev */,
+     CARD8 *      /* map */,
+     int          /* len */,

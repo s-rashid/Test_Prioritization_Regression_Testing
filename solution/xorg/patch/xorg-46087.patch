@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/common/compiler.h b/hw/xfree86/common/compiler.h
+index 114c812..3b648df 100644
+--- a/hw/xfree86/common/compiler.h
++++ b/hw/xfree86/common/compiler.h
+@@ -165,13 +165,14 @@ extern unsigned short ldw_brx(volatile unsigned char *, int);
+ #    endif
+ 
+ #   elif defined __mips__
++     /* Note: sync instruction requires MIPS II instruction set */
+ #    define mem_barrier() \
+         __asm__ __volatile__(                                   \
+-                "# prevent instructions being moved around\n\t" \
+-                ".set\tnoreorder\n\t"                           \
+-                "# 8 nops to fool the R4400 pipeline\n\t"       \
+-                "nop;nop;nop;nop;nop;nop;nop;nop\n\t"           \
+-                ".set\treorder"                                 \
++		".set   push\n\t"	\
++		".set   noreorder\n\t"	\
++		".set   mips2\n\t"	\
++		"sync\n\t"		\
++		".set   pop"		\
+                 : /* no output */                               \
+                 : /* no input */                                \
+                 : "memory")

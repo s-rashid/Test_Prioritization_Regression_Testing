@@ -1,0 +1,12 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index c188bf1..681f651 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -160,6 +160,7 @@ typedef struct _CompScreen {
+     CompOverlayClientPtr        pOverlayClients;
+     
+     GetImageProcPtr		GetImage;
++    SourceValidateProcPtr	SourceValidate;
+ } CompScreenRec, *CompScreenPtr;
+ 
+ extern DevPrivateKeyRec CompScreenPrivateKeyRec;

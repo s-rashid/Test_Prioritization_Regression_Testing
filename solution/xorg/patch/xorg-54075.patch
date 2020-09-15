@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/xaa/xaaGC.c b/hw/xfree86/xaa/xaaGC.c
+index 44d50e6..1bc35d9 100644
+--- a/hw/xfree86/xaa/xaaGC.c
++++ b/hw/xfree86/xaa/xaaGC.c
+@@ -239,6 +239,7 @@ XAADestroyGC(GCPtr pGC)
+ 	free(pGCPriv->XAAOps);
+ 
+     free(pGCPriv->DashPattern);
++    pGCPriv->flags = 0;
+ 
+     (*pGC->funcs->DestroyGC)(pGC);
+     XAA_GC_FUNC_EPILOGUE (pGC);

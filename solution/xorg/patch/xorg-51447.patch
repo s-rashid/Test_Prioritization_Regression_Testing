@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_video.c b/hw/xfree86/os-support/linux/lnx_video.c
+index 39c728d..3d45511 100644
+--- a/hw/xfree86/os-support/linux/lnx_video.c
++++ b/hw/xfree86/os-support/linux/lnx_video.c
+@@ -461,7 +461,7 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 		   " (0x%08lx,0x%lx) (%s)\n", Base, Size,
+ 		   strerror(errno));
+     }
+-    DebugF("base: %lx aligned base: %lx\n",base, base + alignOff);
++    DebugF("base: %lx aligned base: %lx\n",base, (char *)base + alignOff);
+     return (char *)base + alignOff;
+ }
+ #endif /* !(__sparc__) */

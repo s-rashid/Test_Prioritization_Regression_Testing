@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Init.c b/hw/xnest/Init.c
+index ee74101..ea0669a 100644
+--- a/hw/xnest/Init.c
++++ b/hw/xnest/Init.c
+@@ -108,6 +108,7 @@ InitInput(int argc, char *argv[])
+ void
+ CloseInput(void)
+ {
++  mieqFini();
+ }
+ 
+ /*

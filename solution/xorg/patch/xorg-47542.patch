@@ -1,0 +1,13 @@
+diff --git a/glx/glxdriswrast.c b/glx/glxdriswrast.c
+index 20f9f90..c647d83 100644
+--- a/glx/glxdriswrast.c
++++ b/glx/glxdriswrast.c
+@@ -108,7 +108,7 @@ __glXDRIdrawableDestroy(__GLXdrawable *drawable)
+ }
+ 
+ static GLboolean
+-__glXDRIdrawableSwapBuffers(__GLXdrawable *drawable)
++__glXDRIdrawableSwapBuffers(ClientPtr client, __GLXdrawable *drawable)
+ {
+     __GLXDRIdrawable *private = (__GLXDRIdrawable *) drawable;
+     const __DRIcoreExtension *core = private->screen->core;

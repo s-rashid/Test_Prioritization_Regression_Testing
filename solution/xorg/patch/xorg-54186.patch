@@ -1,0 +1,13 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 60f9fa0..5e2ab87 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -626,7 +626,7 @@ void verify_internal_event(const InternalEvent *ev)
+     if (ev && ev->any.header != ET_Internal)
+     {
+         int i;
+-        unsigned char *data = (unsigned char*)ev;
++        const unsigned char *data = (const unsigned char*)ev;
+ 
+         ErrorF("dix: invalid event type %d\n", ev->any.header);
+ 

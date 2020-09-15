@@ -1,0 +1,27 @@
+diff --git a/Xext/geext.c b/Xext/geext.c
+index 6fad4ae..2ba0ca8 100644
+--- a/Xext/geext.c
++++ b/Xext/geext.c
+@@ -168,12 +168,6 @@ GEClientCallback(CallbackListPtr *list,
+     ClientPtr		pClient = clientinfo->client;
+     GEClientInfoPtr     pGEClient = GEGetClient(pClient);
+ 
+-    if (pGEClient == NULL)
+-    {
+-        pGEClient = xcalloc(1, sizeof(GEClientInfoRec));
+-        dixSetPrivate(&pClient->devPrivates, GEClientPrivateKey, pGEClient);
+-    }
+-
+     pGEClient->major_version = 0;
+     pGEClient->minor_version = 0;
+ }
+@@ -222,6 +216,9 @@ GEExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
+ 
++    if (!dixRequestPrivate(GEClientPrivateKey, sizeof(GEClientInfoRec)))
++        FatalError("GEExtensionInit: GE private request failed.\n");
++
+     if(!AddCallback(&ClientStateCallback, GEClientCallback, 0))
+     {
+         FatalError("GEExtensionInit: register client callback failed.\n");

@@ -1,0 +1,26 @@
+diff --git a/hw/xfree86/i2c/msp3430_module.c b/hw/xfree86/i2c/msp3430_module.c
+index 66b14a2..2ebf1f7 100644
+--- a/hw/xfree86/i2c/msp3430_module.c
++++ b/hw/xfree86/i2c/msp3430_module.c
+@@ -4,8 +4,6 @@
+ 
+ #include "xf86Module.h"
+ 
+-static MODULESETUPPROTO(msp3430Setup);
+-
+ static XF86ModuleVersionInfo msp3430VersRec =
+ {
+         "msp3430",
+@@ -22,11 +20,6 @@ static XF86ModuleVersionInfo msp3430VersRec =
+  
+ _X_EXPORT XF86ModuleData msp3430ModuleData = {
+         &msp3430VersRec,
+-        msp3430Setup,
++        NULL,
+         NULL
+ }; 
+-
+-static pointer
+-msp3430Setup(pointer module, pointer opts, int *errmaj, int *errmin) {
+-   return (pointer)1;
+-}

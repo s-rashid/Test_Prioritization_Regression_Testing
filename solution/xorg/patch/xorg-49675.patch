@@ -1,0 +1,29 @@
+diff --git a/record/record.c b/record/record.c
+index 5bd46c2..53bdfec 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -1868,7 +1868,6 @@ bailout:
+     if (si)
+     {
+ 	for (i = 0; i < maxSets; i++)
+-	    if (si[i].intervals)
+ 		free(si[i].intervals);
+ 	free(si);
+     }
+@@ -1955,7 +1954,6 @@ ProcRecordCreateContext(ClientPtr client)
+ 	err = BadAlloc;
+     }
+ bailout:
+-    if (pContext)
+ 	free(pContext);
+     return err;
+ } /* ProcRecordCreateContext */
+@@ -2352,7 +2350,7 @@ ProcRecordGetContext(ClientPtr client)
+ bailout:
+     for (i = 0; i < nRCAPs; i++)
+     {
+-	if (pRangeInfo[i].pRanges) free(pRangeInfo[i].pRanges);
++	free(pRangeInfo[i].pRanges);
+     }
+     free(pRangeInfo);
+     return err;

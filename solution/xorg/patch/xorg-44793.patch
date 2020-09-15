@@ -1,0 +1,20 @@
+diff --git a/xkb/xkbLEDs.c b/xkb/xkbLEDs.c
+index a70ac84..59cdba4 100644
+--- a/xkb/xkbLEDs.c
++++ b/xkb/xkbLEDs.c
+@@ -605,12 +605,12 @@ void
+ XkbFreeSrvLedInfo(XkbSrvLedInfoPtr sli)
+ {
+     if ((sli->flags&XkbSLI_IsDefault)==0) {
+-	if (sli->maps)	_XkbFree(sli->maps);
+-	if (sli->names)	_XkbFree(sli->names);
++	if (sli->maps)	xfree(sli->maps);
++	if (sli->names)	xfree(sli->names);
+     }
+     sli->maps= NULL;
+     sli->names= NULL;
+-    _XkbFree(sli);
++    xfree(sli);
+     return;
+ }
+ 

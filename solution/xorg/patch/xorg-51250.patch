@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxgcops.c b/hw/dmx/dmxgcops.c
+index 589c637..425aa7c 100644
+--- a/hw/dmx/dmxgcops.c
++++ b/hw/dmx/dmxgcops.c
+@@ -533,8 +533,8 @@ static DMXScreenInfo *dmxFindAlternatePixmap(DrawablePtr pDrawable, XID *draw)
+             PixmapPtr     pSrc;
+             dmxPixPrivPtr pSrcPriv;
+             
+-            pSrc = (PixmapPtr)LookupIDByType(pXinPix->info[i].id,
+-                                             RT_PIXMAP);
++            dixLookupResourceByType((pointer*) &pSrc, pXinPix->info[i].id,
++				    RT_PIXMAP, NullClient, DixUnknownAccess);
+             pSrcPriv = DMX_GET_PIXMAP_PRIV(pSrc);
+             if (pSrcPriv->pixmap) {
+                 *draw = pSrcPriv->pixmap;

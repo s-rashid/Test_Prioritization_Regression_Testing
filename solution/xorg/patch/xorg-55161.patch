@@ -1,0 +1,15 @@
+diff --git a/glx/glapitable.h b/glx/glapitable.h
+index e5c5449..f7e7c6c 100644
+--- a/glx/glapitable.h
++++ b/glx/glapitable.h
+@@ -37,9 +37,7 @@
+ # define GLAPIENTRYP GLAPIENTRY *
+ #endif
+ 
+-
+-struct _glapi_table
+-{
++struct _glapi_table {
+    void (GLAPIENTRYP NewList)(GLuint list, GLenum mode); /* 0 */
+    void (GLAPIENTRYP EndList)(void); /* 1 */
+    void (GLAPIENTRYP CallList)(GLuint list); /* 2 */

@@ -1,0 +1,16 @@
+diff --git a/Xi/chdevhier.c b/Xi/chdevhier.c
+index bd3da08..e2903f1 100644
+--- a/Xi/chdevhier.c
++++ b/Xi/chdevhier.c
+@@ -167,9 +167,9 @@ ProcXIChangeHierarchy(ClientPtr client)
+ 
+         switch(any->type)
+         {
+-            case XICreateMaster:
++            case XIAddMaster:
+                 {
+-                    xXICreateMasterInfo* c = (xXICreateMasterInfo*)any;
++                    xXIAddMasterInfo* c = (xXIAddMasterInfo*)any;
+                     char* name;
+ 
+                     SWAPIF(swaps(&c->name_len, n));

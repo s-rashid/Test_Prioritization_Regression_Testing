@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/pseudoramiX.h b/hw/xquartz/pseudoramiX.h
+index df5010d..f41b5cb 100644
+--- a/hw/xquartz/pseudoramiX.h
++++ b/hw/xquartz/pseudoramiX.h
+@@ -4,6 +4,8 @@
+ 
+ extern int noPseudoramiXExtension;
+ 
+-void PseudoramiXAddScreen(int x, int y, int w, int h);
++void
++PseudoramiXAddScreen(int x, int y, int w, int h);
+ void PseudoramiXExtensionInit(int argc, char *argv[]);
+-void PseudoramiXResetScreens(void);
++void
++PseudoramiXResetScreens(void);

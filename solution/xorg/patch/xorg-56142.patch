@@ -1,0 +1,144 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index db34c8d..9b69b2b 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -46,6 +46,7 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ /* from ddxLoad.c */
+ extern const char* Win32TempDir(void);
+ extern int Win32System(const char *cmdline);
++
+ #undef System
+ #define System Win32System
+ 
+@@ -68,10 +69,7 @@ static const char *componentDirs[_XkbListNumComponents] = {
+ 
+ static Status
+ _AddListComponent(	XkbSrvListInfoPtr	list,
+-			int			what,
+-			unsigned		flags,
+-			char *			str,
+-			ClientPtr		client)
++                  int what, unsigned flags, char *str, ClientPtr client)
+ {
+ int		slen,wlen;
+ unsigned char *	wire8;
+@@ -95,8 +93,10 @@ char *		tmp;
+     wlen= (((slen+1)/2)*2)+4;	/* four bytes for flags and length, pad to */
+ 				/* 2-byte boundary */
+     if ((list->szPool-list->nPool)<wlen) {
+-	if (wlen>1024)	list->szPool+= XkbPaddedSize(wlen*2);
+-	else		list->szPool+= 1024;
++        if (wlen > 1024)
++            list->szPool += XkbPaddedSize(wlen * 2);
++        else
++            list->szPool += 1024;
+ 	list->pool= realloc(list->pool, list->szPool * sizeof(char));
+ 	if (!list->pool)
+ 	    return BadAlloc;
+@@ -119,14 +119,13 @@ char *		tmp;
+ /***====================================================================***/
+ static Status
+ XkbDDXListComponent(	DeviceIntPtr 		dev,
+-			int			what,
+-			XkbSrvListInfoPtr	list,
+-			ClientPtr		client)
++                    int what, XkbSrvListInfoPtr list, ClientPtr client)
+ {
+ char 	*file,*map,*tmp,*buf=NULL;
+ FILE 	*in;
+ Status	status;
+ Bool	haveDir;
++
+ #ifdef WIN32
+ char	tmpname[PATH_MAX];
+ #else
+@@ -139,6 +138,7 @@ int	rval;
+     map= strrchr(file,'(');
+     if (map!=NULL) {
+ 	char *tmp;
++
+ 	map++;
+ 	tmp= strrchr(map,')');
+ 	if ((tmp==NULL)||(tmp[1]!='\0')) {
+@@ -171,8 +171,7 @@ int	rval;
+ 		 XkbBinDirectory, XkbBaseDirectory, componentDirs[what],
+ 		 (long) ((xkbDebugFlags < 2) ? 1 :
+ 			 ((xkbDebugFlags > 10) ? 10 : xkbDebugFlags)),
+-		 file W32_tmpfile
+-		    ) == -1)
++                 file W32_tmpfile) == -1)
+ 		buf = NULL;
+ 	}
+     }
+@@ -192,14 +191,12 @@ int	rval;
+ 		 componentDirs[what],
+ 		 (long)	((xkbDebugFlags < 2) ? 1 :
+ 			 ((xkbDebugFlags > 10) ? 10 : xkbDebugFlags)),
+-		 file W32_tmpfile
+-		    ) == -1)
++                 file W32_tmpfile) == -1)
+ 		buf = NULL;
+ 	}
+     }
+     status= Success;
+-    if (!haveDir)
+-    {  
++    if (!haveDir) {
+ #ifndef WIN32
+ 	in= Popen(buf,"r");
+ #else
+@@ -211,8 +208,7 @@ int	rval;
+ 	    in= fopen(tmpname, "r");
+ #endif
+     }
+-    if (!in)
+-    {
++    if (!in) {
+ 	free(buf);
+ #ifdef WIN32
+ 	unlink(tmpname);
+@@ -232,6 +228,7 @@ int	rval;
+     while ((status==Success)&&((tmp=fgets(buf,PATH_MAX,in))!=NULL)) {
+ 	unsigned flags;
+ 	register unsigned int i;
++
+ 	if (*tmp=='#') /* comment, skip it */
+ 	    continue;
+ 	if (!strncmp(tmp, "Warning:", 8) || !strncmp(tmp, "        ", 8))
+@@ -243,22 +240,29 @@ int	rval;
+ 	/* flags and the flags that are specific to the component */
+ 	/* if they're missing, fail with BadImplementation	  */
+ 	for (i=0;(i<8)&&(status==Success);i++) { /* read the general flags */
+-	   if (isalpha(*tmp))	flags|= (1L<<i);
+-	   else if (*tmp!='-')	status= BadImplementation;
++            if (isalpha(*tmp))
++                flags |= (1L << i);
++            else if (*tmp != '-')
++                status = BadImplementation;
+ 	   tmp++;
+ 	}
+-	if (status != Success)  break;
++        if (status != Success)
++            break;
+ 	if (!isspace(*tmp)) {
+ 	     status= BadImplementation;
+ 	     break;
+ 	}
+-	else tmp++;
++        else
++            tmp++;
+ 	for (i=0;(i<8)&&(status==Success);i++) { /* read the component flags */
+-	   if (isalpha(*tmp))	flags|= (1L<<(i+8));
+-	   else if (*tmp!='-')	status= BadImplementation;
++            if (isalpha(*tmp))
++                flags |= (1L << (i + 8));
++            else if (*tmp != '-')
++                status = BadImplementation;
+ 	   tmp++;
+ 	}
+-	if (status != Success)  break;
++        if (status != Success)
++            break;
+ 	if (isspace(*tmp)) {
+ 	    while (isspace(*tmp)) {
+ 		tmp++;

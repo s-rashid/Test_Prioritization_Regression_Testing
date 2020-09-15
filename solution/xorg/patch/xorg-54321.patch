@@ -1,0 +1,13 @@
+diff --git a/os/io.c b/os/io.c
+index 955bf8b..ebb8216 100644
+--- a/os/io.c
++++ b/os/io.c
+@@ -823,7 +823,7 @@ WriteToClient (ClientPtr who, int count, const void *__buf)
+ 	    CARD32 replylen;
+ 	    unsigned long bytesleft;
+ 
+-	    replylen = ((xGenericReply *)buf)->length;
++	    replylen = ((const xGenericReply *)buf)->length;
+ 	    if (who->swapped)
+ 		swapl(&replylen);
+ 	    bytesleft = (replylen * 4) + SIZEOF(xReply) - count - padBytes;

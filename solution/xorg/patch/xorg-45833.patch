@@ -1,0 +1,15 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 31467e9..cdca8f1 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -942,10 +942,6 @@ extern Bool XkbCopyDeviceKeymap(
+         DeviceIntPtr            /* dst */,
+         DeviceIntPtr            /* src */);
+ 
+-extern int XkbGetKeysym(
+-        DeviceIntPtr            /* dev */,
+-        DeviceEvent*            /* event*/);
+-
+ extern Bool XkbFilterEvents(
+         ClientPtr               /* pClient */,
+         int                     /* nEvents */,

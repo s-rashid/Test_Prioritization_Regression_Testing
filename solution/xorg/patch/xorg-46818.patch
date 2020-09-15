@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winprefs.h b/hw/xwin/winprefs.h
+index 6d641da..4daf474 100644
+--- a/hw/xwin/winprefs.h
++++ b/hw/xwin/winprefs.h
+@@ -143,6 +143,9 @@ typedef struct WINPREFS
+   STYLEITEM *style;
+   int styleItems;
+ 
++  /* Force exit flag */
++  Bool fForceExit;
++
+   /* Silent exit flag */
+   Bool fSilentExit;
+ 

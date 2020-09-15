@@ -1,0 +1,34 @@
+diff --git a/hw/xfree86/xaa/xaawrap.h b/hw/xfree86/xaa/xaawrap.h
+index 3f3c261..2d2d788 100644
+--- a/hw/xfree86/xaa/xaawrap.h
++++ b/hw/xfree86/xaa/xaawrap.h
+@@ -6,7 +6,6 @@
+ #define XAA_SCREEN_EPILOGUE(pScreen, field, wrapper)\
+     ((pScreen)->field = wrapper)
+ 
+-
+ #define XAA_GC_FUNC_PROLOGUE(pGC)\
+     XAAGCPtr pGCPriv = (XAAGCPtr)dixLookupPrivate(&(pGC)->devPrivates, XAAGetGCKey()); \
+     (pGC)->funcs = pGCPriv->wrapFuncs;\
+@@ -22,7 +21,6 @@
+ 				&XAAPixmapOps;\
+     }
+ 
+-
+ #define XAA_GC_OP_PROLOGUE(pGC)\
+     XAAGCPtr pGCPriv = (XAAGCPtr)dixLookupPrivate(&(pGC)->devPrivates, XAAGetGCKey()); \
+     GCFuncs *oldFuncs = pGC->funcs;\
+@@ -36,13 +34,11 @@
+     pGC->funcs = pGCPriv->wrapFuncs;\
+     pGC->ops = pGCPriv->wrapOps
+ 
+-    
+ #define XAA_GC_OP_EPILOGUE(pGC)\
+     pGCPriv->wrapOps = pGC->ops;\
+     pGC->funcs = oldFuncs;\
+     pGC->ops   = pGCPriv->XAAOps
+ 
+-
+ #define XAA_PIXMAP_OP_PROLOGUE(pGC, pDraw)\
+     XAAGCPtr pGCPriv = (XAAGCPtr)dixLookupPrivate(&(pGC)->devPrivates, XAAGetGCKey()); \
+     XAAPixmapPtr pixPriv = XAA_GET_PIXMAP_PRIVATE((PixmapPtr)(pDraw));\

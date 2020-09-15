@@ -1,0 +1,24 @@
+diff --git a/exa/exa_render.c b/exa/exa_render.c
+index 1c18566..70701a2 100644
+--- a/exa/exa_render.c
++++ b/exa/exa_render.c
+@@ -204,6 +204,7 @@ exaGetRGBAFromPixel(CARD32	pixel,
+     bshift = pFormat->direct.blue;
+     ashift = pFormat->direct.alpha;
+ 
++    if (rbits) {
+     *red = ((pixel >> rshift ) & ((1 << rbits) - 1)) << (16 - rbits);
+     while (rbits < 16) {
+ 	*red |= *red >> rbits;
+@@ -221,6 +222,11 @@ exaGetRGBAFromPixel(CARD32	pixel,
+ 	*blue |= *blue >> bbits;
+ 	bbits <<= 1;
+     }
++    } else {
++	*red = 0x0000;
++	*green = 0x0000;
++	*blue = 0x0000;
++    }
+ 
+     if (abits) {
+ 	*alpha = ((pixel >> ashift ) & ((1 << abits) - 1)) << (16 - abits);

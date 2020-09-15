@@ -1,0 +1,18 @@
+diff --git a/hw/xwin/winmultiwindowwm.c b/hw/xwin/winmultiwindowwm.c
+index 67a58a0..7c40563 100644
+--- a/hw/xwin/winmultiwindowwm.c
++++ b/hw/xwin/winmultiwindowwm.c
+@@ -1201,9 +1201,11 @@ winInitWM (void **ppWMInfo,
+   XMsgProcArgPtr	pXMsgArg = (XMsgProcArgPtr) malloc (sizeof(XMsgProcArgRec));
+ 
+   /* Bail if the input parameters are bad */
+-  if (pArg == NULL || pWMInfo == NULL)
+-    {
++  if (pArg == NULL || pWMInfo == NULL || pXMsgArg == NULL) {
+       ErrorF ("winInitWM - malloc failed.\n");
++    free(pArg);
++    free(pWMInfo);
++    free(pXMsgArg);
+       return FALSE;
+     }
+   

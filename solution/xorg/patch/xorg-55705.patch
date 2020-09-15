@@ -1,0 +1,494 @@
+diff --git a/hw/xfree86/xaa/xaaPict.c b/hw/xfree86/xaa/xaaPict.c
+index aaafacb..0721768 100644
+--- a/hw/xfree86/xaa/xaaPict.c
++++ b/hw/xfree86/xaa/xaaPict.c
+@@ -49,14 +49,10 @@
+ #include "servermd.h"
+ 
+ Bool
+-XAAGetPixelFromRGBA (
+-    CARD32 *pixel,
++XAAGetPixelFromRGBA(CARD32 *pixel,
+     CARD16 red,
+-    CARD16 green,
+-    CARD16 blue,
+-    CARD16 alpha,
+-    CARD32 format
+-){
++                    CARD16 green, CARD16 blue, CARD16 alpha, CARD32 format)
++{
+     int rbits, bbits, gbits, abits;
+     int rshift, bshift, gshift, ashift;
+ 
+@@ -75,17 +71,20 @@ XAAGetPixelFromRGBA (
+         gshift = bbits;
+ 	rshift = gshift + gbits;
+ 	ashift = rshift + rbits;
+-    } else if(PICT_FORMAT_TYPE(format) == PICT_TYPE_ABGR) {
++    }
++    else if (PICT_FORMAT_TYPE(format) == PICT_TYPE_ABGR) {
+         rshift = 0;
+ 	gshift = rbits;
+ 	bshift = gshift + gbits;
+ 	ashift = bshift + bbits;
+-    } else if(PICT_FORMAT_TYPE(format) == PICT_TYPE_BGRA) {
++    }
++    else if (PICT_FORMAT_TYPE(format) == PICT_TYPE_BGRA) {
+ 	bshift = PICT_FORMAT_BPP(format) - bbits;
+ 	gshift = bshift - gbits;
+ 	rshift = gshift - rbits;
+ 	ashift = 0;
+-    } else
++    }
++    else
+ 	return FALSE;
+     
+     *pixel |=  ( blue >> (16 - bbits)) << bshift;
+@@ -96,16 +95,11 @@ XAAGetPixelFromRGBA (
+     return TRUE;
+ }
+ 
+-
+ Bool
+-XAAGetRGBAFromPixel(
+-    CARD32 pixel,
++XAAGetRGBAFromPixel(CARD32 pixel,
+     CARD16 *red,
+-    CARD16 *green,
+-    CARD16 *blue,
+-    CARD16 *alpha,
+-    CARD32 format
+-){
++                    CARD16 *green, CARD16 *blue, CARD16 *alpha, CARD32 format)
++{
+     int rbits, bbits, gbits, abits;
+     int rshift, bshift, gshift, ashift;
+     
+@@ -122,17 +116,20 @@ XAAGetRGBAFromPixel(
+         gshift = bbits;
+ 	rshift = gshift + gbits;
+ 	ashift = rshift + rbits;
+-    } else if(PICT_FORMAT_TYPE(format) == PICT_TYPE_ABGR) {
++    }
++    else if (PICT_FORMAT_TYPE(format) == PICT_TYPE_ABGR) {
+         rshift = 0;
+ 	gshift = rbits;
+ 	bshift = gshift + gbits;
+ 	ashift = bshift + bbits;
+-    } else if(PICT_FORMAT_TYPE(format) == PICT_TYPE_BGRA) {
++    }
++    else if (PICT_FORMAT_TYPE(format) == PICT_TYPE_BGRA) {
+ 	bshift = PICT_FORMAT_BPP(format) - bbits;
+ 	gshift = bshift - gbits;
+ 	rshift = gshift - rbits;
+ 	ashift = 0;
+-    } else
++    }
++    else
+ 	return FALSE;
+  
+     *red = ((pixel >> rshift ) & ((1 << rbits) - 1)) << (16 - rbits);
+@@ -159,7 +156,9 @@ XAAGetRGBAFromPixel(
+           *alpha |= *alpha >> abits;
+           abits <<= 1;
+        }     
+-    } else *alpha = 0xffff;
++    }
++    else
++        *alpha = 0xffff;
+       
+     return TRUE;
+ }
+@@ -167,15 +166,10 @@ XAAGetRGBAFromPixel(
+ /* 8:8:8 + PICT_a8 -> 8:8:8:8 texture */
+ 
+ void
+-XAA_888_plus_PICT_a8_to_8888 (
+-    CARD32 color,
+-    CARD8  *alphaPtr,   /* in bytes */
+-    int    alphaPitch,
+-    CARD32  *dstPtr,
+-    int    dstPitch,	/* in dwords */
+-    int    width,
+-    int    height
+-){
++XAA_888_plus_PICT_a8_to_8888(CARD32 color, CARD8 *alphaPtr,     /* in bytes */
++                             int alphaPitch, CARD32 *dstPtr, int dstPitch,      /* in dwords */
++                             int width, int height)
++{
+     int x;
+ 
+     color &= 0x00ffffff;
+@@ -193,20 +187,15 @@ XAA_888_plus_PICT_a8_to_8888 (
+      (pDraw->type == DRAWABLE_PIXMAP && IS_OFFSCREEN_PIXMAP(pDraw)))
+ 
+ Bool
+-XAADoComposite (
+-    CARD8      op,
++XAADoComposite(CARD8 op,
+     PicturePtr pSrc,
+     PicturePtr pMask,
+     PicturePtr pDst,
+     INT16      xSrc,
+     INT16      ySrc,
+     INT16      xMask,
+-    INT16      yMask,
+-    INT16      xDst,
+-    INT16      yDst,
+-    CARD16     width,
+-    CARD16     height
+-){
++               INT16 yMask, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
++{
+     ScreenPtr pScreen = pDst->pDrawable->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     RegionRec region;
+@@ -231,8 +220,7 @@ XAADoComposite (
+ 	return FALSE;
+ 
+     if ((pSrc->repeat && pSrc->repeatType != RepeatNormal) ||
+-	(pMask && pMask->repeat && pMask->repeatType != RepeatNormal))
+-    {
++        (pMask && pMask->repeat && pMask->repeatType != RepeatNormal)) {
+ 	return FALSE;
+     }
+ 
+@@ -252,7 +240,8 @@ XAADoComposite (
+            CARD32 pixel =
+                 *((CARD32*)(((PixmapPtr)(pSrc->pDrawable))->devPrivate.ptr));
+ 
+-	   if(!XAAGetRGBAFromPixel(pixel,&red,&green,&blue,&alpha,pSrc->format))
++            if (!XAAGetRGBAFromPixel
++                (pixel, &red, &green, &blue, &alpha, pSrc->format))
+ 		return FALSE;
+ 
+ 	   xMask += pMask->pDrawable->x;
+@@ -263,14 +252,13 @@ XAADoComposite (
+ 	       (op == PictOpOver) && infoRec->WriteBitmap && !pMask->repeat &&
+ 	       !(infoRec->WriteBitmapFlags & NO_TRANSPARENCY) &&
+ 	       (!(infoRec->WriteBitmapFlags & RGB_EQUAL) || 
+-	         ((red == green) && (green == blue))))
+-	   {
++                 ((red == green) && (green == blue)))) {
+ 	        PixmapPtr pPix = (PixmapPtr)(pMask->pDrawable);
+ 		int skipleft;
+ 		        
+ 	  	if (!miComputeCompositeRegion (&region, pSrc, pMask, pDst,
+-                                   xSrc, ySrc, xMask, yMask, xDst, yDst,
+-                                   width, height))
++                                              xSrc, ySrc, xMask, yMask, xDst,
++                                              yDst, width, height))
+ 		      return TRUE;
+ 		      
+ 		nbox = RegionNumRects(&region);
+@@ -289,11 +277,16 @@ XAADoComposite (
+ 		    
+ 	            (*infoRec->WriteBitmap)(infoRec->pScrn,
+ 			        pbox->x1, pbox->y1, 
+-			        pbox->x2 - pbox->x1, pbox->y2 - pbox->y1,
+-			        (unsigned char*)(pPix->devPrivate.ptr) + 
+-				  (pPix->devKind * (pbox->y1 + yMask)) + 
+-			          ((skipleft >> 3) & ~3), pPix->devKind, 
+-				skipleft & 31, pixel, -1, GXcopy, ~0);
++                                             pbox->x2 - pbox->x1,
++                                             pbox->y2 - pbox->y1,
++                                             (unsigned char *) (pPix->
++                                                                devPrivate.
++                                                                ptr) +
++                                             (pPix->devKind *
++                                              (pbox->y1 + yMask)) +
++                                             ((skipleft >> 3) & ~3),
++                                             pPix->devKind, skipleft & 31,
++                                             pixel, -1, GXcopy, ~0);
+ 	            pbox++;
+ 	   	}
+ 				  
+@@ -311,22 +304,25 @@ XAADoComposite (
+ 	  h = pMask->pDrawable->height;
+ 
+ 	  if(pMask->repeat) {
+-	      if((infoRec->CPUToScreenAlphaTextureFlags & XAA_RENDER_NO_TILE) ||
+-		   ((infoRec->CPUToScreenAlphaTextureFlags & 
+-                                   XAA_RENDER_POWER_OF_2_TILE_ONLY) && 
+-				((h & (h - 1)) || (w & (w - 1)))))
+-	      {
++                if ((infoRec->CPUToScreenAlphaTextureFlags & XAA_RENDER_NO_TILE)
++                    ||
++                    ((infoRec->
++                      CPUToScreenAlphaTextureFlags &
++                      XAA_RENDER_POWER_OF_2_TILE_ONLY) && ((h & (h - 1)) ||
++                                                           (w & (w - 1))))) {
+ 		 return FALSE;
+ 	      }
+ 	      flags |= XAA_RENDER_REPEAT;
+ 	  } 
+ 
+ 	  if((alpha != 0xffff) &&
+-              (infoRec->CPUToScreenAlphaTextureFlags & XAA_RENDER_NO_SRC_ALPHA))
++                (infoRec->
++                 CPUToScreenAlphaTextureFlags & XAA_RENDER_NO_SRC_ALPHA))
+ 		return FALSE;
+ 
+ 	  while(*formats != pMask->format) {
+-		if(!(*formats)) return FALSE;
++                if (!(*formats))
++                    return FALSE;
+ 		formats++;
+           }
+ 	  while(*dstformats != pDst->format) {
+@@ -349,12 +345,19 @@ XAADoComposite (
+ 	  }
+ 
+ 	  if(!(infoRec->SetupForCPUToScreenAlphaTexture2)(infoRec->pScrn,
+-			op, red, green, blue, alpha, pMask->format,
++                                                              op, red, green,
++                                                              blue, alpha,
++                                                              pMask->format,
+ 			pDst->format,
+-			((PixmapPtr)(pMask->pDrawable))->devPrivate.ptr,
+-			((PixmapPtr)(pMask->pDrawable))->devKind, 
+-			w, h, flags))
+-	  {
++                                                              ((PixmapPtr)
++                                                               (pMask->
++                                                                pDrawable))->
++                                                              devPrivate.ptr,
++                                                              ((PixmapPtr)
++                                                               (pMask->
++                                                                pDrawable))->
++                                                              devKind, w, h,
++                                                              flags)) {
+                 RegionUninit(&region);
+ 		return FALSE;
+ 	  }
+@@ -364,9 +367,14 @@ XAADoComposite (
+ 	
+ 	   while(nbox--) {
+ 	      (*infoRec->SubsequentCPUToScreenAlphaTexture)(infoRec->pScrn,
+-			pbox->x1, pbox->y1, 
+-			pbox->x1 + xMask, pbox->y1 + yMask,
+-			pbox->x2 - pbox->x1, pbox->y2 - pbox->y1);
++                                                               pbox->x1,
++                                                               pbox->y1,
++                                                               pbox->x1 + xMask,
++                                                               pbox->y1 + yMask,
++                                                               pbox->x2 -
++                                                               pbox->x1,
++                                                               pbox->y2 -
++                                                               pbox->y1);
+ 	      pbox++;
+ 	   }
+ 
+@@ -374,7 +382,8 @@ XAADoComposite (
+ 	   RegionUninit(&region);
+ 	   return TRUE;
+ 	}
+-    } else {
++    }
++    else {
+ 	formats = infoRec->CPUToScreenTextureFormats;
+ 	dstformats = infoRec->CPUToScreenTextureDstFormats;
+ 	if(!formats || !dstformats)
+@@ -387,15 +396,15 @@ XAADoComposite (
+               if((infoRec->CPUToScreenTextureFlags & XAA_RENDER_NO_TILE) ||
+                    ((infoRec->CPUToScreenTextureFlags &
+                                    XAA_RENDER_POWER_OF_2_TILE_ONLY) &&
+-                                ((h & (h - 1)) || (w & (w - 1)))))
+-              {
++                 ((h & (h - 1)) || (w & (w - 1))))) {
+                  return FALSE;
+               }
+               flags |= XAA_RENDER_REPEAT;
+         }
+ 
+ 	while(*formats != pSrc->format) {
+-	    if(!(*formats)) return FALSE;
++            if (!(*formats))
++                return FALSE;
+ 	    formats++;
+ 	}
+ 	while(*dstformats != pDst->format) {
+@@ -418,24 +427,28 @@ XAADoComposite (
+         }
+ 
+ 	if(!(infoRec->SetupForCPUToScreenTexture2)(infoRec->pScrn,
+-			op, pSrc->format, pDst->format, 
+-			((PixmapPtr)(pSrc->pDrawable))->devPrivate.ptr,
+-			((PixmapPtr)(pSrc->pDrawable))->devKind, 
+-			w, h, flags))
+-        {
++                                                     op, pSrc->format,
++                                                     pDst->format,
++                                                     ((PixmapPtr)
++                                                      (pSrc->pDrawable))->
++                                                     devPrivate.ptr,
++                                                     ((PixmapPtr)
++                                                      (pSrc->pDrawable))->
++                                                     devKind, w, h, flags)) {
+               RegionUninit(&region);
+               return FALSE;
+         }
+ 
+-
+ 	xSrc -= xDst;
+ 	ySrc -= yDst;
+ 	
+ 	while(nbox--) {
+ 	    (*infoRec->SubsequentCPUToScreenTexture)(infoRec->pScrn,
+ 			pbox->x1, pbox->y1, 
+-			pbox->x1 + xSrc, pbox->y1 + ySrc,
+-			pbox->x2 - pbox->x1, pbox->y2 - pbox->y1);
++                                                      pbox->x1 + xSrc,
++                                                      pbox->y1 + ySrc,
++                                                      pbox->x2 - pbox->x1,
++                                                      pbox->y2 - pbox->y1);
+ 	    pbox++;
+ 	 }
+ 
+@@ -444,7 +457,6 @@ XAADoComposite (
+ 	return TRUE;
+     }
+ 
+-
+     return FALSE;
+ }
+ 
+@@ -453,10 +465,7 @@ XAACompositeSrcCopy (PicturePtr pSrc,
+ 		     PicturePtr pDst,
+ 		     INT16      xSrc,
+ 		     INT16      ySrc,
+-		     INT16      xDst,
+-		     INT16      yDst,
+-		     CARD16     width,
+-		     CARD16     height)
++                    INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
+ {
+     ScreenPtr	pScreen = pDst->pDrawable->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+@@ -472,8 +481,7 @@ XAACompositeSrcCopy (PicturePtr pSrc,
+     ySrc += pSrc->pDrawable->y;
+ 
+     if (!miComputeCompositeRegion (&region, pSrc, NULL, pDst,
+-				   xSrc, ySrc, 0, 0, xDst, yDst,
+-				   width, height))
++                                  xSrc, ySrc, 0, 0, xDst, yDst, width, height))
+ 	return;
+ 
+     nbox = RegionNumRects(&region);
+@@ -514,14 +522,11 @@ XAAComposite (CARD8      op,
+ 	      INT16      xSrc,
+ 	      INT16      ySrc,
+ 	      INT16      xMask,
+-	      INT16      yMask,
+-	      INT16      xDst,
+-	      INT16      yDst,
+-	      CARD16     width,
+-	      CARD16     height)
++             INT16 yMask, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
+ {
+     ScreenPtr	pScreen = pDst->pDrawable->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
++
+     XAA_RENDER_PROLOGUE(pScreen, Composite);
+ 
+     if(!pMask && infoRec->pScrn->vtSema &&
+@@ -539,19 +544,20 @@ XAAComposite (CARD8      op,
+ 	  (pSrc->format==PICT_a8b8g8r8 && pDst->format==PICT_x8b8g8r8))) ||
+ 	(op == PictOpOver && !pSrc->alphaMap && !pDst->alphaMap &&
+ 	 pSrc->format==pDst->format &&
+-	 (pSrc->format==PICT_x8r8g8b8 || pSrc->format==PICT_x8b8g8r8))))
+-    {
++          (pSrc->format == PICT_x8r8g8b8 || pSrc->format == PICT_x8b8g8r8)))) {
+ 	XAACompositeSrcCopy(pSrc, pDst, xSrc, ySrc, xDst, yDst, width, height);
+-    } else if(!pSrc->pDrawable || (pMask && !pMask->pDrawable) ||
++    }
++    else if (!pSrc->pDrawable || (pMask && !pMask->pDrawable) ||
+               !infoRec->Composite ||
+               !(*infoRec->Composite)(op, pSrc, pMask, pDst,
+                                      xSrc, ySrc, xMask, yMask, xDst, yDst,
+-                                     width, height))
+-    {
++                                     width, height)) {
+         if(infoRec->pScrn->vtSema &&
+            ((pSrc->pDrawable &&
+-             (pSrc->pDrawable->type == DRAWABLE_WINDOW || IS_OFFSCREEN_PIXMAP(pSrc->pDrawable))) ||
+-            pDst->pDrawable->type == DRAWABLE_WINDOW || IS_OFFSCREEN_PIXMAP(pDst->pDrawable))) {
++              (pSrc->pDrawable->type == DRAWABLE_WINDOW ||
++               IS_OFFSCREEN_PIXMAP(pSrc->pDrawable))) ||
++             pDst->pDrawable->type == DRAWABLE_WINDOW ||
++             IS_OFFSCREEN_PIXMAP(pDst->pDrawable))) {
+             SYNC_CHECK(pDst->pDrawable);
+         }
+         (*GetPictureScreen(pScreen)->Composite) (op,
+@@ -562,10 +568,7 @@ XAAComposite (CARD8      op,
+ 		       ySrc,
+ 		       xMask,
+ 		       yMask,
+-		       xDst,
+-		       yDst,
+-		       width,
+-		       height);    
++                                                 xDst, yDst, width, height);
+     }
+ 
+     if(pDst->pDrawable->type == DRAWABLE_PIXMAP)
+@@ -580,10 +583,7 @@ XAADoGlyphs (CARD8         op,
+ 	   PicturePtr    pDst,
+ 	   PictFormatPtr maskFormat,
+ 	   INT16         xSrc,
+-	   INT16         ySrc,
+-	   int           nlist,
+-	   GlyphListPtr  list,
+-	   GlyphPtr      *glyphs)
++            INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs)
+ {
+     ScreenPtr	pScreen = pDst->pDrawable->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+@@ -608,7 +608,8 @@ XAADoGlyphs (CARD8         op,
+     if(maskFormat) {
+         if(!infoRec->CPUToScreenAlphaTextureFormats)
+             return FALSE;
+-    } else {
++    }
++    else {
+         if(!infoRec->CPUToScreenTextureFormats)
+             return FALSE;
+     }
+@@ -618,30 +619,28 @@ XAADoGlyphs (CARD8         op,
+     return TRUE;
+ }	   
+ 	 
+-	
+ void
+ XAAGlyphs (CARD8         op,
+ 	   PicturePtr    pSrc,
+ 	   PicturePtr    pDst,
+ 	   PictFormatPtr maskFormat,
+ 	   INT16         xSrc,
+-	   INT16         ySrc,
+-	   int           nlist,
+-	   GlyphListPtr  list,
+-	   GlyphPtr      *glyphs)
++          INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs)
+ {
+     ScreenPtr	pScreen = pDst->pDrawable->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
++
+     XAA_RENDER_PROLOGUE(pScreen, Glyphs);
+ 
+     if(!pSrc->pDrawable || !infoRec->Glyphs ||
+        !(*infoRec->Glyphs)(op, pSrc, pDst, maskFormat,
+-                           xSrc, ySrc, nlist, list, glyphs))
+-    {
++                             xSrc, ySrc, nlist, list, glyphs)) {
+         if(infoRec->pScrn->vtSema &&
+            ((pSrc->pDrawable &&
+-             (pSrc->pDrawable->type == DRAWABLE_WINDOW || IS_OFFSCREEN_PIXMAP(pSrc->pDrawable))) ||
+-            pDst->pDrawable->type == DRAWABLE_WINDOW || IS_OFFSCREEN_PIXMAP(pDst->pDrawable))) {
++              (pSrc->pDrawable->type == DRAWABLE_WINDOW ||
++               IS_OFFSCREEN_PIXMAP(pSrc->pDrawable))) ||
++             pDst->pDrawable->type == DRAWABLE_WINDOW ||
++             IS_OFFSCREEN_PIXMAP(pDst->pDrawable))) {
+             SYNC_CHECK(pDst->pDrawable);
+         }
+        (*GetPictureScreen(pScreen)->Glyphs) (op, pSrc, pDst, maskFormat,

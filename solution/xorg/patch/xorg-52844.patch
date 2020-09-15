@@ -1,0 +1,13 @@
+diff --git a/randr/rrcrtc.c b/randr/rrcrtc.c
+index d4d8f2a..0437795 100644
+--- a/randr/rrcrtc.c
++++ b/randr/rrcrtc.c
+@@ -632,7 +632,7 @@ RRModeGetScanoutSize (RRModePtr mode, PictTransformPtr transform,
+ void
+ RRCrtcGetScanoutSize(RRCrtcPtr crtc, int *width, int *height)
+ {
+-    return RRModeGetScanoutSize (crtc->mode, &crtc->transform, width, height);
++    RRModeGetScanoutSize (crtc->mode, &crtc->transform, width, height);
+ }
+ 
+ /*

@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/common/xf86xvpriv.h b/hw/xfree86/common/xf86xvpriv.h
+index 88e7a0e..c667926 100644
+--- a/hw/xfree86/common/xf86xvpriv.h
++++ b/hw/xfree86/common/xf86xvpriv.h
+@@ -43,7 +43,6 @@ typedef struct {
+    void                         (*AdjustFrame)(int, int, int, int);
+    Bool                         (*EnterVT)(int, int);
+    void                         (*LeaveVT)(int, int);
+-   GCPtr			videoGC;
+    xf86ModeSetProc		*ModeSet;
+ } XF86XVScreenRec, *XF86XVScreenPtr;
+ 
+@@ -82,7 +81,6 @@ typedef struct {
+ typedef struct _XF86XVWindowRec{
+    XvPortRecPrivatePtr PortRec;
+    struct _XF86XVWindowRec *next;
+-   GCPtr pGC;
+ } XF86XVWindowRec, *XF86XVWindowPtr;
+ 
+ #endif  /* _XF86XVPRIV_H_ */

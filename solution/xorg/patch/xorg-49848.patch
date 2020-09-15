@@ -1,0 +1,20 @@
+diff --git a/exa/exa_glyphs.c b/exa/exa_glyphs.c
+index b09db46..5c46ec9 100644
+--- a/exa/exa_glyphs.c
++++ b/exa/exa_glyphs.c
+@@ -127,15 +127,11 @@ exaUnrealizeGlyphCaches(ScreenPtr    pScreen,
+ 	    cache->picture = NULL;
+ 	}
+ 
+-	if (cache->hashEntries) {
+ 	    free(cache->hashEntries);
+ 	    cache->hashEntries = NULL;
+-	}
+ 	
+-	if (cache->glyphs) {
+ 	    free(cache->glyphs);
+ 	    cache->glyphs = NULL;
+-	}
+ 	cache->glyphCount = 0;
+     }
+ }

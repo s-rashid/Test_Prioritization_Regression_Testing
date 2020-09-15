@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index 132e8bc..65725d2 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -1286,14 +1286,10 @@ checkCoreInputDevices(serverLayoutPtr servlayoutp, Bool implicitLayout)
+ 	}
+     }
+ 
+-    if (!foundPointer) {
+-	if (!xf86Info.allowEmptyInput) {
++    if (!foundPointer && !xf86Info.allowEmptyInput) {
+ 	    /* This shouldn't happen. */
+ 	    xf86Msg(X_ERROR, "Cannot locate a core pointer device.\n");
+ 	    return FALSE;
+-	} else {
+-	    xf86Msg(X_INFO, "Cannot locate a core pointer device.\n");
+-	}
+     }
+ 
+     /*
+@@ -1430,14 +1426,10 @@ checkCoreInputDevices(serverLayoutPtr servlayoutp, Bool implicitLayout)
+ 	}
+     }
+ 
+-    if (!foundKeyboard) {
+-	if (!xf86Info.allowEmptyInput) {
++    if (!foundKeyboard && !xf86Info.allowEmptyInput) {
+ 		/* This shouldn't happen. */
+ 		xf86Msg(X_ERROR, "Cannot locate a core keyboard device.\n");
+ 		return FALSE;
+-	} else {
+-		xf86Msg(X_INFO, "Cannot locate a core keyboard device.\n");
+-	}
+     }
+ 
+     if (pointerMsg) {

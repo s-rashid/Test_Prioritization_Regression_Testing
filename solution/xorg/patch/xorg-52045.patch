@@ -1,0 +1,13 @@
+diff --git a/render/render.c b/render/render.c
+index 7029558..fbb2968 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -239,7 +239,7 @@ RenderClientCallback (CallbackListPtr	*list,
+ }
+ 
+ #ifdef PANORAMIX
+-unsigned long	XRT_PICTURE;
++RESTYPE	XRT_PICTURE;
+ #endif
+ 
+ void

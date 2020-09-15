@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/visualConfigs.c b/hw/xquartz/GL/visualConfigs.c
+index fee665d..f926778 100644
+--- a/hw/xquartz/GL/visualConfigs.c
++++ b/hw/xquartz/GL/visualConfigs.c
+@@ -277,7 +277,7 @@ __GLXconfig *__glXAquaCreateVisualConfigs(int *numConfigsPtr, int screenNumber)
+     (c-1)->next = NULL;
+ 
+     if (c - visualConfigs != numConfigs) {
+-        FatalError("numConfigs calculation error in setVisualConfigs!  numConfigs is %d  i is %d\n", numConfigs, c - visualConfigs);
++        FatalError("numConfigs calculation error in setVisualConfigs!  numConfigs is %d  i is %d\n", numConfigs, (int)(c - visualConfigs));
+     }
+     
+     freeGlCapabilities(&caps);

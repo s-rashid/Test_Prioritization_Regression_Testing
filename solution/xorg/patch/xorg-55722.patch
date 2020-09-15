@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Color.h b/hw/xnest/Color.h
+index d39c638..2c4e0be 100644
+--- a/hw/xnest/Color.h
++++ b/hw/xnest/Color.h
+@@ -33,6 +33,7 @@ typedef struct {
+ } xnestInstalledColormapWindows;
+ 
+ extern DevPrivateKeyRec xnestColormapPrivateKeyRec;
++
+ #define xnestColormapPriv(pCmap) \
+   ((xnestPrivColormap *) dixLookupPrivate(&(pCmap)->devPrivates, &xnestColormapPrivateKeyRec))
+ 

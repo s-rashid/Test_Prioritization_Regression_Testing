@@ -1,0 +1,23 @@
+diff --git a/hw/xwin/winmultiwindowwindow.c b/hw/xwin/winmultiwindowwindow.c
+index 631f1a9..447c99b 100644
+--- a/hw/xwin/winmultiwindowwindow.c
++++ b/hw/xwin/winmultiwindowwindow.c
+@@ -64,18 +64,6 @@ winUpdateWindowsWindow (WindowPtr pWin);
+ static void
+ winFindWindow (pointer value, XID id, pointer cdata);
+ 
+-/*
+- * Macros
+- */
+-
+-#define SubSend(pWin) \
+-    ((pWin->eventMask|wOtherEventMasks(pWin)) & SubstructureNotifyMask)
+-
+-#define StrSend(pWin) \
+-    ((pWin->eventMask|wOtherEventMasks(pWin)) & StructureNotifyMask)
+-
+-#define SubStrSend(pWin,pParent) (StrSend(pWin) || SubSend(pParent))
+-
+ static
+ void winInitMultiWindowClass(void)
+ {

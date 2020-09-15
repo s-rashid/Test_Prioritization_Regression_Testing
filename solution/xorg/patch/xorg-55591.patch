@@ -1,0 +1,9 @@
+diff --git a/hw/xfree86/os-support/shared/sigiostubs.c b/hw/xfree86/os-support/shared/sigiostubs.c
+index cecec37..ba8e234 100644
+--- a/hw/xfree86/os-support/shared/sigiostubs.c
++++ b/hw/xfree86/os-support/shared/sigiostubs.c
+@@ -68,4 +68,3 @@ xf86SIGIOSupported ()
+ {
+     return FALSE;
+ }
+-

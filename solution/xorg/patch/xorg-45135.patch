@@ -1,0 +1,13 @@
+diff --git a/Xi/queryst.c b/Xi/queryst.c
+index 2b20837..c6858e4 100644
+--- a/Xi/queryst.c
++++ b/Xi/queryst.c
+@@ -85,7 +85,7 @@ ProcXQueryDeviceState(ClientPtr client)
+     xValuatorState *tv;
+     xQueryDeviceStateReply rep;
+     DeviceIntPtr dev;
+-    int *values;
++    double *values;
+ 
+     REQUEST(xQueryDeviceStateReq);
+     REQUEST_SIZE_MATCH(xQueryDeviceStateReq);

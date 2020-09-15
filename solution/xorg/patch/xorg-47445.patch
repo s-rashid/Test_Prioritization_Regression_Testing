@@ -1,0 +1,22 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index 0d5b1c6..79685c1 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -58,17 +58,13 @@ enum EventType {
+     ET_ProximityOut,
+     ET_DeviceChanged,
+     ET_Hierarchy,
+-#if XFreeXDGA
+     ET_DGAEvent,
+-#endif
+     ET_RawKeyPress,
+     ET_RawKeyRelease,
+     ET_RawButtonPress,
+     ET_RawButtonRelease,
+     ET_RawMotion,
+-#ifdef XQUARTZ
+     ET_XQuartz,
+-#endif
+     ET_Internal = 0xFF /* First byte */
+ };
+ 

@@ -1,0 +1,13 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index f8171ca..d67b264 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -456,7 +456,7 @@ typedef    void (* DeviceCursorCleanupProcPtr)(
+ typedef struct _Screen {
+     int			myNum;	/* index of this instance in Screens[] */
+     ATOM		id;
+-    short		width, height;
++    short		x, y, width, height;
+     short		mmWidth, mmHeight;
+     short		numDepths;
+     unsigned char      	rootDepth;

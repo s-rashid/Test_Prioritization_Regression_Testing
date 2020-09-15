@@ -1,0 +1,40 @@
+diff --git a/hw/dmx/examples/res.c b/hw/dmx/examples/res.c
+index 901a195..138216e 100644
+--- a/hw/dmx/examples/res.c
++++ b/hw/dmx/examples/res.c
+@@ -36,7 +36,8 @@
+ #include <X11/Xlib.h>
+ #include <X11/extensions/XRes.h>
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  major_version, minor_version;
+@@ -50,7 +51,8 @@ int main(int argc, char **argv)
+             printf("Cannot open display %s\n", argv[1]);
+             return -1;
+         }
+-    } else {
++    }
++    else {
+         printf("Usage: %s display\n", argv[0]);
+         return -1;
+     }
+@@ -80,13 +82,13 @@ int main(int argc, char **argv)
+         int      c, j;
+         XResType *types;
+         
+-        XResQueryClientResources(display, clients[i].resource_base,
+-                                 &c, &types);
++        XResQueryClientResources(display, clients[i].resource_base, &c, &types);
+         printf(" %3d: base = 0x%lx, mask = 0x%lx, %d resource types:\n",
+                i, (long unsigned)clients[i].resource_base,
+                (long unsigned)clients[i].resource_mask, c);
+         for (j = 0; j < c; j++) {
+             char *name = XGetAtomName(display, types[j].resource_type);
++
+             printf("      %2d: %s %d\n", j, name, types[j].count);
+             XFree(name);
+         }

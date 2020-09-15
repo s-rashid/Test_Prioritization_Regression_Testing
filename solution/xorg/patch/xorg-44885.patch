@@ -1,0 +1,13 @@
+diff --git a/mi/miexpose.c b/mi/miexpose.c
+index 5746a5f..2c43d98 100644
+--- a/mi/miexpose.c
++++ b/mi/miexpose.c
+@@ -436,7 +436,7 @@ miSendExposures( WindowPtr pWin, RegionPtr pRgn, int dx, int dy)
+ 		return;
+ 	    }
+ 	    realWin = win->info[0].id;
+-	    pWin = LookupIDByType(realWin, RT_WINDOW);
++	    dixLookupWindow(&pWin, realWin, serverClient, DixSendAccess);
+ 	}
+ 	if(x || y || scrnum)
+ 	  for (i = 0; i < numRects; i++) {

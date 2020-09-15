@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 32fd445..53b7e2c 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -448,6 +448,8 @@ DisableDevice(DeviceIntPtr dev, BOOL sendevent)
+     }
+     OsReleaseSignals();
+ 
++    LeaveWindow(dev);
++    SetFocusOut(dev);
+ 
+     *prev = dev->next;
+     dev->next = inputInfo.off_devices;

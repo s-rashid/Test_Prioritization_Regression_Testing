@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index 16c27e5..455cafa 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -212,7 +212,7 @@ LookupBoolOption(pointer optlist, const char *name, int deflt, Bool markUsed)
+     return deflt;
+ }
+ 
+-static int
++static double
+ LookupPercentOption(pointer optlist, const char *name, double deflt, Bool markUsed)
+ {
+     OptionInfoRec o;

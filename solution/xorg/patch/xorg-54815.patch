@@ -1,0 +1,13 @@
+diff --git a/include/input.h b/include/input.h
+index d891fe5..9a6fdfe 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -572,6 +572,8 @@ extern int TouchConvertToPointerEvent(const InternalEvent *ev,
+ extern int TouchGetPointerEventType(const InternalEvent *ev);
+ extern void TouchRemovePointerGrab(DeviceIntPtr dev);
+ extern void TouchListenerGone(XID resource);
++extern int TouchListenerAcceptReject(DeviceIntPtr dev, TouchPointInfoPtr ti,
++                                     int listener, int mode);
+ extern int TouchAcceptReject(ClientPtr client, DeviceIntPtr dev, int mode,
+                              uint32_t touchid, Window grab_window, XID *error);
+ 

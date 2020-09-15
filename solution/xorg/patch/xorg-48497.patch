@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 3ddee77..b24204d 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1851,7 +1851,7 @@ ChangeKeyMapping(ClientPtr client,
+     XkbApplyMappingChange(dev, &keysyms, firstKeyCode, keyCodes, NULL,
+                           serverClient);
+ 
+-    return client->noClientException;
++    return Success;
+ }
+ 
+ static void

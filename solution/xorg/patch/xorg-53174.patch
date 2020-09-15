@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/int10/helper_mem.c b/hw/xfree86/int10/helper_mem.c
+index 496c9a5..9088298 100644
+--- a/hw/xfree86/int10/helper_mem.c
++++ b/hw/xfree86/int10/helper_mem.c
+@@ -241,9 +241,6 @@ int10_check_bios(int scrnIndex, int codeSeg, const unsigned char* vbiosMem)
+ 	((codeSeg << 4) >= SYS_SIZE))
+ 	return FALSE;
+ 
+-    if (xf86IsPc98())
+-	return FALSE;
+-
+     if ((*vbiosMem != 0x55) || (*(vbiosMem+1) != 0xAA) || !*(vbiosMem+2))
+ 	return FALSE;
+ 

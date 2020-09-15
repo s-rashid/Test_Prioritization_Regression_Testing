@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winscrinit.c b/hw/xwin/winscrinit.c
+index eab0c6c..99d5a46 100644
+--- a/hw/xwin/winscrinit.c
++++ b/hw/xwin/winscrinit.c
+@@ -58,7 +58,9 @@ winMWExtWMProcs = {
+   winMWExtWMDamageRects,
+ #endif
+   winMWExtWMRootlessSwitchWindow,
+-  NULL,//winWMExtWMDoReorderWindow,
++  NULL,//winMWExtWMDoReorderWindow,
++  NULL,//winMWExtWMHideWindow,
++  NULL,//winMWExtWMUpdateColorMap,
+   
+   NULL,//winMWExtWMCopyBytes,
+   NULL,//winMWExtWMFillBytes,

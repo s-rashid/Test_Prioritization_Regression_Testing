@@ -1,0 +1,286 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.h b/hw/xfree86/modes/xf86Crtc.h
+index 8d4a089..a6a3c2e 100644
+--- a/hw/xfree86/modes/xf86Crtc.h
++++ b/hw/xfree86/modes/xf86Crtc.h
+@@ -82,8 +82,7 @@ typedef struct _xf86CrtcFuncs {
+     * be safe to call mode_set.
+     */
+    void
+-    (*dpms)(xf86CrtcPtr		crtc,
+-	    int		    	mode);
++     (*dpms) (xf86CrtcPtr crtc, int mode);
+ 
+    /**
+     * Saves the crtc's state for restoration on VT switch.
+@@ -119,8 +118,7 @@ typedef struct _xf86CrtcFuncs {
+      */
+     Bool
+     (*mode_fixup)(xf86CrtcPtr crtc,
+-		  DisplayModePtr mode,
+-		  DisplayModePtr adjusted_mode);
++                    DisplayModePtr mode, DisplayModePtr adjusted_mode);
+ 
+     /**
+      * Prepare CRTC for an upcoming mode set.
+@@ -134,8 +132,7 @@ typedef struct _xf86CrtcFuncs {
+     void
+     (*mode_set)(xf86CrtcPtr crtc,
+ 		DisplayModePtr mode,
+-		DisplayModePtr adjusted_mode,
+-		int x, int y);
++                  DisplayModePtr adjusted_mode, int x, int y);
+ 
+     /**
+      * Commit mode changes to a CRTC
+@@ -151,8 +148,7 @@ typedef struct _xf86CrtcFuncs {
+     /**
+      * Allocate the shadow area, delay the pixmap creation until needed
+      */
+-    void *
+-    (*shadow_allocate) (xf86CrtcPtr crtc, int width, int height);
++    void *(*shadow_allocate) (xf86CrtcPtr crtc, int width, int height);
+     
+     /**
+      * Create shadow pixmap for rotation support
+@@ -393,8 +389,7 @@ typedef struct _xf86OutputFuncs {
+      * disabled afterwards.
+      */
+     void
+-    (*dpms)(xf86OutputPtr	output,
+-	    int			mode);
++     (*dpms) (xf86OutputPtr output, int mode);
+ 
+     /**
+      * Saves the output's state for restoration on VT switch.
+@@ -417,8 +412,7 @@ typedef struct _xf86OutputFuncs {
+      * \return MODE_OK if the mode is valid, or another MODE_* otherwise.
+      */
+     int
+-    (*mode_valid)(xf86OutputPtr	    output,
+-		  DisplayModePtr    pMode);
++     (*mode_valid) (xf86OutputPtr output, DisplayModePtr pMode);
+ 
+     /**
+      * Callback to adjust the mode to be set in the CRTC.
+@@ -429,8 +423,7 @@ typedef struct _xf86OutputFuncs {
+      */
+     Bool
+     (*mode_fixup)(xf86OutputPtr output,
+-		  DisplayModePtr mode,
+-		  DisplayModePtr adjusted_mode);
++                    DisplayModePtr mode, DisplayModePtr adjusted_mode);
+ 
+     /**
+      * Callback for preparing mode changes on an output
+@@ -453,14 +446,12 @@ typedef struct _xf86OutputFuncs {
+      */
+     void
+     (*mode_set)(xf86OutputPtr  output,
+-		DisplayModePtr mode,
+-		DisplayModePtr adjusted_mode);
++                  DisplayModePtr mode, DisplayModePtr adjusted_mode);
+ 
+     /**
+      * Probe for a connected output, and return detect_status.
+      */
+-    xf86OutputStatus
+-    (*detect)(xf86OutputPtr	    output);
++     xf86OutputStatus(*detect) (xf86OutputPtr output);
+ 
+     /**
+      * Query the device for the modes it provides.
+@@ -469,8 +460,7 @@ typedef struct _xf86OutputFuncs {
+      *
+      * \return singly-linked list of modes or NULL if no modes found.
+      */
+-    DisplayModePtr
+-    (*get_modes)(xf86OutputPtr	    output);
++     DisplayModePtr(*get_modes) (xf86OutputPtr output);
+ 
+ #ifdef RANDR_12_INTERFACE
+     /**
+@@ -478,23 +468,20 @@ typedef struct _xf86OutputFuncs {
+      */
+     Bool
+     (*set_property)(xf86OutputPtr output,
+-		    Atom property,
+-		    RRPropertyValuePtr value);
++                      Atom property, RRPropertyValuePtr value);
+ #endif
+ #ifdef RANDR_13_INTERFACE
+     /**
+      * Callback to get an updated property value
+      */
+     Bool
+-    (*get_property)(xf86OutputPtr output,
+-		    Atom property);
++     (*get_property) (xf86OutputPtr output, Atom property);
+ #endif
+ #ifdef RANDR_GET_CRTC_INTERFACE
+     /**
+      * Callback to get current CRTC for a given output
+      */
+-    xf86CrtcPtr
+-    (*get_crtc)(xf86OutputPtr output);
++     xf86CrtcPtr(*get_crtc) (xf86OutputPtr output);
+ #endif
+     /**
+      * Clean up driver-specific bits of the output
+@@ -503,7 +490,6 @@ typedef struct _xf86OutputFuncs {
+     (*destroy) (xf86OutputPtr	    output);
+ } xf86OutputFuncsRec, *xf86OutputFuncsPtr;
+ 
+-
+ #define XF86_OUTPUT_VERSION 2
+ 
+ struct _xf86Output {
+@@ -635,9 +621,7 @@ typedef struct _xf86CrtcConfigFuncs {
+      * pixmaps it may have moved, and change pScrn->displayWidth.
+      */
+     Bool
+-    (*resize)(ScrnInfoPtr	scrn,
+-	      int		width,
+-	      int		height);
++     (*resize) (ScrnInfoPtr scrn, int width, int height);
+ } xf86CrtcConfigFuncsRec, *xf86CrtcConfigFuncsPtr;
+ 
+ typedef void (*xf86_crtc_notify_proc_ptr) (ScreenPtr pScreen);
+@@ -707,6 +691,7 @@ static _X_INLINE xf86OutputPtr
+ xf86CompatOutput(ScrnInfoPtr pScrn)
+ {
+     xf86CrtcConfigPtr config = XF86_CRTC_CONFIG_PTR(pScrn);
++
+     return config->output[config->compat_output];
+ }
+ 
+@@ -714,6 +699,7 @@ static _X_INLINE xf86CrtcPtr
+ xf86CompatCrtc(ScrnInfoPtr pScrn)
+ {
+     xf86OutputPtr compat_output = xf86CompatOutput(pScrn);
++
+     if (!compat_output)
+ 	return NULL;
+     return compat_output->crtc;
+@@ -723,45 +709,45 @@ static _X_INLINE RRCrtcPtr
+ xf86CompatRRCrtc(ScrnInfoPtr pScrn)
+ {
+     xf86CrtcPtr	compat_crtc = xf86CompatCrtc(pScrn);
++
+     if (!compat_crtc)
+ 	return NULL;
+     return compat_crtc->randr_crtc;
+ }
+ 
+-
+ /*
+  * Initialize xf86CrtcConfig structure
+  */
+ 
+ extern _X_EXPORT void
+-xf86CrtcConfigInit (ScrnInfoPtr				scrn,
+-		    const xf86CrtcConfigFuncsRec	*funcs);
++ xf86CrtcConfigInit(ScrnInfoPtr scrn, const xf86CrtcConfigFuncsRec * funcs);
+ 
+ extern _X_EXPORT void
++
+ xf86CrtcSetSizeRange (ScrnInfoPtr scrn,
+-		      int minWidth, int minHeight,
+-		      int maxWidth, int maxHeight);
++                     int minWidth, int minHeight, int maxWidth, int maxHeight);
+ 
+ /*
+  * Crtc functions
+  */
+ extern _X_EXPORT xf86CrtcPtr
+-xf86CrtcCreate (ScrnInfoPtr		scrn,
+-		const xf86CrtcFuncsRec	*funcs);
++xf86CrtcCreate(ScrnInfoPtr scrn, const xf86CrtcFuncsRec * funcs);
+ 
+ extern _X_EXPORT void
+ xf86CrtcDestroy (xf86CrtcPtr		crtc);
+ 
+-
+ /**
+  * Sets the given video mode on the given crtc
+  */
+ 
+ extern _X_EXPORT Bool
+-xf86CrtcSetModeTransform (xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotation,
+-			  RRTransformPtr transform, int x, int y);
++
++xf86CrtcSetModeTransform(xf86CrtcPtr crtc, DisplayModePtr mode,
++                         Rotation rotation, RRTransformPtr transform, int x,
++                         int y);
+ 
+ extern _X_EXPORT Bool
++
+ xf86CrtcSetMode (xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotation,
+ 		 int x, int y);
+ 
+@@ -804,8 +790,7 @@ xf86CrtcInUse (xf86CrtcPtr crtc);
+  */
+ extern _X_EXPORT xf86OutputPtr
+ xf86OutputCreate (ScrnInfoPtr		    scrn,
+-		  const xf86OutputFuncsRec  *funcs,
+-		  const char		    *name);
++                 const xf86OutputFuncsRec * funcs, const char *name);
+ 
+ extern _X_EXPORT void
+ xf86OutputUseScreenMonitor (xf86OutputPtr output, Bool use_screen_monitor);
+@@ -828,8 +813,7 @@ xf86SetScrnInfoModes (ScrnInfoPtr pScrn);
+ # define ScreenInitRetType	Bool
+ #endif
+ 
+-extern _X_EXPORT ScreenInitRetType
+-xf86CrtcScreenInit (ScreenPtr pScreen);
++extern _X_EXPORT ScreenInitRetType xf86CrtcScreenInit(ScreenPtr pScreen);
+ 
+ extern _X_EXPORT Bool
+ xf86InitialConfiguration (ScrnInfoPtr pScrn, Bool canGrow);
+@@ -847,6 +831,7 @@ extern _X_EXPORT DisplayModePtr
+ xf86OutputFindClosestMode (xf86OutputPtr output, DisplayModePtr desired);
+     
+ extern _X_EXPORT Bool
++
+ xf86SetSingleMode (ScrnInfoPtr pScrn, DisplayModePtr desired, Rotation rotation);
+ 
+ /**
+@@ -859,8 +844,7 @@ xf86OutputSetEDID (xf86OutputPtr output, xf86MonPtr edid_mon);
+  * Return the list of modes supported by the EDID information
+  * stored in 'output'
+  */
+-extern _X_EXPORT DisplayModePtr
+-xf86OutputGetEDIDModes (xf86OutputPtr output);
++extern _X_EXPORT DisplayModePtr xf86OutputGetEDIDModes(xf86OutputPtr output);
+ 
+ extern _X_EXPORT xf86MonPtr
+ xf86OutputGetEDID (xf86OutputPtr output, I2CBusPtr pDDCBus);
+@@ -900,8 +884,7 @@ xf86CrtcSetScreenSubpixelOrder (ScreenPtr pScreen);
+ /*
+  * Get a standard string name for a connector type 
+  */
+-extern _X_EXPORT const char *
+-xf86ConnectorGetName(xf86ConnectorType connector);
++extern _X_EXPORT const char *xf86ConnectorGetName(xf86ConnectorType connector);
+ 
+ /*
+  * Using the desired mode information in each crtc, set
+@@ -964,6 +947,7 @@ xf86CrtcTransformCursorPos (xf86CrtcPtr crtc, int *x, int *y);
+  */
+ 
+ extern _X_EXPORT Bool
++
+ xf86_crtc_clip_video_helper(ScrnInfoPtr pScrn,
+ 			    xf86CrtcPtr *crtc_ret,
+ 			    xf86CrtcPtr desired_crtc,
+@@ -972,9 +956,7 @@ xf86_crtc_clip_video_helper(ScrnInfoPtr pScrn,
+ 			    INT32	*xb,
+ 			    INT32	*ya,
+ 			    INT32	*yb,
+-			    RegionPtr   reg,
+-			    INT32	width,
+-			    INT32	height);
++                            RegionPtr reg, INT32 width, INT32 height);
+ #endif
+     
+ extern _X_EXPORT xf86_crtc_notify_proc_ptr

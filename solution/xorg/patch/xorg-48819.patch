@@ -1,0 +1,13 @@
+diff --git a/config/config.c b/config/config.c
+index 65ef679..f49420d 100644
+--- a/config/config.c
++++ b/config/config.c
+@@ -81,7 +81,7 @@ remove_device(const char *backend, DeviceIntPtr dev)
+      * already been removed. */
+     OsBlockSignals();
+     ProcessInputEvents();
+-    DeleteInputDeviceRequest(dev);
++    DeleteInputDeviceRequest(dev, 0);
+     OsReleaseSignals();
+ }
+ 

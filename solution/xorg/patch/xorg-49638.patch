@@ -1,0 +1,20 @@
+diff --git a/fb/fbscreen.c b/fb/fbscreen.c
+index f4311ae..2502efe 100644
+--- a/fb/fbscreen.c
++++ b/fb/fbscreen.c
+@@ -43,13 +43,13 @@ fbCloseScreen (int index, ScreenPtr pScreen)
+ Bool
+ fbRealizeFont(ScreenPtr pScreen, FontPtr pFont)
+ {
+-    return (TRUE);
++    return TRUE;
+ }
+ 
+ Bool
+ fbUnrealizeFont(ScreenPtr pScreen, FontPtr pFont)
+ {
+-    return (TRUE);
++    return TRUE;
+ }
+ 
+ void

@@ -1,0 +1,12 @@
+diff --git a/glx/singlepixswap.c b/glx/singlepixswap.c
+index 143f204..a7febc9 100644
+--- a/glx/singlepixswap.c
++++ b/glx/singlepixswap.c
+@@ -102,6 +102,7 @@ int __glXDispSwap_ReadPixels(__GLXclientState *cl, GLbyte *pc)
+ 	__GLX_SEND_HEADER();
+ 	__GLX_SEND_VOID_ARRAY(compsize);
+     }
++    __GLX_NOTE_FLUSHED_CMDS(cx);
+     return Success;
+ }
+ 

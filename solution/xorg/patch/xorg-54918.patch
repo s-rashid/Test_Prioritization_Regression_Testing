@@ -1,0 +1,528 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index df5bd58..3699510 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -52,6 +52,7 @@ static CallbackListPtr SecurityValidateGroupCallback = NULL;
+ 
+ /* Private state record */
+ static DevPrivateKeyRec stateKeyRec;
++
+ #define stateKey (&stateKeyRec)
+ 
+ /* This is what we store as client security state */
+@@ -84,7 +85,6 @@ static const Mask SecurityDeviceMask =
+ static const Mask SecurityServerMask = DixGetAttrAccess | DixGrabAccess;
+ static const Mask SecurityClientMask = DixGetAttrAccess;
+ 
+-
+ /* SecurityAudit
+  *
+  * Arguments:
+@@ -97,7 +97,8 @@ static const Mask SecurityClientMask = DixGetAttrAccess;
+  *	Writes the message to the log file if security logging is on.
+  */
+ 
+-static void _X_ATTRIBUTE_PRINTF(1,2)
++static void
++_X_ATTRIBUTE_PRINTF(1, 2)
+ SecurityAudit(const char *format, ...)
+ {
+     va_list args;
+@@ -151,7 +152,6 @@ SecurityLookupRequestName(ClientPtr client)
+     return LookupRequestName(client->majorOp, client->minorOp);
+ }
+ 
+-
+ /* SecurityDeleteAuthorization
+  *
+  * Arguments:
+@@ -165,9 +165,7 @@ SecurityLookupRequestName(ClientPtr client)
+  */
+ 
+ static int
+-SecurityDeleteAuthorization(
+-    pointer value,
+-    XID id)
++SecurityDeleteAuthorization(pointer value, XID id)
+ {
+     SecurityAuthorizationPtr pAuth = (SecurityAuthorizationPtr)value;
+     unsigned short name_len, data_len;
+@@ -179,8 +177,7 @@ SecurityDeleteAuthorization(
+ 
+     /* Remove the auth using the os layer auth manager */
+ 
+-    status = AuthorizationFromID(pAuth->id, &name_len, &name,
+-				 &data_len, &data);
++    status = AuthorizationFromID(pAuth->id, &name_len, &name, &data_len, &data);
+     assert(status);
+     status = RemoveAuthorization(name_len, name, data_len, data);
+     assert(status);
+@@ -188,14 +185,15 @@ SecurityDeleteAuthorization(
+ 
+     /* free the auth timer if there is one */
+ 
+-    if (pAuth->timer) TimerFree(pAuth->timer);
++    if (pAuth->timer)
++        TimerFree(pAuth->timer);
+ 
+     /* send revoke events */
+ 
+-    while ((pEventClient = pAuth->eventClients))
+-    {
++    while ((pEventClient = pAuth->eventClients)) {
+ 	/* send revocation event event */
+ 	xSecurityAuthorizationRevokedEvent are;
++
+ 	are.type = SecurityEventBase + XSecurityAuthorizationRevoked;
+ 	are.authId = pAuth->id;
+ 	WriteEventsToClient(rClient(pEventClient), 1, (xEvent *)&are);
+@@ -207,6 +205,7 @@ SecurityDeleteAuthorization(
+     for (i = 1; i<currentMaxClients; i++)
+ 	if (clients[i]) {
+ 	    SecurityStateRec *state;
++
+ 	    state = dixLookupPrivate(&clients[i]->devPrivates, stateKey);
+ 	    if (state->haveState && state->authId == pAuth->id)
+ 		CloseDownClient(clients[i]);
+@@ -218,22 +217,16 @@ SecurityDeleteAuthorization(
+ 
+ } /* SecurityDeleteAuthorization */
+ 
+-
+ /* resource delete function for RTEventClient */
+ static int
+-SecurityDeleteAuthorizationEventClient(
+-    pointer value,
+-    XID id)
++SecurityDeleteAuthorizationEventClient(pointer value, XID id)
+ {
+     OtherClientsPtr pEventClient, prev = NULL;
+     SecurityAuthorizationPtr pAuth = (SecurityAuthorizationPtr)value;
+ 
+     for (pEventClient = pAuth->eventClients;
+-	 pEventClient;
+-	 pEventClient = pEventClient->next)
+-    {
+-	if (pEventClient->resource == id)
+-	{
++         pEventClient; pEventClient = pEventClient->next) {
++        if (pEventClient->resource == id) {
+ 	    if (prev)
+ 		prev->next = pEventClient->next;
+ 	    else
+@@ -243,11 +236,9 @@ SecurityDeleteAuthorizationEventClient(
+ 	}
+ 	prev = pEventClient;
+     }
+-    /*NOTREACHED*/
+-    return -1; /* make compiler happy */
++     /*NOTREACHED*/ return -1;  /* make compiler happy */
+ } /* SecurityDeleteAuthorizationEventClient */
+ 
+-
+ /* SecurityComputeAuthorizationTimeout
+  *
+  * Arguments:
+@@ -263,8 +254,7 @@ SecurityDeleteAuthorizationEventClient(
+  */
+ 
+ static CARD32
+-SecurityComputeAuthorizationTimeout(
+-    SecurityAuthorizationPtr pAuth,
++SecurityComputeAuthorizationTimeout(SecurityAuthorizationPtr pAuth,
+     unsigned int seconds)
+ {
+     /* maxSecs is the number of full seconds that can be expressed in
+@@ -272,13 +262,11 @@ SecurityComputeAuthorizationTimeout(
+      */
+     CARD32 maxSecs = (CARD32)(~0) / (CARD32)MILLI_PER_SECOND;
+ 
+-    if (seconds > maxSecs)
+-    { /* only come here if we want to wait more than 49 days */
++    if (seconds > maxSecs) {    /* only come here if we want to wait more than 49 days */
+ 	pAuth->secondsRemaining = seconds - maxSecs;
+ 	return maxSecs * MILLI_PER_SECOND;
+     }
+-    else
+-    { /* by far the common case */
++    else {                      /* by far the common case */
+ 	pAuth->secondsRemaining = 0;
+ 	return seconds * MILLI_PER_SECOND;
+     }
+@@ -304,22 +292,17 @@ SecurityComputeAuthorizationTimeout(
+  */
+ 
+ static CARD32
+-SecurityAuthorizationExpired(
+-    OsTimerPtr timer,
+-    CARD32 time,
+-    pointer pval)
++SecurityAuthorizationExpired(OsTimerPtr timer, CARD32 time, pointer pval)
+ {
+     SecurityAuthorizationPtr pAuth = (SecurityAuthorizationPtr)pval;
+ 
+     assert(pAuth->timer == timer);
+ 
+-    if (pAuth->secondsRemaining)
+-    {
++    if (pAuth->secondsRemaining) {
+ 	return SecurityComputeAuthorizationTimeout(pAuth,
+ 						   pAuth->secondsRemaining);
+     }
+-    else
+-    {
++    else {
+ 	FreeResource(pAuth->id, RT_NONE);
+ 	return 0;
+     }
+@@ -339,22 +322,20 @@ SecurityAuthorizationExpired(
+  */
+ 
+ static void
+-SecurityStartAuthorizationTimer(
+-    SecurityAuthorizationPtr pAuth)
++SecurityStartAuthorizationTimer(SecurityAuthorizationPtr pAuth)
+ {
+     pAuth->timer = TimerSet(pAuth->timer, 0,
+-	SecurityComputeAuthorizationTimeout(pAuth, pAuth->timeout),
++                            SecurityComputeAuthorizationTimeout(pAuth,
++                                                                pAuth->timeout),
+ 			    SecurityAuthorizationExpired, pAuth);
+ } /* SecurityStartAuthorizationTimer */
+ 
+-
+ /* Proc functions all take a client argument, execute the request in
+  * client->requestBuffer, and return a protocol error status.
+  */
+ 
+ static int
+-ProcSecurityQueryVersion(
+-    ClientPtr client)
++ProcSecurityQueryVersion(ClientPtr client)
+ {
+     /* REQUEST(xSecurityQueryVersionReq); */
+     xSecurityQueryVersionReply 	rep;
+@@ -365,8 +346,7 @@ ProcSecurityQueryVersion(
+     rep.length         	= 0;
+     rep.majorVersion  	= SERVER_SECURITY_MAJOR_VERSION;
+     rep.minorVersion  	= SERVER_SECURITY_MINOR_VERSION;
+-    if(client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swaps(&rep.majorVersion);
+ 	swaps(&rep.minorVersion);
+@@ -376,21 +356,15 @@ ProcSecurityQueryVersion(
+     return Success;
+ } /* ProcSecurityQueryVersion */
+ 
+-
+ static int
+-SecurityEventSelectForAuthorization(
+-    SecurityAuthorizationPtr pAuth,
+-    ClientPtr client,
+-    Mask mask)
++SecurityEventSelectForAuthorization(SecurityAuthorizationPtr pAuth,
++                                    ClientPtr client, Mask mask)
+ {
+     OtherClients *pEventClient;
+ 
+     for (pEventClient = pAuth->eventClients;
+-	 pEventClient;
+-	 pEventClient = pEventClient->next)
+-    {
+-	if (SameClient(pEventClient, client))
+-	{
++         pEventClient; pEventClient = pEventClient->next) {
++        if (SameClient(pEventClient, client)) {
+ 	    if (mask == 0)
+ 		FreeResource(pEventClient->resource, RT_NONE);
+ 	    else
+@@ -405,9 +379,7 @@ SecurityEventSelectForAuthorization(
+     pEventClient->mask = mask;
+     pEventClient->resource = FakeClientID(client->index);
+     pEventClient->next = pAuth->eventClients;
+-    if (!AddResource(pEventClient->resource, RTEventClient,
+-		     (pointer)pAuth))
+-    {
++    if (!AddResource(pEventClient->resource, RTEventClient, (pointer) pAuth)) {
+ 	free(pEventClient);
+ 	return BadAlloc;
+     }
+@@ -416,10 +388,8 @@ SecurityEventSelectForAuthorization(
+     return Success;
+ } /* SecurityEventSelectForAuthorization */
+ 
+-
+ static int
+-ProcSecurityGenerateAuthorization(
+-    ClientPtr client)
++ProcSecurityGenerateAuthorization(ClientPtr client)
+ {
+     REQUEST(xSecurityGenerateAuthorizationReq);
+     int len;			/* request length in CARD32s*/
+@@ -450,27 +420,23 @@ ProcSecurityGenerateAuthorization(
+ 	return BadLength;
+ 
+     /* check valuemask */
+-    if (stuff->valueMask & ~XSecurityAllAuthorizationAttributes)
+-    {
++    if (stuff->valueMask & ~XSecurityAllAuthorizationAttributes) {
+ 	client->errorValue = stuff->valueMask;
+ 	return BadValue;
+     }
+ 
+     /* check timeout */
+     timeout = 60;
+-    if (stuff->valueMask & XSecurityTimeout)
+-    {
++    if (stuff->valueMask & XSecurityTimeout) {
+ 	timeout = *values++;
+     }
+ 
+     /* check trustLevel */
+     trustLevel = XSecurityClientUntrusted;
+-    if (stuff->valueMask & XSecurityTrustLevel)
+-    {
++    if (stuff->valueMask & XSecurityTrustLevel) {
+ 	trustLevel = *values++;
+ 	if (trustLevel != XSecurityClientTrusted &&
+-	    trustLevel != XSecurityClientUntrusted)
+-	{
++            trustLevel != XSecurityClientUntrusted) {
+ 	    client->errorValue = trustLevel;
+ 	    return BadValue;
+ 	}
+@@ -478,20 +444,18 @@ ProcSecurityGenerateAuthorization(
+ 
+     /* check group */
+     group = None;
+-    if (stuff->valueMask & XSecurityGroup)
+-    {
++    if (stuff->valueMask & XSecurityGroup) {
+ 	group = *values++;
+-	if (SecurityValidateGroupCallback)
+-	{
++        if (SecurityValidateGroupCallback) {
+ 	    SecurityValidateGroupInfoRec vgi;
++
+ 	    vgi.group = group;
+ 	    vgi.valid = FALSE;
+ 	    CallCallbacks(&SecurityValidateGroupCallback, (pointer)&vgi);
+ 
+ 	    /* if nobody said they recognized it, it's an error */
+ 
+-	    if (!vgi.valid)
+-	    {
++            if (!vgi.valid) {
+ 		client->errorValue = group;
+ 		return BadValue;
+ 	    }
+@@ -500,11 +464,9 @@ ProcSecurityGenerateAuthorization(
+ 
+     /* check event mask */
+     eventMask = 0;
+-    if (stuff->valueMask & XSecurityEventMask)
+-    {
++    if (stuff->valueMask & XSecurityEventMask) {
+ 	eventMask = *values++;
+-	if (eventMask & ~XSecurityAllEventMasks)
+-	{
++        if (eventMask & ~XSecurityAllEventMasks) {
+ 	    client->errorValue = eventMask;
+ 	    return BadValue;
+ 	}
+@@ -518,8 +480,7 @@ ProcSecurityGenerateAuthorization(
+     authId = GenerateAuthorization(stuff->nbytesAuthProto, protoname,
+ 				   stuff->nbytesAuthData,  protodata,
+ 				   &authdata_len, &pAuthdata);
+-    if ((XID) ~0L == authId)
+-    {
++    if ((XID) ~0L == authId) {
+ 	err = SecurityErrorBase + XSecurityBadAuthorizationProtocol;
+ 	goto bailout;
+     }
+@@ -532,8 +493,7 @@ ProcSecurityGenerateAuthorization(
+     /* associate additional information with this auth ID */
+ 
+     pAuth = malloc(sizeof(SecurityAuthorizationRec));
+-    if (!pAuth)
+-    {
++    if (!pAuth) {
+ 	err = BadAlloc;
+ 	goto bailout;
+     }
+@@ -550,15 +510,13 @@ ProcSecurityGenerateAuthorization(
+     pAuth->eventClients = NULL;
+ 
+     /* handle event selection */
+-    if (eventMask)
+-    {
++    if (eventMask) {
+ 	err = SecurityEventSelectForAuthorization(pAuth, client, eventMask);
+ 	if (err != Success)
+ 	    goto bailout;
+     }
+ 
+-    if (!AddResource(authId, SecurityAuthorizationResType, pAuth))
+-    {
++    if (!AddResource(authId, SecurityAuthorizationResType, pAuth)) {
+ 	err = BadAlloc;
+ 	goto bailout;
+     }
+@@ -576,8 +534,7 @@ ProcSecurityGenerateAuthorization(
+     rep.authId = authId;
+     rep.dataLength = authdata_len;
+ 
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swapl(&rep.length);
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.authId);
+@@ -588,7 +545,8 @@ ProcSecurityGenerateAuthorization(
+ 		  (char *)&rep);
+     WriteToClient(client, authdata_len, pAuthdata);
+ 
+-    SecurityAudit("client %d generated authorization %d trust %d timeout %d group %d events %d\n",
++    SecurityAudit
++        ("client %d generated authorization %d trust %d timeout %d group %d events %d\n",
+ 		  client->index, pAuth->id, pAuth->trustLevel, pAuth->timeout,
+ 		  pAuth->group, eventMask);
+ 
+@@ -605,8 +563,7 @@ bailout:
+ } /* ProcSecurityGenerateAuthorization */
+ 
+ static int
+-ProcSecurityRevokeAuthorization(
+-    ClientPtr client)
++ProcSecurityRevokeAuthorization(ClientPtr client)
+ {
+     REQUEST(xSecurityRevokeAuthorizationReq);
+     SecurityAuthorizationPtr pAuth;
+@@ -624,15 +581,12 @@ ProcSecurityRevokeAuthorization(
+     return Success;
+ } /* ProcSecurityRevokeAuthorization */
+ 
+-
+ static int
+-ProcSecurityDispatch(
+-    ClientPtr client)
++ProcSecurityDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+ 
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+ 	case X_SecurityQueryVersion:
+ 	    return ProcSecurityQueryVersion(client);
+ 	case X_SecurityGenerateAuthorization:
+@@ -645,8 +599,7 @@ ProcSecurityDispatch(
+ } /* ProcSecurityDispatch */
+ 
+ static int
+-SProcSecurityQueryVersion(
+-    ClientPtr client)
++SProcSecurityQueryVersion(ClientPtr client)
+ {
+     REQUEST(xSecurityQueryVersionReq);
+ 
+@@ -657,10 +610,8 @@ SProcSecurityQueryVersion(
+     return ProcSecurityQueryVersion(client);
+ } /* SProcSecurityQueryVersion */
+ 
+-
+ static int
+-SProcSecurityGenerateAuthorization(
+-    ClientPtr client)
++SProcSecurityGenerateAuthorization(ClientPtr client)
+ {
+     REQUEST(xSecurityGenerateAuthorizationReq);
+     CARD32 *values;
+@@ -683,10 +634,8 @@ SProcSecurityGenerateAuthorization(
+     return ProcSecurityGenerateAuthorization(client);
+ } /* SProcSecurityGenerateAuthorization */
+ 
+-
+ static int
+-SProcSecurityRevokeAuthorization(
+-    ClientPtr client)
++SProcSecurityRevokeAuthorization(ClientPtr client)
+ {
+     REQUEST(xSecurityRevokeAuthorizationReq);
+ 
+@@ -696,15 +645,12 @@ SProcSecurityRevokeAuthorization(
+     return ProcSecurityRevokeAuthorization(client);
+ } /* SProcSecurityRevokeAuthorization */
+ 
+-
+ static int
+-SProcSecurityDispatch(
+-    ClientPtr client)
++SProcSecurityDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+ 
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+ 	case X_SecurityQueryVersion:
+ 	    return SProcSecurityQueryVersion(client);
+ 	case X_SecurityGenerateAuthorization:
+@@ -717,8 +663,7 @@ SProcSecurityDispatch(
+ } /* SProcSecurityDispatch */
+ 
+ static void 
+-SwapSecurityAuthorizationRevokedEvent(
+-    xSecurityAuthorizationRevokedEvent *from,
++SwapSecurityAuthorizationRevokedEvent(xSecurityAuthorizationRevokedEvent * from,
+     xSecurityAuthorizationRevokedEvent *to)
+ {
+     to->type = from->type;
+@@ -835,7 +780,6 @@ SecurityResource(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+     rec->status = BadAccess; /* deny access */
+ }
+ 
+-
+ static void
+ SecurityExtension(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+ {
+@@ -1054,8 +998,7 @@ SecurityClientState(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+  */
+ 
+ static void
+-SecurityResetProc(
+-    ExtensionEntry *extEntry)
++SecurityResetProc(ExtensionEntry * extEntry)
+ {
+     /* Unregister callbacks */
+     DeleteCallback(&ClientStateCallback, SecurityClientState, NULL);
+@@ -1071,7 +1014,6 @@ SecurityResetProc(
+     XaceDeleteCallback(XACE_SERVER_ACCESS, SecurityServer, NULL);
+ }
+ 
+-
+ /* SecurityExtensionInit
+  *
+  * Arguments: none.
+@@ -1102,7 +1044,8 @@ SecurityExtensionInit(INITARGS)
+     RTEventClient |= RC_NEVERRETAIN;
+ 
+     /* Allocate the private storage */
+-    if (!dixRegisterPrivateKey(stateKey, PRIVATE_CLIENT, sizeof(SecurityStateRec)))
++    if (!dixRegisterPrivateKey
++        (stateKey, PRIVATE_CLIENT, sizeof(SecurityStateRec)))
+ 	FatalError("SecurityExtensionSetup: Can't allocate client private.\n");
+ 
+     /* Register callbacks */
+@@ -1133,7 +1076,8 @@ SecurityExtensionInit(INITARGS)
+     EventSwapVector[SecurityEventBase + XSecurityAuthorizationRevoked] =
+ 	(EventSwapPtr)SwapSecurityAuthorizationRevokedEvent;
+ 
+-    SetResourceTypeErrorValue(SecurityAuthorizationResType, SecurityErrorBase + XSecurityBadAuthorization);
++    SetResourceTypeErrorValue(SecurityAuthorizationResType,
++                              SecurityErrorBase + XSecurityBadAuthorization);
+ 
+     /* Label objects that were created before we could register ourself */
+     SecurityLabelInitial();

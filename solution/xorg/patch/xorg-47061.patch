@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/modes/xf86RandR12.c b/hw/xfree86/modes/xf86RandR12.c
+index 6ea9d26..1fc63c4 100644
+--- a/hw/xfree86/modes/xf86RandR12.c
++++ b/hw/xfree86/modes/xf86RandR12.c
+@@ -871,7 +871,12 @@ xf86RandR12Init (ScreenPtr pScreen)
+ #ifdef PANORAMIX
+     /* XXX disable RandR when using Xinerama */
+     if (!noPanoramiXExtension)
++    {
++        if (xf86NumScreens == 1)
++            noPanoramiXExtension = TRUE;
++        else
+ 	return TRUE;
++    }
+ #endif
+ 
+     if (xf86RandR12Generation != serverGeneration)

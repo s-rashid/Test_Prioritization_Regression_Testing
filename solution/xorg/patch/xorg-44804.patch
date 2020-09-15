@@ -1,0 +1,13 @@
+diff --git a/mi/mipointer.h b/mi/mipointer.h
+index 8b13f08..7dc1ae7 100644
+--- a/mi/mipointer.h
++++ b/mi/mipointer.h
+@@ -108,7 +108,7 @@ extern _X_EXPORT void miPointerWarpCursor(
+     ScreenPtr /*pScreen*/,
+     int /*x*/,
+     int /*y*/
+-) _X_DEPRECATED;
++);
+ 
+ /* Deprecated in favour of miPointerSetPosition. */
+ extern _X_EXPORT void miPointerAbsoluteCursor(

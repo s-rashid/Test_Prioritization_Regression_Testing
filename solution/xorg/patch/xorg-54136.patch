@@ -1,0 +1,13 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index a8bc761..503404e 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -200,7 +200,7 @@ unwind:
+     return rc;
+ }
+ 
+-static int
++static void
+ disable_clientpointer(DeviceIntPtr dev)
+ {
+     int i;

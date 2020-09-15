@@ -1,0 +1,13 @@
+diff --git a/dbe/dbe.c b/dbe/dbe.c
+index 19a8618..ca7f3e2 100644
+--- a/dbe/dbe.c
++++ b/dbe/dbe.c
+@@ -467,7 +467,7 @@ ProcDbeSwapBuffers(ClientPtr client)
+         return BadAlloc;
+ 
+     /* Get to the swap info appended to the end of the request. */
+-    dbeSwapInfo = (xDbeSwapInfo *) & stuff[1];
++    dbeSwapInfo = (xDbeSwapInfo *) &stuff[1];
+ 
+     /* Allocate array to record swap information. */
+     swapInfo = (DbeSwapInfoPtr) malloc(nStuff * sizeof(DbeSwapInfoRec));

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index b2095aa..39cd230 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -147,9 +147,6 @@ typedef struct _RootWinProp {
+     pointer			data;
+ } RootWinProp, *RootWinPropPtr;
+ 
+-/* private resource types */
+-#define ResNoAvoid  ResBios
+-
+ /* ISC's cc can't handle ~ of UL constants, so explicitly type cast them. */
+ #define XLED1   ((unsigned long) 0x00000001)
+ #define XLED2   ((unsigned long) 0x00000002)

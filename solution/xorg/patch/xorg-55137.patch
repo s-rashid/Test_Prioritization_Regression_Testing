@@ -1,0 +1,65 @@
+diff --git a/fb/fboverlay.h b/fb/fboverlay.h
+index b626a77..76198cd 100644
+--- a/fb/fboverlay.h
++++ b/fb/fboverlay.h
+@@ -72,40 +72,32 @@ extern _X_EXPORT Bool
+ fbOverlayCreateScreenResources(ScreenPtr pScreen);
+ 
+ extern _X_EXPORT void
++
+ fbOverlayPaintKey (DrawablePtr	pDrawable,
+-		   RegionPtr	pRegion,
+-		   CARD32	pixel,
+-		   int		layer);
++                  RegionPtr pRegion, CARD32 pixel, int layer);
+ extern _X_EXPORT void
+-fbOverlayUpdateLayerRegion (ScreenPtr	pScreen,
+-			    int		layer,
+-			    RegionPtr	prgn);
+-
++ fbOverlayUpdateLayerRegion(ScreenPtr pScreen, int layer, RegionPtr prgn);
+     
+ extern _X_EXPORT void
+-fbOverlayCopyWindow(WindowPtr	pWin,
+-		    DDXPointRec	ptOldOrg,
+-		    RegionPtr	prgnSrc);
++ fbOverlayCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc);
+     
+ extern _X_EXPORT void
++
+ fbOverlayWindowExposures (WindowPtr	pWin,
+-			  RegionPtr	prgn,
+-			  RegionPtr	other_exposed);
++                         RegionPtr prgn, RegionPtr other_exposed);
+ 
+ extern _X_EXPORT Bool
++
+ fbOverlaySetupScreen(ScreenPtr	pScreen,
+ 		     pointer	pbits1,
+ 		     pointer	pbits2,
+ 		     int	xsize,
+ 		     int	ysize,
+ 		     int	dpix,
+-		     int	dpiy,
+-		     int	width1,
+-		     int	width2,
+-		     int	bpp1,
+-		     int	bpp2);
++                     int dpiy, int width1, int width2, int bpp1, int bpp2);
+ 
+ extern _X_EXPORT Bool
++
+ fbOverlayFinishScreenInit(ScreenPtr	pScreen,
+ 			  pointer	pbits1,
+ 			  pointer	pbits2,
+@@ -115,9 +107,6 @@ fbOverlayFinishScreenInit(ScreenPtr	pScreen,
+ 			  int		dpiy,
+ 			  int		width1,
+ 			  int		width2,
+-			  int		bpp1,
+-			  int		bpp2,
+-			  int		depth1,
+-			  int		depth2);
++                          int bpp1, int bpp2, int depth1, int depth2);
+ 
+ #endif /* _FBOVERLAY_H_ */

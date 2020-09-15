@@ -1,0 +1,19 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 2877804..ef3142c 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -433,6 +433,14 @@ valuator_mask_new(int num_valuators)
+     return mask;
+ }
+ 
++void
++valuator_mask_free(ValuatorMask **mask)
++{
++    free(*mask);
++    *mask = NULL;
++}
++
++
+ /**
+  * Sets a range of valuators between first_valuator and num_valuators with
+  * the data in the valuators array. All other values are set to 0.

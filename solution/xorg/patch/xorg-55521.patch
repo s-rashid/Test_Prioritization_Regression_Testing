@@ -1,0 +1,68 @@
+diff --git a/hw/xfree86/int10/helper_mem.c b/hw/xfree86/int10/helper_mem.c
+index 9088298..96c598a 100644
+--- a/hw/xfree86/int10/helper_mem.c
++++ b/hw/xfree86/int10/helper_mem.c
+@@ -42,6 +42,7 @@ dprint(unsigned long start, unsigned long size)
+ 
+     for (j = 0; j < (size >> 4); j++) {
+ 	char *d = c;
++
+ 	ErrorF("\n0x%lx:  ",(unsigned long)c);
+ 	for (i = 0; i<16; i++)
+ 	    ErrorF("%2.2x ",(unsigned char) (*(c++)));
+@@ -202,9 +203,7 @@ xf86HandleInt10Options(ScrnInfoPtr pScrn, int entityIndex)
+ 
+ 	/* Check if xf86CollectOptions() has already been called */
+ 	if (((pEnt->index < 0) ||
+-	    !pScrn ||
+-	    !(configOptions = pScrn->options)) &&
+-	    pEnt->device)
++             !pScrn || !(configOptions = pScrn->options)) && pEnt->device)
+ 	    configOptions = pEnt->device->options;
+ 
+ 	if (configOptions) {
+@@ -225,7 +224,8 @@ int10skip(const void* options)
+ {
+     Bool noint10 = FALSE;
+ 
+-    if (!options) return FALSE;
++    if (!options)
++        return FALSE;
+     
+     xf86GetOptValBool(options, OPT_NOINT10, &noint10);
+     return noint10;
+@@ -237,8 +237,7 @@ int10_check_bios(int scrnIndex, int codeSeg, const unsigned char* vbiosMem)
+     int size;
+ 
+     if ((codeSeg & 0x1f) ||	/* Not 512-byte aligned otherwise */
+-	((codeSeg << 4) < V_BIOS) ||
+-	((codeSeg << 4) >= SYS_SIZE))
++        ((codeSeg << 4) < V_BIOS) || ((codeSeg << 4) >= SYS_SIZE))
+ 	return FALSE;
+ 
+     if ((*vbiosMem != 0x55) || (*(vbiosMem+1) != 0xAA) || !*(vbiosMem+2))
+@@ -260,7 +259,8 @@ initPrimary(const void* options)
+ {
+     Bool initPrimary = FALSE;
+ 
+-    if (!options) return FALSE;
++    if (!options)
++        return FALSE;
+     
+     xf86GetOptValBool(options, OPT_INIT_PRIMARY, &initPrimary);
+     return initPrimary;
+@@ -272,13 +272,13 @@ xf86int10GetBiosLocationType(const xf86Int10InfoPtr pInt)
+     BusType location_type;
+ 
+     EntityInfoPtr pEnt = xf86GetEntityInfo(pInt->entityIndex);
++
+     location_type = pEnt->location.type;
+     free(pEnt);
+ 
+     return location_type;
+ }
+ 
+-
+ #define CHECK_V_SEGMENT_RANGE(x)   \
+     if (((x) << 4) < V_BIOS) { \
+ 	xf86DrvMsg(pInt->scrnIndex, X_ERROR, \

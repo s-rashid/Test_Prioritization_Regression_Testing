@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index 883c48c..c712df7 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -39,6 +39,7 @@
+ #include "xf86Bus.h"
+ #include "xf86Sbus.h"
+ #endif
++#include "misc.h"
+ 
+ typedef struct _DevToConfig {
+     GDevRec GDev;
+@@ -514,10 +515,6 @@ configureDDCMonitorSection (int screennum)
+     return ptr;
+ }
+ 
+-#if !defined(PATH_MAX)
+-# define PATH_MAX 1024
+-#endif
+-
+ void
+ DoConfigure(void)
+ {

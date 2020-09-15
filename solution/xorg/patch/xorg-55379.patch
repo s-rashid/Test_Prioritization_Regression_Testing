@@ -1,0 +1,204 @@
+diff --git a/hw/kdrive/fake/fake.c b/hw/kdrive/fake/fake.c
+index ba05234..90e3ec9 100644
+--- a/hw/kdrive/fake/fake.c
++++ b/hw/kdrive/fake/fake.c
+@@ -44,8 +44,7 @@ fakeCardInit (KdCardInfo *card)
+     if (!priv)
+ 	return FALSE;
+     
+-    if (!fakeInitialize (card, priv))
+-    {
++    if (!fakeInitialize(card, priv)) {
+ 	free(priv);
+ 	return FALSE;
+     }
+@@ -57,8 +56,7 @@ fakeCardInit (KdCardInfo *card)
+ Bool
+ fakeScreenInitialize (KdScreenInfo *screen, FakeScrPriv *scrpriv)
+ {
+-    if (!screen->width || !screen->height)
+-    {
++    if (!screen->width || !screen->height) {
+ 	screen->width = 1024;
+ 	screen->height = 768;
+ 	screen->rate = 72;
+@@ -72,37 +70,31 @@ fakeScreenInitialize (KdScreenInfo *screen, FakeScrPriv *scrpriv)
+     if (!screen->fb.depth)
+ 	screen->fb.depth = 16;
+ 
+-    if (screen->fb.depth <= 8)
+-    {
++    if (screen->fb.depth <= 8) {
+ 	screen->fb.visuals = ((1 << StaticGray) |
+ 			      (1 << GrayScale) |
+ 			      (1 << StaticColor) |
+ 			      (1 << PseudoColor) |
+-			      (1 << TrueColor) |
+-			      (1 << DirectColor));
++                              (1 << TrueColor) | (1 << DirectColor));
+     }
+-    else 
+-    {
++    else {
+ 	screen->fb.visuals = (1 << TrueColor);
+ #define Mask(o,l)   (((1 << l) - 1) << o)
+-	if (screen->fb.depth <= 15)
+-	{
++        if (screen->fb.depth <= 15) {
+ 	    screen->fb.depth = 15;
+ 	    screen->fb.bitsPerPixel = 16;
+ 	    screen->fb.redMask = Mask (10, 5);
+ 	    screen->fb.greenMask = Mask (5, 5);
+ 	    screen->fb.blueMask = Mask (0, 5);
+ 	}
+-	else if (screen->fb.depth <= 16)
+-	{
++        else if (screen->fb.depth <= 16) {
+ 	    screen->fb.depth = 16;
+ 	    screen->fb.bitsPerPixel = 16;
+ 	    screen->fb.redMask = Mask (11, 5);
+ 	    screen->fb.greenMask = Mask (5, 6);
+ 	    screen->fb.blueMask = Mask (0, 5);
+ 	}
+-	else
+-	{
++        else {
+ 	    screen->fb.depth = 24;
+ 	    screen->fb.bitsPerPixel = 32;
+ 	    screen->fb.redMask = Mask (16, 8);
+@@ -125,8 +117,7 @@ fakeScreenInit (KdScreenInfo *screen)
+     if (!scrpriv)
+ 	return FALSE;
+     screen->driver = scrpriv;
+-    if (!fakeScreenInitialize (screen, scrpriv))
+-    {
++    if (!fakeScreenInitialize(screen, scrpriv)) {
+ 	screen->driver = 0;
+ 	free(scrpriv);
+ 	return FALSE;
+@@ -137,10 +128,7 @@ fakeScreenInit (KdScreenInfo *screen)
+ void *
+ fakeWindowLinear (ScreenPtr	pScreen,
+ 		   CARD32	row,
+-		   CARD32	offset,
+-		   int		mode,
+-		   CARD32	*size,
+-		   void		*closure)
++                 CARD32 offset, int mode, CARD32 *size, void *closure)
+ {
+     KdScreenPriv(pScreen);
+     FakePriv	    *priv = pScreenPriv->card->driver;
+@@ -167,17 +155,17 @@ fakeMapFramebuffer (KdScreenInfo *screen)
+     
+     KdSetPointerMatrix (&m);
+     
+-    priv->bytes_per_line = ((screen->width * screen->fb.bitsPerPixel + 31) >> 5) << 2;
++    priv->bytes_per_line =
++        ((screen->width * screen->fb.bitsPerPixel + 31) >> 5) << 2;
+     free(priv->base);
+     priv->base = malloc (priv->bytes_per_line * screen->height);
+     
+-    if (scrpriv->shadow)
+-    {
+-	if (!KdShadowFbAlloc (screen, scrpriv->randr & (RR_Rotate_90|RR_Rotate_270)))
++    if (scrpriv->shadow) {
++        if (!KdShadowFbAlloc
++            (screen, scrpriv->randr & (RR_Rotate_90 | RR_Rotate_270)))
+ 	    return FALSE;
+     }
+-    else
+-    {
++    else {
+         screen->fb.byteStride = priv->bytes_per_line;
+         screen->fb.pixelStride = (priv->bytes_per_line * 8/
+ 				     screen->fb.bitsPerPixel);
+@@ -194,15 +182,13 @@ fakeSetScreenSizes (ScreenPtr pScreen)
+     KdScreenInfo	*screen = pScreenPriv->screen;
+     FakeScrPriv	*scrpriv = screen->driver;
+ 
+-    if (scrpriv->randr & (RR_Rotate_0|RR_Rotate_180))
+-    {
++    if (scrpriv->randr & (RR_Rotate_0 | RR_Rotate_180)) {
+ 	pScreen->width = screen->width;
+ 	pScreen->height = screen->height;
+ 	pScreen->mmWidth = screen->width_mm;
+ 	pScreen->mmHeight = screen->height_mm;
+     }
+-    else
+-    {
++    else {
+ 	pScreen->width = screen->width;
+ 	pScreen->height = screen->height;
+ 	pScreen->mmWidth = screen->height_mm;
+@@ -214,6 +200,7 @@ Bool
+ fakeUnmapFramebuffer (KdScreenInfo *screen)
+ {
+     FakePriv		*priv = screen->card->driver;
++
+     KdShadowFbFree (screen);
+     free(priv->base);
+     priv->base = NULL;
+@@ -238,7 +225,6 @@ fakeSetShadow (ScreenPtr pScreen)
+     return KdShadowSet (pScreen, scrpriv->randr, update, window);
+ }
+ 
+-
+ #ifdef RANDR
+ Bool
+ fakeRandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+@@ -260,9 +246,7 @@ fakeRandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+     
+     pSize = RRRegisterSize (pScreen,
+ 			    screen->width,
+-			    screen->height,
+-			    screen->width_mm,
+-			    screen->height_mm);
++                           screen->height, screen->width_mm, screen->height_mm);
+     
+     randr = KdSubRotation (scrpriv->randr, screen->randr);
+     
+@@ -273,9 +257,7 @@ fakeRandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+ 
+ Bool
+ fakeRandRSetConfig (ScreenPtr		pScreen,
+-		     Rotation		randr,
+-		     int		rate,
+-		     RRScreenSizePtr	pSize)
++                   Rotation randr, int rate, RRScreenSizePtr pSize)
+ {
+     KdScreenPriv(pScreen);
+     KdScreenInfo	*screen = pScreenPriv->screen;
+@@ -288,13 +270,11 @@ fakeRandRSetConfig (ScreenPtr		pScreen,
+     int			oldmmheight;
+     int			newwidth, newheight;
+ 
+-    if (screen->randr & (RR_Rotate_0|RR_Rotate_180))
+-    {
++    if (screen->randr & (RR_Rotate_0 | RR_Rotate_180)) {
+ 	newwidth = pSize->width;
+ 	newheight = pSize->height;
+     }
+-    else
+-    {
++    else {
+ 	newwidth = pSize->height;
+ 	newheight = pSize->width;
+     }
+@@ -406,7 +386,6 @@ fakeFinishInitScreen (ScreenPtr pScreen)
+     return TRUE;
+ }
+ 
+-
+ Bool
+ fakeCreateResources (ScreenPtr pScreen)
+ {
+@@ -457,8 +436,7 @@ fakeCardFini (KdCardInfo *card)
+ void
+ fakeGetColors (ScreenPtr pScreen, int n, xColorItem *pdefs)
+ {
+-    while (n--)
+-    {
++    while (n--) {
+ 	pdefs->red = 0;
+ 	pdefs->green = 0;
+ 	pdefs->blue = 0;

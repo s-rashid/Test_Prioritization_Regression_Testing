@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/xpr/appledri.c b/hw/xquartz/xpr/appledri.c
+index 091145b..44c132a 100644
+--- a/hw/xquartz/xpr/appledri.c
++++ b/hw/xquartz/xpr/appledri.c
+@@ -133,7 +133,7 @@ ProcAppleDRIQueryDirectRenderingCapable(
+     }
+     rep.isCapable = isCapable;
+ 
+-    if (!client->local)
++    if (!LocalClient(client))
+         rep.isCapable = 0;
+ 
+     if (client->swapped) {
+@@ -365,7 +365,7 @@ ProcAppleDRIDispatch (
+         return ProcAppleDRIQueryDirectRenderingCapable(client);
+     }
+ 
+-    if (!client->local)
++    if (!LocalClient(client))
+         return DRIErrorBase + AppleDRIClientNotLocal;
+ 
+     switch (stuff->data)

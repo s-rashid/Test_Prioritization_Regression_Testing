@@ -1,0 +1,34 @@
+diff --git a/Xi/grabdev.c b/Xi/grabdev.c
+index 8fd114e..c505de3 100644
+--- a/Xi/grabdev.c
++++ b/Xi/grabdev.c
+@@ -82,7 +82,8 @@ SProcXGrabDevice(ClientPtr client)
+     swapl(&stuff->time);
+     swaps(&stuff->event_count);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xGrabDeviceReq)) + stuff->event_count)
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xGrabDeviceReq)) + stuff->event_count)
+        return BadLength;
+     
+     SwapLongs((CARD32 *) (&stuff[1]), stuff->event_count);
+@@ -108,7 +109,8 @@ ProcXGrabDevice(ClientPtr client)
+     REQUEST(xGrabDeviceReq);
+     REQUEST_AT_LEAST_SIZE(xGrabDeviceReq);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xGrabDeviceReq)) + stuff->event_count)
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xGrabDeviceReq)) + stuff->event_count)
+ 	return BadLength;
+ 
+     rep.repType = X_Reply;
+@@ -130,8 +132,7 @@ ProcXGrabDevice(ClientPtr client)
+     rc = GrabDevice(client, dev, stuff->other_devices_mode,
+                     stuff->this_device_mode, stuff->grabWindow,
+ 		    stuff->ownerEvents, stuff->time,
+-		    &mask, XI, None, None,
+-		    &rep.status);
++                    &mask, XI, None, None, &rep.status);
+ 
+     if (rc != Success)
+ 	return rc;

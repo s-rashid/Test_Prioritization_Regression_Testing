@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.h b/hw/xfree86/modes/xf86Crtc.h
+index 716499f..8d4a089 100644
+--- a/hw/xfree86/modes/xf86Crtc.h
++++ b/hw/xfree86/modes/xf86Crtc.h
+@@ -900,7 +900,7 @@ xf86CrtcSetScreenSubpixelOrder (ScreenPtr pScreen);
+ /*
+  * Get a standard string name for a connector type 
+  */
+-extern _X_EXPORT char *
++extern _X_EXPORT const char *
+ xf86ConnectorGetName(xf86ConnectorType connector);
+ 
+ /*

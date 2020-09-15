@@ -1,0 +1,13 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index 06a57e3..b7611a5 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -145,7 +145,7 @@ struct _DeviceChangedEvent
+     /** If flags & HAS_OLD_SLAVE is set, old_slaveid specifies SD previously
+      * attached to this device. */
+     int old_slaveid;
+-    /** If flags & HAS_OLD_SLAVE is set, old_slaveid specifies device now
++    /** If flags & HAS_NEW_SLAVE is set, new_slaveid specifies device now
+      * attached to this device. */
+     int new_slaveid;
+ 

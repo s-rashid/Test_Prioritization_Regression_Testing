@@ -1,0 +1,22 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index dbd1b4e..76e962e 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -1134,7 +1134,7 @@ SetKeySymsMap(KeySymsPtr dst, KeySymsPtr src)
+     return TRUE;
+ }
+ 
+-_X_EXPORT Bool
++Bool
+ InitButtonClassDeviceStruct(DeviceIntPtr dev, int numButtons, Atom* labels,
+                             CARD8 *map)
+ {
+@@ -1333,7 +1333,7 @@ InitFocusClassDeviceStruct(DeviceIntPtr dev)
+     return TRUE;
+ }
+ 
+-_X_EXPORT Bool
++Bool
+ InitPtrFeedbackClassDeviceStruct(DeviceIntPtr dev, PtrCtrlProcPtr controlProc)
+ {
+     PtrFeedbackPtr feedc;

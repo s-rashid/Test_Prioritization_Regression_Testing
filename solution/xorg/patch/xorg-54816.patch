@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwinXinput.c b/hw/xquartz/darwinXinput.c
+index 4d6604e..3efaa2c 100644
+--- a/hw/xquartz/darwinXinput.c
++++ b/hw/xquartz/darwinXinput.c
+@@ -112,7 +112,8 @@ SetDeviceValuators(ClientPtr client, DeviceIntPtr dev,
+  */
+ 
+ int
+-ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev, xDeviceCtl * control)
++ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
++                    xDeviceCtl * control)
+ {
+ 
+     DEBUG_LOG("ChangeDeviceControl(%p, %p, %p)\n", client, dev, control);

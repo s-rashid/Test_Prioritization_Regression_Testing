@@ -1,0 +1,1086 @@
+diff --git a/hw/xfree86/shadowfb/shadow.c b/hw/xfree86/shadowfb/shadow.c
+index 5cc476a..714dd14 100644
+--- a/hw/xfree86/shadowfb/shadow.c
++++ b/hw/xfree86/shadowfb/shadow.c
+@@ -6,7 +6,6 @@
+    Pre-fb-write callbacks and RENDER support - Nolan Leake (nolan@vmware.com)
+ */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -30,18 +29,14 @@
+ # include "picturestr.h"
+ 
+ static Bool ShadowCloseScreen (int i, ScreenPtr pScreen);
+-static void ShadowCopyWindow(
+-    WindowPtr pWin,
+-    DDXPointRec ptOldOrg,
+-    RegionPtr prgn 
+-);
++static void ShadowCopyWindow(WindowPtr pWin,
++                             DDXPointRec ptOldOrg, RegionPtr prgn);
+ static Bool ShadowCreateGC(GCPtr pGC);
+ 
+ static Bool ShadowEnterVT(int index, int flags);
+ static void ShadowLeaveVT(int index, int flags);
+ 
+-static void ShadowComposite(
+-    CARD8 op,
++static void ShadowComposite(CARD8 op,
+     PicturePtr pSrc,
+     PicturePtr pMask,
+     PicturePtr pDst,
+@@ -50,11 +45,7 @@ static void ShadowComposite(
+     INT16 xMask,
+     INT16 yMask,
+     INT16 xDst,
+-    INT16 yDst,
+-    CARD16 width,
+-    CARD16 height
+-);
+-
++                            INT16 yDst, CARD16 width, CARD16 height);
+ 
+ typedef struct {
+   ScrnInfoPtr 				pScrn;
+@@ -76,9 +67,11 @@ typedef struct {
+ } ShadowGCRec, *ShadowGCPtr;
+ 
+ static DevPrivateKeyRec ShadowScreenKeyRec;
++
+ #define ShadowScreenKey (&ShadowScreenKeyRec)
+ 
+ static DevPrivateKeyRec ShadowGCKeyRec;
++
+ #define ShadowGCKey (&ShadowGCKeyRec)
+ 
+ #define GET_SCREEN_PRIVATE(pScreen) \
+@@ -107,7 +100,6 @@ static DevPrivateKeyRec ShadowGCKeyRec;
+     pGC->funcs = pGCPriv->funcs;\
+     pGC->ops = pGCPriv->ops
+ 
+-    
+ #define SHADOW_GC_OP_EPILOGUE(pGC)\
+     pGCPriv->ops = pGC->ops;\
+     pGC->funcs = oldFuncs;\
+@@ -139,24 +131,23 @@ static DevPrivateKeyRec ShadowGCKeyRec;
+ #define BOX_NOT_EMPTY(box) \
+     (((box.x2 - box.x1) > 0) && ((box.y2 - box.y1) > 0))
+ 
+-
+-
+ Bool
+-ShadowFBInit2 (
+-    ScreenPtr		pScreen,
++ShadowFBInit2(ScreenPtr pScreen,
+     RefreshAreaFuncPtr  preRefreshArea,
+-    RefreshAreaFuncPtr  postRefreshArea
+-){
++              RefreshAreaFuncPtr postRefreshArea)
++{
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     ShadowScreenPtr pPriv;
+     PictureScreenPtr ps = GetPictureScreenIfSet(pScreen);
+ 
+-    if(!preRefreshArea && !postRefreshArea) return FALSE;
++    if (!preRefreshArea && !postRefreshArea)
++        return FALSE;
+     
+     if (!dixRegisterPrivateKey(&ShadowScreenKeyRec, PRIVATE_SCREEN, 0))
+ 	return FALSE;
+ 
+-    if(!dixRegisterPrivateKey(&ShadowGCKeyRec, PRIVATE_GC, sizeof(ShadowGCRec)))
++    if (!dixRegisterPrivateKey
++        (&ShadowGCKeyRec, PRIVATE_GC, sizeof(ShadowGCRec)))
+ 	return FALSE;
+ 
+     if(!(pPriv = (ShadowScreenPtr)malloc(sizeof(ShadowScreenRec))))
+@@ -193,10 +184,8 @@ ShadowFBInit2 (
+ }
+ 
+ Bool
+-ShadowFBInit (
+-    ScreenPtr		pScreen,
+-    RefreshAreaFuncPtr  refreshArea
+-){
++ShadowFBInit(ScreenPtr pScreen, RefreshAreaFuncPtr refreshArea)
++{
+     return ShadowFBInit2(pScreen, NULL, refreshArea);
+ }
+ 
+@@ -237,7 +226,6 @@ ShadowLeaveVT(int index, int flags)
+ 
+ /**********************************************************/
+ 
+-
+ static Bool
+ ShadowCloseScreen (int i, ScreenPtr pScreen)
+ {
+@@ -263,11 +251,8 @@ ShadowCloseScreen (int i, ScreenPtr pScreen)
+ }
+ 
+ static void 
+-ShadowCopyWindow(
+-   WindowPtr pWin,
+-   DDXPointRec ptOldOrg,
+-   RegionPtr prgn 
+-){
++ShadowCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgn)
++{
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+     ShadowScreenPtr pPriv = GET_SCREEN_PRIVATE(pScreen);
+     int num = 0;
+@@ -284,7 +269,8 @@ ShadowCopyWindow(
+         if ((num = RegionNumRects(&rgnDst))) {
+             if(pPriv->preRefresh)
+                 (*pPriv->preRefresh)(pPriv->pScrn, num, RegionRects(&rgnDst));
+-        } else {
++        }
++        else {
+             RegionUninit(&rgnDst);
+         }
+     }
+@@ -301,8 +287,7 @@ ShadowCopyWindow(
+ }
+ 
+ static void
+-ShadowComposite(
+-    CARD8 op,
++ShadowComposite(CARD8 op,
+     PicturePtr pSrc,
+     PicturePtr pMask,
+     PicturePtr pDst,
+@@ -310,11 +295,8 @@ ShadowComposite(
+     INT16 ySrc,
+     INT16 xMask,
+     INT16 yMask,
+-    INT16 xDst,
+-    INT16 yDst,
+-    CARD16 width,
+-    CARD16 height
+-){
++                INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
++{
+     ScreenPtr pScreen = pDst->pDrawable->pScreen;
+     ShadowScreenPtr pPriv = GET_SCREEN_PRIVATE(pScreen);
+     PictureScreenPtr ps = GetPictureScreen(pScreen);
+@@ -322,8 +304,7 @@ ShadowComposite(
+     BoxPtr extents;
+     Bool boxNotEmpty = FALSE;
+ 
+-    if (pPriv->vtSema
+-	&& pDst->pDrawable->type == DRAWABLE_WINDOW) {
++    if (pPriv->vtSema && pDst->pDrawable->type == DRAWABLE_WINDOW) {
+ 
+ 	box.x1 = pDst->pDrawable->x + xDst;
+ 	box.y1 = pDst->pDrawable->y + yDst;
+@@ -331,10 +312,14 @@ ShadowComposite(
+ 	box.y2 = box.y1 + height;
+ 
+ 	extents = &pDst->pCompositeClip->extents;
+-	if(box.x1 < extents->x1) box.x1 = extents->x1;
+-	if(box.x2 > extents->x2) box.x2 = extents->x2;
+-	if(box.y1 < extents->y1) box.y1 = extents->y1;
+-	if(box.y2 > extents->y2) box.y2 = extents->y2;
++        if (box.x1 < extents->x1)
++            box.x1 = extents->x1;
++        if (box.x2 > extents->x2)
++            box.x2 = extents->x2;
++        if (box.y1 < extents->y1)
++            box.y1 = extents->y1;
++        if (box.y2 > extents->y2)
++            box.y2 = extents->y2;
+ 	
+ 	if (BOX_NOT_EMPTY(box)) {
+ 	    if (pPriv->preRefresh)
+@@ -368,7 +353,6 @@ GCFuncs ShadowGCFuncs = {
+     ShadowChangeClip, ShadowDestroyClip, ShadowCopyClip
+ };
+ 
+-
+ extern GCOps ShadowGCOps;
+ 
+ static Bool
+@@ -390,13 +374,9 @@ ShadowCreateGC(GCPtr pGC)
+     return ret;
+ }
+ 
+-
+ static void
+-ShadowValidateGC(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw 
+-){
++ShadowValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
++{
+     SHADOW_GC_FUNC_PROLOGUE (pGC);
+     (*pGC->funcs->ValidateGC)(pGC, changes, pDraw);
+     if(pDraw->type == DRAWABLE_WINDOW)
+@@ -406,7 +386,6 @@ ShadowValidateGC(
+     SHADOW_GC_FUNC_EPILOGUE (pGC);
+ }
+ 
+-
+ static void
+ ShadowDestroyGC(GCPtr pGC)
+ {
+@@ -416,33 +395,24 @@ ShadowDestroyGC(GCPtr pGC)
+ }
+ 
+ static void
+-ShadowChangeGC (
+-    GCPtr	    pGC,
+-    unsigned long   mask
+-){
++ShadowChangeGC(GCPtr pGC, unsigned long mask)
++{
+     SHADOW_GC_FUNC_PROLOGUE (pGC);
+     (*pGC->funcs->ChangeGC) (pGC, mask);
+     SHADOW_GC_FUNC_EPILOGUE (pGC);
+ }
+ 
+ static void
+-ShadowCopyGC (
+-    GCPtr	    pGCSrc, 
+-    unsigned long   mask,
+-    GCPtr	    pGCDst
+-){
++ShadowCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
++{
+     SHADOW_GC_FUNC_PROLOGUE (pGCDst);
+     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
+     SHADOW_GC_FUNC_EPILOGUE (pGCDst);
+ }
+ 
+ static void
+-ShadowChangeClip (
+-    GCPtr   pGC,
+-    int		type,
+-    pointer	pvalue,
+-    int		nrects 
+-){
++ShadowChangeClip(GCPtr pGC, int type, pointer pvalue, int nrects)
++{
+     SHADOW_GC_FUNC_PROLOGUE (pGC);
+     (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
+     SHADOW_GC_FUNC_EPILOGUE (pGC);
+@@ -464,21 +434,13 @@ ShadowDestroyClip(GCPtr pGC)
+     SHADOW_GC_FUNC_EPILOGUE (pGC);
+ }
+ 
+-
+-
+-
+ /**********************************************************/
+ 
+-
+ static void
+-ShadowFillSpans(
+-    DrawablePtr pDraw,
++ShadowFillSpans(DrawablePtr pDraw,
+     GC		*pGC,
+-    int		nInit,	
+-    DDXPointPtr pptInit,	
+-    int 	*pwidthInit,		
+-    int 	fSorted 
+-){
++                int nInit, DDXPointPtr pptInit, int *pwidthInit, int fSorted)
++{
+     SHADOW_GC_OP_PROLOGUE(pGC);    
+ 
+     if(IS_VISIBLE(pDraw) && nInit) {
+@@ -495,11 +457,14 @@ ShadowFillSpans(
+ 	while(--i) {
+ 	   ppt++;
+ 	   pwidth++;
+-	   if(box.x1 > ppt->x) box.x1 = ppt->x;
++            if (box.x1 > ppt->x)
++                box.x1 = ppt->x;
+ 	   if(box.x2 < (ppt->x + *pwidth)) 
+ 		box.x2 = ppt->x + *pwidth;
+-	   if(box.y1 > ppt->y) box.y1 = ppt->y;
+-	   else if(box.y2 < ppt->y) box.y2 = ppt->y;
++            if (box.y1 > ppt->y)
++                box.y1 = ppt->y;
++            else if (box.y2 < ppt->y)
++                box.y2 = ppt->y;
+ 	}
+ 
+ 	box.y2++;
+@@ -515,26 +480,25 @@ ShadowFillSpans(
+             boxNotEmpty = TRUE;
+         }
+ 
+-	(*pGC->ops->FillSpans)(pDraw, pGC, nInit, pptInit, pwidthInit, fSorted);
++        (*pGC->ops->FillSpans) (pDraw, pGC, nInit, pptInit, pwidthInit,
++                                fSorted);
+ 
+         if(boxNotEmpty && pPriv->postRefresh)
+ 	   (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);
+-    } else
+-	(*pGC->ops->FillSpans)(pDraw, pGC, nInit, pptInit, pwidthInit, fSorted);
++    }
++    else
++        (*pGC->ops->FillSpans) (pDraw, pGC, nInit, pptInit, pwidthInit,
++                                fSorted);
+ 
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
+ 
+ static void
+-ShadowSetSpans(
+-    DrawablePtr		pDraw,
++ShadowSetSpans(DrawablePtr pDraw,
+     GCPtr		pGC,
+     char		*pcharsrc,
+-    DDXPointPtr 	pptInit,
+-    int			*pwidthInit,
+-    int			nspans,
+-    int			fSorted 
+-){
++               DDXPointPtr pptInit, int *pwidthInit, int nspans, int fSorted)
++{
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && nspans) {
+@@ -551,11 +515,14 @@ ShadowSetSpans(
+ 	while(--i) {
+ 	   ppt++;
+ 	   pwidth++;
+-	   if(box.x1 > ppt->x) box.x1 = ppt->x;
++            if (box.x1 > ppt->x)
++                box.x1 = ppt->x;
+ 	   if(box.x2 < (ppt->x + *pwidth)) 
+ 		box.x2 = ppt->x + *pwidth;
+-	   if(box.y1 > ppt->y) box.y1 = ppt->y;
+-	   else if(box.y2 < ppt->y) box.y2 = ppt->y;
++            if (box.y1 > ppt->y)
++                box.y1 = ppt->y;
++            else if (box.y2 < ppt->y)
++                box.y2 = ppt->y;
+ 	}
+ 
+ 	box.y2++;
+@@ -576,7 +543,8 @@ ShadowSetSpans(
+ 
+ 	if(boxNotEmpty && pPriv->postRefresh)
+ 	   (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);
+-    } else
++    }
++    else
+ 	(*pGC->ops->SetSpans)(pDraw, pGC, pcharsrc, pptInit, 
+ 				pwidthInit, nspans, fSorted);
+ 
+@@ -584,15 +552,12 @@ ShadowSetSpans(
+ }
+ 
+ static void
+-ShadowPutImage(
+-    DrawablePtr pDraw,
++ShadowPutImage(DrawablePtr pDraw,
+     GCPtr	pGC,
+     int		depth, 
+     int x, int y, int w, int h,
+-    int		leftPad,
+-    int		format,
+-    char 	*pImage 
+-){
++               int leftPad, int format, char *pImage)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+     
+@@ -623,14 +588,11 @@ ShadowPutImage(
+ }
+ 
+ static RegionPtr
+-ShadowCopyArea(
+-    DrawablePtr pSrc,
++ShadowCopyArea(DrawablePtr pSrc,
+     DrawablePtr pDst,
+     GC *pGC,
+-    int srcx, int srcy,
+-    int width, int height,
+-    int dstx, int dsty 
+-){
++               int srcx, int srcy, int width, int height, int dstx, int dsty)
++{
+     RegionPtr ret;
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+@@ -663,15 +625,13 @@ ShadowCopyArea(
+ }
+ 
+ static RegionPtr
+-ShadowCopyPlane(
+-    DrawablePtr	pSrc,
++ShadowCopyPlane(DrawablePtr pSrc,
+     DrawablePtr	pDst,
+     GCPtr pGC,
+     int	srcx, int srcy,
+     int	width, int height,
+-    int	dstx, int dsty,
+-    unsigned long bitPlane 
+-){
++                int dstx, int dsty, unsigned long bitPlane)
++{
+     RegionPtr ret;
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+@@ -693,7 +653,8 @@ ShadowCopyPlane(
+     }
+     
+     ret = (*pGC->ops->CopyPlane)(pSrc, pDst,
+-	       pGC, srcx, srcy, width, height, dstx, dsty, bitPlane);
++                                  pGC, srcx, srcy, width, height, dstx, dsty,
++                                  bitPlane);
+     
+     if(boxNotEmpty && pPriv->postRefresh)
+         (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);
+@@ -704,13 +665,9 @@ ShadowCopyPlane(
+ }
+ 
+ static void
+-ShadowPolyPoint(
+-    DrawablePtr pDraw,
+-    GCPtr pGC,
+-    int mode,
+-    int nptInit,
+-    xPoint *pptInit 
+-){
++ShadowPolyPoint(DrawablePtr pDraw,
++                GCPtr pGC, int mode, int nptInit, xPoint * pptInit)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+     
+@@ -727,10 +684,14 @@ ShadowPolyPoint(
+ 
+ 	while(--npt) {
+ 	   ppt++;
+-	   if(box.x1 > ppt->x) box.x1 = ppt->x;
+-	   else if(box.x2 < ppt->x) box.x2 = ppt->x;
+-	   if(box.y1 > ppt->y) box.y1 = ppt->y;
+-	   else if(box.y2 < ppt->y) box.y2 = ppt->y;
++            if (box.x1 > ppt->x)
++                box.x1 = ppt->x;
++            else if (box.x2 < ppt->x)
++                box.x2 = ppt->x;
++            if (box.y1 > ppt->y)
++                box.y1 = ppt->y;
++            else if (box.y2 < ppt->y)
++                box.y2 = ppt->y;
+ 	}
+ 
+ 	box.x2++;
+@@ -753,13 +714,9 @@ ShadowPolyPoint(
+ }
+ 
+ static void
+-ShadowPolylines(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		mode,		
+-    int		nptInit,		
+-    DDXPointPtr pptInit 
+-){
++ShadowPolylines(DrawablePtr pDraw,
++                GCPtr pGC, int mode, int nptInit, DDXPointPtr pptInit)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+     
+@@ -783,22 +740,32 @@ ShadowPolylines(
+ 	if(mode == CoordModePrevious) {
+ 	   int x = box.x1;
+ 	   int y = box.y1;
++
+ 	   while(--npt) {
+ 		ppt++;
+ 		x += ppt->x;
+ 		y += ppt->y;
+-		if(box.x1 > x) box.x1 = x;
+-		else if(box.x2 < x) box.x2 = x;
+-		if(box.y1 > y) box.y1 = y;
+-		else if(box.y2 < y) box.y2 = y;
++                if (box.x1 > x)
++                    box.x1 = x;
++                else if (box.x2 < x)
++                    box.x2 = x;
++                if (box.y1 > y)
++                    box.y1 = y;
++                else if (box.y2 < y)
++                    box.y2 = y;
++            }
+ 	    }
+-	} else {
++        else {
+ 	   while(--npt) {
+ 		ppt++;
+-		if(box.x1 > ppt->x) box.x1 = ppt->x;
+-		else if(box.x2 < ppt->x) box.x2 = ppt->x;
+-		if(box.y1 > ppt->y) box.y1 = ppt->y;
+-		else if(box.y2 < ppt->y) box.y2 = ppt->y;
++                if (box.x1 > ppt->x)
++                    box.x1 = ppt->x;
++                else if (box.x2 < ppt->x)
++                    box.x2 = ppt->x;
++                if (box.y1 > ppt->y)
++                    box.y1 = ppt->y;
++                else if (box.y2 < ppt->y)
++                    box.y2 = ppt->y;
+ 	    }
+ 	}
+ 
+@@ -829,12 +796,9 @@ ShadowPolylines(
+ }
+ 
+ static void 
+-ShadowPolySegment(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		nsegInit,
+-    xSegment	*pSegInit 
+-){
++ShadowPolySegment(DrawablePtr pDraw,
++                  GCPtr pGC, int nsegInit, xSegment * pSegInit)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+    
+@@ -851,7 +815,8 @@ ShadowPolySegment(
+ 	if(pSeg->x2 > pSeg->x1) {
+ 	    box.x1 = pSeg->x1;
+ 	    box.x2 = pSeg->x2;
+-	} else {
++        }
++        else {
+ 	    box.x2 = pSeg->x1;
+ 	    box.x1 = pSeg->x2;
+ 	}
+@@ -859,7 +824,8 @@ ShadowPolySegment(
+ 	if(pSeg->y2 > pSeg->y1) {
+ 	    box.y1 = pSeg->y1;
+ 	    box.y2 = pSeg->y2;
+-	} else {
++        }
++        else {
+ 	    box.y2 = pSeg->y1;
+ 	    box.y1 = pSeg->y2;
+ 	}
+@@ -867,18 +833,28 @@ ShadowPolySegment(
+ 	while(--nseg) {
+ 	    pSeg++;
+ 	    if(pSeg->x2 > pSeg->x1) {
+-		if(pSeg->x1 < box.x1) box.x1 = pSeg->x1;
+-		if(pSeg->x2 > box.x2) box.x2 = pSeg->x2;
+-	    } else {
+-		if(pSeg->x2 < box.x1) box.x1 = pSeg->x2;
+-		if(pSeg->x1 > box.x2) box.x2 = pSeg->x1;
++                if (pSeg->x1 < box.x1)
++                    box.x1 = pSeg->x1;
++                if (pSeg->x2 > box.x2)
++                    box.x2 = pSeg->x2;
++            }
++            else {
++                if (pSeg->x2 < box.x1)
++                    box.x1 = pSeg->x2;
++                if (pSeg->x1 > box.x2)
++                    box.x2 = pSeg->x1;
+ 	    }
+ 	    if(pSeg->y2 > pSeg->y1) {
+-		if(pSeg->y1 < box.y1) box.y1 = pSeg->y1;
+-		if(pSeg->y2 > box.y2) box.y2 = pSeg->y2;
+-	    } else {
+-		if(pSeg->y2 < box.y1) box.y1 = pSeg->y2;
+-		if(pSeg->y1 > box.y2) box.y2 = pSeg->y1;
++                if (pSeg->y1 < box.y1)
++                    box.y1 = pSeg->y1;
++                if (pSeg->y2 > box.y2)
++                    box.y2 = pSeg->y2;
++            }
++            else {
++                if (pSeg->y2 < box.y1)
++                    box.y1 = pSeg->y2;
++                if (pSeg->y1 > box.y2)
++                    box.y2 = pSeg->y1;
+ 	    }
+ 	}
+ 
+@@ -909,12 +885,9 @@ ShadowPolySegment(
+ }
+ 
+ static void
+-ShadowPolyRectangle(
+-    DrawablePtr  pDraw,
+-    GCPtr        pGC,
+-    int	         nRectsInit,
+-    xRectangle  *pRectsInit 
+-){
++ShadowPolyRectangle(DrawablePtr pDraw,
++                    GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
++{
+     BoxRec box;
+     BoxPtr pBoxInit = NULL;
+     Bool boxNotEmpty = FALSE;
+@@ -936,10 +909,12 @@ ShadowPolyRectangle(
+ 
+ 	    while(--nRects) {
+ 		pRects++;
+-		if(box.x1 > pRects->x) box.x1 = pRects->x;
++                if (box.x1 > pRects->x)
++                    box.x1 = pRects->x;
+ 		if(box.x2 < (pRects->x + pRects->width))
+ 			box.x2 = pRects->x + pRects->width;
+-		if(box.y1 > pRects->y) box.y1 = pRects->y;
++                if (box.y1 > pRects->y)
++                    box.y1 = pRects->y;
+ 		if(box.y2 < (pRects->y + pRects->height))
+ 			box.y2 = pRects->y + pRects->height;
+ 	    }
+@@ -960,12 +935,14 @@ ShadowPolyRectangle(
+                    (*pPriv->preRefresh)(pPriv->pScrn, 1, &box);
+                 boxNotEmpty = TRUE;
+             }
+-	} else {
++        }
++        else {
+ 	    BoxPtr pbox;
+ 	    int offset1, offset2, offset3;
+ 
+ 	    offset2 = pGC->lineWidth;
+-	    if(!offset2) offset2 = 1;
++            if (!offset2)
++                offset2 = 1;
+ 	    offset1 = offset2 >> 1;
+ 	    offset3 = offset2 - offset1;
+ 
+@@ -1019,7 +996,8 @@ ShadowPolyRectangle(
+ 	    if(num) {
+                 if(pPriv->preRefresh)
+                     (*pPriv->preRefresh)(pPriv->pScrn, num, pBoxInit);
+-            } else {
++            }
++            else {
+                 free(pBoxInit);
+             }                
+ 	}
+@@ -1029,7 +1007,8 @@ ShadowPolyRectangle(
+ 
+     if(boxNotEmpty && pPriv->postRefresh) {
+        (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);
+-    } else if(num) {
++    }
++    else if (num) {
+        if(pPriv->postRefresh)
+           (*pPriv->postRefresh)(pPriv->pScrn, num, pBoxInit);
+        free(pBoxInit);
+@@ -1040,12 +1019,8 @@ ShadowPolyRectangle(
+ }
+ 
+ static void
+-ShadowPolyArc(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		narcsInit,
+-    xArc	*parcsInit 
+-){
++ShadowPolyArc(DrawablePtr pDraw, GCPtr pGC, int narcsInit, xArc * parcsInit)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+    
+@@ -1065,10 +1040,12 @@ ShadowPolyArc(
+ 
+ 	while(--narcs) {
+ 	   parcs++;
+-	   if(box.x1 > parcs->x) box.x1 = parcs->x;
++            if (box.x1 > parcs->x)
++                box.x1 = parcs->x;
+ 	   if(box.x2 < (parcs->x + parcs->width))
+ 		box.x2 = parcs->x + parcs->width;
+-	   if(box.y1 > parcs->y) box.y1 = parcs->y;
++            if (box.y1 > parcs->y)
++                box.y1 = parcs->y;
+ 	   if(box.y2 < (parcs->y + parcs->height))
+ 		box.y2 = parcs->y + parcs->height;
+         }
+@@ -1101,14 +1078,10 @@ ShadowPolyArc(
+ }
+ 
+ static void
+-ShadowFillPolygon(
+-    DrawablePtr	pDraw,
++ShadowFillPolygon(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		shape,
+-    int		mode,
+-    int		count,
+-    DDXPointPtr	pptInit 
+-){
++                  int shape, int mode, int count, DDXPointPtr pptInit)
++{
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && (count > 2)) {
+@@ -1123,22 +1096,32 @@ ShadowFillPolygon(
+ 	if(mode != CoordModeOrigin) {
+ 	   int x = box.x1;
+ 	   int y = box.y1;
++
+ 	   while(--i) {
+ 		ppt++;
+ 		x += ppt->x;
+ 		y += ppt->y;
+-		if(box.x1 > x) box.x1 = x;
+-		else if(box.x2 < x) box.x2 = x;
+-		if(box.y1 > y) box.y1 = y;
+-		else if(box.y2 < y) box.y2 = y;
++                if (box.x1 > x)
++                    box.x1 = x;
++                else if (box.x2 < x)
++                    box.x2 = x;
++                if (box.y1 > y)
++                    box.y1 = y;
++                else if (box.y2 < y)
++                    box.y2 = y;
+ 	    }
+-	} else {
++        }
++        else {
+ 	   while(--i) {
+ 		ppt++;
+-		if(box.x1 > ppt->x) box.x1 = ppt->x;
+-		else if(box.x2 < ppt->x) box.x2 = ppt->x;
+-		if(box.y1 > ppt->y) box.y1 = ppt->y;
+-		else if(box.y2 < ppt->y) box.y2 = ppt->y;
++                if (box.x1 > ppt->x)
++                    box.x1 = ppt->x;
++                else if (box.x2 < ppt->x)
++                    box.x2 = ppt->x;
++                if (box.y1 > ppt->y)
++                    box.y1 = ppt->y;
++                else if (box.y2 < ppt->y)
++                    box.y2 = ppt->y;
+ 	    }
+ 	}
+ 
+@@ -1156,20 +1139,17 @@ ShadowFillPolygon(
+ 
+         if(boxNotEmpty && pPriv->postRefresh)
+            (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);        
+-    } else
++    }
++    else
+ 	(*pGC->ops->FillPolygon)(pDraw, pGC, shape, mode, count, pptInit);
+ 
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void 
+-ShadowPolyFillRect(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		nRectsInit, 
+-    xRectangle	*pRectsInit 
+-){
++ShadowPolyFillRect(DrawablePtr pDraw,
++                   GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
++{
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && nRectsInit) {
+@@ -1185,10 +1165,12 @@ ShadowPolyFillRect(
+ 
+ 	while(--nRects) {
+ 	    pRects++;
+-	    if(box.x1 > pRects->x) box.x1 = pRects->x;
++            if (box.x1 > pRects->x)
++                box.x1 = pRects->x;
+ 	    if(box.x2 < (pRects->x + pRects->width))
+ 		box.x2 = pRects->x + pRects->width;
+-	    if(box.y1 > pRects->y) box.y1 = pRects->y;
++            if (box.y1 > pRects->y)
++                box.y1 = pRects->y;
+ 	    if(box.y2 < (pRects->y + pRects->height))
+ 		box.y2 = pRects->y + pRects->height;
+ 	}
+@@ -1207,20 +1189,16 @@ ShadowPolyFillRect(
+ 
+         if(boxNotEmpty && pPriv->postRefresh)
+             (*pPriv->postRefresh)(pPriv->pScrn, 1, &box);
+-    } else
++    }
++    else
+ 	(*pGC->ops->PolyFillRect)(pDraw, pGC, nRectsInit, pRectsInit);
+ 
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void
+-ShadowPolyFillArc(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		narcsInit,
+-    xArc	*parcsInit 
+-){
++ShadowPolyFillArc(DrawablePtr pDraw, GCPtr pGC, int narcsInit, xArc * parcsInit)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+    
+@@ -1239,10 +1217,12 @@ ShadowPolyFillArc(
+ 
+ 	while(--narcs) {
+ 	   parcs++;
+-	   if(box.x1 > parcs->x) box.x1 = parcs->x;
++            if (box.x1 > parcs->x)
++                box.x1 = parcs->x;
+ 	   if(box.x2 < (parcs->x + parcs->width))
+ 		box.x2 = parcs->x + parcs->width;
+-	   if(box.y1 > parcs->y) box.y1 = parcs->y;
++            if (box.y1 > parcs->y)
++                box.y1 = parcs->y;
+ 	   if(box.y2 < (parcs->y + parcs->height))
+ 		box.y2 = parcs->y + parcs->height;
+         }
+@@ -1292,8 +1272,6 @@ ShadowTextExtent(FontPtr pFont, int count, char* chars,
+     box->y2 = FONTMAXBOUNDS(pFont,descent);
+ }
+ 
+-
+-
+ static void
+ ShadowFontToBox(BoxPtr BB, DrawablePtr pDrawable, GCPtr pGC, int x, int y,
+                 int count, char *chars, int wide)
+@@ -1323,7 +1301,8 @@ ShadowFontToBox(BoxPtr BB, DrawablePtr pDrawable, GCPtr pGC, int x, int y,
+ 	BB->y2 =
+ 	    min(pDrawable->y + y + descent,
+ 		RegionExtents(&((WindowPtr) pDrawable)->winSize)->y2);
+-    } else {
++    }
++    else {
+     	ShadowTextExtent(pFont, count, chars, wide ? (FONTLASTROW(pFont) == 0)
+                          ? Linear16Bit : TwoD16Bit : Linear8Bit, BB);
+ 	BB->x1 =
+@@ -1342,14 +1321,9 @@ ShadowFontToBox(BoxPtr BB, DrawablePtr pDrawable, GCPtr pGC, int x, int y,
+ }
+ 
+ static int
+-ShadowPolyText8(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x, 
+-    int 	y,
+-    int 	count,
+-    char	*chars 
+-){
++ShadowPolyText8(DrawablePtr pDraw,
++                GCPtr pGC, int x, int y, int count, char *chars)
++{
+     int width;
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+@@ -1378,14 +1352,9 @@ ShadowPolyText8(
+ }
+ 
+ static int
+-ShadowPolyText16(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x,
+-    int		y,
+-    int 	count,
+-    unsigned short *chars 
+-){
++ShadowPolyText16(DrawablePtr pDraw,
++                 GCPtr pGC, int x, int y, int count, unsigned short *chars)
++{
+     int width;
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+@@ -1414,16 +1383,12 @@ ShadowPolyText16(
+ }
+ 
+ static void
+-ShadowImageText8(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x, 
+-    int		y,
+-    int 	count,
+-    char	*chars 
+-){
++ShadowImageText8(DrawablePtr pDraw,
++                 GCPtr pGC, int x, int y, int count, char *chars)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
++
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && count) {
+@@ -1433,13 +1398,14 @@ ShadowImageText8(
+ 	bot = max(FONTMAXBOUNDS(pGC->font, descent), FONTDESCENT(pGC->font));
+ 
+ 	Min = count * FONTMINBOUNDS(pGC->font, characterWidth);
+-	if(Min > 0) Min = 0;
++        if (Min > 0)
++            Min = 0;
+ 	Max = count * FONTMAXBOUNDS(pGC->font, characterWidth);	
+-	if(Max < 0) Max = 0;
++        if (Max < 0)
++            Max = 0;
+ 
+ 	/* ugh */
+-	box.x1 = pDraw->x + x + Min +
+-		FONTMINBOUNDS(pGC->font, leftSideBearing);
++        box.x1 = pDraw->x + x + Min + FONTMINBOUNDS(pGC->font, leftSideBearing);
+ 	box.x2 = pDraw->x + x + Max + 
+ 		FONTMAXBOUNDS(pGC->font, rightSideBearing);
+ 
+@@ -1461,17 +1427,14 @@ ShadowImageText8(
+     
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
++
+ static void
+-ShadowImageText16(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x,
+-    int		y,
+-    int 	count,
+-    unsigned short *chars 
+-){
++ShadowImageText16(DrawablePtr pDraw,
++                  GCPtr pGC, int x, int y, int count, unsigned short *chars)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
++
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && count) {
+@@ -1481,13 +1444,14 @@ ShadowImageText16(
+ 	bot = max(FONTMAXBOUNDS(pGC->font, descent), FONTDESCENT(pGC->font));
+ 
+ 	Min = count * FONTMINBOUNDS(pGC->font, characterWidth);
+-	if(Min > 0) Min = 0;
++        if (Min > 0)
++            Min = 0;
+ 	Max = count * FONTMAXBOUNDS(pGC->font, characterWidth);	
+-	if(Max < 0) Max = 0;
++        if (Max < 0)
++            Max = 0;
+ 
+ 	/* ugh */
+-	box.x1 = pDraw->x + x + Min +
+-		FONTMINBOUNDS(pGC->font, leftSideBearing);
++        box.x1 = pDraw->x + x + Min + FONTMINBOUNDS(pGC->font, leftSideBearing);
+ 	box.x2 = pDraw->x + x + Max + 
+ 		FONTMAXBOUNDS(pGC->font, rightSideBearing);
+ 
+@@ -1510,18 +1474,16 @@ ShadowImageText16(
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void
+-ShadowImageGlyphBlt(
+-    DrawablePtr pDraw,
++ShadowImageGlyphBlt(DrawablePtr pDraw,
+     GCPtr pGC,
+     int x, int y,
+     unsigned int nglyphInit,
+-    CharInfoPtr *ppciInit,
+-    pointer pglyphBase 
+-){
++                    CharInfoPtr * ppciInit, pointer pglyphBase)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
++
+     SHADOW_GC_OP_PROLOGUE(pGC);
+ 
+     if(IS_VISIBLE(pDraw) && nglyphInit) {
+@@ -1533,10 +1495,12 @@ ShadowImageGlyphBlt(
+ 	bot = max(FONTMAXBOUNDS(pGC->font, descent), FONTDESCENT(pGC->font));
+ 
+ 	box.x1 = ppci[0]->metrics.leftSideBearing;
+-	if(box.x1 > 0) box.x1 = 0;
++        if (box.x1 > 0)
++            box.x1 = 0;
+ 	box.x2 = ppci[nglyph - 1]->metrics.rightSideBearing - 
+ 		ppci[nglyph - 1]->metrics.characterWidth;
+-	if(box.x2 < 0) box.x2 = 0;
++        if (box.x2 < 0)
++            box.x2 = 0;
+ 
+ 	box.x2 += pDraw->x + x;
+ 	box.x1 += pDraw->x + x;
+@@ -1572,14 +1536,12 @@ ShadowImageGlyphBlt(
+ }
+ 
+ static void
+-ShadowPolyGlyphBlt(
+-    DrawablePtr pDraw,
++ShadowPolyGlyphBlt(DrawablePtr pDraw,
+     GCPtr pGC,
+     int x, int y,
+     unsigned int nglyphInit,
+-    CharInfoPtr *ppciInit,
+-    pointer pglyphBase 
+-){
++                   CharInfoPtr * ppciInit, pointer pglyphBase)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+ 
+@@ -1601,8 +1563,10 @@ ShadowPolyGlyphBlt(
+ 		ppci++;
+ 	    }
+ 	
+-	    if(width > 0) box.x2 += width;
+-	    else box.x1 += width;
++            if (width > 0)
++                box.x2 += width;
++            else
++                box.x1 += width;
+ 	}
+ 
+ 	box.y1 = pDraw->y + y - FONTMAXBOUNDS(pGC->font, ascent);
+@@ -1626,12 +1590,10 @@ ShadowPolyGlyphBlt(
+ }
+ 
+ static void
+-ShadowPushPixels(
+-    GCPtr	pGC,
++ShadowPushPixels(GCPtr pGC,
+     PixmapPtr	pBitMap,
+-    DrawablePtr pDraw,
+-    int	dx, int dy, int xOrg, int yOrg 
+-){
++                 DrawablePtr pDraw, int dx, int dy, int xOrg, int yOrg)
++{
+     BoxRec box;
+     Bool boxNotEmpty = FALSE;
+     
+@@ -1665,7 +1627,6 @@ ShadowPushPixels(
+     SHADOW_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ GCOps ShadowGCOps = {
+     ShadowFillSpans, ShadowSetSpans, 
+     ShadowPutImage, ShadowCopyArea, 
+@@ -1678,4 +1639,3 @@ GCOps ShadowGCOps = {
+     ShadowImageText16, ShadowImageGlyphBlt, 
+     ShadowPolyGlyphBlt, ShadowPushPixels,
+ };
+-

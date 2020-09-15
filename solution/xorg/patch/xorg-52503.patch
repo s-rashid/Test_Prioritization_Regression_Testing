@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/xpr/xprAppleWM.c b/hw/xquartz/xpr/xprAppleWM.c
+index 21e6f98..b6b9a5f 100644
+--- a/hw/xquartz/xpr/xprAppleWM.c
++++ b/hw/xquartz/xpr/xprAppleWM.c
+@@ -114,8 +114,8 @@ static int xprAttachTransient(WindowPtr pWinChild, WindowPtr pWinParent) {
+ 
+ static int xprFrameDraw(
+     WindowPtr pWin,
+-    int class,
+-    unsigned int attr,
++    xp_frame_class class,
++    xp_frame_attr attr,
+     const BoxRec *outer,
+     const BoxRec *inner,
+     unsigned int title_len,

@@ -1,0 +1,15 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index d57265e..8615fd4 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -870,7 +870,9 @@ UpdateDeviceState(DeviceIntPtr device, DeviceEvent* event)
+                     continue;
+                 if (!sd->button)
+                     continue;
+-                if (button_is_down(sd, key, BUTTON_PROCESSED))
++                for (i = 1; i <= sd->button->numButtons; i++)
++                    if (sd->button->map[i] == key &&
++                        button_is_down(sd, i, BUTTON_PROCESSED))
+                     return DONT_PROCESS;
+             }
+         }

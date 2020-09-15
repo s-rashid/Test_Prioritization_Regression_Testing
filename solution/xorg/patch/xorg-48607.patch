@@ -1,0 +1,12 @@
+diff --git a/Xext/xvmain.c b/Xext/xvmain.c
+index f6d39d0..9a367bd 100644
+--- a/Xext/xvmain.c
++++ b/Xext/xvmain.c
+@@ -192,6 +192,7 @@ XvExtensionInit(void)
+       EventSwapVector[XvEventBase+XvPortNotify] = 
+ 	(EventSwapPtr)WriteSwappedPortNotifyEvent;
+ 
++      SetResourceTypeErrorValue(XvRTPort, _XvBadPort);
+       (void)MakeAtom(XvName, strlen(XvName), xTrue);
+ 
+     }

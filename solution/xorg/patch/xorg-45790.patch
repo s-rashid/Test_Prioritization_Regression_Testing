@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 37bc455..d748506 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -154,10 +154,6 @@ const int NUMFORMATS = sizeof(formats)/sizeof(formats[0]);
+ #define XORG_RELEASE "?"
+ #endif
+ 
+-void DDXRingBell(int volume, int pitch, int duration) {
+-  // FIXME -- make some noise, yo
+-}
+-
+ void
+ DarwinPrintBanner(void)
+ { 

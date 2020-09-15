@@ -1,0 +1,12 @@
+diff --git a/fb/fbgc.c b/fb/fbgc.c
+index e3e9236..2568698 100644
+--- a/fb/fbgc.c
++++ b/fb/fbgc.c
+@@ -213,7 +213,6 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+ 	)
+     {
+ 	miComputeCompositeClip (pGC, pDrawable);
+-	pPriv->oneRect = RegionNumRects(fbGetCompositeClip(pGC)) == 1;
+     }
+     
+ #ifdef FB_24_32BIT    

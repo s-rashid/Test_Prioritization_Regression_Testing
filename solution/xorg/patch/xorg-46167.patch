@@ -1,0 +1,22 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 7ba62ea..01f87ba 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -236,14 +236,16 @@ exaPixmapIsOffscreen_mixed(PixmapPtr pPixmap)
+     ScreenPtr pScreen = pPixmap->drawable.pScreen;
+     ExaScreenPriv(pScreen);
+     ExaPixmapPriv(pPixmap);
++    pointer saved_ptr;
+     Bool ret;
+ 
+     if (!pExaPixmap->driverPriv)
+ 	return FALSE;
+ 
++    saved_ptr = pPixmap->devPrivate.ptr;
+     pPixmap->devPrivate.ptr = ExaGetPixmapAddress(pPixmap);
+     ret = pExaScr->info->PixmapIsOffscreen(pPixmap);
+-    pPixmap->devPrivate.ptr = NULL;
++    pPixmap->devPrivate.ptr = saved_ptr;
+ 
+     return ret;
+ }

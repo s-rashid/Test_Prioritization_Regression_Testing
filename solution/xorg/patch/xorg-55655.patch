@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/vbe/vbe_module.c b/hw/xfree86/vbe/vbe_module.c
+index e8f2e74..3fb8695 100644
+--- a/hw/xfree86/vbe/vbe_module.c
++++ b/hw/xfree86/vbe/vbe_module.c
+@@ -6,8 +6,7 @@
+ #include "xf86str.h"
+ #include "vbe.h"
+ 
+-static XF86ModuleVersionInfo vbeVersRec =
+-{
++static XF86ModuleVersionInfo vbeVersRec = {
+     "vbe",
+     MODULEVENDORSTRING,
+     MODINFOSTRING1,

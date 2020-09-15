@@ -1,0 +1,26 @@
+diff --git a/glx/renderpix.c b/glx/renderpix.c
+index 056e62c..6fccde6 100644
+--- a/glx/renderpix.c
++++ b/glx/renderpix.c
+@@ -40,7 +40,8 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-void __glXDisp_SeparableFilter2D(GLbyte *pc)
++void
++__glXDisp_SeparableFilter2D(GLbyte * pc)
+ {
+    __GLXdispatchConvolutionFilterHeader *hdr =
+ 				(__GLXdispatchConvolutionFilterHeader *) pc;
+@@ -64,6 +65,9 @@ void __glXDisp_SeparableFilter2D(GLbyte *pc)
+     image1len = __GLX_PAD(image1len);
+ 
+     CALL_SeparableFilter2D( GET_DISPATCH(), (hdr->target, hdr->internalformat,
+-		 hdr->width, hdr->height, hdr->format, hdr->type,
+-		 ((GLubyte *)hdr+hdrlen), ((GLubyte *)hdr+hdrlen+image1len)) );
++                                            hdr->width, hdr->height,
++                                            hdr->format, hdr->type,
++                                            ((GLubyte *) hdr + hdrlen),
++                                            ((GLubyte *) hdr + hdrlen +
++                                             image1len)));
+ }

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86sbusBus.c b/hw/xfree86/common/xf86sbusBus.c
+index ea8c3e1..30a4202 100644
+--- a/hw/xfree86/common/xf86sbusBus.c
++++ b/hw/xfree86/common/xf86sbusBus.c
+@@ -478,7 +478,6 @@ xf86MatchSbusInstances(const char *driverName, int sbusDevId,
+ 	    instances[i].claimed = TRUE;
+ 	    instances[i].dev = dev;
+ 	}
+-	if (promPath)
+ 	    free(promPath);
+     }
+ 

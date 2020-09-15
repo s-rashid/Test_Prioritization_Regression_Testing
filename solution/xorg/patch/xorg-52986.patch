@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index 847d89b..9ac5a19 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -500,6 +500,8 @@ KdScreenInfoDispose (KdScreenInfo *si);
+ /* kinput.c */
+ void
+ KdInitInput(void);
++void
++KdCloseInput(void);
+ 
+ void
+ KdAddPointerDriver(KdPointerDriver *);

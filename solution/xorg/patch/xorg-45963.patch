@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 1a2f736..26f822d 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -62,6 +62,9 @@ typedef struct {
+     /* event handler part */
+     int			lastEventTime;
+     Bool		vtRequestsPending;
++#ifdef sun
++    int			vtPendingNum;
++#endif
+     Bool		dontVTSwitch;
+     Bool		dontZap;
+     Bool		dontZoom;

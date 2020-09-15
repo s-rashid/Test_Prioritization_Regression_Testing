@@ -1,0 +1,10 @@
+diff --git a/hw/vfb/InitInput.c b/hw/vfb/InitInput.c
+index 60b59c1..8836bbd 100644
+--- a/hw/vfb/InitInput.c
++++ b/hw/vfb/InitInput.c
+@@ -148,4 +148,5 @@ InitInput(int argc, char *argv[])
+ void
+ CloseInput (void)
+ {
++    mieqFini();
+ }

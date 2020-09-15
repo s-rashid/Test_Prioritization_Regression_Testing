@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhw.c b/hw/xfree86/fbdevhw/fbdevhw.c
+index a585491..2b7e36a 100644
+--- a/hw/xfree86/fbdevhw/fbdevhw.c
++++ b/hw/xfree86/fbdevhw/fbdevhw.c
+@@ -342,10 +342,9 @@ fbdev_open_pci(struct pci_device * pPci, char **namep)
+ 
+ 		    return fd;
+ 		}
++		close(fd);
+ 	    }
+ 	}
+-
+-	close(fd);
+     }
+ 
+ 

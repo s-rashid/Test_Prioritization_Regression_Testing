@@ -1,0 +1,25 @@
+diff --git a/miext/rootless/rootlessCommon.h b/miext/rootless/rootlessCommon.h
+index d4a94f8..f44c4e8 100644
+--- a/miext/rootless/rootlessCommon.h
++++ b/miext/rootless/rootlessCommon.h
+@@ -42,9 +42,7 @@
+ 
+ #include "scrnintstr.h"
+ 
+-#ifdef RENDER
+ #include "picturestr.h"
+-#endif
+ 
+ 
+ // Debug output, or not.
+@@ -100,10 +98,8 @@ typedef struct _RootlessScreenRec {
+ 
+     SetShapeProcPtr SetShape;
+ 
+-#ifdef RENDER
+     CompositeProcPtr Composite;
+     GlyphsProcPtr Glyphs;
+-#endif
+ 
+     InstallColormapProcPtr InstallColormap;
+     UninstallColormapProcPtr UninstallColormap;

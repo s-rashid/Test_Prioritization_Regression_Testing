@@ -1,0 +1,13 @@
+diff --git a/os/rpcauth.c b/os/rpcauth.c
+index 989a49a..63b97b6 100644
+--- a/os/rpcauth.c
++++ b/os/rpcauth.c
+@@ -128,7 +128,7 @@ static char rpc_error[MAXNETNAMELEN+50];
+ 
+ _X_HIDDEN XID
+ SecureRPCCheck (unsigned short data_length, const char *data,
+-    ClientPtr client, char **reason)
++    ClientPtr client, const char **reason)
+ {
+     char *fullname;
+     

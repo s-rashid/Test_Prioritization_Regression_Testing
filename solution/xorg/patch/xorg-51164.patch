@@ -1,0 +1,15 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index c674465..ce28797 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -95,6 +95,10 @@
+ #define SERVER_SHM_MAJOR_VERSION		1
+ #define SERVER_SHM_MINOR_VERSION		1
+ 
++/* Sync */
++#define SERVER_SYNC_MAJOR_VERSION		3
++#define SERVER_SYNC_MINOR_VERSION		0
++
+ /* Windows WM */
+ #define SERVER_WINDOWSWM_MAJOR_VERSION		1
+ #define SERVER_WINDOWSWM_MINOR_VERSION		0

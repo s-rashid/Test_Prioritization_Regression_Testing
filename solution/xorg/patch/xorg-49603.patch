@@ -1,0 +1,32 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 0f6ccc1..5b0ec8f 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -532,6 +532,16 @@ match_substring(const char *attr, const char *pattern)
+ 
+ #ifdef HAVE_FNMATCH_H
+ static int
++match_pattern(const char *attr, const char *pattern)
++{
++    return fnmatch(pattern, attr, 0);
++}
++#else
++#define match_pattern match_substring
++#endif
++
++#ifdef HAVE_FNMATCH_H
++static int
+ match_path_pattern(const char *attr, const char *pattern)
+ {
+     return fnmatch(pattern, attr, FNM_PATHNAME);
+@@ -590,6 +600,10 @@ InputClassMatches(const XF86ConfInputClassPtr iclass,
+     if (!MatchAttrToken(HostOS(), iclass->match_os, strcasecmp))
+         return FALSE;
+ 
++    /* MatchPnPID pattern */
++    if (!MatchAttrToken(attrs->pnp_id, iclass->match_pnpid, match_pattern))
++        return FALSE;
++
+     /*
+      * MatchTag string
+      * See if any of the device's tags match any of the MatchTag tokens.

@@ -1,0 +1,14 @@
+diff --git a/glx/glxext.c b/glx/glxext.c
+index 751ea72..913c624 100644
+--- a/glx/glxext.c
++++ b/glx/glxext.c
+@@ -446,6 +446,9 @@ __GLXcontext *__glXForceCurrent(__GLXclientState *cl, GLXContextTag tag,
+     	}
+     }
+     
++    if (cx->wait && (*cx->wait)(cx, cl, error))
++	return NULL;
++
+     if (cx == __glXLastContext) {
+ 	/* No need to re-bind */
+ 	return cx;

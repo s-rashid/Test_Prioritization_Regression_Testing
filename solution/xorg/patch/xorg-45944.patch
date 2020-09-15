@@ -1,0 +1,24 @@
+diff --git a/exa/exa_migration_mixed.c b/exa/exa_migration_mixed.c
+index ed0cc14..d1ee987 100644
+--- a/exa/exa_migration_mixed.c
++++ b/exa/exa_migration_mixed.c
+@@ -92,13 +92,15 @@ exaCreateDriverPixmap_mixed(PixmapPtr pPixmap)
+     if (pExaPixmap->accel_blocked || bpp < 8)
+ 	return;
+ 
++    if (pExaScr->info->CreatePixmap2) {
++	int new_pitch = 0;
++        pExaPixmap->driverPriv = pExaScr->info->CreatePixmap2(pScreen, w, h, depth, usage_hint, bpp, &new_pitch);
++	paddedWidth = pExaPixmap->fb_pitch = new_pitch;
++    } else {
+     if (paddedWidth < pExaPixmap->fb_pitch)
+         paddedWidth = pExaPixmap->fb_pitch;
+-
+-    if (pExaScr->info->CreatePixmap2)
+-	pExaPixmap->driverPriv = pExaScr->info->CreatePixmap2(pScreen, w, h, depth, usage_hint, bpp);
+-    else
+ 	pExaPixmap->driverPriv = pExaScr->info->CreatePixmap(pScreen, paddedWidth*h, 0);
++    }
+ 
+     if (!pExaPixmap->driverPriv)
+ 	return;

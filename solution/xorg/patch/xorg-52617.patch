@@ -1,0 +1,20 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index 0736a5a..96ead6f 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -355,6 +355,7 @@ detach_slave(ClientPtr client, xXIDetachSlaveInfo *c, int flags[MAXDEVICES])
+         goto unwind;
+     }
+ 
++    ReleaseButtonsAndKeys(dev);
+     AttachDevice(client, dev, NULL);
+     flags[dev->id] |= XISlaveDetached;
+ 
+@@ -406,6 +407,7 @@ attach_slave(ClientPtr client, xXIAttachSlaveInfo *c,
+         goto unwind;
+     }
+ 
++    ReleaseButtonsAndKeys(dev);
+     AttachDevice(client, dev, newmaster);
+     flags[dev->id] |= XISlaveAttached;
+ 

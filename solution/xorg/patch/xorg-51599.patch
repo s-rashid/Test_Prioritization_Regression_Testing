@@ -1,0 +1,27 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 6ac48c5..3c706c4 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -276,8 +276,12 @@ static Atom func (void) {					\
+ 
+ typedef Bool (*winAllocateFBProcPtr)(ScreenPtr);
+ 
++typedef void (*winFreeFBProcPtr)(ScreenPtr);
++
+ typedef void (*winShadowUpdateProcPtr)(ScreenPtr, shadowBufPtr);
+ 
++typedef Bool (*winInitScreenProcPtr)(ScreenPtr);
++
+ typedef Bool (*winCloseScreenProcPtr)(int, ScreenPtr);
+ 
+ typedef Bool (*winInitVisualsProcPtr)(ScreenPtr);
+@@ -549,7 +553,9 @@ typedef struct _winPrivScreenRec
+   
+   /* Engine specific functions */
+   winAllocateFBProcPtr			pwinAllocateFB;
++  winFreeFBProcPtr			pwinFreeFB;
+   winShadowUpdateProcPtr		pwinShadowUpdate;
++  winInitScreenProcPtr			pwinInitScreen;
+   winCloseScreenProcPtr			pwinCloseScreen;
+   winInitVisualsProcPtr			pwinInitVisuals;
+   winAdjustVideoModeProcPtr		pwinAdjustVideoMode;

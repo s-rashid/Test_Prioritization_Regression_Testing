@@ -1,0 +1,16 @@
+diff --git a/Xi/devbell.c b/Xi/devbell.c
+index 539da18..8815242 100644
+--- a/Xi/devbell.c
++++ b/Xi/devbell.c
+@@ -71,10 +71,8 @@ SOFTWARE.
+ int
+ SProcXDeviceBell(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xDeviceBellReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     return (ProcXDeviceBell(client));
+ }
+ 

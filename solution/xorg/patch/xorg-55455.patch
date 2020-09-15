@@ -1,0 +1,96 @@
+diff --git a/hw/xfree86/common/xf86xvmc.h b/hw/xfree86/common/xf86xvmc.h
+index 902b4f8..ff32379 100644
+--- a/hw/xfree86/common/xf86xvmc.h
++++ b/hw/xfree86/common/xf86xvmc.h
+@@ -50,7 +50,6 @@ typedef struct {
+   XF86MCImageIDList *compatible_subpictures; /* can be null, if none */
+ } XF86MCSurfaceInfoRec, *XF86MCSurfaceInfoPtr;
+ 
+-
+ /*
+    xf86XvMCCreateContextProc 
+ 
+@@ -64,18 +63,12 @@ typedef struct {
+    space because DIX will free it after it passes it to the client.
+ */
+    
+-
+-typedef int (*xf86XvMCCreateContextProcPtr) (
+-  ScrnInfoPtr pScrn,
++typedef int (*xf86XvMCCreateContextProcPtr) (ScrnInfoPtr pScrn,
+   XvMCContextPtr context,
+-  int *num_priv,
+-  CARD32 **priv 
+-);
++                                             int *num_priv, CARD32 **priv);
+ 
+-typedef void (*xf86XvMCDestroyContextProcPtr) (
+-  ScrnInfoPtr pScrn,
+-  XvMCContextPtr context
+-);
++typedef void (*xf86XvMCDestroyContextProcPtr) (ScrnInfoPtr pScrn,
++                                               XvMCContextPtr context);
+ 
+ /*
+    xf86XvMCCreateSurfaceProc 
+@@ -86,18 +79,12 @@ typedef void (*xf86XvMCDestroyContextProcPtr) (
+    xf86XvMCCreateContextProc.
+ */
+ 
+-
+-typedef int (*xf86XvMCCreateSurfaceProcPtr) (
+-  ScrnInfoPtr pScrn,
++typedef int (*xf86XvMCCreateSurfaceProcPtr) (ScrnInfoPtr pScrn,
+   XvMCSurfacePtr surface,
+-  int *num_priv,
+-  CARD32 **priv
+-);
++                                             int *num_priv, CARD32 **priv);
+ 
+-typedef void (*xf86XvMCDestroySurfaceProcPtr) (
+-  ScrnInfoPtr pScrn,
+-  XvMCSurfacePtr surface
+-);
++typedef void (*xf86XvMCDestroySurfaceProcPtr) (ScrnInfoPtr pScrn,
++                                               XvMCSurfacePtr surface);
+ 
+ /*
+    xf86XvMCCreateSubpictureProc 
+@@ -114,19 +101,12 @@ typedef void (*xf86XvMCDestroySurfaceProcPtr) (
+    xf86XvMCCreateContextProc.
+ */
+ 
+-
+-typedef int (*xf86XvMCCreateSubpictureProcPtr) (
+-  ScrnInfoPtr pScrn,
++typedef int (*xf86XvMCCreateSubpictureProcPtr) (ScrnInfoPtr pScrn,
+   XvMCSubpicturePtr subpicture,
+-  int *num_priv,
+-  CARD32 **priv
+-);
+-
+-typedef void (*xf86XvMCDestroySubpictureProcPtr) (
+-  ScrnInfoPtr pScrn,
+-  XvMCSubpicturePtr subpicture
+-);
++                                                int *num_priv, CARD32 **priv);
+ 
++typedef void (*xf86XvMCDestroySubpictureProcPtr) (ScrnInfoPtr pScrn,
++                                                  XvMCSubpicturePtr subpicture);
+ 
+ typedef struct {
+   char *name;
+@@ -151,11 +131,9 @@ typedef struct {
+    an array of structures.
+ */
+ 
+-extern _X_EXPORT Bool xf86XvMCScreenInit(
+-  ScreenPtr pScreen, 
++extern _X_EXPORT Bool xf86XvMCScreenInit(ScreenPtr pScreen,
+   int num_adaptors,
+-  XF86MCAdaptorPtr *adaptors
+-);
++                                         XF86MCAdaptorPtr * adaptors);
+ 
+ extern _X_EXPORT XF86MCAdaptorPtr xf86XvMCCreateAdaptorRec (void);
+ extern _X_EXPORT void xf86XvMCDestroyAdaptorRec(XF86MCAdaptorPtr adaptor);

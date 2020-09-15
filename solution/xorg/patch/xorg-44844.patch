@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/src/kcmap.c b/hw/kdrive/src/kcmap.c
+index 4941ad1..2c33e79 100644
+--- a/hw/kdrive/src/kcmap.c
++++ b/hw/kdrive/src/kcmap.c
+@@ -217,7 +217,8 @@ KdUninstallColormap (ColormapPtr pCmap)
+ 	return;
+ 
+     /* install default if on same fb */
+-    defMap = (ColormapPtr) LookupIDByType(defMapID, RT_COLORMAP);
++    dixLookupResourceByType((pointer *)&defMap, defMapID, RT_COLORMAP,
++			    serverClient, DixInstallAccess);
+     if (defMap && KdColormapFb (defMap) == fb)
+ 	(*pCmap->pScreen->InstallColormap)(defMap);
+     else

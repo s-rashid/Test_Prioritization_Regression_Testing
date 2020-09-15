@@ -1,0 +1,310 @@
+diff --git a/fb/fbimage.c b/fb/fbimage.c
+index 63978cc..59daa21 100644
+--- a/fb/fbimage.c
++++ b/fb/fbimage.c
+@@ -32,13 +32,7 @@ void
+ fbPutImage (DrawablePtr	pDrawable,
+ 	    GCPtr	pGC,
+ 	    int		depth,
+-	    int		x,
+-	    int		y,
+-	    int		w,
+-	    int		h,
+-	    int		leftPad,
+-	    int		format,
+-	    char	*pImage)
++           int x, int y, int w, int h, int leftPad, int format, char *pImage)
+ {
+     FbGCPrivPtr	    pPriv = fbGetGCPrivate(pGC);
+     unsigned long   i;
+@@ -48,8 +42,7 @@ fbPutImage (DrawablePtr	pDrawable,
+     x += pDrawable->x;
+     y += pDrawable->y;
+     
+-    switch (format)
+-    {
++    switch (format) {
+     case XYBitmap:
+ 	srcStride = BitmapBytePad(w + leftPad) / sizeof (FbStip);
+ 	fbPutXYImage (pDrawable,
+@@ -57,55 +50,37 @@ fbPutImage (DrawablePtr	pDrawable,
+ 		      pPriv->fg,
+ 		      pPriv->bg,
+ 		      pPriv->pm,
+-		      pGC->alu,
+-		      TRUE,
+-		      x, y, w, h,
+-		      src,
+-		      srcStride,
+-		      leftPad);
++                     pGC->alu, TRUE, x, y, w, h, src, srcStride, leftPad);
+ 	break;
+     case XYPixmap:
+ 	srcStride = BitmapBytePad(w + leftPad) / sizeof (FbStip);
+-	for (i = (unsigned long)1 << (pDrawable->depth - 1); i; i >>= 1)
+-	{
+-	    if (i & pGC->planemask)
+-	    {
++        for (i = (unsigned long) 1 << (pDrawable->depth - 1); i; i >>= 1) {
++            if (i & pGC->planemask) {
+ 		fbPutXYImage (pDrawable,
+ 			      fbGetCompositeClip(pGC),
+ 			      FB_ALLONES,
+ 			      0,
+ 			      fbReplicatePixel (i, pDrawable->bitsPerPixel),
+ 			      pGC->alu,
+-			      TRUE,
+-			      x, y, w, h,
+-			      src,
+-			      srcStride,
+-			      leftPad);
++                             TRUE, x, y, w, h, src, srcStride, leftPad);
+ 		src += srcStride * h;
+ 	    }
+ 	}
+ 	break;
+     case ZPixmap:
+-	if (pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth))
+-	{
++        if (pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth)) {
+ 	    srcStride = PixmapBytePad(w, pDrawable->depth);
+ 	    fb24_32PutZImage (pDrawable,
+ 			      fbGetCompositeClip(pGC),
+ 			      pGC->alu,
+ 			      (FbBits) pGC->planemask,
+-			      x, y, w, h,
+-			      (CARD8 *) pImage,
+-			      srcStride);
++                             x, y, w, h, (CARD8 *) pImage, srcStride);
+ 	}
+-	else
+-	{
++        else {
+ 	    srcStride = PixmapBytePad(w, pDrawable->depth) / sizeof (FbStip);
+ 	    fbPutZImage (pDrawable,
+ 			 fbGetCompositeClip(pGC),
+-			 pGC->alu,
+-			 pPriv->pm,
+-			 x, y, w, h, 
+-			 src, srcStride);
++                        pGC->alu, pPriv->pm, x, y, w, h, src, srcStride);
+ 	}
+     }
+ }
+@@ -116,11 +91,7 @@ fbPutZImage (DrawablePtr	pDrawable,
+ 	     int		alu,
+ 	     FbBits		pm,
+ 	     int		x,
+-	     int		y,
+-	     int		width,
+-	     int		height,
+-	     FbStip		*src,
+-	     FbStride		srcStride)
++            int y, int width, int height, FbStip * src, FbStride srcStride)
+ {
+     FbStip	*dst;
+     FbStride	dstStride;
+@@ -133,10 +104,7 @@ fbPutZImage (DrawablePtr	pDrawable,
+     fbGetStipDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+ 
+     for (nbox = RegionNumRects (pClip),
+-	 pbox = RegionRects(pClip);
+-	 nbox--;
+-	 pbox++)
+-    {
++         pbox = RegionRects(pClip); nbox--; pbox++) {
+ 	x1 = x;
+ 	y1 = y;
+ 	x2 = x + width;
+@@ -154,17 +122,10 @@ fbPutZImage (DrawablePtr	pDrawable,
+ 	fbBltStip (src + (y1 - y) * srcStride,
+ 		   srcStride,
+ 		   (x1 - x) * dstBpp,
+-
+ 		   dst + (y1 + dstYoff) * dstStride,
+ 		   dstStride,
+ 		   (x1 + dstXoff) * dstBpp,
+-
+-		   (x2 - x1) * dstBpp,
+-		   (y2 - y1),
+-
+-		   alu,
+-		   pm,
+-		   dstBpp);
++                  (x2 - x1) * dstBpp, (y2 - y1), alu, pm, dstBpp);
+     }
+ 
+     fbFinishAccess (pDrawable);
+@@ -178,15 +139,9 @@ fbPutXYImage (DrawablePtr	pDrawable,
+ 	      FbBits		pm,
+ 	      int		alu,
+ 	      Bool		opaque,
+-	      
+ 	      int		x,
+ 	      int		y,
+-	      int		width,
+-	      int		height,
+-
+-	      FbStip		*src,
+-	      FbStride		srcStride,
+-	      int		srcX)
++             int width, int height, FbStip * src, FbStride srcStride, int srcX)
+ {
+     FbBits	*dst;
+     FbStride	dstStride;
+@@ -199,34 +154,27 @@ fbPutXYImage (DrawablePtr	pDrawable,
+ 
+     fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+ 
+-    if (dstBpp == 1)
+-    {
++    if (dstBpp == 1) {
+ 	if (opaque)
+ 	    alu = FbOpaqueStipple1Rop(alu,fg,bg);
+ 	else
+ 	    alu = FbStipple1Rop(alu,fg);
+     }
+-    else
+-    {
++    else {
+ 	fgand = fbAnd(alu,fg,pm);
+ 	fgxor = fbXor(alu,fg,pm);
+-	if (opaque)
+-	{
++        if (opaque) {
+ 	    bgand = fbAnd(alu,bg,pm);
+ 	    bgxor = fbXor(alu,bg,pm);
+ 	}
+-	else
+-	{
++        else {
+ 	    bgand = fbAnd(GXnoop,(FbBits)0,FB_ALLONES);
+ 	    bgxor = fbXor(GXnoop,(FbBits)0,FB_ALLONES);
+ 	}
+     }
+ 
+     for (nbox = RegionNumRects (pClip),
+-	 pbox = RegionRects(pClip);
+-	 nbox--;
+-	 pbox++)
+-    {
++         pbox = RegionRects(pClip); nbox--; pbox++) {
+ 	x1 = x;
+ 	y1 = y;
+ 	x2 = x + width;
+@@ -241,38 +189,24 @@ fbPutXYImage (DrawablePtr	pDrawable,
+ 	    y2 = pbox->y2;
+ 	if (x1 >= x2 || y1 >= y2)
+ 	    continue;
+-	if (dstBpp == 1)
+-	{
++        if (dstBpp == 1) {
+ 	    fbBltStip (src + (y1 - y) * srcStride,
+ 		       srcStride,
+ 		       (x1 - x) + srcX,
+-
+ 		       (FbStip *) (dst + (y1 + dstYoff) * dstStride),
+ 		       FbBitsStrideToStipStride(dstStride),
+ 		       (x1 + dstXoff) * dstBpp,
+-
+-		       (x2 - x1) * dstBpp,
+-		       (y2 - y1),
+-
+-		       alu,
+-		       pm,
+-		       dstBpp);
++                      (x2 - x1) * dstBpp, (y2 - y1), alu, pm, dstBpp);
+ 	}
+-	else
+-	{
++        else {
+ 	    fbBltOne (src + (y1 - y) * srcStride,
+ 		      srcStride,
+ 		      (x1 - x) + srcX,
+-
+ 		      dst + (y1 + dstYoff) * dstStride,
+ 		      dstStride,
+ 		      (x1 + dstXoff) * dstBpp,
+ 		      dstBpp,
+-
+-		      (x2 - x1) * dstBpp,
+-		      (y2 - y1),
+-
+-		      fgand, fgxor, bgand, bgxor);
++                     (x2 - x1) * dstBpp, (y2 - y1), fgand, fgxor, bgand, bgxor);
+ 	}
+     }
+ 
+@@ -283,11 +217,7 @@ void
+ fbGetImage (DrawablePtr	    pDrawable,
+ 	    int		    x,
+ 	    int		    y,
+-	    int		    w,
+-	    int		    h,
+-	    unsigned int    format,
+-	    unsigned long   planeMask,
+-	    char	    *d)
++           int w, int h, unsigned int format, unsigned long planeMask, char *d)
+ {
+     FbBits	    *src;
+     FbStride	    srcStride;
+@@ -304,8 +234,7 @@ fbGetImage (DrawablePtr	    pDrawable,
+ 	return;
+     
+     if (format == ZPixmap &&
+-	pDrawable->bitsPerPixel != BitsPerPixel (pDrawable->depth))
+-    {
++        pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth)) {
+ 	fb24_32GetImage (pDrawable, x, y, w, h, format, planeMask, d);
+ 	return;
+     }
+@@ -316,8 +245,7 @@ fbGetImage (DrawablePtr	    pDrawable,
+     y += pDrawable->y;
+     
+     dst = (FbStip *) d;
+-    if (format == ZPixmap || srcBpp == 1)
+-    {
++    if (format == ZPixmap || srcBpp == 1) {
+ 	FbBits	pm;
+ 
+ 	pm = fbReplicatePixel (planeMask, srcBpp);
+@@ -328,36 +256,22 @@ fbGetImage (DrawablePtr	    pDrawable,
+ 	fbBltStip ((FbStip *) (src + (y + srcYoff) * srcStride), 
+ 		   FbBitsStrideToStipStride(srcStride),
+ 		   (x + srcXoff) * srcBpp,
+-		   
+-		   dst,
+-		   dstStride,
+-		   0,
+-		   
+-		   w * srcBpp, h,
+-
+-		   GXcopy,
+-		   pm,
+-		   srcBpp);
++                  dst, dstStride, 0, w * srcBpp, h, GXcopy, pm, srcBpp);
+     }
+-    else
+-    {
++    else {
+ 	dstStride = BitmapBytePad(w) / sizeof (FbStip);
+ 	fbBltPlane (src + (y + srcYoff) * srcStride,
+ 		    srcStride, 
+ 		    (x + srcXoff) * srcBpp,
+ 		    srcBpp,
+-
+ 		    dst,
+ 		    dstStride,
+ 		    0,
+-		    
+ 		    w * srcBpp, h,
+-
+ 		    fbAndStip(GXcopy,FB_STIP_ALLONES,FB_STIP_ALLONES),
+ 		    fbXorStip(GXcopy,FB_STIP_ALLONES,FB_STIP_ALLONES),
+ 		    fbAndStip(GXcopy,0,FB_STIP_ALLONES),
+-		    fbXorStip(GXcopy,0,FB_STIP_ALLONES),
+-		    planeMask);
++                   fbXorStip(GXcopy, 0, FB_STIP_ALLONES), planeMask);
+     }
+ 
+     fbFinishAccess (pDrawable);

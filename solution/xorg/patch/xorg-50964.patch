@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/modes/xf86RandR12.c b/hw/xfree86/modes/xf86RandR12.c
+index ba0862a..f562f58 100644
+--- a/hw/xfree86/modes/xf86RandR12.c
++++ b/hw/xfree86/modes/xf86RandR12.c
+@@ -1731,6 +1731,7 @@ xf86RandR12EnterVT (int screen_index, int flags)
+     ScreenPtr        pScreen = screenInfo.screens[screen_index];
+     ScrnInfoPtr	     pScrn = xf86Screens[screen_index];
+     XF86RandRInfoPtr randrp  = XF86RANDRINFO(pScreen);
++    rrScrPrivPtr     rp = rrGetScrPriv(pScreen);
+     Bool	     ret;
+ 
+     if (randrp->orig_EnterVT) {
+@@ -1742,6 +1743,11 @@ xf86RandR12EnterVT (int screen_index, int flags)
+ 	    return FALSE;
+     }
+ 
++    /* reload gamma */
++    int i;
++    for (i = 0; i < rp->numCrtcs; i++)
++	xf86RandR12CrtcSetGamma(pScreen, rp->crtcs[i]);
++
+     return RRGetInfo (pScreen, TRUE); /* force a re-probe of outputs and notify clients about changes */
+ }
+ 

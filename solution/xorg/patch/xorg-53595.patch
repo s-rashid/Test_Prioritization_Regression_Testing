@@ -1,0 +1,23 @@
+diff --git a/os/xprintf.c b/os/xprintf.c
+index 254b737..3b4bb41 100644
+--- a/os/xprintf.c
++++ b/os/xprintf.c
+@@ -64,6 +64,8 @@
+ #include "os.h"
+ #include <stdarg.h>
+ #include <stdio.h>
++#include <errno.h>
++#include <string.h>
+ 
+ #ifdef asprintf
+ # undef asprintf
+@@ -154,8 +156,7 @@ XNFvasprintf(char **ret, const char * _X_RESTRICT_KYWD format, va_list va)
+ {
+     int size = vasprintf(ret, format, va);
+     if ((size == -1) || (*ret == NULL)) {
+-	Error("XNFvasprintf");
+-	FatalError("XNFvasprintf failed");
++	FatalError("XNFvasprintf failed: %s", strerror(errno));
+     }
+     return size;
+ }

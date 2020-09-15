@@ -1,0 +1,13 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 7abbeaa..98e879d 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -554,7 +554,7 @@ ProcXkbGetState(ClientPtr client)
+     if (!(client->xkbClientFlags&_XkbClientInitialized))
+ 	return BadAccess;
+ 
+-    CHK_KBD_DEVICE(dev, stuff->deviceSpec, client, DixReadAccess);
++    CHK_KBD_DEVICE(dev, stuff->deviceSpec, client, DixGetAttrAccess);
+ 
+     xkb= &dev->key->xkbInfo->state;
+     bzero(&rep,sizeof(xkbGetStateReply));

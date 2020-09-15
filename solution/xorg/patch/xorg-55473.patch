@@ -1,0 +1,9 @@
+diff --git a/hw/xfree86/dixmods/extmod/xvmod.c b/hw/xfree86/dixmods/extmod/xvmod.c
+index 9551046..97616c7 100644
+--- a/hw/xfree86/dixmods/extmod/xvmod.c
++++ b/hw/xfree86/dixmods/extmod/xvmod.c
+@@ -20,4 +20,3 @@ XvRegister(void)
+     XvGetRTPortProc = XvGetRTPort;
+     XvMCScreenInitProc = XvMCScreenInit;
+ }
+-

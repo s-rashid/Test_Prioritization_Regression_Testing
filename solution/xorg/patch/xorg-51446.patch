@@ -1,0 +1,12 @@
+diff --git a/os/connection.c b/os/connection.c
+index 5452ae1..5580fab 100644
+--- a/os/connection.c
++++ b/os/connection.c
+@@ -746,6 +746,7 @@ AllocNewConnection (XtransConnInfo trans_conn, int fd, CARD32 conn_time)
+ 	free(oc);
+ 	return NullClient;
+     }
++    oc->local_client = ComputeLocalClient(client);
+ #if !defined(WIN32)
+     ConnectionTranslation[fd] = client->index;
+ #else

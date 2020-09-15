@@ -1,0 +1,67 @@
+diff --git a/dix/events.c b/dix/events.c
+index de96de3..acc1803 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -1891,14 +1891,35 @@ TryClientEvents (ClientPtr client, DeviceIntPtr dev, xEvent *pEvents,
+     int type;
+ 
+ #ifdef DEBUG_EVENTS
+-    ErrorF("[dix] Event([%d, %d], mask=0x%x), client=%d",
+-	pEvents->u.u.type, pEvents->u.u.detail, mask, client->index);
++    ErrorF("[dix] Event([%d, %d], mask=0x%lx), client=%d%s",
++           pEvents->u.u.type, pEvents->u.u.detail, mask,
++           client ? client->index : -1,
++           (client && client->clientGone) ? " (gone)" : "");
+ #endif
+-    if ((client) && (client != serverClient) && (!client->clientGone) &&
+-	((filter == CantBeFiltered) || (mask & filter)))
++
++    if (!client || client == serverClient || client->clientGone) {
++#ifdef DEBUG_EVENTS
++        ErrorF(" not delivered to fake/dead client\n");
++#endif
++        return 0;
++    }
++
++    if (filter != CantBeFiltered && !(mask & filter))
+     {
++ #ifdef DEBUG_EVENTS
++        ErrorF(" filtered\n");
++ #endif
++        return 0;
++    }
++
+ 	if (grab && !SameClient(grab, client))
++    {
++#ifdef DEBUG_EVENTS
++        ErrorF(" not delivered due to grab\n");
++#endif
+ 	    return -1; /* don't send, but notify caller */
++    }
++
+ 	type = pEvents->u.u.type;
+ 	if (type == MotionNotify)
+ 	{
+@@ -1927,6 +1948,7 @@ TryClientEvents (ClientPtr client, DeviceIntPtr dev, xEvent *pEvents,
+ 			((deviceKeyButtonPointer*)pEvents, mask) != 0)
+ 		return 1;
+ 	}
++
+ 	type &= 0177;
+ 	if (type != KeymapNotify)
+ 	{
+@@ -1948,14 +1970,6 @@ TryClientEvents (ClientPtr client, DeviceIntPtr dev, xEvent *pEvents,
+ #endif
+ 	return 1;
+     }
+-    else
+-    {
+-#ifdef DEBUG_EVENTS
+-	ErrorF("[dix] \n");
+-#endif
+-	return 0;
+-    }
+-}
+ 
+ /**
+  * Deliver events to a window. At this point, we do not yet know if the event

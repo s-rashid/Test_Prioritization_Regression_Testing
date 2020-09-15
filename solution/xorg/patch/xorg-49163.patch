@@ -1,0 +1,24 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index f9d8dc8..eda4efb 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -377,9 +377,7 @@ Mask PropagateMask[MAXDEVICES];
+  *
+  */
+ 
+-static int XIClientPrivateKeyIndex;
+-DevPrivateKey XIClientPrivateKey = &XIClientPrivateKeyIndex;
+-
++DevPrivateKeyRec XIClientPrivateKeyRec;
+ 
+ /*****************************************************************
+  *
+@@ -1256,7 +1254,7 @@ XInputExtensionInit(void)
+         SERVER_XI_MINOR_VERSION,
+     };
+ 
+-    if (!dixRequestPrivate(XIClientPrivateKey, sizeof(XIClientRec)))
++    if (!dixRegisterPrivateKey(&XIClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(XIClientRec)))
+         FatalError("Cannot request private for XI.\n");
+ 
+     if (!AddCallback(&ClientStateCallback, XIClientCallback, 0))

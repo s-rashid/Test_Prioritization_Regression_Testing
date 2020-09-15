@@ -1,0 +1,12 @@
+diff --git a/dix/gc.c b/dix/gc.c
+index 5a0d00d..6281f25 100644
+--- a/dix/gc.c
++++ b/dix/gc.c
+@@ -60,6 +60,7 @@ SOFTWARE.
+ #include "dixfontstr.h"
+ #include "scrnintstr.h"
+ #include "region.h"
++#include "dixstruct.h"
+ 
+ #include "privates.h"
+ #include "dix.h"

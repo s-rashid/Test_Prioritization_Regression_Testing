@@ -1,0 +1,10 @@
+diff --git a/Xext/syncsrv.h b/Xext/syncsrv.h
+index 00e0bda..6d0e3d6 100644
+--- a/Xext/syncsrv.h
++++ b/Xext/syncsrv.h
+@@ -173,4 +173,5 @@ extern void SyncDestroySystemCounter(
+ );
+ extern void InitServertime(void);
+ 
++extern void SyncExtensionInit(void);
+ #endif /* _SYNCSRV_H_ */

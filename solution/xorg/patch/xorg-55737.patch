@@ -1,0 +1,124 @@
+diff --git a/hw/xnest/Keyboard.c b/hw/xnest/Keyboard.c
+index 5ef376b..d013dc9 100644
+--- a/hw/xnest/Keyboard.c
++++ b/hw/xnest/Keyboard.c
+@@ -38,8 +38,7 @@ is" without express or implied warranty.
+ #include <X11/extensions/XKBconfig.h>
+ 
+ extern Bool
+-XkbQueryExtension(
+-	Display *		/* dpy */,
++ XkbQueryExtension(Display * /* dpy */ ,
+ 	int *			/* opcodeReturn */,
+ 	int *			/* eventBaseReturn */,
+ 	int *			/* errorBaseReturn */,
+@@ -47,14 +46,12 @@ XkbQueryExtension(
+ 	int *			/* minorRtrn */
+ );
+ 
+-extern	XkbDescPtr XkbGetKeyboard(
+-	Display *		/* dpy */,
++extern XkbDescPtr XkbGetKeyboard(Display * /* dpy */ ,
+ 	unsigned int		/* which */,
+ 	unsigned int		/* deviceSpec */
+ );
+ 
+-extern	Status	XkbGetControls(
+-	Display *		/* dpy */,
++extern Status XkbGetControls(Display * /* dpy */ ,
+ 	unsigned long		/* which */,
+ 	XkbDescPtr		/* desc */
+ );
+@@ -82,10 +79,7 @@ xnestChangeKeyboardControl(DeviceIntPtr pDev, KeybdCtrl *ctrl)
+   int i;
+ 
+   value_mask = KBKeyClickPercent |
+-               KBBellPercent |
+-	       KBBellPitch |
+-	       KBBellDuration |
+-	       KBAutoRepeatMode;
++        KBBellPercent | KBBellPitch | KBBellDuration | KBAutoRepeatMode;
+ 
+   values.key_click_percent = ctrl->click;
+   values.bell_percent = ctrl->bell;
+@@ -105,7 +99,8 @@ xnestChangeKeyboardControl(DeviceIntPtr pDev, KeybdCtrl *ctrl)
+   value_mask = KBLed | KBLedMode;
+   for (i = 1; i <= 32; i++) {
+     values.led = i;
+-    values.led_mode = (ctrl->leds & (1 << (i - 1))) ? LedModeOn : LedModeOff;
++        values.led_mode =
++            (ctrl->leds & (1 << (i - 1))) ? LedModeOn : LedModeOff;
+     XChangeKeyboardControl(xnestDisplay, value_mask, &values);
+   }
+ #endif
+@@ -125,14 +120,14 @@ xnestKeyboardProc(DeviceIntPtr pDev, int onoff)
+   XkbDescPtr xkb;
+   int op, event, error, major, minor;
+ 
+-  switch (onoff)
+-    {
++    switch (onoff) {
+     case DEVICE_INIT: 
+       XDisplayKeycodes(xnestDisplay, &min_keycode, &max_keycode);
+ #ifdef _XSERVER64
+       {
+ 	KeySym64 *keymap64;
+ 	int len;
++
+ 	keymap64 = XGetKeyboardMapping(xnestDisplay,
+ 				     min_keycode,
+ 				     max_keycode - min_keycode + 1,
+@@ -146,8 +141,7 @@ xnestKeyboardProc(DeviceIntPtr pDev, int onoff)
+ #else
+       keymap = XGetKeyboardMapping(xnestDisplay, 
+ 				   min_keycode,
+-				   max_keycode - min_keycode + 1,
+-				   &mapWidth);
++                                     max_keycode - min_keycode + 1, &mapWidth);
+ #endif
+ 
+       memset(modmap, 0, sizeof(modmap));
+@@ -155,7 +149,11 @@ xnestKeyboardProc(DeviceIntPtr pDev, int onoff)
+       for (j = 0; j < 8; j++)
+             for(i = 0; i < modifier_keymap->max_keypermod; i++) {
+                   CARD8 keycode;
+-                  if ((keycode = modifier_keymap->modifiermap[j * modifier_keymap->max_keypermod + i]))
++
++                if ((keycode =
++                     modifier_keymap->modifiermap[j *
++                                                  modifier_keymap->
++                                                  max_keypermod + i]))
+                       modmap[keycode] |= 1<<j;
+       }
+       XFreeModifiermap(modifier_keymap);
+@@ -165,11 +163,14 @@ xnestKeyboardProc(DeviceIntPtr pDev, int onoff)
+       keySyms.mapWidth = mapWidth;
+       keySyms.map = keymap;
+ 
+-      if (XkbQueryExtension(xnestDisplay, &op, &event, &error, &major, &minor) == 0) {
++        if (XkbQueryExtension(xnestDisplay, &op, &event, &error, &major, &minor)
++            == 0) {
+           ErrorF("Unable to initialize XKEYBOARD extension.\n");
+ 	  goto XkbError;
+       }
+-      xkb = XkbGetKeyboard(xnestDisplay, XkbGBN_AllComponentsMask, XkbUseCoreKbd);
++        xkb =
++            XkbGetKeyboard(xnestDisplay, XkbGBN_AllComponentsMask,
++                           XkbUseCoreKbd);
+       if (xkb == NULL || xkb->geom == NULL) {
+ 	  ErrorF("Couldn't get keyboard.\n");
+           goto XkbError;
+@@ -205,11 +206,9 @@ xnestKeyboardProc(DeviceIntPtr pDev, int onoff)
+ XkbError:
+   XGetKeyboardControl(xnestDisplay, &values);
+   memmove((char *)defaultKeyboardControl.autoRepeats,
+-          (char *)values.auto_repeats,
+-          sizeof(values.auto_repeats));
++            (char *) values.auto_repeats, sizeof(values.auto_repeats));
+ 
+-  InitKeyboardDeviceStruct(pDev, NULL,
+-                           xnestBell, xnestChangeKeyboardControl);
++    InitKeyboardDeviceStruct(pDev, NULL, xnestBell, xnestChangeKeyboardControl);
+   free(keymap);
+   return Success;
+ }

@@ -1,0 +1,35 @@
+diff --git a/dbe/midbestr.h b/dbe/midbestr.h
+index a47d8d9..70017b0 100644
+--- a/dbe/midbestr.h
++++ b/dbe/midbestr.h
+@@ -30,7 +30,6 @@
+  * 
+  *****************************************************************************/
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -38,7 +37,6 @@
+ #ifndef MIDBE_STRUCT_H
+ #define MIDBE_STRUCT_H
+ 
+-
+ /* DEFINES */
+ 
+ #define MI_DBE_WINDOW_PRIV_PRIV(pDbeWindowPriv) \
+@@ -50,8 +48,7 @@
+ 
+ /* TYPEDEFS */
+ 
+-typedef struct _MiDbeWindowPrivPrivRec
+-{
++typedef struct _MiDbeWindowPrivPrivRec {
+     /* Place machine-specific fields in here.
+      * Since this is mi code, we do not really have machine-specific fields.
+      */
+@@ -76,4 +73,3 @@ typedef struct _MiDbeWindowPrivPrivRec
+ } MiDbeWindowPrivPrivRec, *MiDbeWindowPrivPrivPtr;
+ 
+ #endif /* MIDBE_STRUCT_H */
+-

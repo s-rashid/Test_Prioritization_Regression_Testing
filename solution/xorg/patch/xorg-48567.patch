@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/appledri.c b/hw/xquartz/xpr/appledri.c
+index 71cfb59..0fbe850 100644
+--- a/hw/xquartz/xpr/appledri.c
++++ b/hw/xquartz/xpr/appledri.c
+@@ -199,7 +199,7 @@ static void surface_notify(
+         return;
+ 
+     client = clients[client_index];
+-    if (client == NULL || client == serverClient || client->clientGone)
++    if (client == NULL)
+         return;
+ 
+     se.type = DRIEventBase + AppleDRISurfaceNotify;

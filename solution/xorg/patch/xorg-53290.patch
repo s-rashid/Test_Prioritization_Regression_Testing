@@ -1,0 +1,35 @@
+diff --git a/os/utils.c b/os/utils.c
+index 36cb46f..e8ecb71 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -201,6 +201,8 @@ Bool PanoramiXExtensionDisabledHack = FALSE;
+ 
+ int auditTrailLevel = 1;
+ 
++char *SeatId = NULL;
++
+ #if defined(SVR4) || defined(__linux__) || defined(CSRG_BASED)
+ #define HAS_SAVED_IDS_AND_SETEUID
+ #endif
+@@ -511,6 +513,7 @@ void UseMsg(void)
+     ErrorF("-render [default|mono|gray|color] set render color alloc policy\n");
+     ErrorF("-retro                 start with classic stipple and cursor\n");
+     ErrorF("-s #                   screen-saver timeout (minutes)\n");
++    ErrorF("-seat string           seat to run on\n");
+     ErrorF("-t #                   default pointer threshold (pixels/t)\n");
+     ErrorF("-terminate             terminate at server reset\n");
+     ErrorF("-to #                  connection time out\n");
+@@ -802,6 +805,13 @@ ProcessCommandLine(int argc, char *argv[])
+ 	    else
+ 		UseMsg();
+ 	}
++	else if ( strcmp( argv[i], "-seat") == 0)
++	{
++	    if(++i < argc)
++		SeatId = argv[i];
++	    else
++		UseMsg();
++	}
+ 	else if ( strcmp( argv[i], "-t") == 0)
+ 	{
+ 	    if(++i < argc)

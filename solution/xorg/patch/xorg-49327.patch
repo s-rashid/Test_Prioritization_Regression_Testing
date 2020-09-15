@@ -1,0 +1,12 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 3892f6f..f9d65e9 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -327,7 +327,6 @@ void
+ AllocateMotionHistory(DeviceIntPtr pDev)
+ {
+     int size;
+-    if (pDev->valuator->motion)
+         free(pDev->valuator->motion);
+ 
+     if (pDev->valuator->numMotionEvents < 1)

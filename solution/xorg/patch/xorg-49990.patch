@@ -1,0 +1,14 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 5847e63..956b224 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -924,6 +924,9 @@ extern int XkbGetEffectiveGroup(
+         XkbStatePtr             /* xkbstate */,
+         CARD8                   /* keycode */);
+ 
++extern void XkbMergeLockedPtrBtns(
++        DeviceIntPtr            /* master */);
++
+ #include "xkbfile.h"
+ #include "xkbrules.h"
+ 

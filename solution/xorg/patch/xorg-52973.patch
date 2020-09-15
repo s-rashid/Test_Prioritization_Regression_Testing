@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/glx/winpriv.c b/hw/xwin/glx/winpriv.c
+index 7772a75..4609737 100644
+--- a/hw/xwin/glx/winpriv.c
++++ b/hw/xwin/glx/winpriv.c
+@@ -19,7 +19,7 @@ winCreateWindowsWindow (WindowPtr pWin);
+  */
+ HWND winGetWindowInfo(WindowPtr pWin)
+ {
+-    winDebug("%s: pWin=%p\n", __FUNCTION__, pWin);
++    winTrace("%s: pWin %p XID 0x%x\n", __FUNCTION__, pWin, pWin->drawable.id);
+ 
+     /* a real window was requested */
+     if (pWin != NULL)

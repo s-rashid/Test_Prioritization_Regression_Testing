@@ -1,0 +1,16 @@
+diff --git a/hw/kdrive/fbdev/fbinit.c b/hw/kdrive/fbdev/fbinit.c
+index 93646f6..51e7e00 100644
+--- a/hw/kdrive/fbdev/fbinit.c
++++ b/hw/kdrive/fbdev/fbinit.c
+@@ -45,6 +45,11 @@ InitInput (int argc, char **argv)
+ }
+ 
+ void
++CloseInput (void)
++{
++}
++
++void
+ ddxUseMsg (void)
+ {
+   KdUseMsg();

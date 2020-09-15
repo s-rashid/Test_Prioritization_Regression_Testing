@@ -1,0 +1,13 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index b69de35..bd8e1d3 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -603,7 +603,7 @@ DeviceSetXTestProperty(DeviceIntPtr dev, Atom property,
+  * This only creates the pair, Activate/Enable Device
+  * still need to be called.
+  */
+-int AllocXTestDevice (ClientPtr client, char* name,
++int AllocXTestDevice (ClientPtr client, const char* name,
+                      DeviceIntPtr* ptr, DeviceIntPtr* keybd,
+                      DeviceIntPtr master_ptr, DeviceIntPtr master_keybd)
+ {

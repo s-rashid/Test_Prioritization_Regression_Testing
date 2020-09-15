@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/winclipboardunicode.c b/hw/xwin/winclipboardunicode.c
+index a297bf2..9c06f7b 100644
+--- a/hw/xwin/winclipboardunicode.c
++++ b/hw/xwin/winclipboardunicode.c
+@@ -33,7 +33,6 @@
+ #endif
+ #include "winclipboard.h"
+ 
+-
+ /*
+  * Determine whether we suport Unicode or not.
+  * NOTE: Currently, just check if we are on an NT-based platform or not.
+@@ -50,8 +49,7 @@ winClipboardDetectUnicodeSupport (void)
+   GetVersionEx (&osvi);
+ 
+   /* Branch on platform ID */
+-  switch (osvi.dwPlatformId)
+-    {
++    switch (osvi.dwPlatformId) {
+     case VER_PLATFORM_WIN32_NT:
+       /* Unicode supported on NT only */
+       fReturn = TRUE;

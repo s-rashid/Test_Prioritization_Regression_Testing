@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index b2daec7..7fc2a60 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -2964,7 +2964,6 @@ xf86OutputSetEDID (xf86OutputPtr output, xf86MonPtr edid_mon)
+     int			size;
+ #endif
+     
+-    if (output->MonInfo != NULL)
+ 	free(output->MonInfo);
+     
+     output->MonInfo = edid_mon;

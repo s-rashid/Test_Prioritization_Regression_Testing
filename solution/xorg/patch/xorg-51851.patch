@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index d38319a..6196540 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -1733,6 +1733,7 @@ static int CreateGLXPixmap(__GLXclientState *cl,
+     else {
+        pVisual = NULL;
+        pGlxVisual = NULL;
++       pGlxScreen = &__glXActiveScreens[pDraw->pScreen->myNum];
+     }
+ 
+     pGlxPixmap = (__GLXpixmap *) malloc(sizeof(__GLXpixmap));

@@ -1,0 +1,307 @@
+diff --git a/hw/kdrive/linux/keyboard.c b/hw/kdrive/linux/keyboard.c
+index ba2637b..9a6ee2d 100644
+--- a/hw/kdrive/linux/keyboard.c
++++ b/hw/kdrive/linux/keyboard.c
+@@ -135,8 +135,7 @@ static const KeySym linux_to_x[256] = {
+    corresponds to the Xkb keymap.
+ */
+ #if 0
+-static unsigned char at2lnx[] =
+-{
++static unsigned char at2lnx[] = {
+ 	0x0,    /* no valid scancode */
+ 	0x01,	/* KEY_Escape */	0x02,	/* KEY_1 */
+ 	0x03,	/* KEY_2 */		0x04,	/* KEY_3 */
+@@ -207,8 +206,7 @@ static unsigned char at2lnx[] =
+ #define NUM_AT_KEYS (sizeof(at2lnx)/sizeof(at2lnx[0]))
+ #define LNX_KEY_INDEX(n) n < NUM_AT_KEYS ? at2lnx[n] : 0
+ 
+-static unsigned char tbl[KD_MAX_WIDTH] =
+-{
++static unsigned char tbl[KD_MAX_WIDTH] = {
+     0,
+     1 << KG_SHIFT,
+     (1 << KG_ALTGR),
+@@ -236,14 +234,12 @@ readKernelMapping(KdKeyboardInfo *ki)
+     maxKeyCode = 0;
+     row = 0;
+     ki->keySyms.mapWidth = KD_MAX_WIDTH;
+-    for (i = 0; i < NR_KEYS && row < KD_MAX_LENGTH; ++i)
+-    {
++    for (i = 0; i < NR_KEYS && row < KD_MAX_LENGTH; ++i) {
+         kbe.kb_index = LNX_KEY_INDEX(i);
+ 
+         k = ki->keySyms.map + row * ki->keySyms.mapWidth;
+ 
+-	for (j = 0; j < ki->keySyms.mapWidth; ++j)
+-	{
++        for (j = 0; j < ki->keySyms.mapWidth; ++j) {
+ 	    unsigned short kval;
+ 
+ 	    k[j] = NoSymbol;
+@@ -254,8 +250,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		continue;
+ 
+ 	    kval = KVAL(kbe.kb_value);
+-	    switch (KTYP(kbe.kb_value))
+-	    {
++            switch (KTYP(kbe.kb_value)) {
+ 	    case KT_LATIN:
+ 	    case KT_LETTER:
+ 		k[j] = linux_to_x[kval];
+@@ -264,8 +259,8 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 	    case KT_FN:
+ 		if (kval <= 19)
+ 		    k[j] = XK_F1 + kval;
+-		else switch (kbe.kb_value)
+-		{
++                else
++                    switch (kbe.kb_value) {
+ 		case K_FIND:
+ 		    k[j] = XK_Home; /* or XK_Find */
+ 		    break;
+@@ -302,8 +297,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		break;
+ 
+ 	    case KT_SPEC:
+-		switch (kbe.kb_value)
+-		{
++                switch (kbe.kb_value) {
+ 		case K_ENTER:
+ 		    k[j] = XK_Return;
+ 		    break;
+@@ -328,8 +322,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		break;
+ 
+ 	    case KT_PAD:
+-		switch (kbe.kb_value)
+-		{
++                switch (kbe.kb_value) {
+ 		case K_PPLUS:
+ 		    k[j] = XK_KP_Add;
+ 		    break;
+@@ -365,8 +358,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		 * KT_DEAD keys are for accelerated diacritical creation.
+ 		 */
+ 	    case KT_DEAD:
+-		switch (kbe.kb_value)
+-		{
++                switch (kbe.kb_value) {
+ 		case K_DGRAVE:
+ 		    k[j] = XK_dead_grave;
+ 		    break;
+@@ -386,8 +378,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		break;
+ 
+ 	    case KT_CUR:
+-		switch (kbe.kb_value)
+-		{
++                switch (kbe.kb_value) {
+ 		case K_DOWN:
+ 		    k[j] = XK_Down;
+ 		    break;
+@@ -404,18 +395,15 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		break;
+ 
+ 	    case KT_SHIFT:
+-		switch (kbe.kb_value)
+-		{
++                switch (kbe.kb_value) {
+ 		case K_ALTGR:
+ 		    k[j] = XK_Mode_switch;
+ 		    break;
+ 		case K_ALT:
+-		    k[j] = (kbe.kb_index == 0x64 ?
+-			  XK_Alt_R : XK_Alt_L);
++                    k[j] = (kbe.kb_index == 0x64 ? XK_Alt_R : XK_Alt_L);
+ 		    break;
+ 		case K_CTRL:
+-		    k[j] = (kbe.kb_index == 0x61 ?
+-			  XK_Control_R : XK_Control_L);
++                    k[j] = (kbe.kb_index == 0x61 ? XK_Control_R : XK_Control_L);
+ 		    break;
+ 		case K_CTRLL:
+ 		    k[j] = XK_Control_L;
+@@ -424,8 +412,7 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 		    k[j] = XK_Control_R;
+ 		    break;
+ 		case K_SHIFT:
+-		    k[j] = (kbe.kb_index == 0x36 ?
+-			  XK_Shift_R : XK_Shift_L);
++                    k[j] = (kbe.kb_index == 0x36 ? XK_Shift_R : XK_Shift_L);
+ 		    break;
+ 		case K_SHIFTL:
+ 		    k[j] = XK_Shift_L;
+@@ -453,8 +440,10 @@ readKernelMapping(KdKeyboardInfo *ki)
+ #ifdef KT_X
+ 	    case KT_X:
+ 		/* depends on new keyboard symbols in file linux/keyboard.h */
+-		if(kbe.kb_value == K_XMENU) k[j] = XK_Menu;
+-		if(kbe.kb_value == K_XTELEPHONE) k[j] = XK_telephone;
++                if (kbe.kb_value == K_XMENU)
++                    k[j] = XK_Menu;
++                if (kbe.kb_value == K_XTELEPHONE)
++                    k[j] = XK_telephone;
+ 		break;
+ #endif
+ #ifdef KT_XF
+@@ -476,11 +465,16 @@ readKernelMapping(KdKeyboardInfo *ki)
+ 	if (minKeyCode == NR_KEYS)
+ 	    continue;
+ 
+-	if (k[3] == k[2]) k[3] = NoSymbol;
+-	if (k[2] == k[1]) k[2] = NoSymbol;
+-	if (k[1] == k[0]) k[1] = NoSymbol;
+-	if (k[0] == k[2] && k[1] == k[3]) k[2] = k[3] = NoSymbol;
+-	if (k[3] == k[0] && k[2] == k[1] && k[2] == NoSymbol) k[3] =NoSymbol;
++        if (k[3] == k[2])
++            k[3] = NoSymbol;
++        if (k[2] == k[1])
++            k[2] = NoSymbol;
++        if (k[1] == k[0])
++            k[1] = NoSymbol;
++        if (k[0] == k[2] && k[1] == k[3])
++            k[2] = k[3] = NoSymbol;
++        if (k[3] == k[0] && k[2] == k[1] && k[2] == NoSymbol)
++            k[3] = NoSymbol;
+ 	row++;
+     }
+     ki->minScanCode = minKeyCode;
+@@ -566,15 +560,13 @@ LinuxKeyboardRead (int fd, void *closure)
+              *
+              * See if this is a prefix extending the following keycode
+              */
+-            if (!prefix && ((b[0] & 0x7f) == KEY_Prefix0))
+-            {
++            if (!prefix && ((b[0] & 0x7f) == KEY_Prefix0)) {
+                     prefix = KEY_Prefix0;
+                     /* swallow this up */
+                     b++;
+                     continue;
+             }
+-            else if (!prefix && ((b[0] & 0x7f) == KEY_Prefix1))
+-            {
++            else if (!prefix && ((b[0] & 0x7f) == KEY_Prefix1)) {
+                     prefix = KEY_Prefix1;
+                     /* swallow this up */
+                     b++;
+@@ -588,57 +580,83 @@ LinuxKeyboardRead (int fd, void *closure)
+                     {
+                         switch (scancode) {
+                             case KEY_KP_7:
+-                                scancode = KEY_Home;      break;  /* curs home */
++                    scancode = KEY_Home;
++                    break;      /* curs home */
+                             case KEY_KP_8:
+-                                scancode = KEY_Up;        break;  /* curs up */
++                    scancode = KEY_Up;
++                    break;      /* curs up */
+                             case KEY_KP_9:
+-                                scancode = KEY_PgUp;      break;  /* curs pgup */
++                    scancode = KEY_PgUp;
++                    break;      /* curs pgup */
+                             case KEY_KP_4:
+-                                scancode = KEY_Left;      break;  /* curs left */
++                    scancode = KEY_Left;
++                    break;      /* curs left */
+                             case KEY_KP_5:
+-                                scancode = KEY_Begin;     break;  /* curs begin */
++                    scancode = KEY_Begin;
++                    break;      /* curs begin */
+                             case KEY_KP_6:
+-                                scancode = KEY_Right;     break;  /* curs right */
++                    scancode = KEY_Right;
++                    break;      /* curs right */
+                             case KEY_KP_1:
+-                                scancode = KEY_End;       break;  /* curs end */
++                    scancode = KEY_End;
++                    break;      /* curs end */
+                             case KEY_KP_2:
+-                                scancode = KEY_Down;      break;  /* curs down */
++                    scancode = KEY_Down;
++                    break;      /* curs down */
+                             case KEY_KP_3:
+-                                scancode = KEY_PgDown;    break;  /* curs pgdown */
++                    scancode = KEY_PgDown;
++                    break;      /* curs pgdown */
+                             case KEY_KP_0:
+-                                scancode = KEY_Insert;    break;  /* curs insert */
++                    scancode = KEY_Insert;
++                    break;      /* curs insert */
+                             case KEY_KP_Decimal:
+-                                scancode = KEY_Delete;    break;  /* curs delete */
++                    scancode = KEY_Delete;
++                    break;      /* curs delete */
+                             case KEY_Enter:
+-                                scancode = KEY_KP_Enter;  break;  /* keypad enter */
++                    scancode = KEY_KP_Enter;
++                    break;      /* keypad enter */
+                             case KEY_LCtrl:
+-                                scancode = KEY_RCtrl;     break;  /* right ctrl */
++                    scancode = KEY_RCtrl;
++                    break;      /* right ctrl */
+                             case KEY_KP_Multiply:
+-                                scancode = KEY_Print;     break;  /* print */
++                    scancode = KEY_Print;
++                    break;      /* print */
+                             case KEY_Slash:
+-                                scancode = KEY_KP_Divide; break;  /* keyp divide */
++                    scancode = KEY_KP_Divide;
++                    break;      /* keyp divide */
+                             case KEY_Alt:
+-                                scancode = KEY_AltLang;   break;  /* right alt */
++                    scancode = KEY_AltLang;
++                    break;      /* right alt */
+                             case KEY_ScrollLock:
+-                                scancode = KEY_Break;     break;  /* curs break */
++                    scancode = KEY_Break;
++                    break;      /* curs break */
+                             case 0x5b:
+-                                scancode = KEY_LMeta;     break;
++                    scancode = KEY_LMeta;
++                    break;
+                             case 0x5c:
+-                                scancode = KEY_RMeta;     break;
++                    scancode = KEY_RMeta;
++                    break;
+                             case 0x5d:
+-                                scancode = KEY_Menu;      break;
++                    scancode = KEY_Menu;
++                    break;
+                             case KEY_F3:
+-                                scancode = KEY_F13;       break;
++                    scancode = KEY_F13;
++                    break;
+                             case KEY_F4:
+-                                scancode = KEY_F14;       break;
++                    scancode = KEY_F14;
++                    break;
+                             case KEY_F5:
+-                                scancode = KEY_F15;       break;
++                    scancode = KEY_F15;
++                    break;
+                             case KEY_F6:
+-                                scancode = KEY_F16;       break;
++                    scancode = KEY_F16;
++                    break;
+                             case KEY_F7:
+-                                scancode = KEY_F17;       break;
++                    scancode = KEY_F17;
++                    break;
+                             case KEY_KP_Plus:
+-                                scancode = KEY_KP_DEC;    break;
++                    scancode = KEY_KP_DEC;
++                    break;
+                             /* Ignore virtual shifts (E0 2A, E0 AA, E0 36, E0 B6) */
+                             case 0x2A:
+                             case 0x36:
+@@ -710,8 +728,7 @@ LinuxKeyboardEnable (KdKeyboardInfo *ki)
+     /*
+      * Flush any pending keystrokes
+      */
+-    while ((n = read (fd, buf, sizeof (buf))) > 0)
+-	;
++    while ((n = read(fd, buf, sizeof(buf))) > 0);
+     KdRegisterFd (fd, LinuxKeyboardRead, ki);
+     return Success;
+ }

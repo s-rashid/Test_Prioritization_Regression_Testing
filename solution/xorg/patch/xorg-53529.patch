@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/bsd/sparc64_video.c b/hw/xfree86/os-support/bsd/sparc64_video.c
+index c838792..a2a30c9 100644
+--- a/hw/xfree86/os-support/bsd/sparc64_video.c
++++ b/hw/xfree86/os-support/bsd/sparc64_video.c
+@@ -58,7 +58,7 @@ static pointer
+ sparc64MapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, 
+ 		 int flags)
+ {
+-	int fd = xf86Info.screenFd;
++	int fd = xf86Info.consoleFd;
+ 	pointer base;
+ 
+ #ifdef DEBUG

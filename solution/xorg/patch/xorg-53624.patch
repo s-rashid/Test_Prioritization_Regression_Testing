@@ -1,0 +1,7 @@
+diff --git a/hw/xfree86/os-support/bus/nobus.c b/hw/xfree86/os-support/bus/nobus.c
+new file mode 100644
+index 0000000..ad23f52
+--- /dev/null
++++ b/hw/xfree86/os-support/bus/nobus.c
+@@ -0,0 +1 @@
++static void __noop_to_appease_ar__() { return; }

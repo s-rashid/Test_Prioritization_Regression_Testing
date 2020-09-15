@@ -1,0 +1,52 @@
+diff --git a/record/set.h b/record/set.h
+index 3246a16..74ddda7 100644
+--- a/record/set.h
++++ b/record/set.h
+@@ -65,18 +65,11 @@ typedef void *RecordSetIteratePtr;
+    set users should never declare a variable of this type.
+ */
+ typedef struct {
+-    void (*DestroySet)(
+-    RecordSetPtr pSet
+-);
+-    unsigned long (*IsMemberOfSet)(
+-    RecordSetPtr pSet,
+-    int possible_member
+-);
+-    RecordSetIteratePtr (*IterateSet)(
+-    RecordSetPtr pSet,
++    void (*DestroySet) (RecordSetPtr pSet);
++    unsigned long (*IsMemberOfSet) (RecordSetPtr pSet, int possible_member);
++     RecordSetIteratePtr(*IterateSet) (RecordSetPtr pSet,
+     RecordSetIteratePtr pIter,
+-    RecordSetInterval *interval
+-);
++                                       RecordSetInterval * interval);
+ } RecordSetOperations;
+ 
+ /* "base class" for sets.
+@@ -86,12 +79,8 @@ typedef struct _RecordSetRec {
+     RecordSetOperations *ops;
+ } RecordSetRec;
+ 
+-RecordSetPtr RecordCreateSet(
+-    RecordSetInterval *intervals,
+-    int nintervals,
+-    void *pMem,
+-    int memsize
+-);
++RecordSetPtr RecordCreateSet(RecordSetInterval * intervals,
++                             int nintervals, void *pMem, int memsize);
+ /*
+     RecordCreateSet creates and returns a new set having members specified
+     by intervals and nintervals.  nintervals is the number of RecordSetInterval
+@@ -104,8 +93,7 @@ RecordSetPtr RecordCreateSet(
+     to resource constraints.
+ */
+ 
+-int RecordSetMemoryRequirements(
+-    RecordSetInterval * /*pIntervals*/,
++int RecordSetMemoryRequirements(RecordSetInterval * /*pIntervals */ ,
+     int /*nintervals*/,
+     int * /*alignment*/
+ );

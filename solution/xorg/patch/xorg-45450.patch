@@ -1,0 +1,13 @@
+diff --git a/Xext/shape.c b/Xext/shape.c
+index 5977296..a5ae455 100644
+--- a/Xext/shape.c
++++ b/Xext/shape.c
+@@ -1069,7 +1069,7 @@ ProcShapeGetRectangles (ClientPtr client)
+     }
+     rep.type = X_Reply;
+     rep.sequenceNumber = client->sequence;
+-    rep.length = (nrects * sizeof (xRectangle)) >> 2;
++    rep.length = bytes_to_int32(nrects * sizeof (xRectangle));
+     rep.ordering = YXBanded;
+     rep.nrects = nrects;
+     if (client->swapped) {

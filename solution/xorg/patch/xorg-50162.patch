@@ -1,0 +1,24 @@
+diff --git a/config/hal.c b/config/hal.c
+index b70488b..6e2850c 100644
+--- a/config/hal.c
++++ b/config/hal.c
+@@ -376,6 +376,7 @@ device_added(LibHalContext *hal_ctx, const char *udi)
+         add_option(&options, "xkb_model", xkb_opts.model);
+     if (xkb_opts.options)
+         add_option(&options, "xkb_options", xkb_opts.options);
++    add_option(&options, "config_info", config_info);
+ 
+     /* this isn't an error, but how else do you output something that the user can see? */
+     LogMessage(X_INFO, "config/hal: Adding input device %s\n", name);
+@@ -385,11 +386,6 @@ device_added(LibHalContext *hal_ctx, const char *udi)
+         goto unwind;
+     }
+ 
+-    for (; dev; dev = dev->next){
+-        free(dev->config_info);
+-        dev->config_info = strdup(config_info);
+-    }
+-
+ unwind:
+     if (set)
+         libhal_free_property_set(set);

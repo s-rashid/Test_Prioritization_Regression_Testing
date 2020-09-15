@@ -1,0 +1,45 @@
+diff --git a/hw/dmx/examples/xbell.c b/hw/dmx/examples/xbell.c
+index 79419d3..543db24 100644
+--- a/hw/dmx/examples/xbell.c
++++ b/hw/dmx/examples/xbell.c
+@@ -35,7 +35,8 @@
+ #include <stdlib.h>
+ #include <X11/Xlib.h>
+ 
+-static void pkc(XKeyboardControl *kc, unsigned long vm)
++static void
++pkc(XKeyboardControl * kc, unsigned long vm)
+ {
+     if (vm&KBKeyClickPercent)
+         printf("   key_click_percent  = %d\n", kc->key_click_percent);
+@@ -55,7 +56,8 @@ static void pkc(XKeyboardControl *kc, unsigned long vm)
+         printf("   auto_repeat_mode   = %d\n", kc->auto_repeat_mode);
+ }
+ 
+-static void pks(XKeyboardState *ks)
++static void
++pks(XKeyboardState * ks)
+ {
+     printf("   key_click_percent  = %d\n", ks->key_click_percent);
+     printf("   bell_percent       = %d\n", ks->bell_percent);
+@@ -65,7 +67,8 @@ static void pks(XKeyboardState *ks)
+     printf("   global_auto_repeat = %d\n", ks->global_auto_repeat);
+ }
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display          *display = XOpenDisplay(NULL);
+     XKeyboardControl kc;
+@@ -77,9 +80,7 @@ int main(int argc, char **argv)
+         return 1;
+     }
+     
+-    vm               = (KBBellPercent
+-                        | KBBellPitch
+-                        | KBBellDuration);
++    vm = (KBBellPercent | KBBellPitch | KBBellDuration);
+     kc.key_click_percent = atoi(argv[1]);
+     kc.bell_percent  = atoi(argv[2]);
+     kc.bell_pitch    = atoi(argv[3]);

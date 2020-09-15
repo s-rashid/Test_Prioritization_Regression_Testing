@@ -1,0 +1,19 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 5aca521..b19c8e2 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1406,10 +1406,13 @@ CheckGrabValues(ClientPtr client, GrabParameters* param)
+ 	client->errorValue = param->other_devices_mode;
+ 	return BadValue;
+     }
+-    if ((param->modifiers != AnyModifier) && (param->modifiers & ~AllModifiersMask)) {
++
++    if (param->grabtype != GRABTYPE_XI2 && (param->modifiers != AnyModifier) &&
++        (param->modifiers & ~AllModifiersMask)) {
+ 	client->errorValue = param->modifiers;
+ 	return BadValue;
+     }
++
+     if ((param->ownerEvents != xFalse) && (param->ownerEvents != xTrue)) {
+ 	client->errorValue = param->ownerEvents;
+ 	return BadValue;

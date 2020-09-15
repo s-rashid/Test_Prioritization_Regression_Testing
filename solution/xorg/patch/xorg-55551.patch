@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/os-support/bsd/bsd_axp.c b/hw/xfree86/os-support/bsd/bsd_axp.c
+index 77c87ce..e7a36f8 100644
+--- a/hw/xfree86/os-support/bsd/bsd_axp.c
++++ b/hw/xfree86/os-support/bsd/bsd_axp.c
+@@ -56,8 +56,7 @@ bsdGetAXP(void)
+ 
+ 	if ((error = sysctl(mib, 3, &sysname, &len, NULL, 0)) < 0)
+ #else	
+-	if ((sysctlbyname("hw.chipset.type", &sysname, &len,
+-                                  0, 0)) < 0)
++    if ((sysctlbyname("hw.chipset.type", &sysname, &len, 0, 0)) < 0)
+ #endif
+             FatalError("bsdGetAXP: can't find machine type\n");
+ #ifdef DEBUG

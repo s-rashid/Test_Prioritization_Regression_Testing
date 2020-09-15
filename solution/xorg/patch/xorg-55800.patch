@@ -1,0 +1,11 @@
+diff --git a/hw/xquartz/xpr/appledri.h b/hw/xquartz/xpr/appledri.h
+index 36964c6..0abf866 100644
+--- a/hw/xquartz/xpr/appledri.h
++++ b/hw/xquartz/xpr/appledri.h
+@@ -118,6 +118,5 @@ Bool XAppleDRICreatePixmap(Display *dpy, int screen, Drawable drawable,
+ Bool XAppleDRIDestroyPixmap(Display *dpy, Pixmap pixmap);
+ 
+ _XFUNCPROTOEND
+-
+ #endif /* _APPLEDRI_SERVER_ */
+ #endif /* _APPLEDRI_H_ */

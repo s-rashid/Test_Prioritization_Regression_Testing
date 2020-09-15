@@ -1,0 +1,12 @@
+diff --git a/miext/damage/damage.c b/miext/damage/damage.c
+index b809cca..2b7e5f2 100644
+--- a/miext/damage/damage.c
++++ b/miext/damage/damage.c
+@@ -1757,7 +1757,6 @@ static GCOps damageGCOps = {
+     damagePolyText16, damageImageText8,
+     damageImageText16, damageImageGlyphBlt,
+     damagePolyGlyphBlt, damagePushPixels,
+-    {NULL}		/* devPrivate */
+ };
+ 
+ static void

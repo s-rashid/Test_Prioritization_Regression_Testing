@@ -1,0 +1,735 @@
+diff --git a/hw/dmx/input/dmxconsole.c b/hw/dmx/input/dmxconsole.c
+index 7ec209d..f63772b 100644
+--- a/hw/dmx/input/dmxconsole.c
++++ b/hw/dmx/input/dmxconsole.c
+@@ -116,42 +116,50 @@ typedef struct _myPrivate {
+     DevicePtr               mou, kbd;
+ } myPrivate;
+ 
+-static int scalex(myPrivate *priv, int x)
++static int
++scalex(myPrivate * priv, int x)
+ {
+     return (int)((x * priv->xScale) + .5);
+ }
+ 
+-static int scaley(myPrivate *priv, int y)
++static int
++scaley(myPrivate * priv, int y)
+ {
+     return (int)((y * priv->yScale) + .5);
+ }
+ 
+-static int unscalex(myPrivate *priv, int x)
++static int
++unscalex(myPrivate * priv, int x)
+ {
+     return (int)((x / priv->xScale) + .5);
+ }
+ 
+-static int unscaley(myPrivate *priv, int y)
++static int
++unscaley(myPrivate * priv, int y)
+ {
+     return (int)((y / priv->yScale) + .5);
+ }
+ 
+ /** Create the private area for \a pDevice. */
+-pointer dmxConsoleCreatePrivate(DeviceIntPtr pDevice)
++pointer
++dmxConsoleCreatePrivate(DeviceIntPtr pDevice)
+ {
+     GETDMXLOCALFROMPDEVICE;
+     myPrivate *priv = calloc(1, sizeof(*priv));
++
+     priv->dmxLocal  = dmxLocal;
+     return priv;
+ }
+ 
+ /** If \a private is non-NULL, free its associated memory. */
+-void dmxConsoleDestroyPrivate(pointer private)
++void
++dmxConsoleDestroyPrivate(pointer private)
+ {
+     free(private);
+ }
+ 
+-static void dmxConsoleDrawFineCursor(myPrivate *priv, XRectangle *rect)
++static void
++dmxConsoleDrawFineCursor(myPrivate * priv, XRectangle * rect)
+ {
+     int size  = 6;
+     int x, y;
+@@ -159,13 +167,11 @@ static void dmxConsoleDrawFineCursor(myPrivate *priv, XRectangle *rect)
+     XDrawLine(priv->display, priv->pixmap, priv->gcCur,
+               x = scalex(priv, priv->globalX) - size,
+               scaley(priv, priv->globalY),
+-              scalex(priv, priv->globalX) + size,
+-              scaley(priv, priv->globalY));
++              scalex(priv, priv->globalX) + size, scaley(priv, priv->globalY));
+     XDrawLine(priv->display, priv->pixmap, priv->gcCur,
+               scalex(priv, priv->globalX),
+               y = scaley(priv, priv->globalY) - size,
+-              scalex(priv, priv->globalX),
+-              scaley(priv, priv->globalY) + size);
++              scalex(priv, priv->globalX), scaley(priv, priv->globalY) + size);
+     if (priv->grabbed) {
+         XDrawLine(priv->display, priv->pixmap, priv->gcCur,
+                   scalex(priv, priv->globalX) - (int)(size / 1.4),
+@@ -186,7 +192,8 @@ static void dmxConsoleDrawFineCursor(myPrivate *priv, XRectangle *rect)
+     }
+ }
+ 
+-static void dmxConsoleDrawWindows(pointer private)
++static void
++dmxConsoleDrawWindows(pointer private)
+ {
+     GETONLYPRIVFROMPRIVATE;
+     Display    *dpy   = priv->display;
+@@ -215,8 +222,7 @@ static void dmxConsoleDrawWindows(pointer private)
+ #endif
+         
+         for (pChild = pRoot->firstChild; pChild; pChild = pChild->nextSib) {
+-            if (pChild->mapped
+-                && pChild->realized) {
++            if (pChild->mapped && pChild->realized) {
+ #if DMX_WINDOW_DEBUG
+                 dmxLog(dmxDebug, "  %p %d,%d %dx%d %d %d  %d RECTS\n",
+                        pChild,
+@@ -240,7 +246,8 @@ static void dmxConsoleDrawWindows(pointer private)
+             }
+         }
+ #ifdef PANORAMIX
+-        if (!noPanoramiXExtension) break; /* Screen 0 valid with Xinerama */
++        if (!noPanoramiXExtension)
++            break;              /* Screen 0 valid with Xinerama */
+ #endif
+     }
+     XDestroyRegion(avail);
+@@ -249,7 +256,8 @@ static void dmxConsoleDrawWindows(pointer private)
+     XSetClipMask(dpy, priv->gc, None);
+ }
+ 
+-static void dmxConsoleDraw(myPrivate *priv, int updateCursor, int update)
++static void
++dmxConsoleDraw(myPrivate * priv, int updateCursor, int update)
+ {
+     GETDMXINPUTFROMPRIV;
+     Display       *dpy     = priv->display;
+@@ -260,6 +268,7 @@ static void dmxConsoleDraw(myPrivate *priv, int updateCursor, int update)
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo *dmxScreen = &dmxScreens[i];
++
+ 	XFillRectangle(dpy, priv->pixmap,
+                        dmxScreen->beDisplay ? priv->gcRev : priv->gcDet,
+                        scalex(priv, screenInfo.screens[i]->x),
+@@ -274,8 +283,10 @@ static void dmxConsoleDraw(myPrivate *priv, int updateCursor, int update)
+                        scalex(priv, screenInfo.screens[i]->width),
+                        scaley(priv, screenInfo.screens[i]->height));
+     }
+-    if (dmxInput->windows)          dmxConsoleDrawWindows(priv);
+-    if (priv->fine && updateCursor) dmxConsoleDrawFineCursor(priv, 0);
++    if (dmxInput->windows)
++        dmxConsoleDrawWindows(priv);
++    if (priv->fine && updateCursor)
++        dmxConsoleDrawFineCursor(priv, 0);
+     if (update) {
+         XCopyArea(priv->display, priv->pixmap, priv->window, priv->gc,
+                   0, 0, priv->consWidth, priv->consHeight, 0, 0);
+@@ -283,8 +294,8 @@ static void dmxConsoleDraw(myPrivate *priv, int updateCursor, int update)
+     }
+ }
+ 
+-static void dmxConsoleClearCursor(myPrivate *priv, int x, int y,
+-                                  XRectangle *rect)
++static void
++dmxConsoleClearCursor(myPrivate * priv, int x, int y, XRectangle * rect)
+ {
+     int        cw = 14, ch = 14;    /* Clear width and height */
+     
+@@ -301,8 +312,8 @@ static void dmxConsoleClearCursor(myPrivate *priv, int x, int y,
+     XSetClipMask(priv->display, priv->gcRev, None);
+ }
+ 
+-
+-static void dmxConsoleUpdateFineCursor(myPrivate *priv)
++static void
++dmxConsoleUpdateFineCursor(myPrivate * priv)
+ {
+     int        leave = 0;
+     XRectangle rects[2];
+@@ -310,7 +321,8 @@ static void dmxConsoleUpdateFineCursor(myPrivate *priv)
+     dmxConsoleClearCursor(priv, priv->globalX, priv->globalY, &rects[0]);
+     if (priv->dmxLocal->sendsCore) {
+         dmxGetGlobalPosition(&priv->globalX, &priv->globalY);
+-    } else {
++    }
++    else {
+         priv->globalX = priv->dmxLocal->lastX;
+         priv->globalY = priv->dmxLocal->lastY;
+     }
+@@ -321,14 +333,18 @@ static void dmxConsoleUpdateFineCursor(myPrivate *priv)
+                                 /* Compute new warp position, which may be
+                                    outside the window */
+     if (priv->globalX < 1 || priv->globalX >= priv->width) {
+-        if (priv->globalX < 1) priv->lastX = 0;
+-        else                   priv->lastX = scalex(priv, priv->width);
++        if (priv->globalX < 1)
++            priv->lastX = 0;
++        else
++            priv->lastX = scalex(priv, priv->width);
+         priv->lastY = scaley(priv, priv->globalY);
+         ++leave;
+     }
+     if (priv->globalY < 1 || priv->globalY >= priv->height) {
+-        if (priv->globalY < 1) priv->lastY = 0;
+-        else                   priv->lastY = scaley(priv, priv->height);
++        if (priv->globalY < 1)
++            priv->lastY = 0;
++        else
++            priv->lastY = scaley(priv, priv->height);
+         priv->lastX = scalex(priv, priv->globalX);
+         ++leave;
+     }
+@@ -349,14 +365,15 @@ static void dmxConsoleUpdateFineCursor(myPrivate *priv)
+ 
+     if (leave) {
+         XEvent X;
++
+         while (XCheckMaskEvent(priv->display, PointerMotionMask, &X)) {
+             if (X.type == MotionNotify) {
+                 if (X.xmotion.x != priv->lastX || X.xmotion.y != priv->lastY) {
+                     DMXDBG4("Ignoring motion to %d %d after leave frm %d %d\n",
+-                            X.xmotion.x, X.xmotion.y,
+-                            priv->lastX, priv->lastY);
++                            X.xmotion.x, X.xmotion.y, priv->lastX, priv->lastY);
++                }
+                 }
+-            } else {
++            else {
+                 dmxLog(dmxInfo, "Ignoring event (%d): %s ****************\n",
+                        X.type, dmxEventName(X.type));
+             }
+@@ -365,8 +382,7 @@ static void dmxConsoleUpdateFineCursor(myPrivate *priv)
+     DMXDBG6("dmxConsoleUpdateFineCursor: Warp %d %d on %d %d [%d %d]\n",
+             priv->lastX, priv->lastY,
+             scalex(priv, priv->width),
+-            scaley(priv, priv->height),
+-            priv->globalX, priv->globalY);
++            scaley(priv, priv->height), priv->globalX, priv->globalY);
+ }
+ 
+ /** Whenever the window layout (size, position, stacking order) might be
+@@ -374,14 +390,15 @@ static void dmxConsoleUpdateFineCursor(myPrivate *priv)
+  * the \a type of change.  This routine is called in a conservative
+  * fashion: the actual layout of the windows of the screen might not
+  * have had any human-visible changes. */
+-void dmxConsoleUpdateInfo(pointer private, DMXUpdateType type,
+-                          WindowPtr pWindow)
++void
++dmxConsoleUpdateInfo(pointer private, DMXUpdateType type, WindowPtr pWindow)
+ {
+     GETONLYPRIVFROMPRIVATE;
+     dmxConsoleDraw(priv, 1, 1);
+ }
+ 
+-static void dmxConsoleMoveAbsolute(myPrivate *priv, int x, int y,
++static void
++dmxConsoleMoveAbsolute(myPrivate * priv, int x, int y,
+                                    DevicePtr pDev, dmxMotionProcPtr motion,
+                                    DMXBlockType block)
+ {
+@@ -391,20 +408,24 @@ static void dmxConsoleMoveAbsolute(myPrivate *priv, int x, int y,
+     tmpY = unscalex(priv, y);
+     DMXDBG6("dmxConsoleMoveAbsolute(,%d,%d) %d %d =? %d %d\n",
+             x, y, tmpX, tmpY, priv->curX, priv->curY);
+-    if (tmpX == priv->curX && tmpY == priv->curY) return;
++    if (tmpX == priv->curX && tmpY == priv->curY)
++        return;
+     v[0] = unscalex(priv, x);
+     v[1] = unscaley(priv, y);
+     motion(pDev, v, 0, 2, DMX_ABSOLUTE_CONFINED, block);
+     /* dmxConsoleUpdatePosition gets called here by dmxCoreMotion */
+ }
+ 
+-static void dmxConsoleMoveRelative(myPrivate *priv, int x, int y,
++static void
++dmxConsoleMoveRelative(myPrivate * priv, int x, int y,
+                                    DevicePtr pDev, dmxMotionProcPtr motion,
+                                    DMXBlockType block)
+ {
+     int v[2];
++
+     /* Ignore the event generated from * warping back to middle */
+-    if (x == priv->lastX && y == priv->lastY) return;
++    if (x == priv->lastX && y == priv->lastY)
++        return;
+     v[0] = priv->lastX - x;
+     v[1] = priv->lastY - y;
+     motion(pDev, v, 0, 2, DMX_RELATIVE, block);
+@@ -414,25 +435,30 @@ static void dmxConsoleMoveRelative(myPrivate *priv, int x, int y,
+ /** This routine gets called from #dmxCoreMotion for each motion.  This
+  * allows the console's notion of the cursor postion to change when
+  * another input device actually caused the change. */
+-void dmxConsoleUpdatePosition(pointer private, int x, int y)
++void
++dmxConsoleUpdatePosition(pointer private, int x, int y)
+ {
+     GETONLYPRIVFROMPRIVATE;
+     int                  tmpX, tmpY;
+     Display              *dpy          = priv->display;
+     static unsigned long dmxGeneration = 0;
+ 
+-
+     tmpX = scalex(priv, x);
+     tmpY = scaley(priv, y);
+     DMXDBG6("dmxConsoleUpdatePosition(,%d,%d) new=%d,%d dims=%d,%d\n",
+             x, y, tmpX, tmpY, priv->consWidth, priv->consHeight);
+     
+-    if (priv->fine) dmxConsoleUpdateFineCursor(priv);
++    if (priv->fine)
++        dmxConsoleUpdateFineCursor(priv);
+     if (tmpX != priv->curX || tmpY != priv->curY) {
+-        if (tmpX < 0)                 tmpX = 0;
+-        if (tmpY < 0)                 tmpY = 0;
+-        if (tmpX >= priv->consWidth)  tmpX = priv->consWidth  - 1;
+-        if (tmpY >= priv->consHeight) tmpY = priv->consHeight - 1;
++        if (tmpX < 0)
++            tmpX = 0;
++        if (tmpY < 0)
++            tmpY = 0;
++        if (tmpX >= priv->consWidth)
++            tmpX = priv->consWidth - 1;
++        if (tmpY >= priv->consHeight)
++            tmpY = priv->consHeight - 1;
+         priv->curX = tmpX;
+         priv->curY = tmpY;
+         if (!priv->fine) {
+@@ -454,11 +480,11 @@ void dmxConsoleUpdatePosition(pointer private, int x, int y)
+  * routines.  The \a checkspecial routine is used to check for special
+  * keys that need handling.  \a block tells if signals should be blocked
+  * when updating the event queue. */
+-void dmxConsoleCollectEvents(DevicePtr pDev,
++void
++dmxConsoleCollectEvents(DevicePtr pDev,
+                              dmxMotionProcPtr motion,
+                              dmxEnqueueProcPtr enqueue,
+-                             dmxCheckSpecialProcPtr checkspecial,
+-                             DMXBlockType block)
++                        dmxCheckSpecialProcPtr checkspecial, DMXBlockType block)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -483,7 +509,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+                     X.xexpose.count,
+                     X.xexpose.x, X.xexpose.y,
+                     X.xexpose.width, X.xexpose.height);
+-            if (!rInitialized++) r = XCreateRegion();
++            if (!rInitialized++)
++                r = XCreateRegion();
+             rect.x      = X.xexpose.x;
+             rect.y      = X.xexpose.y;
+             rect.width  = X.xexpose.width;
+@@ -524,7 +551,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+         case LeaveNotify:
+             DMXDBG4("dmxConsoleCollectEvents: Leave @ %d,%d; r=%d f=%d\n",
+                     X.xcrossing.x, X.xcrossing.y, raising, priv->fine);
+-            if (!priv->captured) dmxCommonRestoreState(priv);
++            if (!priv->captured)
++                dmxCommonRestoreState(priv);
+             else {
+                 dmxConsoleUncapture(dmxInput);
+                 dmxCommonRestoreState(priv);
+@@ -539,7 +567,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+                 raising = 0;
+                 dmxConsoleMoveAbsolute(priv, raiseX, raiseY,
+                                        priv->mou, motion, block);
+-            } else {
++            }
++            else {
+                 if (priv->fine) {
+                     /* The raise will generate an event near the center,
+                      * which is not where the cursor should be.  So we
+@@ -562,7 +591,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+                 continue;
+             if (XPending(dpy)) { /* do motion compression */
+                 XPeekEvent(dpy, &N);
+-                if (N.type == MotionNotify) continue;
++                if (N.type == MotionNotify)
++                    continue;
+             }
+             DMXDBG2("dmxConsoleCollectEvents: Motion %d %d\n",
+                     X.xmotion.x, X.xmotion.y);
+@@ -570,7 +600,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+                 raising = 0;
+                 dmxConsoleMoveAbsolute(priv, raiseX, raiseY,
+                                        priv->mou, motion, block);
+-            } else {
++            }
++            else {
+                 if (priv->fine)
+                     dmxConsoleMoveRelative(priv, X.xmotion.x, X.xmotion.y,
+                                            priv->mou, motion, block);
+@@ -592,7 +623,8 @@ void dmxConsoleCollectEvents(DevicePtr pDev,
+     }
+ }
+ 
+-static void dmxCloseConsole(myPrivate *priv)
++static void
++dmxCloseConsole(myPrivate * priv)
+ {
+     GETDMXINPUTFROMPRIV;
+     dmxCommonRestoreState(priv);
+@@ -601,25 +633,28 @@ static void dmxCloseConsole(myPrivate *priv)
+         XFreeGC(priv->display, priv->gcDet);
+         XFreeGC(priv->display, priv->gcRev);
+         XFreeGC(priv->display, priv->gcCur);
+-        if (!dmxInput->console) XCloseDisplay(priv->display);
++        if (!dmxInput->console)
++            XCloseDisplay(priv->display);
+     }
+     priv->display = NULL;
+ }
+ 
+-static Bool dmxCloseConsoleScreen(int idx, ScreenPtr pScreen)
++static Bool
++dmxCloseConsoleScreen(int idx, ScreenPtr pScreen)
+ {
+     myPrivate *priv, *last;
+ 
+     for (last = priv = (myPrivate *)dixLookupPrivate(&pScreen->devPrivates,
+ 						     dmxScreenPrivateKey);
+-         priv;
+-         priv = priv->next) dmxCloseConsole(last = priv);
++         priv; priv = priv->next)
++        dmxCloseConsole(last = priv);
+     
+     DMX_UNWRAP(CloseScreen, last, pScreen);
+     return pScreen->CloseScreen(idx, pScreen);
+ }
+ 
+-static Cursor dmxConsoleCreateEmptyCursor(myPrivate *priv)
++static Cursor
++dmxConsoleCreateEmptyCursor(myPrivate * priv)
+ {
+     char    noCursorData[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+     Pixmap  pixmap;
+@@ -631,16 +666,15 @@ static Cursor dmxConsoleCreateEmptyCursor(myPrivate *priv)
+     pixmap = XCreateBitmapFromData(priv->display, priv->window,
+                                    noCursorData, 8, 8);
+     if (!XAllocNamedColor(dpy, DefaultColormap(dpy, DefaultScreen(dpy)),
+-                          "black",
+-                          &color,
+-                          &tmpColor))
++                          "black", &color, &tmpColor))
+         dmxLog(dmxFatal, "Cannot allocate color for cursor\n");
+     cursor = XCreatePixmapCursor(dpy, pixmap, pixmap, &color, &color, 0, 0);
+     XFreePixmap(dpy, pixmap);
+     return cursor;
+ }
+ 
+-static void dmxConsoleComputeWidthHeight(myPrivate *priv,
++static void
++dmxConsoleComputeWidthHeight(myPrivate * priv,
+                                          int *width, int *height,
+                                          double *xScale, double *yScale,
+                                          int *consWidth, int *consHeight)
+@@ -657,8 +691,10 @@ static void dmxConsoleComputeWidthHeight(myPrivate *priv,
+     *consWidth  = DisplayWidth(dpy, screen)  * CONSOLE_NUM / CONSOLE_DEN;
+     *consHeight = DisplayHeight(dpy, screen) * CONSOLE_NUM / CONSOLE_DEN;
+ 
+-    if (*consWidth  < 1) *consWidth  = 1;
+-    if (*consHeight < 1) *consHeight = 1;
++    if (*consWidth < 1)
++        *consWidth = 1;
++    if (*consHeight < 1)
++        *consHeight = 1;
+ 
+ #if 1
+                                 /* Always keep the console size similar
+@@ -685,18 +721,22 @@ static void dmxConsoleComputeWidthHeight(myPrivate *priv,
+ 
+     *consWidth  = scalex(priv, *width);
+     *consHeight = scaley(priv, *height);
+-    if (*consWidth  < 1) *consWidth  = 1;
+-    if (*consHeight < 1) *consHeight = 1;
++    if (*consWidth < 1)
++        *consWidth = 1;
++    if (*consHeight < 1)
++        *consHeight = 1;
+ }
+ 
+ /** Re-initialized the console device described by \a pDev (after a
+  * reconfig). */
+-void dmxConsoleReInit(DevicePtr pDev)
++void
++dmxConsoleReInit(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     Display *dpy;
+ 
+-    if (!priv || !priv->initialized) return;
++    if (!priv || !priv->initialized)
++        return;
+     dpy = priv->display;
+ 
+     dmxConsoleComputeWidthHeight(priv,
+@@ -714,7 +754,8 @@ void dmxConsoleReInit(DevicePtr pDev)
+ }
+ 
+ /** Initialized the console device described by \a pDev. */
+-void dmxConsoleInit(DevicePtr pDev)
++void
++dmxConsoleInit(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     DMXInputInfo         *dmxInput = &dmxInputs[dmxLocal->inputIdx];
+@@ -728,9 +769,12 @@ void dmxConsoleInit(DevicePtr pDev)
+     XClassHint           class_hints;
+     unsigned long        tmp;
+ 
+-    if (dmxLocal->type == DMX_LOCAL_MOUSE)    priv->mou = pDev;
+-    if (dmxLocal->type == DMX_LOCAL_KEYBOARD) priv->kbd = pDev;
+-    if (priv->initialized++) return; /* Only do once for mouse/keyboard pair */
++    if (dmxLocal->type == DMX_LOCAL_MOUSE)
++        priv->mou = pDev;
++    if (dmxLocal->type == DMX_LOCAL_KEYBOARD)
++        priv->kbd = pDev;
++    if (priv->initialized++)
++        return;                 /* Only do once for mouse/keyboard pair */
+ 
+     if (!(dpy = priv->display = XOpenDisplay(dmxInput->name)))
+         dmxLog(dmxFatal,
+@@ -753,16 +797,15 @@ void dmxConsoleInit(DevicePtr pDev)
+                                 | EnterWindowMask
+                                 | LeaveWindowMask
+                                 | KeyPressMask
+-                                | KeyReleaseMask
+-                                | ExposureMask
+-                                | ResizeRedirectMask);
++                       | KeyReleaseMask | ExposureMask | ResizeRedirectMask);
+ 
+     mask = CWBackPixel | CWEventMask | CWColormap | CWOverrideRedirect;
+     attribs.colormap = DefaultColormap(dpy, screen);
+     if (XParseColor(dpy, attribs.colormap, CONSOLE_BG_COLOR, &color)
+         && XAllocColor(dpy, attribs.colormap, &color)) {
+ 	attribs.background_pixel = color.pixel;
+-    } else 
++    }
++    else
+         attribs.background_pixel = WhitePixel(dpy, screen);
+ 
+     attribs.event_mask        = priv->eventMask;
+@@ -786,7 +829,6 @@ void dmxConsoleInit(DevicePtr pDev)
+     class_hints.res_class = DMX_RES_CLASS;
+     XSetClassHint(dpy, win, &class_hints);
+ 
+-
+                                 /* Map the window */
+     XMapWindow(dpy, win);
+ 
+@@ -806,12 +848,14 @@ void dmxConsoleInit(DevicePtr pDev)
+     if (XParseColor(dpy, attribs.colormap, CONSOLE_SCREEN_FG_COLOR, &color)
+         && XAllocColor(dpy, attribs.colormap, &color)) {
+ 	gcvals.foreground = color.pixel;
+-    } else
++    }
++    else
+ 	gcvals.foreground = BlackPixel(dpy, screen);
+     if (XParseColor(dpy, attribs.colormap, CONSOLE_SCREEN_BG_COLOR, &color)
+         && XAllocColor(dpy, attribs.colormap, &color)) {
+ 	gcvals.background = color.pixel;
+-    } else
++    }
++    else
+ 	gcvals.background = WhitePixel(dpy, screen);
+     gcvals.line_width         = 0;
+     gcvals.line_style         = LineSolid;
+@@ -825,7 +869,8 @@ void dmxConsoleInit(DevicePtr pDev)
+     if (XParseColor(dpy, attribs.colormap, CONSOLE_SCREEN_DET_COLOR, &color)
+         && XAllocColor(dpy, attribs.colormap, &color)) {
+         gcvals.foreground = color.pixel;
+-    } else
++    }
++    else
+         gcvals.foreground = BlackPixel(dpy, screen);
+     priv->gcDet = XCreateGC(dpy, win, mask, &gcvals);
+     gcvals.foreground = tmp;
+@@ -839,7 +884,8 @@ void dmxConsoleInit(DevicePtr pDev)
+     if (XParseColor(dpy, attribs.colormap, CONSOLE_SCREEN_CUR_COLOR, &color)
+         && XAllocColor(dpy, attribs.colormap, &color)) {
+         gcvals.foreground = color.pixel;
+-    } else
++    }
++    else
+         gcvals.foreground = BlackPixel(dpy, screen);
+     priv->gcCur = XCreateGC(dpy, win, mask, &gcvals);
+ 
+@@ -858,7 +904,8 @@ void dmxConsoleInit(DevicePtr pDev)
+ 
+ /** Fill in the \a info structure for the specified \a pDev.  Only used
+  * for pointers. */
+-void dmxConsoleMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxConsoleMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     GETPRIVFROMPDEV;
+ 
+@@ -870,7 +917,8 @@ void dmxConsoleMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+     info->minval[1] = 0;
+     /* max possible console window size: */
+     info->maxval[0] = DisplayWidth(priv->display, DefaultScreen(priv->display));
+-    info->maxval[1] = DisplayHeight(priv->display, DefaultScreen(priv->display));
++    info->maxval[1] =
++        DisplayHeight(priv->display, DefaultScreen(priv->display));
+     info->res[0]           = 1;
+     info->minres[0]        = 0;
+     info->maxres[0]        = 1;
+@@ -879,7 +927,8 @@ void dmxConsoleMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ 
+ /** Fill in the \a info structure for the specified \a pDev.  Only used
+  * for keyboard. */
+-void dmxConsoleKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxConsoleKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     dmxCommonKbdGetInfo(pDev, info);
+     info->keyboard         = 1;
+@@ -891,7 +940,8 @@ void dmxConsoleKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ }
+ 
+ /** Handle special console-only keys. */
+-int dmxConsoleFunctions(pointer private, DMXFunctionType function)
++int
++dmxConsoleFunctions(pointer private, DMXFunctionType function)
+ {
+     GETONLYPRIVFROMPRIVATE;
+     XRectangle rect;
+@@ -909,14 +959,14 @@ int dmxConsoleFunctions(pointer private, DMXFunctionType function)
+             
+             XDefineCursor(dpy, priv->window,
+                           priv->grabbed
+-                          ? priv->cursorGrabbed
+-                          : priv->cursorNormal);
++                          ? priv->cursorGrabbed : priv->cursorNormal);
+             XWarpPointer(dpy, priv->window, priv->window,
+                          0, 0, 0, 0,
+                          scalex(priv, priv->globalX),
+                          scaley(priv, priv->globalY));
+             XSync(dpy, False); /* Not a backend display */
+-        } else {
++        }
++        else {
+             priv->fine = 1;
+             XRaiseWindow(dpy, priv->window);
+             XDefineCursor(dpy, priv->window, priv->cursorEmpty);
+@@ -928,10 +978,9 @@ int dmxConsoleFunctions(pointer private, DMXFunctionType function)
+             XUngrabKeyboard(dpy, CurrentTime);
+             XUngrabPointer(dpy, CurrentTime);
+             XDefineCursor(dpy, priv->window,
+-                          priv->fine
+-                          ? priv->cursorEmpty
+-                          : priv->cursorNormal);
+-        } else {
++                          priv->fine ? priv->cursorEmpty : priv->cursorNormal);
++        }
++        else {
+             if (XGrabPointer(dpy, priv->window, True,
+                              0, GrabModeAsync, GrabModeAsync, priv->window,
+                              None, CurrentTime)) {
+@@ -945,12 +994,11 @@ int dmxConsoleFunctions(pointer private, DMXFunctionType function)
+                 return 0;
+             }
+             XDefineCursor(dpy, priv->window,
+-                          priv->fine
+-                          ? priv->cursorEmpty
+-                          : priv->cursorGrabbed);
++                          priv->fine ? priv->cursorEmpty : priv->cursorGrabbed);
+         }
+         priv->grabbed = !priv->grabbed;
+-        if (priv->fine) dmxConsoleUpdateFineCursor(priv);
++        if (priv->fine)
++            dmxConsoleUpdateFineCursor(priv);
+         return 1;
+     case DMX_FUNCTION_TERMINATE:
+         return 1;
+@@ -959,7 +1007,8 @@ int dmxConsoleFunctions(pointer private, DMXFunctionType function)
+     }
+ }
+ 
+-static void dmxDump(void)
++static void
++dmxDump(void)
+ {
+     int          i, j;
+     DMXInputInfo *dmxInput;
+@@ -969,6 +1018,7 @@ static void dmxDump(void)
+         for (j = 0; j < dmxInput->numDevs; j++) {
+             DMXLocalInputInfoPtr dmxLocal = dmxInput->devs[j];
+             myPrivate            *priv    = dmxLocal->private;
++
+             while (priv
+                    && priv->display
+                    && XCheckTypedEvent(priv->display, MotionNotify, &X)) {
+@@ -982,7 +1032,8 @@ static void dmxDump(void)
+ /** This routine is used to warp the pointer into the console window
+  * from anywhere on the screen.  It is used when backend and console
+  * input are both being taken from the same X display. */
+-void dmxConsoleCapture(DMXInputInfo *dmxInput)
++void
++dmxConsoleCapture(DMXInputInfo * dmxInput)
+ {
+     int     i;
+     XEvent  X;
+@@ -992,9 +1043,13 @@ void dmxConsoleCapture(DMXInputInfo *dmxInput)
+     for (i = 0; i < dmxInput->numDevs; i++) {
+         DMXLocalInputInfoPtr dmxLocal = dmxInput->devs[i];
+         myPrivate            *priv    = dmxLocal->private;
+-        if (dmxLocal->extType != DMX_LOCAL_TYPE_CONSOLE) continue;
+-        if (dmxLocal->type    != DMX_LOCAL_MOUSE)        continue;
+-        if (priv->captured)                              continue;
++
++        if (dmxLocal->extType != DMX_LOCAL_TYPE_CONSOLE)
++            continue;
++        if (dmxLocal->type != DMX_LOCAL_MOUSE)
++            continue;
++        if (priv->captured)
++            continue;
+         priv->captured = 2;     /* Ungrab only after proximal events. */
+         XRaiseWindow(priv->display, priv->window);
+         XSync(priv->display, False); /* Not a backend display */
+@@ -1006,12 +1061,14 @@ void dmxConsoleCapture(DMXInputInfo *dmxInput)
+                      priv->window, 0, 0, 0, 0, priv->curX, priv->curY);
+         XSync(priv->display, False); /* Not a backend display */
+         dmxDump();
+-        if (priv->fine) dmxConsoleUpdateFineCursor(priv);
++        if (priv->fine)
++            dmxConsoleUpdateFineCursor(priv);
+     }
+ }
+ 
+ /** Undo the capture that was done by #dmxConsoleCapture. */
+-void dmxConsoleUncapture(DMXInputInfo *dmxInput)
++void
++dmxConsoleUncapture(DMXInputInfo * dmxInput)
+ {
+     int i;
+ 
+@@ -1020,9 +1077,13 @@ void dmxConsoleUncapture(DMXInputInfo *dmxInput)
+     for (i = 0; i < dmxInput->numDevs; i++) {
+         DMXLocalInputInfoPtr dmxLocal = dmxInput->devs[i];
+         myPrivate            *priv    = dmxLocal->private;
+-        if (dmxLocal->extType != DMX_LOCAL_TYPE_CONSOLE) continue;
+-        if (dmxLocal->type    != DMX_LOCAL_MOUSE)        continue;
+-        if (!priv->captured)                             continue;
++
++        if (dmxLocal->extType != DMX_LOCAL_TYPE_CONSOLE)
++            continue;
++        if (dmxLocal->type != DMX_LOCAL_MOUSE)
++            continue;
++        if (!priv->captured)
++            continue;
+         priv->captured = 0;
+         XSync(priv->display, False); /* Not a backend display */
+     }

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/xf86_OSlib.h b/hw/xfree86/os-support/xf86_OSlib.h
+index 9161e18..e931b09 100644
+--- a/hw/xfree86/os-support/xf86_OSlib.h
++++ b/hw/xfree86/os-support/xf86_OSlib.h
+@@ -171,7 +171,7 @@
+ /**************************************************************************/
+ /* Linux or Glibc-based system                                            */
+ /**************************************************************************/
+-#if defined(__linux__) || defined(__GLIBC__)
++#if defined(__linux__) || defined(__GLIBC__) || defined(__CYGWIN__)
+ #include <sys/ioctl.h>
+ #include <signal.h>
+ #include <stdlib.h>

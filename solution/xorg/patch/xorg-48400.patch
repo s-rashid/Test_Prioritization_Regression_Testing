@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/src/kcmap.c b/hw/kdrive/src/kcmap.c
+index 40697e0..9bfdd78 100644
+--- a/hw/kdrive/src/kcmap.c
++++ b/hw/kdrive/src/kcmap.c
+@@ -58,7 +58,7 @@ KdSetColormap (ScreenPtr pScreen)
+     for (i = 0; i < (1 << pScreenPriv->screen->fb.depth); i++)
+ 	pixels[i] = i;
+ 
+-    QueryColors (pCmap, (1 << pScreenPriv->screen->fb.depth), pixels, colors);
++    QueryColors (pCmap, (1 << pScreenPriv->screen->fb.depth), pixels, colors, serverClient);
+ 
+     for (i = 0; i < (1 << pScreenPriv->screen->fb.depth); i++)
+     {

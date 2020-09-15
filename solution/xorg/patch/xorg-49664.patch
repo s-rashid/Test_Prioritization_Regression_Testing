@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/windialogs.c b/hw/xwin/windialogs.c
+index a815353..3ec9b78 100755
+--- a/hw/xwin/windialogs.c
++++ b/hw/xwin/windialogs.c
+@@ -365,7 +365,7 @@ winExitDlgProc (HWND hDialog, UINT message,
+ 	/* Set the number of connected clients */
+ 	SetWindowText (GetDlgItem (hDialog, IDC_CLIENTS_CONNECTED),
+ 		       pszConnectedClients);
+-	xfree (pszConnectedClients);
++	free(pszConnectedClients);
+       }
+       return TRUE;
+ 

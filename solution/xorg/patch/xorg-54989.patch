@@ -1,0 +1,18 @@
+diff --git a/Xi/grabdevk.h b/Xi/grabdevk.h
+index e349136..85738af 100644
+--- a/Xi/grabdevk.h
++++ b/Xi/grabdevk.h
+@@ -30,10 +30,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #ifndef GRABDEVK_H
+ #define GRABDEVK_H 1
+ 
+-int SProcXGrabDeviceKey(ClientPtr	/* client */
++int SProcXGrabDeviceKey(ClientPtr       /* client */
+     );
+ 
+-int ProcXGrabDeviceKey(ClientPtr	/* client */
++int ProcXGrabDeviceKey(ClientPtr        /* client */
+     );
+ 
+-#endif /* GRABDEVK_H */
++#endif                          /* GRABDEVK_H */

@@ -1,0 +1,11 @@
+diff --git a/hw/xfree86/os-support/bsd/sparc64_video.c b/hw/xfree86/os-support/bsd/sparc64_video.c
+index ea520c4..c838792 100644
+--- a/hw/xfree86/os-support/bsd/sparc64_video.c
++++ b/hw/xfree86/os-support/bsd/sparc64_video.c
+@@ -87,5 +87,5 @@ xf86ReadBIOS(unsigned long Base, unsigned long Offset, unsigned char *Buf,
+ 	     int Len)
+ {
+ 
+-	return (0);
++	return 0;
+ }

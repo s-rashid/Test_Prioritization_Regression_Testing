@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/darwinXinput.c b/hw/xquartz/darwinXinput.c
+index 19aefb1..966aaf3 100644
+--- a/hw/xquartz/darwinXinput.c
++++ b/hw/xquartz/darwinXinput.c
+@@ -120,7 +120,6 @@ AddOtherInputDevices(void)
+ 
+     dev = (DeviceIntPtr) AddInputDevice(deviceProc, TRUE);
+     dev->public.devicePrivate = private;
+-    RegisterOtherDevice(dev);
+     dev->inited = ((*dev->deviceProc)(dev, DEVICE_INIT) == Success);
+     ************************************************************************/
+   DEBUG_LOG("AddOtherInputDevices\n");

@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/config/dmxconfig.h b/hw/dmx/config/dmxconfig.h
+index 7c9dbc7..477db4a 100644
+--- a/hw/dmx/config/dmxconfig.h
++++ b/hw/dmx/config/dmxconfig.h
+@@ -36,7 +36,7 @@
+ 
+ #ifndef _DMXCONFIG_H_
+ #define _DMXCONFIG_H_
+-#define DMX_DEFAULT_XKB_RULES  "xfree86"
++#define DMX_DEFAULT_XKB_RULES  "base"
+ #define DMX_DEFAULT_XKB_MODEL  "pc101"
+ #define DMX_DEFAULT_XKB_LAYOUT "us"
+ #define DMX_DEFAULT_XKB_VARIANT NULL

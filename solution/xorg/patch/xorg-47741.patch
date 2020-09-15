@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index 4306404..5f1f870 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -522,7 +522,7 @@ bool getGlCapabilities(struct glCapabilities *cap) {
+ 	    conf = malloc(sizeof(*conf));
+ 	    if(NULL == conf) {
+             perror("malloc");
+-            abort();
++            OsAbort();
+ 	    }
+ 
+ 	    /* Copy the struct. */

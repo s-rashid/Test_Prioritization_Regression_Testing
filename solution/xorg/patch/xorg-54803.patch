@@ -1,0 +1,13 @@
+diff --git a/include/resource.h b/include/resource.h
+index ae5dd51..19f46d1 100644
+--- a/include/resource.h
++++ b/include/resource.h
+@@ -162,6 +162,8 @@ typedef struct {
+     unsigned long resourceSize;
+     /* Size attributed to pixmap references from the resource. */
+     unsigned long pixmapRefSize;
++    /* Number of references to this resource; typically 1 */
++    unsigned long refCnt;
+ } ResourceSizeRec, *ResourceSizePtr;
+ 
+ typedef void (*SizeType)(pointer /*value*/,

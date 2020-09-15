@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartz.c b/hw/xquartz/quartz.c
+index 222a5ea..11e5a74 100644
+--- a/hw/xquartz/quartz.c
++++ b/hw/xquartz/quartz.c
+@@ -82,6 +82,8 @@ Bool XQuartzIsRootless = TRUE;
+ Bool XQuartzServerVisible = FALSE;
+ Bool XQuartzFullscreenMenu = FALSE;
+ 
++int32_t XQuartzShieldingWindowLevel = 0;
++
+ /*
+ ===========================================================================
+ 

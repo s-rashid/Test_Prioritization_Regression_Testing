@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index 9865e6f..836b251 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -57,10 +57,6 @@
+ #define KD_MAX_FB   FB_OVERLAY_MAX
+ #endif
+ 
+-#ifndef KD_MAX_CARD_ADDRESS
+-#define KD_MAX_CARD_ADDRESS 8
+-#endif
+-
+ #define Status int
+ 
+ typedef struct _KdCardInfo {

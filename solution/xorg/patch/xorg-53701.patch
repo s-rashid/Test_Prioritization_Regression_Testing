@@ -1,0 +1,45 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 384d8b4..aac33d3 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -1915,7 +1915,13 @@ xf86SetScrnInfoModes (ScrnInfoPtr scrn)
+ 		break;
+     }
+ 
+-    if (scrn->modes != NULL) {
++    if (!scrn->modes) {
++	scrn->modes = xf86ModesAdd(scrn->modes,
++				   xf86CVTMode(scrn->display->virtualX,
++					       scrn->display->virtualY,
++					       60, 0, 0));
++    }
++
+ 	/* For some reason, scrn->modes is circular, unlike the other mode
+ 	 * lists.  How great is that?
+ 	 */
+@@ -1927,7 +1933,7 @@ xf86SetScrnInfoModes (ScrnInfoPtr scrn)
+ 	    while (scrn->modes != mode)
+ 		scrn->modes = scrn->modes->next;
+ 	}
+-    }
++
+     scrn->currentMode = scrn->modes;
+ #ifdef XFreeXDGA
+     if (scrn->pScreen)
+@@ -2529,16 +2535,7 @@ xf86InitialConfiguration (ScrnInfoPtr scrn, Bool canGrow)
+ 			      width, height);
+     }
+ 
+-    if (have_outputs) {
+-	/* Mirror output modes to scrn mode list */
+ 	xf86SetScrnInfoModes (scrn);
+-    } else {
+-	/* Clear any existing modes from scrn->modes */
+-	while (scrn->modes != NULL)
+-	    xf86DeleteMode(&scrn->modes, scrn->modes);
+-	scrn->modes = xf86ModesAdd(scrn->modes,
+-				   xf86CVTMode(width, height, 60, 0, 0));
+-    }
+ 
+     success = TRUE;
+  bailout:

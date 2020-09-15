@@ -1,0 +1,21 @@
+diff --git a/miext/damage/damage.c b/miext/damage/damage.c
+index 2c78134..b7ec92a 100644
+--- a/miext/damage/damage.c
++++ b/miext/damage/damage.c
+@@ -1953,6 +1953,7 @@ DamageCreate (DamageReportFunc  damageReport,
+     pDamage->damageDestroy = damageDestroy;
+     pDamage->damageMarker = NULL;
+     pDamage->pScreen = pScreen;
++    pDamage->devPrivates = NULL;
+ 
+     (*pScrPriv->funcs.Create) (pDamage);
+ 
+@@ -2056,6 +2057,8 @@ DamageDestroy (DamagePtr    pDamage)
+     if (pDamage->damageDestroy)
+ 	(*pDamage->damageDestroy) (pDamage, pDamage->closure);
+     (*pScrPriv->funcs.Destroy) (pDamage);
++    dixFreePrivates(pDamage->devPrivates);
++    pDamage->devPrivates = NULL;
+     REGION_UNINIT (pScreen, &pDamage->damage);
+     REGION_UNINIT (pScreen, &pDamage->pendingDamage);
+     xfree (pDamage);

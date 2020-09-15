@@ -1,0 +1,19 @@
+diff --git a/hw/xwin/winkeyhook.c b/hw/xwin/winkeyhook.c
+index 2d6ed18..fe1156d 100644
+--- a/hw/xwin/winkeyhook.c
++++ b/hw/xwin/winkeyhook.c
+@@ -34,13 +34,7 @@
+ #include "win.h"
+ 
+ 
+-/*
+- * References to external symbols
+- */
+-
+-extern HHOOK			g_hhookKeyboardLL;
+-extern DWORD			g_dwCurrentThreadID;
+-extern HWND			g_hwndKeyboardFocus;
++static HHOOK g_hhookKeyboardLL = NULL;
+ 
+ 
+ /*

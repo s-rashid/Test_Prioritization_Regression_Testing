@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/windialogs.c b/hw/xwin/windialogs.c
+index 0b590cf..a815353 100755
+--- a/hw/xwin/windialogs.c
++++ b/hw/xwin/windialogs.c
+@@ -705,7 +705,7 @@ winAboutDlgProc (HWND hwndDialog, UINT message,
+ 
+ 	case ID_ABOUT_WEBSITE:
+ 	  {
+-	    const char *	pszPath = "http://x.cygwin.com/";
++	    const char *	pszPath = __VENDORDWEBSUPPORT__;
+ 	    int			iReturn;
+ 	    
+ 	    iReturn = ShellExecute (NULL,

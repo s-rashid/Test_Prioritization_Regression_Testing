@@ -1,0 +1,13 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 43cb4d1..4a4481a 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -3898,6 +3898,8 @@ AddScreen(
+ 	return -1;
+     }
+ 
++    update_desktop_dimensions();
++
+     dixRegisterScreenPrivateKey(&cursorScreenDevPriv, pScreen, PRIVATE_CURSOR, 0);
+ 
+     return i;

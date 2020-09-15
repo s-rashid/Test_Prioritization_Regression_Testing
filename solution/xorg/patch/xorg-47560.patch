@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index dd59297..1c8626b 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -164,9 +164,18 @@ typedef struct {
+     DRI2DestroyBufferProcPtr	DestroyBuffer;
+     DRI2CopyRegionProcPtr	CopyRegion;
+     DRI2WaitProcPtr		Wait;
++
++    /* added in version 4 */
++
+     DRI2ScheduleSwapProcPtr	ScheduleSwap;
+     DRI2GetMSCProcPtr		GetMSC;
+     DRI2ScheduleWaitMSCProcPtr	ScheduleWaitMSC;
++
++    /* number of drivers in the driverNames array */
++    unsigned int numDrivers;
++    /* array of driver names, indexed by DRI2Driver* driver types */
++    /* a name of NULL means that driver is not supported */
++    const char * const *driverNames;
+ }  DRI2InfoRec, *DRI2InfoPtr;
+ 
+ extern _X_EXPORT int DRI2EventBase;

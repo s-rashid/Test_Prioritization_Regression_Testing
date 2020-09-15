@@ -1,0 +1,13 @@
+diff --git a/dbe/dbe.c b/dbe/dbe.c
+index 1d14bb3..f4d088c 100644
+--- a/dbe/dbe.c
++++ b/dbe/dbe.c
+@@ -1283,7 +1283,7 @@ DbeSetupBackgroundPainter(WindowPtr pWin, GCPtr pGC)
+             return(FALSE);
+     }
+ 
+-    return dixChangeGC(NullClient, pGC, gcmask, NULL, gcvalues) == 0;
++    return ChangeGC(NullClient, pGC, gcmask, gcvalues) == 0;
+ } /* DbeSetupBackgroundPainter() */
+ 
+ 

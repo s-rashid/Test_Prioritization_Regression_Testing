@@ -1,0 +1,12 @@
+diff --git a/mi/miscrinit.c b/mi/miscrinit.c
+index d46b9f5..1b88ecb 100644
+--- a/mi/miscrinit.c
++++ b/mi/miscrinit.c
+@@ -246,7 +246,6 @@ miScreenInit(
+     }
+     /* else CloseScreen */
+     /* QueryBestSize, SaveScreen, GetImage, GetSpans */
+-    pScreen->PointerNonInterestBox = (PointerNonInterestBoxProcPtr) 0;
+     pScreen->SourceValidate = (SourceValidateProcPtr) 0;
+     /* CreateWindow, DestroyWindow, PositionWindow, ChangeWindowAttributes */
+     /* RealizeWindow, UnrealizeWindow */

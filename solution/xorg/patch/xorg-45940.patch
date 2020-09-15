@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index ec6aff7..d554a7f 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2841,7 +2841,7 @@ WindowsRestructured(void)
+     DeviceIntPtr pDev = inputInfo.devices;
+     while(pDev)
+     {
+-        if (DevHasCursor(pDev))
++        if (IsMaster(pDev) || !pDev->u.master)
+             CheckMotion(NULL, pDev);
+         pDev = pDev->next;
+     }

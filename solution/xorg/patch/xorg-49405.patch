@@ -1,0 +1,12 @@
+diff --git a/test/xi2/protocol-common.c b/test/xi2/protocol-common.c
+index ad18042..50f2b86 100644
+--- a/test/xi2/protocol-common.c
++++ b/test/xi2/protocol-common.c
+@@ -157,7 +157,6 @@ void init_simple(void)
+     dixResetPrivates();
+     InitAtoms();
+     XkbInitPrivates();
+-    XTestInitPrivates();
+     dixRegisterPrivateKey(&XIClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(XIClientRec));
+     dixRegisterPrivateKey(&miPointerScreenKeyRec, PRIVATE_SCREEN, 0);
+     dixRegisterPrivateKey(&miPointerPrivKeyRec, PRIVATE_DEVICE, 0);

@@ -1,0 +1,13 @@
+diff --git a/Xi/xiproperty.c b/Xi/xiproperty.c
+index f726030..88de119 100644
+--- a/Xi/xiproperty.c
++++ b/Xi/xiproperty.c
+@@ -48,7 +48,7 @@
+ static struct dev_properties
+ {
+     Atom type;
+-    char *name;
++    const char *name;
+ } dev_properties[] = {
+     {0, XI_PROP_ENABLED},
+     {0, XI_PROP_XTEST_DEVICE},

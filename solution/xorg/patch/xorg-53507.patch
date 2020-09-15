@@ -1,0 +1,13 @@
+diff --git a/fb/fbpict.c b/fb/fbpict.c
+index d1fd0cb..57c93fd 100644
+--- a/fb/fbpict.c
++++ b/fb/fbpict.c
+@@ -164,6 +164,8 @@ create_bits_picture (PicturePtr pict,
+ 	pixmap->drawable.width, pixmap->drawable.height,
+ 	(uint32_t *)bits, stride * sizeof (FbStride));
+     
++    if (!image)
++	return NULL;
+     
+ #ifdef FB_ACCESS_WRAPPER
+ #if FB_SHIFT==5

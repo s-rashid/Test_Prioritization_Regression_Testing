@@ -1,0 +1,10 @@
+diff --git a/hw/dmx/dmxscrinit.h b/hw/dmx/dmxscrinit.h
+index 9c9fbc5..5c0bfac 100644
+--- a/hw/dmx/dmxscrinit.h
++++ b/hw/dmx/dmxscrinit.h
+@@ -45,4 +45,4 @@ extern Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[]);
+ extern void dmxBEScreenInit(int idx, ScreenPtr pScreen);
+ extern void dmxBECloseScreen(ScreenPtr pScreen);
+ 
+-#endif /* DMXSCRINIT_H */
++#endif                          /* DMXSCRINIT_H */

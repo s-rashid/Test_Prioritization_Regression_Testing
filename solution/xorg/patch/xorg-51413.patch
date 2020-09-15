@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/dixmods/extmod/modinit.h b/hw/xfree86/dixmods/extmod/modinit.h
+index 1154e46..5bbbb88 100644
+--- a/hw/xfree86/dixmods/extmod/modinit.h
++++ b/hw/xfree86/dixmods/extmod/modinit.h
+@@ -18,6 +18,10 @@ extern void XTestExtensionInit(INITARGS);
+ extern void XTestExtension1Init(INITARGS);
+ #endif
+ 
++#if 1
++extern void XCMiscExtensionInit(INITARGS);
++#endif
++
+ #ifdef SCREENSAVER
+ extern void ScreenSaverExtensionInit (INITARGS);
+ #include <X11/extensions/saver.h>

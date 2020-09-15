@@ -1,0 +1,359 @@
+diff --git a/composite/compext.c b/composite/compext.c
+index 722587a..940eed1 100644
+--- a/composite/compext.c
++++ b/composite/compext.c
+@@ -51,6 +51,7 @@
+ 
+ static CARD8	CompositeReqCode;
+ static DevPrivateKeyRec CompositeClientPrivateKeyRec;
++
+ #define CompositeClientPrivateKey (&CompositeClientPrivateKeyRec)
+ RESTYPE		CompositeClientWindowType;
+ RESTYPE		CompositeClientSubwindowsType;
+@@ -65,9 +66,7 @@ typedef struct _CompositeClient {
+     dixLookupPrivate(&(pClient)->devPrivates, CompositeClientPrivateKey))
+ 
+ static void
+-CompositeClientCallback (CallbackListPtr	*list,
+-		      pointer		closure,
+-		      pointer		data)
++CompositeClientCallback(CallbackListPtr *list, pointer closure, pointer data)
+ {
+     NewClientInfoRec	*clientinfo = (NewClientInfoRec *) data;
+     ClientPtr		pClient = clientinfo->client;
+@@ -109,6 +108,7 @@ ProcCompositeQueryVersion (ClientPtr client)
+ {
+     CompositeClientPtr pCompositeClient = GetCompositeClient (client);
+     xCompositeQueryVersionReply rep;
++
+     REQUEST(xCompositeQueryVersionReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeQueryVersionReq);
+@@ -118,7 +118,8 @@ ProcCompositeQueryVersion (ClientPtr client)
+     if (stuff->majorVersion < SERVER_COMPOSITE_MAJOR_VERSION) {
+ 	rep.majorVersion = stuff->majorVersion;
+ 	rep.minorVersion = stuff->minorVersion;
+-    } else {
++    }
++    else {
+ 	rep.majorVersion = SERVER_COMPOSITE_MAJOR_VERSION;
+         rep.minorVersion = SERVER_COMPOSITE_MINOR_VERSION;
+     }
+@@ -149,6 +150,7 @@ static int
+ ProcCompositeRedirectWindow (ClientPtr client)
+ {
+     WindowPtr	pWin;
++
+     REQUEST(xCompositeRedirectWindowReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeRedirectWindowReq);
+@@ -162,6 +164,7 @@ static int
+ ProcCompositeRedirectSubwindows (ClientPtr client)
+ {
+     WindowPtr	pWin;
++
+     REQUEST(xCompositeRedirectSubwindowsReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeRedirectSubwindowsReq);
+@@ -175,6 +178,7 @@ static int
+ ProcCompositeUnredirectWindow (ClientPtr client)
+ {
+     WindowPtr	pWin;
++
+     REQUEST(xCompositeUnredirectWindowReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeUnredirectWindowReq);
+@@ -188,6 +192,7 @@ static int
+ ProcCompositeUnredirectSubwindows (ClientPtr client)
+ {
+     WindowPtr	pWin;
++
+     REQUEST(xCompositeUnredirectSubwindowsReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeUnredirectSubwindowsReq);
+@@ -203,6 +208,7 @@ ProcCompositeCreateRegionFromBorderClip (ClientPtr client)
+     WindowPtr	    pWin;
+     CompWindowPtr   cw;
+     RegionPtr	    pBorderClip, pRegion;
++
+     REQUEST(xCompositeCreateRegionFromBorderClipReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeCreateRegionFromBorderClipReq);
+@@ -232,6 +238,7 @@ ProcCompositeNameWindowPixmap (ClientPtr client)
+     CompWindowPtr   cw;
+     PixmapPtr	    pPixmap;
+     int rc;
++
+     REQUEST(xCompositeNameWindowPixmapReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeNameWindowPixmapReq);
+@@ -264,7 +271,6 @@ ProcCompositeNameWindowPixmap (ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int
+ ProcCompositeGetOverlayWindow (ClientPtr client)
+ {
+@@ -293,16 +299,14 @@ ProcCompositeGetOverlayWindow (ClientPtr client)
+      */
+     cs = GetCompScreen(pScreen);
+     if (cs->pOverlayWin == NULL)
+-	if (!compCreateOverlayWindow(pScreen))
+-	{
++        if (!compCreateOverlayWindow(pScreen)) {
+ 	    FreeResource (pOc->resource, RT_NONE);
+ 	    return BadAlloc;
+ 	}
+ 
+     rc = XaceHook(XACE_RESOURCE_ACCESS, client, cs->pOverlayWin->drawable.id,
+ 		  RT_WINDOW, cs->pOverlayWin, RT_NONE, NULL, DixGetAttrAccess);
+-    if (rc != Success)
+-    {
++    if (rc != Success) {
+ 	FreeResource (pOc->resource, RT_NONE);
+ 	return rc;
+     }
+@@ -312,13 +316,13 @@ ProcCompositeGetOverlayWindow (ClientPtr client)
+     rep.length = 0;
+     rep.overlayWin = cs->pOverlayWin->drawable.id;
+ 
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swapl(&rep.overlayWin);
+     }
+-    (void) WriteToClient(client, sz_xCompositeGetOverlayWindowReply, (char *)&rep);
++    (void) WriteToClient(client, sz_xCompositeGetOverlayWindowReply,
++                         (char *) &rep);
+ 
+     return Success;
+ }
+@@ -357,9 +361,7 @@ static int (*ProcCompositeVector[CompositeNumberRequests])(ClientPtr) = {
+     ProcCompositeUnredirectSubwindows,
+     ProcCompositeCreateRegionFromBorderClip,
+     ProcCompositeNameWindowPixmap,
+-    ProcCompositeGetOverlayWindow,
+-    ProcCompositeReleaseOverlayWindow,
+-};
++        ProcCompositeGetOverlayWindow, ProcCompositeReleaseOverlayWindow,};
+ 
+ static int
+ ProcCompositeDispatch (ClientPtr client)
+@@ -482,9 +484,7 @@ static int (*SProcCompositeVector[CompositeNumberRequests])(ClientPtr) = {
+     SProcCompositeUnredirectSubwindows,
+     SProcCompositeCreateRegionFromBorderClip,
+     SProcCompositeNameWindowPixmap,
+-    SProcCompositeGetOverlayWindow,
+-    SProcCompositeReleaseOverlayWindow,
+-};
++        SProcCompositeGetOverlayWindow, SProcCompositeReleaseOverlayWindow,};
+ 
+ static int
+ SProcCompositeDispatch (ClientPtr client)
+@@ -513,8 +513,7 @@ CompositeExtensionInit (void)
+ 	/* Composite on 8bpp pseudocolor root windows appears to fail, so
+ 	 * just disable it on anything pseudocolor for safety.
+ 	 */
+-	for (vis = pScreen->visuals; vis->vid != pScreen->rootVisual; vis++)
+-	    ;
++        for (vis = pScreen->visuals; vis->vid != pScreen->rootVisual; vis++);
+ 	if ((vis->class | DynamicClass) == PseudoColor)
+ 	    return;
+ 
+@@ -575,6 +574,7 @@ PanoramiXCompositeRedirectWindow (ClientPtr client)
+ {
+     PanoramiXRes *win;
+     int rc = 0, j;
++
+     REQUEST(xCompositeRedirectWindowReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeRedirectWindowReq);
+@@ -588,7 +588,8 @@ PanoramiXCompositeRedirectWindow (ClientPtr client)
+     FOR_NSCREENS_FORWARD(j) {
+ 	stuff->window = win->info[j].id;
+ 	rc = (*PanoramiXSaveCompositeVector[stuff->compositeReqType]) (client);
+-	if (rc != Success) break;
++        if (rc != Success)
++            break;
+     }
+ 
+     return rc;
+@@ -599,6 +600,7 @@ PanoramiXCompositeRedirectSubwindows (ClientPtr client)
+ {
+     PanoramiXRes *win;
+     int rc = 0, j;
++
+     REQUEST(xCompositeRedirectSubwindowsReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeRedirectSubwindowsReq);
+@@ -612,7 +614,8 @@ PanoramiXCompositeRedirectSubwindows (ClientPtr client)
+     FOR_NSCREENS_FORWARD(j) {
+ 	stuff->window = win->info[j].id;
+ 	rc = (*PanoramiXSaveCompositeVector[stuff->compositeReqType]) (client);
+-	if (rc != Success) break;
++        if (rc != Success)
++            break;
+     }
+ 
+     return rc;
+@@ -623,6 +626,7 @@ PanoramiXCompositeUnredirectWindow (ClientPtr client)
+ {
+     PanoramiXRes *win;
+     int rc = 0, j;
++
+     REQUEST(xCompositeUnredirectWindowReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeUnredirectWindowReq);
+@@ -636,7 +640,8 @@ PanoramiXCompositeUnredirectWindow (ClientPtr client)
+     FOR_NSCREENS_FORWARD(j) {
+ 	stuff->window = win->info[j].id;
+ 	rc = (*PanoramiXSaveCompositeVector[stuff->compositeReqType]) (client);
+-	if (rc != Success) break;
++        if (rc != Success)
++            break;
+     }
+ 
+     return rc;
+@@ -647,6 +652,7 @@ PanoramiXCompositeUnredirectSubwindows (ClientPtr client)
+ {
+     PanoramiXRes *win;
+     int rc = 0, j;
++
+     REQUEST(xCompositeUnredirectSubwindowsReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeUnredirectSubwindowsReq);
+@@ -660,7 +666,8 @@ PanoramiXCompositeUnredirectSubwindows (ClientPtr client)
+     FOR_NSCREENS_FORWARD(j) {
+ 	stuff->window = win->info[j].id;
+ 	rc = (*PanoramiXSaveCompositeVector[stuff->compositeReqType]) (client);
+-	if (rc != Success) break;
++        if (rc != Success)
++            break;
+     }
+ 
+     return rc;
+@@ -675,6 +682,7 @@ PanoramiXCompositeNameWindowPixmap (ClientPtr client)
+     int rc;
+     PanoramiXRes *win, *newPix;
+     int i;
++
+     REQUEST(xCompositeNameWindowPixmapReq);
+ 
+     REQUEST_SIZE_MATCH(xCompositeNameWindowPixmapReq);
+@@ -697,35 +705,30 @@ PanoramiXCompositeNameWindowPixmap (ClientPtr client)
+     FOR_NSCREENS(i) {
+ 	rc = dixLookupResourceByType ((void **) &pWin, win->info[i].id,
+ 				      RT_WINDOW, client, DixGetAttrAccess);
+-	if (rc != Success)
+-	{
++        if (rc != Success) {
+ 	    client->errorValue = stuff->window;
+ 	    free (newPix);
+ 	    return rc;
+ 	}
+ 
+-	if (!pWin->viewable)
+-	{
++        if (!pWin->viewable) {
+ 	    free (newPix);
+ 	    return BadMatch;
+ 	}
+ 
+ 	cw = GetCompWindow (pWin);
+-	if (!cw)
+-	{
++        if (!cw) {
+ 	    free (newPix);
+ 	    return BadMatch;
+ 	}
+ 
+ 	pPixmap = (*pWin->drawable.pScreen->GetWindowPixmap) (pWin);
+-	if (!pPixmap)
+-	{
++        if (!pPixmap) {
+ 	    free (newPix);
+ 	    return BadMatch;
+ 	}
+ 
+-	if (!AddResource (newPix->info[i].id, RT_PIXMAP,
+-			  (pointer) pPixmap))
++        if (!AddResource(newPix->info[i].id, RT_PIXMAP, (pointer) pPixmap))
+ 	    return BadAlloc;
+ 
+ 	++pPixmap->refcnt;
+@@ -737,7 +740,6 @@ PanoramiXCompositeNameWindowPixmap (ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int
+ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+ {
+@@ -760,8 +762,7 @@ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+     }
+ 
+     cs = GetCompScreen(screenInfo.screens[0]);
+-    if (!cs->pOverlayWin)
+-    {
++    if (!cs->pOverlayWin) {
+ 	if(!(overlayWin = malloc(sizeof(PanoramiXRes))))
+ 	    return BadAlloc;
+ 
+@@ -772,8 +773,7 @@ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+     FOR_NSCREENS_BACKWARD(i) {
+ 	rc = dixLookupResourceByType((pointer *)&pWin, win->info[i].id,
+ 				     RT_WINDOW, client, DixGetAttrAccess);
+-	if (rc != Success)
+-	{
++        if (rc != Success) {
+ 	    client->errorValue = stuff->window;
+ 	    return rc;
+ 	}
+@@ -792,8 +792,7 @@ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+ 	 */
+ 	cs = GetCompScreen(pScreen);
+ 	if (cs->pOverlayWin == NULL)
+-	    if (!compCreateOverlayWindow(pScreen))
+-	    {
++            if (!compCreateOverlayWindow(pScreen)) {
+ 		FreeResource (pOc->resource, RT_NONE);
+ 		return BadAlloc;
+ 	    }
+@@ -802,15 +801,13 @@ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+ 		      cs->pOverlayWin->drawable.id,
+ 		      RT_WINDOW, cs->pOverlayWin, RT_NONE, NULL,
+ 		      DixGetAttrAccess);
+-	if (rc != Success)
+-	{
++        if (rc != Success) {
+ 	    FreeResource (pOc->resource, RT_NONE);
+ 	    return rc;
+ 	}
+     }
+ 
+-    if (overlayWin)
+-    {
++    if (overlayWin) {
+ 	FOR_NSCREENS(i) {
+ 	    cs = GetCompScreen(screenInfo.screens[i]);
+ 	    overlayWin->info[i].id = cs->pOverlayWin->drawable.id;
+@@ -826,13 +823,13 @@ PanoramiXCompositeGetOverlayWindow (ClientPtr client)
+     rep.length = 0;
+     rep.overlayWin = cs->pOverlayWin->drawable.id;
+ 
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swapl(&rep.overlayWin);
+     }
+-    (void) WriteToClient(client, sz_xCompositeGetOverlayWindowReply, (char *)&rep);
++    (void) WriteToClient(client, sz_xCompositeGetOverlayWindowReply,
++                         (char *) &rep);
+ 
+     return Success;
+ }

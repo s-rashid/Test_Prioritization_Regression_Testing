@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/ddc/ddcProperty.c b/hw/xfree86/ddc/ddcProperty.c
+index d2d90ba..5d6eec9 100644
+--- a/hw/xfree86/ddc/ddcProperty.c
++++ b/hw/xfree86/ddc/ddcProperty.c
+@@ -30,7 +30,6 @@
+ #include <X11/Xatom.h>
+ #include "property.h"
+ #include "propertyst.h"
+-#include "xf86DDC.h"
+ #include <string.h>
+ 
+ #define EDID1_ATOM_NAME         "XFree86_DDC_EDID1_RAWDATA"

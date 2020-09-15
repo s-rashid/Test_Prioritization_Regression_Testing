@@ -1,0 +1,12 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index c578d0b..db24381 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -602,7 +602,6 @@ miPointerSetPosition(DeviceIntPtr pDev, int mode, int *x, int *y)
+ 		pScreen = newScreen;
+ 		(*pScreenPriv->screenFuncs->NewEventScreen) (pDev, pScreen,
+ 							     FALSE);
+-		pScreenPriv = GetScreenPrivate (pScreen);
+ 	    	/* Smash the confine to the new screen */
+                 pPointer->limits.x2 = pScreen->width;
+                 pPointer->limits.y2 = pScreen->height;

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winclipboardinit.c b/hw/xwin/winclipboardinit.c
+index bec63ac..d74cd03 100644
+--- a/hw/xwin/winclipboardinit.c
++++ b/hw/xwin/winclipboardinit.c
+@@ -41,7 +41,7 @@
+ 
+ typedef int (*winDispatchProcPtr) (ClientPtr);
+ 
+-DISPATCH_PROC(winProcSetSelectionOwner);
++int winProcSetSelectionOwner(ClientPtr /* client */);
+ 
+ 
+ /*

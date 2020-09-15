@@ -1,0 +1,39 @@
+diff --git a/Xi/xigetclientpointer.c b/Xi/xigetclientpointer.c
+index 1124ae0..07dbf18 100644
+--- a/Xi/xigetclientpointer.c
++++ b/Xi/xigetclientpointer.c
+@@ -56,22 +56,23 @@ SProcXIGetClientPointer(ClientPtr client)
+     return ProcXIGetClientPointer(client);
+ }
+ 
+-int ProcXIGetClientPointer(ClientPtr client)
++int
++ProcXIGetClientPointer(ClientPtr client)
+ {
+     int rc;
+     ClientPtr winclient;
+     xXIGetClientPointerReply rep;
++
+     REQUEST(xXIGetClientPointerReq);
+     REQUEST_SIZE_MATCH(xXIGetClientPointerReq);
+ 
+-    if (stuff->win != None)
+-    {
+-        rc = dixLookupClient(&winclient, stuff->win, client,
+-                DixGetAttrAccess);
++    if (stuff->win != None) {
++        rc = dixLookupClient(&winclient, stuff->win, client, DixGetAttrAccess);
+ 
+         if (rc != Success)
+             return BadWindow;
+-    } else
++    }
++    else
+         winclient = client;
+ 
+     rep.repType = X_Reply;
+@@ -101,4 +102,3 @@ SRepXIGetClientPointer(ClientPtr client, int size,
+     swaps(&rep->deviceid);
+     WriteToClient(client, size, (char *)rep);
+ }
+-

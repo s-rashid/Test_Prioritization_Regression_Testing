@@ -1,0 +1,21 @@
+diff --git a/hw/dmx/input/dmxarg.h b/hw/dmx/input/dmxarg.h
+index ca76f92..acd8805 100644
+--- a/hw/dmx/input/dmxarg.h
++++ b/hw/dmx/input/dmxarg.h
+@@ -39,11 +39,11 @@
+ 
+ typedef struct _dmxArg *dmxArg;
+ 
+-extern dmxArg     dmxArgCreate(void);
+-extern void       dmxArgFree(dmxArg a);
+-extern void       dmxArgAdd(dmxArg a, const char *string);
++extern dmxArg dmxArgCreate(void);
++extern void dmxArgFree(dmxArg a);
++extern void dmxArgAdd(dmxArg a, const char *string);
+ extern const char *dmxArgV(dmxArg a, int item);
+-extern int        dmxArgC(dmxArg a);
+-extern dmxArg     dmxArgParse(const char *string);
++extern int dmxArgC(dmxArg a);
++extern dmxArg dmxArgParse(const char *string);
+ 
+ #endif

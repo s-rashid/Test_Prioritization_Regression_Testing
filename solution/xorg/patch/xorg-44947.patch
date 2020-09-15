@@ -1,0 +1,22 @@
+diff --git a/dix/events.c b/dix/events.c
+index 52c5e6c..13ef5b8 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3417,7 +3417,17 @@ CheckPassiveGrabsOnWindow(
+                 gdev = GetPairedDevice(device);
+             else
+                 gdev = device;
++        } else if (grab->grabtype == GRABTYPE_XI2)
++        {
++            /* if the device is an attached slave device, gdev must be the
++             * attached master keyboard. Since the slave may have been
++             * reattached after the grab, the modifier device may not be the
++             * same. */
++            if (!IsMaster(grab->device) && device->u.master)
++                gdev = GetMaster(device, MASTER_KEYBOARD);
+         }
++
++
+         if (gdev && gdev->key)
+             xkbi= gdev->key->xkbInfo;
+ 	tempGrab.modifierDevice = grab->modifierDevice;

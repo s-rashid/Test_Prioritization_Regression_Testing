@@ -1,0 +1,13 @@
+diff --git a/os/xdmcp.c b/os/xdmcp.c
+index 877b11c..f5331e1 100644
+--- a/os/xdmcp.c
++++ b/os/xdmcp.c
+@@ -486,7 +486,7 @@ XdmcpRegisterConnection (
+ 	    }
+ 	}
+ #endif
+-	if (fromAddr && memcmp(regAddr, fromAddr, regAddrlen) != 0) {
++	if (!fromAddr || memcmp(regAddr, fromAddr, regAddrlen) != 0) {
+ 	    return;
+ 	}
+     }

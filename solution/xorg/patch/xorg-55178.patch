@@ -1,0 +1,25 @@
+diff --git a/glx/glxscreens.h b/glx/glxscreens.h
+index eb29260..d5420ee 100644
+--- a/glx/glxscreens.h
++++ b/glx/glxscreens.h
+@@ -124,10 +124,8 @@ struct __GLXscreen {
+ 				     DrawablePtr pDraw,
+ 				     XID drawId,
+ 				     int type,
+-				     XID glxDrawId,
+-				     __GLXconfig *modes);
+-    int            (*swapInterval)  (__GLXdrawable *drawable,
+-				     int interval);
++                                      XID glxDrawId, __GLXconfig * modes);
++    int (*swapInterval) (__GLXdrawable * drawable, int interval);
+ 
+     ScreenPtr pScreen;
+ 
+@@ -158,7 +156,6 @@ struct __GLXscreen {
+     Bool (*CloseScreen)(int index, ScreenPtr pScreen);
+ };
+ 
+-
+ void __glXScreenInit(__GLXscreen *screen, ScreenPtr pScreen);
+ void __glXScreenDestroy(__GLXscreen *screen);
+ 

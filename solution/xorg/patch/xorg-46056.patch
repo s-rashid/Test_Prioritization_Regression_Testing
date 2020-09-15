@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartz.c b/hw/xquartz/quartz.c
+index 3f8f8b9..ca8b245 100644
+--- a/hw/xquartz/quartz.c
++++ b/hw/xquartz/quartz.c
+@@ -45,7 +45,7 @@
+ 
+ #include "X11Application.h"
+ 
+-#include <X11/extensions/applewm.h>
++#include <X11/extensions/applewmconst.h>
+ #include <X11/extensions/randr.h>
+ 
+ // X headers

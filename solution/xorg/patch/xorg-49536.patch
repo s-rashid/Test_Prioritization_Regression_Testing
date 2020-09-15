@@ -1,0 +1,25 @@
+diff --git a/hw/xfree86/exa/examodule.c b/hw/xfree86/exa/examodule.c
+index 315ba4a..83f72b5 100644
+--- a/hw/xfree86/exa/examodule.c
++++ b/hw/xfree86/exa/examodule.c
+@@ -42,8 +42,8 @@ typedef struct _ExaXorgScreenPrivRec {
+     OptionInfoPtr		 options;
+ } ExaXorgScreenPrivRec, *ExaXorgScreenPrivPtr;
+ 
+-static int exaXorgScreenPrivateKeyIndex;
+-static DevPrivateKey exaXorgScreenPrivateKey = &exaXorgScreenPrivateKeyIndex;
++static DevPrivateKeyRec exaXorgScreenPrivateKeyRec;
++#define exaXorgScreenPrivateKey (&exaXorgScreenPrivateKeyRec)
+ 
+ typedef enum {
+     EXAOPT_MIGRATION_HEURISTIC,
+@@ -114,6 +114,9 @@ exaDDXDriverInit(ScreenPtr pScreen)
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     ExaXorgScreenPrivPtr pScreenPriv;
+ 
++    if (!dixRegisterPrivateKey(&exaXorgScreenPrivateKeyRec, PRIVATE_SCREEN, 0))
++	return;
++
+     pScreenPriv = calloc(1, sizeof(ExaXorgScreenPrivRec));
+     if (pScreenPriv == NULL)
+ 	return;

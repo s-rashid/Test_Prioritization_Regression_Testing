@@ -1,0 +1,25 @@
+diff --git a/Xi/chgdctl.h b/Xi/chgdctl.h
+index 9cda225..f5ca5e7 100644
+--- a/Xi/chgdctl.h
++++ b/Xi/chgdctl.h
+@@ -30,15 +30,15 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #ifndef CHGDCTL_H
+ #define CHGDCTL_H 1
+ 
+-int SProcXChangeDeviceControl(ClientPtr	/* client */
++int SProcXChangeDeviceControl(ClientPtr /* client */
+     );
+ 
+-int ProcXChangeDeviceControl(ClientPtr	/* client */
++int ProcXChangeDeviceControl(ClientPtr  /* client */
+     );
+ 
+ void SRepXChangeDeviceControl(ClientPtr /* client */ ,
+-			      int /* size */ ,
+-			      xChangeDeviceControlReply *	/* rep */
++                              int /* size */ ,
++                              xChangeDeviceControlReply *       /* rep */
+     );
+ 
+-#endif /* CHGDCTL_H */
++#endif                          /* CHGDCTL_H */

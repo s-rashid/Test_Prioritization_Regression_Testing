@@ -1,0 +1,13 @@
+diff --git a/os/xprintf.c b/os/xprintf.c
+index 0a8bd06..254b737 100644
+--- a/os/xprintf.c
++++ b/os/xprintf.c
+@@ -108,7 +108,7 @@ Xvasprintf(char **ret, const char * _X_RESTRICT_KYWD format, va_list va)
+         return -1;
+ 
+     vsnprintf(*ret, size + 1, format, va);
+-    ret[size] = 0;
++    (*ret)[size] = 0;
+     return size;
+ #endif
+ }

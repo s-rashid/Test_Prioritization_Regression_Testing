@@ -1,0 +1,20 @@
+diff --git a/xkb/xkbEvents.c b/xkb/xkbEvents.c
+index 8028502..c020e5e 100644
+--- a/xkb/xkbEvents.c
++++ b/xkb/xkbEvents.c
+@@ -1045,15 +1045,6 @@ XkbInterestPtr	interest;
+ 	interest->dev = dev;
+ 	interest->client = client;
+ 	interest->resource = id;
+-	interest->stateNotifyMask= 0;
+-	interest->ctrlsNotifyMask= 0;
+-	interest->namesNotifyMask= 0;
+-	interest->compatNotifyMask= 0;
+-	interest->bellNotifyMask= FALSE;
+-	interest->accessXNotifyMask= 0;
+-	interest->iStateNotifyMask= 0;
+-	interest->iMapNotifyMask= 0;
+-	interest->altSymsNotifyMask= 0;
+ 	interest->next = dev->xkb_interest;
+ 	dev->xkb_interest= interest;
+ 	return interest;

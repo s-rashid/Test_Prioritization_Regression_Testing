@@ -1,0 +1,12 @@
+diff --git a/Xi/xisetdevfocus.h b/Xi/xisetdevfocus.h
+index 2c3243d..0865a72 100644
+--- a/Xi/xisetdevfocus.h
++++ b/Xi/xisetdevfocus.h
+@@ -36,5 +36,5 @@ int ProcXISetFocus(ClientPtr client);
+ int SProcXIGetFocus(ClientPtr client);
+ int ProcXIGetFocus(ClientPtr client);
+ 
+-void SRepXIGetFocus(ClientPtr client, int len, xXIGetFocusReply* rep);
+-#endif /* XISETDEVFOCUS_H */
++void SRepXIGetFocus(ClientPtr client, int len, xXIGetFocusReply * rep);
++#endif                          /* XISETDEVFOCUS_H */

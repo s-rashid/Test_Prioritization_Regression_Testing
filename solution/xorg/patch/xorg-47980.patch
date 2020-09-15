@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/quartzCommon.h b/hw/xquartz/quartzCommon.h
+index 1c0eeba..8ab70f2 100644
+--- a/hw/xquartz/quartzCommon.h
++++ b/hw/xquartz/quartzCommon.h
+@@ -60,6 +60,7 @@ extern int              focusOnNewWindow;
+ extern int              quartzUseAGL;
+ extern int              quartzEnableKeyEquivalents;
+ extern int              quartzFullscreenDisableHotkeys;
++extern int              quartzOptionSendsAlt;
+ 
+ // Other shared data
+ extern int              quartzServerVisible;

@@ -1,0 +1,32 @@
+diff --git a/hw/xfree86/common/xf86noBus.c b/hw/xfree86/common/xf86noBus.c
+index e7d4442..0b96349 100644
+--- a/hw/xfree86/common/xf86noBus.c
++++ b/hw/xfree86/common/xf86noBus.c
+@@ -40,16 +40,12 @@
+ #include "os.h"
+ #include "xf86.h"
+ #include "xf86Priv.h"
+-#include "xf86Resources.h"
+ 
+ #include "xf86Bus.h"
+ 
+ #define XF86_OS_PRIVS
+-#define NEED_OS_RAC_PROTOS
+ #include "xf86_OSproc.h"
+ 
+-#include "xf86RAC.h"
+-
+ int
+ xf86ClaimNoSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+ {
+@@ -64,10 +60,6 @@ xf86ClaimNoSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+     p->active = active;
+     p->inUse = FALSE;
+     xf86AddDevToEntity(num, dev);
+-    p->access = xnfcalloc(1,sizeof(EntityAccessRec));
+-    p->access->fallback = &AccessNULL;
+-    p->access->pAccess = &AccessNULL;
+-    p->busAcc = NULL;
+ 
+     return num;
+ }

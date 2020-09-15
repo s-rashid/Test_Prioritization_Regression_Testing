@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index be14b9d..dd59297 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -169,6 +169,8 @@ typedef struct {
+     DRI2ScheduleWaitMSCProcPtr	ScheduleWaitMSC;
+ }  DRI2InfoRec, *DRI2InfoPtr;
+ 
++extern _X_EXPORT int DRI2EventBase;
++
+ extern _X_EXPORT Bool DRI2ScreenInit(ScreenPtr	pScreen,
+ 		    DRI2InfoPtr info);
+ 

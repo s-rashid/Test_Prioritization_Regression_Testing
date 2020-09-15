@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/glxProxy/glxutil.h b/hw/dmx/glxProxy/glxutil.h
+index 5458212..d3c7286 100644
+--- a/hw/dmx/glxProxy/glxutil.h
++++ b/hw/dmx/glxProxy/glxutil.h
+@@ -35,8 +35,7 @@ extern void __glXNop(void);
+ 
+ /* context helper routines */
+ extern __GLXcontext *__glXLookupContextByTag(__GLXclientState*, GLXContextTag);
+-extern DrawablePtr __glXLookupDrawableByTag(__GLXclientState *cl, GLXContextTag tag);
+-
++extern DrawablePtr __glXLookupDrawableByTag(__GLXclientState * cl,
++                                            GLXContextTag tag);
+ 
+ #endif /* _glxcmds_h_ */
+-

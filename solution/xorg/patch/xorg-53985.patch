@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index da817a8..37cbcdb 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -2554,7 +2554,7 @@ GetMaster(DeviceIntPtr dev, int which)
+  * the value for master.
+  */
+ int
+-AllocDevicePair (ClientPtr client, char* name,
++AllocDevicePair (ClientPtr client, const char* name,
+                  DeviceIntPtr* ptr,
+                  DeviceIntPtr* keybd,
+                  DeviceProc ptr_proc,

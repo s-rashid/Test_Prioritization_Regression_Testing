@@ -1,0 +1,13 @@
+diff --git a/dix/swapreq.c b/dix/swapreq.c
+index d058518..a896b4b 100644
+--- a/dix/swapreq.c
++++ b/dix/swapreq.c
+@@ -807,7 +807,7 @@ SProcStoreColors(ClientPtr client)
+     swaps(&stuff->length);
+     REQUEST_AT_LEAST_SIZE(xStoreColorsReq);
+     swapl(&stuff->cmap);
+-    pItem = (xColorItem *) & stuff[1];
++    pItem = (xColorItem *) &stuff[1];
+     for (count = LengthRestB(stuff) / sizeof(xColorItem); --count >= 0;)
+         SwapColorItem(pItem++);
+     return ((*ProcVector[X_StoreColors]) (client));

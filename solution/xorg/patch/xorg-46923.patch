@@ -1,0 +1,13 @@
+diff --git a/include/site.h b/include/site.h
+index c07cbbf..b134212 100644
+--- a/include/site.h
++++ b/include/site.h
+@@ -73,7 +73,7 @@ SOFTWARE.
+  * DO NOT CHANGE THESE VALUES OR THE DIX IMAKEFILE!
+  */
+ #ifndef COMPILEDDEFAULTFONTPATH
+-#define COMPILEDDEFAULTFONTPATH	"/usr/lib/X11/fonts/misc/"
++#define COMPILEDDEFAULTFONTPATH	"/usr/share/fonts/X11/misc/"
+ #endif
+ 
+ /*

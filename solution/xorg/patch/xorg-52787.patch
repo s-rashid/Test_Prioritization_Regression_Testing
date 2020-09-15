@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index d2968dc..98250e6 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -193,6 +193,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height, ScreenPtr pScr
+         *width = 800;
+         *height = 600;
+         PseudoramiXAddScreen(*x, *y, *width, *height);
++        QuartzCopyDisplayIDs(pScreen, 0, NULL);
+         return;
+     }
+ 

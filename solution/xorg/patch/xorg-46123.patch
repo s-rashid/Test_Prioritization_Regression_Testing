@@ -1,0 +1,13 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 66936c9..4848c1b 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -107,7 +107,7 @@ do_butmap_change(DeviceIntPtr dev, CARD8 *map, int len, ClientPtr client)
+  * to the requested device, faithfully ignores any errors encountered while
+  * trying to apply the map to its master/slaves.
+  */
+-_X_EXPORT int
++int
+ ApplyPointerMapping(DeviceIntPtr dev, CARD8 *map, int len, ClientPtr client)
+ {
+     int ret;

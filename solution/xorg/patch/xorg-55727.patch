@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/Events.c b/hw/xnest/Events.c
+index 619427d..447d5a7 100644
+--- a/hw/xnest/Events.c
++++ b/hw/xnest/Events.c
+@@ -174,7 +174,8 @@ xnestCollectEvents(void)
+       if (X.xcrossing.detail != NotifyInferior) {
+ 	pScreen = xnestScreen(X.xcrossing.window);
+ 	if (pScreen) {
+-	  NewCurrentScreen(inputInfo.pointer, pScreen, X.xcrossing.x, X.xcrossing.y);
++                    NewCurrentScreen(inputInfo.pointer, pScreen, X.xcrossing.x,
++                                     X.xcrossing.y);
+           valuators[0] = X.xcrossing.x;
+           valuators[1] = X.xcrossing.y;
+           valuator_mask_set_range(&mask, 0, 2, valuators);

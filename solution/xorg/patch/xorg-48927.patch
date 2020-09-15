@@ -1,0 +1,29 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 21b4a16..1460bc4 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -82,6 +82,16 @@ typedef struct _Depth {
+     VisualID		*vids;    /* block of visual ids for this depth */
+   } DepthRec;
+ 
++typedef struct _ScreenSaverStuff {
++    WindowPtr pWindow;
++    XID       wid;
++    char      blanked;
++    Bool      (*ExternalScreenSaver)(
++	ScreenPtr	/*pScreen*/,
++	int		/*xstate*/,
++	Bool		/*force*/);
++} ScreenSaverStuffRec;
++
+ 
+ /*
+  *  There is a typedef for each screen function pointer so that code that
+@@ -468,6 +478,7 @@ typedef struct _Screen {
+     pointer		devPrivate;
+     short       	numVisuals;
+     VisualPtr		visuals;
++    ScreenSaverStuffRec screensaver;
+ 
+     /* Random screen procedures */
+ 

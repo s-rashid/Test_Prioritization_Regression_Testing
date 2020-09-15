@@ -1,0 +1,15 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 0a63aa2..6fc1eaf 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -148,9 +148,7 @@ SecurityLabelInitial(void)
+ static _X_INLINE const char *
+ SecurityLookupRequestName(ClientPtr client)
+ {
+-    int major = ((xReq *)client->requestBuffer)->reqType;
+-    int minor = MinorOpcodeOfRequest(client);
+-    return LookupRequestName(major, minor);
++    return LookupRequestName(client->majorOp, client->minorOp);
+ }
+ 
+ 

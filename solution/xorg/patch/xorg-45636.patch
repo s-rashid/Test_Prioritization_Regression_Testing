@@ -1,0 +1,19 @@
+diff --git a/hw/xquartz/bundle/Info.plist.cpp b/hw/xquartz/bundle/Info.plist.cpp
+index 9062816..6d951ad 100644
+--- a/hw/xquartz/bundle/Info.plist.cpp
++++ b/hw/xquartz/bundle/Info.plist.cpp
+@@ -26,6 +26,14 @@
+ 		<string>x11a</string>
+ 	<key>CSResourcesFileMapped</key>
+ 		<true/>
++#ifdef XQUARTZ_SPARKLE
++	<key>SUEnableAutomaticChecks</key>
++		<true/>
++	<key>SUPublicDSAKeyFile</key>
++		<string>sparkle.pem</string>
++        <key>SUFeedURL</key>
++                <string>http://xquartz.macosforge.org/downloads/sparkle/release.xml</string>
++#endif
+ 	<key>NSHumanReadableCopyright</key>
+ 		<string>© 2003-2009 Apple Inc.
+ © 2003 XFree86 Project, Inc.

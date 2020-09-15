@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/loader/loader.h b/hw/xfree86/loader/loader.h
+index 42e1518..9dfc307 100644
+--- a/hw/xfree86/loader/loader.h
++++ b/hw/xfree86/loader/loader.h
+@@ -68,7 +68,6 @@ typedef struct _loader {
+     int handle;			/* Unique id used to remove symbols from
+ 				 * this module when it is unloaded */
+     char *name;
+-    char *cname;
+     void *private;		/* format specific data */
+     loaderPtr next;
+ } loaderRec;
+@@ -87,7 +86,7 @@ extern const ModuleVersions LoaderVersionInfo;
+ extern unsigned long LoaderOptions;
+ 
+ /* Internal Functions */
+-int LoaderOpen(const char *, const char *, int, int *, int *, int *, int);
++int LoaderOpen(const char *, int, int *, int *, int *, int);
+ int LoaderHandleOpen(int);
+ 
+ #endif /* _LOADER_H */

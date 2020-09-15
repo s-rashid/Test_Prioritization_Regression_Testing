@@ -1,0 +1,39 @@
+diff --git a/mi/mieq.c b/mi/mieq.c
+index 6ec2dba..b27e9da 100644
+--- a/mi/mieq.c
++++ b/mi/mieq.c
+@@ -367,14 +367,24 @@ mieqProcessDeviceEvent(DeviceIntPtr dev,
+     /* Custom event handler */
+     handler = miEventQueue.handlers[event->any.type];
+ 
++    switch (event->any.type) {
++        /* Catch events that include valuator information and check if they
++         * are changing the screen */
++        case ET_Motion:
++        case ET_KeyPress:
++        case ET_KeyRelease:
++        case ET_ButtonPress:
++        case ET_ButtonRelease:
+     if (dev && screen && screen != DequeueScreen(dev) && !handler) {
+-        /* Assumption - screen switching can only occur on motion events. */
+         DequeueScreen(dev) = screen;
+         x = event->device.root_x;
+         y = event->device.root_y;
+         NewCurrentScreen (dev, DequeueScreen(dev), x, y);
+     }
+-    else {
++            break;
++        default:
++            break;
++    }
+         master = CopyGetMasterEvent(dev, event, &mevent);
+ 
+         if (master)
+@@ -401,7 +411,6 @@ mieqProcessDeviceEvent(DeviceIntPtr dev,
+                 master->public.processInputProc(&mevent, master);
+         }
+     }
+-}
+ 
+ /* Call this from ProcessInputEvents(). */
+ void

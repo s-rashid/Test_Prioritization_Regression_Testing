@@ -1,0 +1,208 @@
+diff --git a/hw/xnest/Window.c b/hw/xnest/Window.c
+index 9ed69ed..e2b21b5 100644
+--- a/hw/xnest/Window.c
++++ b/hw/xnest/Window.c
+@@ -45,6 +45,7 @@ static int
+ xnestFindWindowMatch(WindowPtr pWin, pointer ptr)
+ {
+   xnestWindowMatch *wm = (xnestWindowMatch *)ptr;
++
+   if (wm->window == xnestWindow(pWin)) {
+     wm->pWin = pWin;
+     return WT_STOPWALKING;
+@@ -64,7 +65,8 @@ xnestWindowPtr(Window window)
+ 
+   for (i = 0; i < xnestNumScreens; i++) {
+     WalkTree(screenInfo.screens[i], xnestFindWindowMatch, (pointer) &wm);
+-    if (wm.pWin) break;
++        if (wm.pWin)
++            break;
+   }
+   
+   return wm.pWin;
+@@ -88,12 +90,15 @@ xnestCreateWindow(WindowPtr pWin)
+     attributes.backing_store = NotUseful;
+     
+     if (pWin->parent) {
+-      if (pWin->optional && pWin->optional->visual != wVisual(pWin->parent)) {
+-	visual = xnestVisualFromID(pWin->drawable.pScreen, wVisual(pWin));
++            if (pWin->optional &&
++                pWin->optional->visual != wVisual(pWin->parent)) {
++                visual =
++                    xnestVisualFromID(pWin->drawable.pScreen, wVisual(pWin));
+ 	mask |= CWColormap;
+ 	if (pWin->optional->colormap) {
+ 	  dixLookupResourceByType((pointer *)&pCmap, wColormap(pWin),
+-				  RT_COLORMAP, serverClient, DixUseAccess);
++                                            RT_COLORMAP, serverClient,
++                                            DixUseAccess);
+ 	  attributes.colormap = xnestColormap(pCmap);
+ 	}
+ 	else
+@@ -122,8 +127,7 @@ xnestCreateWindow(WindowPtr pWin)
+ 						pWin->borderWidth,
+ 						pWin->drawable.depth, 
+ 						pWin->drawable.class,
+-						visual,
+-						mask, &attributes);
++                                                  visual, mask, &attributes);
+   xnestWindowPriv(pWin)->parent = xnestWindowParent(pWin);
+   xnestWindowPriv(pWin)->x = pWin->origin.x - wBorderWidth(pWin);
+   xnestWindowPriv(pWin)->y = pWin->origin.y - wBorderWidth(pWin);
+@@ -133,10 +137,8 @@ xnestCreateWindow(WindowPtr pWin)
+   xnestWindowPriv(pWin)->sibling_above = None;
+   if (pWin->nextSib)
+     xnestWindowPriv(pWin->nextSib)->sibling_above = xnestWindow(pWin);
+-  xnestWindowPriv(pWin)->bounding_shape = 
+-    RegionCreate(NULL, 1);
+-  xnestWindowPriv(pWin)->clip_shape = 
+-    RegionCreate(NULL, 1);
++    xnestWindowPriv(pWin)->bounding_shape = RegionCreate(NULL, 1);
++    xnestWindowPriv(pWin)->clip_shape = RegionCreate(NULL, 1);
+ 
+   if (!pWin->parent) /* only the root window will have the right colormap */
+     xnestSetInstalledColormapWindows(pWin->drawable.pScreen);
+@@ -166,9 +168,7 @@ xnestPositionWindow(WindowPtr pWin, int x, int y)
+ {
+   xnestConfigureWindow(pWin, 
+ 		       CWParent |
+-		       CWX | CWY | 
+-		       CWWidth | CWHeight | 
+-		       CWBorderWidth);
++                         CWX | CWY | CWWidth | CWHeight | CWBorderWidth);
+   
+   return True;
+ }
+@@ -199,40 +199,32 @@ xnestConfigureWindow(WindowPtr pWin, unsigned int mask)
+       xnestWindowPriv(pWin)->x != pWin->origin.x - wBorderWidth(pWin)) {
+     valuemask |= CWX;
+     values.x =
+-      xnestWindowPriv(pWin)->x = 
+-	pWin->origin.x - wBorderWidth(pWin);
++            xnestWindowPriv(pWin)->x = pWin->origin.x - wBorderWidth(pWin);
+   }
+ 
+   if (mask & CWY &&
+       xnestWindowPriv(pWin)->y != pWin->origin.y - wBorderWidth(pWin)) {
+     valuemask |= CWY;
+     values.y =
+-      xnestWindowPriv(pWin)->y = 
+-	pWin->origin.y - wBorderWidth(pWin);
++            xnestWindowPriv(pWin)->y = pWin->origin.y - wBorderWidth(pWin);
+   }
+ 
+-  if (mask & CWWidth &&
+-      xnestWindowPriv(pWin)->width != pWin->drawable.width) {
++    if (mask & CWWidth && xnestWindowPriv(pWin)->width != pWin->drawable.width) {
+     valuemask |= CWWidth;
+-    values.width = 
+-      xnestWindowPriv(pWin)->width = 
+-	pWin->drawable.width;
++        values.width = xnestWindowPriv(pWin)->width = pWin->drawable.width;
+   }
+   
+   if (mask & CWHeight &&
+       xnestWindowPriv(pWin)->height != pWin->drawable.height) {
+     valuemask |= CWHeight;
+-    values.height = 
+-      xnestWindowPriv(pWin)->height = 
+-	pWin->drawable.height;
++        values.height = xnestWindowPriv(pWin)->height = pWin->drawable.height;
+   }
+   
+   if (mask & CWBorderWidth &&
+       xnestWindowPriv(pWin)->border_width != pWin->borderWidth) {
+     valuemask |= CWBorderWidth;
+     values.border_width = 
+-      xnestWindowPriv(pWin)->border_width = 
+-	pWin->borderWidth;
++            xnestWindowPriv(pWin)->border_width = pWin->borderWidth;
+   }
+  
+   if (valuemask)
+@@ -256,8 +248,10 @@ xnestConfigureWindow(WindowPtr pWin, unsigned int mask)
+       valuemask = CWSibling | CWStackMode;
+       values.sibling = xnestWindowSiblingAbove(pSib);
+       values.stack_mode = Below;
+-      XConfigureWindow(xnestDisplay, xnestWindow(pSib), valuemask, &values);
+-      xnestWindowPriv(pSib)->sibling_above = xnestWindowSiblingAbove(pSib);
++            XConfigureWindow(xnestDisplay, xnestWindow(pSib), valuemask,
++                             &values);
++            xnestWindowPriv(pSib)->sibling_above =
++                xnestWindowSiblingAbove(pSib);
+     }
+   }
+ }
+@@ -337,8 +331,8 @@ xnestChangeWindowAttributes(WindowPtr pWin, unsigned long mask)
+   if (mask & CWColormap) {
+     ColormapPtr pCmap;
+     
+-    dixLookupResourceByType((pointer *)&pCmap, wColormap(pWin), RT_COLORMAP,
+-			    serverClient, DixUseAccess);
++        dixLookupResourceByType((pointer *) &pCmap, wColormap(pWin),
++                                RT_COLORMAP, serverClient, DixUseAccess);
+ 
+     attributes.colormap = xnestColormap(pCmap);
+ 
+@@ -432,9 +426,11 @@ xnestRegionEqual(RegionPtr pReg1, RegionPtr pReg2)
+   BoxPtr pBox1, pBox2;
+   unsigned int n1, n2;
+ 
+-  if (pReg1 == pReg2) return True;
++    if (pReg1 == pReg2)
++        return True;
+ 
+-  if (pReg1 == NullRegion || pReg2 == NullRegion) return False;
++    if (pReg1 == NullRegion || pReg2 == NullRegion)
++        return False;
+ 
+   pBox1 = RegionRects(pReg1);
+   n1 = RegionNumRects(pReg1);
+@@ -442,11 +438,14 @@ xnestRegionEqual(RegionPtr pReg1, RegionPtr pReg2)
+   pBox2 = RegionRects(pReg2);
+   n2 = RegionNumRects(pReg2);
+ 
+-  if (n1 != n2) return False;
++    if (n1 != n2)
++        return False;
+ 
+-  if (pBox1 == pBox2) return True;
++    if (pBox1 == pBox2)
++        return True;
+ 
+-  if (memcmp(pBox1, pBox2, n1 * sizeof(BoxRec))) return False;
++    if (memcmp(pBox1, pBox2, n1 * sizeof(BoxRec)))
++        return False;
+ 
+   return True;
+ }
+@@ -463,7 +462,8 @@ xnestShapeWindow(WindowPtr pWin)
+ 			wBoundingShape(pWin))) {
+     
+     if (wBoundingShape(pWin)) {
+-      RegionCopy(xnestWindowPriv(pWin)->bounding_shape, wBoundingShape(pWin));
++            RegionCopy(xnestWindowPriv(pWin)->bounding_shape,
++                       wBoundingShape(pWin));
+       
+       reg = XCreateRegion();
+       pBox = RegionRects(xnestWindowPriv(pWin)->bounding_shape);
+@@ -488,8 +488,7 @@ xnestShapeWindow(WindowPtr pWin)
+     }
+   }
+   
+-  if (!xnestRegionEqual(xnestWindowPriv(pWin)->clip_shape,
+-			wClipShape(pWin))) {
++    if (!xnestRegionEqual(xnestWindowPriv(pWin)->clip_shape, wClipShape(pWin))) {
+     
+     if (wClipShape(pWin)) {
+       RegionCopy(xnestWindowPriv(pWin)->clip_shape, wClipShape(pWin));
+@@ -497,8 +496,7 @@ xnestShapeWindow(WindowPtr pWin)
+       reg = XCreateRegion();
+       pBox = RegionRects(xnestWindowPriv(pWin)->clip_shape);
+       for (i = 0; 
+-	   i < RegionNumRects(xnestWindowPriv(pWin)->clip_shape);
+-	   i++) {
++                 i < RegionNumRects(xnestWindowPriv(pWin)->clip_shape); i++) {
+         rect.x = pBox[i].x1;
+         rect.y = pBox[i].y1;
+         rect.width = pBox[i].x2 - pBox[i].x1;

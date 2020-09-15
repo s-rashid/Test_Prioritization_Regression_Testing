@@ -1,0 +1,18 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 2df32e8..bfde2e9 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -630,9 +630,12 @@ updateFromMaster(EventListPtr events, DeviceIntPtr dev, int type, int *num_event
+     if (master && master->last.slave != dev)
+     {
+         CreateClassesChangedEvent(events, master, dev, type);
++        if (IsPointerDevice(master))
++        {
+         updateSlaveDeviceCoords(master, dev);
+-        master->last.slave = dev;
+         master->last.numValuators = dev->last.numValuators;
++        }
++        master->last.slave = dev;
+         (*num_events)++;
+         events++;
+     }

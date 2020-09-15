@@ -1,0 +1,40 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_kmod.c b/hw/xfree86/os-support/linux/lnx_kmod.c
+index 0b9493d..0a17c2a 100644
+--- a/hw/xfree86/os-support/linux/lnx_kmod.c
++++ b/hw/xfree86/os-support/linux/lnx_kmod.c
+@@ -11,11 +11,9 @@
+ #include "xf86_OSlib.h"
+ #include "xf86.h"
+ 
+-
+ #define MODPROBE_PATH_FILE      "/proc/sys/kernel/modprobe"
+ #define MAX_PATH                1024
+ 
+-
+ #if 0
+ /* XFree86 #defines execl to be the xf86execl() function which does
+  * a fork AND exec.  We don't want that.  We want the regular,
+@@ -26,7 +24,6 @@
+ #endif
+ #endif
+ 
+-
+ /*
+  * Load a Linux kernel module.
+  * This is used by the DRI/DRM to load a DRM kernel module when
+@@ -47,6 +44,7 @@ xf86LoadKernelModule(const char *modName)
+    fd = open(MODPROBE_PATH_FILE, O_RDONLY);
+    if (fd >= 0) {
+       int count = read(fd, mpPath, MAX_PATH - 1);
++
+       if (count <= 0) {
+          mpPath[0] = 0;
+       }
+@@ -90,6 +88,7 @@ xf86LoadKernelModule(const char *modName)
+           * the first attempt.  Don't know why!
+           */
+          int count = 0, p;
++
+          do {
+             p = waitpid(pid, &status, 0);
+          } while (p == -1 && count++ < 4);

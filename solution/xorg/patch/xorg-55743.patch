@@ -1,0 +1,10 @@
+diff --git a/hw/xnest/Screen.h b/hw/xnest/Screen.h
+index b113c64..1d255d7 100644
+--- a/hw/xnest/Screen.h
++++ b/hw/xnest/Screen.h
+@@ -22,4 +22,4 @@ ScreenPtr xnestScreen(Window window);
+ Bool xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[]);
+ Bool xnestCloseScreen(int index, ScreenPtr pScreen);
+ 
+-#endif /* XNESTSCREEN_H */
++#endif                          /* XNESTSCREEN_H */

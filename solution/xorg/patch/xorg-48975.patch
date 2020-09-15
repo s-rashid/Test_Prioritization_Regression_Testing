@@ -1,0 +1,22 @@
+diff --git a/hw/kdrive/linux/tslib.c b/hw/kdrive/linux/tslib.c
+index 322ccc7..48a0842 100644
+--- a/hw/kdrive/linux/tslib.c
++++ b/hw/kdrive/linux/tslib.c
+@@ -157,7 +157,7 @@ TslibInit (KdPointerInfo *pi)
+         return !Success;
+ 
+     pi->driverPrivate = (struct TslibPrivate *)
+-                        xcalloc(sizeof(struct TslibPrivate), 1);
++                        calloc(sizeof(struct TslibPrivate), 1);
+     if (!pi->driverPrivate)
+         return !Success;
+ 
+@@ -175,7 +175,7 @@ TslibInit (KdPointerInfo *pi)
+ static void
+ TslibFini (KdPointerInfo *pi)
+ {
+-    xfree(pi->driverPrivate);
++    free(pi->driverPrivate);
+     pi->driverPrivate = NULL;
+ }
+ 

@@ -1,0 +1,14 @@
+diff --git a/include/input.h b/include/input.h
+index a1930bb..4eee47c 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -427,7 +427,8 @@ extern _X_EXPORT void FreeEventList(InternalEvent *list, int num_events);
+ extern void CreateClassesChangedEvent(InternalEvent *event,
+                                       DeviceIntPtr master,
+                                       DeviceIntPtr slave,
+-                                      int type);
++                                      int flags);
++
+ extern InternalEvent * UpdateFromMaster(
+     InternalEvent *events,
+     DeviceIntPtr pDev,

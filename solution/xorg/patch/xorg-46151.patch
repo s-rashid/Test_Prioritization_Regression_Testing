@@ -1,0 +1,13 @@
+diff --git a/test/xi2/protocol-common.h b/test/xi2/protocol-common.h
+index bf8b875..1ab35c9 100644
+--- a/test/xi2/protocol-common.h
++++ b/test/xi2/protocol-common.h
+@@ -131,7 +131,7 @@ void init_simple(void);
+ 
+ /* Declarations for various overrides in the test files. */
+ void __wrap_WriteToClient(ClientPtr client, int len, void *data);
+-void __wrap_XISetEventMask(DeviceIntPtr dev, WindowPtr win, int len, unsigned char* mask);
++int __wrap_XISetEventMask(DeviceIntPtr dev, WindowPtr win, int len, unsigned char* mask);
+ int __wrap_dixLookupWindow(WindowPtr *win, XID id, ClientPtr client, Mask access);
+ int __real_dixLookupWindow(WindowPtr *win, XID id, ClientPtr client, Mask access);
+ Bool __wrap_AddResource(XID id, RESTYPE type, pointer value);

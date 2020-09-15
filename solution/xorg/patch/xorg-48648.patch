@@ -1,0 +1,12 @@
+diff --git a/render/picture.c b/render/picture.c
+index aab9391..86e2e0f 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1176,7 +1176,6 @@ ChangePicture (PicturePtr	pPicture,
+ 			if (error != Success)
+ 			{
+ 			    client->errorValue = pid;
+-			    error = (error == BadValue) ? BadPixmap : error;
+ 			    break;
+ 			}
+ 		    }

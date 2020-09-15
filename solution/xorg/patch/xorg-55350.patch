@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/input/usb-mouse.h b/hw/dmx/input/usb-mouse.h
+index 918bf64..91f6fcf 100644
+--- a/hw/dmx/input/usb-mouse.h
++++ b/hw/dmx/input/usb-mouse.h
+@@ -39,8 +39,7 @@
+ extern void    mouUSBRead(DevicePtr pDev,
+                           dmxMotionProcPtr motion,
+                           dmxEnqueueProcPtr enqueue,
+-                          dmxCheckSpecialProcPtr checkspecial,
+-                          DMXBlockType block);
++                       dmxCheckSpecialProcPtr checkspecial, DMXBlockType block);
+ extern void    mouUSBInit(DevicePtr pDev);
+ extern void    mouUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info);
+ extern int     mouUSBOn(DevicePtr pDev);

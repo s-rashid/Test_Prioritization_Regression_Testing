@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/loader/loader.h b/hw/xfree86/loader/loader.h
+index ac5f99c..6121e02 100644
+--- a/hw/xfree86/loader/loader.h
++++ b/hw/xfree86/loader/loader.h
+@@ -88,15 +88,9 @@ extern const ModuleVersions LoaderVersionInfo;
+ extern unsigned long LoaderOptions;
+ 
+ /* Internal Functions */
+-void LoaderDuplicateSymbol(const char *, const int);
+-char *_LoaderModuleToName(int);
+ int LoaderOpen(const char *, const char *, int, int *, int *, int *, int);
+ int LoaderHandleOpen(int);
+ 
+-/* object to name lookup routines */
+-char *_LoaderHandleToName(int handle);
+-char *_LoaderHandleToCanonicalName(int handle);
+-
+ /* Loader backends. */
+ #include "dlloader.h"
+ 

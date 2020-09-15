@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Events.c b/hw/xfree86/common/xf86Events.c
+index 6402d72..c4a4db9 100644
+--- a/hw/xfree86/common/xf86Events.c
++++ b/hw/xfree86/common/xf86Events.c
+@@ -399,7 +399,7 @@ xf86ReleaseKeys(DeviceIntPtr pDev)
+          i++) {
+         if (key_is_down(pDev, i, KEY_POSTED)) {
+             sigstate = xf86BlockSIGIO ();
+-            QueueKeyboardEvents(xf86Events, pDev, KeyRelease, i, NULL);
++            QueueKeyboardEvents(pDev, KeyRelease, i, NULL);
+             xf86UnblockSIGIO(sigstate);
+         }
+     }

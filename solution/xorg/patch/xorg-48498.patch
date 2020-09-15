@@ -1,0 +1,13 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 0534728..d46087a 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -396,7 +396,7 @@ SyncSendAlarmNotifyEvents(SyncAlarm *pAlarm)
+     /* send to other interested clients */
+     for (pcl = pAlarm->pEventClients; pcl; pcl = pcl->next)
+     {
+-	if (!pAlarm->client->clientGone)
++	if (!pcl->client->clientGone)
+ 	{
+ 	    ane.sequenceNumber = pcl->client->sequence;
+ 	    WriteEventsToClient(pcl->client, 1, (xEvent *) &ane);

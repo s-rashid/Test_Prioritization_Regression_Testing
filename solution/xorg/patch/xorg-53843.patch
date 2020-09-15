@@ -1,0 +1,34 @@
+diff --git a/hw/xwin/winprocarg.c b/hw/xwin/winprocarg.c
+index 0c24b08..2b6949e 100644
+--- a/hw/xwin/winprocarg.c
++++ b/hw/xwin/winprocarg.c
+@@ -326,8 +326,7 @@ ddxProcessArgument (int argc, char *argv[], int i)
+         struct GetMonitorInfoData data;
+         if (!QueryMonitor(iMonitor, &data))
+         {
+-            ErrorF ("ddxProcessArgument - screen - "
+-                    "Querying monitors is not supported on NT4 and Win95\n");
++            ErrorF ("ddxProcessArgument - screen - Querying monitors failed\n");
+         } else if (data.bMonitorSpecifiedExists == TRUE) 
+         {
+ 		  winErrorFVerb(2, "ddxProcessArgument - screen - Found Valid ``@Monitor'' = %d arg\n", iMonitor);
+@@ -383,8 +382,7 @@ ddxProcessArgument (int argc, char *argv[], int i)
+           struct GetMonitorInfoData data;
+           if (!QueryMonitor(iMonitor, &data))
+           {
+-              ErrorF ("ddxProcessArgument - screen - "
+-                      "Querying monitors is not supported on NT4 and Win95\n");
++              ErrorF ("ddxProcessArgument - screen - Querying monitors failed\n");
+           } else if (data.bMonitorSpecifiedExists == TRUE) 
+           {
+ 			g_ScreenInfo[nScreenNum].iMonitor = iMonitor;
+@@ -411,8 +409,7 @@ ddxProcessArgument (int argc, char *argv[], int i)
+         struct GetMonitorInfoData data;
+         if (!QueryMonitor(iMonitor, &data))
+         {
+-		  ErrorF ("ddxProcessArgument - screen - "
+-                  "Querying monitors is not supported on NT4 and Win95\n");
++		  ErrorF ("ddxProcessArgument - screen - Querying monitors failed\n");
+         } else if (data.bMonitorSpecifiedExists == TRUE) 
+         {
+ 		  winErrorFVerb (2, "ddxProcessArgument - screen - Found Valid ``@Monitor'' = %d arg\n", iMonitor);

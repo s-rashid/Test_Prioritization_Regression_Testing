@@ -1,0 +1,12 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index bfee385..dc59430 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -307,6 +307,6 @@ XISetEventMask(DeviceIntPtr dev, WindowPtr win, ClientPtr client,
+                            unsigned int len, unsigned char* mask);
+ 
+ extern int
+-XICheckInvalidMaskBits(unsigned char *mask, int len);
++XICheckInvalidMaskBits(ClientPtr client, unsigned char *mask, int len);
+ 
+ #endif /* EXEVENTS_H */

@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/glx/glwindows.h b/hw/xwin/glx/glwindows.h
+index cc3f2e6..ec1d1f5 100644
+--- a/hw/xwin/glx/glwindows.h
++++ b/hw/xwin/glx/glwindows.h
+@@ -28,7 +28,6 @@
+  * DEALINGS IN THE SOFTWARE.
+  */
+ 
+-
+ #include <GL/gl.h>
+ 
+ typedef struct {
+@@ -46,7 +45,8 @@ extern glxWinDebugSettingsRec glxWinDebugSettings;
+ void glWinCallDelta(void);
+ void glxWinPushNativeProvider(void);
+ const GLubyte* glGetStringWrapperNonstatic(GLenum name);
+-void glAddSwapHintRectWINWrapperNonstatic(GLint x, GLint y, GLsizei width, GLsizei height);
++void glAddSwapHintRectWINWrapperNonstatic(GLint x, GLint y, GLsizei width,
++                                          GLsizei height);
+ void glWinSetupDispatchTable(void);
+ 
+ #if 1

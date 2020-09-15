@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index d3c0577..28fffc1 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -1210,6 +1210,9 @@ DGAHandleEvent(int screen_num, InternalEvent *ev, DeviceIntPtr device)
+     if (!pScreenPriv)
+ 	return;
+ 
++    if (!IsMaster(device))
++	return;
++
+     switch (event->subtype) {
+     case KeyPress:
+     case KeyRelease:

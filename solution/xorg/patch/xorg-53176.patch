@@ -1,0 +1,48 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_init.c b/hw/xfree86/os-support/solaris/sun_init.c
+index d8c897d..800fc1c 100644
+--- a/hw/xfree86/os-support/solaris/sun_init.c
++++ b/hw/xfree86/os-support/solaris/sun_init.c
+@@ -186,6 +186,11 @@ xf86OpenConsole(void)
+ 	    xf86Info.vtno = VTnum;
+ 	    from = X_CMDLINE;
+ 	}
++	else if (xf86Info.ShareVTs)
++	{
++	    xf86Info.vtno = vtinfo.v_active;
++	    from = X_CMDLINE;
++	}
+ 	else
+ 	{
+ 	    if ((ioctl(fd, VT_OPENQRY, &xf86Info.vtno) < 0) ||
+@@ -217,6 +222,9 @@ OPENCONSOLE:
+ 	chown(consoleDev, getuid(), getgid());
+ 
+ #ifdef HAS_USL_VTS
++	if (xf86Info.ShareVTs)
++	    return;
++
+ 	if (vtEnabled)
+ 	{
+ 	    /*
+@@ -261,11 +269,12 @@ OPENCONSOLE:
+     else /* serverGeneration != 1 */
+     {
+ #ifdef HAS_USL_VTS
+-	if (vtEnabled)
++	if (vtEnabled && !xf86Info.ShareVTs)
+ 	{
+ 	    /*
+ 	     * Now re-get the VT
+ 	     */
++	    if (xf86Info.autoVTSwitch)
+ 	    switch_to(xf86Info.vtno, "xf86OpenConsole");
+ 
+ #ifdef VT_SET_CONSUSER /* added in snv_139 */
+@@ -355,6 +364,7 @@ xf86CloseConsole(void)
+ 	}
+ 
+ 	/* Activate the VT that X was started on */
++	if (xf86Info.autoVTSwitch)
+ 	switch_to(xf86StartVT, "xf86CloseConsole");
+     }
+ #endif /* HAS_USL_VTS */

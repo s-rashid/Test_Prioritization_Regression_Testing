@@ -1,0 +1,13 @@
+diff --git a/record/record.c b/record/record.c
+index 53be182..69fca72 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -1958,7 +1958,7 @@ ProcRecordCreateContext(ClientPtr client)
+     else
+     {
+ 	RecordDeleteContext((pointer)pContext, pContext->id);
+-	err = BadAlloc;
++	return BadAlloc;
+     }
+ bailout:
+     free(pContext);

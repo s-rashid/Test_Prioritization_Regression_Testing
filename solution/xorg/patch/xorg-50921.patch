@@ -1,0 +1,13 @@
+diff --git a/mi/mispans.c b/mi/mispans.c
+index 9f56e3c..53539e5 100644
+--- a/mi/mispans.c
++++ b/mi/mispans.c
+@@ -215,7 +215,7 @@ void miAppendSpans(SpanGroup *spanGroup, SpanGroup *otherGroup, Spans *spans)
+ 
+ void miFreeSpanGroup(SpanGroup *spanGroup)
+ {
+-    if (spanGroup->group != NULL) free(spanGroup->group);
++    free(spanGroup->group);
+ }
+ 
+ static void QuickSortSpansX(

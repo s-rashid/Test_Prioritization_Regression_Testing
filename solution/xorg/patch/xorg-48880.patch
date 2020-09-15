@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 29c917f..03255a2 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -94,6 +94,7 @@ typedef struct _DRI2Screen {
+     DRI2ScheduleSwapProcPtr	 ScheduleSwap;
+     DRI2GetMSCProcPtr		 GetMSC;
+     DRI2ScheduleWaitMSCProcPtr	 ScheduleWaitMSC;
++    DRI2AuthMagicProcPtr	 AuthMagic;
+ 
+     HandleExposuresProcPtr       HandleExposures;
+ 
+@@ -968,7 +969,7 @@ DRI2Authenticate(ScreenPtr pScreen, drm_magic_t magic)
+ {
+     DRI2ScreenPtr ds = DRI2GetScreen(pScreen);
+ 
+-    if (ds == NULL || drmAuthMagic(ds->fd, magic))
++    if (ds == NULL || (*ds->AuthMagic)(ds->fd, magic))
+ 	return FALSE;
+ 
+     return TRUE;
+@@ -1040,6 +1041,14 @@ DRI2ScreenInit(ScreenPtr pScreen, DRI2InfoPtr info)
+ 	cur_minor = 1;
+     }
+ 
++    if (info->version >= 5) {
++        ds->AuthMagic = info->AuthMagic;
++    }
++
++    if (!ds->AuthMagic)
++        ds->AuthMagic = drmAuthMagic;
++
++
+     /* Initialize minor if needed and set to minimum provied by DDX */
+     if (!dri2_minor || dri2_minor > cur_minor)
+ 	dri2_minor = cur_minor;

@@ -1,0 +1,44 @@
+diff --git a/os/access.c b/os/access.c
+index 494986e..eb1a21d 100644
+--- a/os/access.c
++++ b/os/access.c
+@@ -1028,20 +1028,19 @@ ResetHosts (char *display)
+ }
+ 
+ /* Is client on the local host */
+-Bool LocalClient(ClientPtr client)
++Bool
++ComputeLocalClient(ClientPtr client)
+ {
+     int    		alen, family, notused;
+     Xtransaddr		*from = NULL;
+     pointer		addr;
+     register HOST	*host;
++    OsCommPtr           oc = (OsCommPtr) client->osPrivate;
+ 
+-    if (!client->osPrivate)
+-        return FALSE;
+-    if (!((OsCommPtr)client->osPrivate)->trans_conn)
++    if (!oc->trans_conn)
+         return FALSE;
+ 
+-    if (!_XSERVTransGetPeerAddr (((OsCommPtr)client->osPrivate)->trans_conn,
+-	&notused, &alen, &from))
++    if (!_XSERVTransGetPeerAddr (oc->trans_conn, &notused, &alen, &from))
+     {
+ 	family = ConvertAddr ((struct sockaddr *) from,
+ 	    &alen, (pointer *)&addr);
+@@ -1067,6 +1066,13 @@ Bool LocalClient(ClientPtr client)
+     return FALSE;
+ }
+ 
++Bool LocalClient(ClientPtr client)
++{
++    if (!client->osPrivate)
++        return FALSE;
++    return ((OsCommPtr)client->osPrivate)->local_client;
++}
++
+ /*
+  * Return the uid and gid of a connected local client
+  * 

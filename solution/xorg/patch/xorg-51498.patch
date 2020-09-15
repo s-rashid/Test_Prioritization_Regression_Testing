@@ -1,0 +1,15 @@
+diff --git a/dix/window.c b/dix/window.c
+index d140dda..9be7064 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -298,6 +298,10 @@ SetWindowToDefaults(WindowPtr pWin)
+ #ifdef ROOTLESS
+     pWin->rootlessUnhittable = FALSE;
+ #endif
++
++#ifdef COMPOSITE
++    pWin->damagedDescendants = FALSE;
++#endif
+ }
+ 
+ static void

@@ -1,0 +1,21 @@
+diff --git a/include/input.h b/include/input.h
+index 40ba660..e962696 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -54,6 +54,7 @@ SOFTWARE.
+ #include <X11/Xproto.h>
+ #include "window.h"     /* for WindowPtr */
+ #include "xkbrules.h"
++#include "events.h"
+ 
+ #define DEVICE_INIT	0
+ #define DEVICE_ON	1
+@@ -96,8 +97,6 @@ SOFTWARE.
+ #define RevertToFollowKeyboard	3
+ #endif
+ 
+-#include "events.h"
+-
+ typedef unsigned long Leds;
+ typedef struct _OtherClients *OtherClientsPtr;
+ typedef struct _InputClients *InputClientsPtr;

@@ -1,0 +1,11 @@
+diff --git a/hw/dmx/input/dmxmap.h b/hw/dmx/input/dmxmap.h
+index aad30d1..62da1ed 100644
+--- a/hw/dmx/input/dmxmap.h
++++ b/hw/dmx/input/dmxmap.h
+@@ -38,5 +38,5 @@
+ extern void dmxMapInsert(DMXLocalInputInfoPtr dmxLocal,
+                          int remoteEvent, int serverEvent);
+ extern void dmxMapClear(DMXLocalInputInfoPtr dmxLocal);
+-extern int  dmxMapLookup(DMXLocalInputInfoPtr dmxLocal, int remoteEvent);
++extern int dmxMapLookup(DMXLocalInputInfoPtr dmxLocal, int remoteEvent);
+ #endif

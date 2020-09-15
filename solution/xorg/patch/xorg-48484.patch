@@ -1,0 +1,22 @@
+diff --git a/mi/mizerarc.c b/mi/mizerarc.c
+index 6233472..5adf3dd 100644
+--- a/mi/mizerarc.c
++++ b/mi/mizerarc.c
+@@ -805,7 +805,7 @@ miZeroPolyArc(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc *parcs)
+ 	    {
+ 		ChangeGCVal gcval;
+ 		gcval.val = pGC->bgPixel;
+-		dixChangeGC(NullClient, pGC, GCForeground, NULL, &gcval);
++		ChangeGC(NullClient, pGC, GCForeground, &gcval);
+ 		ValidateGC(pDraw, pGC);
+ 	    }
+ 	    pts = &points[numPts >> 1];
+@@ -835,7 +835,7 @@ miZeroPolyArc(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc *parcs)
+ 	    {
+ 		ChangeGCVal gcval;
+ 		gcval.val = fgPixel;
+-		dixChangeGC(NullClient, pGC, GCForeground, NULL, &gcval);
++		ChangeGC(NullClient, pGC, GCForeground, &gcval);
+ 		ValidateGC(pDraw, pGC);
+ 	    }
+ 	}

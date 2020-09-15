@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/GL/visualConfigs.h b/hw/xquartz/GL/visualConfigs.h
+index b9e6ae7..2e1a1b3 100644
+--- a/hw/xquartz/GL/visualConfigs.h
++++ b/hw/xquartz/GL/visualConfigs.h
+@@ -23,6 +23,6 @@
+ #ifndef VISUAL_CONFIGS_H
+ #define VISUAL_CONFIGS_H
+ 
+-void setVisualConfigs(void);
++__GLXconfig *__glXAquaCreateVisualConfigs(int *numConfigsPtr, int screenNumber);
+ 
+ #endif

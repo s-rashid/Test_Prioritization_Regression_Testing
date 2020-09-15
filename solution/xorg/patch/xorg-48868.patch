@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index a481368..7acb6af 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -2330,6 +2330,7 @@ configInput(IDevPtr inputp, XF86ConfInputPtr conf_input, MessageType from)
+     inputp->driver = conf_input->inp_driver;
+     inputp->commonOptions = conf_input->inp_option_lst;
+     inputp->extraOptions = NULL;
++    inputp->attrs = NULL;
+ 
+     return TRUE;
+ }

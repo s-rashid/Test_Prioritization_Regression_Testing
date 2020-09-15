@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/X11Controller.h b/hw/xquartz/X11Controller.h
+index 88f50a1..bb28447 100644
+--- a/hw/xquartz/X11Controller.h
++++ b/hw/xquartz/X11Controller.h
+@@ -55,7 +55,7 @@ typedef unsigned int NSUInteger;
+ #endif
+ #endif
+ 
+-@interface X11Controller : NSObject
++@interface X11Controller : NSObject <NSTableViewDataSource>
+ {
+     IBOutlet NSPanel *prefs_panel;
+ 

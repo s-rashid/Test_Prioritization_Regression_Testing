@@ -1,0 +1,81 @@
+diff --git a/hw/xwin/glx/glwrap.c b/hw/xwin/glx/glwrap.c
+index 5190d36..690b829 100644
+--- a/hw/xwin/glx/glwrap.c
++++ b/hw/xwin/glx/glwrap.c
+@@ -53,11 +53,10 @@ glWinCallDelta(void)
+ {
+   static unsigned int glWinIndirectProcCallsLast = 0;
+   static unsigned int glWinDirectProcCallsLast = 0;
++
+   if ((glWinIndirectProcCalls != glWinIndirectProcCallsLast) ||
+-      (glWinDirectProcCalls != glWinDirectProcCallsLast))
+-    {
+-      if (glxWinDebugSettings.enableTrace)
+-        {
++        (glWinDirectProcCalls != glWinDirectProcCallsLast)) {
++        if (glxWinDebugSettings.enableTrace) {
+           ErrorF("after %d direct and %d indirect GL calls\n",
+                  glWinDirectProcCalls - glWinDirectProcCallsLast,
+                  glWinIndirectProcCalls - glWinIndirectProcCallsLast);
+@@ -73,28 +72,23 @@ glWinResolveHelper(PROC *cache, char *symbol)
+   PROC proc = NULL;
+ 
+   /* If not yet cached, call wglGetProcAddress */
+-  if ((*cache) == NULL)
+-    {
++    if ((*cache) == NULL) {
+       proc = wglGetProcAddress(symbol);
+-      if (proc == NULL)
+-        {
++        if (proc == NULL) {
+           ErrorF("glwrap: Can't resolve \"%s\"\n", symbol);
+           (*cache) = (PROC)-1;
+         }
+-      else
+-        {
++        else {
+           ErrorF("glwrap: Resolved \"%s\"\n", symbol);
+           (*cache) = proc;
+         }
+     }
+   /* Cached wglGetProcAddress failure */
+-  else if ((*cache) == (PROC)-1)
+-    {
++    else if ((*cache) == (PROC) - 1) {
+       proc = 0;
+     }
+   /* Cached wglGetProcAddress result */
+-  else
+-    {
++    else {
+       proc = (*cache);
+     }
+ 
+@@ -129,7 +123,8 @@ glWinResolveHelper(PROC *cache, char *symbol)
+   Special non-static wrapper for glGetString for debug output
+ */
+ 
+-const GLubyte* glGetStringWrapperNonstatic(GLenum name)
++const GLubyte *
++glGetStringWrapperNonstatic(GLenum name)
+ {
+   return glGetString(name);
+ }
+@@ -138,11 +133,14 @@ const GLubyte* glGetStringWrapperNonstatic(GLenum name)
+   Special non-static wrapper for glAddSwapHintRectWIN for copySubBuffers
+ */
+ 
+-typedef void (__stdcall *PFNGLADDSWAPHINTRECTWIN)(GLint x, GLint y, GLsizei width, GLsizei height);
++typedef void (__stdcall * PFNGLADDSWAPHINTRECTWIN) (GLint x, GLint y,
++                                                    GLsizei width,
++                                                    GLsizei height);
+ 
+-void glAddSwapHintRectWINWrapperNonstatic(GLint x, GLint y, GLsizei width, GLsizei height)
++void
++glAddSwapHintRectWINWrapperNonstatic(GLint x, GLint y, GLsizei width,
++                                     GLsizei height)
+ {
+   RESOLVE(PFNGLADDSWAPHINTRECTWIN, "glAddSwapHintRectWIN");
+   proc(x, y, width, height);
+ }
+-

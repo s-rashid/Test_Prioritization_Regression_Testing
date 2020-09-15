@@ -1,0 +1,12 @@
+diff --git a/exa/exa_priv.h b/exa/exa_priv.h
+index 1aec8e9..5b056da 100644
+--- a/exa/exa_priv.h
++++ b/exa/exa_priv.h
+@@ -188,6 +188,7 @@ typedef struct {
+     unsigned			 numOffscreenAvailable;
+     CARD32			 lastDefragment;
+     CARD32			 nextDefragment;
++    PixmapPtr			 deferred_mixed_pixmap;
+ 
+     /* Reference counting for accessed pixmaps */
+     struct {

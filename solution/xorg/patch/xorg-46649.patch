@@ -1,0 +1,18 @@
+diff --git a/hw/dmx/config/dmxconfig.h b/hw/dmx/config/dmxconfig.h
+index 477db4a..91a6662 100644
+--- a/hw/dmx/config/dmxconfig.h
++++ b/hw/dmx/config/dmxconfig.h
+@@ -36,11 +36,8 @@
+ 
+ #ifndef _DMXCONFIG_H_
+ #define _DMXCONFIG_H_
+-#define DMX_DEFAULT_XKB_RULES  "base"
+-#define DMX_DEFAULT_XKB_MODEL  "pc101"
+-#define DMX_DEFAULT_XKB_LAYOUT "us"
+-#define DMX_DEFAULT_XKB_VARIANT NULL
+-#define DMX_DEFAULT_XKB_OPTIONS NULL
++
++#include <xkb-config.h>
+ 
+ extern void dmxConfigStoreDisplay(const char *display);
+ extern void dmxConfigStoreInput(const char *input); /* Core devices */

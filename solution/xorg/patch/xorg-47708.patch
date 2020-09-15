@@ -1,0 +1,16 @@
+diff --git a/hw/kdrive/fake/fakeinit.c b/hw/kdrive/fake/fakeinit.c
+index 87c221d..ba61959 100644
+--- a/hw/kdrive/fake/fakeinit.c
++++ b/hw/kdrive/fake/fakeinit.c
+@@ -58,6 +58,11 @@ InitInput (int argc, char **argv)
+     KdInitInput ();
+ }
+ 
++void
++CloseInput (void)
++{
++}
++
+ #ifdef DDXBEFORERESET
+ void
+ ddxBeforeReset (void)

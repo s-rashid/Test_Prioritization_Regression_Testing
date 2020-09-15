@@ -1,0 +1,21 @@
+diff --git a/Xext/xvdisp.c b/Xext/xvdisp.c
+index 1f3fc0f..e674dfd 100644
+--- a/Xext/xvdisp.c
++++ b/Xext/xvdisp.c
+@@ -36,6 +36,7 @@ SOFTWARE.
+ #include "gcstruct.h"
+ #include "dixstruct.h"
+ #include "resource.h"
++#include "registry.h"
+ #include "opaque.h"
+ 
+ #include <X11/extensions/Xv.h>
+@@ -1867,6 +1868,8 @@ void XineramifyXv(void)
+ 
+    if (!xvsp0 || !XvXRTPort) return;
+ 
++   RegisterResourceName(XvXRTPort, "XvXRTPort");
++
+    for(i = 0; i < xvsp0->nAdaptors; i++) {
+       refAdapt = xvsp0->pAdaptors + i;
+ 

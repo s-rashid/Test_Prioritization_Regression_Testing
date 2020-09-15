@@ -1,0 +1,13 @@
+diff --git a/glx/glxdricommon.c b/glx/glxdricommon.c
+index 454aa55..86797a0 100644
+--- a/glx/glxdricommon.c
++++ b/glx/glxdricommon.c
+@@ -127,7 +127,7 @@ createModeFromConfig(const __DRIcoreExtension *core,
+     unsigned int attrib, value;
+     int i;
+ 
+-    config = xalloc(sizeof *config);
++    config = malloc(sizeof *config);
+ 
+     config->driConfig = driConfig;
+ 

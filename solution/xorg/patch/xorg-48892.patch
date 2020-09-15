@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index 29b1d9b..f08ca29 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -206,7 +206,7 @@ extern _X_EXPORT Bool DRI2Connect(ScreenPtr pScreen,
+ 		 const char **driverName,
+ 		 const char **deviceName);
+ 
+-extern _X_EXPORT Bool DRI2Authenticate(ScreenPtr pScreen, drm_magic_t magic);
++extern _X_EXPORT Bool DRI2Authenticate(ScreenPtr pScreen, uint32_t magic);
+ 
+ extern _X_EXPORT int DRI2CreateDrawable(ClientPtr client,
+ 					DrawablePtr pDraw,

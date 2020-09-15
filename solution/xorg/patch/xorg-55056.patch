@@ -1,0 +1,34 @@
+diff --git a/config/dbus-core.c b/config/dbus-core.c
+index 4c5e10f..3242587 100644
+--- a/config/dbus-core.c
++++ b/config/dbus-core.c
+@@ -57,7 +57,8 @@ wakeup_handler(pointer data, int err, pointer read_mask)
+             dbus_connection_read_write_dispatch(info->connection, 0);
+         } while (info->connection &&
+                  dbus_connection_get_is_connected(info->connection) &&
+-                 dbus_connection_get_dispatch_status(info->connection) == DBUS_DISPATCH_DATA_REMAINS);
++                 dbus_connection_get_dispatch_status(info->connection) ==
++                 DBUS_DISPATCH_DATA_REMAINS);
+     }
+ }
+ 
+@@ -110,8 +111,7 @@ message_filter(DBusConnection *connection, DBusMessage *message, void *data)
+     /* If we get disconnected, then take everything down, and attempt to
+      * reconnect immediately (assuming it's just a restart).  The
+      * connection isn't valid at this point, so throw it out immediately. */
+-    if (dbus_message_is_signal(message, DBUS_INTERFACE_LOCAL,
+-                                    "Disconnected")) {
++    if (dbus_message_is_signal(message, DBUS_INTERFACE_LOCAL, "Disconnected")) {
+         DebugF("[config/dbus-core] disconnected from bus\n");
+         bus_info.connection = NULL;
+         teardown();
+@@ -202,8 +202,7 @@ config_dbus_core_add_hook(struct config_dbus_core_hook *hook)
+ {
+     struct config_dbus_core_hook **prev;
+ 
+-    for (prev = &bus_info.hooks; *prev; prev = &(*prev)->next)
+-        ;
++    for (prev = &bus_info.hooks; *prev; prev = &(*prev)->next);
+ 
+     hook->next = NULL;
+     *prev = hook;

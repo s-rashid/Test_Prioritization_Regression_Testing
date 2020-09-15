@@ -1,0 +1,118 @@
+diff --git a/hw/xfree86/parser/Files.c b/hw/xfree86/parser/Files.c
+index a95be9e..d8152c0 100644
+--- a/hw/xfree86/parser/Files.c
++++ b/hw/xfree86/parser/Files.c
+@@ -51,7 +51,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,8 +64,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec FilesTab[] =
+-{
++static xf86ConfigSymTabRec FilesTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{FONTPATH, "fontpath"},
+ 	{MODULEPATH, "modulepath"},
+@@ -87,12 +85,11 @@ xf86parseFilesSection (void)
+ 	int k, l;
+ 	char *str;
+ 	int token;
++
+ 	parsePrologue (XF86ConfFilesPtr, XF86ConfFilesRec)
+ 
+-	while ((token = xf86getToken (FilesTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(FilesTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->file_comment = xf86addComment(ptr->file_comment, val.str);
+ 			break;
+@@ -101,23 +98,19 @@ xf86parseFilesSection (void)
+ 				Error (QUOTE_MSG, "FontPath");
+ 			j = FALSE;
+ 			str = val.str;
+-			if (ptr->file_fontpath == NULL)
+-			{
++            if (ptr->file_fontpath == NULL) {
+ 				ptr->file_fontpath = malloc (1);
+ 				ptr->file_fontpath[0] = '\0';
+ 				i = strlen (str) + 1;
+ 			}
+-			else
+-			{
++            else {
+ 				i = strlen (ptr->file_fontpath) + strlen (str) + 1;
+-				if (ptr->file_fontpath[strlen (ptr->file_fontpath) - 1] != ',')
+-				{
++                if (ptr->file_fontpath[strlen(ptr->file_fontpath) - 1] != ',') {
+ 					i++;
+ 					j = TRUE;
+ 				}
+ 			}
+-			ptr->file_fontpath =
+-				realloc (ptr->file_fontpath, i);
++            ptr->file_fontpath = realloc(ptr->file_fontpath, i);
+ 			if (j)
+ 				strcat (ptr->file_fontpath, ",");
+ 
+@@ -129,17 +122,15 @@ xf86parseFilesSection (void)
+ 				Error (QUOTE_MSG, "ModulePath");
+ 			l = FALSE;
+ 			str = val.str;
+-			if (ptr->file_modulepath == NULL)
+-			{
++            if (ptr->file_modulepath == NULL) {
+ 				ptr->file_modulepath = malloc (1);
+ 				ptr->file_modulepath[0] = '\0';
+ 				k = strlen (str) + 1;
+ 			}
+-			else
+-			{
++            else {
+ 				k = strlen (ptr->file_modulepath) + strlen (str) + 1;
+-				if (ptr->file_modulepath[strlen (ptr->file_modulepath) - 1] != ',')
+-				{
++                if (ptr->file_modulepath[strlen(ptr->file_modulepath) - 1] !=
++                    ',') {
+ 					k++;
+ 					l = TRUE;
+ 				}
+@@ -195,12 +186,10 @@ xf86printFileSection (FILE * cf, XF86ConfFilesPtr ptr)
+ 		fprintf (cf, "%s", ptr->file_comment);
+ 	if (ptr->file_logfile)
+ 		fprintf (cf, "\tLogFile      \"%s\"\n", ptr->file_logfile);
+-	if (ptr->file_modulepath)
+-	{
++    if (ptr->file_modulepath) {
+ 		s = ptr->file_modulepath;
+ 		p = index (s, ',');
+-		while (p)
+-		{
++        while (p) {
+ 			*p = '\000';
+ 			fprintf (cf, "\tModulePath   \"%s\"\n", s);
+ 			*p = ',';
+@@ -210,12 +199,10 @@ xf86printFileSection (FILE * cf, XF86ConfFilesPtr ptr)
+ 		}
+ 		fprintf (cf, "\tModulePath   \"%s\"\n", s);
+ 	}
+-	if (ptr->file_fontpath)
+-	{
++    if (ptr->file_fontpath) {
+ 		s = ptr->file_fontpath;
+ 		p = index (s, ',');
+-		while (p)
+-		{
++        while (p) {
+ 			*p = '\000';
+ 			fprintf (cf, "\tFontPath     \"%s\"\n", s);
+ 			*p = ',';

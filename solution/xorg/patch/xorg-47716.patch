@@ -1,0 +1,13 @@
+diff --git a/hw/vfb/InitInput.c b/hw/vfb/InitInput.c
+index 7f2d56f..35d1dc4 100644
+--- a/hw/vfb/InitInput.c
++++ b/hw/vfb/InitInput.c
+@@ -142,3 +142,8 @@ InitInput(int argc, char *argv[])
+     RegisterKeyboardDevice(k);
+     (void)mieqInit();
+ }
++
++void
++CloseInput (void)
++{
++}

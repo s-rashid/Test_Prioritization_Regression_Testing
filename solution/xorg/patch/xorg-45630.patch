@@ -1,0 +1,80 @@
+diff --git a/exa/exa_render.c b/exa/exa_render.c
+index 14d710b..678b6c2 100644
+--- a/exa/exa_render.c
++++ b/exa/exa_render.c
+@@ -253,7 +253,6 @@ exaTryDriverSolidFill(PicturePtr	pSrc,
+     ExaPixmapPrivPtr pSrcExaPix, pDstExaPix;
+     CARD32 pixel;
+     CARD16 red, green, blue, alpha;
+-    ExaMigrationRec pixmaps[1];
+ 
+     pDstPix = exaGetDrawablePixmap (pDst->pDrawable);
+     pSrcPix = exaGetDrawablePixmap (pSrc->pDrawable);
+@@ -284,11 +283,15 @@ exaTryDriverSolidFill(PicturePtr	pSrc,
+ 
+     pixel = exaGetPixmapFirstPixel (pSrcPix);
+ 
++    if (pDstExaPix->pDamage) {
++	ExaMigrationRec pixmaps[1];
++
+     pixmaps[0].as_dst = TRUE;
+     pixmaps[0].as_src = FALSE;
+     pixmaps[0].pPix = pDstPix;
+     pixmaps[0].pReg = &region;
+     exaDoMigration(pixmaps, 1, TRUE);
++    }
+ 
+     if (!exaPixmapIsOffscreen(pDstPix)) {
+ 	REGION_UNINIT(pDst->pDrawable->pScreen, &region);
+@@ -343,7 +346,6 @@ exaTryDriverCompositeRects(CARD8	       op,
+     int src_off_x, src_off_y, mask_off_x, mask_off_y, dst_off_x, dst_off_y;
+     PixmapPtr pSrcPix, pMaskPix = NULL, pDstPix;
+     ExaPixmapPrivPtr pSrcExaPix, pMaskExaPix = NULL, pDstExaPix;
+-    ExaMigrationRec pixmaps[3];
+ 
+     if (!pExaScr->info->PrepareComposite)
+ 	return -1;
+@@ -375,6 +377,9 @@ exaTryDriverCompositeRects(CARD8	       op,
+ 	return -1;
+     }
+     
++    if (pDstExaPix->pDamage) {
++	ExaMigrationRec pixmaps[3];
++
+     pixmaps[0].as_dst = TRUE;
+     pixmaps[0].as_src = exaOpReadsDestination(op);
+     pixmaps[0].pPix = pDstPix;
+@@ -391,6 +396,7 @@ exaTryDriverCompositeRects(CARD8	       op,
+ 	exaDoMigration(pixmaps, 3, TRUE);
+     } else
+ 	exaDoMigration(pixmaps, 2, TRUE);
++    }
+ 
+     pDstPix = exaGetOffscreenPixmap (pDst->pDrawable, &dst_off_x, &dst_off_y);
+     if (!pDstPix)
+@@ -615,7 +621,6 @@ exaTryDriverComposite(CARD8		op,
+     int src_off_x, src_off_y, mask_off_x, mask_off_y, dst_off_x, dst_off_y;
+     PixmapPtr pSrcPix, pMaskPix = NULL, pDstPix;
+     ExaPixmapPrivPtr pSrcExaPix, pMaskExaPix = NULL, pDstExaPix;
+-    ExaMigrationRec pixmaps[3];
+ 
+     pSrcPix = exaGetDrawablePixmap(pSrc->pDrawable);
+     pSrcExaPix = ExaGetPixmapPriv(pSrcPix);
+@@ -665,6 +670,9 @@ exaTryDriverComposite(CARD8		op,
+ 
+     REGION_TRANSLATE(pScreen, &region, dst_off_x, dst_off_y);
+ 
++    if (pDstExaPix->pDamage) {
++	ExaMigrationRec pixmaps[3];
++
+     pixmaps[0].as_dst = TRUE;
+     pixmaps[0].as_src = exaOpReadsDestination(op);
+     pixmaps[0].pPix = pDstPix;
+@@ -682,6 +690,7 @@ exaTryDriverComposite(CARD8		op,
+     } else {
+ 	exaDoMigration(pixmaps, 2, TRUE);
+     }
++    }
+ 
+     pSrcPix = exaGetOffscreenPixmap (pSrc->pDrawable, &src_off_x, &src_off_y);
+     if (pMask)

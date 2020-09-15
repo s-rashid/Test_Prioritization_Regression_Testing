@@ -1,0 +1,22 @@
+diff --git a/dix/eventconvert.c b/dix/eventconvert.c
+index e104ce9..fa2684c 100644
+--- a/dix/eventconvert.c
++++ b/dix/eventconvert.c
+@@ -76,8 +76,6 @@ EventToCore(InternalEvent *event, xEvent *core)
+         case ET_ButtonRelease:
+         case ET_KeyPress:
+         case ET_KeyRelease:
+-        case ET_ProximityIn:
+-        case ET_ProximityOut:
+             {
+                 DeviceEvent *e = (DeviceEvent*)event;
+ 
+@@ -93,6 +91,8 @@ EventToCore(InternalEvent *event, xEvent *core)
+                 core->u.keyButtonPointer.state = e->corestate;
+             }
+             break;
++        case ET_ProximityIn:
++        case ET_ProximityOut:
+         case ET_Raw:
+             return BadMatch;
+         default:

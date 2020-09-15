@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxscrinit.c b/hw/dmx/dmxscrinit.c
+index 7360750..b5afb58 100644
+--- a/hw/dmx/dmxscrinit.c
++++ b/hw/dmx/dmxscrinit.c
+@@ -68,7 +68,7 @@ static unsigned long dmxGeneration;
+ static unsigned long *dmxCursorGeneration;
+ 
+ static int dmxGCPrivateKeyIndex;
+-DevPrivateKey dmxGCPrivateKey = &dmxGCPrivateKey; /**< Private index for GCs       */
++DevPrivateKey dmxGCPrivateKey = &dmxGCPrivateKeyIndex; /**< Private index for GCs       */
+ static int dmxWinPrivateKeyIndex;
+ DevPrivateKey dmxWinPrivateKey = &dmxWinPrivateKeyIndex; /**< Private index for Windows   */
+ static int dmxPixPrivateKeyIndex;

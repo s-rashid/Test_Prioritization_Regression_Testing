@@ -1,0 +1,15 @@
+diff --git a/include/os.h b/include/os.h
+index 823fe5d..df35805 100644
+--- a/include/os.h
++++ b/include/os.h
+@@ -492,6 +492,10 @@ extern _X_EXPORT size_t strlcpy(char *dst, const char *src, size_t siz);
+ extern _X_EXPORT size_t strlcat(char *dst, const char *src, size_t siz);
+ #endif
+ 
++#ifndef HAVE_STRNDUP
++extern _X_EXPORT char * strndup(const char *str, size_t n);
++#endif
++
+ /* Logging. */
+ typedef enum _LogParameter {
+     XLOG_FLUSH,

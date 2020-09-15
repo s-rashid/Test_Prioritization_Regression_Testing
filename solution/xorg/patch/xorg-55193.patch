@@ -1,0 +1,142 @@
+diff --git a/glx/indirect_util.c b/glx/indirect_util.c
+index 46a2706..a54f70a 100644
+--- a/glx/indirect_util.c
++++ b/glx/indirect_util.c
+@@ -47,12 +47,10 @@
+ #include "indirect_table.h"
+ #include "indirect_util.h"
+ 
+-
+ #define __GLX_PAD(a) (((a)+3)&~3)
+ 
+ extern xGLXSingleReply __glXReply;
+ 
+-
+ GLint
+ __glGetBooleanv_variable_size( GLenum e )
+ {
+@@ -68,7 +66,6 @@ __glGetBooleanv_variable_size( GLenum e )
+     }
+ }
+ 
+-
+ /**
+  * Get a properly aligned buffer to hold reply data.
+  *
+@@ -106,7 +103,6 @@ __glXGetAnswerBuffer( __GLXclientState * cl, size_t required_size,
+     return buffer;
+ }
+ 
+-
+ /**
+  * Send a GLX reply to the client.
+  *
+@@ -135,7 +131,6 @@ __glXSendReply( ClientPtr client, const void * data, size_t elements,
+     __glXReply.size =           elements;
+     __glXReply.retval =         retval;
+ 
+-
+     /* It is faster on almost always every architecture to just copy the 8
+      * bytes, even when not necessary, than check to see of the value of
+      * elements requires it.  Copying the data when not needed will do no
+@@ -150,7 +145,6 @@ __glXSendReply( ClientPtr client, const void * data, size_t elements,
+     }
+ }
+ 
+-
+ /**
+  * Send a GLX reply to the client.
+  *
+@@ -183,7 +177,6 @@ __glXSendReplySwap( ClientPtr client, const void * data, size_t elements,
+     __glXReply.size =           bswap_32( elements );
+     __glXReply.retval =         bswap_32( retval );
+ 
+-
+     /* It is faster on almost always every architecture to just copy the 8
+      * bytes, even when not necessary, than check to see of the value of
+      * elements requires it.  Copying the data when not needed will do no
+@@ -198,17 +191,14 @@ __glXSendReplySwap( ClientPtr client, const void * data, size_t elements,
+     }
+ }
+ 
+-
+ static int
+-get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+-		 unsigned opcode)
++get_decode_index(const struct __glXDispatchInfo *dispatch_info, unsigned opcode)
+ {
+     int remaining_bits;
+     int next_remain;
+     const int_fast16_t * const tree = dispatch_info->dispatch_tree;
+     int_fast16_t index;
+ 
+-
+     remaining_bits = dispatch_info->bits;
+     if (opcode >= (1U << remaining_bits)) {
+ 	return -1;
+@@ -219,7 +209,6 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+ 	unsigned mask;
+ 	unsigned child_index;
+ 
+-
+ 	/* Calculate the slice of bits used by this node.
+ 	 * 
+ 	 * If remaining_bits = 8 and tree[index] = 3, the mask of just the
+@@ -229,9 +218,7 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+ 	 */
+ 
+ 	next_remain = remaining_bits - tree[index];
+-	mask = ((1 << remaining_bits) - 1) &
+-	  ~((1 << next_remain) - 1);
+-
++        mask = ((1 << remaining_bits) - 1) & ~((1 << next_remain) - 1);
+ 
+ 	/* Using the mask, calculate the index of the opcode in the node.
+ 	 * With that index, fetch the index of the next node.
+@@ -240,7 +227,6 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+ 	child_index = (opcode & mask) >> next_remain;
+ 	index = tree[index + 1 + child_index];
+ 
+-
+ 	/* If the next node is an empty leaf, the opcode is for a non-existant
+ 	 * function.  We're done.
+ 	 *
+@@ -254,7 +240,6 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+ 	else if (IS_LEAF_INDEX(index)) {
+ 	    unsigned func_index;
+ 
+-
+ 	    /* The value stored in the tree for a leaf node is the base of
+ 	     * the function pointers for that leaf node.  The offset for the
+ 	     * function for a particular opcode is the remaining bits in the
+@@ -272,7 +257,6 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+     return -1;
+ }
+ 
+-
+ void *
+ __glXGetProtocolDecodeFunction(const struct __glXDispatchInfo *dispatch_info,
+ 			       int opcode, int swapped_version)
+@@ -281,10 +265,10 @@ __glXGetProtocolDecodeFunction(const struct __glXDispatchInfo *dispatch_info,
+ 
+     return (func_index < 0) 
+ 	? NULL 
+-	: (void *) dispatch_info->dispatch_functions[func_index][swapped_version];
++        : (void *) dispatch_info->
++        dispatch_functions[func_index][swapped_version];
+ }
+ 
+-
+ int
+ __glXGetProtocolSizeData(const struct __glXDispatchInfo *dispatch_info,
+ 			 int opcode, __GLXrenderSizeData *data)
+@@ -294,8 +278,7 @@ __glXGetProtocolSizeData(const struct __glXDispatchInfo *dispatch_info,
+ 
+ 	if ((func_index >= 0) 
+ 	    && (dispatch_info->size_table[func_index][0] != 0)) {
+-	    const int var_offset = 
+-		dispatch_info->size_table[func_index][1];
++            const int var_offset = dispatch_info->size_table[func_index][1];
+ 
+ 	    data->bytes = dispatch_info->size_table[func_index][0];
+ 	    data->varsize = (var_offset != ~0)

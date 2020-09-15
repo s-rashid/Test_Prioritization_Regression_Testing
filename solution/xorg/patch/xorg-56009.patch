@@ -1,0 +1,22 @@
+diff --git a/mi/misprite.h b/mi/misprite.h
+index 632d207..099cd0e 100644
+--- a/mi/misprite.h
++++ b/mi/misprite.h
+@@ -6,7 +6,6 @@
+  * mi versions of these routines exist.
+  */
+ 
+-
+ /*
+ 
+ Copyright 1989, 1998  The Open Group
+@@ -32,8 +31,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ */
+ 
+-extern Bool miSpriteInitialize(
+-    ScreenPtr /*pScreen*/,
++extern Bool miSpriteInitialize(ScreenPtr /*pScreen */ ,
+     miPointerScreenFuncPtr /*screenFuncs*/
+ );
+ 

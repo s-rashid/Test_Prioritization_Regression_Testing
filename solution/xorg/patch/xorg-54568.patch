@@ -1,0 +1,13 @@
+diff --git a/Xi/xiallowev.c b/Xi/xiallowev.c
+index dab3393..38967b2 100644
+--- a/Xi/xiallowev.c
++++ b/Xi/xiallowev.c
+@@ -98,7 +98,7 @@ ProcXIAllowEvents(ClientPtr client)
+     case XIRejectTouch:
+     case XIAcceptTouch:
+         ret = TouchAcceptReject(client, dev, stuff->mode, stuff->touchid,
+-                                &client->errorValue);
++                                stuff->grab_window, &client->errorValue);
+         break;
+     default:
+ 	client->errorValue = stuff->mode;

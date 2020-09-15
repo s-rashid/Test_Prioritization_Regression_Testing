@@ -1,0 +1,15 @@
+diff --git a/Xi/setbmap.c b/Xi/setbmap.c
+index 2a8f5d3..110f5e9 100644
+--- a/Xi/setbmap.c
++++ b/Xi/setbmap.c
+@@ -106,7 +106,9 @@ ProcXSetDeviceButtonMapping(ClientPtr client)
+     rep.sequenceNumber = client->sequence;
+     rep.status = MappingSuccess;
+ 
+-    ret = ApplyPointerMapping(dev, (CARD8 *) &stuff[1], stuff->map_length, client);
++    ret =
++        ApplyPointerMapping(dev, (CARD8 *) &stuff[1], stuff->map_length,
++                            client);
+     if (ret == -1)
+         return BadValue;
+     else if (ret == MappingBusy)

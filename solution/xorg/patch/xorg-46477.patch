@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/mach-startup/launchd_fd.c b/hw/xquartz/mach-startup/launchd_fd.c
+index fa623ea..6dace8e 100644
+--- a/hw/xquartz/mach-startup/launchd_fd.c
++++ b/hw/xquartz/mach-startup/launchd_fd.c
+@@ -36,7 +36,7 @@
+ 
+ #include "launchd_fd.h"
+ 
+-int launchd_display_fd() {
++int launchd_display_fd(void) {
+     launch_data_t sockets_dict, checkin_request, checkin_response;
+     launch_data_t listening_fd_array, listening_fd;
+ 

@@ -1,0 +1,12 @@
+diff --git a/glx/glxcmdsswap.c b/glx/glxcmdsswap.c
+index 4132b76..f1c0ce6 100644
+--- a/glx/glxcmdsswap.c
++++ b/glx/glxcmdsswap.c
+@@ -28,7 +28,6 @@
+  * Silicon Graphics, Inc.
+  */
+ 
+-#define FONT_PCF
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif

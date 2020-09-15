@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 7129ac6..5ad5392 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -67,8 +67,7 @@
+ #include <IOKit/hidsystem/IOHIDLib.h>
+ 
+ #ifdef MITSHM
+-#define _XSHM_SERVER_
+-#include <X11/extensions/XShm.h>
++#include "shmint.h"
+ #endif
+ 
+ #include "darwin.h"

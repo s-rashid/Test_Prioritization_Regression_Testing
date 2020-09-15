@@ -1,0 +1,2546 @@
+diff --git a/hw/dmx/glxProxy/g_renderswap.c b/hw/dmx/glxProxy/g_renderswap.c
+index e434a71..ce1c609 100644
+--- a/hw/dmx/glxProxy/g_renderswap.c
++++ b/hw/dmx/glxProxy/g_renderswap.c
+@@ -34,7 +34,8 @@
+ #include "unpack.h"
+ #include "compsize.h"
+ 
+-void __glXDispSwap_CallList(GLbyte *pc)
++void
++__glXDispSwap_CallList(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -42,7 +43,8 @@ void __glXDispSwap_CallList(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ListBase(GLbyte *pc)
++void
++__glXDispSwap_ListBase(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -50,7 +52,8 @@ void __glXDispSwap_ListBase(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Begin(GLbyte *pc)
++void
++__glXDispSwap_Begin(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -58,16 +61,17 @@ void __glXDispSwap_Begin(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color3bv(GLbyte *pc)
++void
++__glXDispSwap_Color3bv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Color3dv(GLbyte *pc)
++void
++__glXDispSwap_Color3dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -78,7 +82,8 @@ void __glXDispSwap_Color3dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color3fv(GLbyte *pc)
++void
++__glXDispSwap_Color3fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -86,7 +91,8 @@ void __glXDispSwap_Color3fv(GLbyte *pc)
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 0, 3);
+ }
+ 
+-void __glXDispSwap_Color3iv(GLbyte *pc)
++void
++__glXDispSwap_Color3iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -95,7 +101,8 @@ void __glXDispSwap_Color3iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color3sv(GLbyte *pc)
++void
++__glXDispSwap_Color3sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -104,11 +111,13 @@ void __glXDispSwap_Color3sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color3ubv(GLbyte *pc)
++void
++__glXDispSwap_Color3ubv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Color3uiv(GLbyte *pc)
++void
++__glXDispSwap_Color3uiv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -116,7 +125,8 @@ void __glXDispSwap_Color3uiv(GLbyte *pc)
+ 	__GLX_SWAP_INT_ARRAY(pc + 0, 3);
+ }
+ 
+-void __glXDispSwap_Color3usv(GLbyte *pc)
++void
++__glXDispSwap_Color3usv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -124,16 +134,17 @@ void __glXDispSwap_Color3usv(GLbyte *pc)
+ 	__GLX_SWAP_SHORT_ARRAY(pc + 0, 3);
+ }
+ 
+-void __glXDispSwap_Color4bv(GLbyte *pc)
++void
++__glXDispSwap_Color4bv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Color4dv(GLbyte *pc)
++void
++__glXDispSwap_Color4dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -143,7 +154,8 @@ void __glXDispSwap_Color4dv(GLbyte *pc)
+ 	__GLX_SWAP_DOUBLE_ARRAY(pc + 0, 4);
+ }
+ 
+-void __glXDispSwap_Color4fv(GLbyte *pc)
++void
++__glXDispSwap_Color4fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -152,7 +164,8 @@ void __glXDispSwap_Color4fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color4iv(GLbyte *pc)
++void
++__glXDispSwap_Color4iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -161,7 +174,8 @@ void __glXDispSwap_Color4iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color4sv(GLbyte *pc)
++void
++__glXDispSwap_Color4sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -170,12 +184,14 @@ void __glXDispSwap_Color4sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color4ubv(GLbyte *pc)
++void
++__glXDispSwap_Color4ubv(GLbyte * pc)
+ {
+ 
+ }
+ 
+-void __glXDispSwap_Color4uiv(GLbyte *pc)
++void
++__glXDispSwap_Color4uiv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -184,7 +200,8 @@ void __glXDispSwap_Color4uiv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Color4usv(GLbyte *pc)
++void
++__glXDispSwap_Color4usv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -193,20 +210,22 @@ void __glXDispSwap_Color4usv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EdgeFlagv(GLbyte *pc)
++void
++__glXDispSwap_EdgeFlagv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_End(GLbyte *pc)
++void
++__glXDispSwap_End(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Indexdv(GLbyte *pc)
++void
++__glXDispSwap_Indexdv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 8);
+@@ -217,7 +236,8 @@ void __glXDispSwap_Indexdv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Indexfv(GLbyte *pc)
++void
++__glXDispSwap_Indexfv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -226,7 +246,8 @@ void __glXDispSwap_Indexfv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Indexiv(GLbyte *pc)
++void
++__glXDispSwap_Indexiv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -235,7 +256,8 @@ void __glXDispSwap_Indexiv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Indexsv(GLbyte *pc)
++void
++__glXDispSwap_Indexsv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -244,16 +266,17 @@ void __glXDispSwap_Indexsv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Normal3bv(GLbyte *pc)
++void
++__glXDispSwap_Normal3bv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Normal3dv(GLbyte *pc)
++void
++__glXDispSwap_Normal3dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -264,7 +287,8 @@ void __glXDispSwap_Normal3dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Normal3fv(GLbyte *pc)
++void
++__glXDispSwap_Normal3fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -273,7 +297,8 @@ void __glXDispSwap_Normal3fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Normal3iv(GLbyte *pc)
++void
++__glXDispSwap_Normal3iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -282,7 +307,8 @@ void __glXDispSwap_Normal3iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Normal3sv(GLbyte *pc)
++void
++__glXDispSwap_Normal3sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -291,12 +317,12 @@ void __glXDispSwap_Normal3sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos2dv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos2dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -307,7 +333,8 @@ void __glXDispSwap_RasterPos2dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos2fv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos2fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -316,7 +343,8 @@ void __glXDispSwap_RasterPos2fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos2iv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos2iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -325,7 +353,8 @@ void __glXDispSwap_RasterPos2iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos2sv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos2sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -334,12 +363,12 @@ void __glXDispSwap_RasterPos2sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos3dv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos3dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -350,7 +379,8 @@ void __glXDispSwap_RasterPos3dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos3fv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos3fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -359,7 +389,8 @@ void __glXDispSwap_RasterPos3fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos3iv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos3iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -368,7 +399,8 @@ void __glXDispSwap_RasterPos3iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos3sv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos3sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -377,12 +409,12 @@ void __glXDispSwap_RasterPos3sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos4dv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos4dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -393,7 +425,8 @@ void __glXDispSwap_RasterPos4dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos4fv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos4fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -402,7 +435,8 @@ void __glXDispSwap_RasterPos4fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos4iv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos4iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -411,7 +445,8 @@ void __glXDispSwap_RasterPos4iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_RasterPos4sv(GLbyte *pc)
++void
++__glXDispSwap_RasterPos4sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -420,12 +455,12 @@ void __glXDispSwap_RasterPos4sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Rectdv(GLbyte *pc)
++void
++__glXDispSwap_Rectdv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -437,7 +472,8 @@ void __glXDispSwap_Rectdv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Rectfv(GLbyte *pc)
++void
++__glXDispSwap_Rectfv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -447,7 +483,8 @@ void __glXDispSwap_Rectfv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Rectiv(GLbyte *pc)
++void
++__glXDispSwap_Rectiv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -457,7 +494,8 @@ void __glXDispSwap_Rectiv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Rectsv(GLbyte *pc)
++void
++__glXDispSwap_Rectsv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -467,12 +505,12 @@ void __glXDispSwap_Rectsv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord1dv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord1dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 8);
+@@ -483,7 +521,8 @@ void __glXDispSwap_TexCoord1dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord1fv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord1fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -492,7 +531,8 @@ void __glXDispSwap_TexCoord1fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord1iv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord1iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -501,7 +541,8 @@ void __glXDispSwap_TexCoord1iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord1sv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord1sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -510,12 +551,12 @@ void __glXDispSwap_TexCoord1sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord2dv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord2dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -526,7 +567,8 @@ void __glXDispSwap_TexCoord2dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord2fv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord2fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -535,7 +577,8 @@ void __glXDispSwap_TexCoord2fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord2iv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord2iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -544,7 +587,8 @@ void __glXDispSwap_TexCoord2iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord2sv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord2sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -553,12 +597,12 @@ void __glXDispSwap_TexCoord2sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord3dv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord3dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -569,7 +613,8 @@ void __glXDispSwap_TexCoord3dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord3fv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord3fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -578,7 +623,8 @@ void __glXDispSwap_TexCoord3fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord3iv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord3iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -587,7 +633,8 @@ void __glXDispSwap_TexCoord3iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord3sv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord3sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -596,12 +643,12 @@ void __glXDispSwap_TexCoord3sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord4dv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord4dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -612,7 +659,8 @@ void __glXDispSwap_TexCoord4dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord4fv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord4fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -621,7 +669,8 @@ void __glXDispSwap_TexCoord4fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord4iv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord4iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -630,7 +679,8 @@ void __glXDispSwap_TexCoord4iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexCoord4sv(GLbyte *pc)
++void
++__glXDispSwap_TexCoord4sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -639,12 +689,12 @@ void __glXDispSwap_TexCoord4sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex2dv(GLbyte *pc)
++void
++__glXDispSwap_Vertex2dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -655,7 +705,8 @@ void __glXDispSwap_Vertex2dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex2fv(GLbyte *pc)
++void
++__glXDispSwap_Vertex2fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -664,7 +715,8 @@ void __glXDispSwap_Vertex2fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex2iv(GLbyte *pc)
++void
++__glXDispSwap_Vertex2iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -673,7 +725,8 @@ void __glXDispSwap_Vertex2iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex2sv(GLbyte *pc)
++void
++__glXDispSwap_Vertex2sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -682,12 +735,12 @@ void __glXDispSwap_Vertex2sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex3dv(GLbyte *pc)
++void
++__glXDispSwap_Vertex3dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -698,7 +751,8 @@ void __glXDispSwap_Vertex3dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex3fv(GLbyte *pc)
++void
++__glXDispSwap_Vertex3fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -707,7 +761,8 @@ void __glXDispSwap_Vertex3fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex3iv(GLbyte *pc)
++void
++__glXDispSwap_Vertex3iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -716,7 +771,8 @@ void __glXDispSwap_Vertex3iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex3sv(GLbyte *pc)
++void
++__glXDispSwap_Vertex3sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -725,12 +781,12 @@ void __glXDispSwap_Vertex3sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex4dv(GLbyte *pc)
++void
++__glXDispSwap_Vertex4dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -741,7 +797,8 @@ void __glXDispSwap_Vertex4dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex4fv(GLbyte *pc)
++void
++__glXDispSwap_Vertex4fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -750,7 +807,8 @@ void __glXDispSwap_Vertex4fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex4iv(GLbyte *pc)
++void
++__glXDispSwap_Vertex4iv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -759,7 +817,8 @@ void __glXDispSwap_Vertex4iv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Vertex4sv(GLbyte *pc)
++void
++__glXDispSwap_Vertex4sv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -768,12 +827,12 @@ void __glXDispSwap_Vertex4sv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClipPlane(GLbyte *pc)
++void
++__glXDispSwap_ClipPlane(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 36);
+@@ -785,7 +844,8 @@ void __glXDispSwap_ClipPlane(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ColorMaterial(GLbyte *pc)
++void
++__glXDispSwap_ColorMaterial(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -794,7 +854,8 @@ void __glXDispSwap_ColorMaterial(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CullFace(GLbyte *pc)
++void
++__glXDispSwap_CullFace(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -802,7 +863,8 @@ void __glXDispSwap_CullFace(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Fogf(GLbyte *pc)
++void
++__glXDispSwap_Fogf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -811,22 +873,26 @@ void __glXDispSwap_Fogf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Fogfv(GLbyte *pc)
++void
++__glXDispSwap_Fogfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 0);
+ 	pname = *(GLenum *)(pc + 0);
+ 	compsize = __glFogfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 4, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_Fogi(GLbyte *pc)
++void
++__glXDispSwap_Fogi(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -835,22 +901,26 @@ void __glXDispSwap_Fogi(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Fogiv(GLbyte *pc)
++void
++__glXDispSwap_Fogiv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 0);
+ 	pname = *(GLenum *)(pc + 0);
+ 	compsize = __glFogiv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT_ARRAY(pc + 4, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_FrontFace(GLbyte *pc)
++void
++__glXDispSwap_FrontFace(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -858,7 +928,8 @@ void __glXDispSwap_FrontFace(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Hint(GLbyte *pc)
++void
++__glXDispSwap_Hint(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -867,7 +938,8 @@ void __glXDispSwap_Hint(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Lightf(GLbyte *pc)
++void
++__glXDispSwap_Lightf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -877,23 +949,27 @@ void __glXDispSwap_Lightf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Lightfv(GLbyte *pc)
++void
++__glXDispSwap_Lightfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glLightfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_Lighti(GLbyte *pc)
++void
++__glXDispSwap_Lighti(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -903,23 +979,27 @@ void __glXDispSwap_Lighti(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Lightiv(GLbyte *pc)
++void
++__glXDispSwap_Lightiv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glLightiv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_LightModelf(GLbyte *pc)
++void
++__glXDispSwap_LightModelf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -928,22 +1008,26 @@ void __glXDispSwap_LightModelf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LightModelfv(GLbyte *pc)
++void
++__glXDispSwap_LightModelfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 0);
+ 	pname = *(GLenum *)(pc + 0);
+ 	compsize = __glLightModelfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 4, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_LightModeli(GLbyte *pc)
++void
++__glXDispSwap_LightModeli(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -952,22 +1036,26 @@ void __glXDispSwap_LightModeli(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LightModeliv(GLbyte *pc)
++void
++__glXDispSwap_LightModeliv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 0);
+ 	pname = *(GLenum *)(pc + 0);
+ 	compsize = __glLightModeliv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT_ARRAY(pc + 4, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_LineStipple(GLbyte *pc)
++void
++__glXDispSwap_LineStipple(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -976,7 +1064,8 @@ void __glXDispSwap_LineStipple(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LineWidth(GLbyte *pc)
++void
++__glXDispSwap_LineWidth(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -984,7 +1073,8 @@ void __glXDispSwap_LineWidth(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Materialf(GLbyte *pc)
++void
++__glXDispSwap_Materialf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -994,23 +1084,27 @@ void __glXDispSwap_Materialf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Materialfv(GLbyte *pc)
++void
++__glXDispSwap_Materialfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glMaterialfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_Materiali(GLbyte *pc)
++void
++__glXDispSwap_Materiali(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1020,23 +1114,27 @@ void __glXDispSwap_Materiali(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Materialiv(GLbyte *pc)
++void
++__glXDispSwap_Materialiv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glMaterialiv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_PointSize(GLbyte *pc)
++void
++__glXDispSwap_PointSize(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1044,7 +1142,8 @@ void __glXDispSwap_PointSize(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PolygonMode(GLbyte *pc)
++void
++__glXDispSwap_PolygonMode(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1053,7 +1152,8 @@ void __glXDispSwap_PolygonMode(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Scissor(GLbyte *pc)
++void
++__glXDispSwap_Scissor(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1064,7 +1164,8 @@ void __glXDispSwap_Scissor(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ShadeModel(GLbyte *pc)
++void
++__glXDispSwap_ShadeModel(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1072,7 +1173,8 @@ void __glXDispSwap_ShadeModel(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexParameterf(GLbyte *pc)
++void
++__glXDispSwap_TexParameterf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1082,23 +1184,27 @@ void __glXDispSwap_TexParameterf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexParameterfv(GLbyte *pc)
++void
++__glXDispSwap_TexParameterfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexParameterfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_TexParameteri(GLbyte *pc)
++void
++__glXDispSwap_TexParameteri(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1108,23 +1214,27 @@ void __glXDispSwap_TexParameteri(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexParameteriv(GLbyte *pc)
++void
++__glXDispSwap_TexParameteriv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexParameteriv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_TexEnvf(GLbyte *pc)
++void
++__glXDispSwap_TexEnvf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1134,23 +1244,27 @@ void __glXDispSwap_TexEnvf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexEnvfv(GLbyte *pc)
++void
++__glXDispSwap_TexEnvfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexEnvfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_TexEnvi(GLbyte *pc)
++void
++__glXDispSwap_TexEnvi(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1160,27 +1274,30 @@ void __glXDispSwap_TexEnvi(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexEnviv(GLbyte *pc)
++void
++__glXDispSwap_TexEnviv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexEnviv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_TexGend(GLbyte *pc)
++void
++__glXDispSwap_TexGend(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -1193,18 +1310,21 @@ void __glXDispSwap_TexGend(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexGendv(GLbyte *pc)
++void
++__glXDispSwap_TexGendv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint cmdlen;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexGendv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	cmdlen = __GLX_PAD(8+compsize*8);
+ 
+ #ifdef __GLX_ALIGN64
+@@ -1218,7 +1338,8 @@ void __glXDispSwap_TexGendv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexGenf(GLbyte *pc)
++void
++__glXDispSwap_TexGenf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1228,23 +1349,27 @@ void __glXDispSwap_TexGenf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexGenfv(GLbyte *pc)
++void
++__glXDispSwap_TexGenfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexGenfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_TexGeni(GLbyte *pc)
++void
++__glXDispSwap_TexGeni(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1254,27 +1379,32 @@ void __glXDispSwap_TexGeni(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_TexGeniv(GLbyte *pc)
++void
++__glXDispSwap_TexGeniv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glTexGeniv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_InitNames(GLbyte *pc)
++void
++__glXDispSwap_InitNames(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_LoadName(GLbyte *pc)
++void
++__glXDispSwap_LoadName(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1282,7 +1412,8 @@ void __glXDispSwap_LoadName(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PassThrough(GLbyte *pc)
++void
++__glXDispSwap_PassThrough(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1290,11 +1421,13 @@ void __glXDispSwap_PassThrough(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PopName(GLbyte *pc)
++void
++__glXDispSwap_PopName(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_PushName(GLbyte *pc)
++void
++__glXDispSwap_PushName(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1302,7 +1435,8 @@ void __glXDispSwap_PushName(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_DrawBuffer(GLbyte *pc)
++void
++__glXDispSwap_DrawBuffer(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1310,7 +1444,8 @@ void __glXDispSwap_DrawBuffer(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Clear(GLbyte *pc)
++void
++__glXDispSwap_Clear(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1318,7 +1453,8 @@ void __glXDispSwap_Clear(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClearAccum(GLbyte *pc)
++void
++__glXDispSwap_ClearAccum(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1329,7 +1465,8 @@ void __glXDispSwap_ClearAccum(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClearIndex(GLbyte *pc)
++void
++__glXDispSwap_ClearIndex(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1337,7 +1474,8 @@ void __glXDispSwap_ClearIndex(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClearColor(GLbyte *pc)
++void
++__glXDispSwap_ClearColor(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1348,7 +1486,8 @@ void __glXDispSwap_ClearColor(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClearStencil(GLbyte *pc)
++void
++__glXDispSwap_ClearStencil(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1356,11 +1495,11 @@ void __glXDispSwap_ClearStencil(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ClearDepth(GLbyte *pc)
++void
++__glXDispSwap_ClearDepth(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 8);
+@@ -1371,7 +1510,8 @@ void __glXDispSwap_ClearDepth(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_StencilMask(GLbyte *pc)
++void
++__glXDispSwap_StencilMask(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1379,15 +1519,18 @@ void __glXDispSwap_StencilMask(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ColorMask(GLbyte *pc)
++void
++__glXDispSwap_ColorMask(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_DepthMask(GLbyte *pc)
++void
++__glXDispSwap_DepthMask(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_IndexMask(GLbyte *pc)
++void
++__glXDispSwap_IndexMask(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1395,7 +1538,8 @@ void __glXDispSwap_IndexMask(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Accum(GLbyte *pc)
++void
++__glXDispSwap_Accum(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1404,7 +1548,8 @@ void __glXDispSwap_Accum(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Disable(GLbyte *pc)
++void
++__glXDispSwap_Disable(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1412,7 +1557,8 @@ void __glXDispSwap_Disable(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Enable(GLbyte *pc)
++void
++__glXDispSwap_Enable(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1420,11 +1566,13 @@ void __glXDispSwap_Enable(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PopAttrib(GLbyte *pc)
++void
++__glXDispSwap_PopAttrib(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_PushAttrib(GLbyte *pc)
++void
++__glXDispSwap_PushAttrib(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1432,11 +1580,11 @@ void __glXDispSwap_PushAttrib(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MapGrid1d(GLbyte *pc)
++void
++__glXDispSwap_MapGrid1d(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 20);
+@@ -1449,7 +1597,8 @@ void __glXDispSwap_MapGrid1d(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MapGrid1f(GLbyte *pc)
++void
++__glXDispSwap_MapGrid1f(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1459,11 +1608,11 @@ void __glXDispSwap_MapGrid1f(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MapGrid2d(GLbyte *pc)
++void
++__glXDispSwap_MapGrid2d(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 40);
+@@ -1479,7 +1628,8 @@ void __glXDispSwap_MapGrid2d(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MapGrid2f(GLbyte *pc)
++void
++__glXDispSwap_MapGrid2f(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1492,12 +1642,12 @@ void __glXDispSwap_MapGrid2f(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalCoord1dv(GLbyte *pc)
++void
++__glXDispSwap_EvalCoord1dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 8);
+@@ -1508,7 +1658,8 @@ void __glXDispSwap_EvalCoord1dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalCoord1fv(GLbyte *pc)
++void
++__glXDispSwap_EvalCoord1fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -1517,12 +1668,12 @@ void __glXDispSwap_EvalCoord1fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalCoord2dv(GLbyte *pc)
++void
++__glXDispSwap_EvalCoord2dv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -1533,7 +1684,8 @@ void __glXDispSwap_EvalCoord2dv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalCoord2fv(GLbyte *pc)
++void
++__glXDispSwap_EvalCoord2fv(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -1542,7 +1694,8 @@ void __glXDispSwap_EvalCoord2fv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalMesh1(GLbyte *pc)
++void
++__glXDispSwap_EvalMesh1(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1552,7 +1705,8 @@ void __glXDispSwap_EvalMesh1(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalPoint1(GLbyte *pc)
++void
++__glXDispSwap_EvalPoint1(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1560,7 +1714,8 @@ void __glXDispSwap_EvalPoint1(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalMesh2(GLbyte *pc)
++void
++__glXDispSwap_EvalMesh2(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1572,7 +1727,8 @@ void __glXDispSwap_EvalMesh2(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_EvalPoint2(GLbyte *pc)
++void
++__glXDispSwap_EvalPoint2(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1581,7 +1737,8 @@ void __glXDispSwap_EvalPoint2(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_AlphaFunc(GLbyte *pc)
++void
++__glXDispSwap_AlphaFunc(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1590,7 +1747,8 @@ void __glXDispSwap_AlphaFunc(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_BlendFunc(GLbyte *pc)
++void
++__glXDispSwap_BlendFunc(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1599,7 +1757,8 @@ void __glXDispSwap_BlendFunc(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LogicOp(GLbyte *pc)
++void
++__glXDispSwap_LogicOp(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1607,7 +1766,8 @@ void __glXDispSwap_LogicOp(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_StencilFunc(GLbyte *pc)
++void
++__glXDispSwap_StencilFunc(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1617,7 +1777,8 @@ void __glXDispSwap_StencilFunc(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_StencilOp(GLbyte *pc)
++void
++__glXDispSwap_StencilOp(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1627,7 +1788,8 @@ void __glXDispSwap_StencilOp(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_DepthFunc(GLbyte *pc)
++void
++__glXDispSwap_DepthFunc(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1635,7 +1797,8 @@ void __glXDispSwap_DepthFunc(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelZoom(GLbyte *pc)
++void
++__glXDispSwap_PixelZoom(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1644,7 +1807,8 @@ void __glXDispSwap_PixelZoom(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelTransferf(GLbyte *pc)
++void
++__glXDispSwap_PixelTransferf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1653,7 +1817,8 @@ void __glXDispSwap_PixelTransferf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelTransferi(GLbyte *pc)
++void
++__glXDispSwap_PixelTransferi(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1662,9 +1827,11 @@ void __glXDispSwap_PixelTransferi(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelMapfv(GLbyte *pc)
++void
++__glXDispSwap_PixelMapfv(GLbyte * pc)
+ {
+ 	GLint mapsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -1675,9 +1842,11 @@ void __glXDispSwap_PixelMapfv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelMapuiv(GLbyte *pc)
++void
++__glXDispSwap_PixelMapuiv(GLbyte * pc)
+ {
+ 	GLint mapsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -1688,9 +1857,11 @@ void __glXDispSwap_PixelMapuiv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PixelMapusv(GLbyte *pc)
++void
++__glXDispSwap_PixelMapusv(GLbyte * pc)
+ {
+ 	GLint mapsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -1701,7 +1872,8 @@ void __glXDispSwap_PixelMapusv(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ReadBuffer(GLbyte *pc)
++void
++__glXDispSwap_ReadBuffer(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1709,7 +1881,8 @@ void __glXDispSwap_ReadBuffer(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyPixels(GLbyte *pc)
++void
++__glXDispSwap_CopyPixels(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1721,11 +1894,11 @@ void __glXDispSwap_CopyPixels(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_DepthRange(GLbyte *pc)
++void
++__glXDispSwap_DepthRange(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 16);
+@@ -1737,11 +1910,11 @@ void __glXDispSwap_DepthRange(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Frustum(GLbyte *pc)
++void
++__glXDispSwap_Frustum(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 48);
+@@ -1757,11 +1930,13 @@ void __glXDispSwap_Frustum(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LoadIdentity(GLbyte *pc)
++void
++__glXDispSwap_LoadIdentity(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_LoadMatrixf(GLbyte *pc)
++void
++__glXDispSwap_LoadMatrixf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -1770,12 +1945,12 @@ void __glXDispSwap_LoadMatrixf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_LoadMatrixd(GLbyte *pc)
++void
++__glXDispSwap_LoadMatrixd(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 128);
+@@ -1786,7 +1961,8 @@ void __glXDispSwap_LoadMatrixd(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MatrixMode(GLbyte *pc)
++void
++__glXDispSwap_MatrixMode(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1794,7 +1970,8 @@ void __glXDispSwap_MatrixMode(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultMatrixf(GLbyte *pc)
++void
++__glXDispSwap_MultMatrixf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -1803,12 +1980,12 @@ void __glXDispSwap_MultMatrixf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultMatrixd(GLbyte *pc)
++void
++__glXDispSwap_MultMatrixd(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 128);
+@@ -1819,11 +1996,11 @@ void __glXDispSwap_MultMatrixd(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Ortho(GLbyte *pc)
++void
++__glXDispSwap_Ortho(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 48);
+@@ -1839,19 +2016,21 @@ void __glXDispSwap_Ortho(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PopMatrix(GLbyte *pc)
++void
++__glXDispSwap_PopMatrix(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_PushMatrix(GLbyte *pc)
++void
++__glXDispSwap_PushMatrix(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_Rotated(GLbyte *pc)
++void
++__glXDispSwap_Rotated(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 32);
+@@ -1865,7 +2044,8 @@ void __glXDispSwap_Rotated(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Rotatef(GLbyte *pc)
++void
++__glXDispSwap_Rotatef(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1876,11 +2056,11 @@ void __glXDispSwap_Rotatef(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Scaled(GLbyte *pc)
++void
++__glXDispSwap_Scaled(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -1893,7 +2073,8 @@ void __glXDispSwap_Scaled(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Scalef(GLbyte *pc)
++void
++__glXDispSwap_Scalef(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1903,11 +2084,11 @@ void __glXDispSwap_Scalef(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Translated(GLbyte *pc)
++void
++__glXDispSwap_Translated(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 24);
+@@ -1920,7 +2101,8 @@ void __glXDispSwap_Translated(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Translatef(GLbyte *pc)
++void
++__glXDispSwap_Translatef(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1930,7 +2112,8 @@ void __glXDispSwap_Translatef(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Viewport(GLbyte *pc)
++void
++__glXDispSwap_Viewport(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1941,7 +2124,8 @@ void __glXDispSwap_Viewport(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PolygonOffset(GLbyte *pc)
++void
++__glXDispSwap_PolygonOffset(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1950,7 +2134,8 @@ void __glXDispSwap_PolygonOffset(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyTexImage1D(GLbyte *pc)
++void
++__glXDispSwap_CopyTexImage1D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1964,7 +2149,8 @@ void __glXDispSwap_CopyTexImage1D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyTexImage2D(GLbyte *pc)
++void
++__glXDispSwap_CopyTexImage2D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1979,7 +2165,8 @@ void __glXDispSwap_CopyTexImage2D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyTexSubImage1D(GLbyte *pc)
++void
++__glXDispSwap_CopyTexSubImage1D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -1992,7 +2179,8 @@ void __glXDispSwap_CopyTexSubImage1D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyTexSubImage2D(GLbyte *pc)
++void
++__glXDispSwap_CopyTexSubImage2D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2007,7 +2195,8 @@ void __glXDispSwap_CopyTexSubImage2D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_BindTexture(GLbyte *pc)
++void
++__glXDispSwap_BindTexture(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2016,9 +2205,11 @@ void __glXDispSwap_BindTexture(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_PrioritizeTextures(GLbyte *pc)
++void
++__glXDispSwap_PrioritizeTextures(GLbyte * pc)
+ {
+ 	GLsizei n;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -2029,11 +2220,13 @@ void __glXDispSwap_PrioritizeTextures(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Indexubv(GLbyte *pc)
++void
++__glXDispSwap_Indexubv(GLbyte * pc)
+ {
+ }
+ 
+-void __glXDispSwap_BlendColor(GLbyte *pc)
++void
++__glXDispSwap_BlendColor(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2044,7 +2237,8 @@ void __glXDispSwap_BlendColor(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_BlendEquation(GLbyte *pc)
++void
++__glXDispSwap_BlendEquation(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2052,39 +2246,46 @@ void __glXDispSwap_BlendEquation(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ColorTableParameterfv(GLbyte *pc)
++void
++__glXDispSwap_ColorTableParameterfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glColorTableParameterfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_ColorTableParameteriv(GLbyte *pc)
++void
++__glXDispSwap_ColorTableParameteriv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glColorTableParameteriv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_CopyColorTable(GLbyte *pc)
++void
++__glXDispSwap_CopyColorTable(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2096,7 +2297,8 @@ void __glXDispSwap_CopyColorTable(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyColorSubTable(GLbyte *pc)
++void
++__glXDispSwap_CopyColorSubTable(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2108,7 +2310,8 @@ void __glXDispSwap_CopyColorSubTable(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ConvolutionParameterf(GLbyte *pc)
++void
++__glXDispSwap_ConvolutionParameterf(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2118,23 +2321,27 @@ void __glXDispSwap_ConvolutionParameterf(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ConvolutionParameterfv(GLbyte *pc)
++void
++__glXDispSwap_ConvolutionParameterfv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glConvolutionParameterfv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_FLOAT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_ConvolutionParameteri(GLbyte *pc)
++void
++__glXDispSwap_ConvolutionParameteri(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2144,23 +2351,27 @@ void __glXDispSwap_ConvolutionParameteri(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ConvolutionParameteriv(GLbyte *pc)
++void
++__glXDispSwap_ConvolutionParameteriv(GLbyte * pc)
+ {
+ 	GLenum pname;
+ 	GLint compsize;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(pc + 4);
+ 	pname = *(GLenum *)(pc + 4);
+ 	compsize = __glConvolutionParameteriv_size(pname);
+-	if (compsize < 0) compsize = 0;
++    if (compsize < 0)
++        compsize = 0;
+ 	__GLX_SWAP_INT(pc + 0);
+ 	__GLX_SWAP_INT_ARRAY(pc + 8, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_CopyConvolutionFilter1D(GLbyte *pc)
++void
++__glXDispSwap_CopyConvolutionFilter1D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2172,7 +2383,8 @@ void __glXDispSwap_CopyConvolutionFilter1D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyConvolutionFilter2D(GLbyte *pc)
++void
++__glXDispSwap_CopyConvolutionFilter2D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2185,7 +2397,8 @@ void __glXDispSwap_CopyConvolutionFilter2D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Histogram(GLbyte *pc)
++void
++__glXDispSwap_Histogram(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2195,7 +2408,8 @@ void __glXDispSwap_Histogram(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_Minmax(GLbyte *pc)
++void
++__glXDispSwap_Minmax(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2204,7 +2418,8 @@ void __glXDispSwap_Minmax(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ResetHistogram(GLbyte *pc)
++void
++__glXDispSwap_ResetHistogram(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2212,7 +2427,8 @@ void __glXDispSwap_ResetHistogram(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ResetMinmax(GLbyte *pc)
++void
++__glXDispSwap_ResetMinmax(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2220,7 +2436,8 @@ void __glXDispSwap_ResetMinmax(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_CopyTexSubImage3D(GLbyte *pc)
++void
++__glXDispSwap_CopyTexSubImage3D(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2236,7 +2453,8 @@ void __glXDispSwap_CopyTexSubImage3D(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_ActiveTextureARB(GLbyte *pc)
++void
++__glXDispSwap_ActiveTextureARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+@@ -2244,12 +2462,12 @@ void __glXDispSwap_ActiveTextureARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord1dvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord1dvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 12);
+@@ -2261,7 +2479,8 @@ void __glXDispSwap_MultiTexCoord1dvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord1fvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord1fvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2271,7 +2490,8 @@ void __glXDispSwap_MultiTexCoord1fvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord1ivARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord1ivARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2281,7 +2501,8 @@ void __glXDispSwap_MultiTexCoord1ivARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord1svARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord1svARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2291,12 +2512,12 @@ void __glXDispSwap_MultiTexCoord1svARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord2dvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord2dvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 20);
+@@ -2308,7 +2529,8 @@ void __glXDispSwap_MultiTexCoord2dvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord2fvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord2fvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2318,7 +2540,8 @@ void __glXDispSwap_MultiTexCoord2fvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord2ivARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord2ivARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2328,7 +2551,8 @@ void __glXDispSwap_MultiTexCoord2ivARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord2svARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord2svARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2338,12 +2562,12 @@ void __glXDispSwap_MultiTexCoord2svARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord3dvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord3dvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 28);
+@@ -2355,7 +2579,8 @@ void __glXDispSwap_MultiTexCoord3dvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord3fvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord3fvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2365,7 +2590,8 @@ void __glXDispSwap_MultiTexCoord3fvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord3ivARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord3ivARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2375,7 +2601,8 @@ void __glXDispSwap_MultiTexCoord3ivARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord3svARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord3svARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2385,12 +2612,12 @@ void __glXDispSwap_MultiTexCoord3svARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord4dvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord4dvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+-
+ #ifdef __GLX_ALIGN64
+ 	if ((unsigned long)(pc) & 7) {
+ 	    __GLX_MEM_COPY(pc-4, pc, 36);
+@@ -2402,7 +2629,8 @@ void __glXDispSwap_MultiTexCoord4dvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord4fvARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord4fvARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2412,7 +2640,8 @@ void __glXDispSwap_MultiTexCoord4fvARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord4ivARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord4ivARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2422,7 +2651,8 @@ void __glXDispSwap_MultiTexCoord4ivARB(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_MultiTexCoord4svARB(GLbyte *pc)
++void
++__glXDispSwap_MultiTexCoord4svARB(GLbyte * pc)
+ {
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 	__GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -2431,4 +2661,3 @@ void __glXDispSwap_MultiTexCoord4svARB(GLbyte *pc)
+ 	__GLX_SWAP_SHORT_ARRAY(pc + 4, 4);
+ 
+ }
+-

@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxsync.c b/hw/dmx/dmxsync.c
+index 2cec1b9..2c7ccb8 100644
+--- a/hw/dmx/dmxsync.c
++++ b/hw/dmx/dmxsync.c
+@@ -159,7 +159,7 @@ void dmxSync(DMXScreenInfo *dmxScreen, Bool now)
+              * 2) freed, if it was on a queue (dmxSyncPending != 0), or
+              * 3) allocated, if it wasn't on a queue (dmxSyncPending == 0)
+              */
+-            if (dmxSyncTimer && !dmxSyncPending) xfree(dmxSyncTimer);
++            if (dmxSyncTimer && !dmxSyncPending) free(dmxSyncTimer);
+             dmxSyncTimer  = NULL;
+             now           = TRUE;
+             dmxGeneration = serverGeneration;

@@ -1,0 +1,96 @@
+diff --git a/hw/dmx/dmxcmap.c b/hw/dmx/dmxcmap.c
+index ca9ef1f..450627b 100644
+--- a/hw/dmx/dmxcmap.c
++++ b/hw/dmx/dmxcmap.c
+@@ -46,7 +46,8 @@
+ 
+ #include "micmap.h"
+ 
+-static Bool dmxAllocateColormapPrivates(ColormapPtr pColormap)
++static Bool
++dmxAllocateColormapPrivates(ColormapPtr pColormap)
+ {
+     dmxColormapPrivPtr   pCmapPriv;
+ 
+@@ -61,7 +62,8 @@ static Bool dmxAllocateColormapPrivates(ColormapPtr pColormap)
+ }
+ 
+ /** Create \a pColormap on the back-end server. */
+-Bool dmxBECreateColormap(ColormapPtr pColormap)
++Bool
++dmxBECreateColormap(ColormapPtr pColormap)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -85,7 +87,8 @@ Bool dmxBECreateColormap(ColormapPtr pColormap)
+ 
+ /** Create colormap on back-end server associated with \a pColormap's
+  *  screen. */
+-Bool dmxCreateColormap(ColormapPtr pColormap)
++Bool
++dmxCreateColormap(ColormapPtr pColormap)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -108,7 +111,8 @@ Bool dmxCreateColormap(ColormapPtr pColormap)
+ }
+ 
+ /** Destroy \a pColormap on the back-end server. */
+-Bool dmxBEFreeColormap(ColormapPtr pColormap)
++Bool
++dmxBEFreeColormap(ColormapPtr pColormap)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -125,7 +129,8 @@ Bool dmxBEFreeColormap(ColormapPtr pColormap)
+ 
+ /** Destroy colormap on back-end server associated with \a pColormap's
+  *  screen. */
+-void dmxDestroyColormap(ColormapPtr pColormap)
++void
++dmxDestroyColormap(ColormapPtr pColormap)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -144,7 +149,8 @@ void dmxDestroyColormap(ColormapPtr pColormap)
+ 
+ /** Install colormap on back-end server associated with \a pColormap's
+  *  screen. */
+-void dmxInstallColormap(ColormapPtr pColormap)
++void
++dmxInstallColormap(ColormapPtr pColormap)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -163,7 +169,8 @@ void dmxInstallColormap(ColormapPtr pColormap)
+ 
+ /** Store colors in \a pColormap on back-end server associated with \a
+  *  pColormap's screen. */
+-void dmxStoreColors(ColormapPtr pColormap, int ndef, xColorItem *pdef)
++void
++dmxStoreColors(ColormapPtr pColormap, int ndef, xColorItem * pdef)
+ {
+     ScreenPtr           pScreen   = pColormap->pScreen;
+     DMXScreenInfo      *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -184,8 +191,10 @@ void dmxStoreColors(ColormapPtr pColormap, int ndef, xColorItem *pdef)
+             }
+             XStoreColors(dmxScreen->beDisplay, pCmapPriv->cmap, color, ndef);
+             free(color);
+-        } else {                /* xalloc failed, so fallback */
++        }
++        else {                  /* xalloc failed, so fallback */
+             XColor c;
++
+             for (i = 0; i < ndef; i++) {
+                 c.pixel = pdef[i].pixel;
+                 c.red   = pdef[i].red;
+@@ -206,7 +215,8 @@ void dmxStoreColors(ColormapPtr pColormap, int ndef, xColorItem *pdef)
+ }
+ 
+ /** Create the DMX server's default colormap. */
+-Bool dmxCreateDefColormap(ScreenPtr pScreen)
++Bool
++dmxCreateDefColormap(ScreenPtr pScreen)
+ {
+     return miCreateDefColormap(pScreen);
+ }

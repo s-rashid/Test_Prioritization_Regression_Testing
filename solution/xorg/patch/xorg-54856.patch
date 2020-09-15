@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 2a7d0a3..f42dd10 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -1580,3 +1580,10 @@ xf86GetBppFromDepth(ScrnInfoPtr pScrn, int depth)
+     else
+         return 0;
+ }
++
++#ifdef DDXBEFORERESET
++void
++ddxBeforeReset(void)
++{
++}
++#endif

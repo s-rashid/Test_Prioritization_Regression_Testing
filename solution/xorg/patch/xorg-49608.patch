@@ -1,0 +1,13 @@
+diff --git a/dix/resource.c b/dix/resource.c
+index ce025f9..a0fe719 100644
+--- a/dix/resource.c
++++ b/dix/resource.c
+@@ -901,7 +901,7 @@ LegalNewID(XID id, ClientPtr client)
+ 
+ 	    rc = dixLookupResourceByClass(&val, id, RC_ANY, serverClient,
+ 					  DixGetAttrAccess);
+-	    return (rc == BadValue);
++	    return rc == BadValue;
+ 	}
+ 	return FALSE;
+ }

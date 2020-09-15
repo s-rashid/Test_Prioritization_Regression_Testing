@@ -1,0 +1,16 @@
+diff --git a/hw/xnest/Init.c b/hw/xnest/Init.c
+index 0765f73..8a90cc6 100644
+--- a/hw/xnest/Init.c
++++ b/hw/xnest/Init.c
+@@ -109,6 +109,11 @@ InitInput(int argc, char *argv[])
+   RegisterBlockAndWakeupHandlers(xnestBlockHandler, xnestWakeupHandler, NULL);
+ }
+ 
++void
++CloseInput(void)
++{
++}
++
+ /*
+  * DDX - specific abort routine.  Called by AbortServer().
+  */

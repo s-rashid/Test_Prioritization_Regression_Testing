@@ -1,0 +1,27 @@
+diff --git a/hw/dmx/dmxinit.c b/hw/dmx/dmxinit.c
+index 0755532..74b3582 100644
+--- a/hw/dmx/dmxinit.c
++++ b/hw/dmx/dmxinit.c
+@@ -69,12 +69,6 @@
+ #include "dmx_glxvisuals.h"
+ #include <X11/extensions/Xext.h>
+ #include <X11/extensions/extutil.h>
+-
+-extern void GlxSetVisualConfigs(
+-    int               nconfigs,
+-    __GLXvisualConfig *configs,
+-    void              **configprivs
+-);
+ #endif /* GLXEXT */
+ 
+ /* Global variables available to all Xserver/hw/dmx routines. */
+@@ -768,9 +762,6 @@ void InitOutput(ScreenInfo *pScreenInfo, int argc, char *argv[])
+ 		    }
+ 		}
+ 
+-		/* Hand out the glx configs to glx extension */
+-		GlxSetVisualConfigs(nconfigs, configs, (void**)configprivs);
+-
+                 XFlush(dmxScreen->beDisplay);
+ 	    }
+ 	}

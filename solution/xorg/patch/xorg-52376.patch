@@ -1,0 +1,16 @@
+diff --git a/Xi/xipassivegrab.c b/Xi/xipassivegrab.c
+index 3319ef9..22f905e 100644
+--- a/Xi/xipassivegrab.c
++++ b/Xi/xipassivegrab.c
+@@ -99,8 +99,11 @@ ProcXIPassiveGrabDevice(ClientPtr client)
+     {
+         ret = dixLookupDevice(&dev, stuff->deviceid, client, DixGrabAccess);
+         if (ret != Success)
++        {
++            client->errorValue = stuff->deviceid;
+             return ret;
+     }
++    }
+ 
+     if (stuff->grab_type != XIGrabtypeButton &&
+         stuff->grab_type != XIGrabtypeKeycode &&

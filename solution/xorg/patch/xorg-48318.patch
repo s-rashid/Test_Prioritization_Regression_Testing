@@ -1,0 +1,15 @@
+diff --git a/dix/atom.c b/dix/atom.c
+index 7d04c68..88b40db 100644
+--- a/dix/atom.c
++++ b/dix/atom.c
+@@ -145,8 +145,8 @@ MakeAtom(const char *string, unsigned len, Bool makeit)
+ 	*np = nd;
+ 	nd->left = nd->right = NULL;
+ 	nd->fingerPrint = fp;
+-	nd->a = (++lastAtom);
+-	*(nodeTable+lastAtom) = nd;
++	nd->a = ++lastAtom;
++	nodeTable[lastAtom] = nd;
+ 	return nd->a;
+     }
+     else

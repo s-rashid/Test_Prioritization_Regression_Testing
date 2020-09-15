@@ -1,0 +1,146 @@
+diff --git a/hw/dmx/dmxdpms.c b/hw/dmx/dmxdpms.c
+index 2af1605..d53a3d9 100644
+--- a/hw/dmx/dmxdpms.c
++++ b/hw/dmx/dmxdpms.c
+@@ -56,7 +56,8 @@
+ static unsigned long dpmsGeneration = 0;
+ static Bool          dpmsSupported  = TRUE;
+ 
+-static void _dmxDPMSInit(DMXScreenInfo *dmxScreen)
++static void
++_dmxDPMSInit(DMXScreenInfo * dmxScreen)
+ {
+     int        event_base, error_base;
+     int        major, minor;
+@@ -70,7 +71,8 @@ static void _dmxDPMSInit(DMXScreenInfo *dmxScreen)
+     }
+ 
+ #ifdef DPMSExtension
+-    if (DPMSDisabledSwitch) dpmsSupported = FALSE; /* -dpms turns off */
++    if (DPMSDisabledSwitch)
++        dpmsSupported = FALSE;  /* -dpms turns off */
+ #endif
+ 
+     dmxScreen->dpmsCapable = 0;
+@@ -82,8 +84,7 @@ static void _dmxDPMSInit(DMXScreenInfo *dmxScreen)
+         return;
+     }
+ 
+-    if (!DPMSQueryExtension(dmxScreen->beDisplay,
+-                            &event_base, &error_base)) {
++    if (!DPMSQueryExtension(dmxScreen->beDisplay, &event_base, &error_base)) {
+         dmxLogOutput(dmxScreen, "DPMS not supported\n");
+         dpmsSupported = FALSE;
+         return;
+@@ -112,11 +113,21 @@ static void _dmxDPMSInit(DMXScreenInfo *dmxScreen)
+     dmxScreen->dpmsOff     = off;
+ 
+     switch (level) {
+-    case DPMSModeOn:      monitor = "on";      break;
+-    case DPMSModeStandby: monitor = "standby"; break;
+-    case DPMSModeSuspend: monitor = "suspend"; break;
+-    case DPMSModeOff:     monitor = "off";     break;
+-    default:              monitor = "unknown"; break;
++    case DPMSModeOn:
++        monitor = "on";
++        break;
++    case DPMSModeStandby:
++        monitor = "standby";
++        break;
++    case DPMSModeSuspend:
++        monitor = "suspend";
++        break;
++    case DPMSModeOff:
++        monitor = "off";
++        break;
++    default:
++        monitor = "unknown";
++        break;
+     }
+         
+     dmxLogOutput(dmxScreen,
+@@ -127,7 +138,8 @@ static void _dmxDPMSInit(DMXScreenInfo *dmxScreen)
+ 
+ /** Initialize DPMS support.  We save the current settings and turn off
+  * DPMS.  The settings are restored in #dmxDPMSTerm. */
+-void dmxDPMSInit(DMXScreenInfo *dmxScreen)
++void
++dmxDPMSInit(DMXScreenInfo * dmxScreen)
+ {
+     int    interval, preferBlanking, allowExposures;
+ 
+@@ -148,7 +160,8 @@ void dmxDPMSInit(DMXScreenInfo *dmxScreen)
+ 
+ /** Terminate DPMS support on \a dmxScreen.  We restore the settings
+  * saved in #dmxDPMSInit. */
+-void dmxDPMSTerm(DMXScreenInfo *dmxScreen)
++void
++dmxDPMSTerm(DMXScreenInfo * dmxScreen)
+ {
+     int    timeout, interval, preferBlanking, allowExposures;
+ 
+@@ -164,45 +177,55 @@ void dmxDPMSTerm(DMXScreenInfo *dmxScreen)
+         DPMSForceLevel(dmxScreen->beDisplay, DPMSModeOn);
+         DPMSSetTimeouts(dmxScreen->beDisplay, dmxScreen->dpmsStandby,
+                         dmxScreen->dpmsSuspend, dmxScreen->dpmsOff);
+-        if (dmxScreen->dpmsEnabled) DPMSEnable(dmxScreen->beDisplay);
+-        else                        DPMSDisable(dmxScreen->beDisplay);
++        if (dmxScreen->dpmsEnabled)
++            DPMSEnable(dmxScreen->beDisplay);
++        else
++            DPMSDisable(dmxScreen->beDisplay);
+     }
+     dmxSync(dmxScreen, FALSE);
+ }
+ 
+ /** Called when activity is detected so that DPMS power-saving mode can
+  * be deactivated. */
+-void dmxDPMSWakeup(void)
++void
++dmxDPMSWakeup(void)
+ {
+     if (screenIsSaved == SCREEN_SAVER_ON)
+         dixSaveScreens(serverClient, SCREEN_SAVER_OFF, ScreenSaverReset);
+ #ifdef DPMSExtension
+-    if (DPMSPowerLevel) DPMSSet(serverClient, 0);
++    if (DPMSPowerLevel)
++        DPMSSet(serverClient, 0);
+ #endif
+ }
+ 
+ #ifdef DPMSExtension
+ /** This is called on each server generation.  It should determine if
+  * DPMS is supported on all of the backends and, if so, return TRUE. */
+-Bool DPMSSupported(void)
++Bool
++DPMSSupported(void)
+ {
+     return dpmsSupported;
+ }
+ 
+ /** This is used by clients (e.g., xset) to set the DPMS level. */
+-int DPMSSet(ClientPtr client, int level)
++int
++DPMSSet(ClientPtr client, int level)
+ {
+     int i;
+ 
+-    if (!dpmsSupported) return Success;
++    if (!dpmsSupported)
++        return Success;
+ 
+-    if (level < 0) level = DPMSModeOn;
+-    if (level > 3) level = DPMSModeOff;
++    if (level < 0)
++        level = DPMSModeOn;
++    if (level > 3)
++        level = DPMSModeOff;
+     
+     DPMSPowerLevel = level;
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo *dmxScreen = &dmxScreens[i];
++
+ 	if (dmxScreen->beDisplay) {
+ 	    DPMSForceLevel(dmxScreen->beDisplay, level);
+ 	    dmxSync(dmxScreen, FALSE);

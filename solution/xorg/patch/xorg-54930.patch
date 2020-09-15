@@ -1,0 +1,10 @@
+diff --git a/Xext/xacestr.h b/Xext/xacestr.h
+index 84216c8..989b033 100644
+--- a/Xext/xacestr.h
++++ b/Xext/xacestr.h
+@@ -144,4 +144,4 @@ typedef struct {
+     int requestResult;
+ } XaceAuditRec;
+ 
+-#endif /* _XACESTR_H */
++#endif                          /* _XACESTR_H */

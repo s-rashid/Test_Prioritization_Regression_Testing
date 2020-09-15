@@ -1,0 +1,12 @@
+diff --git a/miext/cw/cw.c b/miext/cw/cw.c
+index 58816c9..3da3bc3 100644
+--- a/miext/cw/cw.c
++++ b/miext/cw/cw.c
+@@ -325,7 +325,6 @@ cwCreateGC(GCPtr pGC)
+     ScreenPtr	pScreen = pGC->pScreen;
+     Bool	ret;
+ 
+-    memset(pPriv, 0, sizeof(cwGCRec));
+     SCREEN_PROLOGUE(pScreen, CreateGC);
+ 
+     if ( (ret = (*pScreen->CreateGC)(pGC)) )

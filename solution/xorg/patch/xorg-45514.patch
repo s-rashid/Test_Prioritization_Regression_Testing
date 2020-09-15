@@ -1,0 +1,13 @@
+diff --git a/xkb/xkbInit.c b/xkb/xkbInit.c
+index 86a7a11..747c913 100644
+--- a/xkb/xkbInit.c
++++ b/xkb/xkbInit.c
+@@ -505,7 +505,7 @@ InitKeyboardDeviceStruct(DeviceIntPtr dev, XkbRMLVOSet *rmlvo,
+     XkbRMLVOSet rmlvo_dflts = { NULL };
+ 
+     if (dev->key || dev->kbdfeed)
+-	return False;
++	return FALSE;
+ 
+     if (!rmlvo)
+     {

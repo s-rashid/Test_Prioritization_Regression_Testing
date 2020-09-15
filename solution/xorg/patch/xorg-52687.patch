@@ -1,0 +1,45 @@
+diff --git a/include/input.h b/include/input.h
+index 6799a53..100c00f 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -461,6 +461,14 @@ extern _X_EXPORT int GetPointerEvents(
+     int flags,
+     const ValuatorMask *mask);
+ 
++extern _X_EXPORT void QueuePointerEvents(
++    EventListPtr events,
++    DeviceIntPtr pDev,
++    int type,
++    int buttons,
++    int flags,
++    const ValuatorMask *mask);
++
+ extern _X_EXPORT int GetKeyboardEvents(
+     EventListPtr events,
+     DeviceIntPtr pDev,
+@@ -468,12 +476,25 @@ extern _X_EXPORT int GetKeyboardEvents(
+     int key_code,
+     const ValuatorMask *mask);
+ 
++extern _X_EXPORT void QueueKeyboardEvents(
++    EventListPtr events,
++    DeviceIntPtr pDev,
++    int type,
++    int key_code,
++    const ValuatorMask *mask);
++
+ extern int GetProximityEvents(
+     EventListPtr events,
+     DeviceIntPtr pDev,
+     int type,
+     const ValuatorMask *mask);
+ 
++extern void QueueProximityEvents(
++    EventListPtr events,
++    DeviceIntPtr pDev,
++    int type,
++    const ValuatorMask *mask);
++
+ extern void PostSyntheticMotion(
+     DeviceIntPtr pDev,
+     int x,

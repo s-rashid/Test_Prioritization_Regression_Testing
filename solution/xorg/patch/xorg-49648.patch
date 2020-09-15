@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwin.h b/hw/xquartz/darwin.h
+index 8fa48bf..350eade 100644
+--- a/hw/xquartz/darwin.h
++++ b/hw/xquartz/darwin.h
+@@ -50,7 +50,8 @@ void xf86SetRootClip (ScreenPtr pScreen, int enable);
+ /*
+  * Global variables from darwin.c
+  */
+-extern DevPrivateKey    darwinScreenKey; // index into pScreen.devPrivates
++extern DevPrivateKeyRec darwinScreenKeyRec;
++#define darwinScreenKey (&darwinScreenKeyRec)
+ extern int              darwinScreensFound;
+ extern io_connect_t     darwinParamConnect;
+ extern int              darwinEventReadFD;

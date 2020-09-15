@@ -1,0 +1,44 @@
+diff --git a/hw/xfree86/int10/xf86int10.h b/hw/xfree86/int10/xf86int10.h
+index 5bf326e..36b659f 100644
+--- a/hw/xfree86/int10/xf86int10.h
++++ b/hw/xfree86/int10/xf86int10.h
+@@ -116,6 +116,7 @@ extern _X_EXPORT void xf86ExecX86int10(xf86Int10InfoPtr pInt);
+ 
+ /* OS dependent functions */
+ extern _X_EXPORT Bool MapCurrentInt10(xf86Int10InfoPtr pInt);
++
+ /* x86 executor related functions */
+ extern _X_EXPORT Bool xf86Int10ExecSetup(xf86Int10InfoPtr pInt);
+ 
+@@ -135,8 +136,10 @@ void stack_trace(xf86Int10InfoPtr pInt);
+ CARD8 bios_checksum(const CARD8 *start, int size);
+ void LockLegacyVGA(xf86Int10InfoPtr pInt, legacyVGAPtr vga);
+ void UnlockLegacyVGA(xf86Int10InfoPtr pInt, legacyVGAPtr vga);
++
+ #if defined (_PC)
+-extern _X_EXPORT void xf86Int10SaveRestoreBIOSVars(xf86Int10InfoPtr pInt, Bool save);
++extern _X_EXPORT void xf86Int10SaveRestoreBIOSVars(xf86Int10InfoPtr pInt,
++                                                   Bool save);
+ #endif
+ int port_rep_inb(xf86Int10InfoPtr pInt,
+ 		 CARD16 port, CARD32 base, int d_f, CARD32 count);
+@@ -170,13 +173,16 @@ void setup_int_vect(xf86Int10InfoPtr pInt);
+ int setup_system_bios(void *base_addr);
+ void reset_int_vect(xf86Int10InfoPtr pInt);
+ void set_return_trap(xf86Int10InfoPtr pInt);
+-extern _X_EXPORT void * xf86HandleInt10Options(ScrnInfoPtr pScrn, int entityIndex);
++extern _X_EXPORT void *xf86HandleInt10Options(ScrnInfoPtr pScrn,
++                                              int entityIndex);
+ Bool int10skip(const void* options);
+ Bool int10_check_bios(int scrnIndex, int codeSeg,
+     const unsigned char* vbiosMem);
+ Bool initPrimary(const void* options);
+-extern _X_EXPORT BusType xf86int10GetBiosLocationType(const xf86Int10InfoPtr pInt);
+-extern _X_EXPORT Bool xf86int10GetBiosSegment(xf86Int10InfoPtr pInt, void *base);
++extern _X_EXPORT BusType xf86int10GetBiosLocationType(const xf86Int10InfoPtr
++                                                      pInt);
++extern _X_EXPORT Bool xf86int10GetBiosSegment(xf86Int10InfoPtr pInt,
++                                              void *base);
+ #ifdef DEBUG
+ void dprint(unsigned long start, unsigned long size);
+ #endif

@@ -1,0 +1,13 @@
+diff --git a/fb/fbpush.c b/fb/fbpush.c
+index 9d82718..8dd7c2b 100644
+--- a/fb/fbpush.c
++++ b/fb/fbpush.c
+@@ -235,7 +235,7 @@ fbPushPixels (GCPtr	    pGC,
+     FbStip	*stip;
+     FbStride	stipStride;
+     int		stipBpp;
+-    int		stipXoff, stipYoff; /* Assumed to be zero */
++    _X_UNUSED int	stipXoff, stipYoff;
+ 
+     fbGetStipDrawable (&pBitmap->drawable, stip, stipStride, stipBpp, stipXoff, stipYoff);
+ 

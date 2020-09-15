@@ -1,0 +1,21 @@
+diff --git a/dix/main.c b/dix/main.c
+index da910fe..f023536 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -257,7 +257,6 @@ int main(int argc, char *argv[], char *envp[])
+         InitCoreDevices();
+ 	InitInput(argc, argv);
+ 	InitAndStartDevices();
+-	config_init();
+ 
+ 	dixSaveScreens(serverClient, SCREEN_SAVER_FORCER, ScreenSaverReset);
+ 
+@@ -305,7 +304,7 @@ int main(int argc, char *argv[], char *envp[])
+ 	FreeAllResources();
+ #endif
+ 
+-        config_fini();
++        CloseInput();
+ 
+         memset(WindowTable, 0, sizeof(WindowTable));
+ 	CloseDownDevices();

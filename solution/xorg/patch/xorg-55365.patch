@@ -1,0 +1,37 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostglx.h b/hw/kdrive/ephyr/ephyrhostglx.h
+index 6db362f..9c60120 100644
+--- a/hw/kdrive/ephyr/ephyrhostglx.h
++++ b/hw/kdrive/ephyr/ephyrhostglx.h
+@@ -45,6 +45,7 @@ Bool ephyrHostGLXGetVisualConfigs (int a_screen,
+                                    int32_t *a_props_buf_size,
+                                    int32_t **a_props_buf) ;
+ Bool
++
+ ephyrHostGLXVendorPrivGetFBConfigsSGIX (int a_screen,
+                                         int32_t *a_num_visuals,
+                                         int32_t *a_num_props,
+@@ -56,21 +57,15 @@ Bool ephyrHostGLXSendClientInfo (int32_t a_major, int32_t a_minor,
+ Bool ephyrHostGLXCreateContext (int a_screen,
+                                 int a_visual_id,
+                                 int a_context_id,
+-                                int a_shared_list_ctx_id,
+-                                Bool a_direct) ;
++                               int a_shared_list_ctx_id, Bool a_direct);
+ 
+ Bool ephyrHostDestroyContext (int a_ctxt_id) ;
+ 
+ Bool ephyrHostGLXMakeCurrent (int a_drawable, int a_glx_ctxt_id,
+                               int a_olg_ctxt_tag, int *a_ctxt_tag) ;
+ 
+-Bool ephyrHostGetIntegerValue (int a_current_context_tag,
+-                               int a_int,
+-                               int *a_val) ;
+-
+-Bool ephyrHostIsContextDirect (int a_ctxt_id,
+-                               int *a_is_direct) ;
++Bool ephyrHostGetIntegerValue(int a_current_context_tag, int a_int, int *a_val);
+ 
++Bool ephyrHostIsContextDirect(int a_ctxt_id, int *a_is_direct);
+ 
+ #endif /*__EPHYRHOSTGLX_H__*/
+-

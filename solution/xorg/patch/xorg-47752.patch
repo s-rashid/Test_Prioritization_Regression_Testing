@@ -1,0 +1,13 @@
+diff --git a/miext/rootless/rootlessWindow.c b/miext/rootless/rootlessWindow.c
+index 5320956..e78e2c8 100644
+--- a/miext/rootless/rootlessWindow.c
++++ b/miext/rootless/rootlessWindow.c
+@@ -978,7 +978,7 @@ StartFrameResize(WindowPtr pWin, Bool gravity,
+                 copy_rect.y2 = oldY2;
+             }
+             else
+-                abort();
++                OsAbort();
+ 
+             Bpp = winRec->win->drawable.bitsPerPixel / 8;
+             copy_rect_width = copy_rect.x2 - copy_rect.x1;

@@ -1,0 +1,24 @@
+diff --git a/mi/mispans.c b/mi/mispans.c
+index 8ac66cc..9f56e3c 100644
+--- a/mi/mispans.c
++++ b/mi/mispans.c
+@@ -410,9 +410,7 @@ void miFillUniqueSpanGroup(DrawablePtr pDraw, GCPtr pGC, SpanGroup *spanGroup)
+ 
+ 	if (!yspans || !ysizes)
+ 	{
+-	    if (yspans)
+ 		free(yspans);
+-	    if (ysizes)
+ 		free(ysizes);
+ 	    miDisposeSpanGroup (spanGroup);
+ 	    return;
+@@ -492,9 +490,7 @@ void miFillUniqueSpanGroup(DrawablePtr pDraw, GCPtr pGC, SpanGroup *spanGroup)
+ 	    }
+ 	    free(yspans);
+ 	    free(ysizes);
+-	    if (points)
+ 		free(points);
+-	    if (widths)
+ 		free(widths);
+ 	    return;
+ 	}

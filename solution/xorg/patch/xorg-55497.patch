@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/i2c/bt829.h b/hw/xfree86/i2c/bt829.h
+index 06e488f..2709bee 100644
+--- a/hw/xfree86/i2c/bt829.h
++++ b/hw/xfree86/i2c/bt829.h
+@@ -69,15 +69,19 @@ extern _X_EXPORT int bt829_SetCaptSize(BT829Ptr bt, int width, int height);
+ 
+ #define xf86_bt829_SetBrightness	bt829_SetBrightness
+ extern _X_EXPORT void bt829_SetBrightness(BT829Ptr bt, int brightness);
++
+ #define xf86_bt829_SetContrast		bt829_SetContrast
+ extern _X_EXPORT void bt829_SetContrast(BT829Ptr bt, int contrast);
++
+ #define xf86_bt829_SetSaturation	bt829_SetSaturation
+ extern _X_EXPORT void bt829_SetSaturation(BT829Ptr bt, int saturation);
++
+ #define xf86_bt829_SetTint		bt829_SetTint
+ extern _X_EXPORT void bt829_SetTint(BT829Ptr bt, int hue);	 /* Hue */
+ 
+ #define xf86_bt829_SetOUT_EN		bt829_SetOUT_EN
+ extern _X_EXPORT void bt829_SetOUT_EN(BT829Ptr bt, BOOL out_en);/* VPOLE register */
++
+ #define xf86_bt829_SetP_IO		bt829_SetP_IO
+ extern _X_EXPORT void bt829_SetP_IO(BT829Ptr bt, CARD8 p_io);	 /* P_IO register */
+ 

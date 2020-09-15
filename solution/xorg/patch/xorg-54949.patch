@@ -1,0 +1,86 @@
+diff --git a/Xi/chgfctl.c b/Xi/chgfctl.c
+index f818cd0..db47cfc 100644
+--- a/Xi/chgfctl.c
++++ b/Xi/chgfctl.c
+@@ -173,12 +173,14 @@ ChangeKbdFeedback(ClientPtr client, DeviceIntPtr dev, long unsigned int mask,
+ 		kctrl.autoRepeat = FALSE;
+ 	    else
+ 		kctrl.autoRepeats[inx] &= ~kmask;
+-	} else if (t == AutoRepeatModeOn) {
++        }
++        else if (t == AutoRepeatModeOn) {
+ 	    if (key == DO_ALL)
+ 		kctrl.autoRepeat = TRUE;
+ 	    else
+ 		kctrl.autoRepeats[inx] |= kmask;
+-	} else if (t == AutoRepeatModeDefault) {
++        }
++        else if (t == AutoRepeatModeDefault) {
+ 	    if (key == DO_ALL)
+ 		kctrl.autoRepeat = defaultKeyboardControl.autoRepeat;
+ 	    else
+@@ -186,7 +188,8 @@ ChangeKbdFeedback(ClientPtr client, DeviceIntPtr dev, long unsigned int mask,
+ 	    kctrl.autoRepeats[inx] =
+ 		(kctrl.autoRepeats[inx] & ~kmask) |
+ 		(defaultKeyboardControl.autoRepeats[inx] & kmask);
+-	} else {
++        }
++        else {
+ 	    client->errorValue = t;
+ 	    return BadValue;
+ 	}
+@@ -226,7 +229,8 @@ ChangePtrFeedback(ClientPtr client, DeviceIntPtr dev, long unsigned int mask,
+ 	else if (accelNum < 0) {
+ 	    client->errorValue = accelNum;
+ 	    return BadValue;
+-	} else
++        }
++        else
+ 	    pctrl.num = accelNum;
+     }
+ 
+@@ -239,7 +243,8 @@ ChangePtrFeedback(ClientPtr client, DeviceIntPtr dev, long unsigned int mask,
+ 	else if (accelDenom <= 0) {
+ 	    client->errorValue = accelDenom;
+ 	    return BadValue;
+-	} else
++        }
++        else
+ 	    pctrl.den = accelDenom;
+     }
+ 
+@@ -252,7 +257,8 @@ ChangePtrFeedback(ClientPtr client, DeviceIntPtr dev, long unsigned int mask,
+ 	else if (threshold < 0) {
+ 	    client->errorValue = threshold;
+ 	    return BadValue;
+-	} else
++        }
++        else
+ 	    pctrl.threshold = threshold;
+     }
+ 
+@@ -463,7 +469,8 @@ ProcXChangeFeedbackControl(ClientPtr client)
+ 	if (client->swapped) {
+ 	    swaps(&f->num_keysyms);
+ 	}
+-	if (len != (bytes_to_int32(sizeof(xStringFeedbackCtl)) + f->num_keysyms))
++        if (len !=
++            (bytes_to_int32(sizeof(xStringFeedbackCtl)) + f->num_keysyms))
+ 	    return BadLength;
+ 
+ 	for (s = dev->stringfeed; s; s = s->next)
+@@ -479,7 +486,8 @@ ProcXChangeFeedbackControl(ClientPtr client)
+ 	for (i = dev->intfeed; i; i = i->next)
+ 	    if (i->ctrl.id == ((xIntegerFeedbackCtl *) & stuff[1])->id)
+ 		return ChangeIntegerFeedback(client, dev, stuff->mask, i,
+-					     (xIntegerFeedbackCtl *)&stuff[1]);
++                                             (xIntegerFeedbackCtl *) &
++                                             stuff[1]);
+ 	break;
+     case LedFeedbackClass:
+ 	if (len != bytes_to_int32(sizeof(xLedFeedbackCtl)))
+@@ -505,4 +513,3 @@ ProcXChangeFeedbackControl(ClientPtr client)
+ 
+     return BadMatch;
+ }
+-

@@ -1,0 +1,19 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 832b09c..fb8ebd0 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -2272,6 +2272,14 @@ NewInputDeviceRequest(InputOption *options, DeviceIntPtr *pdev)
+                 return BadValue;
+             }
+         }
++#ifdef CONFIG_HAL
++        else if (strcmp(option->key, "_source") == 0 &&
++                 strcmp(option->value, "server/hal") == 0)
++        {
++            ErrorF("Ignoring device from HAL.\n");
++            return BadValue;
++        }
++#endif
+     }
+ 
+     if (!ki && !pi) {

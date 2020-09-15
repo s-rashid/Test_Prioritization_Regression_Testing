@@ -1,0 +1,13 @@
+diff --git a/os/strcasestr.c b/os/strcasestr.c
+index f89b2f2..a20a6cc 100644
+--- a/os/strcasestr.c
++++ b/os/strcasestr.c
+@@ -41,7 +41,7 @@
+ /*
+  * Find the first occurrence of find in s, ignore case.
+  */
+-#ifdef NEED_STRCASESTR
++#ifndef HAVE_STRCASESTR
+ char *
+ xstrcasestr(const char *s, const char *find)
+ {

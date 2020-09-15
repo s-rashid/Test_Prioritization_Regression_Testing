@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 327c1ff..f9224b1 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -962,10 +962,6 @@ InitOutput(ScreenInfo *pScreenInfo, int argc, char **argv)
+ 	    break;
+ 	}
+     }
+-
+-    /* set up the proper access funcs */
+-    xf86PostPreInit();
+-
+   } else {
+     /*
+      * serverGeneration != 1; some OSs have to do things here, too.

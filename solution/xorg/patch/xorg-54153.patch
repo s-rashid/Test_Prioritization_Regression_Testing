@@ -1,0 +1,233 @@
+diff --git a/dix/events.c b/dix/events.c
+index 12c1678..09d38a1 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3635,67 +3635,38 @@ BorderSizeNotEmpty(DeviceIntPtr pDev, WindowPtr pWin)
+ }
+ 
+ /**
+- * "CheckPassiveGrabsOnWindow" checks to see if the event passed in causes a
+- * passive grab set on the window to be activated.
+- * If activate is true and a passive grab is found, it will be activated,
+- * and the event will be delivered to the client.
++ * Check an individual grab against an event to determine if a passive grab
++ * should be activated.
++ * If activate is true and a passive grab is found, it will be activated, and
++ * the event will be delivered to the client.
+  *
+- * @param pWin The window that may be subject to a passive grab.
+- * @param device Device that caused the event.
++ * @param device The device of the event to check.
++ * @param grab The grab to check.
+  * @param event The current device event.
+  * @param checkCore Check for core grabs too.
+- * @param activate If a grab is found, activate it and deliver the event.
++ * @param activate Whether to activate a matching grab.
++ * @param tempGrab A pre-allocated temporary grab record for matching. This
++ *        must have the window and device values filled in.
++ * @param[out] grab_return The modified value of grab, to be used in the
++ * caller for grab activation if a this function returns TRUE. May be NULL.
++ *
++ * @return Whether the grab matches the event.
+  */
+-
+-GrabPtr
+-CheckPassiveGrabsOnWindow(
+-    WindowPtr pWin,
+-    DeviceIntPtr device,
+-    InternalEvent *event,
+-    BOOL checkCore,
+-    BOOL activate)
++static Bool
++CheckPassiveGrab(DeviceIntPtr device, GrabPtr grab, InternalEvent *event,
++                 Bool checkCore, Bool activate, GrabPtr tempGrab, GrabPtr *grab_return)
+ {
++    static const int CORE_MATCH = 0x1;
++    static const int XI_MATCH = 0x2;
++    static const int XI2_MATCH = 0x4;
+     SpritePtr pSprite = device->spriteInfo->sprite;
+-    GrabPtr grab = wPassiveGrabs(pWin);
+-    GrabPtr tempGrab;
+     GrabInfoPtr grabinfo;
+-#define CORE_MATCH      0x1
+-#define XI_MATCH        0x2
+-#define XI2_MATCH        0x4
+-    int match = 0;
+-
+-    if (!grab)
+-	return NULL;
+-
+-    tempGrab = AllocGrab();
+-
+-    /* Fill out the grab details, but leave the type for later before
+-     * comparing */
+-    switch (event->any.type)
+-    {
+-        case ET_KeyPress:
+-        case ET_KeyRelease:
+-            tempGrab->detail.exact = event->device_event.detail.key;
+-            break;
+-        case ET_ButtonPress:
+-        case ET_ButtonRelease:
+-            tempGrab->detail.exact = event->device_event.detail.button;
+-            break;
+-        default:
+-            tempGrab->detail.exact = 0;
+-            break;
+-    }
+-    tempGrab->window = pWin;
+-    tempGrab->device = device;
+-    tempGrab->detail.pMask = NULL;
+-    tempGrab->modifiersDetail.pMask = NULL;
+-    tempGrab->next = NULL;
+-    for (; grab; grab = grab->next)
+-    {
+ 	DeviceIntPtr	gdev;
+ 	XkbSrvInfoPtr	xkbi = NULL;
+ 	xEvent *xE = NULL;
+-        int count, rc;
++    int match = 0;
++    int count;
++    int rc;
+ 
+ 	gdev= grab->modifierDevice;
+         if (grab->grabtype == GRABTYPE_CORE)
+@@ -3711,7 +3682,6 @@ CheckPassiveGrabsOnWindow(
+                 gdev = GetMaster(device, MASTER_KEYBOARD);
+         }
+ 
+-
+         if (gdev && gdev->key)
+             xkbi= gdev->key->xkbInfo;
+         tempGrab->modifierDevice = grab->modifierDevice;
+@@ -3743,8 +3713,9 @@ CheckPassiveGrabsOnWindow(
+         if (!match || (grab->confineTo &&
+                        (!grab->confineTo->realized ||
+                         !BorderSizeNotEmpty(device, grab->confineTo))))
+-            continue;
++        return FALSE;
+ 
++    *grab_return = grab;
+         grabinfo = &device->deviceGrab;
+         /* In some cases a passive core grab may exist, but the client
+          * already has a core grab on some other device. In this case we
+@@ -3785,17 +3756,17 @@ CheckPassiveGrabsOnWindow(
+                 }
+             }
+             if (interfering)
+-                continue;
++            return FALSE;
+         }
+ 
+         if (!activate)
+-            break;
++        return TRUE;
+         else if (!GetXIType(event->any.type) && !GetCoreType(event->any.type))
+         {
+             ErrorF("Event type %d in CheckPassiveGrabsOnWindow is neither"
+                    " XI 1.x nor core\n", event->any.type);
+-            grab = NULL;
+-            break;
++        *grab_return = NULL;
++        return TRUE;
+         }
+ 
+         /* The only consumers of corestate are Xi 1.x and core events, which
+@@ -3815,7 +3786,7 @@ CheckPassiveGrabsOnWindow(
+                 if (rc != BadMatch)
+                     ErrorF("[dix] %s: core conversion failed in CPGFW "
+                             "(%d, %d).\n", device->name, event->any.type, rc);
+-                continue;
++            return TRUE;
+             }
+         } else if (match & XI2_MATCH)
+         {
+@@ -3825,7 +3796,7 @@ CheckPassiveGrabsOnWindow(
+                 if (rc != BadMatch)
+                     ErrorF("[dix] %s: XI2 conversion failed in CPGFW "
+                             "(%d, %d).\n", device->name, event->any.type, rc);
+-                continue;
++            return TRUE;
+             }
+             count = 1;
+         } else
+@@ -3836,7 +3807,7 @@ CheckPassiveGrabsOnWindow(
+                 if (rc != BadMatch)
+                     ErrorF("[dix] %s: XI conversion failed in CPGFW "
+                             "(%d, %d).\n", device->name, event->any.type, rc);
+-                continue;
++            return TRUE;
+             }
+         }
+ 
+@@ -3861,14 +3832,67 @@ CheckPassiveGrabsOnWindow(
+         }
+ 
+         free(xE);
++    return TRUE;
++}
++
++/**
++ * "CheckPassiveGrabsOnWindow" checks to see if the event passed in causes a
++ * passive grab set on the window to be activated.
++ * If activate is true and a passive grab is found, it will be activated,
++ * and the event will be delivered to the client.
++ *
++ * @param pWin The window that may be subject to a passive grab.
++ * @param device Device that caused the event.
++ * @param event The current device event.
++ * @param checkCore Check for core grabs too.
++ * @param activate If a grab is found, activate it and deliver the event.
++ */
++
++GrabPtr
++CheckPassiveGrabsOnWindow(
++    WindowPtr pWin,
++    DeviceIntPtr device,
++    InternalEvent *event,
++    BOOL checkCore,
++    BOOL activate)
++{
++    GrabPtr grab = wPassiveGrabs(pWin);
++    GrabPtr tempGrab;
++
++    if (!grab)
++	return NULL;
++
++    tempGrab = AllocGrab();
++
++    /* Fill out the grab details, but leave the type for later before
++     * comparing */
++    switch (event->any.type)
++    {
++        case ET_KeyPress:
++        case ET_KeyRelease:
++            tempGrab->detail.exact = event->device_event.detail.key;
++            break;
++        case ET_ButtonPress:
++        case ET_ButtonRelease:
++            tempGrab->detail.exact = event->device_event.detail.button;
++            break;
++        default:
++            tempGrab->detail.exact = 0;
+         break;
+     }
++    tempGrab->window = pWin;
++    tempGrab->device = device;
++    tempGrab->detail.pMask = NULL;
++    tempGrab->modifiersDetail.pMask = NULL;
++    tempGrab->next = NULL;
++
++    for (; grab; grab = grab->next)
++        if (CheckPassiveGrab(device, grab, event, checkCore, activate,
++                             tempGrab, &grab))
++            break;
+ 
+     FreeGrab(tempGrab);
+     return grab;
+-#undef CORE_MATCH
+-#undef XI_MATCH
+-#undef XI2_MATCH
+ }
+ 
+ /**

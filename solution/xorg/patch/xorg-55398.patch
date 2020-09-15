@@ -1,0 +1,211 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index cda965d..6c2f293 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -230,7 +230,6 @@ int KdAddPointer (KdPointerInfo *ki);
+ int KdAddConfigPointer (char *pointer);
+ void KdRemovePointer (KdPointerInfo *ki);
+ 
+-
+ #define KD_KEY_COUNT 248
+ #define KD_MIN_KEYCODE  8
+ #define KD_MAX_KEYCODE  255
+@@ -343,6 +342,7 @@ typedef struct _KdPointerMatrix {
+ #endif
+ 
+ extern DevPrivateKeyRec	kdScreenPrivateKeyRec;
++
+ #define kdScreenPrivateKey (&kdScreenPrivateKeyRec)
+ 
+ extern unsigned long	kdGeneration;
+@@ -407,24 +407,18 @@ KdResume (void);
+ void
+ KdProcessSwitch (void);
+ 
+-Rotation
+-KdAddRotation (Rotation a, Rotation b);
++Rotation KdAddRotation(Rotation a, Rotation b);
+ 
+-Rotation
+-KdSubRotation (Rotation a, Rotation b);
++Rotation KdSubRotation(Rotation a, Rotation b);
+ 
+ void
+-KdParseScreen (KdScreenInfo *screen,
+-	       char	    *arg);
++ KdParseScreen(KdScreenInfo * screen, char *arg);
+ 
+-KdPointerInfo *
+-KdParsePointer (char *arg);
++KdPointerInfo *KdParsePointer(char *arg);
+ 
+-KdKeyboardInfo *
+-KdParseKeyboard (char *arg);
++KdKeyboardInfo *KdParseKeyboard(char *arg);
+ 
+-char *
+-KdParseFindNext (char *cur, const char *delim, char *save, char *last);
++char *KdParseFindNext(char *cur, const char *delim, char *save, char *last);
+ 
+ void
+ KdParseRgba (char *rgba);
+@@ -457,21 +451,15 @@ Bool
+ KdScreenInit(int index, ScreenPtr pScreen, int argc, char **argv);
+ 
+ void
++
+ KdInitScreen (ScreenInfo    *pScreenInfo,
+-	      KdScreenInfo  *screen,
+-	      int	    argc,
+-	      char	    **argv);
++             KdScreenInfo * screen, int argc, char **argv);
+ 
+ void
+-KdInitCard (ScreenInfo	    *pScreenInfo,
+-	    KdCardInfo	    *card,
+-	    int		    argc,
+-	    char	    **argv);
++ KdInitCard(ScreenInfo * pScreenInfo, KdCardInfo * card, int argc, char **argv);
+ 
+ void
+-KdInitOutput (ScreenInfo    *pScreenInfo,
+-	      int	    argc,
+-	      char	    **argv);
++ KdInitOutput(ScreenInfo * pScreenInfo, int argc, char **argv);
+ 
+ void
+ KdSetSubpixelOrder (ScreenPtr pScreen, Rotation randr);
+@@ -480,23 +468,18 @@ void
+ KdBacktrace (int signum);
+ 
+ /* kinfo.c */
+-KdCardInfo *
+-KdCardInfoAdd (KdCardFuncs  *funcs,
+-	       void	    *closure);
++KdCardInfo *KdCardInfoAdd(KdCardFuncs * funcs, void *closure);
+ 
+-KdCardInfo *
+-KdCardInfoLast (void);
++KdCardInfo *KdCardInfoLast(void);
+ 
+ void
+ KdCardInfoDispose (KdCardInfo *ci);
+ 
+-KdScreenInfo *
+-KdScreenInfoAdd (KdCardInfo *ci);
++KdScreenInfo *KdScreenInfoAdd(KdCardInfo * ci);
+ 
+ void
+ KdScreenInfoDispose (KdScreenInfo *si);
+ 
+-
+ /* kinput.c */
+ void
+ KdInitInput(void);
+@@ -513,6 +496,7 @@ void
+ KdUnregisterFd (void *closure, int fd, Bool do_close);
+ 
+ void
++
+ KdEnqueueKeyboardEvent(KdKeyboardInfo *ki, unsigned char scan_code,
+                     unsigned char is_up);
+ 
+@@ -525,10 +509,12 @@ KdEnqueueKeyboardEvent(KdKeyboardInfo *ki, unsigned char scan_code,
+ #define KD_MOUSE_DELTA	0x80000000
+ 
+ void
++
+ KdEnqueuePointerEvent(KdPointerInfo *pi, unsigned long flags, int rx, int ry,
+                       int rz);
+ 
+ void
++
+ _KdEnqueuePointerEvent(KdPointerInfo *pi, int type, int x, int y, int z,
+                        int b, int absrel, Bool force);
+ 
+@@ -542,22 +528,22 @@ void
+ KdSetPointerMatrix (KdPointerMatrix *pointer);
+ 
+ void
+-KdComputePointerMatrix (KdPointerMatrix *pointer, Rotation randr, int width, int height);
++
++KdComputePointerMatrix(KdPointerMatrix * pointer, Rotation randr, int width,
++                       int height);
+ 
+ void
+ KdScreenToPointerCoords (int *x, int *y);
+ 
+ void
++
+ KdBlockHandler (int		screen,
+-		pointer		blockData,
+-		pointer		timeout,
+-		pointer		readmask);
++               pointer blockData, pointer timeout, pointer readmask);
+ 
+ void
++
+ KdWakeupHandler (int		screen,
+-		 pointer    	data,
+-		 unsigned long	result,
+-		 pointer	readmask);
++                pointer data, unsigned long result, pointer readmask);
+ 
+ void
+ KdDisableInput (void);
+@@ -569,35 +555,30 @@ void
+ ProcessInputEvents (void);
+ 
+ void
+-KdRingBell (KdKeyboardInfo      *ki,
+-            int                 volume,
+-            int                 pitch,
+-            int                 duration);
++ KdRingBell(KdKeyboardInfo * ki, int volume, int pitch, int duration);
+ 
+ /* kmode.c */
+-const KdMonitorTiming *
+-KdFindMode (KdScreenInfo    *screen,
++const KdMonitorTiming *KdFindMode(KdScreenInfo * screen,
+ 	    Bool	    (*supported) (KdScreenInfo *,
+ 					  const KdMonitorTiming *));
+ 
+ Bool
++
+ KdTuneMode (KdScreenInfo    *screen,
+ 	    Bool	    (*usable) (KdScreenInfo *),
+-	    Bool	    (*supported) (KdScreenInfo *,
+-					  const KdMonitorTiming *));
++           Bool (*supported) (KdScreenInfo *, const KdMonitorTiming *));
+ 
+ #ifdef RANDR
+ Bool
++
+ KdRandRGetInfo (ScreenPtr pScreen,
+ 		int randr,
+-		Bool (*supported) (ScreenPtr pScreen,
+-				   const KdMonitorTiming *));
++               Bool (*supported) (ScreenPtr pScreen, const KdMonitorTiming *));
+ 
+-const KdMonitorTiming *
+-KdRandRGetTiming (ScreenPtr	    pScreen,
++const KdMonitorTiming *KdRandRGetTiming(ScreenPtr pScreen,
+ 		  Bool		    (*supported) (ScreenPtr pScreen,
+-						  const KdMonitorTiming *),
+-		  int		    rate,
++                                                           const KdMonitorTiming
++                                                           *), int rate,
+ 		  RRScreenSizePtr   pSize);
+ #endif
+ 
+@@ -609,7 +590,9 @@ void
+ KdShadowFbFree (KdScreenInfo *screen);
+ 
+ Bool
+-KdShadowSet (ScreenPtr pScreen, int randr, ShadowUpdateProc update, ShadowWindowProc window);
++
++KdShadowSet(ScreenPtr pScreen, int randr, ShadowUpdateProc update,
++            ShadowWindowProc window);
+ 
+ void
+ KdShadowUnset (ScreenPtr pScreen);

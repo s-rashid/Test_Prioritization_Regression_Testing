@@ -1,0 +1,10 @@
+diff --git a/mi/mibstore.h b/mi/mibstore.h
+index c23caac..f8ed444 100644
+--- a/mi/mibstore.h
++++ b/mi/mibstore.h
+@@ -20,4 +20,4 @@
+ 
+ #define miInitializeBackingStore(x) do {} while (0)
+ 
+-#endif /* _MIBSTORE_H */
++#endif                          /* _MIBSTORE_H */

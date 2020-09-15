@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index 5ce4dbb..3bb1571 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -121,7 +121,6 @@ extern _X_EXPORT void xf86FindPrimaryDevice(void);
+ extern _X_EXPORT void xf86PostProbe(void);
+ extern _X_EXPORT void xf86ClearEntityListForScreen(int scrnIndex);
+ extern _X_EXPORT void xf86AddDevToEntity(int entityIndex, GDevPtr dev);
+-extern _X_EXPORT void xf86PostPreInit(void);
+ extern _X_EXPORT void xf86PostScreenInit(void);
+ 
+ /* xf86Config.c */

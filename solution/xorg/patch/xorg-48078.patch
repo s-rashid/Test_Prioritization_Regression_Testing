@@ -1,0 +1,14 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index 96eb8f9..d5965c2 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -476,7 +476,8 @@ void PanoramiXExtensionInit(int argc, char *argv[])
+ 	panoramiXdataPtr = (PanoramiXData *) 
+ 		xcalloc(PanoramiXNumScreens, sizeof(PanoramiXData));
+ 
+-        BREAK_IF(!panoramiXdataPtr);
++	if (!panoramiXdataPtr)
++	    break;
+ 
+ 	if (!dixRequestPrivate(PanoramiXGCKey, sizeof(PanoramiXGCRec))) {
+ 		noPanoramiXExtension = TRUE;

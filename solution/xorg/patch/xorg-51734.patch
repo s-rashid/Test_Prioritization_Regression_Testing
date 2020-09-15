@@ -1,0 +1,35 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index f1a87f1..6dcd497 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -280,8 +280,6 @@ xf86XVScreenInit(
+ 
+   pScrn = xf86Screens[pScreen->myNum];
+ 
+-  ScreenPriv->videoGC = NULL;  /* for the helper */
+-
+   ScreenPriv->DestroyWindow = pScreen->DestroyWindow;
+   ScreenPriv->WindowExposures = pScreen->WindowExposures;
+   ScreenPriv->ClipNotify = pScreen->ClipNotify;
+@@ -1123,9 +1121,6 @@ xf86XVDestroyWindow(WindowPtr pWin)
+ 
+      pPriv->pDraw = NULL;
+      tmp = WinPriv;
+-     if(WinPriv->pGC) {
+-       FreeGC(WinPriv->pGC, 0);
+-     }
+      WinPriv = WinPriv->next;
+      free(tmp);
+   }
+@@ -1232,11 +1227,6 @@ xf86XVCloseScreen(int i, ScreenPtr pScreen)
+ 
+   if(!ScreenPriv) return TRUE;
+ 
+-  if(ScreenPriv->videoGC) {
+-     FreeGC(ScreenPriv->videoGC, 0);
+-     ScreenPriv->videoGC = NULL;
+-  }
+-
+   pScreen->DestroyWindow = ScreenPriv->DestroyWindow;
+   pScreen->WindowExposures = ScreenPriv->WindowExposures;
+   pScreen->ClipNotify = ScreenPriv->ClipNotify;

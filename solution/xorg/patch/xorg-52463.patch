@@ -1,0 +1,20 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 51e0078..0905e18 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -84,7 +84,6 @@ SOFTWARE.
+ #include "closedev.h"
+ #include "devbell.h"
+ #include "getbmap.h"
+-#include "getbmap.h"
+ #include "getdctl.h"
+ #include "getfctl.h"
+ #include "getfocus.h"
+@@ -93,7 +92,6 @@ SOFTWARE.
+ #include "getprop.h"
+ #include "getselev.h"
+ #include "getvers.h"
+-#include "getvers.h"
+ #include "grabdev.h"
+ #include "grabdevb.h"
+ #include "grabdevk.h"

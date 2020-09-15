@@ -1,0 +1,28 @@
+diff --git a/hw/xwin/winerror.c b/hw/xwin/winerror.c
+index 9ed27c3..191b9a9 100644
+--- a/hw/xwin/winerror.c
++++ b/hw/xwin/winerror.c
+@@ -41,8 +41,9 @@
+ 
+ /* References to external symbols */
+ extern char *		g_pszCommandLine;
+-extern char *		g_pszLogFile;
++extern const char *	g_pszLogFile;
+ extern Bool		g_fSilentFatalError;
++extern Bool		g_fLogInited;
+ 
+ 
+ #ifdef DDXOSVERRORF
+@@ -87,6 +88,12 @@ OsVendorFatalError (void)
+   if (g_fSilentFatalError)
+     return;
+ 
++  if (!g_fLogInited) {
++    g_fLogInited = TRUE;
++    g_pszLogFile = LogInit (g_pszLogFile, NULL);
++  }
++  LogClose ();
++
+   winMessageBoxF (
+           "A fatal error has occurred and " PROJECT_NAME " will now exit.\n" \
+ 		  "Please open %s for more information.\n",

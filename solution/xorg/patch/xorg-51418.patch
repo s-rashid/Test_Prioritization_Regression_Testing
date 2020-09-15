@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_agp.c b/hw/xfree86/os-support/linux/lnx_agp.c
+index c65f1e3..a5f0411 100644
+--- a/hw/xfree86/os-support/linux/lnx_agp.c
++++ b/hw/xfree86/os-support/linux/lnx_agp.c
+@@ -264,7 +264,7 @@ xf86DeallocateGARTMemory(int screenNum, int key)
+ 	}
+ 
+ #ifdef __linux__
+-	if (ioctl(gartFd, AGPIOC_DEALLOCATE, (int *)key) != 0) {
++	if (ioctl(gartFd, AGPIOC_DEALLOCATE, (int *)(uintptr_t)key) != 0) {
+ #else
+ 	if (ioctl(gartFd, AGPIOC_DEALLOCATE, &key) != 0) {
+ #endif

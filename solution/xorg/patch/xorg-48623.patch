@@ -1,0 +1,13 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index 01511e2..e73d1ac 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -320,7 +320,7 @@ ProcRRCreateMode (ClientPtr client)
+     WriteToClient(client, sizeof(xRRCreateModeReply), (char *)&rep);
+     /* Drop out reference to this mode */
+     RRModeDestroy (mode);
+-    return client->noClientException;
++    return Success;
+ }
+ 
+ int

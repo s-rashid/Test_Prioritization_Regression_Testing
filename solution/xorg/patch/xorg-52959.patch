@@ -1,0 +1,25 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index daa6430..cc675c1 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -679,12 +679,19 @@ GetXTestDevice(DeviceIntPtr master)
+     return NULL;
+ }
+ 
++static void
++XTestExtensionTearDown(ExtensionEntry *e)
++{
++    FreeEventList(xtest_evlist, GetMaximumEventsNum());
++    xtest_evlist = NULL;
++}
++
+ void
+ XTestExtensionInit(INITARGS)
+ {
+     AddExtension(XTestExtensionName, 0, 0,
+             ProcXTestDispatch, SProcXTestDispatch,
+-            NULL, StandardMinorOpcode);
++            XTestExtensionTearDown, StandardMinorOpcode);
+ 
+     xtest_evlist = InitEventList(GetMaximumEventsNum());
+ }

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index 1fe3d7e..8c69859 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -69,7 +69,7 @@ extern _X_EXPORT  Pix24Flags xf86Pix24;
+ extern _X_EXPORT  rgb xf86Weight;
+ extern _X_EXPORT  Bool xf86FlipPixels;
+ extern _X_EXPORT  Gamma xf86Gamma;
+-extern _X_EXPORT  char *xf86ServerName;
++extern _X_EXPORT  const char *xf86ServerName;
+ 
+ /* Other parameters */
+ 

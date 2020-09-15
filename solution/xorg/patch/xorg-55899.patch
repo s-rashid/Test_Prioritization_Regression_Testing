@@ -1,0 +1,58 @@
+diff --git a/hw/xwin/winwindow.h b/hw/xwin/winwindow.h
+index 229696a..c357f8d 100644
+--- a/hw/xwin/winwindow.h
++++ b/hw/xwin/winwindow.h
+@@ -67,13 +67,11 @@
+ 
+ typedef struct _winPrivScreenRec *winPrivScreenPtr;
+ 
+-
+ /*
+  * Window privates
+  */
+ 
+-typedef struct
+-{
++typedef struct {
+   DWORD			dwDummy;
+   HRGN			hRgn;
+   HWND			hWnd;
+@@ -104,7 +102,6 @@ typedef struct _winWMMessageRec{
+   int			iWidth, iHeight;
+ } winWMMessageRec, *winWMMessagePtr;
+ 
+-
+ /*
+  * winmultiwindowwm.c
+  */
+@@ -140,19 +137,19 @@ contains 5... we only need the first 3... so that is all we will define */
+ typedef struct MwmHints {
+   unsigned long		flags, functions, decorations;
+ } MwmHints;
++
+ #define		PropMwmHintsElements	3
+ 
+ void
+ winSendMessageToWM (void *pWMInfo, winWMMessagePtr msg);
+ 
+ Bool
++
+ winInitWM (void **ppWMInfo,
+ 	   pthread_t *ptWMProc,
+ 	   pthread_t *ptXMsgProc,
+ 	   pthread_mutex_t *ppmServerStarted,
+-	   int dwScreen,
+-	   HWND hwndScreen,
+-	   BOOL allowOtherWM);
++          int dwScreen, HWND hwndScreen, BOOL allowOtherWM);
+ 
+ void
+ winDeinitMultiWindowWM (void);
+@@ -160,7 +157,6 @@ winDeinitMultiWindowWM (void);
+ void
+ winMinimizeWindow (Window id);
+ 
+-
+ /*
+  * winmultiwindowicons.c
+  */

@@ -1,0 +1,13 @@
+diff --git a/randr/randr.c b/randr/randr.c
+index 1c1d0c4..5944564 100644
+--- a/randr/randr.c
++++ b/randr/randr.c
+@@ -98,6 +98,8 @@ RRCloseScreen (int i, ScreenPtr pScreen)
+     for (j = pScrPriv->numOutputs - 1; j >= 0; j--)
+ 	RROutputDestroy (pScrPriv->outputs[j]);
+     
++    xfree (pScrPriv->crtcs);
++    xfree (pScrPriv->outputs);
+     xfree (pScrPriv);
+     RRNScreens -= 1;	/* ok, one fewer screen with RandR running */
+     return (*pScreen->CloseScreen) (i, pScreen);    

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/xaa/xaaFillRect.c b/hw/xfree86/xaa/xaaFillRect.c
+index dde31c1..e1fecab 100644
+--- a/hw/xfree86/xaa/xaaFillRect.c
++++ b/hw/xfree86/xaa/xaaFillRect.c
+@@ -1090,6 +1090,6 @@ XAAGetRectClipBoxes(
+     	}
+     }
+ 
+-    return(pboxClipped - pboxClippedBase);  
++    return pboxClipped - pboxClippedBase;
+ }
+ 

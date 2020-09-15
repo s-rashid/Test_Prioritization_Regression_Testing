@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/stub/stub_video.c b/hw/xfree86/os-support/stub/stub_video.c
+index 3274968..9771fcf 100644
+--- a/hw/xfree86/os-support/stub/stub_video.c
++++ b/hw/xfree86/os-support/stub/stub_video.c
+@@ -8,6 +8,6 @@
+ void
+ xf86OSInitVidMem(VidMemInfoPtr pVidMem)
+ {
+-	pVidMem->initialised = TRUE;
+-	return;
++    pVidMem->initialised = TRUE;
++    return;
+ }

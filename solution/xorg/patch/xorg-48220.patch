@@ -1,0 +1,21 @@
+diff --git a/dix/window.c b/dix/window.c
+index c7201df..02451fc 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -2777,7 +2777,6 @@ UnrealizeTree(
+     WindowPtr pChild;
+     UnrealizeWindowProcPtr Unrealize;
+     MarkUnrealizedWindowProcPtr MarkUnrealizedWindow;
+-    int rc;
+ 
+     Unrealize = pWin->drawable.pScreen->UnrealizeWindow;
+     MarkUnrealizedWindow = pWin->drawable.pScreen->MarkUnrealizedWindow;
+@@ -2791,7 +2790,7 @@ UnrealizeTree(
+ #ifdef PANORAMIX
+ 	    if(!noPanoramiXExtension && !pChild->drawable.pScreen->myNum) {
+ 		PanoramiXRes *win;
+-		rc = dixLookupResourceByType((pointer *)&win,
++		int rc = dixLookupResourceByType((pointer *)&win,
+ 					     pChild->drawable.id, XRT_WINDOW,
+ 					     serverClient, DixWriteAccess);
+ 		if (rc == Success)

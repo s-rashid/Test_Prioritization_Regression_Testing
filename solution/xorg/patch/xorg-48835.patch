@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxinput.c b/hw/dmx/dmxinput.c
+index 568bb88..eceb251 100644
+--- a/hw/dmx/dmxinput.c
++++ b/hw/dmx/dmxinput.c
+@@ -114,6 +114,6 @@ NewInputDeviceRequest (InputOption *options, InputAttributes *attrs,
+ }
+ 
+ void
+-DeleteInputDeviceRequest(DeviceIntPtr pDev)
++DeleteInputDeviceRequest(DeviceIntPtr pDev, int flags)
+ {
+ }

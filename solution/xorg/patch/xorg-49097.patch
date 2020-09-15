@@ -1,0 +1,27 @@
+diff --git a/Xext/geext.c b/Xext/geext.c
+index b7f32c0..e61989c 100644
+--- a/Xext/geext.c
++++ b/Xext/geext.c
+@@ -36,12 +36,10 @@
+ 
+ #define rClient(obj) (clients[CLIENT_ID((obj)->resource)])
+ 
+-static int GEClientPrivateKeyIndex;
+-DevPrivateKey GEClientPrivateKey = &GEClientPrivateKeyIndex;
++DevPrivateKeyRec GEClientPrivateKeyRec;
+ 
+ int RT_GECLIENT  = 0;
+ 
+-
+ GEExtension GEExtensions[MAXEXTENSIONS];
+ 
+ /* Major available requests */
+@@ -209,7 +207,7 @@ GEExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
+ 
+-    if (!dixRequestPrivate(GEClientPrivateKey, sizeof(GEClientInfoRec)))
++    if (!dixRegisterPrivateKey(&GEClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(GEClientInfoRec)))
+         FatalError("GEExtensionInit: GE private request failed.\n");
+ 
+     if(!AddCallback(&ClientStateCallback, GEClientCallback, 0))

@@ -1,0 +1,182 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 002355e..185369e 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -65,8 +65,10 @@ static const char *xprOpenGLBundle = "glxCGL.bundle";
+  * eventHandler
+  *  Callback handler for Xplugin events.
+  */
+-static void eventHandler(unsigned int type, const void *arg,
+-                         unsigned int arg_size, void *data) {
++static void
++eventHandler(unsigned int type, const void *arg,
++             unsigned int arg_size, void *data)
++{
+     
+     switch (type) {
+         case XP_EVENT_DISPLAY_CHANGED:
+@@ -78,10 +80,12 @@ static void eventHandler(unsigned int type, const void *arg,
+             if (arg_size >= sizeof(xp_window_state_event)) {
+                 const xp_window_state_event *ws_arg = arg;
+                 
+-                DEBUG_LOG("XP_EVENT_WINDOW_STATE_CHANGED: id=%d, state=%d\n", ws_arg->id, ws_arg->state);
+-                DarwinSendDDXEvent(kXquartzWindowState, 2,
++            DEBUG_LOG("XP_EVENT_WINDOW_STATE_CHANGED: id=%d, state=%d\n",
+                                           ws_arg->id, ws_arg->state);
+-            } else {
++            DarwinSendDDXEvent(kXquartzWindowState, 2, ws_arg->id,
++                               ws_arg->state);
++        }
++        else {
+                 DEBUG_LOG("XP_EVENT_WINDOW_STATE_CHANGED: ignored\n");
+             }
+             break;
+@@ -90,6 +94,7 @@ static void eventHandler(unsigned int type, const void *arg,
+             DEBUG_LOG("XP_EVENT_WINDOW_MOVED\n");
+             if (arg_size == sizeof(xp_window_id))  {
+                 xp_window_id id = * (xp_window_id *) arg;
++
+                 DarwinSendDDXEvent(kXquartzWindowMoved, 1, id);
+             }
+             break;
+@@ -114,6 +119,7 @@ static void eventHandler(unsigned int type, const void *arg,
+             DEBUG_LOG("XP_EVENT_SPACE_CHANGED\n");
+             if(arg_size == sizeof(uint32_t)) {
+                 uint32_t space_id = *(uint32_t *)arg;
++
+                 DarwinSendDDXEvent(kXquartzSpaceChanged, 1, space_id);
+             }
+             break;
+@@ -157,8 +163,7 @@ displayScreenBounds(CGDirectDisplayID id)
+               (int)frame.origin.x, (int)frame.origin.y);
+     
+     /* Remove menubar to help standard X11 window managers. */
+-    if (XQuartzIsRootless && 
+-        frame.origin.x == 0 && frame.origin.y == 0) {
++    if (XQuartzIsRootless && frame.origin.x == 0 && frame.origin.y == 0) {
+         frame.origin.y += aquaMenuBarHeight;
+         frame.size.height -= aquaMenuBarHeight;
+     }
+@@ -176,7 +181,8 @@ displayScreenBounds(CGDirectDisplayID id)
+  *  with PseudoramiX.
+  */
+ static void
+-xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height, ScreenPtr pScreen)
++xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height,
++                         ScreenPtr pScreen)
+ {
+     CGDisplayCount i, displayCount;
+     CGDirectDisplayID *displayList = NULL;
+@@ -187,7 +193,8 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height, ScreenPtr pScr
+     DEBUG_LOG("displayCount: %d\n", (int)displayCount);
+ 
+     if(!displayCount) {
+-        ErrorF("CoreGraphics has reported no connected displays.  Creating a stub 800x600 display.\n");
++        ErrorF
++            ("CoreGraphics has reported no connected displays.  Creating a stub 800x600 display.\n");
+         *x = *y = 0;
+         *width = 800;
+         *height = 600;
+@@ -212,6 +219,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height, ScreenPtr pScr
+     /* Get the union of all screens */
+     for (i = 0; i < displayCount; i++) {
+         CGDirectDisplayID dpy = displayList[i];
++
+         frame = displayScreenBounds(dpy);
+         unionRect = CGRectUnion(unionRect, frame);
+     }
+@@ -226,8 +234,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height, ScreenPtr pScr
+               *x, *y, *width, *height);
+ 
+     /* Tell PseudoramiX about the real screens. */
+-    for (i = 0; i < displayCount; i++)
+-    {
++    for (i = 0; i < displayCount; i++) {
+         CGDirectDisplayID dpy = displayList[i];
+ 
+         frame = displayScreenBounds(dpy);
+@@ -269,14 +276,12 @@ xprDisplayInit(void)
+         FatalError("Could not initialize the Xplugin library.");
+ 
+     xp_select_events(XP_EVENT_DISPLAY_CHANGED
+-                     | XP_EVENT_WINDOW_STATE_CHANGED
+-                     | XP_EVENT_WINDOW_MOVED
++                     | XP_EVENT_WINDOW_STATE_CHANGED | XP_EVENT_WINDOW_MOVED
+ #ifdef XP_EVENT_SPACE_CHANGED
+                      | XP_EVENT_SPACE_CHANGED
+ #endif
+                      | XP_EVENT_SURFACE_CHANGED
+-                     | XP_EVENT_SURFACE_DESTROYED,
+-                     eventHandler, NULL);
++                     | XP_EVENT_SURFACE_DESTROYED, eventHandler, NULL);
+ 
+     AppleDRIExtensionInit();
+     xprAppleWMInit();
+@@ -300,7 +305,9 @@ xprAddScreen(int index, ScreenPtr pScreen)
+     
+     if(depth == -1) {
+ #if MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+-        depth = CGDisplaySamplesPerPixel(kCGDirectMainDisplay) * CGDisplayBitsPerSample(kCGDirectMainDisplay);
++        depth =
++            CGDisplaySamplesPerPixel(kCGDirectMainDisplay) *
++            CGDisplayBitsPerSample(kCGDirectMainDisplay);
+ #else
+         CGDisplayModeRef modeRef;
+         CFStringRef encStrRef;
+@@ -314,11 +321,19 @@ xprAddScreen(int index, ScreenPtr pScreen)
+         if(!encStrRef)
+             goto have_depth;
+         
+-        if(CFStringCompare(encStrRef, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
++        if (CFStringCompare
++            (encStrRef, CFSTR(IO32BitDirectPixels),
++             kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
+             depth = 24;
+-        } else if(CFStringCompare(encStrRef, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
++        }
++        else if (CFStringCompare
++                 (encStrRef, CFSTR(IO16BitDirectPixels),
++                  kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
+             depth = 15;
+-        } else if(CFStringCompare(encStrRef, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
++        }
++        else if (CFStringCompare
++                 (encStrRef, CFSTR(IO8BitIndexedPixels),
++                  kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
+             depth = 8;
+         }
+ 
+@@ -353,7 +368,9 @@ have_depth:
+ //        case 24:
+         default:
+             if(depth != 24)
+-                ErrorF("Unsupported color depth requested.  Defaulting to 24bit. (depth=%d darwinDesiredDepth=%d)\n", depth, darwinDesiredDepth);
++            ErrorF
++                ("Unsupported color depth requested.  Defaulting to 24bit. (depth=%d darwinDesiredDepth=%d)\n",
++                 depth, darwinDesiredDepth);
+             dfb->visuals = TrueColorMask; //LARGE_VISUALS;
+             dfb->preferredCVC = TrueColor;
+             dfb->depth = 24;
+@@ -365,8 +382,7 @@ have_depth:
+             break;
+     }
+ 
+-    if (noPseudoramiXExtension)
+-    {
++    if (noPseudoramiXExtension) {
+         CGDirectDisplayID dpy;
+         CGRect frame;
+ 
+@@ -382,9 +398,9 @@ have_depth:
+         dfb->width =  frame.size.width;
+         dfb->height = frame.size.height;
+     }
+-    else
+-    {
+-        xprAddPseudoramiXScreens(&dfb->x, &dfb->y, &dfb->width, &dfb->height, pScreen);
++    else {
++        xprAddPseudoramiXScreens(&dfb->x, &dfb->y, &dfb->width, &dfb->height,
++                                 pScreen);
+     }
+ 
+     /* Passing zero width (pitch) makes miCreateScreenResources set the

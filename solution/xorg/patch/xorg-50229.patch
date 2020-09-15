@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 39cd230..efe19e2 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -96,7 +96,6 @@ typedef struct {
+ #endif
+     Bool		pmFlag;
+     Log			log;
+-    Bool		kbdCustomKeycodes;
+     Bool		disableRandR;
+     MessageType		randRFrom;
+     Bool		aiglx;

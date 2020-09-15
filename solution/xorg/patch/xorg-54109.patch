@@ -1,0 +1,12 @@
+diff --git a/include/dixgrabs.h b/include/dixgrabs.h
+index 2ed8a54..65ff45d 100644
+--- a/include/dixgrabs.h
++++ b/include/dixgrabs.h
+@@ -33,6 +33,7 @@ extern void UngrabAllDevices(Bool kill_client);
+ 
+ extern GrabPtr AllocGrab(void);
+ extern void FreeGrab(GrabPtr grab);
++extern Bool CopyGrab(GrabPtr dst, const GrabPtr src);
+ 
+ extern GrabPtr CreateGrab(
+ 	int /* client */,

@@ -1,0 +1,12 @@
+diff --git a/include/input.h b/include/input.h
+index c68a284..5969693 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -215,6 +215,7 @@ typedef struct _InputAttributes {
+     char                *product;
+     char                *vendor;
+     char                *device;
++    char                *pnp_id;
+     char                **tags; /* null-terminated */
+     uint32_t            flags;
+ } InputAttributes;

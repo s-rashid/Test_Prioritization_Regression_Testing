@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winwin32rootless.c b/hw/xwin/winwin32rootless.c
+index 8f9917a..d9e71c0 100644
+--- a/hw/xwin/winwin32rootless.c
++++ b/hw/xwin/winwin32rootless.c
+@@ -640,8 +640,6 @@ winMWExtWMRestackFrame (RootlessFrameID wid, RootlessFrameID nextWid)
+       SetWindowPos (pRLWinPriv->hWnd, pRLNextWinPriv->hWnd,
+ 		    0, 0, 0, 0,
+ 		    SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE);
+-#if 0
+-#endif
+     }
+ #if CYGMULTIWINDOW_DEBUG
+   winDebug ("winMWExtWMRestackFrame - done (%08x)\n", (int) pRLWinPriv);

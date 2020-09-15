@@ -1,0 +1,187 @@
+diff --git a/fb/fbstipple.c b/fb/fbstipple.c
+index dc1fd46..f6c84a2 100644
+--- a/fb/fbstipple.c
++++ b/fb/fbstipple.c
+@@ -56,10 +56,7 @@
+  */
+ 
+ void
+-fbTransparentSpan (FbBits   *dst,
+-		   FbBits   stip,
+-		   FbBits   fgxor,
+-		   int	    n)
++fbTransparentSpan(FbBits * dst, FbBits stip, FbBits fgxor, int n)
+ {
+     FbStip  s;
+ 
+@@ -83,21 +80,13 @@ fbEvenStipple (FbBits	*dst,
+ 	       FbStride	dstStride,
+ 	       int	dstX,
+ 	       int	dstBpp,
+-
+ 	       int	width,
+ 	       int	height,
+-
+ 	       FbStip	*stip,
+ 	       FbStride	stipStride,
+ 	       int	stipHeight,
+-
+ 	       FbBits	fgand,
+-	       FbBits	fgxor,
+-	       FbBits	bgand,
+-	       FbBits	bgxor,
+-
+-	       int	xRot,
+-	       int	yRot)
++              FbBits fgxor, FbBits bgand, FbBits bgxor, int xRot, int yRot)
+ {
+     FbBits	startmask, endmask;
+     FbBits	mask, and, xor;
+@@ -113,8 +102,7 @@ fbEvenStipple (FbBits	*dst,
+      * Check for a transparent stipple (stencil)
+      */
+     transparent = FALSE;
+-    if (dstBpp >= 8 &&
+-	fgand == 0 && bgand == FB_ALLONES && bgxor == 0)
++    if (dstBpp >= 8 && fgand == 0 && bgand == FB_ALLONES && bgxor == 0)
+ 	transparent = TRUE;
+     
+     pixelsPerDst = FB_UNIT / dstBpp;
+@@ -146,8 +134,7 @@ fbEvenStipple (FbBits	*dst,
+     /* fbStippleTable covers all valid bpp (4,8,16,32) */
+     fbBits = fbStippleTable[pixelsPerDst];
+     
+-    while (height--)
+-    {
++    while (height--) {
+ 	/*
+ 	 * Extract stipple bits for this scanline;
+ 	 */
+@@ -168,10 +155,8 @@ fbEvenStipple (FbBits	*dst,
+ 	and = (fgand & mask) | (bgand & ~mask);
+ 	xor = (fgxor & mask) | (bgxor & ~mask);
+ 	
+-	if (transparent)
+-	{
+-	    if (startmask)
+-	    {
++        if (transparent) {
++            if (startmask) {
+ 		fbTransparentSpan(dst, mask&startmask, fgxor, 1);
+ 		dst++;
+ 	    }
+@@ -180,13 +165,11 @@ fbEvenStipple (FbBits	*dst,
+ 	    if (endmask)
+ 		fbTransparentSpan(dst, mask&endmask, fgxor, 1);
+ 	}
+-	else
+-	{
++        else {
+ 	    /*
+ 	     * Fill scanline
+ 	     */
+-	    if (startmask)
+-	    {
++            if (startmask) {
+ 		FbDoLeftMaskByteRRop (dst, startbyte, startmask, and, xor);
+ 		dst++;
+ 	    }
+@@ -194,10 +177,8 @@ fbEvenStipple (FbBits	*dst,
+ 	    if (!and)
+ 		while (n--)
+ 		    WRITE(dst++, xor);
+-	    else
+-	    {
+-		while (n--)
+-		{
++            else {
++                while (n--) {
+ 		    WRITE(dst, FbDoRRop (READ(dst), and, xor));
+ 		    dst++;
+ 		}
+@@ -214,22 +195,14 @@ fbOddStipple (FbBits	*dst,
+ 	      FbStride	dstStride,
+ 	      int	dstX,
+ 	      int	dstBpp,
+-
+ 	      int	width,
+ 	      int	height,
+-
+ 	      FbStip	*stip,
+ 	      FbStride	stipStride,
+ 	      int	stipWidth,
+ 	      int	stipHeight,
+-
+ 	      FbBits	fgand,
+-	      FbBits	fgxor,
+-	      FbBits	bgand,
+-	      FbBits	bgxor,
+-
+-	      int	xRot,
+-	      int	yRot)
++             FbBits fgxor, FbBits bgand, FbBits bgxor, int xRot, int yRot)
+ {
+     int		stipX, stipY, sx;
+     int		widthTmp;
+@@ -239,8 +212,7 @@ fbOddStipple (FbBits	*dst,
+     modulus (- yRot, stipHeight, stipY);
+     modulus (dstX / dstBpp - xRot, stipWidth, stipX);
+     y = 0;
+-    while (height)
+-    {
++    while (height) {
+ 	h = stipHeight - stipY;
+ 	if (h > height)
+ 	    h = height;
+@@ -248,8 +220,7 @@ fbOddStipple (FbBits	*dst,
+ 	widthTmp = width;
+ 	x = dstX;
+ 	sx = stipX;
+-	while (widthTmp)
+-	{
++        while (widthTmp) {
+ 	    w = (stipWidth - sx) * dstBpp;
+ 	    if (w > widthTmp)
+ 		w = widthTmp;
+@@ -257,15 +228,8 @@ fbOddStipple (FbBits	*dst,
+ 	    fbBltOne (stip + stipY * stipStride,
+ 		      stipStride,
+ 		      sx,
+-
+ 		      dst + y * dstStride,
+-		      dstStride,
+-		      x,
+-		      dstBpp,
+-
+-		      w, h,
+-
+-		      fgand, fgxor, bgand, bgxor);
++                     dstStride, x, dstBpp, w, h, fgand, fgxor, bgand, bgxor);
+ 	    x += w;
+ 	    sx = 0;
+ 	}
+@@ -279,23 +243,15 @@ fbStipple (FbBits	*dst,
+ 	   FbStride	dstStride,
+ 	   int		dstX,
+ 	   int		dstBpp,
+-
+ 	   int		width,
+ 	   int		height,
+-
+ 	   FbStip	*stip,
+ 	   FbStride	stipStride,
+ 	   int		stipWidth,
+ 	   int		stipHeight,
+ 	   Bool		even,
+-
+ 	   FbBits	fgand,
+-	   FbBits	fgxor,
+-	   FbBits	bgand,
+-	   FbBits	bgxor,
+-
+-	   int		xRot,
+-	   int		yRot)
++          FbBits fgxor, FbBits bgand, FbBits bgxor, int xRot, int yRot)
+ {
+     if (even)
+ 	fbEvenStipple (dst, dstStride, dstX, dstBpp, width, height,

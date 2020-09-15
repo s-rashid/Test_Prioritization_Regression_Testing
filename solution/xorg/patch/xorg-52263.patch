@@ -1,0 +1,13 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 302a561..a9357e8 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -208,7 +208,7 @@ typedef    PixmapPtr (* CreatePixmapProcPtr)(
+ 	int /*width*/,
+ 	int /*height*/,
+ 	int /*depth*/,
+-	unsigned /*class*/);
++	unsigned /*usage_hint*/);
+ 
+ typedef    Bool (* DestroyPixmapProcPtr)(
+ 	PixmapPtr /*pPixmap*/);

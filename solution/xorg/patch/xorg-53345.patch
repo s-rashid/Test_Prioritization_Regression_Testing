@@ -1,0 +1,17 @@
+diff --git a/Xi/chgkmap.c b/Xi/chgkmap.c
+index e4b9e15..32caa2d 100644
+--- a/Xi/chgkmap.c
++++ b/Xi/chgkmap.c
+@@ -72,11 +72,10 @@ SOFTWARE.
+ int
+ SProcXChangeDeviceKeyMapping(ClientPtr client)
+ {
+-    char n;
+     unsigned int count;
+ 
+     REQUEST(xChangeDeviceKeyMappingReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     REQUEST_AT_LEAST_SIZE(xChangeDeviceKeyMappingReq);
+     count = stuff->keyCodes * stuff->keySymsPerKeyCode;
+     REQUEST_FIXED_SIZE(xChangeDeviceKeyMappingReq, count * sizeof(CARD32));

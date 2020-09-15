@@ -1,0 +1,44 @@
+diff --git a/Xext/xcmisc.c b/Xext/xcmisc.c
+index 745135e..99a6ece 100644
+--- a/Xext/xcmisc.c
++++ b/Xext/xcmisc.c
+@@ -98,8 +98,7 @@ ProcXCMiscGetXIDList(ClientPtr client)
+ 	    return BadAlloc;
+ 
+     pids = (XID *)malloc(stuff->count * sizeof(XID));
+-    if (!pids)
+-    {
++    if (!pids) {
+ 	return BadAlloc;
+     }
+     count = GetXIDList(client, stuff->count, pids);
+@@ -113,8 +112,7 @@ ProcXCMiscGetXIDList(ClientPtr client)
+ 	swapl(&rep.count);
+     }
+     WriteToClient(client, sizeof(xXCMiscGetXIDListReply), (char *)&rep);
+-    if (count)
+-    {
++    if (count) {
+     	client->pSwapReplyFunc = (ReplySwapPtr) Swap32Write;
+ 	WriteSwappedDataToClient(client, count * sizeof(XID), pids);
+     }
+@@ -126,8 +124,7 @@ static int
+ ProcXCMiscDispatch (ClientPtr client)
+ {
+     REQUEST(xReq);
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+     case X_XCMiscGetVersion:
+ 	return ProcXCMiscGetVersion(client);
+     case X_XCMiscGetXIDRange:
+@@ -174,8 +171,7 @@ static int
+ SProcXCMiscDispatch (ClientPtr client)
+ {
+     REQUEST(xReq);
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+     case X_XCMiscGetVersion:
+ 	return SProcXCMiscGetVersion(client);
+     case X_XCMiscGetXIDRange:

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86cmap.c b/hw/xfree86/common/xf86cmap.c
+index 36e6f96..08f557c 100644
+--- a/hw/xfree86/common/xf86cmap.c
++++ b/hw/xfree86/common/xf86cmap.c
+@@ -115,7 +115,9 @@ static void CMapDestroyColormap (ColormapPtr);
+ 
+ static Bool CMapEnterVT(int, int);
+ static Bool CMapSwitchMode(int, DisplayModePtr, int);
++#ifdef XFreeXDGA
+ static int  CMapSetDGAMode(int, int, DGADevicePtr);
++#endif
+ static int  CMapChangeGamma(int, Gamma);
+ 
+ static void ComputeGamma(CMapScreenPtr);

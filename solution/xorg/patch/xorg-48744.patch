@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/vbe/vbe.h b/hw/xfree86/vbe/vbe.h
+index 3ebd440..072621f 100644
+--- a/hw/xfree86/vbe/vbe.h
++++ b/hw/xfree86/vbe/vbe.h
+@@ -65,7 +65,7 @@ typedef struct vbeControllerInfoBlock {
+ #pragma pack(0)
+ #endif
+ 
+-#ifndef __GNUC__
++#if !( defined(__GNUC__) || (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)) )
+ #define __attribute__(a)
+ #endif
+ 

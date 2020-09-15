@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index bde80ea..d4b9351 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -330,6 +330,8 @@ xf86DeleteInput(InputInfoPtr pInp, int flags)
+     if (pInp->private)
+ 	free(pInp->private);
+ 
++    FreeInputAttributes(pInp->attrs);
++
+     /* Remove the entry from the list. */
+     if (pInp == xf86InputDevs)
+ 	xf86InputDevs = pInp->next;

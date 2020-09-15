@@ -1,0 +1,13 @@
+diff --git a/hw/vfb/InitOutput.c b/hw/vfb/InitOutput.c
+index 2d679a5..e2cd96c 100644
+--- a/hw/vfb/InitOutput.c
++++ b/hw/vfb/InitOutput.c
+@@ -219,7 +219,7 @@ OsVendorInit(void)
+ }
+ 
+ void
+-OsVendorFatalError(void)
++OsVendorFatalError(const char *f, va_list args)
+ {
+ }
+ 

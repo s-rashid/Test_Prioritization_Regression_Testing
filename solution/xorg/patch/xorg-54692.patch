@@ -1,0 +1,12 @@
+diff --git a/Xext/syncsrv.h b/Xext/syncsrv.h
+index d29c361..dbed476 100644
+--- a/Xext/syncsrv.h
++++ b/Xext/syncsrv.h
+@@ -135,4 +135,7 @@ extern void SyncChangeCounter(SyncCounter *pCounter,
+ extern void SyncDestroySystemCounter(pointer pCounter);
+ 
+ extern void SyncExtensionInit(void);
++
++extern SyncCounter *SyncInitDeviceIdleTime(DeviceIntPtr dev);
++extern void SyncRemoveDeviceIdleTime(SyncCounter *counter);
+ #endif                          /* _SYNCSRV_H_ */

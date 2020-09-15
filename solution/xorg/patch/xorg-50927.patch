@@ -1,0 +1,15 @@
+diff --git a/miext/rootless/rootlessWindow.c b/miext/rootless/rootlessWindow.c
+index 42ab8da..c4a32aa 100644
+--- a/miext/rootless/rootlessWindow.c
++++ b/miext/rootless/rootlessWindow.c
+@@ -1140,10 +1140,8 @@ FinishFrameResize(WindowPtr pWin, Bool gravity, int oldX, int oldY,
+         }
+     }
+ 
+-    if (gResizeDeathBits != NULL) {
+         free(gResizeDeathBits);
+         gResizeDeathBits = NULL;
+-    }
+ 
+     if (gravity) {
+         pScreen->CopyWindow = gResizeOldCopyWindowProc;

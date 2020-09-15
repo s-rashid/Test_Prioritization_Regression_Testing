@@ -1,0 +1,13 @@
+diff --git a/Xi/setcptr.c b/Xi/setcptr.c
+index ba76246..9d1a54c 100644
+--- a/Xi/setcptr.c
++++ b/Xi/setcptr.c
+@@ -55,6 +55,8 @@ SProcXISetClientPointer(ClientPtr client)
+ 
+     REQUEST(xXISetClientPointerReq);
+     swaps(&stuff->length, n);
++    swapl(&stuff->win, n);
++    swaps(&stuff->deviceid, n);
+     REQUEST_SIZE_MATCH(xXISetClientPointerReq);
+     return (ProcXISetClientPointer(client));
+ }

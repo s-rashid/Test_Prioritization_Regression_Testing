@@ -1,0 +1,24 @@
+diff --git a/Xi/devbell.c b/Xi/devbell.c
+index 8815242..c75b94d 100644
+--- a/Xi/devbell.c
++++ b/Xi/devbell.c
+@@ -119,7 +119,8 @@ ProcXDeviceBell(ClientPtr client)
+ 	proc = k->BellProc;
+ 	ctrl = (pointer) & (k->ctrl);
+ 	class = KbdFeedbackClass;
+-    } else if (stuff->feedbackclass == BellFeedbackClass) {
++    }
++    else if (stuff->feedbackclass == BellFeedbackClass) {
+ 	for (b = dev->bell; b; b = b->next)
+ 	    if (b->ctrl.id == stuff->feedbackid)
+ 		break;
+@@ -131,7 +132,8 @@ ProcXDeviceBell(ClientPtr client)
+ 	proc = b->BellProc;
+ 	ctrl = (pointer) & (b->ctrl);
+ 	class = BellFeedbackClass;
+-    } else {
++    }
++    else {
+ 	client->errorValue = stuff->feedbackclass;
+ 	return BadValue;
+     }

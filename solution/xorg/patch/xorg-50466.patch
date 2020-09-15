@@ -1,0 +1,38 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 0e5aced..17f308c 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -238,7 +238,6 @@ long	    SmartLastPrint;
+ #endif
+ 
+ void        Dispatch(void);
+-void        InitProcVectors(void);
+ 
+ static int
+ SmartScheduleClient (int *clientReady, int nready)
+@@ -3387,25 +3386,6 @@ int ProcNoOperation(ClientPtr client)
+     return Success;
+ }
+ 
+-void
+-InitProcVectors(void)
+-{
+-    int i;
+-    for (i = 0; i<256; i++)
+-    {
+-	if(!ProcVector[i])
+-	{
+-            ProcVector[i] = SwappedProcVector[i] = ProcBadRequest;
+-	    ReplySwapVector[i] = ReplyNotSwappd;
+-	}
+-    }
+-    for(i = LASTEvent; i < 128; i++)
+-    {
+-	EventSwapVector[i] = NotImplemented;
+-    }
+-    
+-}
+-
+ /**********************
+  * CloseDownClient
+  *

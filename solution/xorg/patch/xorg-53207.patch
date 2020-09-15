@@ -1,0 +1,17 @@
+diff --git a/hw/dmx/glxProxy/glxserver.h b/hw/dmx/glxProxy/glxserver.h
+index cd833f8..03e95b8 100644
+--- a/hw/dmx/glxProxy/glxserver.h
++++ b/hw/dmx/glxProxy/glxserver.h
+@@ -42,12 +42,6 @@
+ #include <scrnintstr.h>
+ 
+ 
+-/*
+-** The X header misc.h defines these math functions.
+-*/
+-#undef abs
+-#undef fabs
+-
+ #define GL_GLEXT_PROTOTYPES /* we want prototypes */
+ #include <GL/gl.h>
+ #include <GL/glxproto.h>

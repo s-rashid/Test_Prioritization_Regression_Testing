@@ -1,0 +1,17 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index e36b15f..cd4fb70 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -601,6 +601,12 @@ typedef struct _Screen {
+     /* Device cursor procedures */
+     DeviceCursorInitializeProcPtr DeviceCursorInitialize;
+     DeviceCursorCleanupProcPtr    DeviceCursorCleanup;
++
++    /* set it in driver side if X server can copy the framebuffer content.
++     * Meant to be used together with '-background none' option, avoiding
++     * malicious users to steal framebuffer's content if that would be the
++     * default */
++    Bool		canDoBGNoneRoot;
+ } ScreenRec;
+ 
+ static inline RegionPtr BitmapToRegion(ScreenPtr _pScreen, PixmapPtr pPix) {

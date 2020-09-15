@@ -1,0 +1,30 @@
+diff --git a/include/privates.h b/include/privates.h
+index e2bdafd..4fed7d0 100644
+--- a/include/privates.h
++++ b/include/privates.h
+@@ -60,6 +60,7 @@ typedef struct _DevPrivateKeyRec {
+     int			offset;
+     int			size;
+     Bool		initialized;
++    Bool		allocated;
+     DevPrivateType	type;
+     struct _DevPrivateKeyRec	*next;
+ } DevPrivateKeyRec, *DevPrivateKey;
+@@ -99,6 +100,17 @@ dixPrivateKeyRegistered(DevPrivateKey key)
+ }
+ 
+ /*
++ * Allocate a new private key.
++ *
++ * This manages the storage of the key object itself, freeing it when the
++ * privates system is restarted at server reset time. All other keys
++ * are expected to be statically allocated as the privates must be
++ * reset after all objects have been freed
++ */
++extern _X_EXPORT DevPrivateKey
++dixCreatePrivateKey(DevPrivateType type, unsigned size);
++
++/*
+  * Get the address of the private storage.
+  *
+  * For keys with pre-defined storage, this gets the base of that storage

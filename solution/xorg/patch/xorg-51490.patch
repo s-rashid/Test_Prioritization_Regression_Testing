@@ -1,0 +1,42 @@
+diff --git a/composite/compwindow.c b/composite/compwindow.c
+index 22d2374..2440f18 100644
+--- a/composite/compwindow.c
++++ b/composite/compwindow.c
+@@ -720,13 +720,11 @@ compWindowUpdateAutomatic (WindowPtr pWin)
+     DamageEmpty (cw->damage);
+ }
+ 
+-void
+-compWindowUpdate (WindowPtr pWin)
++static void
++compPaintWindowToParent (WindowPtr pWin)
+ {
+-    WindowPtr	pChild;
++    compPaintChildrenToWindow (pWin);
+ 
+-    for (pChild = pWin->lastChild; pChild; pChild = pChild->prevSib)
+-	compWindowUpdate (pChild);
+     if (pWin->redirectDraw != RedirectDrawNone)
+     {
+ 	CompWindowPtr	cw = GetCompWindow(pWin);
+@@ -739,6 +737,20 @@ compWindowUpdate (WindowPtr pWin)
+     }
+ }
+ 
++void
++compPaintChildrenToWindow (WindowPtr pWin)
++{
++    WindowPtr pChild;
++
++    if (!pWin->damagedDescendants)
++	return;
++
++    for (pChild = pWin->lastChild; pChild; pChild = pChild->prevSib)
++	compPaintWindowToParent (pChild);
++
++    pWin->damagedDescendants = FALSE;
++}
++
+ WindowPtr
+ CompositeRealChildHead (WindowPtr pWin)
+ {

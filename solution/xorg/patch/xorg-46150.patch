@@ -1,0 +1,10 @@
+diff --git a/Xi/xichangehierarchy.h b/Xi/xichangehierarchy.h
+index b46cfb4..483c6cd 100644
+--- a/Xi/xichangehierarchy.h
++++ b/Xi/xichangehierarchy.h
+@@ -41,4 +41,4 @@ int ProcXIChangeHierarchy(ClientPtr /* client */);
+ 
+ void XISendDeviceHierarchyEvent(int flags[]);
+ 
+-#endif
++#endif /* CHDEVHIER_H */

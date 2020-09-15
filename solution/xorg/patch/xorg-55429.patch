@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/common/xf86Optionstr.h b/hw/xfree86/common/xf86Optionstr.h
+index fc93856..c38499c 100644
+--- a/hw/xfree86/common/xf86Optionstr.h
++++ b/hw/xfree86/common/xf86Optionstr.h
+@@ -29,15 +29,13 @@
+ /*
+  * All options are stored using this data type.
+  */
+-typedef struct _XF86OptionRec
+-{
++typedef struct _XF86OptionRec {
+ 	GenericListRec list;
+ 	char *opt_name;
+ 	char *opt_val;
+ 	int opt_used;
+ 	char *opt_comment;
+-}
+-XF86OptionRec;
++} XF86OptionRec;
+ 
+ typedef struct _InputOption *XF86OptionPtr;
+ 

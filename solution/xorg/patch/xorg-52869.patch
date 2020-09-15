@@ -1,0 +1,16 @@
+diff --git a/include/dix.h b/include/dix.h
+index 9a111e8..b1bf9ed 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -387,6 +387,11 @@ extern _X_EXPORT int DeliverEventsToWindow(
+     Mask /* filter */,
+     GrabPtr /* grab */);
+ 
++extern _X_EXPORT void DeliverRawEvent(
++    RawDeviceEvent* /* ev */,
++    DeviceIntPtr /* dev */
++);
++
+ extern int DeliverDeviceEvents(
+     WindowPtr /* pWin */,
+     InternalEvent* /* event */,

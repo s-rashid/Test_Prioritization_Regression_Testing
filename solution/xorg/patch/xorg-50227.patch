@@ -1,0 +1,15 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index 39e1c70..b64252f 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -146,10 +146,6 @@ typedef struct _GrabParameters {
+ } GrabParameters;
+ 
+ 
+-extern void
+-RegisterOtherDevice (
+-	DeviceIntPtr           /* device */);
+-
+ extern int
+ UpdateDeviceState (
+ 	DeviceIntPtr           /* device */,

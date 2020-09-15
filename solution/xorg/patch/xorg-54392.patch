@@ -1,0 +1,19 @@
+diff --git a/dix/events.c b/dix/events.c
+index 8dff299..eb7bd92 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -1115,12 +1115,13 @@ NoticeEventTime(InternalEvent *ev)
+ void
+ EnqueueEvent(InternalEvent *ev, DeviceIntPtr device)
+ {
+-    QdEventPtr	tail;
++    QdEventPtr	tail = NULL;
+     QdEventPtr	qe;
+     SpritePtr	pSprite = device->spriteInfo->sprite;
+     int		eventlen;
+     DeviceEvent *event = &ev->device_event;
+ 
++    if (!list_is_empty(&syncEvents.pending))
+     tail = list_last_entry(&syncEvents.pending, QdEventRec, next);
+ 
+     NoticeTime((InternalEvent*)event);

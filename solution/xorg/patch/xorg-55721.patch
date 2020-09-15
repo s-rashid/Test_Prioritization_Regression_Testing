@@ -1,0 +1,216 @@
+diff --git a/hw/xnest/Color.c b/hw/xnest/Color.c
+index 0aae8e9..7ef137d 100644
+--- a/hw/xnest/Color.c
++++ b/hw/xnest/Color.c
+@@ -26,7 +26,6 @@ is" without express or implied warranty.
+ 
+ #include "Xnest.h"
+ 
+-
+ #include "Display.h"
+ #include "Screen.h"
+ #include "Color.h"
+@@ -37,6 +36,7 @@ is" without express or implied warranty.
+ DevPrivateKeyRec xnestColormapPrivateKeyRec;
+ 
+ static DevPrivateKeyRec cmapScrPrivateKeyRec;
++
+ #define cmapScrPrivateKey (&cmapScrPrivateKeyRec)
+ 
+ #define GetInstalledColormap(s) ((ColormapPtr) dixLookupPrivate(&(s)->devPrivates, cmapScrPrivateKey))
+@@ -58,9 +58,7 @@ xnestCreateColormap(ColormapPtr pCmap)
+     XCreateColormap(xnestDisplay,
+ 		    xnestDefaultWindows[pCmap->pScreen->myNum],
+ 		    xnestVisual(pVisual),
+-		    (pVisual->class & DynamicClass) ? 
+-		    AllocAll : AllocNone);
+- 
++                        (pVisual->class & DynamicClass) ? AllocAll : AllocNone);
+   
+   switch (pVisual->class) {
+   case StaticGray: /* read only */
+@@ -98,11 +96,14 @@ xnestCreateColormap(ColormapPtr pCmap)
+     for (i = 0; i < ncolors; i++) {
+       colors[i].pixel = red | green | blue;
+       red += redInc;
+-      if (red > pVisual->redMask) red = 0L;
++            if (red > pVisual->redMask)
++                red = 0L;
+       green += greenInc;
+-      if (green > pVisual->greenMask) green = 0L;
++            if (green > pVisual->greenMask)
++                green = 0L;
+       blue += blueInc;
+-      if (blue > pVisual->blueMask) blue = 0L;
++            if (blue > pVisual->blueMask)
++                blue = 0L;
+     }
+     XQueryColors(xnestDisplay, xnestColormap(pCmap), colors, ncolors);
+     for (i = 0; i < ncolors; i++) {
+@@ -199,7 +200,8 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+   icws.numWindows = 0;
+   WalkTree(pScreen, xnestCountInstalledColormapWindows, (pointer)&icws);
+   if (icws.numWindows) {
+-    icws.windows = (Window *)malloc((icws.numWindows + 1) * sizeof(Window));
++        icws.windows =
++            (Window *) malloc((icws.numWindows + 1) * sizeof(Window));
+     icws.index = 0;
+     WalkTree(pScreen, xnestGetInstalledColormapWindows, (pointer)&icws);
+     icws.windows[icws.numWindows] = xnestDefaultWindows[pScreen->myNum];
+@@ -218,12 +220,14 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+ #ifdef _XSERVER64
+     {
+       int i;
+-      Window64 *windows = (Window64 *)malloc(numWindows * sizeof(Window64));
++            Window64 *windows =
++                (Window64 *) malloc(numWindows * sizeof(Window64));
+ 
+       for(i = 0; i < numWindows; ++i)
+ 	  windows[i] = icws.windows[i];
+-      XSetWMColormapWindows(xnestDisplay, xnestDefaultWindows[pScreen->myNum],
+-			    windows, numWindows);
++            XSetWMColormapWindows(xnestDisplay,
++                                  xnestDefaultWindows[pScreen->myNum], windows,
++                                  numWindows);
+       free(windows);
+     }
+ #else
+@@ -239,8 +243,7 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+       This code is for dumb window managers.
+       This will only work with default local visual colormaps.
+       */
+-    if (icws.numWindows)
+-      {
++        if (icws.numWindows) {
+ 	WindowPtr pWin;
+ 	Visual *visual;
+ 	ColormapPtr pCmap;
+@@ -250,10 +253,12 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+ 	
+ 	if (visual == xnestDefaultVisual(pScreen))
+ 	    dixLookupResourceByType((pointer *)&pCmap, wColormap(pWin),
+-				    RT_COLORMAP, serverClient, DixUseAccess);
++                                        RT_COLORMAP, serverClient,
++                                        DixUseAccess);
+ 	else
+-	    dixLookupResourceByType((pointer *)&pCmap, pScreen->defColormap,
+-				    RT_COLORMAP, serverClient, DixUseAccess);
++                dixLookupResourceByType((pointer *) &pCmap,
++                                        pScreen->defColormap, RT_COLORMAP,
++                                        serverClient, DixUseAccess);
+ 	
+ 	XSetWindowColormap(xnestDisplay, 
+ 			   xnestDefaultWindows[pScreen->myNum],
+@@ -296,7 +301,8 @@ xnestDirectInstallColormaps(ScreenPtr pScreen)
+   int i, n;
+   Colormap pCmapIDs[MAXCMAPS];
+   
+-  if (!xnestDoDirectColormaps) return;
++    if (!xnestDoDirectColormaps)
++        return;
+ 
+   n = (*pScreen->ListInstalledColormaps)(pScreen, pCmapIDs);
+ 
+@@ -316,7 +322,8 @@ xnestDirectUninstallColormaps(ScreenPtr pScreen)
+   int i, n;
+   Colormap pCmapIDs[MAXCMAPS];
+ 
+-  if (!xnestDoDirectColormaps) return;
++    if (!xnestDoDirectColormaps)
++        return;
+ 
+   n = (*pScreen->ListInstalledColormaps)(pScreen, pCmapIDs);
+ 
+@@ -335,8 +342,7 @@ xnestInstallColormap(ColormapPtr pCmap)
+ {
+   ColormapPtr pOldCmap = GetInstalledColormap(pCmap->pScreen);
+   
+-  if(pCmap != pOldCmap)
+-    {
++    if (pCmap != pOldCmap) {
+       xnestDirectUninstallColormaps(pCmap->pScreen);
+ 
+       /* Uninstall pInstalledMap. Notify all interested parties. */
+@@ -356,10 +362,8 @@ xnestUninstallColormap(ColormapPtr pCmap)
+ {
+   ColormapPtr pCurCmap = GetInstalledColormap(pCmap->pScreen);
+   
+-  if(pCmap == pCurCmap)
+-    {
+-      if (pCmap->mid != pCmap->pScreen->defColormap)
+-        {
++    if (pCmap == pCurCmap) {
++        if (pCmap->mid != pCmap->pScreen->defColormap) {
+ 	  dixLookupResourceByType((pointer *)&pCurCmap,
+ 				  pCmap->pScreen->defColormap,
+ 				  RT_COLORMAP,
+@@ -391,8 +395,7 @@ xnestStoreColors(ColormapPtr pCmap, int nColors, xColorItem *pColors)
+     int i;
+     XColor *pColors64 = (XColor *)malloc(nColors * sizeof(XColor) );
+ 
+-    for(i = 0; i < nColors; ++i)
+-    {
++        for (i = 0; i < nColors; ++i) {
+       pColors64[i].pixel = pColors[i].pixel;
+       pColors64[i].red = pColors[i].red;
+       pColors64[i].green = pColors[i].green;
+@@ -418,21 +421,18 @@ xnestResolveColor(unsigned short *pRed, unsigned short *pGreen,
+   shift = 16 - pVisual->bitsPerRGBValue;
+   lim = (1 << pVisual->bitsPerRGBValue) - 1;
+ 
+-  if ((pVisual->class == PseudoColor) || (pVisual->class == DirectColor))
+-    {
++    if ((pVisual->class == PseudoColor) || (pVisual->class == DirectColor)) {
+       /* rescale to rgb bits */
+       *pRed = ((*pRed >> shift) * 65535) / lim;
+       *pGreen = ((*pGreen >> shift) * 65535) / lim;
+       *pBlue = ((*pBlue >> shift) * 65535) / lim;
+     }
+-  else if (pVisual->class == GrayScale)
+-    {
++    else if (pVisual->class == GrayScale) {
+       /* rescale to gray then rgb bits */
+       *pRed = (30L * *pRed + 59L * *pGreen + 11L * *pBlue) / 100;
+       *pBlue = *pGreen = *pRed = ((*pRed >> shift) * 65535) / lim;
+     }
+-  else if (pVisual->class == StaticGray)
+-    {
++    else if (pVisual->class == StaticGray) {
+       unsigned int limg;
+  
+       limg = pVisual->ColormapEntries - 1;
+@@ -441,8 +441,7 @@ xnestResolveColor(unsigned short *pRed, unsigned short *pGreen,
+       *pRed = ((((*pRed * (limg + 1))) >> 16) * 65535) / limg;
+       *pBlue = *pGreen = *pRed = ((*pRed >> shift) * 65535) / lim;
+     }
+-  else
+-    {
++    else {
+       unsigned limr, limg, limb;
+       
+       limr = pVisual->redMask >> pVisual->offsetRed;
+@@ -470,11 +469,11 @@ xnestCreateDefaultColormap(ScreenPtr pScreen)
+       return FALSE;
+ 
+   for (pVisual = pScreen->visuals;
+-       pVisual->vid != pScreen->rootVisual;
+-       pVisual++);
++         pVisual->vid != pScreen->rootVisual; pVisual++);
+ 
+   if (CreateColormap(pScreen->defColormap, pScreen, pVisual, &pCmap,
+-		     (pVisual->class & DynamicClass) ? AllocNone : AllocAll, 0)
++                       (pVisual->class & DynamicClass) ? AllocNone : AllocAll,
++                       0)
+       != Success)
+     return False;
+ 
+@@ -482,8 +481,7 @@ xnestCreateDefaultColormap(ScreenPtr pScreen)
+   bp = pScreen->blackPixel;
+   if ((AllocColor(pCmap, &ones, &ones, &ones, &wp, 0) !=
+        Success) ||
+-      (AllocColor(pCmap, &zero, &zero, &zero, &bp, 0) !=
+-       Success))
++        (AllocColor(pCmap, &zero, &zero, &zero, &bp, 0) != Success))
+     return FALSE;
+   pScreen->whitePixel = wp;
+   pScreen->blackPixel = bp;

@@ -1,0 +1,13 @@
+diff --git a/Xi/xiquerypointer.c b/Xi/xiquerypointer.c
+index e770e84..2222873 100644
+--- a/Xi/xiquerypointer.c
++++ b/Xi/xiquerypointer.c
+@@ -91,7 +91,7 @@ ProcXIQueryPointer(ClientPtr client)
+         return BadDevice;
+     }
+ 
+-    rc = dixLookupWindow(&pWin, stuff->win, client, DixReadAccess);
++    rc = dixLookupWindow(&pWin, stuff->win, client, DixGetAttrAccess);
+     if (rc != Success)
+     {
+         SendErrorToClient(client, IReqCode, X_XIQueryPointer,

@@ -1,0 +1,24 @@
+diff --git a/xfixes/region.c b/xfixes/region.c
+index 3942c9d..1b4accb 100644
+--- a/xfixes/region.c
++++ b/xfixes/region.c
+@@ -33,7 +33,6 @@ extern int RenderErrBase;
+ #include <regionstr.h>
+ #include <gcstruct.h>
+ #include <window.h>
+-#include "registry.h"
+ 
+ RESTYPE RegionResType;
+ 
+@@ -64,10 +63,7 @@ XFixesRegionCopy (RegionPtr pRegion)
+ Bool
+ XFixesRegionInit (void)
+ {
+-    RegionResType = CreateNewResourceType(RegionResFree);
+-
+-    if (RegionResType)
+-	RegisterResourceName(RegionResType, "XFixesRegion");
++    RegionResType = CreateNewResourceType(RegionResFree, "XFixesRegion");
+ 
+     return (RegionResType != 0);
+ }

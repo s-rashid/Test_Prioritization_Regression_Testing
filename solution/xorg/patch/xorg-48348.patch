@@ -1,0 +1,13 @@
+diff --git a/os/log.c b/os/log.c
+index 0781659..ce43319 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -403,7 +403,7 @@ LogMessage(MessageType type, const char *format, ...)
+ }
+ 
+ void
+-AbortServer(void) X_NORETURN;
++AbortServer(void) _X_NORETURN;
+ 
+ void
+ AbortServer(void)

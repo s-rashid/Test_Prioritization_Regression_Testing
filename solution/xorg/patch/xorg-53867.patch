@@ -1,0 +1,12 @@
+diff --git a/os/io.c b/os/io.c
+index 068f5f0..955bf8b 100644
+--- a/os/io.c
++++ b/os/io.c
+@@ -809,6 +809,7 @@ WriteToClient (ClientPtr who, int count, const void *__buf)
+ 	replyinfo.client = who;
+ 	replyinfo.replyData = buf;
+ 	replyinfo.dataLenBytes = count + padBytes;
++	replyinfo.padBytes = padBytes;
+ 	if (who->replyBytesRemaining)
+ 	{ /* still sending data of an earlier reply */
+ 	    who->replyBytesRemaining -= count + padBytes;

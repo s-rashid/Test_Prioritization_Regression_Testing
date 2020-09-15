@@ -1,0 +1,14 @@
+diff --git a/include/dixfont.h b/include/dixfont.h
+index e444a20..cf86f54 100644
+--- a/include/dixfont.h
++++ b/include/dixfont.h
+@@ -96,8 +96,7 @@ extern _X_EXPORT int ImageText(ClientPtr /*client*/,
+ 
+ extern _X_EXPORT int SetFontPath(ClientPtr /*client*/,
+ 		       int /*npaths*/,
+-		       unsigned char * /*paths*/,
+-		       int * /*error*/);
++		       unsigned char * /*paths*/);
+ 
+ extern _X_EXPORT int SetDefaultFontPath(char * /*path*/);
+ 

@@ -1,0 +1,11 @@
+diff --git a/mi/micmap.c b/mi/micmap.c
+index 8d76f4d..41e0300 100644
+--- a/mi/micmap.c
++++ b/mi/micmap.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 1987 Sun Microsystems, Inc.  All rights reserved.
++ * Copyright (c) 1987, Oracle and/or its affiliates. All rights reserved.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),

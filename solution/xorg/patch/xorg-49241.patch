@@ -1,0 +1,22 @@
+diff --git a/mi/miexpose.c b/mi/miexpose.c
+index 2fd070d..94258b8 100644
+--- a/mi/miexpose.c
++++ b/mi/miexpose.c
+@@ -131,7 +131,6 @@ miHandleExposures(DrawablePtr pSrcDrawable, DrawablePtr pDstDrawable,
+ 		  GCPtr pGC, int srcx, int srcy, int width, int height,
+ 		  int dstx, int dsty, unsigned long plane)
+ {
+-    ScreenPtr pscr;
+     RegionPtr prgnSrcClip;	/* drawable-relative source clip */
+     RegionRec rgnSrcRec;
+     RegionPtr prgnDstClip;	/* drawable-relative dest clip */
+@@ -148,9 +147,6 @@ miHandleExposures(DrawablePtr pSrcDrawable, DrawablePtr pDstDrawable,
+     BoxRec expBox;
+     Bool extents;
+ 
+-    /* This prevents warning about pscr not being used. */
+-    pGC->pScreen = pscr = pGC->pScreen;
+-
+     /* avoid work if we can */
+     if (!pGC->graphicsExposures &&
+ 	(pDstDrawable->type == DRAWABLE_PIXMAP) &&

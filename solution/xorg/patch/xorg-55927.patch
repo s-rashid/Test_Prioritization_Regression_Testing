@@ -1,0 +1,238 @@
+diff --git a/include/gcstruct.h b/include/gcstruct.h
+index 4fea02c..7621ceb 100644
+--- a/include/gcstruct.h
++++ b/include/gcstruct.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,8 +44,6 @@ SOFTWARE.
+ 
+ ******************************************************************/
+ 
+-
+-
+ #ifndef GCSTRUCT_H
+ #define GCSTRUCT_H
+ 
+@@ -66,34 +63,27 @@ SOFTWARE.
+  */
+ 
+ typedef struct _GCFuncs {
+-    void	(* ValidateGC)(
+-		GCPtr /*pGC*/,
++    void (*ValidateGC) (GCPtr /*pGC */ ,
+ 		unsigned long /*stateChanges*/,
+ 		DrawablePtr /*pDrawable*/);
+ 
+-    void	(* ChangeGC)(
+-		GCPtr /*pGC*/,
++    void (*ChangeGC) (GCPtr /*pGC */ ,
+ 		unsigned long /*mask*/);
+ 
+-    void	(* CopyGC)(
+-		GCPtr /*pGCSrc*/,
++    void (*CopyGC) (GCPtr /*pGCSrc */ ,
+ 		unsigned long /*mask*/,
+ 		GCPtr /*pGCDst*/);
+ 
+-    void	(* DestroyGC)(
+-		GCPtr /*pGC*/);
++    void (*DestroyGC) (GCPtr /*pGC */ );
+ 
+-    void	(* ChangeClip)(
+-		GCPtr /*pGC*/,
++    void (*ChangeClip) (GCPtr /*pGC */ ,
+ 		int /*type*/,
+ 		pointer /*pvalue*/,
+ 		int /*nrects*/);
+ 
+-    void	(* DestroyClip)(
+-		GCPtr /*pGC*/);
++    void (*DestroyClip) (GCPtr /*pGC */ );
+ 
+-    void	(* CopyClip)(
+-		GCPtr /*pgcDst*/,
++    void (*CopyClip) (GCPtr /*pgcDst */ ,
+ 		GCPtr /*pgcSrc*/);
+ } GCFuncs;
+ 
+@@ -102,16 +92,14 @@ typedef struct _GCFuncs {
+  */
+ 
+ typedef struct _GCOps {
+-    void	(* FillSpans)(
+-		DrawablePtr /*pDrawable*/,
++    void (*FillSpans) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*nInit*/,
+ 		DDXPointPtr /*pptInit*/,
+ 		int * /*pwidthInit*/,
+ 		int /*fSorted*/);
+ 
+-    void	(* SetSpans)(
+-		DrawablePtr /*pDrawable*/,
++    void (*SetSpans) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		char * /*psrc*/,
+ 		DDXPointPtr /*ppt*/,
+@@ -119,8 +107,7 @@ typedef struct _GCOps {
+ 		int /*nspans*/,
+ 		int /*fSorted*/);
+ 
+-    void	(* PutImage)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PutImage) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*depth*/,
+ 		int /*x*/,
+@@ -131,8 +118,7 @@ typedef struct _GCOps {
+ 		int /*format*/,
+ 		char * /*pBits*/);
+ 
+-    RegionPtr	(* CopyArea)(
+-		DrawablePtr /*pSrc*/,
++    RegionPtr (*CopyArea) (DrawablePtr /*pSrc */ ,
+ 		DrawablePtr /*pDst*/,
+ 		GCPtr /*pGC*/,
+ 		int /*srcx*/,
+@@ -142,8 +128,7 @@ typedef struct _GCOps {
+ 		int /*dstx*/,
+ 		int /*dsty*/);
+ 
+-    RegionPtr	(* CopyPlane)(
+-		DrawablePtr /*pSrcDrawable*/,
++    RegionPtr (*CopyPlane) (DrawablePtr /*pSrcDrawable */ ,
+ 		DrawablePtr /*pDstDrawable*/,
+ 		GCPtr /*pGC*/,
+ 		int /*srcx*/,
+@@ -153,92 +138,79 @@ typedef struct _GCOps {
+ 		int /*dstx*/,
+ 		int /*dsty*/,
+ 		unsigned long /*bitPlane*/);
+-    void	(* PolyPoint)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyPoint) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*mode*/,
+ 		int /*npt*/,
+ 		DDXPointPtr /*pptInit*/);
+ 
+-    void	(* Polylines)(
+-		DrawablePtr /*pDrawable*/,
++    void (*Polylines) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*mode*/,
+ 		int /*npt*/,
+ 		DDXPointPtr /*pptInit*/);
+ 
+-    void	(* PolySegment)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolySegment) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*nseg*/,
+ 		xSegment * /*pSegs*/);
+ 
+-    void	(* PolyRectangle)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyRectangle) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*nrects*/,
+ 		xRectangle * /*pRects*/);
+ 
+-    void	(* PolyArc)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyArc) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*narcs*/,
+ 		xArc * /*parcs*/);
+ 
+-    void	(* FillPolygon)(
+-		DrawablePtr /*pDrawable*/,
++    void (*FillPolygon) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*shape*/,
+ 		int /*mode*/,
+ 		int /*count*/,
+ 		DDXPointPtr /*pPts*/);
+ 
+-    void	(* PolyFillRect)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyFillRect) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*nrectFill*/,
+ 		xRectangle * /*prectInit*/);
+ 
+-    void	(* PolyFillArc)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyFillArc) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*narcs*/,
+ 		xArc * /*parcs*/);
+ 
+-    int		(* PolyText8)(
+-		DrawablePtr /*pDrawable*/,
++    int (*PolyText8) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+ 		int /*count*/,
+ 		char * /*chars*/);
+ 
+-    int		(* PolyText16)(
+-		DrawablePtr /*pDrawable*/,
++    int (*PolyText16) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+ 		int /*count*/,
+ 		unsigned short * /*chars*/);
+ 
+-    void	(* ImageText8)(
+-		DrawablePtr /*pDrawable*/,
++    void (*ImageText8) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+ 		int /*count*/,
+ 		char * /*chars*/);
+ 
+-    void	(* ImageText16)(
+-		DrawablePtr /*pDrawable*/,
++    void (*ImageText16) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+ 		int /*count*/,
+ 		unsigned short * /*chars*/);
+ 
+-    void	(* ImageGlyphBlt)(
+-		DrawablePtr /*pDrawable*/,
++    void (*ImageGlyphBlt) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+@@ -246,8 +218,7 @@ typedef struct _GCOps {
+ 		CharInfoPtr * /*ppci*/,
+ 		pointer /*pglyphBase*/);
+ 
+-    void	(* PolyGlyphBlt)(
+-		DrawablePtr /*pDrawable*/,
++    void (*PolyGlyphBlt) (DrawablePtr /*pDrawable */ ,
+ 		GCPtr /*pGC*/,
+ 		int /*x*/,
+ 		int /*y*/,
+@@ -255,8 +226,7 @@ typedef struct _GCOps {
+ 		CharInfoPtr * /*ppci*/,
+ 		pointer /*pglyphBase*/);
+ 
+-    void	(* PushPixels)(
+-		GCPtr /*pGC*/,
++    void (*PushPixels) (GCPtr /*pGC */ ,
+ 		PixmapPtr /*pBitMap*/,
+ 		DrawablePtr /*pDst*/,
+ 		int /*w*/,

@@ -1,0 +1,13 @@
+diff --git a/os/WaitFor.c b/os/WaitFor.c
+index 4c3be34..95e64ba 100644
+--- a/os/WaitFor.c
++++ b/os/WaitFor.c
+@@ -547,7 +547,7 @@ NextDPMSTimeout(INT32 timeout)
+ static CARD32
+ ScreenSaverTimeoutExpire(OsTimerPtr timer, CARD32 now, pointer arg)
+ {
+-    INT32 timeout = now - lastDeviceEventTime.milliseconds;
++    INT32 timeout = now - lastDeviceEventTime[XIAllDevices].milliseconds;
+     CARD32 nextTimeout = 0;
+ 
+ #ifdef DPMSExtension

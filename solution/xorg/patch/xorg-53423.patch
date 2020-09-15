@@ -1,0 +1,13 @@
+diff --git a/include/xserver-properties.h b/include/xserver-properties.h
+index bf50042..18b54ba 100644
+--- a/include/xserver-properties.h
++++ b/include/xserver-properties.h
+@@ -77,6 +77,8 @@
+ #define AXIS_LABEL_PROP_REL_DIAL        "Rel Dial"
+ #define AXIS_LABEL_PROP_REL_WHEEL       "Rel Vert Wheel"
+ #define AXIS_LABEL_PROP_REL_MISC        "Rel Misc"
++#define AXIS_LABEL_PROP_REL_VSCROLL     "Rel Vert Scroll"
++#define AXIS_LABEL_PROP_REL_HSCROLL     "Rel Horiz Scroll"
+ 
+ /*
+  * Absolute axes

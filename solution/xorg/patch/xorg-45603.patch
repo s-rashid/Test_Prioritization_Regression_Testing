@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/loader/loader.c b/hw/xfree86/loader/loader.c
+index 47c8c2e..892c70a 100644
+--- a/hw/xfree86/loader/loader.c
++++ b/hw/xfree86/loader/loader.c
+@@ -257,13 +257,6 @@ LoaderSymbol(const char *sym)
+     return (DLFindSymbol(sym));
+ }
+ 
+-/* more stub */
+-int
+-LoaderCheckUnresolved(int delay_flag)
+-{
+-    return 0;
+-}
+-
+ int
+ LoaderUnload(int handle)
+ {

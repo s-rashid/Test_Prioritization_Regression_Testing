@@ -1,0 +1,13 @@
+diff --git a/Xi/xiquerypointer.c b/Xi/xiquerypointer.c
+index 9e05eff..d01a813 100644
+--- a/Xi/xiquerypointer.c
++++ b/Xi/xiquerypointer.c
+@@ -109,7 +109,7 @@ ProcXIQueryPointer(ClientPtr client)
+         MaybeStopHint(pDev, client);
+ 
+     if (IsMaster(pDev))
+-        kbd = GetPairedDevice(pDev);
++        kbd = GetMaster(pDev, MASTER_KEYBOARD);
+     else
+         kbd = (pDev->key) ? pDev : NULL;
+ 

@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/parser/scan.c b/hw/xfree86/parser/scan.c
+index 52e80a9..05fbc89 100644
+--- a/hw/xfree86/parser/scan.c
++++ b/hw/xfree86/parser/scan.c
+@@ -923,7 +923,6 @@ OpenConfigDir(const char *path, const char *cmdline, const char *projroot,
+ 		if (!found) {
+ 			free(dirpath);
+ 			dirpath = NULL;
+-			if (list)
+ 				free(list);
+ 		}
+ 	}
+@@ -1088,7 +1087,6 @@ xf86validationError (char *format,...)
+ void
+ xf86setSection (char *section)
+ {
+-	if (configSection)
+ 		free(configSection);
+ 	configSection = malloc(strlen (section) + 1);
+ 	strcpy (configSection, section);

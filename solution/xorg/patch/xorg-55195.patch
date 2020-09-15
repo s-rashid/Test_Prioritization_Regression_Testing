@@ -1,0 +1,134 @@
+diff --git a/glx/render2.c b/glx/render2.c
+index eb7c30b..8cf74a6 100644
+--- a/glx/render2.c
++++ b/glx/render2.c
+@@ -41,8 +41,8 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-
+-void __glXDisp_Map1f(GLbyte *pc)
++void
++__glXDisp_Map1f(GLbyte * pc)
+ {
+     GLint order, k;
+     GLfloat u1, u2, *points;
+@@ -58,7 +58,8 @@ void __glXDisp_Map1f(GLbyte *pc)
+     CALL_Map1f( GET_DISPATCH(), (target, u1, u2, k, order, points) );
+ }
+ 
+-void __glXDisp_Map2f(GLbyte *pc)
++void
++__glXDisp_Map2f(GLbyte * pc)
+ {
+     GLint uorder, vorder, ustride, vstride, k;
+     GLfloat u1, u2, v1, v2, *points;
+@@ -77,12 +78,16 @@ void __glXDisp_Map2f(GLbyte *pc)
+     ustride = vorder * k;
+     vstride = k;
+ 
+-   CALL_Map2f( GET_DISPATCH(), (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) );
++    CALL_Map2f(GET_DISPATCH(),
++               (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder,
++                points));
+ }
+ 
+-void __glXDisp_Map1d(GLbyte *pc)
++void
++__glXDisp_Map1d(GLbyte * pc)
+ {
+     GLint order, k;
++
+ #ifdef __GLX_ALIGN64
+     GLint compsize;
+ #endif
+@@ -96,7 +101,8 @@ void __glXDisp_Map1d(GLbyte *pc)
+ #ifdef __GLX_ALIGN64
+     if (order < 0 || k < 0) {
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = order * k;
+     }
+ #endif
+@@ -113,7 +119,8 @@ void __glXDisp_Map1d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+@@ -122,10 +129,12 @@ void __glXDisp_Map1d(GLbyte *pc)
+     CALL_Map1d( GET_DISPATCH(), (target, u1, u2, k, order, points) );
+ }
+ 
+-void __glXDisp_Map2d(GLbyte *pc)
++void
++__glXDisp_Map2d(GLbyte * pc)
+ {
+     GLdouble u1, u2, v1, v2, *points;
+     GLint uorder, vorder, ustride, vstride, k;
++
+ #ifdef __GLX_ALIGN64
+     GLint compsize;
+ #endif
+@@ -139,7 +148,8 @@ void __glXDisp_Map2d(GLbyte *pc)
+ #ifdef __GLX_ALIGN64
+     if (vorder < 0 || uorder < 0 || k < 0) {
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = uorder * vorder * k;
+     }
+ #endif
+@@ -161,16 +171,20 @@ void __glXDisp_Map2d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+     points = (GLdouble*) pc;
+ #endif
+-    CALL_Map2d( GET_DISPATCH(), (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) );
++    CALL_Map2d(GET_DISPATCH(),
++               (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder,
++                points));
+ }
+ 
+-void __glXDisp_DrawArrays(GLbyte *pc)
++void
++__glXDisp_DrawArrays(GLbyte * pc)
+ {
+     __GLXdispatchDrawArraysHeader *hdr = (__GLXdispatchDrawArraysHeader *)pc;
+     __GLXdispatchDrawArraysComponentHeader *compHeader;
+@@ -218,15 +232,18 @@ void __glXDisp_DrawArrays(GLbyte *pc)
+ 	    break;
+ 	  case GL_TEXTURE_COORD_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_TEXTURE_COORD_ARRAY) );
+-	    CALL_TexCoordPointer( GET_DISPATCH(), (numVals, datatype, stride, pc) );
++            CALL_TexCoordPointer(GET_DISPATCH(),
++                                 (numVals, datatype, stride, pc));
+ 	    break;
+ 	  case GL_EDGE_FLAG_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_EDGE_FLAG_ARRAY) );
+-	    CALL_EdgeFlagPointer( GET_DISPATCH(), (stride, (const GLboolean *)pc) );
++            CALL_EdgeFlagPointer(GET_DISPATCH(),
++                                 (stride, (const GLboolean *) pc));
+ 	    break;
+ 	  case GL_SECONDARY_COLOR_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_SECONDARY_COLOR_ARRAY) );
+-	    CALL_SecondaryColorPointerEXT( GET_DISPATCH(), (numVals, datatype, stride, pc) );
++            CALL_SecondaryColorPointerEXT(GET_DISPATCH(),
++                                          (numVals, datatype, stride, pc));
+ 	    break;
+ 	  case GL_FOG_COORD_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_FOG_COORD_ARRAY) );

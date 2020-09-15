@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86cmap.c b/hw/xfree86/common/xf86cmap.c
+index f26c22c..d2a8f12 100644
+--- a/hw/xfree86/common/xf86cmap.c
++++ b/hw/xfree86/common/xf86cmap.c
+@@ -327,7 +327,7 @@ CMapDestroyColormap (ColormapPtr cmap)
+     CMapLinkPtr prevLink = NULL, pLink = pScreenPriv->maps;
+ 
+     if(pColPriv) {
+-	if(pColPriv->colors) free(pColPriv->colors);
++	free(pColPriv->colors);
+ 	free(pColPriv);
+     }
+    

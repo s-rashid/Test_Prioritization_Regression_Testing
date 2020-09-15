@@ -1,0 +1,14 @@
+diff --git a/dix/dixfonts.c b/dix/dixfonts.c
+index 329318d..6dc8193 100644
+--- a/dix/dixfonts.c
++++ b/dix/dixfonts.c
+@@ -71,8 +71,7 @@ Equipment Corporation.
+ #endif
+ 
+ #ifdef XF86BIGFONT
+-#define _XF86BIGFONT_SERVER_
+-#include <X11/extensions/xf86bigfont.h>
++#include "xf86bigfontsrv.h"
+ #endif
+ 
+ #define QUERYCHARINFO(pci, pr)  *(pr) = (pci)->metrics

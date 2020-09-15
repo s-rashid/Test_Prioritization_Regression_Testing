@@ -1,0 +1,14 @@
+diff --git a/include/dixgrabs.h b/include/dixgrabs.h
+index 229c8bb..2ed8a54 100644
+--- a/include/dixgrabs.h
++++ b/include/dixgrabs.h
+@@ -31,6 +31,9 @@ struct _GrabParameters;
+ extern void PrintDeviceGrabInfo(DeviceIntPtr dev);
+ extern void UngrabAllDevices(Bool kill_client);
+ 
++extern GrabPtr AllocGrab(void);
++extern void FreeGrab(GrabPtr grab);
++
+ extern GrabPtr CreateGrab(
+ 	int /* client */,
+ 	DeviceIntPtr /* device */,

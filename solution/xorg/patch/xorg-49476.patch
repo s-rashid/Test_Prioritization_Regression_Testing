@@ -1,0 +1,22 @@
+diff --git a/Xext/xvmain.c b/Xext/xvmain.c
+index 0c34b16..1b80b12 100644
+--- a/Xext/xvmain.c
++++ b/Xext/xvmain.c
+@@ -634,7 +634,7 @@ XvdiPutVideo(
+ 
+   pPort->time = currentTime;
+ 
+-  return (Success);
++  return Success;
+ 
+ }
+ 
+@@ -764,7 +764,7 @@ XvdiGetVideo(
+ 
+   pPort->time = currentTime;
+ 
+-  return (Success);
++  return Success;
+ 
+ }
+ 

@@ -1,0 +1,19 @@
+diff --git a/Xi/stubs.c b/Xi/stubs.c
+index 6a4c181..8baa5a0 100644
+--- a/Xi/stubs.c
++++ b/Xi/stubs.c
+@@ -112,13 +112,11 @@ SetDeviceValuators(ClientPtr client, DeviceIntPtr dev,
+  */
+ 
+ int
+-ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
+-		    xDeviceCtl * control)
++ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev, xDeviceCtl * control)
+ {
+     return BadMatch;
+ }
+ 
+-
+ /****************************************************************************
+  *
+  * Caller: configAddDevice (and others)

@@ -1,0 +1,262 @@
+diff --git a/hw/xfree86/xaa/xaaInit.c b/hw/xfree86/xaa/xaaInit.c
+index 11443a6..661fa90 100644
+--- a/hw/xfree86/xaa/xaaInit.c
++++ b/hw/xfree86/xaa/xaaInit.c
+@@ -43,21 +43,30 @@ static void XAAEnableDisableFBAccess (int index, Bool enable);
+ static Bool XAAChangeWindowAttributes (WindowPtr pWin, unsigned long mask);
+ 
+ static DevPrivateKeyRec XAAScreenKeyRec;
++
+ #define XAAScreenKey (&XAAScreenKeyRec)
+ static DevPrivateKeyRec XAAGCKeyRec;
++
+ #define XAAGCKey (&XAAGCKeyRec)
+ static DevPrivateKeyRec XAAPixmapKeyRec;
++
+ #define XAAPixmapKey (&XAAPixmapKeyRec)
+ 
+-DevPrivateKey XAAGetScreenKey(void) {
++DevPrivateKey
++XAAGetScreenKey(void)
++{
+     return XAAScreenKey;
+ }
+ 
+-DevPrivateKey XAAGetGCKey(void) {
++DevPrivateKey
++XAAGetGCKey(void)
++{
+     return XAAGCKey;
+ }
+ 
+-DevPrivateKey XAAGetPixmapKey(void) {
++DevPrivateKey
++XAAGetPixmapKey(void)
++{
+     return XAAPixmapKey;
+ }
+ 
+@@ -79,7 +88,8 @@ XAACreateInfoRec(void)
+ void
+ XAADestroyInfoRec(XAAInfoRecPtr infoRec)
+ {
+-    if(!infoRec) return;
++    if (!infoRec)
++        return;
+ 
+     if(infoRec->ClosePixmapCache)
+ 	(*infoRec->ClosePixmapCache)(infoRec->pScrn->pScreen);
+@@ -91,7 +101,6 @@ XAADestroyInfoRec(XAAInfoRecPtr infoRec)
+     free(infoRec);
+ }
+ 
+-
+ Bool
+ XAAInit(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+ {
+@@ -107,7 +116,8 @@ XAAInit(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+     if (!dixRegisterPrivateKey(&XAAGCKeyRec, PRIVATE_GC, sizeof(XAAGCRec)))
+ 	return FALSE;
+ 
+-    if (!dixRegisterPrivateKey(&XAAPixmapKeyRec, PRIVATE_PIXMAP, sizeof(XAAPixmapRec)))
++    if (!dixRegisterPrivateKey
++        (&XAAPixmapKeyRec, PRIVATE_PIXMAP, sizeof(XAAPixmapRec)))
+ 	return FALSE;
+ 
+     if (!dixRegisterPrivateKey(&XAAScreenKeyRec, PRIVATE_SCREEN, 0))
+@@ -133,11 +143,11 @@ XAAInit(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+ 	    infoRec->FullPlanemasks[i] = (1 << (i+1)) - 1;	
+     }
+ 
+-    if(!XAAInitAccel(pScreen, infoRec)) return FALSE;
++    if (!XAAInitAccel(pScreen, infoRec))
++        return FALSE;
+     pScreenPriv->AccelInfoRec = infoRec;
+     infoRec->ScratchGC.pScreen = pScreen;
+ 
+-    
+     if(!infoRec->GetImage)
+ 	infoRec->GetImage = XAAGetImage;
+     if(!infoRec->GetSpans)
+@@ -172,8 +182,7 @@ XAAInit(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+     pScrn->EnableDisableFBAccess = XAAEnableDisableFBAccess;
+ 
+     pScreenPriv->WindowExposures = pScreen->WindowExposures;
+-    if (ps)
+-    {
++    if (ps) {
+ 	pScreenPriv->Composite = ps->Composite;
+ 	ps->Composite = XAAComposite;
+ 	pScreenPriv->Glyphs = ps->Glyphs;
+@@ -204,8 +213,6 @@ XAAInit(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+     return TRUE;
+ }
+ 
+-
+-
+ static Bool
+ XAACloseScreen (int i, ScreenPtr pScreen)
+ {
+@@ -235,26 +242,20 @@ XAACloseScreen (int i, ScreenPtr pScreen)
+ }
+ 
+ static void
+-XAAGetImage (
+-    DrawablePtr pDraw,
++XAAGetImage(DrawablePtr pDraw,
+     int	sx, int sy, int w, int h,
+-    unsigned int    format,
+-    unsigned long   planemask,
+-    char	    *pdstLine 
+-)
++            unsigned int format, unsigned long planemask, char *pdstLine)
+ {
+     ScreenPtr pScreen = pDraw->pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     ScrnInfoPtr pScrn = infoRec->pScrn;
+ 
+     if(pScrn->vtSema && 
+-	((pDraw->type == DRAWABLE_WINDOW) || IS_OFFSCREEN_PIXMAP(pDraw))) 
+-    {
++        ((pDraw->type == DRAWABLE_WINDOW) || IS_OFFSCREEN_PIXMAP(pDraw))) {
+ 	if(infoRec->ReadPixmap && (format == ZPixmap) && 
+ 	   ((planemask & infoRec->FullPlanemasks[pDraw->depth - 1]) == 
+                            infoRec->FullPlanemasks[pDraw->depth - 1]) &&
+-	   (pDraw->bitsPerPixel == BitsPerPixel(pDraw->depth)))
+-	{
++            (pDraw->bitsPerPixel == BitsPerPixel(pDraw->depth))) {
+ 	    (*infoRec->ReadPixmap)(pScrn, 
+ 		   sx + pDraw->x, sy + pDraw->y, w, h,
+ 		   (unsigned char *)pdstLine,
+@@ -271,16 +272,11 @@ XAAGetImage (
+ }
+ 
+ static void
+-XAAGetSpans (
+-    DrawablePtr pDraw,
+-    int		wMax,
+-    DDXPointPtr	ppt,
+-    int		*pwidth,
+-    int		nspans,
+-    char	*pdstStart
+-)
++XAAGetSpans(DrawablePtr pDraw,
++            int wMax, DDXPointPtr ppt, int *pwidth, int nspans, char *pdstStart)
+ {
+     ScreenPtr pScreen = pDraw->pScreen;
++
+     XAA_SCREEN_PROLOGUE (pScreen, GetSpans);
+     if(xf86Screens[pScreen->myNum]->vtSema && 
+ 	((pDraw->type == DRAWABLE_WINDOW) || IS_OFFSCREEN_PIXMAP(pDraw))) {
+@@ -290,7 +286,6 @@ XAAGetSpans (
+     XAA_SCREEN_EPILOGUE (pScreen, GetSpans, XAAGetSpans);
+ }
+ 
+-
+ static int
+ XAAPixmapBPP (ScreenPtr pScreen, int depth)
+ {
+@@ -350,8 +345,7 @@ XAACreatePixmap(ScreenPtr pScreen, int w, int h, int depth, unsigned usage_hint)
+ 	(infoRec->offscreenDepths & (1 << (depth - 1))) &&
+ 	(size >= MIN_OFFPIX_SIZE) && !SwitchedOut &&
+ 	(!infoRec->maxOffPixWidth || (w <= infoRec->maxOffPixWidth)) &&
+-	(!infoRec->maxOffPixHeight || (h <= infoRec->maxOffPixHeight)) )
+-    {
++        (!infoRec->maxOffPixHeight || (h <= infoRec->maxOffPixHeight))) {
+         PixmapLinkPtr pLink;
+ 	PixmapPtr pScreenPix;
+         FBAreaPtr area;
+@@ -359,10 +353,17 @@ XAACreatePixmap(ScreenPtr pScreen, int w, int h, int depth, unsigned usage_hint)
+ 
+ 	switch(pScrn->bitsPerPixel) {
+         case 24: 
+-        case 8:  gran = 4;  break;
+-        case 16: gran = 2;  break;
+-        case 32: gran = 1;  break;
+-        default: break;
++        case 8:
++            gran = 4;
++            break;
++        case 16:
++            gran = 2;
++            break;
++        case 32:
++            gran = 1;
++            break;
++        default:
++            break;
+         }
+ 
+         if(BITMAP_SCANLINE_PAD == 64)
+@@ -448,10 +449,13 @@ XAADestroyPixmap(PixmapPtr pPix)
+ 		    pLink = pLink->next;
+ 		}
+ 
+-	        if(prev) prev->next = pLink->next;
+-		else infoRec->OffscreenPixmaps = pLink->next;
++                if (prev)
++                    prev->next = pLink->next;
++                else
++                    infoRec->OffscreenPixmaps = pLink->next;
+ 
+-	        if(!area) area = pLink->area;
++                if (!area)
++                    area = pLink->area;
+ 
+ 	        xf86FreeOffscreenArea(area);
+ 	        pPriv->offscreenArea = NULL;
+@@ -480,29 +484,28 @@ XAAChangeWindowAttributes (WindowPtr pWin, unsigned long mask)
+ 
+    XAA_SCREEN_PROLOGUE (pScreen, ChangeWindowAttributes);
+    ret = (*pScreen->ChangeWindowAttributes) (pWin, mask);
+-   XAA_SCREEN_EPILOGUE (pScreen, ChangeWindowAttributes, XAAChangeWindowAttributes);
++    XAA_SCREEN_EPILOGUE(pScreen, ChangeWindowAttributes,
++                        XAAChangeWindowAttributes);
+ 
+    /* we have to assume that shared memory pixmaps are dirty
+       because we can't wrap operations on them */
+ 
+    if((mask & CWBackPixmap) && (pWin->backgroundState == BackgroundPixmap) &&
+-      PIXMAP_IS_SHARED(pWin->background.pixmap))
+-   {
++        PIXMAP_IS_SHARED(pWin->background.pixmap)) {
+         XAAPixmapPtr pPixPriv = XAA_GET_PIXMAP_PRIVATE(pWin->background.pixmap);
++
+ 	pPixPriv->flags |= DIRTY;
+    }
+    if((mask & CWBorderPixmap) && !(pWin->borderIsPixel) &&
+-      PIXMAP_IS_SHARED(pWin->border.pixmap))
+-   {
++        PIXMAP_IS_SHARED(pWin->border.pixmap)) {
+         XAAPixmapPtr pPixPriv = XAA_GET_PIXMAP_PRIVATE(pWin->border.pixmap);
++
+         pPixPriv->flags |= DIRTY;
+    }
+ 
+    return ret;
+ }
+ 
+-
+-
+ /*  These two aren't really needed for anything */
+ 
+ static Bool 
+@@ -567,7 +570,8 @@ XAASetDGAMode(int index, int num, DGADevicePtr devRet)
+     }
+ 
+     ret = (*pScreenPriv->SetDGAMode)(index, num, devRet);
+-    if(ret != Success) return ret;
++    if (ret != Success)
++        return ret;
+ 
+     if(num && devRet->pPix) {  /* accelerate this pixmap */
+ 	XAAPixmapPtr pixPriv = XAA_GET_PIXMAP_PRIVATE(devRet->pPix);
+@@ -607,8 +611,6 @@ XAASetDGAMode(int index, int num, DGADevicePtr devRet)
+     return ret;
+ }
+ 
+-
+-
+ static void
+ XAAEnableDisableFBAccess (int index, Bool enable)
+ {

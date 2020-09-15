@@ -1,0 +1,124 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index c665a20..b176e8c 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -76,6 +76,7 @@ Bool
+ xf86CallDriverProbe( DriverPtr drv, Bool detect_only )
+ {
+     Bool     foundScreen = FALSE;
++
+ #ifdef XSERVER_LIBPCIACCESS
+     if (drv->PciProbe != NULL) {
+         if (xf86DoConfigure && xf86DoConfigurePass1) {
+@@ -119,6 +120,7 @@ xf86BusConfig(void)
+      */
+     for (i = 0; i < xf86NumDrivers; i++) {
+         xorgHWFlags flags;
++
+         if (!xorgHWAccess) {
+             if (!xf86DriverList[i]->driverFunc
+             || !xf86DriverList[i]->driverFunc(NULL,
+@@ -155,11 +157,13 @@ xf86BusConfig(void)
+         for (layout = xf86ConfigLayout.screens; layout->screen != NULL;
+              layout++) {
+             Bool found = FALSE;
++
+             for (j = 0; j < xf86Screens[i]->numEntities; j++) {
+ 
+-                GDevPtr dev = xf86GetDevFromEntity(
+-                                xf86Screens[i]->entityList[j],
++                GDevPtr dev =
++                    xf86GetDevFromEntity(xf86Screens[i]->entityList[j],
+                                 xf86Screens[i]->entityInstanceList[j]);
++
+                 if (dev == layout->screen->device) {
+                     /* A match has been found */
+                     xf86Screens[i]->confScreen = layout->screen;
+@@ -167,12 +171,14 @@ xf86BusConfig(void)
+                     break;
+                 }
+             }
+-            if (found) break;
++            if (found)
++                break;
+         }
+         if (layout->screen == NULL) {
+             /* No match found */
+             xf86Msg(X_ERROR,
+-            "Screen %d deleted because of no matching config section.\n", i);
++                    "Screen %d deleted because of no matching config section.\n",
++                    i);
+             xf86DeleteScreen(i--, 0);
+         }
+     }
+@@ -256,7 +262,8 @@ xf86IsEntityPrimary(int entityIndex)
+ {
+     EntityPtr pEnt = xf86Entities[entityIndex];
+     
+-    if (primaryBus.type != pEnt->bus.type) return FALSE;
++    if (primaryBus.type != pEnt->bus.type)
++        return FALSE;
+ 
+     switch (pEnt->bus.type) {
+     case BUS_PCI:
+@@ -285,6 +292,7 @@ Bool
+ xf86DriverHasEntities(DriverPtr drvp)
+ {
+     int i;
++
+     for (i = 0; i < xf86NumEntities; i++) {
+ 	if (xf86Entities[i]->driver == drvp) 
+ 	    return TRUE;
+@@ -338,7 +346,8 @@ xf86FindScreenForEntity(int entityIndex)
+ {
+     int i,j;
+ 
+-    if (entityIndex == -1) return NULL;
++    if (entityIndex == -1)
++        return NULL;
+     
+     if (xf86Screens) {
+ 	for (i = 0; i < xf86NumScreens; i++) {
+@@ -377,7 +386,8 @@ xf86ClearEntityListForScreen(int scrnIndex)
+     ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+     int i, entityIndex;
+     
+-    if (pScrn->entityList == NULL || pScrn->numEntities == 0) return;
++    if (pScrn->entityList == NULL || pScrn->numEntities == 0)
++        return;
+ 	
+     for (i = 0; i < pScrn->numEntities; i++) {
+ 	entityIndex = pScrn->entityList[i];
+@@ -439,7 +449,8 @@ xf86GetEntityInfo(int entityIndex)
+ 	    if (xf86Entities[entityIndex]->devices[i]->screen == 0)
+ 	        break;
+ 	pEnt->device = xf86Entities[entityIndex]->devices[i];
+-    } else
++    }
++    else
+ 	pEnt->device = NULL;
+     
+     return pEnt;
+@@ -530,7 +541,8 @@ xf86GetLastScrnFlag(int entityIndex)
+ {
+     if(entityIndex < xf86NumEntities) {
+         return xf86Entities[entityIndex]->lastScrnFlag;
+-    } else {
++    }
++    else {
+         return -1;
+     }
+ }
+@@ -608,7 +620,6 @@ xf86ClearPrimInitDone(int entityIndex)
+     }
+ }
+ 
+-
+ /*
+  * Allocate a private in the entities.
+  */
+@@ -640,4 +651,3 @@ xf86GetEntityPrivate(int entityIndex, int privIndex)
+ 
+     return &(xf86Entities[entityIndex]->entityPrivates[privIndex]);
+ }
+-

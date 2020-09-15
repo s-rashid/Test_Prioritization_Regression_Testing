@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 3998838..3cdffdb 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -1831,6 +1831,7 @@ xf86ConfigFbEntity(ScrnInfoPtr pScrn, int scrnFlag, int entityIndex,
+ 
+     xf86SetEntityFuncs(entityIndex,init,enter,leave,private);
+ 
++    free(pEnt);
+     return pScrn;
+ }
+ 

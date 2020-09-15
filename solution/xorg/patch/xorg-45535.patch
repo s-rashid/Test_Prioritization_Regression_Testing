@@ -1,0 +1,81 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index f7d45fa..99b9eae 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -425,7 +425,7 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+ 
+     handleAccumulationModes(c, flags);
+     
+-    return 0;
++    return kCGLNoError;
+ }
+ 
+ static void initCapabilities(struct glCapabilities *cap) {
+@@ -491,48 +491,28 @@ void freeGlCapabilities(struct glCapabilities *cap) {
+     cap->configurations = NULL;    
+ }
+ 
+-#define MAX_DISPLAYS 32
+-
+ /*Return true if an error occured. */
+ bool getGlCapabilities(struct glCapabilities *cap) {
+-    CGDirectDisplayID dspys[MAX_DISPLAYS];
+-    CGDisplayErr err;
+-    CGOpenGLDisplayMask displayMask;
+-    CGDisplayCount i, displayCount = 0;
+-
+-    initCapabilities(cap);
+-    
+-    err = CGGetActiveDisplayList(MAX_DISPLAYS, dspys, &displayCount);
+-    if(err) {
+-	fprintf(stderr, "CGGetActiveDisplayList error: %s\n", CGLErrorString(err));
+-	return true;
+-    }
+- 
+-    for(i = 0; i < displayCount; ++i) {
+-        displayMask = CGDisplayIDToOpenGLDisplayMask(dspys[i]);
+-       
+ 	CGLRendererInfoObj info;
+-	GLint numRenderers = 0, r, renderCount = 0;
++    CGLError err;
++	GLint numRenderers = 0, r;
+ 	    
+-	err = CGLQueryRendererInfo(displayMask, &info, &numRenderers);
++    initCapabilities(cap);
+ 
++	err = CGLQueryRendererInfo((GLuint)-1, &info, &numRenderers);
+         if(err) {
+ 	    fprintf(stderr, "CGLQueryRendererInfo error: %s\n", CGLErrorString(err));
+-	    fprintf(stderr, "trying to continue...\n");
+-	    continue;
++        return err;
+ 	}
+ 			
+-	CGLDescribeRenderer(info, 0, kCGLRPRendererCount, &renderCount);
+-
+-	for(r = 0; r < renderCount; ++r) {
+-	    CGLError derr;
++	for(r = 0; r < numRenderers; r++) {
+ 	    struct glCapabilitiesConfig tmpconf, *conf;
+ 
+ 	    initConfig(&tmpconf);
+ 
+-	    derr = handleRendererDescriptions(info, r, &tmpconf);
+-	    if(derr) {
+-		fprintf(stderr, "error: %s\n", CGLErrorString(derr));
++	    err = handleRendererDescriptions(info, r, &tmpconf);
++	    if(err) {
++            fprintf(stderr, "handleRendererDescriptions returned error: %s\n", CGLErrorString(err));
+ 		fprintf(stderr, "trying to continue...\n");
+ 		continue;
+ 	    }
+@@ -552,8 +532,7 @@ bool getGlCapabilities(struct glCapabilities *cap) {
+ 	}
+ 
+     	CGLDestroyRendererInfo(info);
+-    }
+     
+     /* No error occured.  We are done. */
+-    return false;
++    return kCGLNoError;
+ }

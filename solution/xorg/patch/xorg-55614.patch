@@ -1,0 +1,44 @@
+diff --git a/hw/xfree86/parser/InputClass.c b/hw/xfree86/parser/InputClass.c
+index c25117c..8493685 100644
+--- a/hw/xfree86/parser/InputClass.c
++++ b/hw/xfree86/parser/InputClass.c
+@@ -38,8 +38,7 @@
+ extern LexRec val;
+ 
+ static
+-xf86ConfigSymTabRec InputClassTab[] =
+-{
++xf86ConfigSymTabRec InputClassTab[] = {
+     {ENDSECTION, "endsection"},
+     {IDENTIFIER, "identifier"},
+     {OPTION, "option"},
+@@ -147,8 +146,7 @@ xf86parseInputClassSection(void)
+         case MATCH_OS:
+             if (xf86getSubToken(&(ptr->comment)) != STRING)
+                 Error(QUOTE_MSG, "MatchOS");
+-            add_group_entry(&ptr->match_os,
+-                            xstrtokenize(val.str, TOKEN_SEP));
++            add_group_entry(&ptr->match_os, xstrtokenize(val.str, TOKEN_SEP));
+             free(val.str);
+             break;
+         case MATCH_PNPID:
+@@ -175,8 +173,7 @@ xf86parseInputClassSection(void)
+         case MATCH_TAG:
+             if (xf86getSubToken(&(ptr->comment)) != STRING)
+                 Error(QUOTE_MSG, "MatchTag");
+-            add_group_entry(&ptr->match_tag,
+-                            xstrtokenize(val.str, TOKEN_SEP));
++            add_group_entry(&ptr->match_tag, xstrtokenize(val.str, TOKEN_SEP));
+             free(val.str);
+             break;
+         case MATCH_LAYOUT:
+@@ -216,8 +213,7 @@ xf86parseInputClassSection(void)
+         case MATCH_IS_TABLET:
+             if (xf86getSubToken(&(ptr->comment)) != STRING)
+                 Error(QUOTE_MSG, "MatchIsTablet");
+-            ptr->is_tablet.set = xf86getBoolValue(&ptr->is_tablet.val,
+-                                                  val.str);
++            ptr->is_tablet.set = xf86getBoolValue(&ptr->is_tablet.val, val.str);
+             free(val.str);
+             if (!ptr->is_tablet.set)
+                 Error(BOOL_MSG, "MatchIsTablet");

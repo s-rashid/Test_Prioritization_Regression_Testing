@@ -1,0 +1,127 @@
+diff --git a/hw/dmx/glxProxy/glxscreens.c b/hw/dmx/glxProxy/glxscreens.c
+index baa4a65..f725bd1 100644
+--- a/hw/dmx/glxProxy/glxscreens.c
++++ b/hw/dmx/glxProxy/glxscreens.c
+@@ -57,14 +57,12 @@ static char GLXServerExtensions[] =
+             "GLX_EXT_visual_info "
+             "GLX_EXT_visual_rating "
+             "GLX_EXT_import_context "
+-	    "GLX_SGIX_fbconfig "
+-	    "GLX_SGI_make_current_read "
+-	    "GLX_SGI_swap_control "
+-            ;
++    "GLX_SGIX_fbconfig " "GLX_SGI_make_current_read " "GLX_SGI_swap_control ";
+ 
+ static char ExtensionsString[1024];
+ 
+-static void CalcServerVersionAndExtensions( void )
++static void
++CalcServerVersionAndExtensions(void)
+ {
+    int s;
+    xGLXQueryVersionReq *req;
+@@ -158,9 +156,11 @@ static void CalcServerVersionAndExtensions( void )
+       if (!be_extensions[s]) {
+ 	 /* Throw data on the floor */
+ 	 _XEatData(dpy, length);
+-      } else {
++        }
++        else {
+ 	 _XRead(dpy, (char *)be_extensions[s], numbytes);
+-	 if (slop) _XEatData(dpy,4-slop);
++            if (slop)
++                _XEatData(dpy, 4 - slop);
+       }
+       UnlockDisplay(dpy);
+       SyncHandle();
+@@ -217,17 +217,17 @@ static void CalcServerVersionAndExtensions( void )
+ 
+ }
+ 
+-void __glXScreenInit(GLint numscreens)
++void
++__glXScreenInit(GLint numscreens)
+ {
+    int s;
+    int c;
+    DMXScreenInfo *dmxScreen0 = &dmxScreens[0];
+-    __glXNumActiveScreens = numscreens;
+ 
++    __glXNumActiveScreens = numscreens;
+ 
+    CalcServerVersionAndExtensions();
+ 
+-
+    __glXFBConfigs = NULL;
+    __glXNumFBConfigs = 0;
+ 
+@@ -241,7 +241,9 @@ void __glXScreenInit(GLint numscreens)
+       // servers - only those configs will be supported
+        */
+       __glXFBConfigs = (__GLXFBConfig **)malloc( dmxScreen0->numFBConfigs *
+-	                      (numscreens+1) * sizeof(__GLXFBConfig *) );
++                                                   (numscreens +
++                                                    1) *
++                                                   sizeof(__GLXFBConfig *));
+       __glXNumFBConfigs = 0;
+    
+       for (c=0; c<dmxScreen0->numFBConfigs; c++) { 
+@@ -254,13 +256,18 @@ void __glXScreenInit(GLint numscreens)
+ 	       cfg = FindMatchingFBConfig( &dmxScreen0->fbconfigs[c],
+ 		                           dmxScreen->fbconfigs, 
+ 		                           dmxScreen->numFBConfigs );
+-	       __glXFBConfigs[ __glXNumFBConfigs * (numscreens+1) + s + 1 ] = cfg;
++                    __glXFBConfigs[__glXNumFBConfigs * (numscreens + 1) + s +
++                                   1] = cfg;
+ 	       if (!cfg) {
+-		  dmxLog(dmxInfo,"screen0 FBConfig 0x%x is missing on screen#%d\n", dmxScreen0->fbconfigs[c].id, s);
++                        dmxLog(dmxInfo,
++                               "screen0 FBConfig 0x%x is missing on screen#%d\n",
++                               dmxScreen0->fbconfigs[c].id, s);
+ 		  break;
+ 	       }
+ 	       else {
+-		  dmxLog(dmxInfo,"screen0 FBConfig 0x%x matched to  0x%x on screen#%d\n", dmxScreen0->fbconfigs[c].id, cfg->id, s);
++                        dmxLog(dmxInfo,
++                               "screen0 FBConfig 0x%x matched to  0x%x on screen#%d\n",
++                               dmxScreen0->fbconfigs[c].id, cfg->id, s);
+ 	       }
+ 	    }
+          }
+@@ -283,7 +290,8 @@ void __glXScreenInit(GLint numscreens)
+ 	       /* visual will be associated later in __glXGetFBConfigs */
+ 	       proxy_cfg->associatedVisualId =  (unsigned int)-1;
+ 
+-	       __glXFBConfigs[ __glXNumFBConfigs * (numscreens+1) + 0 ] = proxy_cfg;
++                    __glXFBConfigs[__glXNumFBConfigs * (numscreens + 1) + 0] =
++                        proxy_cfg;
+ 
+ 	       __glXNumFBConfigs++;
+ 	    }
+@@ -296,12 +304,14 @@ void __glXScreenInit(GLint numscreens)
+ 
+ }
+ 
+-void __glXScreenReset(void)
++void
++__glXScreenReset(void)
+ {
+   __glXNumActiveScreens = 0;
+ }
+ 
+-char *__glXGetServerString( unsigned int name ) 
++char *
++__glXGetServerString(unsigned int name)
+ {
+    char *ret = NULL;
+ 
+@@ -327,7 +337,8 @@ char *__glXGetServerString( unsigned int name )
+ 
+ }
+ 
+-int glxIsExtensionSupported( char *ext )
++int
++glxIsExtensionSupported(char *ext)
+ {
+    return( strstr(ExtensionsString, ext) != NULL );
+ }

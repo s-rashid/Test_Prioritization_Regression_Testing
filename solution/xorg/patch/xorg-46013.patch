@@ -1,0 +1,15 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index 48d25c3..c123724 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -54,10 +54,6 @@
+ 
+ #include "xichangehierarchy.h"
+ 
+-extern DeviceProc CorePointerProc;
+-extern DeviceProc CoreKeyboardProc;
+-
+-
+ /**
+  * Send the current state of the device hierarchy to all clients.
+  */

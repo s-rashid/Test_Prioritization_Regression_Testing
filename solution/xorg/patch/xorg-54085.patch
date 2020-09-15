@@ -1,0 +1,12 @@
+diff --git a/include/list.h b/include/list.h
+index 73ff0be..733a579 100644
+--- a/include/list.h
++++ b/include/list.h
+@@ -28,6 +28,7 @@
+ 
+ /**
+  * @file Classic doubly-link circular list implementation.
++ * For real usage examples of the linked list, see the file test/list.c
+  *
+  * Example:
+  * We need to keep a list of struct foo in the parent struct bar, i.e. what

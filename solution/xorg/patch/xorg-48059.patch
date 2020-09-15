@@ -1,0 +1,39 @@
+diff --git a/fb/fbpict.c b/fb/fbpict.c
+index dddfce8..896d33e 100644
+--- a/fb/fbpict.c
++++ b/fb/fbpict.c
+@@ -31,8 +31,6 @@
+ 
+ #include "fb.h"
+ 
+-#ifdef RENDER
+-
+ #include "picturestr.h"
+ #include "mipict.h"
+ #include "fbpict.h"
+@@ -203,8 +201,6 @@ fbCompositeGeneral (CARD8	op,
+ 			width, height);
+ }
+ 
+-#endif /* RENDER */
+-
+ static pixman_image_t *
+ create_solid_fill_image (PicturePtr pict)
+ {
+@@ -472,8 +468,6 @@ Bool
+ fbPictureInit (ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+ {
+ 
+-#ifdef RENDER
+-
+     PictureScreenPtr    ps;
+ 
+     if (!miPictureInit (pScreen, formats, nformats))
+@@ -486,7 +480,5 @@ fbPictureInit (ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+     ps->AddTraps = fbAddTraps;
+     ps->AddTriangles = fbAddTriangles;
+ 
+-#endif /* RENDER */
+-
+     return TRUE;
+ }

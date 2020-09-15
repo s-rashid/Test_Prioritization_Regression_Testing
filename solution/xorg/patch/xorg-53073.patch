@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/ephyr/ephyrdriext.c b/hw/kdrive/ephyr/ephyrdriext.c
+index 6945f5b..0bd51b2 100644
+--- a/hw/kdrive/ephyr/ephyrdriext.c
++++ b/hw/kdrive/ephyr/ephyrdriext.c
+@@ -1394,6 +1394,10 @@ ephyrDRIExtensionInit (ScreenPtr a_screen)
+         EPHYR_LOG_ERROR ("failed to register DRI extension\n") ;
+         goto out ;
+     }
++    if (!dixRegisterPrivateKey(&ephyrDRIScreenKeyRec, PRIVATE_SCREEN, 0))
++        goto out ;
++    if (!dixRegisterPrivateKey(&ephyrDRIWindowKeyRec, PRIVATE_WINDOW, 0))
++        goto out ;
+     screen_priv = calloc(1, sizeof (EphyrDRIScreenPrivRec)) ;
+     if (!screen_priv) {
+         EPHYR_LOG_ERROR ("failed to allocate screen_priv\n") ;

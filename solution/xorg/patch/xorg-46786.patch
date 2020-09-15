@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_apm.c b/hw/xfree86/os-support/linux/lnx_apm.c
+index 4ccc7d6..54c6989 100644
+--- a/hw/xfree86/os-support/linux/lnx_apm.c
++++ b/hw/xfree86/os-support/linux/lnx_apm.c
+@@ -16,7 +16,6 @@ extern PMClose lnxACPIOpen(void);
+ 
+ #ifdef HAVE_APM
+ 
+-#include "lnx.h"
+ #include <linux/apm_bios.h>
+ #include <unistd.h>
+ #include <sys/ioctl.h>

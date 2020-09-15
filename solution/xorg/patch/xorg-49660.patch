@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxfont.c b/hw/dmx/dmxfont.c
+index 7a418c8..34161f2 100644
+--- a/hw/dmx/dmxfont.c
++++ b/hw/dmx/dmxfont.c
+@@ -108,7 +108,7 @@ static Bool dmxCheckFontPathElement(DMXScreenInfo *dmxScreen, char *fp)
+     dmxSync(dmxScreen, TRUE);   /* Must complete before removing handler */
+     XSetErrorHandler(oldErrorHandler);
+ 
+-    return (dmxFontLastError == 0);
++    return dmxFontLastError == 0;
+ }
+ 
+ static int dmxSetFontPath(DMXScreenInfo *dmxScreen)

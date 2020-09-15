@@ -1,0 +1,15 @@
+diff --git a/test/xi2/protocol-eventconvert.c b/test/xi2/protocol-eventconvert.c
+index ba2d96a..dce1c50 100644
+--- a/test/xi2/protocol-eventconvert.c
++++ b/test/xi2/protocol-eventconvert.c
+@@ -389,9 +389,7 @@ static void test_values_XIDeviceEvent(DeviceEvent *in, xXIDeviceEvent *out,
+             {
+                 FP3232 vi, vo;
+ 
+-                vi.integral = trunc(in->valuators.data[i]);
+-                vi.frac = (in->valuators.data[i] - vi.integral) * (1UL << 32);
+-
++                vi = double_to_fp3232(in->valuators.data[i]);
+                 vo = *values;
+ 
+                 if (swap)

@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Screen.c b/hw/xnest/Screen.c
+index 62255b8..0a05ac8 100644
+--- a/hw/xnest/Screen.c
++++ b/hw/xnest/Screen.c
+@@ -243,7 +243,6 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+   pScreen->saveUnderSupport = NotUseful;
+   pScreen->whitePixel = xnestWhitePixel;
+   pScreen->blackPixel = xnestBlackPixel;
+-  /* rgf */
+   /* GCperDepth */
+   /* PixmapPerDepth */
+   pScreen->devPrivate = NULL;

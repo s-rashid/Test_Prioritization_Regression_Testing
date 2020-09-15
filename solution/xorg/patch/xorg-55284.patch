@@ -1,0 +1,10 @@
+diff --git a/hw/dmx/glxProxy/compsize.h b/hw/dmx/glxProxy/compsize.h
+index 856c6f5..3609662 100644
+--- a/hw/dmx/glxProxy/compsize.h
++++ b/hw/dmx/glxProxy/compsize.h
+@@ -48,4 +48,4 @@ extern GLint __glTexGeniv_size(GLenum e);
+ extern GLint __glTexParameterfv_size(GLenum e);
+ extern GLint __glTexParameteriv_size(GLenum e);
+ 
+-#endif /* !__compsize_h__ */
++#endif                          /* !__compsize_h__ */

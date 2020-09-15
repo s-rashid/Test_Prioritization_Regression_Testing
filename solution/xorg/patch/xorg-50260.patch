@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index ca532ee..f93933d 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -822,7 +822,7 @@ InitOutput(ScreenInfo *pScreenInfo, int argc, char **argv)
+ void
+ InitInput(int argc, char **argv)
+ {
+-    IDevPtr* pDev;
++    InputInfoPtr* pDev;
+     DeviceIntPtr dev;
+ 
+     xf86Info.vtRequestsPending = FALSE;

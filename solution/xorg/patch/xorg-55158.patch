@@ -1,0 +1,169 @@
+diff --git a/glx/glapi.c b/glx/glapi.c
+index 65f3bc9..02e06ac 100644
+--- a/glx/glapi.c
++++ b/glx/glapi.c
+@@ -96,7 +96,8 @@ static _glthread_TSD ContextTSD;         /**< Per-thread context pointer */
+ 
+ #if defined(WIN32_THREADS)
+ void FreeTSD(_glthread_TSD *p);
+-void FreeAllTSD(void)
++void
++FreeAllTSD(void)
+ {
+    FreeTSD(&_gl_DispatchTSD);
+    FreeTSD(&ContextTSD);
+@@ -137,8 +138,6 @@ _glapi_set_context(void *context)
+ #endif
+ }
+ 
+-
+-
+ /**
+  * Get the current context pointer for this thread.
+  * The context pointer is an opaque type which should be cast from
+@@ -154,8 +153,6 @@ _glapi_get_context(void)
+ #endif
+ }
+ 
+-
+-
+ /**
+  * Set the global or per-thread dispatch table pointer.
+  */
+@@ -164,6 +161,7 @@ _glapi_set_dispatch(struct _glapi_table *dispatch)
+ {
+ #if defined(PTHREADS) || defined(GLX_USE_TLS)
+    static pthread_once_t once_control = PTHREAD_ONCE_INIT;
++
+    pthread_once( & once_control, init_glapi_relocs );
+ #endif
+ 
+@@ -177,8 +175,6 @@ _glapi_set_dispatch(struct _glapi_table *dispatch)
+ #endif /*THREADS*/
+ }
+ 
+-
+-
+ /**
+  * Return pointer to current dispatch table for calling thread.
+  */
+@@ -186,6 +182,7 @@ PUBLIC struct _glapi_table *
+ _glapi_get_dispatch(void)
+ {
+    struct _glapi_table * api;
++
+ #if defined(GLX_USE_TLS)
+    api = _glapi_tls_Dispatch;
+ #else
+@@ -194,8 +191,6 @@ _glapi_get_dispatch(void)
+    return api;
+ }
+ 
+-
+-
+ /***
+  *** The rest of this file is pretty much concerned with GetProcAddress
+  *** functionality.
+@@ -211,11 +206,9 @@ _glapi_get_dispatch(void)
+ # endif
+ #endif
+ 
+-
+ /* The code in this file is auto-generated with Python */
+ #include "glprocs.h"
+ 
+-
+ /**
+  * Search the table of static entrypoint functions for the named function
+  * and return the corresponding glprocs_table_t entry.
+@@ -224,8 +217,10 @@ static const glprocs_table_t *
+ find_entry( const char * n )
+ {
+    GLuint i;
++
+    for (i = 0; static_functions[i].Name_offset >= 0; i++) {
+-      const char *testName = gl_string_table + static_functions[i].Name_offset;
++        const char *testName =
++            gl_string_table + static_functions[i].Name_offset;
+       if (strcmp(testName, n) == 0) {
+ 	 return &static_functions[i];
+       }
+@@ -233,7 +228,6 @@ find_entry( const char * n )
+    return NULL;
+ }
+ 
+-
+ /**
+  * Return dispatch table offset of the named static (built-in) function.
+  * Return -1 if function not found.
+@@ -242,14 +236,13 @@ static GLint
+ get_static_proc_offset(const char *funcName)
+ {
+    const glprocs_table_t * const f = find_entry( funcName );
++
+    if (f) {
+       return f->Offset;
+    }
+    return -1;
+ }
+ 
+-
+-
+ /**********************************************************************
+  * Extension function management.
+  */
+@@ -259,7 +252,6 @@ get_static_proc_offset(const char *funcName)
+  */
+ #define MAX_EXTENSION_FUNCS 300
+ 
+-
+ /*
+  * The dispatch table size (number of entries) is the size of the
+  * _glapi_table struct plus the number of dynamic entries we can add.
+@@ -268,7 +260,6 @@ get_static_proc_offset(const char *funcName)
+  */
+ #define DISPATCH_TABLE_SIZE (sizeof(struct _glapi_table) / sizeof(void *) + MAX_EXTENSION_FUNCS)
+ 
+-
+ /**
+  * Track information about a function added to the GL API.
+  */
+@@ -330,7 +321,6 @@ add_function_name( const char * funcName )
+    return entry;
+ }
+ 
+-
+ /**
+  * Fill-in the dispatch stub for the named function.
+  * 
+@@ -392,7 +382,6 @@ _glapi_add_dispatch( const char * const * function_names,
+    int offset = ~0;
+    int new_offset;
+ 
+-
+    (void) memset(is_static, 0, sizeof(is_static));
+    (void) memset(entry, 0, sizeof(entry));
+ 
+@@ -428,10 +417,12 @@ _glapi_add_dispatch( const char * const * function_names,
+ 	     */
+ 
+ 	    if (ExtEntryTable[j].dispatch_offset != ~0) {
+-	       if (strcmp(real_sig, ExtEntryTable[j].parameter_signature) != 0)
++                    if (strcmp(real_sig, ExtEntryTable[j].parameter_signature)
++                        != 0)
+ 		  return -1;
+ 
+-	       if ((offset != ~0) && (ExtEntryTable[j].dispatch_offset != offset)) {
++                    if ((offset != ~0) &&
++                        (ExtEntryTable[j].dispatch_offset != offset)) {
+ 		  return -1;
+ 	       }
+ 
+@@ -495,6 +486,7 @@ init_glapi_relocs( void )
+ {
+ #if defined(USE_X86_ASM) && defined(GLX_USE_TLS) && !defined(GLX_X86_READONLY_TEXT)
+     extern unsigned long _x86_get_dispatch(void);
++
+     char run_time_patch[] = {
+        0x65, 0xa1, 0, 0, 0, 0 /* movl %gs:0,%eax */
+     };

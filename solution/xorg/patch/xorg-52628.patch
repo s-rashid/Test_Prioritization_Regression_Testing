@@ -1,0 +1,23 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index c4cb740..e17e216 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -5870,7 +5870,9 @@ ProcXkbGetKbdByName(ClientPtr client)
+ 	xkb->ctrls->num_groups= nTG;
+ 
+         for (tmpd = inputInfo.devices; tmpd; tmpd = tmpd->next) {
+-            if ((tmpd == dev) || (!IsMaster(tmpd) && GetMaster(tmpd, MASTER_KEYBOARD) == dev)) {
++            if (tmpd != dev && GetMaster(tmpd, MASTER_KEYBOARD) != dev)
++                continue;
++
+                 if (tmpd != dev)
+                     XkbCopyDeviceKeymap(tmpd, dev);
+ 
+@@ -5886,7 +5888,6 @@ ProcXkbGetKbdByName(ClientPtr client)
+                     XkbFreeSrvLedInfo(old_sli);
+                 }
+             }
+-        }
+ 
+ 	nkn.deviceID= nkn.oldDeviceID= dev->id;
+ 	nkn.minKeyCode= new->min_key_code;

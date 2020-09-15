@@ -1,0 +1,12 @@
+diff --git a/include/events.h b/include/events.h
+index 375173a..222cc3d 100644
+--- a/include/events.h
++++ b/include/events.h
+@@ -26,6 +26,7 @@
+ #define EVENTS_H
+ typedef struct _DeviceEvent DeviceEvent;
+ typedef struct _DeviceChangedEvent DeviceChangedEvent;
++typedef struct _TouchOwnershipEvent TouchOwnershipEvent;
+ #if XFreeXDGA
+ typedef struct _DGAEvent DGAEvent;
+ #endif

@@ -1,0 +1,28 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index ac1f283..394fb06 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -234,7 +234,6 @@ xf86DeleteScreen(int scrnIndex, int flags)
+     if (pScrn->drv)
+ 	pScrn->drv->refCount--;
+ 
+-    if (pScrn->privates)
+ 	free(pScrn->privates);
+ 
+     xf86ClearEntityListForScreen(scrnIndex);
+@@ -327,7 +326,6 @@ xf86DeleteInput(InputInfoPtr pInp, int flags)
+     /* This should *really* be handled in drv->UnInit(dev) call instead, but
+      * if the driver forgets about it make sure we free it or at least crash
+      * with flying colors */
+-    if (pInp->private)
+ 	free(pInp->private);
+ 
+     FreeInputAttributes(pInp->attrs);
+@@ -2017,7 +2015,6 @@ xf86RegisterRootWindowProperty(int ScrnIndex, Atom property, Atom type,
+        */
+       pNewProp->next = NULL;
+     } else {
+-      if (pNewProp->name)
+ 	free(pNewProp->name);
+       existing = TRUE;
+     }

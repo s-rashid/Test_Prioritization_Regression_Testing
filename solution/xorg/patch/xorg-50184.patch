@@ -1,0 +1,12 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 0f00f24..6a934cf 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -272,6 +272,7 @@ AddInputDevice(ClientPtr client, DeviceProc deviceProc, Bool autoStart)
+     dev->deviceGrab.ActivateGrab = ActivateKeyboardGrab;
+     dev->deviceGrab.DeactivateGrab = DeactivateKeyboardGrab;
+ 
++    XkbSetExtension(dev, ProcessKeyboardEvent);
+ 
+     dev->coreEvents = TRUE;
+ 

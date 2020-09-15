@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/parser/scan.c b/hw/xfree86/parser/scan.c
+index 4163a3a..e609bdf 100644
+--- a/hw/xfree86/parser/scan.c
++++ b/hw/xfree86/parser/scan.c
+@@ -1090,8 +1090,7 @@ void
+ xf86setSection (char *section)
+ {
+ 	free(configSection);
+-	configSection = malloc(strlen (section) + 1);
+-	strcpy (configSection, section);
++	configSection = strdup(section);
+ }
+ 
+ /* 

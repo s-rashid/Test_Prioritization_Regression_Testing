@@ -1,0 +1,302 @@
+diff --git a/mi/micmap.c b/mi/micmap.c
+index 7448ef8..3ef0c8c 100644
+--- a/mi/micmap.c
++++ b/mi/micmap.c
+@@ -27,7 +27,6 @@
+  * are may be debatable.
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -57,8 +56,7 @@ miInstallColormap(ColormapPtr pmap)
+ {
+     ColormapPtr oldpmap = GetInstalledmiColormap(pmap->pScreen);
+ 
+-    if(pmap != oldpmap)
+-    {
++    if (pmap != oldpmap) {
+ 	/* Uninstall pInstalledMap. No hardware changes required, just
+ 	 * notify all interested parties. */
+ 	if(oldpmap != (ColormapPtr)None)
+@@ -75,14 +73,11 @@ miUninstallColormap(ColormapPtr pmap)
+ {
+     ColormapPtr curpmap = GetInstalledmiColormap(pmap->pScreen);
+ 
+-    if(pmap == curpmap)
+-    {
+-	if (pmap->mid != pmap->pScreen->defColormap)
+-	{
++    if (pmap == curpmap) {
++        if (pmap->mid != pmap->pScreen->defColormap) {
+ 	    dixLookupResourceByType((pointer *)&curpmap,
+ 				    pmap->pScreen->defColormap,
+-				    RT_COLORMAP, serverClient,
+-				    DixUseAccess);
++                                    RT_COLORMAP, serverClient, DixUseAccess);
+ 	    (*pmap->pScreen->InstallColormap)(curpmap);
+ 	}
+     }
+@@ -95,14 +90,12 @@ miResolveColor(unsigned short *pred, unsigned short *pgreen,
+     int shift = 16 - pVisual->bitsPerRGBValue;
+     unsigned lim = (1 << pVisual->bitsPerRGBValue) - 1;
+ 
+-    if ((pVisual->class | DynamicClass) == GrayScale)
+-    {
++    if ((pVisual->class | DynamicClass) == GrayScale) {
+ 	/* rescale to gray then rgb bits */
+ 	*pred = (30L * *pred + 59L * *pgreen + 11L * *pblue) / 100;
+ 	*pblue = *pgreen = *pred = ((*pred >> shift) * 65535) / lim;
+     }
+-    else
+-    {
++    else {
+ 	/* rescale to rgb bits */
+ 	*pred = ((*pred >> shift) * 65535) / lim;
+ 	*pgreen = ((*pgreen >> shift) * 65535) / lim;
+@@ -121,15 +114,13 @@ miInitializeColormap(ColormapPtr pmap)
+     lim = (1 << pVisual->bitsPerRGBValue) - 1;
+     shift = 16 - pVisual->bitsPerRGBValue;
+     maxent = pVisual->ColormapEntries - 1;
+-    if (pVisual->class == TrueColor)
+-    {
++    if (pVisual->class == TrueColor) {
+ 	unsigned limr, limg, limb;
+ 
+ 	limr = pVisual->redMask >> pVisual->offsetRed;
+ 	limg = pVisual->greenMask >> pVisual->offsetGreen;
+ 	limb = pVisual->blueMask >> pVisual->offsetBlue;
+-	for(i = 0; i <= maxent; i++)
+-	{
++        for (i = 0; i <= maxent; i++) {
+ 	    /* rescale to [0..65535] then rgb bits */
+ 	    pmap->red[i].co.local.red =
+ 		((((i * 65535) / limr) >> shift) * 65535) / lim;
+@@ -139,15 +130,13 @@ miInitializeColormap(ColormapPtr pmap)
+ 		((((i * 65535) / limb) >> shift) * 65535) / lim;
+ 	}
+     }
+-    else if (pVisual->class == StaticColor)
+-    {
++    else if (pVisual->class == StaticColor) {
+ 	unsigned limr, limg, limb;
+ 
+ 	limr = pVisual->redMask >> pVisual->offsetRed;
+ 	limg = pVisual->greenMask >> pVisual->offsetGreen;
+ 	limb = pVisual->blueMask >> pVisual->offsetBlue;
+-	for(i = 0; i <= maxent; i++)
+-	{
++        for (i = 0; i <= maxent; i++) {
+ 	    /* rescale to [0..65535] then rgb bits */
+ 	    pmap->red[i].co.local.red =
+ 		((((((i & pVisual->redMask) >> pVisual->offsetRed)
+@@ -160,10 +149,8 @@ miInitializeColormap(ColormapPtr pmap)
+ 		    * 65535) / limb) >> shift) * 65535) / lim;
+ 	}
+     }
+-    else if (pVisual->class == StaticGray)
+-    {
+-	for(i = 0; i <= maxent; i++)
+-	{
++    else if (pVisual->class == StaticGray) {
++        for (i = 0; i <= maxent; i++) {
+ 	    /* rescale to [0..65535] then rgb bits */
+ 	    pmap->red[i].co.local.red = ((((i * 65535) / maxent) >> shift)
+ 					 * 65535) / lim;
+@@ -216,37 +203,27 @@ miExpandDirectColors(ColormapPtr pmap, int ndef, xColorItem *indefs,
+     maxgreen = pVisual->greenMask;
+     maxblue = pVisual->blueMask;
+     nresult = 0;
+-    for (;ndef--; indefs++)
+-    {
+-	if (indefs->flags & DoRed)
+-	{
++    for (; ndef--; indefs++) {
++        if (indefs->flags & DoRed) {
+ 	    red = indefs->pixel & pVisual->redMask;
+-    	    for (green = 0; green <= maxgreen; green += stepgreen)
+-    	    {
+-	    	for (blue = 0; blue <= maxblue; blue += stepblue)
+-	    	{
++            for (green = 0; green <= maxgreen; green += stepgreen) {
++                for (blue = 0; blue <= maxblue; blue += stepblue) {
+ 		    AddElement (DoRed)
+ 	    	}
+     	    }
+ 	}
+-	if (indefs->flags & DoGreen)
+-	{
++        if (indefs->flags & DoGreen) {
+ 	    green = indefs->pixel & pVisual->greenMask;
+-    	    for (red = 0; red <= maxred; red += stepred)
+-    	    {
+-	    	for (blue = 0; blue <= maxblue; blue += stepblue)
+-	    	{
++            for (red = 0; red <= maxred; red += stepred) {
++                for (blue = 0; blue <= maxblue; blue += stepblue) {
+ 		    AddElement (DoGreen)
+ 	    	}
+     	    }
+ 	}
+-	if (indefs->flags & DoBlue)
+-	{
++        if (indefs->flags & DoBlue) {
+ 	    blue = indefs->pixel & pVisual->blueMask;
+-    	    for (red = 0; red <= maxred; red += stepred)
+-    	    {
+-	    	for (green = 0; green <= maxgreen; green += stepgreen)
+-	    	{
++            for (red = 0; red <= maxred; red += stepred) {
++                for (green = 0; green <= maxgreen; green += stepgreen) {
+ 		    AddElement (DoBlue)
+ 	    	}
+     	    }
+@@ -303,9 +280,7 @@ miCreateDefColormap(ScreenPtr pScreen)
+ 	return FALSE;
+ 
+     for (pVisual = pScreen->visuals;
+-	 pVisual->vid != pScreen->rootVisual;
+-	 pVisual++)
+-	;
++         pVisual->vid != pScreen->rootVisual; pVisual++);
+ 
+     if (pScreen->rootDepth == 1 || (pVisual->class & DynamicClass))
+ 	alloctype = AllocNone;
+@@ -329,8 +304,7 @@ miCreateDefColormap(ScreenPtr pScreen)
+ #else
+ 	if ((AllocColor(cmap, &ones, &ones, &ones, &wp, 0) !=
+        	       Success) ||
+-	    (AllocColor(cmap, &zero, &zero, &zero, &bp, 0) !=
+-       	       Success))
++            (AllocColor(cmap, &zero, &zero, &zero, &bp, 0) != Success))
+     	    return FALSE;
+ 	pScreen->whitePixel = wp;
+ 	pScreen->blackPixel = bp;
+@@ -386,7 +360,6 @@ miClearVisualTypes(void)
+     }
+ }
+ 
+-
+ Bool
+ miSetVisualTypesAndMasks(int depth, int visuals, int bitsPerRGB, 
+ 			 int preferredCVC,
+@@ -398,8 +371,7 @@ miSetVisualTypesAndMasks(int depth, int visuals, int bitsPerRGB,
+     new = malloc(sizeof *new);
+     if (!new)
+ 	return FALSE;
+-    if (!redMask || !greenMask || !blueMask)
+-    {
++    if (!redMask || !greenMask || !blueMask) {
+ 	redMask = _RM(depth);
+ 	greenMask = _GM(depth);
+ 	blueMask = _BM(depth);
+@@ -458,11 +430,9 @@ miSetPixmapDepths (void)
+     int	d, f;
+     
+     /* Add any unlisted depths from the pixmap formats */
+-    for (f = 0; f < screenInfo.numPixmapFormats; f++) 
+-    {
++    for (f = 0; f < screenInfo.numPixmapFormats; f++) {
+ 	d = screenInfo.formats[f].depth;
+-	if (!miVisualTypesSet (d))
+-	{
++        if (!miVisualTypesSet(d)) {
+ 	    if (!miSetVisualTypes (d, 0, 0, -1))
+ 		return FALSE;
+ 	}
+@@ -478,10 +448,10 @@ maskShift (Pixel p)
+ {
+     int	s;
+ 
+-    if (!p) return 0;
++    if (!p)
++        return 0;
+     s = 0;
+-    while (!(p & 1))
+-    {
++    while (!(p & 1)) {
+ 	s++;
+ 	p >>= 1;
+     }
+@@ -498,7 +468,6 @@ Bool
+ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+ 		int *ndepthp, int *rootDepthp, VisualID *defaultVisp,
+ 		unsigned long sizes, int bitsPerRGB, int preferredVis)
+-
+ {
+     int		i, j = 0, k;
+     VisualPtr	visual;
+@@ -514,10 +483,8 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+     int		first_depth;
+ 
+     /* none specified, we'll guess from pixmap formats */
+-    if (!miVisuals) 
+-    {
+-    	for (f = 0; f < screenInfo.numPixmapFormats; f++) 
+-    	{
++    if (!miVisuals) {
++        for (f = 0; f < screenInfo.numPixmapFormats; f++) {
+ 	    d = screenInfo.formats[f].depth;
+ 	    b = screenInfo.formats[f].bitsPerPixel;
+ 	    if (sizes & (1 << (b - 1)))
+@@ -530,8 +497,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+     }
+     nvisual = 0;
+     ndepth = 0;
+-    for (visuals = miVisuals; visuals; visuals = nextVisuals) 
+-    {
++    for (visuals = miVisuals; visuals; visuals = nextVisuals) {
+ 	nextVisuals = visuals->next;
+ 	ndepth++;
+ 	nvisual += visuals->count;
+@@ -539,8 +505,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+     depth = malloc(ndepth * sizeof (DepthRec));
+     visual = malloc(nvisual * sizeof (VisualRec));
+     preferredCVCs = malloc(ndepth * sizeof(int));
+-    if (!depth || !visual || !preferredCVCs)
+-    {
++    if (!depth || !visual || !preferredCVCs) {
+ 	free(depth);
+ 	free(visual);
+ 	free(preferredCVCs);
+@@ -551,8 +516,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+     *ndepthp = ndepth;
+     *nvisualp = nvisual;
+     prefp = preferredCVCs;
+-    for (visuals = miVisuals; visuals; visuals = nextVisuals) 
+-    {
++    for (visuals = miVisuals; visuals; visuals = nextVisuals) {
+ 	nextVisuals = visuals->next;
+ 	d = visuals->depth;
+ 	vtype = visuals->visuals;
+@@ -560,8 +524,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+ 	*prefp = visuals->preferredCVC;
+ 	prefp++;
+ 	vid = NULL;
+-	if (nvtype)
+-	{
++        if (nvtype) {
+ 	    vid = malloc(nvtype * sizeof (VisualID));
+ 	    if (!vid) {
+ 	        free(depth);
+@@ -630,8 +593,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+        }
+     }
+ 
+-    for (i = first_depth; i < ndepth; i++)
+-    {
++    for (i = first_depth; i < ndepth; i++) {
+ 	int prefColorVisualClass = -1;
+ 
+ 	if (defaultColorVisualClass >= 0)
+@@ -644,8 +606,7 @@ miInitVisuals(VisualPtr *visualp, DepthPtr *depthp, int *nvisualp,
+ 	if (*rootDepthp && *rootDepthp != depth[i].depth)
+ 	    continue;
+ 	
+-	for (j = 0; j < depth[i].numVids; j++)
+-	{
++        for (j = 0; j < depth[i].numVids; j++) {
+ 	    for (k = 0; k < nvisual; k++)
+ 		if (visual[k].vid == depth[i].vids[j])
+ 		    break;

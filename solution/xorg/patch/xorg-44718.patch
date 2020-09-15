@@ -1,0 +1,29 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index c6eed33..1b241cd 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -2549,18 +2549,23 @@ Bool
+ xf86SetDesiredModes (ScrnInfoPtr scrn)
+ {
+     xf86CrtcConfigPtr   config = XF86_CRTC_CONFIG_PTR(scrn);
++    xf86CrtcPtr         crtc = config->crtc[0];
+     int			c;
+ 
++    /* A driver with this hook will take care of this */
++    if (!crtc->funcs->set_mode_major) {
+     xf86PrepareOutputs(scrn);
+     xf86PrepareCrtcs(scrn);
++    }
+ 
+     for (c = 0; c < config->num_crtc; c++)
+     {
+-	xf86CrtcPtr	crtc = config->crtc[c];
+ 	xf86OutputPtr	output = NULL;
+ 	int		o;
+ 	RRTransformPtr	transform;
+ 
++	crtc = config->crtc[c];
++
+ 	/* Skip disabled CRTCs */
+ 	if (!crtc->enabled)
+ 	    continue;

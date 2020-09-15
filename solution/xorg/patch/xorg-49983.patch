@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 034d5e6..ac5806a 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -1239,7 +1239,7 @@ InitValuatorClassDeviceStruct(DeviceIntPtr dev, int numAxes, Atom *labels,
+     if (!dev)
+         return FALSE;
+ 
+-    if (numAxes >= MAX_VALUATORS)
++    if (numAxes > MAX_VALUATORS)
+     {
+         LogMessage(X_WARNING,
+                    "Device '%s' has %d axes, only using first %d.\n",

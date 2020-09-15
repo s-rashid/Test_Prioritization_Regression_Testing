@@ -1,0 +1,15 @@
+diff --git a/hw/vfb/InitInput.c b/hw/vfb/InitInput.c
+index 801aaa0..60b59c1 100644
+--- a/hw/vfb/InitInput.c
++++ b/hw/vfb/InitInput.c
+@@ -138,10 +138,8 @@ InitInput(int argc, char *argv[])
+     Atom xiclass;
+     p = AddInputDevice(serverClient, vfbMouseProc, TRUE);
+     k = AddInputDevice(serverClient, vfbKeybdProc, TRUE);
+-    RegisterPointerDevice(p);
+     xiclass = MakeAtom(XI_MOUSE, sizeof(XI_MOUSE) - 1, TRUE);
+     AssignTypeAndName(p, xiclass, "Xvfb mouse");
+-    RegisterKeyboardDevice(k);
+     xiclass = MakeAtom(XI_KEYBOARD, sizeof(XI_KEYBOARD) - 1, TRUE);
+     AssignTypeAndName(k, xiclass, "Xvfb keyboard");
+     (void)mieqInit();

@@ -1,0 +1,48 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index d6a8a5a..fddfb70 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -1541,11 +1541,8 @@ ProcChangeGC(ClientPtr client)
+     if (client->noClientException != Success)
+         return(client->noClientException);
+     else
+-    {
+-	client->errorValue = clientErrorValue;
+         return(result);
+     }
+-}
+ 
+ int
+ ProcCopyGC(ClientPtr client)
+@@ -1564,15 +1561,17 @@ ProcCopyGC(ClientPtr client)
+ 	return result;
+     if ((dstGC->pScreen != pGC->pScreen) || (dstGC->depth != pGC->depth))
+         return (BadMatch);    
++    if (stuff->mask & ~GCAllBits)
++    {
++	client->errorValue = stuff->mask;
++	return BadValue;
++    }
+     result = CopyGC(pGC, dstGC, stuff->mask);
+     if (client->noClientException != Success)
+         return(client->noClientException);
+     else
+-    {
+-	client->errorValue = clientErrorValue;
+         return(result);
+     }
+-}
+ 
+ int
+ ProcSetDashes(ClientPtr client)
+@@ -1598,7 +1597,9 @@ ProcSetDashes(ClientPtr client)
+         return(client->noClientException);
+     else
+     {
+-	client->errorValue = clientErrorValue;
++	/* If there's an error, either there's no sensible errorValue,
++	 * or there was a dash segment of 0. */
++	client->errorValue = 0;
+         return(result);
+     }
+ }

@@ -1,0 +1,315 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index c1899e1..5818d2c 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -136,67 +136,28 @@ int SProcXIChangeHierarchy(ClientPtr client)
+     return (ProcXIChangeHierarchy(client));
+ }
+ 
+-#define SWAPIF(cmd) if (client->swapped) { cmd; }
+-
+-int
+-ProcXIChangeHierarchy(ClientPtr client)
++static int
++add_master(ClientPtr client, xXIAddMasterInfo *c, int flags[MAXDEVICES])
+ {
+     DeviceIntPtr ptr, keybd, XTestptr, XTestkeybd;
+-    xXIAnyHierarchyChangeInfo *any;
+-    int required_len = sizeof(xXIChangeHierarchyReq);
+-    char n;
+-    int rc = Success;
+-    int flags[MAXDEVICES] = {0};
+-
+-    REQUEST(xXIChangeHierarchyReq);
+-    REQUEST_AT_LEAST_SIZE(xXIChangeHierarchyReq);
+-
+-    if (!stuff->num_changes)
+-        return rc;
+-
+-    any = (xXIAnyHierarchyChangeInfo*)&stuff[1];
+-    while(stuff->num_changes--)
+-    {
+-        SWAPIF(swapl(&any->type, n));
+-        SWAPIF(swaps(&any->length, n));
+-
+-        required_len += any->length;
+-        if ((stuff->length * 4) < required_len)
+-            return BadLength;
+-
+-        switch(any->type)
+-        {
+-            case XIAddMaster:
+-                {
+-                    xXIAddMasterInfo* c = (xXIAddMasterInfo*)any;
+                     char* name;
++    int rc;
+ 
+-                    SWAPIF(swaps(&c->name_len, n));
+                     name = calloc(c->name_len + 1, sizeof(char));
+                     strncpy(name, (char*)&c[1], c->name_len);
+ 
+-
+                     rc = AllocDevicePair(client, name, &ptr, &keybd,
+-                                         CorePointerProc, CoreKeyboardProc,
+-                                         TRUE);
++                         CorePointerProc, CoreKeyboardProc, TRUE);
+                     if (rc != Success)
+-                    {
+-                        free(name);
+                         goto unwind;
+-                    }
+ 
+                     if (!c->send_core)
+                         ptr->coreEvents = keybd->coreEvents =  FALSE;
+ 
+                     /* Allocate virtual slave devices for xtest events */
+-                    rc = AllocXTestDevice(client, name, &XTestptr, &XTestkeybd,
+-                                         ptr, keybd);
++    rc = AllocXTestDevice(client, name, &XTestptr, &XTestkeybd, ptr, keybd);
+                     if (rc != Success)
+-                    {
+-
+-                        free(name);
+                         goto unwind;
+-                    }
+ 
+                     ActivateDevice(ptr, FALSE);
+                     ActivateDevice(keybd, FALSE);
+@@ -228,19 +189,23 @@ ProcXIChangeHierarchy(ClientPtr client)
+                     flags[XTestptr->id] |= XISlaveAttached;
+                     flags[XTestkeybd->id] |= XISlaveAttached;
+ 
++unwind:
+                     free(name);
++    return rc;
+                 }
+-                break;
+-            case XIRemoveMaster:
++
++static int
++remove_master(ClientPtr client, xXIRemoveMasterInfo *r,
++              int flags[MAXDEVICES])
+                 {
+-                    xXIRemoveMasterInfo* r = (xXIRemoveMasterInfo*)any;
++    DeviceIntPtr ptr, keybd, XTestptr, XTestkeybd;
++    int rc = Success;
+ 
+                     if (r->return_mode != XIAttachToMaster &&
+                             r->return_mode != XIFloating)
+                         return BadValue;
+ 
+-                    rc = dixLookupDevice(&ptr, r->deviceid, client,
+-                                         DixDestroyAccess);
++    rc = dixLookupDevice(&ptr, r->deviceid, client, DixDestroyAccess);
+                     if (rc != Success)
+                         goto unwind;
+ 
+@@ -252,8 +217,7 @@ ProcXIChangeHierarchy(ClientPtr client)
+                     }
+ 
+                     /* XXX: For now, don't allow removal of VCP, VCK */
+-                    if (ptr == inputInfo.pointer ||
+-                            ptr == inputInfo.keyboard)
++    if (ptr == inputInfo.pointer || ptr == inputInfo.keyboard)
+                     {
+                         rc = BadDevice;
+                         goto unwind;
+@@ -261,23 +225,16 @@ ProcXIChangeHierarchy(ClientPtr client)
+ 
+ 
+                     ptr = GetMaster(ptr, MASTER_POINTER);
+-                    rc = dixLookupDevice(&ptr,
+-                                         ptr->id,
+-                                         client,
+-                                         DixDestroyAccess);
++    rc = dixLookupDevice(&ptr, ptr->id, client, DixDestroyAccess);
+                     if (rc != Success)
+                         goto unwind;
+                     keybd = GetMaster(ptr, MASTER_KEYBOARD);
+-                    rc = dixLookupDevice(&keybd,
+-                                         keybd->id,
+-                                         client,
+-                                         DixDestroyAccess);
++    rc = dixLookupDevice(&keybd, keybd->id, client, DixDestroyAccess);
+                     if (rc != Success)
+                         goto unwind;
+ 
+                     XTestptr = GetXTestDevice(ptr);
+-                    rc = dixLookupDevice(&XTestptr, XTestptr->id, client,
+-                                         DixDestroyAccess);
++    rc = dixLookupDevice(&XTestptr, XTestptr->id, client, DixDestroyAccess);
+                     if (rc != Success)
+                         goto unwind;
+ 
+@@ -295,8 +252,7 @@ ProcXIChangeHierarchy(ClientPtr client)
+                                      newptr,
+                                      newkeybd;
+ 
+-                        rc = dixLookupDevice(&newptr, r->return_pointer,
+-                                             client, DixAddAccess);
++        rc = dixLookupDevice(&newptr, r->return_pointer, client, DixAddAccess);
+                         if (rc != Success)
+                             goto unwind;
+ 
+@@ -319,9 +275,7 @@ ProcXIChangeHierarchy(ClientPtr client)
+                             goto unwind;
+                         }
+ 
+-                        for (attached = inputInfo.devices;
+-                                attached;
+-                                attached = attached->next)
++        for (attached = inputInfo.devices; attached; attached = attached->next)
+                         {
+                             if (!IsMaster(attached)) {
+                                 if (attached->u.master == ptr)
+@@ -363,14 +317,18 @@ ProcXIChangeHierarchy(ClientPtr client)
+                     flags[XTestkeybd->id] |= XISlaveRemoved;
+                     flags[keybd->id] |= XIMasterRemoved;
+                     flags[ptr->id] |= XIMasterRemoved;
++
++unwind:
++    return rc;
+                 }
+-                break;
+-            case XIDetachSlave:
++
++static int
++detach_slave(ClientPtr client, xXIDetachSlaveInfo *c, int flags[MAXDEVICES])
+                 {
+-                    xXIDetachSlaveInfo* c = (xXIDetachSlaveInfo*)any;
++    DeviceIntPtr ptr;
++    int rc;
+ 
+-                    rc = dixLookupDevice(&ptr, c->deviceid, client,
+-                                          DixManageAccess);
++    rc = dixLookupDevice(&ptr, c->deviceid, client, DixManageAccess);
+                     if (rc != Success)
+                        goto unwind;
+ 
+@@ -391,15 +349,20 @@ ProcXIChangeHierarchy(ClientPtr client)
+ 
+                     AttachDevice(client, ptr, NULL);
+                     flags[ptr->id] |= XISlaveDetached;
++
++unwind:
++    return rc;
+                 }
+-                break;
+-            case XIAttachSlave:
++
++static int
++attach_slave(ClientPtr client, xXIAttachSlaveInfo *c,
++             int flags[MAXDEVICES])
+                 {
+-                    xXIAttachSlaveInfo* c = (xXIAttachSlaveInfo*)any;
++    DeviceIntPtr ptr;
+                     DeviceIntPtr newmaster;
++    int rc;
+ 
+-                    rc = dixLookupDevice(&ptr, c->deviceid, client,
+-                                          DixManageAccess);
++    rc = dixLookupDevice(&ptr, c->deviceid, client, DixManageAccess);
+                     if (rc != Success)
+                        goto unwind;
+ 
+@@ -418,8 +381,7 @@ ProcXIChangeHierarchy(ClientPtr client)
+                         goto unwind;
+                     }
+ 
+-                    rc = dixLookupDevice(&newmaster, c->new_master,
+-                            client, DixAddAccess);
++    rc = dixLookupDevice(&newmaster, c->new_master, client, DixAddAccess);
+                     if (rc != Success)
+                         goto unwind;
+                     if (!IsMaster(newmaster))
+@@ -429,16 +391,86 @@ ProcXIChangeHierarchy(ClientPtr client)
+                         goto unwind;
+                     }
+ 
+-                    if (!((IsPointerDevice(newmaster) &&
+-                                    IsPointerDevice(ptr)) ||
+-                                (IsKeyboardDevice(newmaster) &&
+-                                 IsKeyboardDevice(ptr))))
++    if (!((IsPointerDevice(newmaster) && IsPointerDevice(ptr)) ||
++        (IsKeyboardDevice(newmaster) && IsKeyboardDevice(ptr))))
+                     {
+                         rc = BadDevice;
+                         goto unwind;
+                     }
++
+                     AttachDevice(client, ptr, newmaster);
+                     flags[ptr->id] |= XISlaveAttached;
++
++unwind:
++    return rc;
++}
++
++
++
++#define SWAPIF(cmd) if (client->swapped) { cmd; }
++
++int
++ProcXIChangeHierarchy(ClientPtr client)
++{
++    xXIAnyHierarchyChangeInfo *any;
++    int required_len = sizeof(xXIChangeHierarchyReq);
++    char n;
++    int rc = Success;
++    int flags[MAXDEVICES] = {0};
++
++    REQUEST(xXIChangeHierarchyReq);
++    REQUEST_AT_LEAST_SIZE(xXIChangeHierarchyReq);
++
++    if (!stuff->num_changes)
++        return rc;
++
++    any = (xXIAnyHierarchyChangeInfo*)&stuff[1];
++    while(stuff->num_changes--)
++    {
++        SWAPIF(swapl(&any->type, n));
++        SWAPIF(swaps(&any->length, n));
++
++        required_len += any->length;
++        if ((stuff->length * 4) < required_len)
++            return BadLength;
++
++        switch(any->type)
++        {
++            case XIAddMaster:
++                {
++                    xXIAddMasterInfo* c = (xXIAddMasterInfo*)any;
++                    SWAPIF(swaps(&c->name_len, n));
++
++                    rc = add_master(client, c, flags);
++                    if (rc != Success)
++                        goto unwind;
++                }
++                break;
++            case XIRemoveMaster:
++                {
++                    xXIRemoveMasterInfo* r = (xXIRemoveMasterInfo*)any;
++
++                    rc = remove_master(client, r, flags);
++                    if (rc != Success)
++                        goto unwind;
++                }
++                break;
++            case XIDetachSlave:
++                {
++                    xXIDetachSlaveInfo* c = (xXIDetachSlaveInfo*)any;
++
++                    rc = detach_slave(client, c, flags);
++                    if (rc != Success)
++                       goto unwind;
++                }
++                break;
++            case XIAttachSlave:
++                {
++                    xXIAttachSlaveInfo* c = (xXIAttachSlaveInfo*)any;
++
++                    rc = attach_slave(client, c, flags);
++                    if (rc != Success)
++                       goto unwind;
+                 }
+                 break;
+         }

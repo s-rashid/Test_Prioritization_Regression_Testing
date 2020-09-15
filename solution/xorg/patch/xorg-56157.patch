@@ -1,0 +1,224 @@
+diff --git a/xkb/xkbfmisc.c b/xkb/xkbfmisc.c
+index 782b823..d96ee4b 100644
+--- a/xkb/xkbfmisc.c
++++ b/xkb/xkbfmisc.c
+@@ -62,7 +62,8 @@ unsigned	set,rtrn;
+ 		rtrn|= _XkbKSUpper;
+ 	    }
+ 	    if (((ks>=XK_a)&&(ks<=XK_z))||
+-		((ks>=XK_ssharp)&&(ks<=XK_ydiaeresis)&&(ks!=XK_division))) {
++            ((ks >= XK_ssharp) && (ks <= XK_ydiaeresis) &&
++             (ks != XK_division))) {
+ 		rtrn|= _XkbKSLower;
+ 	    }
+ 	    break;
+@@ -71,8 +72,11 @@ unsigned	set,rtrn;
+ 		((ks>=XK_Racute)&&(ks<=XK_Tcedilla))) {
+ 		rtrn|= _XkbKSUpper;
+ 	    }
+-	    if (((ks>=XK_aogonek)&&(ks<=XK_zabovedot)&&(ks!=XK_ogonek)&&(ks!=XK_caron)&&(ks!=XK_doubleacute))||
+-		((ks>=XK_racute)&&(ks<=XK_tcedilla))) {
++        if (((ks >= XK_aogonek) && (ks <= XK_zabovedot) && (ks != XK_ogonek) &&
++             (ks != XK_caron) && (ks != XK_doubleacute)) || ((ks >= XK_racute)
++                                                             && (ks <=
++                                                                 XK_tcedilla)))
++        {
+ 		rtrn|= _XkbKSLower;
+ 	    }
+ 	    break;
+@@ -88,14 +92,12 @@ unsigned	set,rtrn;
+ 	    break;
+ 	case 3:		/* latin 4 */
+ 	    if (((ks>=XK_Rcedilla)&&(ks<=XK_Tslash))||
+-	        (ks==XK_ENG)||
+-		((ks>=XK_Amacron)&&(ks<=XK_Umacron))) {
++            (ks == XK_ENG) || ((ks >= XK_Amacron) && (ks <= XK_Umacron))) {
+ 		rtrn|= _XkbKSUpper;
+ 	    }
+ 	    if ((ks==XK_kra)||
+ 	        ((ks>=XK_rcedilla)&&(ks<=XK_tslash))||
+-	        (ks==XK_eng)||
+-		((ks>=XK_amacron)&&(ks<=XK_umacron))) {
++            (ks == XK_eng) || ((ks >= XK_amacron) && (ks <= XK_umacron))) {
+ 		rtrn|= _XkbKSLower;
+ 	    }
+ 	    break;
+@@ -110,9 +112,7 @@ unsigned	set,rtrn;
+ 		(ks==XK_Sabovedot)||
+ 		(ks==XK_Tabovedot)||
+ 		(ks==XK_Wgrave)||
+-		(ks==XK_Wacute)||
+-		(ks==XK_Wdiaeresis)||
+-		(ks==XK_Ygrave)) {
++            (ks == XK_Wacute) || (ks == XK_Wdiaeresis) || (ks == XK_Ygrave)) {
+ 		rtrn|= _XkbKSUpper;
+ 	    }
+ 	    if ((ks==XK_wcircumflex)||
+@@ -125,9 +125,7 @@ unsigned	set,rtrn;
+ 		(ks==XK_sabovedot)||
+ 		(ks==XK_tabovedot)||
+ 		(ks==XK_wgrave)||
+-		(ks==XK_wacute)||
+-		(ks==XK_wdiaeresis)||
+-		(ks==XK_ygrave)) {
++            (ks == XK_wacute) || (ks == XK_wdiaeresis) || (ks == XK_ygrave)) {
+ 		rtrn|= _XkbKSLower;
+ 	    }
+ 	    break;
+@@ -159,10 +157,7 @@ XkbWriteSectionFromName(FILE *file,const char *sectionName,const char *name)
+ static void
+ _AddIncl(	FILE *		file,
+ 		XkbDescPtr 	xkb,
+-		Bool 		topLevel,
+-		Bool 		showImplicit,
+-		int 		index,
+-		void *		priv)
++         Bool topLevel, Bool showImplicit, int index, void *priv)
+ {
+     if ((priv)&&(strcmp((char *)priv,"%")!=0))
+ 	fprintf(file,"    include \"%s\"\n",(char *)priv);
+@@ -172,9 +167,7 @@ _AddIncl(	FILE *		file,
+ Bool
+ XkbWriteXKBKeymapForNames(	FILE *			file,
+ 				XkbComponentNamesPtr	names,
+-				XkbDescPtr		xkb,
+-				unsigned		want,
+-				unsigned		need)
++                          XkbDescPtr xkb, unsigned want, unsigned need)
+ {
+ const char *	tmp;
+ unsigned	complete;
+@@ -183,11 +176,16 @@ int		multi_section;
+ unsigned	wantNames,wantConfig,wantDflts;
+ 
+     complete= 0;
+-    if (COMPLETE(names->keycodes))	complete|= XkmKeyNamesMask;
+-    if (COMPLETE(names->types))		complete|= XkmTypesMask;
+-    if (COMPLETE(names->compat))	complete|= XkmCompatMapMask;
+-    if (COMPLETE(names->symbols))	complete|= XkmSymbolsMask;
+-    if (COMPLETE(names->geometry))	complete|= XkmGeometryMask;
++    if (COMPLETE(names->keycodes))
++        complete |= XkmKeyNamesMask;
++    if (COMPLETE(names->types))
++        complete |= XkmTypesMask;
++    if (COMPLETE(names->compat))
++        complete |= XkmCompatMapMask;
++    if (COMPLETE(names->symbols))
++        complete |= XkmSymbolsMask;
++    if (COMPLETE(names->geometry))
++        complete |= XkmGeometryMask;
+     want|= (complete|need);
+     if (want&XkmSymbolsMask)
+ 	want|= XkmKeyNamesMask|XkmTypesMask;
+@@ -265,7 +263,8 @@ unsigned	wantNames,wantConfig,wantDflts;
+ 		tmp= NameForAtom(old_names->compat);
+ 		names->compat= Xstrdup(tmp);
+ 	    }
+-	    else wantDflts|= XkmCompatMapMask;
++            else
++                wantDflts |= XkmCompatMapMask;
+ 	    complete|= XkmCompatMapMask; 
+ 	}
+ 	if (wantNames&XkmSymbolsMask) {
+@@ -280,7 +279,8 @@ unsigned	wantNames,wantConfig,wantDflts;
+ 		tmp= NameForAtom(old_names->keycodes);
+ 		names->keycodes= Xstrdup(tmp);
+ 	    }
+-	    else wantDflts|= XkmKeyNamesMask;
++            else
++                wantDflts |= XkmKeyNamesMask;
+ 	    complete|= XkmKeyNamesMask;
+ 	}
+ 	if (wantNames&XkmGeometryMask) {
+@@ -298,7 +298,8 @@ unsigned	wantNames,wantConfig,wantDflts;
+ 	complete|= XkmVirtualModsMask;
+     if (need & (~complete))
+ 	return FALSE;
+-    if ((complete&XkmSymbolsMask)&&((XkmKeyNamesMask|XkmTypesMask)&(~complete)))
++    if ((complete & XkmSymbolsMask) &&
++        ((XkmKeyNamesMask | XkmTypesMask) & (~complete)))
+ 	return FALSE;
+ 
+     multi_section= 1;
+@@ -375,6 +376,7 @@ register int	i;
+ 	return 0;
+     if (xkb->geom && xkb->geom->key_aliases) {
+ 	XkbKeyAliasPtr	a;
++
+ 	a= xkb->geom->key_aliases;
+ 	for (i=0;i<xkb->geom->num_key_aliases;i++,a++) {
+ 	    if (strncmp(name,a->alias,XkbKeyNameLength)==0)
+@@ -383,6 +385,7 @@ register int	i;
+     }
+     if (xkb->names && xkb->names->key_aliases) {
+ 	XkbKeyAliasPtr	a;
++
+ 	a= xkb->names->key_aliases;
+ 	for (i=0;i<xkb->names->num_key_aliases;i++,a++) {
+ 	    if (strncmp(name,a->alias,XkbKeyNameLength)==0)
+@@ -392,7 +395,6 @@ register int	i;
+     return 0;
+ }
+ 
+-
+ unsigned
+ XkbConvertGetByNameComponents(Bool toXkm,unsigned orig)
+ {
+@@ -400,21 +402,34 @@ unsigned	rtrn;
+ 
+     rtrn= 0;
+     if (toXkm) {
+-	if (orig&XkbGBN_TypesMask)		rtrn|= XkmTypesMask;
+-	if (orig&XkbGBN_CompatMapMask)		rtrn|= XkmCompatMapMask;
+-	if (orig&XkbGBN_SymbolsMask)		rtrn|= XkmSymbolsMask;
+-	if (orig&XkbGBN_IndicatorMapMask)	rtrn|= XkmIndicatorsMask;
+-	if (orig&XkbGBN_KeyNamesMask)		rtrn|= XkmKeyNamesMask;
+-	if (orig&XkbGBN_GeometryMask)		rtrn|= XkmGeometryMask;
++        if (orig & XkbGBN_TypesMask)
++            rtrn |= XkmTypesMask;
++        if (orig & XkbGBN_CompatMapMask)
++            rtrn |= XkmCompatMapMask;
++        if (orig & XkbGBN_SymbolsMask)
++            rtrn |= XkmSymbolsMask;
++        if (orig & XkbGBN_IndicatorMapMask)
++            rtrn |= XkmIndicatorsMask;
++        if (orig & XkbGBN_KeyNamesMask)
++            rtrn |= XkmKeyNamesMask;
++        if (orig & XkbGBN_GeometryMask)
++            rtrn |= XkmGeometryMask;
+     }
+     else {
+-	if (orig&XkmTypesMask)			rtrn|= XkbGBN_TypesMask;
+-	if (orig&XkmCompatMapMask)		rtrn|= XkbGBN_CompatMapMask;
+-	if (orig&XkmSymbolsMask)		rtrn|= XkbGBN_SymbolsMask;
+-	if (orig&XkmIndicatorsMask)		rtrn|= XkbGBN_IndicatorMapMask;
+-	if (orig&XkmKeyNamesMask)		rtrn|= XkbGBN_KeyNamesMask;
+-	if (orig&XkmGeometryMask)		rtrn|= XkbGBN_GeometryMask;
+-	if (orig!=0)				rtrn|= XkbGBN_OtherNamesMask;
++        if (orig & XkmTypesMask)
++            rtrn |= XkbGBN_TypesMask;
++        if (orig & XkmCompatMapMask)
++            rtrn |= XkbGBN_CompatMapMask;
++        if (orig & XkmSymbolsMask)
++            rtrn |= XkbGBN_SymbolsMask;
++        if (orig & XkmIndicatorsMask)
++            rtrn |= XkbGBN_IndicatorMapMask;
++        if (orig & XkmKeyNamesMask)
++            rtrn |= XkbGBN_KeyNamesMask;
++        if (orig & XkmGeometryMask)
++            rtrn |= XkbGBN_GeometryMask;
++        if (orig != 0)
++            rtrn |= XkbGBN_OtherNamesMask;
+     }
+     return rtrn;
+ }
+@@ -439,7 +454,8 @@ XkbNameMatchesPattern(char *name,char *ptrn)
+ 		return FALSE;
+ 	}
+ 	else if (ptrn[0]=='*') {
+-	    if ((!UNMATCHABLE(name[0]))&&XkbNameMatchesPattern(name+1,ptrn))
++            if ((!UNMATCHABLE(name[0])) &&
++                XkbNameMatchesPattern(name + 1, ptrn))
+ 		return TRUE;
+ 	    return XkbNameMatchesPattern(name,ptrn+1);
+ 	}

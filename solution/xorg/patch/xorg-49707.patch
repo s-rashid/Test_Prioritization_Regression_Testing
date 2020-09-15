@@ -1,0 +1,22 @@
+diff --git a/include/cursorstr.h b/include/cursorstr.h
+index 3ff56e2..6a4d0db 100644
+--- a/include/cursorstr.h
++++ b/include/cursorstr.h
+@@ -70,6 +70,8 @@ typedef struct _CursorBits {
+ #endif
+ } CursorBits, *CursorBitsPtr;
+ 
++#define CURSOR_BITS_SIZE (sizeof(CursorBits) + dixPrivatesSize(PRIVATE_CURSOR_BITS))
++
+ typedef struct _Cursor {
+     CursorBitsPtr bits;
+     unsigned short foreRed, foreGreen, foreBlue; /* device-independent color */
+@@ -83,6 +85,8 @@ typedef struct _Cursor {
+ #endif
+ } CursorRec;
+ 
++#define CURSOR_REC_SIZE (sizeof(CursorRec) + dixPrivatesSize(PRIVATE_CURSOR))
++
+ typedef struct _CursorMetric {
+     unsigned short width, height, xhot, yhot;
+ } CursorMetricRec;

@@ -1,0 +1,26 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index 9f52b6d..48d25c3 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -54,6 +54,10 @@
+ 
+ #include "xichangehierarchy.h"
+ 
++extern DeviceProc CorePointerProc;
++extern DeviceProc CoreKeyboardProc;
++
++
+ /**
+  * Send the current state of the device hierarchy to all clients.
+  */
+@@ -176,7 +180,9 @@ ProcXIChangeHierarchy(ClientPtr client)
+                     strncpy(name, (char*)&c[1], c->name_len);
+ 
+ 
+-                    rc = AllocDevicePair(client, name, &ptr, &keybd, TRUE);
++                    rc = AllocDevicePair(client, name, &ptr, &keybd,
++                                         CorePointerProc, CoreKeyboardProc,
++                                         TRUE);
+                     if (rc != Success)
+                     {
+                         xfree(name);

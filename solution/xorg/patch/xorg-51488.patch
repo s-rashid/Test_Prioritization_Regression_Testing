@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/xaa/xaaBitBlt.c b/hw/xfree86/xaa/xaaBitBlt.c
+index 5148ed4..dfe51ea 100644
+--- a/hw/xfree86/xaa/xaaBitBlt.c
++++ b/hw/xfree86/xaa/xaaBitBlt.c
+@@ -57,7 +57,8 @@ XAABitBlt(
+     if((pSrcDrawable != pDstDrawable) && 
+ 			pSrcDrawable->pScreen->SourceValidate) {
+ 	(*pSrcDrawable->pScreen->SourceValidate) (
+-			pSrcDrawable, srcx, srcy, width, height);
++			pSrcDrawable, srcx, srcy, width, height,
++			pGC->subWindowMode);
+     }
+ 
+     srcx += pSrcDrawable->x;

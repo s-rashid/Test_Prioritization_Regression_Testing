@@ -1,0 +1,22 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index e1f63be..1b33f82 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -497,14 +497,14 @@ miPointerSetPosition(DeviceIntPtr pDev, int *x, int *y)
+ 
+     miPointerPtr        pPointer; 
+ 
++    if (!pDev || !pDev->coreEvents)
++        return;
++
+     pPointer = MIPOINTER(pDev);
+     pScreen = pPointer->pScreen;
+     if (!pScreen)
+ 	return;	    /* called before ready */
+ 
+-    if (!pDev || !pDev->coreEvents)
+-        return;
+-
+     if (*x < 0 || *x >= pScreen->width || *y < 0 || *y >= pScreen->height)
+     {
+ 	pScreenPriv = GetScreenPrivate (pScreen);

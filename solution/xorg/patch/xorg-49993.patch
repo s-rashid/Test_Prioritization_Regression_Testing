@@ -1,0 +1,17 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 956b224..9f1507e 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -927,6 +927,12 @@ extern int XkbGetEffectiveGroup(
+ extern void XkbMergeLockedPtrBtns(
+         DeviceIntPtr            /* master */);
+ 
++extern void XkbFakeDeviceButton(
++        DeviceIntPtr            /* dev */,
++        int                     /* press */,
++        int                     /* button */);
++
++
+ #include "xkbfile.h"
+ #include "xkbrules.h"
+ 

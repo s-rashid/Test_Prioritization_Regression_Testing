@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/winwin32rootlesswndproc.c b/hw/xwin/winwin32rootlesswndproc.c
+index e624ded..4d7afee 100755
+--- a/hw/xwin/winwin32rootlesswndproc.c
++++ b/hw/xwin/winwin32rootlesswndproc.c
+@@ -783,6 +783,17 @@ winMWExtWMWindowProc (HWND hwnd, UINT message,
+       SendMessage (hwndScreen, message, wParam, lParam);
+       return 0;
+ 
++    case WM_ERASEBKGND:
++#if CYGDEBUG
++      winDebug ("winMWExtWMWindowProc - WM_ERASEBKGND\n");
++#endif
++      /*
++       * Pretend that we did erase the background but we don't care,
++       * since we repaint the entire region anyhow
++       * This avoids some flickering when resizing.
++       */
++      return TRUE;
++
+     case WM_PAINT:
+     
+       /* BeginPaint gives us an hdc that clips to the invalidated region */

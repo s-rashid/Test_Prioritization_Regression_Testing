@@ -1,0 +1,24 @@
+diff --git a/xfixes/saveset.c b/xfixes/saveset.c
+index 31664ab..29de0d8 100755
+--- a/xfixes/saveset.c
++++ b/xfixes/saveset.c
+@@ -29,7 +29,7 @@
+ int
+ ProcXFixesChangeSaveSet(ClientPtr client)
+ {
+-    Bool	toRoot, remap;
++    Bool	toRoot, map;
+     int		result;
+     WindowPtr	pWin;
+     REQUEST(xXFixesChangeSaveSetReq);
+@@ -56,8 +56,8 @@ ProcXFixesChangeSaveSet(ClientPtr client)
+ 	return( BadValue );
+     }
+     toRoot = (stuff->target == SaveSetRoot);
+-    remap = (stuff->map == SaveSetMap);
+-    result = AlterSaveSetForClient(client, pWin, stuff->mode, toRoot, remap);
++    map = (stuff->map == SaveSetMap);
++    result = AlterSaveSetForClient(client, pWin, stuff->mode, toRoot, map);
+     if (client->noClientException != Success)
+ 	return(client->noClientException);
+     else

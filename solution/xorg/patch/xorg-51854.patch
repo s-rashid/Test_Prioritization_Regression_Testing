@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index 6196540..f79264e 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -1660,7 +1660,7 @@ static int CreateGLXPixmap(__GLXclientState *cl,
+ 	return BadMatch;
+     }
+ 
+-    if (fbconfigId == NULL && visual == NULL) {
++    if (fbconfigId == 0 && visual == 0) {
+ 	  return BadValue;
+     }
+ 

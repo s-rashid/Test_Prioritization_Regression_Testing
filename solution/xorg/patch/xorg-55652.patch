@@ -1,0 +1,136 @@
+diff --git a/hw/xfree86/vbe/vbe.h b/hw/xfree86/vbe/vbe.h
+index 072621f..81be0ff 100644
+--- a/hw/xfree86/vbe/vbe.h
++++ b/hw/xfree86/vbe/vbe.h
+@@ -20,8 +20,7 @@ typedef enum {
+     DDC_1,
+     DDC_2,
+     DDC_1_2
+-}
+-ddc_lvl;
++} ddc_lvl;
+ 
+ typedef struct {
+     xf86Int10InfoPtr pInt10;
+@@ -38,7 +37,8 @@ typedef struct {
+ #define VBE_VERSION_MINOR(x) (CARD8)(x)
+ 
+ extern _X_EXPORT vbeInfoPtr VBEInit(xf86Int10InfoPtr pInt, int entityIndex);
+-extern _X_EXPORT vbeInfoPtr VBEExtendedInit(xf86Int10InfoPtr pInt, int entityIndex, int Flags);
++extern _X_EXPORT vbeInfoPtr VBEExtendedInit(xf86Int10InfoPtr pInt,
++                                            int entityIndex, int Flags);
+ extern _X_EXPORT void vbeFree(vbeInfoPtr pVbe);
+ extern _X_EXPORT xf86MonPtr vbeDoEDID(vbeInfoPtr pVbe, pointer pDDCModule);
+ 
+@@ -81,19 +81,24 @@ struct _VbeInfoBlock {
+     /* VESA 1.2 fields */
+     CARD8 VESASignature[4];		/* VESA */
+     CARD16 VESAVersion;			/* Higher byte major, lower byte minor */
+-    /*CARD32*/char *OEMStringPtr;	/* Pointer to OEM string */
++                                        /*CARD32 */ char *OEMStringPtr;
++                                        /* Pointer to OEM string */
+     CARD8 Capabilities[4];		/* Capabilities of the video environment */
+ 
+-    /*CARD32*/CARD16 *VideoModePtr;	/* pointer to supported Super VGA modes */
++                                        /*CARD32 */ CARD16 *VideoModePtr;
++                                        /* pointer to supported Super VGA modes */
+ 
+     CARD16 TotalMemory;			/* Number of 64kb memory blocks on board */
+     /* if not VESA 2, 236 scratch bytes follow (256 bytes total size) */
+ 
+     /* VESA 2 fields */
+     CARD16 OemSoftwareRev;		/* VBE implementation Software revision */
+-    /*CARD32*/char *OemVendorNamePtr;	/* Pointer to Vendor Name String */
+-    /*CARD32*/char *OemProductNamePtr;	/* Pointer to Product Name String */
+-    /*CARD32*/char *OemProductRevPtr;	/* Pointer to Product Revision String */
++                                        /*CARD32 */ char *OemVendorNamePtr;
++                                        /* Pointer to Vendor Name String */
++                                                /*CARD32 */ char *OemProductNamePtr;
++                                                /* Pointer to Product Name String */
++                                        /*CARD32 */ char *OemProductRevPtr;
++                                        /* Pointer to Product Revision String */
+     CARD8 Reserved[222];		/* Reserved for VBE implementation */
+     CARD8 OemData[256];			/* Data Area for OEM Strings */
+ } __attribute__((packed));
+@@ -187,9 +192,11 @@ struct _VbeCRTCInfoBlock {
+     CARD16 RefreshRate;			/* Refresh rate in units of 0.01 Hz */
+     CARD8 Reserved[40];			/* remainder of ModeInfoBlock */
+ } __attribute__((packed));
++
+ /* VbeCRTCInfoBlock is in the VESA 3.0 specs */
+ 
+-extern _X_EXPORT Bool VBESetVBEMode(vbeInfoPtr pVbe, int mode, VbeCRTCInfoBlock *crtc);
++extern _X_EXPORT Bool VBESetVBEMode(vbeInfoPtr pVbe, int mode,
++                                    VbeCRTCInfoBlock * crtc);
+ 
+ /*
+  * INT 3
+@@ -218,6 +225,7 @@ typedef enum {
+ } vbeSaveRestoreFunction;
+ 
+ extern _X_EXPORT Bool
++
+ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction fuction, 
+ 	       pointer *memory, int *size, int *real_mode_pages);
+ 
+@@ -252,15 +260,18 @@ typedef enum {
+ 	VBESetGetLogicalScanlineLength(pVbe, SCANWID_GET_MAX, 0, \
+ 					pixels, bytes, max)
+ extern _X_EXPORT Bool VBESetGetLogicalScanlineLength(vbeInfoPtr pVbe,
+-				    vbeScanwidthCommand command, int width,
+-				     int *pixels, int *bytes, int *max);
++                                                     vbeScanwidthCommand
++                                                     command, int width,
++                                                     int *pixels, int *bytes,
++                                                     int *max);
+ 
+ /*
+  * INT 7
+  */
+ 
+ /* 16 bit code */
+-extern _X_EXPORT Bool VBESetDisplayStart(vbeInfoPtr pVbe, int x, int y, Bool wait_retrace);
++extern _X_EXPORT Bool VBESetDisplayStart(vbeInfoPtr pVbe, int x, int y,
++                                         Bool wait_retrace);
+ extern _X_EXPORT Bool VBEGetDisplayStart(vbeInfoPtr pVbe, int *x, int *y);
+ 
+ /*
+@@ -280,8 +291,10 @@ extern _X_EXPORT int VBESetGetDACPaletteFormat(vbeInfoPtr pVbe, int bits);
+  *  If setting a palette, it will return the pointer received on success,
+  * NULL on failure.
+  */
+-extern _X_EXPORT CARD32 *VBESetGetPaletteData(vbeInfoPtr pVbe, Bool set, int first, int num,
+-			     CARD32 *data, Bool secondary, Bool wait_retrace);
++extern _X_EXPORT CARD32 *VBESetGetPaletteData(vbeInfoPtr pVbe, Bool set,
++                                              int first, int num, CARD32 *data,
++                                              Bool secondary,
++                                              Bool wait_retrace);
+ #define VBEFreePaletteData(data)	free(data)
+ 
+ /*
+@@ -295,6 +308,7 @@ typedef struct _VBEpmi {
+ } VBEpmi;
+ 
+ extern _X_EXPORT VBEpmi *VBEGetVBEpmi(vbeInfoPtr pVbe);
++
+ #define VESAFreeVBEpmi(pmi)	free(pmi)
+ 
+ /* high level helper functions */
+@@ -316,6 +330,7 @@ typedef struct {
+ } vbeSaveRestoreRec, *vbeSaveRestorePtr;
+ 
+ extern _X_EXPORT void
++
+ VBEVesaSaveRestore(vbeInfoPtr pVbe, vbeSaveRestorePtr vbe_sr,
+ 		   vbeSaveRestoreFunction function);
+ 
+@@ -335,7 +350,8 @@ struct vbePanelID {
+     char reserved[14];
+ };
+ 
+-extern _X_EXPORT void VBEInterpretPanelID(int scrnIndex, struct vbePanelID *data);
++extern _X_EXPORT void VBEInterpretPanelID(int scrnIndex,
++                                          struct vbePanelID *data);
+ extern _X_EXPORT struct vbePanelID *VBEReadPanelID(vbeInfoPtr pVbe);
+ 
+ #endif

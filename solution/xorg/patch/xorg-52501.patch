@@ -1,0 +1,16 @@
+diff --git a/os/xstrans.c b/os/xstrans.c
+index c086e22..44ff976 100644
+--- a/os/xstrans.c
++++ b/os/xstrans.c
+@@ -2,6 +2,11 @@
+ #include <dix-config.h>
+ #endif
+ 
++#include <X11/Xfuncproto.h>
++
++/* ErrorF is used by xtrans */
++extern _X_EXPORT void ErrorF(const char *f, ...) _X_ATTRIBUTE_PRINTF(1,2);
++
+ #define TRANS_REOPEN
+ #define TRANS_SERVER
+ #define XSERV_t

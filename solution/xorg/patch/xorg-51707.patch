@@ -1,0 +1,13 @@
+diff --git a/exa/exa_driver.c b/exa/exa_driver.c
+index a913cfb..b9903d1 100644
+--- a/exa/exa_driver.c
++++ b/exa/exa_driver.c
+@@ -115,6 +115,8 @@ exaCreatePixmap_driver(ScreenPtr pScreen, int w, int h, int depth,
+     exaSetAccelBlock(pExaScr, pExaPixmap,
+                      w, h, bpp);
+ 
++    pExaPixmap->use_gpu_copy = exaPixmapHasGpuCopy(pPixmap);
++
+     /* During a fallback we must prepare access. */
+     if (pExaScr->fallback_counter)
+ 	exaPrepareAccess(&pPixmap->drawable, EXA_PREPARE_AUX_DEST);

@@ -1,0 +1,13 @@
+diff --git a/Xext/xvmain.c b/Xext/xvmain.c
+index 13cd600..72678f7 100644
+--- a/Xext/xvmain.c
++++ b/Xext/xvmain.c
+@@ -126,8 +126,6 @@ unsigned long XvRTPortNotify;
+ 
+ /* EXTERNAL */
+ 
+-extern XID clientErrorValue;
+-
+ static void WriteSwappedVideoNotifyEvent(xvEvent *, xvEvent *);
+ static void WriteSwappedPortNotifyEvent(xvEvent *, xvEvent *);
+ static Bool CreateResourceTypes(void);

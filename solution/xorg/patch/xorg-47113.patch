@@ -1,0 +1,22 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 04e6497..5757f85 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -47,6 +47,7 @@ in this Software without prior written authorization from the X Consortium.
+ #include "cursorstr.h"
+ #include "colormapst.h"
+ #include "xace.h"
++#include "registry.h"
+ #ifdef PANORAMIX
+ #include "panoramiX.h"
+ #include "panoramiXsrv.h"
+@@ -266,6 +267,9 @@ ScreenSaverExtensionInit(INITARGS)
+ 				 ProcScreenSaverDispatch, SProcScreenSaverDispatch,
+ 				 NULL, StandardMinorOpcode)))
+     {
++	RegisterResourceName(AttrType, "SaverAttr");
++	RegisterResourceName(SaverEventType, "SaverEvent");
++	RegisterResourceName(SuspendType, "SaverSuspend");
+ 	ScreenSaverEventBase = extEntry->eventBase;
+ 	EventSwapVector[ScreenSaverEventBase] = (EventSwapPtr) SScreenSaverNotifyEvent;
+     }

@@ -1,0 +1,12 @@
+diff --git a/include/input.h b/include/input.h
+index fb24fd5..bd12f68 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -544,7 +544,6 @@ extern _X_EXPORT void FreeInputAttributes(InputAttributes *attrs);
+ extern Mask GetEventMask(DeviceIntPtr dev, xEvent* ev, InputClientsPtr clients);
+ extern Mask GetEventFilter(DeviceIntPtr dev, xEvent *event);
+ extern Bool WindowXI2MaskIsset(DeviceIntPtr dev, WindowPtr win, xEvent* ev);
+-extern Mask GetXI2EventFilterMask(int evtype);
+ extern int GetXI2MaskByte(XI2Mask *mask, DeviceIntPtr dev, int event_type);
+ void FixUpEventFromWindow(SpritePtr pSprite,
+                           xEvent *xE,

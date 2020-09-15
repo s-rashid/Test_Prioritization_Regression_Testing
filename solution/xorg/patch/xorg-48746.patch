@@ -1,0 +1,13 @@
+diff --git a/fb/fboverlay.c b/fb/fboverlay.c
+index 99939e8..3eb1b03 100644
+--- a/fb/fboverlay.c
++++ b/fb/fboverlay.c
+@@ -348,7 +348,7 @@ fbOverlayFinishScreenInit(ScreenPtr	pScreen,
+     VisualID	defaultVisual;
+     FbOverlayScrPrivPtr	pScrPriv;
+ 
+-    pScrPriv = xalloc (sizeof (FbOverlayScrPrivRec));
++    pScrPriv = malloc(sizeof (FbOverlayScrPrivRec));
+     if (!pScrPriv)
+ 	return FALSE;
+  

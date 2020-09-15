@@ -1,0 +1,12 @@
+diff --git a/include/gcstruct.h b/include/gcstruct.h
+index b6d71a9..4fea02c 100644
+--- a/include/gcstruct.h
++++ b/include/gcstruct.h
+@@ -303,7 +303,6 @@ typedef struct _GC {
+     DDXPointRec		patOrg;		/* origin for (tile, stipple) */
+     struct _Font	*font;
+     DDXPointRec		clipOrg;
+-    DDXPointRec		lastWinOrg;	/* position of window last validated */
+     pointer		clientClip;
+     unsigned long	stateChanges;	/* masked with GC_<kind> */
+     unsigned long       serialNumber;

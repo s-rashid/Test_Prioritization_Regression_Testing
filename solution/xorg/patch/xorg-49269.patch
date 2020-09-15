@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_bell.c b/hw/xfree86/os-support/solaris/sun_bell.c
+index 05d1749..bab3913 100644
+--- a/hw/xfree86/os-support/solaris/sun_bell.c
++++ b/hw/xfree86/os-support/solaris/sun_bell.c
+@@ -64,7 +64,7 @@ xf86OSRingBell(int loudness, int pitch, int duration)
+     }
+ 
+     lastFreq = 0;
+-    bzero(silence, sizeof(silence));
++    memset(silence, 0, sizeof(silence));
+ 
+     audioFD = open(AUDIO_DEVICE, O_WRONLY | O_NONBLOCK);
+     if (audioFD == -1) {

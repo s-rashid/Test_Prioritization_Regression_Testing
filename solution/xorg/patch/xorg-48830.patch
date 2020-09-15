@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index cf23bc6..2784024 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -891,7 +891,7 @@ CloseDeviceList(DeviceIntPtr *listHead)
+     while (dev != NULL)
+     {
+         freedIds[dev->id] = TRUE;
+-        DeleteInputDeviceRequest(dev);
++        DeleteInputDeviceRequest(dev, DEVICE_REMOVE_ALL);
+ 
+         dev = *listHead;
+         while (dev != NULL && freedIds[dev->id])

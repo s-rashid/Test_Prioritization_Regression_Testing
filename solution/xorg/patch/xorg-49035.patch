@@ -1,0 +1,13 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index 670cf50..c625438 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -386,7 +386,7 @@ static void XineramaInitData(ScreenPtr pScreen)
+ {
+     int i, w, h;
+ 
+-    RegionNull(&PanoramiXScreenRegion)
++    RegionNull(&PanoramiXScreenRegion);
+     for (i = 0; i < PanoramiXNumScreens; i++) {
+ 	BoxRec TheBox;
+ 	RegionRec ScreenRegion;

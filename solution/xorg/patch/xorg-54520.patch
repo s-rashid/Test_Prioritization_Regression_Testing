@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winclipboard.h b/hw/xwin/winclipboard.h
+index 6b5249f..b655f16 100644
+--- a/hw/xwin/winclipboard.h
++++ b/hw/xwin/winclipboard.h
+@@ -70,6 +70,8 @@
+ #define WIN_XEVENTS_SHUTDOWN			1
+ #define WIN_XEVENTS_CONVERT			2
+ #define WIN_XEVENTS_NOTIFY			3
++#define WIN_CLIPBOARD_RETRIES			40
++#define WIN_CLIPBOARD_DELAY			1
+ 
+ #define WM_WM_REINIT                           (WM_USER + 1)
+ 

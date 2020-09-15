@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index 4676130..532f0b2 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -1120,8 +1120,6 @@ xf86XVClipNotify(WindowPtr pWin, int dx, int dy)
+   while(WinPriv) {
+      pPriv = WinPriv->PortRec;
+ 
+-     if(!pPriv) goto next;
+- 
+      if(pPriv->pCompositeClip && pPriv->FreeCompositeClip)
+ 	RegionDestroy(pPriv->pCompositeClip);
+ 
+@@ -1156,7 +1154,6 @@ xf86XVClipNotify(WindowPtr pWin, int dx, int dy)
+ 	}
+      }
+ 
+-next:
+      pPrev = WinPriv;
+      WinPriv = WinPriv->next;
+   }

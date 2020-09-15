@@ -1,0 +1,464 @@
+diff --git a/exa/exa_glyphs.c b/exa/exa_glyphs.c
+index 5c46ec9..2538bce 100644
+--- a/exa/exa_glyphs.c
++++ b/exa/exa_glyphs.c
+@@ -88,30 +88,34 @@ exaGlyphsInit(ScreenPtr pScreen)
+     memset(pExaScr->glyphCaches, 0, sizeof(pExaScr->glyphCaches));
+ 
+     pExaScr->glyphCaches[i].format = PICT_a8;
+-    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight = 16;
++    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight =
++        16;
+     i++;
+     pExaScr->glyphCaches[i].format = PICT_a8;
+-    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight = 32;
++    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight =
++        32;
+     i++;
+     pExaScr->glyphCaches[i].format = PICT_a8r8g8b8;
+-    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight = 16;
++    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight =
++        16;
+     i++;
+     pExaScr->glyphCaches[i].format = PICT_a8r8g8b8;
+-    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight = 32;
++    pExaScr->glyphCaches[i].glyphWidth = pExaScr->glyphCaches[i].glyphHeight =
++        32;
+     i++;
+ 
+     assert(i == EXA_NUM_GLYPH_CACHES);
+     
+     for (i = 0; i < EXA_NUM_GLYPH_CACHES; i++) {
+-	pExaScr->glyphCaches[i].columns = CACHE_PICTURE_WIDTH / pExaScr->glyphCaches[i].glyphWidth;
++        pExaScr->glyphCaches[i].columns =
++            CACHE_PICTURE_WIDTH / pExaScr->glyphCaches[i].glyphWidth;
+ 	pExaScr->glyphCaches[i].size = 256;
+ 	pExaScr->glyphCaches[i].hashSize = 557;
+     }
+ }
+ 
+ static void
+-exaUnrealizeGlyphCaches(ScreenPtr    pScreen,
+-			unsigned int format)
++exaUnrealizeGlyphCaches(ScreenPtr pScreen, unsigned int format)
+ {
+     ExaScreenPriv(pScreen);
+     int i;
+@@ -148,8 +152,7 @@ exaUnrealizeGlyphCaches(ScreenPtr    pScreen,
+  * rest of the allocated structures for all caches with the given format.
+  */
+ static Bool
+-exaRealizeGlyphCaches(ScreenPtr    pScreen,
+-		      unsigned int format)
++exaRealizeGlyphCaches(ScreenPtr pScreen, unsigned int format)
+ {
+     ExaScreenPriv(pScreen);
+ 
+@@ -184,8 +187,7 @@ exaRealizeGlyphCaches(ScreenPtr    pScreen,
+ 
+     /* Now allocate the pixmap and picture */
+     pPixmap = (*pScreen->CreatePixmap) (pScreen,
+-					CACHE_PICTURE_WIDTH,
+-					height, depth, 0);
++                                        CACHE_PICTURE_WIDTH, height, depth, 0);
+     if (!pPixmap)
+ 	return FALSE;
+ 
+@@ -246,8 +248,7 @@ exaGlyphsFini (ScreenPtr pScreen)
+ }
+ 
+ static int
+-exaGlyphCacheHashLookup(ExaGlyphCachePtr cache,
+-			GlyphPtr         pGlyph)
++exaGlyphCacheHashLookup(ExaGlyphCachePtr cache, GlyphPtr pGlyph)
+ {
+     int slot;
+ 
+@@ -255,10 +256,13 @@ exaGlyphCacheHashLookup(ExaGlyphCachePtr cache,
+     
+     while (TRUE) { /* hash table can never be full */
+ 	int entryPos = cache->hashEntries[slot];
++
+ 	if (entryPos == -1)
+ 	    return -1;
+ 
+-	if (memcmp(pGlyph->sha1, cache->glyphs[entryPos].sha1, sizeof(pGlyph->sha1)) == 0){
++        if (memcmp
++            (pGlyph->sha1, cache->glyphs[entryPos].sha1,
++             sizeof(pGlyph->sha1)) == 0) {
+ 	    return entryPos;
+ 	}
+ 	    
+@@ -269,9 +273,7 @@ exaGlyphCacheHashLookup(ExaGlyphCachePtr cache,
+ }
+ 
+ static void
+-exaGlyphCacheHashInsert(ExaGlyphCachePtr cache,
+-			GlyphPtr         pGlyph,
+-			int              pos)
++exaGlyphCacheHashInsert(ExaGlyphCachePtr cache, GlyphPtr pGlyph, int pos)
+ {
+     int slot;
+ 
+@@ -292,8 +294,7 @@ exaGlyphCacheHashInsert(ExaGlyphCachePtr cache,
+ }
+ 
+ static void
+-exaGlyphCacheHashRemove(ExaGlyphCachePtr cache,
+-			int              pos)
++exaGlyphCacheHashRemove(ExaGlyphCachePtr cache, int pos)
+ {
+     int slot;
+     int emptiedSlot = -1;
+@@ -309,7 +310,8 @@ exaGlyphCacheHashRemove(ExaGlyphCachePtr cache,
+ 	if (entryPos == pos) {
+ 	    cache->hashEntries[slot] = -1;
+ 	    emptiedSlot = slot;
+-	} else if (emptiedSlot != -1) {
++        }
++        else if (emptiedSlot != -1) {
+ 	    /* See if we can move this entry into the emptied slot, we can't
+ 	     * do that if if entry would have hashed between the current position
+ 	     * and the emptied slot. (taking wrapping into account). Bad positions
+@@ -326,11 +328,12 @@ exaGlyphCacheHashRemove(ExaGlyphCachePtr cache,
+ 	     * (Knuth 6.4R)
+ 	     */
+ 	    
+-	    int entrySlot = (*(CARD32 *) cache->glyphs[entryPos].sha1) % cache->hashSize;
++            int entrySlot =
++                (*(CARD32 *) cache->glyphs[entryPos].sha1) % cache->hashSize;
+ 
+ 	    if (!((entrySlot >= slot && entrySlot < emptiedSlot) ||
+-		  (emptiedSlot < slot && (entrySlot < emptiedSlot || entrySlot >= slot)))) 
+-	    {
++                  (emptiedSlot < slot &&
++                   (entrySlot < emptiedSlot || entrySlot >= slot)))) {
+ 		cache->hashEntries[emptiedSlot] = entryPos;
+ 		cache->hashEntries[slot] = -1;
+ 		emptiedSlot = slot;
+@@ -359,18 +362,17 @@ exaGlyphCacheHashRemove(ExaGlyphCachePtr cache,
+  */
+ static void
+ exaGlyphCacheUploadGlyph(ScreenPtr         pScreen,
+-			 ExaGlyphCachePtr  cache,
+-			 int               x,
+-			 int               y,
+-			 GlyphPtr          pGlyph)
++                         ExaGlyphCachePtr cache, int x, int y, GlyphPtr pGlyph)
+ {
+     ExaScreenPriv(pScreen);
+     PicturePtr pGlyphPicture = GlyphPicture(pGlyph)[pScreen->myNum];
+     PixmapPtr pGlyphPixmap = (PixmapPtr)pGlyphPicture->pDrawable;
++
+     ExaPixmapPriv(pGlyphPixmap);
+     PixmapPtr pCachePixmap = (PixmapPtr)cache->picture->pDrawable;
+ 
+-    if (!pExaScr->info->UploadToScreen || pExaScr->swappedOut || pExaPixmap->accel_blocked)
++    if (!pExaScr->info->UploadToScreen || pExaScr->swappedOut ||
++        pExaPixmap->accel_blocked)
+ 	goto composite;
+ 
+     /* If the glyph pixmap is already uploaded, no point in doing
+@@ -379,7 +381,8 @@ exaGlyphCacheUploadGlyph(ScreenPtr         pScreen,
+ 	goto composite;
+ 
+     /* UploadToScreen only works if bpp match */
+-    if (pGlyphPixmap->drawable.bitsPerPixel != pCachePixmap->drawable.bitsPerPixel)
++    if (pGlyphPixmap->drawable.bitsPerPixel !=
++        pCachePixmap->drawable.bitsPerPixel)
+ 	goto composite;
+ 
+     if (pExaScr->do_migration) {
+@@ -411,20 +414,12 @@ composite:
+ 		      pGlyphPicture,
+ 		      None,
+ 		      cache->picture,
+-		      0, 0,
+-		      0, 0,
+-		      x,
+-		      y,
+-		      pGlyph->info.width,
+-		      pGlyph->info.height);
++                     0, 0, 0, 0, x, y, pGlyph->info.width, pGlyph->info.height);
+ 
+ damage:
+     /* The cache pixmap isn't a window, so no need to offset coordinates. */
+     exaPixmapDirty (pCachePixmap,
+-		    x,
+-		    y,
+-		    x + cache->glyphWidth,
+-		    y + cache->glyphHeight);
++                   x, y, x + cache->glyphWidth, y + cache->glyphHeight);
+ }
+ 
+ static ExaGlyphCacheResult
+@@ -436,10 +431,7 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+ 			 PicturePtr        pDst,
+ 			 INT16             xSrc,
+ 			 INT16             ySrc,
+-			 INT16             xMask,
+-			 INT16             yMask,
+-			 INT16             xDst,
+-			 INT16             yDst)
++                         INT16 xMask, INT16 yMask, INT16 xDst, INT16 yDst)
+ {
+     ExaCompositeRectPtr rect;
+     int pos;
+@@ -454,7 +446,8 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+     }
+ 
+     DBG_GLYPH_CACHE(("(%d,%d,%s): buffering glyph %lx\n",
+-		     cache->glyphWidth, cache->glyphHeight, cache->format == PICT_a8 ? "A" : "ARGB",
++                     cache->glyphWidth, cache->glyphHeight,
++                     cache->format == PICT_a8 ? "A" : "ARGB",
+ 		     (long)*(CARD32 *) pGlyph->sha1));
+    
+     pos = exaGlyphCacheHashLookup(cache, pGlyph);
+@@ -462,7 +455,8 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+ 	DBG_GLYPH_CACHE(("  found existing glyph at %d\n", pos));
+ 	x = CACHE_X(pos);
+ 	y = CACHE_Y(pos);
+-    } else {
++    }
++    else {
+ 	if (cache->glyphCount < cache->size) {
+ 	    /* Space remaining; we fill from the start */
+ 	    pos = cache->glyphCount;
+@@ -473,7 +467,8 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+ 
+ 	    exaGlyphCacheHashInsert(cache, pGlyph, pos);
+ 
+-	} else {
++        }
++        else {
+ 	    /* Need to evict an entry. We have to see if any glyphs
+ 	     * already in the output buffer were at this position in
+ 	     * the cache
+@@ -487,8 +482,10 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+ 
+ 		for (i = 0; i < buffer->count; i++) {
+ 		    if (pSrc ?
+-			(buffer->rects[i].xMask == x && buffer->rects[i].yMask == y) :
+-			(buffer->rects[i].xSrc == x && buffer->rects[i].ySrc == y)) {
++                        (buffer->rects[i].xMask == x &&
++                         buffer->rects[i].yMask ==
++                         y) : (buffer->rects[i].xSrc == x &&
++                               buffer->rects[i].ySrc == y)) {
+ 			DBG_GLYPH_CACHE(("  must flush buffer\n"));
+ 			return ExaGlyphNeedFlush;
+ 		    }
+@@ -510,15 +507,13 @@ exaGlyphCacheBufferGlyph(ScreenPtr         pScreen,
+ 	    
+     rect = &buffer->rects[buffer->count];
+ 
+-    if (pSrc)
+-    {
++    if (pSrc) {
+ 	rect->xSrc = xSrc;
+ 	rect->ySrc = ySrc;
+ 	rect->xMask = x;
+ 	rect->yMask = y;
+     }
+-    else
+-    {
++    else {
+ 	rect->xSrc = x;
+ 	rect->ySrc = y;
+ 	rect->xMask = 0;
+@@ -546,11 +541,7 @@ exaBufferGlyph(ScreenPtr         pScreen,
+ 	       PicturePtr        pSrc,
+ 	       PicturePtr        pDst,
+ 	       INT16             xSrc,
+-	       INT16             ySrc,
+-	       INT16             xMask,
+-	       INT16             yMask,
+-	       INT16             xDst,
+-	       INT16             yDst)
++               INT16 ySrc, INT16 xMask, INT16 yMask, INT16 xDst, INT16 yDst)
+ {
+     ExaScreenPriv(pScreen);
+     unsigned int format = (GlyphPicture(pGlyph)[pScreen->myNum])->format;
+@@ -570,10 +561,11 @@ exaBufferGlyph(ScreenPtr         pScreen,
+ 	ExaGlyphCachePtr cache = &pExaScr->glyphCaches[i];
+ 
+ 	if (format == cache->format &&
+-	    width <= cache->glyphWidth &&
+-	    height <= cache->glyphHeight) {
++            width <= cache->glyphWidth && height <= cache->glyphHeight) {
+ 	    ExaGlyphCacheResult result = exaGlyphCacheBufferGlyph(pScreen,
+-								  &pExaScr->glyphCaches[i],
++                                                                  &pExaScr->
++                                                                  glyphCaches
++                                                                  [i],
+ 								  buffer,
+ 								  pGlyph,
+ 								  pSrc,
+@@ -581,6 +573,7 @@ exaBufferGlyph(ScreenPtr         pScreen,
+ 								  xSrc, ySrc,
+ 								  xMask, yMask,
+ 								  xDst, yDst);
++
+ 	    switch (result) {
+ 	    case ExaGlyphFail:
+ 		break;
+@@ -615,8 +608,7 @@ exaBufferGlyph(ScreenPtr         pScreen,
+ }
+ 
+ static void
+-exaGlyphsToMask(PicturePtr        pMask,
+-		ExaGlyphBufferPtr buffer)
++exaGlyphsToMask(PicturePtr pMask, ExaGlyphBufferPtr buffer)
+ {
+     exaCompositeRects(PictOpAdd, buffer->mask, NULL, pMask,
+ 		      buffer->count, buffer->rects);
+@@ -626,9 +618,7 @@ exaGlyphsToMask(PicturePtr        pMask,
+ }
+ 
+ static void
+-exaGlyphsToDst(PicturePtr	 pSrc,
+-	       PicturePtr	 pDst,
+-	       ExaGlyphBufferPtr buffer)
++exaGlyphsToDst(PicturePtr pSrc, PicturePtr pDst, ExaGlyphBufferPtr buffer)
+ {
+     exaCompositeRects(PictOpOver, pSrc, buffer->mask, pDst, buffer->count,
+ 		      buffer->rects);
+@@ -639,10 +629,7 @@ exaGlyphsToDst(PicturePtr	 pSrc,
+ 
+ /* Cut and paste from render/glyph.c - probably should export it instead */
+ static void
+-GlyphExtents (int		nlist,
+-	      GlyphListPtr	list,
+-	      GlyphPtr	       *glyphs,
+-	      BoxPtr		extents)
++GlyphExtents(int nlist, GlyphListPtr list, GlyphPtr * glyphs, BoxPtr extents)
+ {
+     int		x1, x2, y1, y2;
+     int		n;
+@@ -655,14 +642,12 @@ GlyphExtents (int		nlist,
+     extents->x2 = MINSHORT;
+     extents->y1 = MAXSHORT;
+     extents->y2 = MINSHORT;
+-    while (nlist--)
+-    {
++    while (nlist--) {
+ 	x += list->xOff;
+ 	y += list->yOff;
+ 	n = list->len;
+ 	list++;
+-	while (n--)
+-	{
++        while (n--) {
+ 	    glyph = *glyphs++;
+ 	    x1 = x - glyph->info.x;
+ 	    if (x1 < MINSHORT)
+@@ -696,10 +681,7 @@ exaGlyphs (CARD8 	 op,
+ 	   PicturePtr	 pDst,
+ 	   PictFormatPtr maskFormat,
+ 	   INT16	 xSrc,
+-	   INT16	 ySrc,
+-	   int		 nlist,
+-	   GlyphListPtr	 list,
+-	   GlyphPtr	*glyphs)
++          INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs)
+ {
+     PixmapPtr   pMaskPixmap = 0;
+     PicturePtr  pMask = NULL;
+@@ -714,8 +696,7 @@ exaGlyphs (CARD8 	 op,
+     CARD32	component_alpha;
+     ExaGlyphBuffer buffer;
+ 
+-    if (maskFormat)
+-    {
++    if (maskFormat) {
+ 	ExaScreenPriv(pScreen);
+ 	GCPtr	    pGC;
+ 	xRectangle  rect;
+@@ -787,46 +768,45 @@ exaGlyphs (CARD8 	 op,
+ 	x = -extents.x1;
+ 	y = -extents.y1;
+     }
+-    else
+-    {
++    else {
+ 	x = 0;
+ 	y = 0;
+     }
+     buffer.count = 0;
+     buffer.mask = NULL;
+-    while (nlist--)
+-    {
++    while (nlist--) {
+ 	x += list->xOff;
+ 	y += list->yOff;
+ 	n = list->len;
+-	while (n--)
+-	{
++        while (n--) {
+ 	    glyph = *glyphs++;
+ 
+-	    if (glyph->info.width > 0 && glyph->info.height > 0)
+-	    {
++            if (glyph->info.width > 0 && glyph->info.height > 0) {
+ 		/* pGlyph->info.{x,y} compensate for empty space in the glyph. */
+-		if (maskFormat)
+-		{
++                if (maskFormat) {
+ 		    if (exaBufferGlyph(pScreen, &buffer, glyph, NULL, pMask,
+-				       0, 0, 0, 0, x - glyph->info.x, y - glyph->info.y) == ExaGlyphNeedFlush)
+-		    {
++                                       0, 0, 0, 0, x - glyph->info.x,
++                                       y - glyph->info.y) ==
++                        ExaGlyphNeedFlush) {
+ 			exaGlyphsToMask(pMask, &buffer);
+ 			exaBufferGlyph(pScreen, &buffer, glyph, NULL, pMask,
+-				       0, 0, 0, 0, x - glyph->info.x, y - glyph->info.y);
++                                       0, 0, 0, 0, x - glyph->info.x,
++                                       y - glyph->info.y);
+ 		    }
+ 		}
+-		else
+-		{
++                else {
+ 		    if (exaBufferGlyph(pScreen, &buffer, glyph, pSrc, pDst,
+-				       xSrc + (x - glyph->info.x) - first_xOff, ySrc + (y - glyph->info.y) - first_yOff,
+-				       0, 0, x - glyph->info.x, y - glyph->info.y)
+-			== ExaGlyphNeedFlush)
+-		    {
++                                       xSrc + (x - glyph->info.x) - first_xOff,
++                                       ySrc + (y - glyph->info.y) - first_yOff,
++                                       0, 0, x - glyph->info.x,
++                                       y - glyph->info.y)
++                        == ExaGlyphNeedFlush) {
+ 			exaGlyphsToDst(pSrc, pDst, &buffer);
+ 			exaBufferGlyph(pScreen, &buffer, glyph, pSrc, pDst,
+-				       xSrc + (x - glyph->info.x) - first_xOff, ySrc + (y - glyph->info.y) - first_yOff,
+-				       0, 0, x - glyph->info.x, y - glyph->info.y);
++                                       xSrc + (x - glyph->info.x) - first_xOff,
++                                       ySrc + (y - glyph->info.y) - first_yOff,
++                                       0, 0, x - glyph->info.x,
++                                       y - glyph->info.y);
+ 		    }
+ 		}
+ 	    }
+@@ -844,8 +824,7 @@ exaGlyphs (CARD8 	 op,
+ 	    exaGlyphsToDst(pSrc, pDst, &buffer);
+     }
+ 
+-    if (maskFormat)
+-    {
++    if (maskFormat) {
+ 	x = extents.x1;
+ 	y = extents.y1;
+ 	CompositePicture (op,
+@@ -853,10 +832,7 @@ exaGlyphs (CARD8 	 op,
+ 			  pMask,
+ 			  pDst,
+ 			  xSrc + x - first_xOff,
+-			  ySrc + y - first_yOff,
+-			  0, 0,
+-			  x, y,
+-			  width, height);
++                         ySrc + y - first_yOff, 0, 0, x, y, width, height);
+ 	FreePicture ((pointer) pMask, (XID) 0);
+ 	(*pScreen->DestroyPixmap) (pMaskPixmap);
+     }

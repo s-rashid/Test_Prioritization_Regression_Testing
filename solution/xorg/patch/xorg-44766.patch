@@ -1,0 +1,13 @@
+diff --git a/xkb/XKBMisc.c b/xkb/XKBMisc.c
+index 82d37d1..9cb7061 100644
+--- a/xkb/XKBMisc.c
++++ b/xkb/XKBMisc.c
+@@ -507,7 +507,7 @@ unsigned		changed,tmp;
+ 	mc->changed|= changed;
+     }
+     if (interps!=ibuf)
+-	_XkbFree(interps);
++	xfree(interps);
+     return True;
+ }
+ 

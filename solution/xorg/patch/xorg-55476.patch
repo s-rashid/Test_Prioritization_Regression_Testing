@@ -1,0 +1,34 @@
+diff --git a/hw/xfree86/dixmods/glxmodule.c b/hw/xfree86/dixmods/glxmodule.c
+index 62a047e..e72f382 100644
+--- a/hw/xfree86/dixmods/glxmodule.c
++++ b/hw/xfree86/dixmods/glxmodule.c
+@@ -47,8 +47,7 @@ static MODULESETUPPROTO(glxSetup);
+ 
+ static const char *initdeps[] = { "DOUBLE-BUFFER", "COMPOSITE", NULL };
+ 
+-static ExtensionModule GLXExt =
+-{
++static ExtensionModule GLXExt = {
+     GlxExtensionInit,
+     "GLX",
+     &noGlxExtension,
+@@ -56,8 +55,7 @@ static ExtensionModule GLXExt =
+     initdeps
+ };
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+         "glx",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,
+@@ -79,7 +77,8 @@ glxSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     __GLXprovider *provider;
+ 
+     if (setupDone) {
+-	if (errmaj) *errmaj = LDR_ONCEONLY;
++        if (errmaj)
++            *errmaj = LDR_ONCEONLY;
+ 	return NULL;
+     } 
+ 

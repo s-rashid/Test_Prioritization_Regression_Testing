@@ -1,0 +1,86 @@
+diff --git a/mi/miscrinit.c b/mi/miscrinit.c
+index fb01c68..2850c8d 100644
+--- a/mi/miscrinit.c
++++ b/mi/miscrinit.c
+@@ -52,13 +52,11 @@ from The Open Group.
+  * detail to the whole server.
+  */
+ 
+-typedef struct
+-{
++typedef struct {
+     pointer pbits; /* pointer to framebuffer */
+     int width;    /* delta to add to a framebuffer addr to move one row down */
+ } miScreenInitParmsRec, *miScreenInitParmsPtr;
+ 
+-
+ /* this plugs into pScreen->ModifyPixmapHeader */
+ Bool
+ miModifyPixmapHeader(PixmapPtr pPixmap, int width, int height, int depth,
+@@ -83,7 +81,8 @@ miModifyPixmapHeader(PixmapPtr pPixmap, int width, int height, int depth,
+ 	pPixmap->devKind = devKind;
+ 	pPixmap->refcnt = 1;
+ 	pPixmap->devPrivate.ptr = pPixData;
+-    } else {
++    }
++    else {
+ 	/*
+ 	 * Only modify specified fields, keeping all others intact.
+ 	 */
+@@ -143,27 +142,28 @@ miCreateScreenResources(ScreenPtr pScreen)
+     /* if width is non-zero, pScreen->devPrivate will be a pixmap
+      * else it will just take the value pbits
+      */
+-    if (pScrInitParms->width)
+-    {
++    if (pScrInitParms->width) {
+ 	PixmapPtr pPixmap;
+ 
+ 	/* create a pixmap with no data, then redirect it to point to
+ 	 * the screen
+ 	 */
+-	pPixmap = (*pScreen->CreatePixmap)(pScreen, 0, 0, pScreen->rootDepth, 0);
++        pPixmap =
++            (*pScreen->CreatePixmap) (pScreen, 0, 0, pScreen->rootDepth, 0);
+ 	if (!pPixmap)
+ 	    return FALSE;
+ 
+ 	if (!(*pScreen->ModifyPixmapHeader)(pPixmap, pScreen->width,
+-		    pScreen->height, pScreen->rootDepth,
++                                             pScreen->height,
++                                             pScreen->rootDepth,
+ 		    BitsPerPixel(pScreen->rootDepth),
+-		    PixmapBytePad(pScrInitParms->width, pScreen->rootDepth),
++                                             PixmapBytePad(pScrInitParms->width,
++                                                           pScreen->rootDepth),
+ 		    pScrInitParms->pbits))
+ 	    return FALSE;
+ 	value = (pointer)pPixmap;
+     }
+-    else
+-    {
++    else {
+ 	value = pScrInitParms->pbits;
+     }
+     free(pScreen->devPrivate); /* freeing miScreenInitParmsRec */
+@@ -203,9 +203,7 @@ miSetScreenPixmap(PixmapPtr pPix)
+ }
+ 
+ Bool
+-miScreenInit(
+-    ScreenPtr pScreen,
+-    pointer pbits,		/* pointer to screen bits */
++miScreenInit(ScreenPtr pScreen, pointer pbits,  /* pointer to screen bits */
+     int xsize, int ysize,	/* in pixels */
+     int dpix, int dpiy,		/* dots per inch */
+     int width,			/* pixel width of frame buffer */
+@@ -237,8 +235,7 @@ miScreenInit(
+     pScreen->SetScreenPixmap = miSetScreenPixmap;
+     pScreen->numVisuals = numVisuals;
+     pScreen->visuals = visuals;
+-    if (width)
+-    {
++    if (width) {
+ #ifdef MITSHM
+ 	ShmRegisterFbFuncs(pScreen);
+ #endif

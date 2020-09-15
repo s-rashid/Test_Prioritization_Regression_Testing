@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/xaa/xaaFallback.c b/hw/xfree86/xaa/xaaFallback.c
+index 7ab4031..deeadbf 100644
+--- a/hw/xfree86/xaa/xaaFallback.c
++++ b/hw/xfree86/xaa/xaaFallback.c
+@@ -343,7 +343,6 @@ GCOps XAAFallbackOps = {
+     XAAPolyText16Fallback, XAAImageText8Fallback, 
+     XAAImageText16Fallback, XAAImageGlyphBltFallback, 
+     XAAPolyGlyphBltFallback, XAAPushPixelsFallback,
+-    {NULL}		/* devPrivate */
+ };
+ 
+ GCOps *XAAGetFallbackOps(void)

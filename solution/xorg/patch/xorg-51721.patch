@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index 1058a46..3cded85 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -446,6 +446,11 @@ xf86SetDGAMode(
+    pScreenPriv->grabMouse = TRUE;
+    pScreenPriv->grabKeyboard = TRUE;
+ 
++   if (!mieq_installed) {
++      mieqSetHandler(ET_DGAEvent, DGAHandleEvent);
++      mieq_installed = 1;
++   }
++
+    return Success;
+ }
+ 

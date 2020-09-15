@@ -1,0 +1,18 @@
+diff --git a/config/udev.c b/config/udev.c
+index ab27c98..678e47a 100644
+--- a/config/udev.c
++++ b/config/udev.c
+@@ -197,10 +197,10 @@ device_added(struct udev_device *udev_device)
+ 
+  unwind:
+     free(config_info);
+-    while (!dev && (tmpo = options)) {
++    while ((tmpo = options)) {
+         options = tmpo->next;
+-        free(tmpo->key);
+-        free(tmpo->value);
++        free(tmpo->key);        /* NULL if dev != NULL */
++        free(tmpo->value);      /* NULL if dev != NULL */
+         free(tmpo);
+     }
+ 

@@ -1,0 +1,55 @@
+diff --git a/hw/xfree86/modes/xf86gtf.c b/hw/xfree86/modes/xf86gtf.c
+index 9d5d50a..23707b4 100644
+--- a/hw/xfree86/modes/xf86gtf.c
++++ b/hw/xfree86/modes/xf86gtf.c
+@@ -88,7 +88,6 @@
+ #define C_PRIME           (((C - J) * K/256.0) + J)
+ #define M_PRIME           (K/256.0 * M)
+ 
+-
+ /*
+  * xf86GTFMode() - as defined by the GTF Timing Standard, compute the
+  * Stage 1 Parameters using the vertical refresh frequency.  In other
+@@ -154,8 +153,7 @@ xf86GTFMode(int h_pixels, int v_lines, float freq, int interlaced, int margins)
+      */
+ 
+     v_lines_rnd = interlaced ?
+-            rint((float) v_lines) / 2.0 :
+-            rint((float) v_lines);
++        rint((float) v_lines) / 2.0 : rint((float) v_lines);
+     
+     /*  3. Find the frame rate required:
+      *
+@@ -181,7 +179,8 @@ xf86GTFMode(int h_pixels, int v_lines, float freq, int interlaced, int margins)
+      *          0)
+      */
+ 
+-    bottom_margin = margins ? rint(MARGIN_PERCENT/100.0 * v_lines_rnd) : (0.0);
++    bottom_margin =
++        margins ? rint(MARGIN_PERCENT / 100.0 * v_lines_rnd) : (0.0);
+ 
+     /*  6. If interlace is required, then set variable [INTERLACE]=0.5:
+      *   
+@@ -332,20 +331,19 @@ xf86GTFMode(int h_pixels, int v_lines, float freq, int interlaced, int margins)
+ 
+     h_freq = 1000.0 / h_period;
+     
+-
+     /* Stage 1 computations are now complete; I should really pass
+        the results to another function and do the Stage 2
+        computations, but I only need a few more values so I'll just
+        append the computations here for now */
+     
+-
+     /*  17. Find the number of pixels in the horizontal sync period:
+      *
+      *  [H SYNC (PIXELS)] =(ROUND(([H SYNC%] / 100 * [TOTAL PIXELS] /
+      *                             [CELL GRAN RND]),0))*[CELL GRAN RND]
+      */
+ 
+-    h_sync = rint(H_SYNC_PERCENT/100.0 * total_pixels / CELL_GRAN) * CELL_GRAN;
++    h_sync =
++        rint(H_SYNC_PERCENT / 100.0 * total_pixels / CELL_GRAN) * CELL_GRAN;
+ 
+     /*  18. Find the number of pixels in the horizontal front porch period:
+      *

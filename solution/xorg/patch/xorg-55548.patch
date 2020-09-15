@@ -1,0 +1,368 @@
+diff --git a/hw/xfree86/os-support/bsd/arm_video.c b/hw/xfree86/os-support/bsd/arm_video.c
+index 1de6c87..71064af 100644
+--- a/hw/xfree86/os-support/bsd/arm_video.c
++++ b/hw/xfree86/os-support/bsd/arm_video.c
+@@ -68,8 +68,7 @@
+ 
+ #ifdef __arm32__
+ #include "machine/devmap.h"
+-struct memAccess
+-{
++struct memAccess {
+     int ioctl;
+     struct map_info memInfo;
+     pointer regionVirtBase;
+@@ -84,11 +83,16 @@ extern int vgaPhysLinearBase;
+ 
+ /* A memAccess structure is needed for each possible region */ 
+ struct memAccess vgaMemInfo = { CONSOLE_GET_MEM_INFO, NULL, NULL, 
+-				    FALSE, FALSE };
++    FALSE, FALSE
++};
++
+ struct memAccess linearMemInfo = { CONSOLE_GET_LINEAR_INFO, NULL, NULL, 
+-				       FALSE, FALSE };
++    FALSE, FALSE
++};
++
+ struct memAccess ioMemInfo = { CONSOLE_GET_IO_INFO, NULL, NULL,
+-				   FALSE, FALSE };
++    FALSE, FALSE
++};
+ #endif /* __arm32__ */
+ 
+ #if defined(__NetBSD__) && !defined(MAP_FILE)
+@@ -100,7 +104,6 @@ struct memAccess ioMemInfo = { CONSOLE_GET_IO_INFO, NULL, NULL,
+ #define BUS_BASE	0L
+ #define BUS_BASE_BWX	0L
+ 
+-
+ /***************************************************************************/
+ /* Video Memory Mapping section                                            */
+ /***************************************************************************/
+@@ -126,22 +129,20 @@ checkDevMem(Bool warn)
+ 	    return;
+ 	devMemChecked = TRUE;
+ 
+-	if ((fd = open(DEV_MEM, O_RDWR)) >= 0)
+-	{
++    if ((fd = open(DEV_MEM, O_RDWR)) >= 0) {
+ 	    /* Try to map a page at the VGA address */
+ 	    base = mmap((caddr_t)0, 4096, PROT_READ | PROT_WRITE,
+ 				 MAP_FLAGS, fd, (off_t)0xA0000 + BUS_BASE);
+ 	
+-	    if (base != MAP_FAILED)
+-	    {
++        if (base != MAP_FAILED) {
+ 		munmap((caddr_t)base, 4096);
+ 		devMemFd = fd;
+ 		useDevMem = TRUE;
+ 		return;
+-	    } else {
++        }
++        else {
+ 		/* This should not happen */
+-		if (warn)
+-		{
++            if (warn) {
+ 		    xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
+ 			    DEV_MEM, strerror(errno));
+ 		}
+@@ -149,8 +150,7 @@ checkDevMem(Bool warn)
+ 		return;
+ 	    }
+ 	}
+-	if (warn)
+-	{ 
++    if (warn) {
+ 	    xf86Msg(X_WARNING, "checkDevMem: failed to open %s (%s)\n",
+ 		    DEV_MEM, strerror(errno));
+ 	} 
+@@ -177,10 +177,8 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 
+ 	checkDevMem(FALSE);
+ 
+-	if (useDevMem)
+-	{
+-	    if (devMemFd < 0) 
+-	    {
++    if (useDevMem) {
++        if (devMemFd < 0) {
+ 		FatalError("xf86MapVidMem: failed to open %s (%s)\n",
+ 			   DEV_MEM, strerror(errno));
+ 	    }
+@@ -188,28 +186,23 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 			(flags & VIDMEM_READONLY) ?
+ 			 PROT_READ : (PROT_READ | PROT_WRITE),
+ 			MAP_FLAGS, devMemFd, (off_t)Base + BUS_BASE_BWX);
+-	    if (base == MAP_FAILED)
+-	    {
++        if (base == MAP_FAILED) {
+ 		FatalError("%s: could not mmap %s [s=%x,a=%x] (%s)\n",
+-			   "xf86MapVidMem", DEV_MEM, Size, Base, 
+-			   strerror(errno));
++                       "xf86MapVidMem", DEV_MEM, Size, Base, strerror(errno));
+ 	    }
+ 	    return base;
+ 	}
+ 		
+ 	/* else, mmap /dev/vga */
+-	if ((unsigned long)Base < 0xA0000 || (unsigned long)Base >= 0xC0000)
+-	{
++    if ((unsigned long) Base < 0xA0000 || (unsigned long) Base >= 0xC0000) {
+ 		FatalError("%s: Address 0x%x outside allowable range\n",
+ 			   "xf86MapVidMem", Base);
+ 	}
+ 	base = mmap(0, Size,
+ 		    (flags & VIDMEM_READONLY) ?
+ 		     PROT_READ : (PROT_READ | PROT_WRITE),
+-		    MAP_FLAGS, xf86Info.consoleFd,
+-		    (unsigned long)Base - 0xA0000);
+-	if (base == MAP_FAILED)
+-	{
++                MAP_FLAGS, xf86Info.consoleFd, (unsigned long) Base - 0xA0000);
++    if (base == MAP_FAILED) {
+ 	    FatalError("xf86MapVidMem: Could not mmap /dev/vga (%s)\n",
+ 		       strerror(errno));
+ 	}
+@@ -245,8 +238,7 @@ xf86ReadBIOS(unsigned long Base, unsigned long Offset, unsigned char *Buf,
+ 	mlen = (Offset + Len + psize - 1) & ~(psize - 1);
+ 	ptr = (unsigned char *)mmap((caddr_t)0, mlen, PROT_READ,
+ 					MAP_SHARED, devMemFd, (off_t)Base+BUS_BASE);
+-	if ((long)ptr == -1)
+-	{
++    if ((long) ptr == -1) {
+ 		xf86Msg(X_WARNING, 
+ 			"xf86ReadBIOS: %s mmap[s=%x,a=%x,o=%x] failed (%s)\n",
+ 			DEV_MEM, Len, Base, Offset, strerror(errno));
+@@ -266,7 +258,6 @@ xf86ReadBIOS(unsigned long Base, unsigned long Offset, unsigned char *Buf,
+ 	return Len;
+ }
+ 
+-
+ /* XXX This needs to be updated for the ND */
+ 
+ /*
+@@ -278,8 +269,7 @@ checkMapInfo(Bool warn, int Region)
+ {
+     struct memAccess *memAccP;
+         
+-    switch (Region)
+-    {
++    switch (Region) {
+ 	case VGA_REGION:
+ 	    memAccP = &vgaMemInfo;
+ 	    break;
+@@ -297,31 +287,25 @@ checkMapInfo(Bool warn, int Region)
+ 	    break;
+     }
+     
+-    if(!memAccP->Checked)
+-    {	
+-	if(ioctl(xf86Info.consoleFd, memAccP->ioctl, &(memAccP->memInfo)) == -1)
+-	{
+-	    if(warn)
+-	    {
++    if (!memAccP->Checked) {
++        if (ioctl(xf86Info.consoleFd, memAccP->ioctl, &(memAccP->memInfo)) ==
++            -1) {
++            if (warn) {
+ 		xf86Msg(X_WARNING,
+ 		 "checkMapInfo: failed to get map info for region %d\n\t(%s)\n",
+ 		       Region, strerror(errno));
+ 	    }
+ 	}
+-	else
+-	{
+-	    if(memAccP->memInfo.u.map_info_mmap.map_offset 
+-	       != MAP_INFO_UNKNOWN)
++        else {
++            if (memAccP->memInfo.u.map_info_mmap.map_offset != MAP_INFO_UNKNOWN)
+ 		memAccP->OK = TRUE;
+ 	}
+ 	memAccP->Checked = TRUE;
+     }
+-    if (memAccP->OK)
+-    {
++    if (memAccP->OK) {
+ 	return memAccP;
+     }
+-    else
+-    {
++    else {
+ 	return NULL;
+     }
+ }
+@@ -331,23 +315,19 @@ xf86MapInfoMap(struct memAccess *memInfoP, pointer Base, unsigned long Size)
+ {
+     struct map_info *mapInfoP = &(memInfoP->memInfo);
+ 
+-    if (mapInfoP->u.map_info_mmap.map_size == MAP_INFO_UNKNOWN)
+-    {	
++    if (mapInfoP->u.map_info_mmap.map_size == MAP_INFO_UNKNOWN) {
+ 	Size = (unsigned long)Base + Size;
+     }
+-    else
+-    {
++    else {
+ 	Size = mapInfoP->u.map_info_mmap.map_size;
+     }
+     
+-    switch(mapInfoP->method)
+-    {
++    switch (mapInfoP->method) {
+ 	case MAP_MMAP:
+ 	    /* Need to remap if size is unknown because we may not have
+ 	       mapped the whole region initially */
+ 	    if(memInfoP->regionVirtBase == NULL ||
+-	       mapInfoP->u.map_info_mmap.map_size == MAP_INFO_UNKNOWN)
+-	    {
++            mapInfoP->u.map_info_mmap.map_size == MAP_INFO_UNKNOWN) {
+ 		if((memInfoP->regionVirtBase = 
+ 		    mmap((caddr_t)0,
+ 			 Size,
+@@ -355,9 +335,9 @@ xf86MapInfoMap(struct memAccess *memInfoP, pointer Base, unsigned long Size)
+ 			 MAP_SHARED,
+ 			 xf86Info.consoleFd,
+ 			 (unsigned long)mapInfoP->u.map_info_mmap.map_offset))
+-		   == (pointer)-1)
+-		{
+-		    FatalError("xf86MapInfoMap: Failed to map memory at 0x%x\n\t%s\n", 
++                == (pointer) -1) {
++                FatalError
++                    ("xf86MapInfoMap: Failed to map memory at 0x%x\n\t%s\n",
+ 			       mapInfoP->u.map_info_mmap.map_offset, strerror(errno));
+ 		}
+ 		if(mapInfoP->u.map_info_mmap.internal_offset > 0)
+@@ -379,11 +359,9 @@ xf86MapInfoUnmap(struct memAccess *memInfoP, unsigned long Size)
+ {
+     struct map_info *mapInfoP = &(memInfoP->memInfo);
+     
+-    switch(mapInfoP->method)
+-    {
++    switch (mapInfoP->method) {
+ 	case MAP_MMAP:
+-	    if(memInfoP->regionVirtBase != NULL)
+-	    {
++        if (memInfoP->regionVirtBase != NULL) {
+ 		if(mapInfoP->u.map_info_mmap.map_size != MAP_INFO_UNKNOWN)
+ 		    Size = mapInfoP->u.map_info_mmap.map_size;
+ 		munmap((caddr_t)memInfoP->regionVirtBase, Size);
+@@ -401,19 +379,16 @@ armMapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ {
+ 	struct memAccess *memInfoP;
+ 	
+-	if((memInfoP = checkMapInfo(FALSE, Region)) != NULL)
+-	{
++    if ((memInfoP = checkMapInfo(FALSE, Region)) != NULL) {
+ 	    /*
+ 	     ** xf86 passes in a physical address offset from the start
+ 	     ** of physical memory, but xf86MapInfoMap expects an 
+ 	     ** offset from the start of the specified region - it gets 
+ 	     ** the physical address of the region from the display driver.
+ 	     */
+-	    switch(Region)
+-	    {
++        switch (Region) {
+ 	        case LINEAR_REGION:
+-		    if (vgaPhysLinearBase)
+-		    {
++            if (vgaPhysLinearBase) {
+ 			Base -= vgaPhysLinearBase;
+ 		    }
+ 		    break;
+@@ -433,8 +408,7 @@ armUnmapVidMem(int ScreenNum, pointer Base, unsigned long Size)
+ {
+         struct memAccess *memInfoP;
+ 	
+-	if((memInfoP = checkMapInfo(FALSE, Region)) != NULL)
+-	{
++    if ((memInfoP = checkMapInfo(FALSE, Region)) != NULL) {
+ 	    xf86MapInfoUnmap(memInfoP, Base, Size);
+ 	}
+ 	unmapVidMem(ScreenNum, Base, Size);
+@@ -449,8 +423,7 @@ xf86EnableIO()
+ 	if (IoFd >= 0)
+ 		return TRUE;
+ 
+-	if ((IoFd = open("/dev/io", O_RDWR)) == -1)
+-	{
++    if ((IoFd = open("/dev/io", O_RDWR)) == -1) {
+ 		xf86Msg(X_WARNING,"xf86EnableIO: "
+ 				"Failed to open /dev/io for extended I/O\n");
+ 		return FALSE;
+@@ -572,8 +545,7 @@ int ScreenNum;
+ #ifdef __arm32__
+ 	IOPortBase = (unsigned int)-1;
+ 
+-	if((memInfoP = checkMapInfo(TRUE, MMIO_REGION)) != NULL)
+-	{
++    if ((memInfoP = checkMapInfo(TRUE, MMIO_REGION)) != NULL) {
+ 	    /* 
+ 	     * xf86MapInfoMap maps an offset from the start of video IO
+ 	     * space (e.g. 0x3B0), but IOPortBase is expected to map to
+@@ -582,8 +554,7 @@ int ScreenNum;
+ 	     * actually mmap the start of the page, then the start of video
+ 	     * I/O space is added as an internal offset.
+ 	     */
+-	    IOPortBase = (unsigned int)xf86MapInfoMap(memInfoP,
+-						      (caddr_t)0x0, 0L) 
++        IOPortBase = (unsigned int) xf86MapInfoMap(memInfoP, (caddr_t) 0x0, 0L)
+ 		- memInfoP->memInfo.u.map_info_mmap.internal_offset;
+ 	    ExtendedEnabled = TRUE;
+ 	    return TRUE;
+@@ -591,8 +562,7 @@ int ScreenNum;
+ #ifdef USE_ARM32_MMAP
+ 	checkDevMem(TRUE);
+ 
+-	if (devMemFd >= 0 && useDevMem)
+-	{
++    if (devMemFd >= 0 && useDevMem) {
+ 	    base = (pointer)mmap((caddr_t)0, 0x400, PROT_READ | PROT_WRITE,
+ 				 MAP_FLAGS, devMemFd, (off_t)DEV_MEM_IOBASE);
+ 
+@@ -600,15 +570,16 @@ int ScreenNum;
+ 		IOPortBase = (unsigned int)base;
+ 	}
+ 
+-        if (IOPortBase == (unsigned int)-1)
+-	{	
+-	    xf86Msg(X_WARNING,"xf86EnableIOPorts: failed to open mem device or map IO base. \n\
++    if (IOPortBase == (unsigned int) -1) {
++        xf86Msg(X_WARNING,
++                "xf86EnableIOPorts: failed to open mem device or map IO base. \n\
+ Make sure you have the Aperture Driver installed, or a kernel built with the INSECURE option\n");
+ 	    return FALSE;
+ 	}
+ #else
+ 	/* We don't have the IOBASE, so we can't map the address */
+-	xf86Msg(X_WARNING,"xf86EnableIOPorts: failed to open mem device or map IO base. \n\
++    xf86Msg(X_WARNING,
++            "xf86EnableIOPorts: failed to open mem device or map IO base. \n\
+ Try building the server with USE_ARM32_MMAP defined\n");
+ 	return FALSE;
+ #endif
+@@ -624,6 +595,7 @@ xf86DisableIOPorts(ScreenNum)
+ int ScreenNum;
+ {
+ 	int i;
++
+ #ifdef __arm32__
+         struct memAccess *memInfoP;
+ #endif
+@@ -631,8 +603,7 @@ int ScreenNum;
+ 	ScreenEnabled[ScreenNum] = FALSE;
+ 
+ #ifdef __arm32__
+-	if((memInfoP = checkMapInfo(FALSE, MMIO_REGION)) != NULL)
+-	{
++    if ((memInfoP = checkMapInfo(FALSE, MMIO_REGION)) != NULL) {
+ 	    xf86MapInfoUnmap(memInfoP, 0);
+ 	}
+ #endif
+@@ -655,5 +626,3 @@ int ScreenNum;
+ 
+ #endif /* USE_ARC_MMAP || USE_ARM32_MMAP */
+ #endif
+-
+-

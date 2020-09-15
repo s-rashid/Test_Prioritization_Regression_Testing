@@ -1,0 +1,13 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index 3d053bc..9642dda 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -288,7 +288,7 @@ ProcRRCreateMode (ClientPtr client)
+     RRModePtr		mode;
+     
+     REQUEST_AT_LEAST_SIZE (xRRCreateModeReq);
+-    rc = dixLookupWindow(&pWin, stuff->window, client, DixReadAccess);
++    rc = dixLookupWindow(&pWin, stuff->window, client, DixGetAttrAccess);
+     if (rc != Success)
+ 	return rc;
+ 

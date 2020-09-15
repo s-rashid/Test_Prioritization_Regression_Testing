@@ -1,0 +1,21 @@
+diff --git a/render/picture.c b/render/picture.c
+index 015d633..e7e1f2b 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1773,8 +1773,6 @@ CompositeTriStrip (CARD8	    op,
+ 		   int		    npoints,
+ 		   xPointFixed	    *points)
+ {
+-    ScreenPtr           pScreen = pDst->pDrawable->pScreen;
+-    PictureScreenPtr    ps = GetPictureScreen(pScreen);
+     xTriangle           *tris, *tri;
+     int                 ntri;
+     
+@@ -1804,7 +1802,6 @@ CompositeTriFan (CARD8		op,
+ 		 int		npoints,
+ 		 xPointFixed	*points)
+ {
+-    ScreenPtr		pScreen = pDst->pDrawable->pScreen;
+     xTriangle		*tris, *tri;
+     xPointFixed		*first;
+     int			ntri;

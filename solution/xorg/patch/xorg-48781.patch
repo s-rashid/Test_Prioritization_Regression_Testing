@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 8a73925..69fbdff 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -49,8 +49,6 @@
+ #include "xf86_OSproc.h"
+ #include "xf86VGAarbiter.h"
+ 
+-#include "Pci.h"
+-
+ /* Entity data */
+ EntityPtr *xf86Entities = NULL;	/* Bus slots claimed by drivers */
+ int xf86NumEntities = 0;

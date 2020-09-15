@@ -1,0 +1,13 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index 3ff3d81..bf49311 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -97,7 +97,7 @@ char *		tmp;
+     if ((list->szPool-list->nPool)<wlen) {
+ 	if (wlen>1024)	list->szPool+= XkbPaddedSize(wlen*2);
+ 	else		list->szPool+= 1024;
+-	list->pool= _XkbTypedRealloc(list->pool,list->szPool,char);
++	list->pool= xrealloc(list->pool, list->szPool * sizeof(char));
+ 	if (!list->pool)
+ 	    return BadAlloc;
+     }

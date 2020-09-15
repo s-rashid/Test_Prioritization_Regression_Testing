@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/x86emu/x86emu/types.h b/hw/xfree86/x86emu/x86emu/types.h
+index fa23800..5a6ef01 100644
+--- a/hw/xfree86/x86emu/x86emu/types.h
++++ b/hw/xfree86/x86emu/x86emu/types.h
+@@ -36,7 +36,6 @@
+ *
+ ****************************************************************************/
+ 
+-
+ #ifndef __X86EMU_TYPES_H
+ #define __X86EMU_TYPES_H
+ 

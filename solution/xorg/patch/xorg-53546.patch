@@ -1,0 +1,14 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 4206ca9..bb1f5c9 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -833,8 +833,7 @@ positionSprite(DeviceIntPtr dev, int mode, ValuatorMask *mask,
+      * screenx back into device co-ordinates. */
+     isx = trunc(*screenx);
+     isy = trunc(*screeny);
+-    miPointerSetPosition(dev, mode, &isx, &isy);
+-    scr = miPointerGetScreen(dev);
++    scr = miPointerSetPosition(dev, mode, &isx, &isy);
+     if (isx != trunc(*screenx))
+     {
+         *screenx -= trunc(*screenx) - isx;

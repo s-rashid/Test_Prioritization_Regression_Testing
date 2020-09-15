@@ -1,0 +1,13 @@
+diff --git a/Xi/xipassivegrab.c b/Xi/xipassivegrab.c
+index a62fe79..2966145 100644
+--- a/Xi/xipassivegrab.c
++++ b/Xi/xipassivegrab.c
+@@ -147,7 +147,7 @@ ProcXIPassiveGrabDevice(ClientPtr client)
+ 	if (status != Success)
+ 	{
+ 	    client->errorValue = stuff->cursor;
+-	    return (status == BadValue) ? BadCursor : status;
++	    return status;
+ 	}
+     }
+ 

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/i2c/fi1236_module.c b/hw/xfree86/i2c/fi1236_module.c
+index a63f922..2f453d9 100644
+--- a/hw/xfree86/i2c/fi1236_module.c
++++ b/hw/xfree86/i2c/fi1236_module.c
+@@ -4,8 +4,7 @@
+ 
+ #include "xf86Module.h"
+ 
+-static XF86ModuleVersionInfo fi1236VersRec =
+-{
++static XF86ModuleVersionInfo fi1236VersRec = {
+         "fi1236",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,

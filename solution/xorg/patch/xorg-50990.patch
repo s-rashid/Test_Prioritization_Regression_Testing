@@ -1,0 +1,13 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 9553728..bc5841f 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1139,7 +1139,7 @@ GetPointerEvents(EventList *events, DeviceIntPtr pDev, int type, int buttons,
+             }
+             if (valuator_mask_isset(&mask, 1))
+             {
+-                scaled = rescaleValuatorAxis(valuator_mask_get(&mask, 0),
++                scaled = rescaleValuatorAxis(valuator_mask_get(&mask, 1),
+                                              0.0, &y_frac, NULL,
+                                              pDev->valuator->axes + 1,
+                                              scr->height);

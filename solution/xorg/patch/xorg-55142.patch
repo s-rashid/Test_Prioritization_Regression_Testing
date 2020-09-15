@@ -1,0 +1,219 @@
+diff --git a/fb/fbpush.c b/fb/fbpush.c
+index 8dd7c2b..f0a861c 100644
+--- a/fb/fbpush.c
++++ b/fb/fbpush.c
+@@ -29,16 +29,8 @@
+ void
+ fbPushPattern (DrawablePtr  pDrawable,
+ 	       GCPtr	    pGC,
+-	       
+ 	       FbStip	    *src,
+-	       FbStride	    srcStride,
+-	       int	    srcX,
+-
+-	       int	    x,
+-	       int	    y,
+-
+-	       int	    width,
+-	       int	    height)
++              FbStride srcStride, int srcX, int x, int y, int width, int height)
+ {
+     FbStip	    *s, bitsMask, bitsMask0, bits;
+     int		    xspan;
+@@ -50,27 +42,22 @@ fbPushPattern (DrawablePtr  pDrawable,
+     
+     bitsMask0 = FbStipMask (srcX, 1);
+     
+-    while (height--)
+-    {
++    while (height--) {
+ 	bitsMask = bitsMask0;
+ 	w = width;
+ 	s = src;
+ 	src += srcStride;
+ 	bits = READ(s++);
+ 	xspan = x;
+-	while (w)
+-	{
+-	    if (bits & bitsMask)
+-	    {
++        while (w) {
++            if (bits & bitsMask) {
+ 		lenspan = 0;
+-		do
+-		{
++                do {
+ 		    lenspan++;
+ 		    if (lenspan == w)
+ 			break;
+ 		    bitsMask = FbStipRight (bitsMask, 1);
+-		    if (!bitsMask)
+-		    {
++                    if (!bitsMask) {
+ 			bits = READ(s++);
+ 			bitsMask = FbBitsMask(0,1);
+ 		    }
+@@ -79,17 +66,14 @@ fbPushPattern (DrawablePtr  pDrawable,
+ 		xspan += lenspan;
+ 		w -= lenspan;
+ 	    }
+-	    else
+-	    {
+-		do
+-		{
++            else {
++                do {
+ 		    w--;
+ 		    xspan++;
+ 		    if (!w)
+ 			break;
+ 		    bitsMask = FbStipRight (bitsMask, 1);
+-		    if (!bitsMask)
+-		    {
++                    if (!bitsMask) {
+ 			bits = READ(s++);
+ 			bitsMask = FbBitsMask(0,1);
+ 		    }
+@@ -103,20 +87,12 @@ fbPushPattern (DrawablePtr  pDrawable,
+ void
+ fbPushFill (DrawablePtr	pDrawable,
+ 	    GCPtr	pGC,
+-
+ 	    FbStip	*src,
+-	    FbStride	srcStride,
+-	    int		srcX,
+-	    
+-	    int		x,
+-	    int		y,
+-	    int		width,
+-	    int		height)
++           FbStride srcStride, int srcX, int x, int y, int width, int height)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate(pGC);
+     
+-    if (pGC->fillStyle == FillSolid)
+-    {
++    if (pGC->fillStyle == FillSolid) {
+ 	FbBits	    *dst;
+ 	FbStride    dstStride;
+ 	int	    dstBpp;
+@@ -128,45 +104,34 @@ fbPushFill (DrawablePtr	pDrawable,
+ 	dst = dst + (y + dstYoff) * dstStride;
+ 	dstX = (x + dstXoff) * dstBpp;
+ 	dstWidth = width * dstBpp;
+-	if (dstBpp == 1)
+-	{
++        if (dstBpp == 1) {
+ 	    fbBltStip (src,
+ 		       srcStride,
+ 		       srcX,
+-    
+ 		       (FbStip *) dst,
+ 		       FbBitsStrideToStipStride (dstStride),
+ 		       dstX,
+-    
+ 		       dstWidth,
+ 		       height,
+-    
+-		       FbStipple1Rop(pGC->alu,pGC->fgPixel),
+-		       pPriv->pm,
+-		       dstBpp);
++                      FbStipple1Rop(pGC->alu, pGC->fgPixel), pPriv->pm, dstBpp);
+ 	}
+-	else
+-	{
++        else {
+ 	    fbBltOne (src,
+ 		      srcStride,
+ 		      srcX,
+-    
+ 		      dst,
+ 		      dstStride,
+ 		      dstX,
+ 		      dstBpp,
+-    
+ 		      dstWidth,
+ 		      height,
+-    
+ 		      pPriv->and, pPriv->xor,
+ 		      fbAnd(GXnoop,(FbBits) 0,FB_ALLONES),
+ 		      fbXor(GXnoop,(FbBits) 0,FB_ALLONES));
+ 	}
+ 	fbFinishAccess (pDrawable);
+     }
+-    else
+-    {
++    else {
+ 	fbPushPattern (pDrawable, pGC, src, srcStride, srcX,
+ 		       x, y, width, height);
+     }
+@@ -175,15 +140,8 @@ fbPushFill (DrawablePtr	pDrawable,
+ void
+ fbPushImage (DrawablePtr    pDrawable,
+ 	     GCPtr	    pGC,
+-	     
+ 	     FbStip	    *src,
+-	     FbStride	    srcStride,
+-	     int	    srcX,
+-
+-	     int	    x,
+-	     int	    y,
+-	     int	    width,
+-	     int	    height)
++            FbStride srcStride, int srcX, int x, int y, int width, int height)
+ {
+     RegionPtr	pClip = fbGetCompositeClip (pGC);
+     int		nbox;
+@@ -191,10 +149,7 @@ fbPushImage (DrawablePtr    pDrawable,
+     int		x1, y1, x2, y2;
+     
+     for (nbox = RegionNumRects (pClip),
+-	 pbox = RegionRects(pClip);
+-	 nbox--;
+-	 pbox++)
+-    {
++         pbox = RegionRects(pClip); nbox--; pbox++) {
+ 	x1 = x;
+ 	y1 = y;
+ 	x2 = x + width;
+@@ -211,35 +166,23 @@ fbPushImage (DrawablePtr    pDrawable,
+ 	    continue;
+ 	fbPushFill (pDrawable,
+ 		    pGC,
+-
+ 		    src + (y1 - y) * srcStride,
+-		    srcStride,
+-		    srcX + (x1 - x),
+-
+-		    x1,
+-		    y1,
+-		    x2 - x1,
+-		    y2 - y1);
++                   srcStride, srcX + (x1 - x), x1, y1, x2 - x1, y2 - y1);
+     }
+ }
+ 	     
+ void
+ fbPushPixels (GCPtr	    pGC,
+ 	      PixmapPtr	    pBitmap,
+-	      DrawablePtr   pDrawable,
+-	      int	    dx,
+-	      int	    dy,
+-	      int	    xOrg,
+-	      int	    yOrg)
++             DrawablePtr pDrawable, int dx, int dy, int xOrg, int yOrg)
+ {
+     FbStip	*stip;
+     FbStride	stipStride;
+     int		stipBpp;
+     _X_UNUSED int	stipXoff, stipYoff;
+ 
+-    fbGetStipDrawable (&pBitmap->drawable, stip, stipStride, stipBpp, stipXoff, stipYoff);
++    fbGetStipDrawable(&pBitmap->drawable, stip, stipStride, stipBpp, stipXoff,
++                      stipYoff);
+ 
+-    fbPushImage (pDrawable, pGC,
+-		 stip, stipStride, 0,
+-		 xOrg, yOrg, dx, dy);
++    fbPushImage(pDrawable, pGC, stip, stipStride, 0, xOrg, yOrg, dx, dy);
+ }

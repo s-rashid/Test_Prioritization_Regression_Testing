@@ -1,0 +1,20 @@
+diff --git a/hw/dmx/dmxclient.h b/hw/dmx/dmxclient.h
+index f0f235f..19dfdbe 100644
+--- a/hw/dmx/dmxclient.h
++++ b/hw/dmx/dmxclient.h
+@@ -51,6 +51,7 @@ typedef unsigned long Mask64;
+ typedef unsigned long Atom64;
+ typedef unsigned long VisualID64;
+ typedef unsigned long Time64;
++
+ #define XID           XID64
+ #define Mask          Mask64
+ #define Atom          Atom64
+@@ -64,6 +65,7 @@ typedef XID           Cursor64;
+ typedef XID           Colormap64;
+ typedef XID           GContext64;
+ typedef XID           KeySym64;
++
+ #define Window        Window64
+ #define Drawable      Drawable64
+ #define Font          Font64

@@ -1,0 +1,183 @@
+diff --git a/mi/mizerline.c b/mi/mizerline.c
+index 7077b51..90798db 100644
+--- a/mi/mizerline.c
++++ b/mi/mizerline.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -98,10 +97,7 @@ SOFTWARE.
+ }
+ 
+ void
+-miZeroLine(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		mode,		/* Origin or Previous */
++miZeroLine(DrawablePtr pDraw, GCPtr pGC, int mode,      /* Origin or Previous */
+     int		npt,		/* number of points */
+     DDXPointPtr pptInit)
+ {
+@@ -130,8 +126,7 @@ miZeroLine(
+     xright  = pDraw->x + pDraw->width - 1;
+     ybottom = pDraw->y + pDraw->height - 1;
+ 
+-    if (!pGC->miTranslate)
+-    {
++    if (!pGC->miTranslate) {
+ 	/* do everything in drawable-relative coordinates */
+ 	xleft    = 0;
+ 	ytop     = 0;
+@@ -170,8 +165,7 @@ miZeroLine(
+ 
+     xstart = ppt->x;
+     ystart = ppt->y;
+-    if (pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	xstart += pDraw->x;
+ 	ystart += pDraw->y;
+     }
+@@ -184,8 +178,7 @@ miZeroLine(
+     oc2 = 0;
+     MIOUTCODES(oc2, x2, y2, xleft, ytop, xright, ybottom);
+ 
+-    while (--npt > 0)
+-    {
++    while (--npt > 0) {
+ 	if (Nspans > 0)
+ 	    (*pGC->ops->FillSpans)(pDraw, pGC, Nspans, pspanInit,
+ 				   pwidthInit, FALSE);
+@@ -201,13 +194,11 @@ miZeroLine(
+ 
+ 	x2 = ppt->x;
+ 	y2 = ppt->y;
+-	if (pGC->miTranslate && (mode != CoordModePrevious))
+-	{
++        if (pGC->miTranslate && (mode != CoordModePrevious)) {
+ 	    x2 += pDraw->x;
+ 	    y2 += pDraw->y;
+ 	}
+-	else if (mode == CoordModePrevious)
+-	{
++        else if (mode == CoordModePrevious) {
+ 	    x2 += x1;
+ 	    y2 += y1;
+ 	}
+@@ -217,8 +208,7 @@ miZeroLine(
+ 
+ 	CalcLineDeltas(x1, y1, x2, y2, adx, ady, signdx, signdy, 1, 1, octant);
+ 
+-	if (adx > ady)
+-	{
++        if (adx > ady) {
+ 	    e1 = ady << 1;
+ 	    e2 = e1 - (adx << 1);
+ 	    e  = e1 - adx;
+@@ -233,8 +223,7 @@ miZeroLine(
+ 	    pt1_clipped = 0;
+ 	    pt2_clipped = 0;
+ 
+-	    if ((oc1 | oc2) != 0)
+-	    {
++            if ((oc1 | oc2) != 0) {
+ 		result = miZeroClipLine(xleft, ytop, xright, ybottom,
+ 					&new_x1, &new_y1, &new_x2, &new_y2,
+ 					adx, ady,
+@@ -251,8 +240,7 @@ miZeroLine(
+ 		if (pt2_clipped)
+ 		    length++;
+ 
+-		if (pt1_clipped)
+-		{
++                if (pt1_clipped) {
+ 		    /* must calculate new error terms */
+ 		    clipdx = abs(new_x1 - x1);
+ 		    clipdy = abs(new_y1 - y1);
+@@ -268,20 +256,18 @@ miZeroLine(
+ 	    e3 = e2 - e1;
+ 	    e  = e - e1;
+ 
+-	    while (length--)
+-	    {
++            while (length--) {
+ 		MI_OUTPUT_POINT(x, y);
+ 		e += e1;
+-		if (e >= 0)
+-		{
++                if (e >= 0) {
+ 		    y += signdy;
+ 		    e += e3;
+ 		}
+ 		x += signdx;
+ 	    }
+ 	}
+-	else    /* Y major line */
+-	{
++        else {                  /* Y major line */
++
+ 	    e1 = adx << 1;
+ 	    e2 = e1 - (ady << 1);
+ 	    e  = e1 - ady;
+@@ -297,8 +283,7 @@ miZeroLine(
+ 	    pt1_clipped = 0;
+ 	    pt2_clipped = 0;
+ 
+-	    if ((oc1 | oc2) != 0)
+-	    {
++            if ((oc1 | oc2) != 0) {
+ 		result = miZeroClipLine(xleft, ytop, xright, ybottom,
+ 					&new_x1, &new_y1, &new_x2, &new_y2,
+ 					adx, ady,
+@@ -315,8 +300,7 @@ miZeroLine(
+ 		if (pt2_clipped)
+ 		    length++;
+ 
+-		if (pt1_clipped)
+-		{
++                if (pt1_clipped) {
+ 		    /* must calculate new error terms */
+ 		    clipdx = abs(new_x1 - x1);
+ 		    clipdy = abs(new_y1 - y1);
+@@ -332,12 +316,10 @@ miZeroLine(
+ 	    e3 = e2 - e1;
+ 	    e  = e - e1;
+ 
+-	    while (length--)
+-	    {
++            while (length--) {
+ 		MI_OUTPUT_POINT(x, y);
+ 		e += e1;
+-		if (e >= 0)
+-		{
++                if (e >= 0) {
+ 		    x += signdx;
+ 		    e += e3;
+ 		}
+@@ -352,8 +334,7 @@ miZeroLine(
+      * line is degenerate
+      */
+     if ( (! pt2_clipped) && (pGC->capStyle != CapNotLast) &&
+-		(((xstart != x2) || (ystart != y2)) || (ppt == pptInit + 1)))
+-    {
++        (((xstart != x2) || (ystart != y2)) || (ppt == pptInit + 1))) {
+ 	MI_OUTPUT_POINT(x, y);
+     }    
+ 
+@@ -366,11 +347,7 @@ miZeroLine(
+ }
+ 
+ void
+-miZeroDashLine(
+-            DrawablePtr dst,
+-            GCPtr pgc,
+-            int mode,
+-            int nptInit,		/* number of points in polyline */
++miZeroDashLine(DrawablePtr dst, GCPtr pgc, int mode, int nptInit,       /* number of points in polyline */
+             DDXPointRec *pptInit	/* points in the polyline */
+         )
+ {

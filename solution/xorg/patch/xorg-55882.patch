@@ -1,0 +1,109 @@
+diff --git a/hw/xwin/winrandr.c b/hw/xwin/winrandr.c
+index 596c1ab..1b34085 100644
+--- a/hw/xwin/winrandr.c
++++ b/hw/xwin/winrandr.c
+@@ -40,7 +40,6 @@
+ #error X server must have RandR 1.2 interface
+ #endif
+ 
+-
+ /*
+  * Answer queries about the RandR features supported.
+  */
+@@ -69,9 +68,7 @@ winRandRGetInfo (ScreenPtr pScreen, Rotation *pRotations)
+ void
+ winDoRandRScreenSetSize (ScreenPtr  pScreen,
+                          CARD16	    width,
+-                         CARD16	    height,
+-                         CARD32	    mmWidth,
+-                         CARD32	    mmHeight)
++                        CARD16 height, CARD32 mmWidth, CARD32 mmHeight)
+ {
+   winScreenPriv(pScreen);
+   winScreenInfo *pScreenInfo = pScreenPriv->pScreenInfo;
+@@ -86,8 +83,7 @@ winDoRandRScreenSetSize (ScreenPtr  pScreen,
+ 
+   /* Reallocate the framebuffer used by the drawing engine */
+   (*pScreenPriv->pwinFreeFB)(pScreen);
+-  if (!(*pScreenPriv->pwinAllocateFB)(pScreen))
+-    {
++    if (!(*pScreenPriv->pwinAllocateFB) (pScreen)) {
+       ErrorF ("winDoRandRScreenSetSize - Could not reallocate framebuffer\n");
+     }
+ 
+@@ -121,9 +117,7 @@ static
+ Bool
+ winRandRScreenSetSize (ScreenPtr  pScreen,
+ 		       CARD16	    width,
+-		       CARD16	    height,
+-		       CARD32	    mmWidth,
+-		       CARD32	    mmHeight)
++                      CARD16 height, CARD32 mmWidth, CARD32 mmHeight)
+ {
+   winScreenPriv(pScreen);
+   winScreenInfo *pScreenInfo = pScreenPriv->pScreenInfo;
+@@ -134,9 +128,9 @@ winRandRScreenSetSize (ScreenPtr  pScreen,
+     It doesn't currently make sense to allow resize in fullscreen mode
+     (we'd actually have to list the supported resolutions)
+   */
+-  if (pScreenInfo->fFullScreen)
+-    {
+-      ErrorF ("winRandRScreenSetSize - resize not supported in fullscreen mode\n");
++    if (pScreenInfo->fFullScreen) {
++        ErrorF
++            ("winRandRScreenSetSize - resize not supported in fullscreen mode\n");
+       return FALSE;
+     }
+ 
+@@ -153,9 +147,9 @@ winRandRScreenSetSize (ScreenPtr  pScreen,
+ #ifdef XWIN_MULTIWINDOW
+       || pScreenInfo->fMultiWindow
+ #endif
+-      )
+-    {
+-      ErrorF ("winRandRScreenSetSize - resize not supported in rootless modes\n");
++        ) {
++        ErrorF
++            ("winRandRScreenSetSize - resize not supported in rootless modes\n");
+       return FALSE;
+     }
+ 
+@@ -171,7 +165,8 @@ winRandRScreenSetSize (ScreenPtr  pScreen,
+     rcClient.right = width;
+     rcClient.bottom = height;
+ 
+-    ErrorF ("winRandRScreenSetSize new client area w: %d h: %d\n", width, height);
++        ErrorF("winRandRScreenSetSize new client area w: %d h: %d\n", width,
++               height);
+ 
+     /* Get the Windows window style and extended style */
+     dwExStyle = GetWindowLongPtr(pScreenPriv->hwndScreen, GWL_EXSTYLE);
+@@ -183,11 +178,12 @@ winRandRScreenSetSize (ScreenPtr  pScreen,
+      */
+     AdjustWindowRectEx(&rcClient, dwStyle, FALSE, dwExStyle);
+ 
+-    ErrorF ("winRandRScreenSetSize new window area w: %ld h: %ld\n", rcClient.right-rcClient.left, rcClient.bottom-rcClient.top);
++        ErrorF("winRandRScreenSetSize new window area w: %ld h: %ld\n",
++               rcClient.right - rcClient.left, rcClient.bottom - rcClient.top);
+ 
+     SetWindowPos(pScreenPriv->hwndScreen, NULL,
+-                 0, 0, rcClient.right-rcClient.left, rcClient.bottom-rcClient.top,
+-                 SWP_NOZORDER | SWP_NOMOVE);
++                     0, 0, rcClient.right - rcClient.left,
++                     rcClient.bottom - rcClient.top, SWP_NOZORDER | SWP_NOMOVE);
+   }
+ 
+   return TRUE;
+@@ -201,10 +197,10 @@ Bool
+ winRandRInit (ScreenPtr pScreen)
+ {
+   rrScrPrivPtr pRRScrPriv;
++
+   winDebug ("winRandRInit ()\n");
+ 
+-  if (!RRScreenInit (pScreen))
+-    {
++    if (!RRScreenInit(pScreen)) {
+       ErrorF ("winRandRInit () - RRScreenInit () failed\n");
+       return FALSE;
+     }

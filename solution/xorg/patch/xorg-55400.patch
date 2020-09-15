@@ -1,0 +1,633 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 968ebb1..692e511 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -70,6 +70,7 @@ static KdPointerDriver  *kdPointerDrivers  = NULL;
+ static Bool		kdInputEnabled;
+ static Bool		kdOffScreen;
+ static unsigned long	kdOffScreenTime;
++
+ static KdPointerMatrix	kdPointerMatrix = {
+    { { 1, 0, 0 },
+      { 0, 1, 0 } }
+@@ -165,6 +166,7 @@ static void
+ KdNonBlockFd (int fd)
+ {
+     int	flags;
++
+     flags = fcntl (fd, F_GETFL);
+     flags |= FASYNC|NOBLOCK;
+     fcntl (fd, F_SETFL, flags);
+@@ -202,8 +204,7 @@ KdRemoveFd (int fd)
+     flags = fcntl (fd, F_GETFL);
+     flags &= ~(FASYNC|NOBLOCK);
+     fcntl (fd, F_SETFL, flags);
+-    if (kdnFds == 0)
+-    {
++    if (kdnFds == 0) {
+ 	memset (&act, '\0', sizeof act);
+ 	act.sa_handler = SIG_IGN;
+ 	sigemptyset (&act.sa_mask);
+@@ -401,8 +402,7 @@ KdPointerProc(DeviceIntPtr pDevice, int onoff)
+         return BadImplementation;
+     }
+ 
+-    switch (onoff)
+-    {
++    switch (onoff) {
+     case DEVICE_INIT:
+ #ifdef DEBUG
+         ErrorF("initialising pointer %s ...\n", pi->name);
+@@ -442,8 +442,7 @@ KdPointerProc(DeviceIntPtr pDevice, int onoff)
+ 	    return BadAlloc;
+ 	}
+ 
+-	switch(pi->nAxes)
+-	{
++        switch (pi->nAxes) {
+ 	    default:
+ 	    case 7:
+ 		btn_labels[6] = XIGetKnownProperty(BTN_LABEL_PROP_BTN_HWHEEL_RIGHT);
+@@ -594,7 +593,6 @@ KdRingBell(KdKeyboardInfo *ki, int volume, int pitch, int duration)
+         (*ki->driver->Bell) (ki, volume, pitch, duration);
+ }
+ 
+-
+ static void
+ KdSetLeds (KdKeyboardInfo *ki, int leds)
+ {
+@@ -631,31 +629,39 @@ KdComputePointerMatrix (KdPointerMatrix *m, Rotation randr, int width,
+     int		    i, j;
+     int		    size[2];
+ 
+-    size[0] = width; size[1] = height;
++    size[0] = width;
++    size[1] = height;
+     if (randr & RR_Reflect_X)
+ 	x_dir = -1;
+     if (randr & RR_Reflect_Y)
+ 	y_dir = -1;
+     switch (randr & (RR_Rotate_All)) {
+     case RR_Rotate_0:
+-	m->matrix[0][0] = x_dir; m->matrix[0][1] = 0;
+-	m->matrix[1][0] = 0; m->matrix[1][1] = y_dir;
++        m->matrix[0][0] = x_dir;
++        m->matrix[0][1] = 0;
++        m->matrix[1][0] = 0;
++        m->matrix[1][1] = y_dir;
+ 	break;
+     case RR_Rotate_90:
+-	m->matrix[0][0] = 0; m->matrix[0][1] = -x_dir;
+-	m->matrix[1][0] = y_dir; m->matrix[1][1] = 0;
++        m->matrix[0][0] = 0;
++        m->matrix[0][1] = -x_dir;
++        m->matrix[1][0] = y_dir;
++        m->matrix[1][1] = 0;
+ 	break;
+     case RR_Rotate_180:
+-	m->matrix[0][0] = -x_dir; m->matrix[0][1] = 0;
+-	m->matrix[1][0] = 0; m->matrix[1][1] = -y_dir;
++        m->matrix[0][0] = -x_dir;
++        m->matrix[0][1] = 0;
++        m->matrix[1][0] = 0;
++        m->matrix[1][1] = -y_dir;
+ 	break;
+     case RR_Rotate_270:
+-	m->matrix[0][0] = 0; m->matrix[0][1] = x_dir;
+-	m->matrix[1][0] = -y_dir; m->matrix[1][1] = 0;
++        m->matrix[0][0] = 0;
++        m->matrix[0][1] = x_dir;
++        m->matrix[1][0] = -y_dir;
++        m->matrix[1][1] = 0;
+ 	break;
+     }
+-    for (i = 0; i < 2; i++)
+-    {
++    for (i = 0; i < 2; i++) {
+ 	m->matrix[i][2] = 0;
+ 	for (j = 0 ; j < 2; j++)
+ 	    if (m->matrix[i][j] < 0)
+@@ -671,8 +677,10 @@ KdScreenToPointerCoords (int *x, int *y)
+     int sx = *x;
+     int sy = *y;
+ 
+-    *x = (m[0][1] * sy - m[0][1] * m[1][2] + m[1][1] * m[0][2] - m[1][1] * sx) / div;
+-    *y = (m[1][0] * sx + m[0][0] * m[1][2] - m[1][0] * m[0][2] - m[0][0] * sy) / div;
++    *x = (m[0][1] * sy - m[0][1] * m[1][2] + m[1][1] * m[0][2] -
++          m[1][1] * sx) / div;
++    *y = (m[1][0] * sx + m[0][0] * m[1][2] - m[1][0] * m[0][2] -
++          m[0][0] * sy) / div;
+ }
+ 
+ static void
+@@ -716,8 +724,7 @@ KdKeyboardProc(DeviceIntPtr pDevice, int onoff)
+         return BadImplementation;
+     }
+ 
+-    switch (onoff)
+-    {
++    switch (onoff) {
+     case DEVICE_INIT:
+ #ifdef DEBUG
+         ErrorF("initialising keyboard %s\n", ki->name);
+@@ -887,6 +894,7 @@ KdKeyboardInfo *
+ KdNewKeyboard (void)
+ {
+     KdKeyboardInfo *ki = calloc(sizeof(KdKeyboardInfo), 1);
++
+     if (!ki)
+         return NULL;
+ 
+@@ -1042,12 +1050,10 @@ static Bool
+ KdGetOptions (InputOption **options, char *string)
+ {
+     InputOption     *newopt = NULL;
+-    char            *key = NULL,
+-                    *value = NULL;
++    char *key = NULL, *value = NULL;
+     int             tam_key = 0;
+ 
+-    if (strchr(string, '='))
+-    {
++    if (strchr(string, '=')) {
+         tam_key = (strchr(string, '=') - string);
+         key = strndup(string, tam_key);
+         if (!key)
+@@ -1057,8 +1063,7 @@ KdGetOptions (InputOption **options, char *string)
+         if (!value)
+             goto out;
+     }
+-    else
+-    {
++    else {
+         key = strdup(string);
+         value = NULL;
+     }
+@@ -1079,8 +1084,7 @@ KdParseKbdOptions (KdKeyboardInfo *ki)
+ {
+     InputOption *option = NULL;
+ 
+-    nt_list_for_each_entry(option, ki->options, list.next)
+-    {
++    nt_list_for_each_entry(option, ki->options, list.next) {
+         const char *key = input_option_get_key(option);
+         const char *value = input_option_get_value(option);
+ 
+@@ -1120,23 +1124,20 @@ KdParseKeyboard (char *arg)
+     ki->driverPrivate = NULL;
+     ki->next = NULL;
+ 
+-    if (!arg)
+-    {
++    if (!arg) {
+         ErrorF("keybd: no arg\n");
+         KdFreeKeyboard (ki);
+         return NULL;
+     }
+ 
+-    if (strlen (arg) >= sizeof (save))
+-    {
++    if (strlen(arg) >= sizeof(save)) {
+         ErrorF("keybd: arg too long\n");
+         KdFreeKeyboard (ki);
+         return NULL;
+     }
+ 
+     arg = KdParseFindNext (arg, ",", save, &delim);
+-    if (!save[0])
+-    {
++    if (!save[0]) {
+         ErrorF("keybd: failed on save[0]\n");
+         KdFreeKeyboard (ki);
+         return NULL;
+@@ -1147,26 +1148,22 @@ KdParseKeyboard (char *arg)
+     else
+         ki->driverPrivate = strdup(save);
+ 
+-    if (delim != ',')
+-    {
++    if (delim != ',') {
+         return ki;
+     }
+ 
+     arg = KdParseFindNext (arg, ",", save, &delim);
+ 
+-    while (delim == ',')
+-    {
++    while (delim == ',') {
+         arg = KdParseFindNext (arg, ",", save, &delim);
+ 
+-	if (!KdGetOptions(&options, save))
+-	{
++        if (!KdGetOptions(&options, save)) {
+ 	    KdFreeKeyboard(ki);
+ 	    return NULL;
+         }
+     }
+ 
+-    if (options)
+-    {
++    if (options) {
+         ki->options = options;
+         KdParseKbdOptions(ki);
+     }
+@@ -1179,8 +1176,7 @@ KdParsePointerOptions (KdPointerInfo *pi)
+ {
+     InputOption *option = NULL;
+ 
+-    nt_list_for_each_entry(option, pi->options, list.next)
+-    {
++    nt_list_for_each_entry(option, pi->options, list.next) {
+         const char *key = input_option_get_key(option);
+         const char *value = input_option_get_value(option);
+ 
+@@ -1220,22 +1216,19 @@ KdParsePointer (char *arg)
+     pi->nButtons = 5; /* XXX should not be hardcoded */
+     pi->inputClass = KD_MOUSE;
+ 
+-    if (!arg)
+-    {
++    if (!arg) {
+         ErrorF("mouse: no arg\n");
+         KdFreePointer (pi);
+         return NULL;
+     }
+ 
+-    if (strlen (arg) >= sizeof (save))
+-    {
++    if (strlen(arg) >= sizeof(save)) {
+         ErrorF("mouse: arg too long\n");
+         KdFreePointer (pi);
+         return NULL;
+     }
+     arg = KdParseFindNext (arg, ",", save, &delim);
+-    if (!save[0])
+-    {
++    if (!save[0]) {
+         ErrorF("failed on save[0]\n");
+         KdFreePointer (pi);
+         return NULL;
+@@ -1246,22 +1239,19 @@ KdParsePointer (char *arg)
+     else
+         pi->driverPrivate = strdup(save);
+ 
+-    if (delim != ',')
+-    {
++    if (delim != ',') {
+         return pi;
+     }
+ 
+     arg = KdParseFindNext (arg, ",", save, &delim);
+ 
+-    while (delim == ',')
+-    {
++    while (delim == ',') {
+         arg = KdParseFindNext (arg, ",", save, &delim);
+-        if (save[0] == '{')
+-        {
++        if (save[0] == '{') {
+             char *s = save + 1;
++
+              i = 0;
+-             while (*s && *s != '}')
+-             {
++            while (*s && *s != '}') {
+                 if ('1' <= *s && *s <= '0' + pi->nButtons)
+                     pi->map[i] = *s - '0';
+                 else
+@@ -1269,18 +1259,15 @@ KdParsePointer (char *arg)
+                 s++;
+              }
+         }
+-        else
+-        {
+-            if (!KdGetOptions(&options, save))
+-            {
++        else {
++            if (!KdGetOptions(&options, save)) {
+                 KdFreePointer(pi);
+                 return NULL;
+             }
+         }
+     }
+ 
+-    if (options)
+-    {
++    if (options) {
+         pi->options = options;
+         KdParsePointerOptions(pi);
+     }
+@@ -1288,7 +1275,6 @@ KdParsePointer (char *arg)
+     return pi;
+ }
+ 
+-
+ void
+ KdInitInput (void)
+ {
+@@ -1642,18 +1628,26 @@ KdClassifyInput (KdPointerInfo *pi, int type, int x, int y, int z, int b)
+     switch (type) {
+     case ButtonPress:
+ 	switch (b) {
+-	case 1: return down_1;
+-	case 2: return down_2;
+-	case 3: return down_3;
+-	default: return down_o;
++        case 1:
++            return down_1;
++        case 2:
++            return down_2;
++        case 3:
++            return down_3;
++        default:
++            return down_o;
+ 	}
+ 	break;
+     case ButtonRelease:
+ 	switch (b) {
+-	case 1: return up_1;
+-	case 2: return up_2;
+-	case 3: return up_3;
+-	default: return up_o;
++        case 1:
++            return up_1;
++        case 2:
++            return up_2;
++        case 3:
++            return up_3;
++        default:
++            return up_o;
+ 	}
+ 	break;
+     case MotionNotify:
+@@ -1719,8 +1713,7 @@ KdRunMouseMachine (KdPointerInfo *pi, KdInputClass c, int type, int x, int y,
+ 
+     c = KdClassifyInput(pi, type, x, y, z, b);
+     t = &kdInputMachine[pi->mouseState][c];
+-    for (a = 0; a < MAX_ACTIONS; a++)
+-    {
++    for (a = 0; a < MAX_ACTIONS; a++) {
+ 	switch (t->actions[a]) {
+ 	case noop:
+ 	    break;
+@@ -1759,14 +1752,12 @@ KdRunMouseMachine (KdPointerInfo *pi, KdInputClass c, int type, int x, int y,
+ 	    pi->timeoutPending = FALSE;
+ 	    break;
+ 	case gen_down_2:
+-            _KdEnqueuePointerEvent (pi, ButtonPress, x, y, z, 2, absrel,
+-                                    TRUE);
++            _KdEnqueuePointerEvent(pi, ButtonPress, x, y, z, 2, absrel, TRUE);
+ 	    pi->eventHeld = FALSE;
+             return TRUE;
+ 	    break;
+ 	case gen_up_2:
+-            _KdEnqueuePointerEvent (pi, ButtonRelease, x, y, z, 2, absrel,
+-                                    TRUE);
++            _KdEnqueuePointerEvent(pi, ButtonRelease, x, y, z, 2, absrel, TRUE);
+             return TRUE;
+ 	    break;
+ 	}
+@@ -1814,8 +1805,7 @@ KdReleaseAllKeys (void)
+     KdBlockSigio ();
+ 
+     for (ki = kdKeyboards; ki; ki = ki->next) {
+-        for (key = ki->keySyms.minKeyCode; key < ki->keySyms.maxKeyCode;
+-             key++) {
++        for (key = ki->keySyms.minKeyCode; key < ki->keySyms.maxKeyCode; key++) {
+             if (key_is_down(ki->dixdev, key, KEY_POSTED | KEY_PROCESSED)) {
+                 KdHandleKeyboardEvent(ki, KeyRelease, key);
+                 QueueGetKeyboardEvents(ki->dixdev, KeyRelease, key, NULL);
+@@ -1839,7 +1829,8 @@ KdCheckLock (void)
+             keyc = tmp->dixdev->key;
+             isSet = (tmp->leds & (1 << (tmp->LockLed-1))) != 0;
+             /* FIXME: Just use XKB indicators! */
+-            shouldBeSet = !!(XkbStateFieldFromRec(&keyc->xkbInfo->state) & LockMask);
++            shouldBeSet =
++                ! !(XkbStateFieldFromRec(&keyc->xkbInfo->state) & LockMask);
+             if (isSet != shouldBeSet)
+                 KdSetLed (tmp, tmp->LockLed, shouldBeSet);
+         }
+@@ -1848,8 +1839,7 @@ KdCheckLock (void)
+ 
+ void
+ KdEnqueueKeyboardEvent(KdKeyboardInfo   *ki,
+-                       unsigned char scan_code,
+-		       unsigned char is_up)
++                       unsigned char scan_code, unsigned char is_up)
+ {
+     unsigned char key_code;
+     KeyClassPtr	keyc = NULL;
+@@ -1862,8 +1852,7 @@ KdEnqueueKeyboardEvent(KdKeyboardInfo   *ki,
+     keyc = ki->dixdev->key;
+     ctrl = &ki->dixdev->kbdfeed->ctrl;
+ 
+-    if (scan_code >= ki->minScanCode && scan_code <= ki->maxScanCode)
+-    {
++    if (scan_code >= ki->minScanCode && scan_code <= ki->maxScanCode) {
+ 	key_code = scan_code + KD_MIN_KEYCODE - ki->minScanCode;
+ 
+ 	/*
+@@ -1932,33 +1921,31 @@ KdEnqueuePointerEvent(KdPointerInfo *pi, unsigned long flags, int rx, int ry,
+     }
+     z = rz;
+ 
+-    if (flags & KD_MOUSE_DELTA)
+-    {
+-        if (x || y || z)
+-        {
++    if (flags & KD_MOUSE_DELTA) {
++        if (x || y || z) {
+             dixflags = POINTER_RELATIVE | POINTER_ACCELERATE;
+-            _KdEnqueuePointerEvent(pi, MotionNotify, x, y, z, 0, dixflags, FALSE);
++            _KdEnqueuePointerEvent(pi, MotionNotify, x, y, z, 0, dixflags,
++                                   FALSE);
+         }
+-    } else
+-    {
++    }
++    else {
+         dixflags = POINTER_ABSOLUTE;
+         if (x != pi->dixdev->last.valuators[0] ||
+             y != pi->dixdev->last.valuators[1])
+-            _KdEnqueuePointerEvent(pi, MotionNotify, x, y, z, 0, dixflags, FALSE);
++            _KdEnqueuePointerEvent(pi, MotionNotify, x, y, z, 0, dixflags,
++                                   FALSE);
+     }
+ 
+     buttons = flags;
+ 
+-    for (button = KD_BUTTON_1, n = 1; n <= pi->nButtons;
+-         button <<= 1, n++) {
++    for (button = KD_BUTTON_1, n = 1; n <= pi->nButtons; button <<= 1, n++) {
+         if (((pi->buttonState & button) ^ (buttons & button)) &&
+            !(buttons & button)) {
+             _KdEnqueuePointerEvent(pi, ButtonRelease, x, y, z, n,
+                                    dixflags, FALSE);
+ 	}
+     }
+-    for (button = KD_BUTTON_1, n = 1; n <= pi->nButtons;
+-         button <<= 1, n++) {
++    for (button = KD_BUTTON_1, n = 1; n <= pi->nButtons; button <<= 1, n++) {
+ 	if (((pi->buttonState & button) ^ (buttons & button)) &&
+ 	    (buttons & button)) {
+             _KdEnqueuePointerEvent(pi, ButtonPress, x, y, z, n,
+@@ -1986,18 +1973,13 @@ _KdEnqueuePointerEvent (KdPointerInfo *pi, int type, int x, int y, int z,
+ }
+ 
+ void
+-KdBlockHandler (int		screen,
+-		pointer		blockData,
+-		pointer		timeout,
+-		pointer		readmask)
++KdBlockHandler(int screen, pointer blockData, pointer timeout, pointer readmask)
+ {
+     KdPointerInfo		    *pi;
+     int myTimeout=0;
+ 
+-    for (pi = kdPointers; pi; pi = pi->next)
+-    {
+-	if (pi->timeoutPending)
+-	{
++    for (pi = kdPointers; pi; pi = pi->next) {
++        if (pi->timeoutPending) {
+ 	    int	ms;
+ 
+ 	    ms = pi->emulationTimeout - GetTimeInMillis ();
+@@ -2008,8 +1990,7 @@ KdBlockHandler (int		screen,
+ 	}
+     }
+     /* if we need to poll for events, do that */
+-    if(kdOsFuncs->pollEvents)
+-    {
++    if (kdOsFuncs->pollEvents) {
+ 	    (*kdOsFuncs->pollEvents)();
+ 	    myTimeout=20;
+     }
+@@ -2019,31 +2000,24 @@ KdBlockHandler (int		screen,
+ 
+ void
+ KdWakeupHandler (int		screen,
+-		 pointer    	data,
+-		 unsigned long	lresult,
+-		 pointer	readmask)
++                pointer data, unsigned long lresult, pointer readmask)
+ {
+     int		result = (int) lresult;
+     fd_set	*pReadmask = (fd_set *) readmask;
+     int		i;
+     KdPointerInfo	*pi;
+ 
+-    if (kdInputEnabled && result > 0)
+-    {
++    if (kdInputEnabled && result > 0) {
+ 	for (i = 0; i < kdNumInputFds; i++)
+-	    if (FD_ISSET (kdInputFds[i].fd, pReadmask))
+-	    {
++            if (FD_ISSET(kdInputFds[i].fd, pReadmask)) {
+ 		KdBlockSigio ();
+ 		(*kdInputFds[i].read) (kdInputFds[i].fd, kdInputFds[i].closure);
+ 		KdUnblockSigio ();
+ 	    }
+     }
+-    for (pi = kdPointers; pi; pi = pi->next)
+-    {
+-	if (pi->timeoutPending)
+-	{
+-	    if ((long) (GetTimeInMillis () - pi->emulationTimeout) >= 0)
+-	    {
++    for (pi = kdPointers; pi; pi = pi->next) {
++        if (pi->timeoutPending) {
++            if ((long) (GetTimeInMillis() - pi->emulationTimeout) >= 0) {
+ 		pi->timeoutPending = FALSE;
+ 		KdBlockSigio ();
+ 		KdReceiveTimeout (pi);
+@@ -2083,41 +2057,32 @@ KdCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
+     best_x = 32767;
+     n_best_y = -1;
+     best_y = 32767;
+-    for (n = 0; n < screenInfo.numScreens; n++)
+-    {
++    for (n = 0; n < screenInfo.numScreens; n++) {
+ 	pNewScreen = screenInfo.screens[n];
+ 	if (pNewScreen == pScreen)
+ 	    continue;
+ 	dx = KdScreenOrigin(pNewScreen)->x - KdScreenOrigin(pScreen)->x;
+ 	dy = KdScreenOrigin(pNewScreen)->y - KdScreenOrigin(pScreen)->y;
+-	if (*x < 0)
+-	{
+-	    if (dx <= 0 && -dx < best_x)
+-	    {
++        if (*x < 0) {
++            if (dx <= 0 && -dx < best_x) {
+ 		best_x = -dx;
+ 		n_best_x = n;
+ 	    }
+ 	}
+-	else if (*x >= pScreen->width)
+-	{
+-	    if (dx >= 0 && dx < best_x)
+-	    {
++        else if (*x >= pScreen->width) {
++            if (dx >= 0 && dx < best_x) {
+ 		best_x = dx;
+ 		n_best_x = n;
+ 	    }
+ 	}
+-	if (*y < 0)
+-	{
+-	    if (dy <= 0 && -dy < best_y)
+-	    {
++        if (*y < 0) {
++            if (dy <= 0 && -dy < best_y) {
+ 		best_y = -dy;
+ 		n_best_y = n;
+ 	    }
+ 	}
+-	else if (*y >= pScreen->height)
+-	{
+-	    if (dy >= 0 && dy < best_y)
+-	    {
++        else if (*y >= pScreen->height) {
++            if (dy >= 0 && dy < best_y) {
+ 		best_y = dy;
+ 		n_best_y = n;
+ 	    }
+@@ -2159,8 +2124,7 @@ KdWarpCursor (DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+     KdUnblockSigio ();
+ }
+ 
+-miPointerScreenFuncRec kdPointerScreenFuncs =
+-{
++miPointerScreenFuncRec kdPointerScreenFuncs = {
+     KdCursorOffScreen,
+     KdCrossScreen,
+     KdWarpCursor
+@@ -2243,16 +2207,14 @@ NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
+         }
+ #ifdef CONFIG_HAL
+         else if (strcmp(key, "_source") == 0 &&
+-                 strcmp(value, "server/hal") == 0)
+-        {
++                 strcmp(value, "server/hal") == 0) {
+             ErrorF("Ignoring device from HAL.\n");
+             return BadValue;
+         }
+ #endif
+ #ifdef CONFIG_UDEV
+         else if (strcmp(key, "_source") == 0 &&
+-                 strcmp(value, "server/udev") == 0)
+-        {
++                 strcmp(value, "server/udev") == 0) {
+             ErrorF("Ignoring device from udev.\n");
+             return BadValue;
+         }
+@@ -2317,7 +2279,8 @@ NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
+ 
+     if (pi) {
+         *pdev = pi->dixdev;
+-    } else if(ki) {
++    }
++    else if (ki) {
+         *pdev = ki->dixdev;
+     }
+ 

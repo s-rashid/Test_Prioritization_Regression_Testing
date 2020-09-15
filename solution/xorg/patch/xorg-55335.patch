@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/input/dmxmotion.h b/hw/dmx/input/dmxmotion.h
+index 88aeb3d..5ccdbe4 100644
+--- a/hw/dmx/input/dmxmotion.h
++++ b/hw/dmx/input/dmxmotion.h
+@@ -41,8 +41,7 @@ extern int  dmxPointerGetMotionBufferSize(void);
+ extern int  dmxPointerGetMotionEvents(DeviceIntPtr pDevice,
+                                       xTimecoord *coords,
+                                       unsigned long start,
+-                                      unsigned long stop,
+-                                      ScreenPtr pScreen);
++                                     unsigned long stop, ScreenPtr pScreen);
+ extern void dmxPointerPutMotionEvent(DeviceIntPtr pDevice,
+                                      int firstAxis, int axesCount, int *v,
+                                      unsigned long time);

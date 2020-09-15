@@ -1,0 +1,27 @@
+diff --git a/dbe/midbe.h b/dbe/midbe.h
+index cff36d0..4eed538 100644
+--- a/dbe/midbe.h
++++ b/dbe/midbe.h
+@@ -40,19 +40,17 @@
+ 
+ /* EXTERNS */
+ 
+-extern Bool miDbeInit(
+-    ScreenPtr           pScreen,
+-    DbeScreenPrivPtr    pDbeScreenPriv
+-);
++extern Bool miDbeInit(ScreenPtr pScreen, DbeScreenPrivPtr pDbeScreenPriv);
+ 
+ extern DevPrivateKeyRec dbeScreenPrivKeyRec;
++
+ #define dbeScreenPrivKey (&dbeScreenPrivKeyRec)
+ 
+ extern DevPrivateKeyRec dbeWindowPrivKeyRec;
++
+ #define dbeWindowPrivKey (&dbeWindowPrivKeyRec)
+ 
+ extern RESTYPE	dbeDrawableResType;
+ extern RESTYPE	dbeWindowPrivResType;
+ 
+ #endif /* MIDBE_H */
+-

@@ -1,0 +1,22 @@
+diff --git a/glx/indirect_size_get.c b/glx/indirect_size_get.c
+index 80f81de..475aa58 100644
+--- a/glx/indirect_size_get.c
++++ b/glx/indirect_size_get.c
+@@ -32,7 +32,7 @@
+ #include "indirect_util.h"
+ #include "indirect_size.h"
+ 
+-#  if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
++#  if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96) || (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590))
+ #    define PURE __attribute__((pure))
+ #  else
+ #    define PURE
+@@ -44,7 +44,7 @@
+ #    define FASTCALL
+ #  endif
+ 
+-#  if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)) && defined(__ELF__)
++#  if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3) || (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590))) && defined(__ELF__)
+ #    define INTERNAL  __attribute__((visibility("internal")))
+ #  else
+ #    define INTERNAL

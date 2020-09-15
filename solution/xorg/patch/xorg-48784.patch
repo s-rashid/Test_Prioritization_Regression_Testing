@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Bus.h b/hw/xfree86/common/xf86Bus.h
+index b22e2e7..e161c7f 100644
+--- a/hw/xfree86/common/xf86Bus.h
++++ b/hw/xfree86/common/xf86Bus.h
+@@ -54,7 +54,6 @@ typedef struct {
+     Bool                        active;
+     Bool                        inUse;
+     BusRec                      bus;
+-    pointer                     busAcc;
+     int                         lastScrnFlag;
+     DevUnion *                  entityPrivates;
+     int                         numInstances;

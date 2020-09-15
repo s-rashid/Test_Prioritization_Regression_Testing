@@ -1,0 +1,188 @@
+diff --git a/hw/xfree86/vbe/vbeModes.c b/hw/xfree86/vbe/vbeModes.c
+index ea24b61..415167d 100644
+--- a/hw/xfree86/vbe/vbeModes.c
++++ b/hw/xfree86/vbe/vbeModes.c
+@@ -55,7 +55,8 @@ GetDepthFlag(vbeInfoPtr pVbe, int id)
+ 	if (VBE_MODE_COLOR(mode)) {
+ 	    depth = mode->RedMaskSize + mode->GreenMaskSize +
+ 		    mode->BlueMaskSize;
+-	} else {
++        }
++        else {
+ 	    depth = 1;
+ 	}
+ 	bpp = mode->BitsPerPixel;
+@@ -152,17 +153,17 @@ CheckMode(ScrnInfoPtr pScrn, vbeInfoPtr pVbe, VbeInfoBlock *vbe, int id,
+     }
+ 
+     xf86ErrorFVerb(DEBUG_VERB,
+-	    "Mode: %x (%dx%d)\n", id, mode->XResolution, mode->YResolution);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	ModeAttributes: 0x%x\n", mode->ModeAttributes);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	WinAAttributes: 0x%x\n", mode->WinAAttributes);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	WinBAttributes: 0x%x\n", mode->WinBAttributes);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	WinGranularity: %d\n", mode->WinGranularity);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	WinSize: %d\n", mode->WinSize);
++                   "Mode: %x (%dx%d)\n", id, mode->XResolution,
++                   mode->YResolution);
++    xf86ErrorFVerb(DEBUG_VERB, "	ModeAttributes: 0x%x\n",
++                   mode->ModeAttributes);
++    xf86ErrorFVerb(DEBUG_VERB, "	WinAAttributes: 0x%x\n",
++                   mode->WinAAttributes);
++    xf86ErrorFVerb(DEBUG_VERB, "	WinBAttributes: 0x%x\n",
++                   mode->WinBAttributes);
++    xf86ErrorFVerb(DEBUG_VERB, "	WinGranularity: %d\n",
++                   mode->WinGranularity);
++    xf86ErrorFVerb(DEBUG_VERB, "	WinSize: %d\n", mode->WinSize);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	WinASegment: 0x%x\n", mode->WinASegment);
+     xf86ErrorFVerb(DEBUG_VERB,
+@@ -171,28 +172,21 @@ CheckMode(ScrnInfoPtr pScrn, vbeInfoPtr pVbe, VbeInfoBlock *vbe, int id,
+ 	    "	WinFuncPtr: 0x%lx\n", (unsigned long)mode->WinFuncPtr);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	BytesPerScanline: %d\n", mode->BytesPerScanline);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	XResolution: %d\n", mode->XResolution);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	YResolution: %d\n", mode->YResolution);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	XCharSize: %d\n", mode->XCharSize);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-           "	YCharSize: %d\n", mode->YCharSize);
++    xf86ErrorFVerb(DEBUG_VERB, "	XResolution: %d\n", mode->XResolution);
++    xf86ErrorFVerb(DEBUG_VERB, "	YResolution: %d\n", mode->YResolution);
++    xf86ErrorFVerb(DEBUG_VERB, "	XCharSize: %d\n", mode->XCharSize);
++    xf86ErrorFVerb(DEBUG_VERB, "	YCharSize: %d\n", mode->YCharSize);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	NumberOfPlanes: %d\n", mode->NumberOfPlanes);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	BitsPerPixel: %d\n", mode->BitsPerPixel);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	NumberOfBanks: %d\n", mode->NumberOfBanks);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	MemoryModel: %d\n", mode->MemoryModel);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	BankSize: %d\n", mode->BankSize);
++    xf86ErrorFVerb(DEBUG_VERB, "	MemoryModel: %d\n", mode->MemoryModel);
++    xf86ErrorFVerb(DEBUG_VERB, "	BankSize: %d\n", mode->BankSize);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	NumberOfImages: %d\n", mode->NumberOfImages);
+-    xf86ErrorFVerb(DEBUG_VERB,
+-	    "	RedMaskSize: %d\n", mode->RedMaskSize);
++    xf86ErrorFVerb(DEBUG_VERB, "	RedMaskSize: %d\n", mode->RedMaskSize);
+     xf86ErrorFVerb(DEBUG_VERB,
+ 	    "	RedFieldPosition: %d\n", mode->RedFieldPosition);
+     xf86ErrorFVerb(DEBUG_VERB,
+@@ -215,29 +209,30 @@ CheckMode(ScrnInfoPtr pScrn, vbeInfoPtr pVbe, VbeInfoBlock *vbe, int id,
+ 		(unsigned long)mode->PhysBasePtr);
+ 	if (major >= 3) {
+ 	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinBytesPerScanLine: %d\n", mode->LinBytesPerScanLine);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	BnkNumberOfImagePages: %d\n", mode->BnkNumberOfImagePages);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinNumberOfImagePages: %d\n", mode->LinNumberOfImagePages);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinRedMaskSize: %d\n", mode->LinRedMaskSize);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinRedFieldPosition: %d\n", mode->LinRedFieldPosition);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinGreenMaskSize: %d\n", mode->LinGreenMaskSize);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinGreenFieldPosition: %d\n", mode->LinGreenFieldPosition);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinBlueMaskSize: %d\n", mode->LinBlueMaskSize);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinBlueFieldPosition: %d\n", mode->LinBlueFieldPosition);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinRsvdMaskSize: %d\n", mode->LinRsvdMaskSize);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	LinRsvdFieldPosition: %d\n", mode->LinRsvdFieldPosition);
+-	    xf86ErrorFVerb(DEBUG_VERB,
+-		    "	MaxPixelClock: %ld\n", (unsigned long)mode->MaxPixelClock);
++                           "	LinBytesPerScanLine: %d\n",
++                           mode->LinBytesPerScanLine);
++            xf86ErrorFVerb(DEBUG_VERB, "	BnkNumberOfImagePages: %d\n",
++                           mode->BnkNumberOfImagePages);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinNumberOfImagePages: %d\n",
++                           mode->LinNumberOfImagePages);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinRedMaskSize: %d\n",
++                           mode->LinRedMaskSize);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinRedFieldPosition: %d\n",
++                           mode->LinRedFieldPosition);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinGreenMaskSize: %d\n",
++                           mode->LinGreenMaskSize);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinGreenFieldPosition: %d\n",
++                           mode->LinGreenFieldPosition);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinBlueMaskSize: %d\n",
++                           mode->LinBlueMaskSize);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinBlueFieldPosition: %d\n",
++                           mode->LinBlueFieldPosition);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinRsvdMaskSize: %d\n",
++                           mode->LinRsvdMaskSize);
++            xf86ErrorFVerb(DEBUG_VERB, "	LinRsvdFieldPosition: %d\n",
++                           mode->LinRsvdFieldPosition);
++            xf86ErrorFVerb(DEBUG_VERB, "	MaxPixelClock: %ld\n",
++                           (unsigned long) mode->MaxPixelClock);
+ 	}
+     }
+ 
+@@ -297,10 +292,12 @@ VBEGetModePool(ScrnInfoPtr pScrn, vbeInfoPtr pVbe, VbeInfoBlock *vbe,
+ 				"Not using mode \"%dx%d\" (%s)\n",
+ 				pMode->HDisplay, pMode->VDisplay,
+ 				xf86ModeStatusToString(status));
+-		} else {
++                }
++                else {
+ 		    if (p == NULL) {
+ 			modePool = pMode;
+-		    } else {
++                    }
++                    else {
+ 			p->next = pMode;
+ 		    }
+ 		    pMode->prev = NULL;
+@@ -328,10 +325,12 @@ VBEGetModePool(ScrnInfoPtr pScrn, vbeInfoPtr pVbe, VbeInfoBlock *vbe,
+ 				"Not using mode \"%dx%d\" (%s)\n",
+ 				pMode->HDisplay, pMode->VDisplay,
+ 				xf86ModeStatusToString(status));
+-		} else {
++                }
++                else {
+ 		    if (p == NULL) {
+ 			modePool = pMode;
+-		    } else {
++                    }
++                    else {
+ 			p->next = pMode;
+ 		    }
+ 		    pMode->prev = NULL;
+@@ -355,7 +354,8 @@ VBESetModeNames(DisplayModePtr pMode)
+ 	    if (pMode->HDisplay > 10000 || pMode->HDisplay < 0 ||
+ 		pMode->VDisplay > 10000 || pMode->VDisplay < 0) {
+ 		pMode->name = strdup("BADMODE");
+-	    } else {
++            }
++            else {
+ 		XNFasprintf(&pMode->name, "%dx%d",
+ 			    pMode->HDisplay, pMode->VDisplay);
+ 	    }
+@@ -421,7 +421,8 @@ VBESetModeParameters(ScrnInfoPtr pScrn, vbeInfoPtr pVbe)
+ 		data->block->PixelClock = clock;
+ 	    data->mode |= (1 << 11);
+ 	    data->block->RefreshRate = ((double)(data->block->PixelClock) /
+-                       (double)(best->HTotal * best->VTotal)) * 100;
++                                        (double) (best->HTotal *
++                                                  best->VTotal)) * 100;
+ 	}
+ 	pMode = pMode->next;
+     } while (pMode != pScrn->modes);
+@@ -448,4 +449,3 @@ VBEPrintModes(ScrnInfoPtr scrp)
+ {
+     xf86PrintModes(scrp);
+ }
+-

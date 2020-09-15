@@ -1,0 +1,24 @@
+diff --git a/hw/xwin/winscrinit.c b/hw/xwin/winscrinit.c
+index e0686e2..f505ddd 100644
+--- a/hw/xwin/winscrinit.c
++++ b/hw/xwin/winscrinit.c
+@@ -155,10 +155,17 @@ winScreenInit (int index,
+       && !GetSystemMetrics (SM_SAMEDISPLAYFORMAT))
+     {
+       ErrorF ("winScreenInit - Monitors do not all have same pixel format / "
+-	      "display depth.\n"
+-	      "Using primary display only.\n");
++	      "display depth.\n");
++      if (pScreenInfo->dwEngine == WIN_SERVER_SHADOW_GDI)
++        {
++          ErrorF ("winScreenInit - Performance may suffer off primary display.\n");
++        }
++      else
++        {
++          ErrorF ("winScreenInit - Using primary display only.\n");
+       pScreenInfo->fMultipleMonitors = FALSE;
+     }
++    }
+ 
+   /* Create display window */
+   if (!(*pScreenPriv->pwinCreateBoundingWindow) (pScreen))

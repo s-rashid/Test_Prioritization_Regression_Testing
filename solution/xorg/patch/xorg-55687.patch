@@ -1,0 +1,301 @@
+diff --git a/hw/xfree86/xaa/xaaDashLine.c b/hw/xfree86/xaa/xaaDashLine.c
+index e847084..c7e52cd 100644
+--- a/hw/xfree86/xaa/xaaDashLine.c
++++ b/hw/xfree86/xaa/xaaDashLine.c
+@@ -17,23 +17,17 @@
+ #include "xaa.h"
+ #include "xaalocal.h"
+ 
+-
+ void
+ #ifdef POLYSEGMENT
+-XAAPolySegmentDashed(
+-    DrawablePtr	pDrawable,
+-    GCPtr	pGC,
+-    int		nseg,
+-    xSegment	*pSeg
++ XAAPolySegmentDashed(DrawablePtr pDrawable,
++                      GCPtr pGC, int nseg, xSegment * pSeg
+ #else
+-XAAPolyLinesDashed(
+-    DrawablePtr pDrawable,
+-    GCPtr	pGC,
+-    int		mode,		/* Origin or Previous */
++XAAPolyLinesDashed(DrawablePtr pDrawable, GCPtr pGC, int mode,  /* Origin or Previous */
+     int		npt,		/* number of points */
+     DDXPointPtr pptInit
+ #endif
+-){
++    )
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     XAAGCPtr   pGCPriv = (XAAGCPtr)dixLookupPrivate(&pGC->devPrivates,
+ 						    XAAGetGCKey());
+@@ -44,6 +38,7 @@ XAAPolyLinesDashed(
+     int yorg = pDrawable->y;
+     int nbox;
+     BoxPtr pbox;
++
+ #ifndef POLYSEGMENT
+     DDXPointPtr ppt;
+ #endif
+@@ -60,6 +55,7 @@ XAAPolyLinesDashed(
+ 	int maxValX = infoRec->DashedLineLimits.x2;
+ 	int minValY = infoRec->DashedLineLimits.y1;
+ 	int maxValY = infoRec->DashedLineLimits.y2;
++
+ #ifdef POLYSEGMENT
+ 	int n = nseg;
+ 	xSegment *s = pSeg;
+@@ -95,8 +91,7 @@ XAAPolyLinesDashed(
+ #endif
+ 	    if (x1 > maxValX || x1 < minValX ||
+ 		x2 > maxValX || x2 < minValX ||
+-		y1 > maxValY || y1 < minValY ||
+-		y2 > maxValY || y2 < minValY) {
++                y1 > maxValY || y1 < minValY || y2 > maxValY || y2 < minValY) {
+ #ifdef POLYSEGMENT
+ 		XAAFallbackOps.PolySegment(pDrawable, pGC, nseg, pSeg);
+ #else
+@@ -111,9 +106,10 @@ XAAPolyLinesDashed(
+     PatternOffset = pGC->dashOffset % PatternLength;
+ 
+     (*infoRec->SetupForDashedLine)(infoRec->pScrn, pGC->fgPixel,
+-		(pGC->lineStyle == LineDoubleDash) ? pGC->bgPixel : -1,
+-		pGC->alu, pGC->planemask, PatternLength, pGCPriv->DashPattern);
+-
++                                    (pGC->lineStyle ==
++                                     LineDoubleDash) ? pGC->bgPixel : -1,
++                                    pGC->alu, pGC->planemask, PatternLength,
++                                    pGCPriv->DashPattern);
+ 
+ #ifdef POLYSEGMENT
+     while (nseg--)
+@@ -145,12 +141,13 @@ XAAPolyLinesDashed(
+ 	y2 = ppt->y + yorg;
+ #endif
+ 
+-
+ 	if (infoRec->SubsequentDashedBresenhamLine) {
+ 	    if((dmaj = x2 - x1) < 0) {
+ 		dmaj = -dmaj;
+ 		octant = XDECREASING;
+-	    } else octant = 0;		   
++            }
++            else
++                octant = 0;
+ 
+ 	    if((dmin = y2 - y1) < 0) {
+ 		dmin = -dmin;
+@@ -158,7 +155,9 @@ XAAPolyLinesDashed(
+ 	    }	
+ 	
+ 	    if(dmin >= dmaj){
+-		tmp = dmin; dmin = dmaj; dmaj = tmp;
++                tmp = dmin;
++                dmin = dmaj;
++                dmaj = tmp;
+ 		octant |= YMAJOR;
+ 	    }
+ 
+@@ -166,7 +165,8 @@ XAAPolyLinesDashed(
+ 	    len = dmaj;
+ 	    dmin <<= 1;
+ 	    dmaj <<= 1;
+-	} else {	/* Muffle compiler */
++        }
++        else {                  /* Muffle compiler */
+ 	    dmin = dmaj = e = octant = len = 0;
+ 	}
+ 
+@@ -176,46 +176,63 @@ XAAPolyLinesDashed(
+ 	    OUTCODES(oc2, x2, y2, pbox);
+ 	    if (!(oc1 | oc2)) {   /* uncliped */
+ 		if(infoRec->SubsequentDashedTwoPointLine) {
+-		   (*infoRec->SubsequentDashedTwoPointLine)(
+-				infoRec->pScrn, x1, y1, x2, y2, 
++                    (*infoRec->SubsequentDashedTwoPointLine) (infoRec->pScrn,
++                                                              x1, y1, x2, y2,
+ #ifdef POLYSEGMENT
+-			    	(pGC->capStyle != CapNotLast) ? 0 :
++                                                              (pGC->capStyle !=
++                                                               CapNotLast) ? 0 :
+ #endif
+-				OMIT_LAST, PatternOffset);
+-		} else {
+-		    (*infoRec->SubsequentDashedBresenhamLine)(
+-				infoRec->pScrn, x1, y1, dmaj, dmin, e, 
++                                                              OMIT_LAST,
++                                                              PatternOffset);
++                }
++                else {
++                    (*infoRec->SubsequentDashedBresenhamLine) (infoRec->pScrn,
++                                                               x1, y1, dmaj,
++                                                               dmin, e,
+ #ifdef POLYSEGMENT
+-			    	(pGC->capStyle != CapNotLast) ? (len+1) :
++                                                               (pGC->capStyle !=
++                                                                CapNotLast)
++                                                               ? (len + 1) :
+ #endif
+-			    	len, octant, PatternOffset);
++                                                               len, octant,
++                                                               PatternOffset);
+ 		}
+ 		break;
+-	    } else if (oc1 & oc2) { /* completely clipped */
++            }
++            else if (oc1 & oc2) {       /* completely clipped */
+ 		pbox++;
+-	    } else if (infoRec->ClippingFlags & HARDWARE_CLIP_DASHED_LINE) {
++            }
++            else if (infoRec->ClippingFlags & HARDWARE_CLIP_DASHED_LINE) {
+ 		(*infoRec->SetClippingRectangle)(infoRec->pScrn,
+-			pbox->x1, pbox->y1, pbox->x2 - 1, pbox->y2 - 1);
++                                                  pbox->x1, pbox->y1,
++                                                  pbox->x2 - 1, pbox->y2 - 1);
+ 
+ 		if(infoRec->SubsequentDashedBresenhamLine) {
+-		    (*infoRec->SubsequentDashedBresenhamLine)(
+-				infoRec->pScrn, x1, y1, dmaj, dmin, e, 
++                    (*infoRec->SubsequentDashedBresenhamLine) (infoRec->pScrn,
++                                                               x1, y1, dmaj,
++                                                               dmin, e,
+ #ifdef POLYSEGMENT
+-			    	(pGC->capStyle != CapNotLast) ? (len+1) :
++                                                               (pGC->capStyle !=
++                                                                CapNotLast)
++                                                               ? (len + 1) :
+ #endif
+-			    	len, octant, PatternOffset);
+-		} else {
+-			(*infoRec->SubsequentDashedTwoPointLine)(
+-				infoRec->pScrn, x1, y1, x2, y2, 
++                                                               len, octant,
++                                                               PatternOffset);
++                }
++                else {
++                    (*infoRec->SubsequentDashedTwoPointLine) (infoRec->pScrn,
++                                                              x1, y1, x2, y2,
+ #ifdef POLYSEGMENT
+-			    	(pGC->capStyle != CapNotLast) ? 0 :
++                                                              (pGC->capStyle !=
++                                                               CapNotLast) ? 0 :
+ #endif
+-				OMIT_LAST, PatternOffset
+-			);
++                                                              OMIT_LAST,
++                                                              PatternOffset);
+ 		}
+ 		(*infoRec->DisableClipping)(infoRec->pScrn);
+ 		pbox++;
+-	    } else {
++            }
++            else {
+ 		int new_x1 = x1, new_y1 = y1, new_x2 = x2, new_y2 = y2;
+ 		int clip1 = 0, clip2 = 0;
+ 		int err, adx, ady;
+@@ -223,7 +240,8 @@ XAAPolyLinesDashed(
+ 		if(octant & YMAJOR) {
+ 		    ady = dmaj >> 1;
+ 		    adx = dmin >> 1;
+-		} else {
++                }
++                else {
+ 		    ady = dmin >> 1;
+ 		    adx = dmaj >> 1;
+ 		}
+@@ -232,8 +250,7 @@ XAAPolyLinesDashed(
+ 				       pbox->x2 - 1, pbox->y2 - 1,
+ 				       &new_x1, &new_y1, &new_x2, &new_y2,
+ 				       adx, ady, &clip1, &clip2,
+-				       octant, bias, oc1, oc2) == -1)
+-		{
++                                   octant, bias, oc1, oc2) == -1) {
+ 		    pbox++;
+ 		    continue;
+ 		}
+@@ -250,6 +267,7 @@ XAAPolyLinesDashed(
+ #endif
+ 		if (len) {
+ 		    int abserr, clipdx, clipdy;
++
+ 			/* unwind bresenham error term to first point */
+ 		    if (clip1) {
+ 			clipdx = abs(new_x1 - x1);
+@@ -259,14 +277,13 @@ XAAPolyLinesDashed(
+ 			    err = e + clipdy*dmin - clipdx*dmaj;
+ 			else
+ 			    err = e + clipdx*dmin - clipdy*dmaj;
+-		    } else
++                    }
++                    else
+ 			err = e;
+ 
+ #define range infoRec->DashedBresenhamLineErrorTermBits
+ 		    abserr = abs(err);			    
+-		    while((abserr & range) || 
+-			  (dmaj & range) ||
+-			  (dmin & range)) {
++                    while ((abserr & range) || (dmaj & range) || (dmin & range)) {
+ 			dmin >>= 1;
+ 			dmaj >>= 1;
+ 			abserr >>= 1;
+@@ -281,9 +298,11 @@ XAAPolyLinesDashed(
+ 		    offset += PatternOffset;
+ 		    offset %= PatternLength;
+ 
+-		    (*infoRec->SubsequentDashedBresenhamLine)(
+-				infoRec->pScrn, new_x1, new_y1,
+-				dmaj, dmin, err, len, octant, offset);
++                    (*infoRec->SubsequentDashedBresenhamLine) (infoRec->pScrn,
++                                                               new_x1, new_y1,
++                                                               dmaj, dmin, err,
++                                                               len, octant,
++                                                               offset);
+ 		}
+ 		pbox++;
+ 	    }
+@@ -305,25 +324,26 @@ XAAPolyLinesDashed(
+     if ((pGC->capStyle != CapNotLast) &&
+ 	((ppt->x + xorg != pptInit->x + pDrawable->x) ||
+ 	 (ppt->y + yorg != pptInit->y + pDrawable->y) ||
+-	 (ppt == pptInit + 1)))
+-    {
++         (ppt == pptInit + 1))) {
+ 	nbox = nboxInit;
+ 	pbox = pboxInit;
+ 	while (nbox--) {
+ 	    if ((x2 >= pbox->x1) && (y2 >= pbox->y1) &&
+-		(x2 <  pbox->x2) && (y2 <  pbox->y2))
+-	    {
++                (x2 < pbox->x2) && (y2 < pbox->y2)) {
+ 		if(infoRec->SubsequentDashedTwoPointLine) {
+-			(*infoRec->SubsequentDashedTwoPointLine)(
+-				infoRec->pScrn, x2, y2, x2, y2, 0,
++                    (*infoRec->SubsequentDashedTwoPointLine) (infoRec->pScrn,
++                                                              x2, y2, x2, y2, 0,
++                                                              PatternOffset);
++                }
++                else {
++                    (*infoRec->SubsequentDashedBresenhamLine) (infoRec->pScrn,
++                                                               x2, y2, 2, 0, -1,
++                                                               1, 0,
+ 				PatternOffset);
+-		} else {
+-			(*infoRec->SubsequentDashedBresenhamLine)(
+-				infoRec->pScrn, x2, y2, 2, 0, -1, 
+-				1, 0, PatternOffset);
+ 		}
+ 		break;
+-	    } else
++            }
++            else
+ 		pbox++;
+ 	}
+     }
+@@ -331,4 +351,3 @@ XAAPolyLinesDashed(
+ 
+     SET_SYNC_FLAG(infoRec);
+ }
+-

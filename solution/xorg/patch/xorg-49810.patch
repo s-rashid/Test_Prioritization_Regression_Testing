@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index d33b0d1..e20595a 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -949,7 +949,7 @@ DRI2HasSwapControl(ScreenPtr pScreen)
+ {
+     DRI2ScreenPtr ds = DRI2GetScreen(pScreen);
+ 
+-    return (ds->ScheduleSwap && ds->GetMSC);
++    return ds->ScheduleSwap && ds->GetMSC;
+ }
+ 
+ Bool

@@ -1,0 +1,24 @@
+diff --git a/mi/miwideline.h b/mi/miwideline.h
+index 2ff36ed..8d84878 100644
+--- a/mi/miwideline.h
++++ b/mi/miwideline.h
+@@ -78,13 +78,17 @@ typedef struct _LineFace {
+ #define MILINESETPIXEL(pDrawable, pGC, pixel, oldPixel) { \
+     oldPixel = pGC->fgPixel; \
+     if (pixel != oldPixel) { \
+-	dixChangeGC (NullClient, pGC, GCForeground, (XID *) &pixel, NULL); \
++	ChangeGCVal gcval; \
++	gcval.val = pixel; \
++	dixChangeGC (NullClient, pGC, GCForeground, NULL, &gcval); \
+ 	ValidateGC (pDrawable, pGC); \
+     } \
+ }
+ #define MILINERESETPIXEL(pDrawable, pGC, pixel, oldPixel) { \
+     if (pixel != oldPixel) { \
+-	dixChangeGC (NullClient, pGC, GCForeground, (XID *) &oldPixel, NULL); \
++	ChangeGCVal gcval; \
++	gcval.val = oldPixel; \
++	dixChangeGC (NullClient, pGC, GCForeground, NULL, &gcval); \
+ 	ValidateGC (pDrawable, pGC); \
+     } \
+ }

@@ -1,0 +1,13 @@
+diff --git a/xkb/xkbLEDs.c b/xkb/xkbLEDs.c
+index ae3666f..f617537 100644
+--- a/xkb/xkbLEDs.c
++++ b/xkb/xkbLEDs.c
+@@ -166,7 +166,7 @@ XkbStatePtr	state;
+ 	    }
+ 	}
+     }
+-    return (stateChange || ctrlChange);
++    return stateChange || ctrlChange;
+ }
+ 	
+ 	/*

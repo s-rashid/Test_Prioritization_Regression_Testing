@@ -1,0 +1,163 @@
+diff --git a/hw/kdrive/linux/evdev.c b/hw/kdrive/linux/evdev.c
+index 3797f09..9982fad 100644
+--- a/hw/kdrive/linux/evdev.c
++++ b/hw/kdrive/linux/evdev.c
+@@ -93,6 +93,7 @@ EvdevPtrBtn (KdPointerInfo    *pi, struct input_event *ev)
+         KdEnqueuePointerEvent (pi, flags, 0, 0, 0);
+     }
+ }
++
+ static void
+ EvdevPtrMotion (KdPointerInfo    *pi, struct input_event *ev)
+ {
+@@ -101,13 +102,11 @@ EvdevPtrMotion (KdPointerInfo    *pi, struct input_event *ev)
+     int flags = KD_MOUSE_DELTA | pi->buttonState;
+ 
+     for (i = 0; i <= ke->max_rel; i++)
+-        if (ke->rel[i])
+-        {
++        if (ke->rel[i]) {
+             int a;
+-            for (a = 0; a <= ke->max_rel; a++)
+-            {
+-                if (ISBITSET (ke->relbits, a))
+-		{
++
++            for (a = 0; a <= ke->max_rel; a++) {
++                if (ISBITSET(ke->relbits, a)) {
+                     if (a == 0)
+                         KdEnqueuePointerEvent(pi, flags, ke->rel[a], 0, 0);
+                     else if (a == 1)
+@@ -118,12 +117,11 @@ EvdevPtrMotion (KdPointerInfo    *pi, struct input_event *ev)
+             break;
+         }
+     for (i = 0; i < ke->max_abs; i++)
+-        if (ke->abs[i] != ke->prevabs[i])
+-        {
++        if (ke->abs[i] != ke->prevabs[i]) {
+             int a;
++
+             ErrorF ("abs");
+-            for (a = 0; a <= ke->max_abs; a++)
+-            {
++            for (a = 0; a <= ke->max_abs; a++) {
+                 if (ISBITSET (ke->absbits, a))
+                     ErrorF (" %d=%d", a, ke->abs[a]);
+                 ke->prevabs[a] = ke->abs[a];
+@@ -133,8 +131,7 @@ EvdevPtrMotion (KdPointerInfo    *pi, struct input_event *ev)
+         }
+ 
+     if (ev->code == REL_WHEEL) {
+-      for (i = 0; i < abs (ev->value); i++)
+-      {
++        for (i = 0; i < abs(ev->value); i++) {
+         if (ev->value > 0)
+           flags |= KD_BUTTON_4;
+         else
+@@ -170,8 +167,7 @@ EvdevPtrRead (int evdevPort, void *closure)
+     }
+ 
+     n /= sizeof (struct input_event);
+-    for (i = 0; i < n; i++)
+-    {
++    for (i = 0; i < n; i++) {
+         switch (events[i].type) {
+         case EV_SYN:
+             break;
+@@ -246,34 +242,26 @@ EvdevPtrEnable (KdPointerInfo *pi)
+     if (ioctl (fd, EVIOCGRAB, 1) < 0)
+         perror ("Grabbing evdev mouse device failed");
+ 
+-    if (ioctl (fd, EVIOCGBIT(0 /*EV*/, sizeof (ev)), ev) < 0)
+-    {
++    if (ioctl(fd, EVIOCGBIT(0 /*EV*/, sizeof(ev)), ev) < 0) {
+         perror ("EVIOCGBIT 0");
+         close (fd);
+         return BadMatch;
+     }
+     ke = calloc(1, sizeof (Kevdev));
+-    if (!ke)
+-    {
++    if (!ke) {
+         close (fd);
+         return BadAlloc;
+     }
+-    if (ISBITSET (ev, EV_KEY))
+-    {
+-        if (ioctl (fd, EVIOCGBIT (EV_KEY, sizeof (ke->keybits)),
+-                   ke->keybits) < 0)
+-        {
++    if (ISBITSET(ev, EV_KEY)) {
++        if (ioctl(fd, EVIOCGBIT(EV_KEY, sizeof(ke->keybits)), ke->keybits) < 0) {
+             perror ("EVIOCGBIT EV_KEY");
+             free(ke);
+             close (fd);
+             return BadMatch;
+         }
+     }
+-    if (ISBITSET (ev, EV_REL))
+-    {
+-        if (ioctl (fd, EVIOCGBIT (EV_REL, sizeof (ke->relbits)),
+-                       ke->relbits) < 0)
+-        {
++    if (ISBITSET(ev, EV_REL)) {
++        if (ioctl(fd, EVIOCGBIT(EV_REL, sizeof(ke->relbits)), ke->relbits) < 0) {
+             perror ("EVIOCGBIT EV_REL");
+             free(ke);
+             close (fd);
+@@ -283,13 +271,10 @@ EvdevPtrEnable (KdPointerInfo *pi)
+             if (ISBITSET(ke->relbits, ke->max_rel))
+                 break;
+     }
+-    if (ISBITSET (ev, EV_ABS))
+-    {
++    if (ISBITSET(ev, EV_ABS)) {
+         int i;
+ 
+-        if (ioctl (fd, EVIOCGBIT (EV_ABS, sizeof (ke->absbits)),
+-                   ke->absbits) < 0)
+-            {
++        if (ioctl(fd, EVIOCGBIT(EV_ABS, sizeof(ke->absbits)), ke->absbits) < 0) {
+             perror ("EVIOCGBIT EV_ABS");
+             free(ke);
+             close (fd);
+@@ -298,18 +283,15 @@ EvdevPtrEnable (KdPointerInfo *pi)
+         for (ke->max_abs = ABS_MAX; ke->max_abs >= 0; ke->max_abs--)
+             if (ISBITSET(ke->absbits, ke->max_abs))
+                 break;
+-        for (i = 0; i <= ke->max_abs; i++)
+-        {
++        for (i = 0; i <= ke->max_abs; i++) {
+             if (ISBITSET (ke->absbits, i))
+-                if (ioctl (fd, EVIOCGABS(i), &ke->absinfo[i]) < 0)
+-                {
++                if (ioctl(fd, EVIOCGABS(i), &ke->absinfo[i]) < 0) {
+                     perror ("EVIOCGABS");
+                     break;
+                 }
+             ke->prevabs[i] = ABS_UNSET;
+         }
+-        if (i <= ke->max_abs)
+-        {
++        if (i <= ke->max_abs) {
+             free(ke);
+             close (fd);
+             return BadValue;
+@@ -350,7 +332,6 @@ EvdevPtrFini (KdPointerInfo *pi)
+ {
+ }
+ 
+-
+ /*
+  * Evdev keyboard functions
+  */
+@@ -380,8 +361,7 @@ EvdevKbdRead (int evdevPort, void *closure)
+     }
+ 
+     n /= sizeof (struct input_event);
+-    for (i = 0; i < n; i++)
+-    {
++    for (i = 0; i < n; i++) {
+         if (events[i].type == EV_KEY)
+ 	    KdEnqueueKeyboardEvent (ki, events[i].code, !events[i].value);
+ /* FIXME: must implement other types of events

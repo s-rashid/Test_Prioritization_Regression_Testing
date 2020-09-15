@@ -1,0 +1,12 @@
+diff --git a/miext/shadow/shalloc.c b/miext/shadow/shalloc.c
+index f57cb52..e555135 100644
+--- a/miext/shadow/shalloc.c
++++ b/miext/shadow/shalloc.c
+@@ -20,7 +20,6 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif

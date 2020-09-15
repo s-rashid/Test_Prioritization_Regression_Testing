@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmultiwindowclass.h b/hw/xwin/winmultiwindowclass.h
+index 1c9a5e5..0e3465c 100644
+--- a/hw/xwin/winmultiwindowclass.h
++++ b/hw/xwin/winmultiwindowclass.h
+@@ -98,7 +98,6 @@ typedef struct {
+ /* obsolete */
+ #define PAllHints (PPosition|PSize|PMinSize|PMaxSize|PResizeInc|PAspect)
+ 
+-
+ /*
+  * Function prototypes
+  */

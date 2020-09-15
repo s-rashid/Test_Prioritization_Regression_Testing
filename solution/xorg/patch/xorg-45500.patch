@@ -1,0 +1,17 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 85baa03..984bc07 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -986,7 +986,11 @@ ProcessOtherEvent(InternalEvent *ev, DeviceIntPtr device)
+ 
+     CHECKEVENT(ev);
+ 
+-    if (ev->any.type == ET_Raw)
++    if (ev->any.type == ET_RawKeyPress ||
++        ev->any.type == ET_RawKeyRelease ||
++        ev->any.type == ET_RawButtonPress ||
++        ev->any.type == ET_RawButtonRelease ||
++        ev->any.type == ET_RawMotion)
+     {
+         ProcessRawEvent((RawDeviceEvent*)ev, device);
+         return;

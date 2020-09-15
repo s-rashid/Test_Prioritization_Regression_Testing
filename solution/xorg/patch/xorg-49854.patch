@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostvideo.c b/hw/kdrive/ephyr/ephyrhostvideo.c
+index 38927b0..9dde768 100644
+--- a/hw/kdrive/ephyr/ephyrhostvideo.c
++++ b/hw/kdrive/ephyr/ephyrhostvideo.c
+@@ -831,10 +831,8 @@ out:
+         XFreeGC (dpy, gc) ;
+         gc = NULL ;
+     }
+-    if (rects) {
+         free (rects) ;
+         rects = NULL ;
+-    }
+     EPHYR_LOG ("leave\n") ;
+     return is_ok ;
+ }

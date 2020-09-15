@@ -1,0 +1,39 @@
+diff --git a/miext/rootless/rootless.h b/miext/rootless/rootless.h
+index 3d4a1b0..a3f38b6 100644
+--- a/miext/rootless/rootless.h
++++ b/miext/rootless/rootless.h
+@@ -74,7 +74,6 @@ typedef struct _RootlessWindowRec {
+     unsigned int is_obscured :1;
+ } RootlessWindowRec, *RootlessWindowPtr;
+ 
+-
+ /* Offset for screen-local to global coordinate transforms */
+ extern int rootlessGlobalOffsetX;
+ extern int rootlessGlobalOffsetY;
+@@ -93,7 +92,6 @@ enum rl_gravity_enum {
+     RL_GRAVITY_SOUTH_WEST       = 4,	/* anchor to bottom-left corner */
+ };
+ 
+-
+ /*------------------------------------------
+    Rootless Implementation Functions
+   ------------------------------------------*/
+@@ -278,9 +276,7 @@ typedef void (*RootlessCopyBytesProc)
+  *  dx, dy      Number of pixels away to copy area
+  */
+ typedef void (*RootlessCopyWindowProc)
+-    (RootlessFrameID wid, int dstNrects, const BoxRec *dstRects,
+-     int dx, int dy);
+-
++ (RootlessFrameID wid, int dstNrects, const BoxRec * dstRects, int dx, int dy);
+ 
+ typedef void (*RootlessHideWindowProc)
+      (RootlessFrameID wid);
+@@ -317,7 +313,6 @@ typedef struct _RootlessFrameProcs {
+     RootlessCopyWindowProc CopyWindow;
+ } RootlessFrameProcsRec, *RootlessFrameProcsPtr;
+ 
+-
+ /*
+  * Initialize rootless mode on the given screen.
+  */

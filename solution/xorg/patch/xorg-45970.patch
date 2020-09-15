@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 8450706..b32960a 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -5137,7 +5137,7 @@ ProcUngrabKey(ClientPtr client)
+     int rc;
+ 
+     REQUEST_SIZE_MATCH(xUngrabKeyReq);
+-    rc = dixLookupWindow(&pWin, stuff->grabWindow, client, DixReadAccess);
++    rc = dixLookupWindow(&pWin, stuff->grabWindow, client, DixGetAttrAccess);
+     if (rc != Success)
+ 	return rc;
+ 

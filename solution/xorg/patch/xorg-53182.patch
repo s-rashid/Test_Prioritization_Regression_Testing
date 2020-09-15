@@ -1,0 +1,17 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index 1b067c7..16ecae3 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -671,9 +671,9 @@ static char *dmxMakeUniqueDeviceName(DMXLocalInputInfoPtr dmxLocal)
+     }
+ 
+     switch (dmxLocal->type) {
+-    case DMX_LOCAL_KEYBOARD: XmuSnprintf(buf, LEN, "Keyboard%d", k++); break;
+-    case DMX_LOCAL_MOUSE:    XmuSnprintf(buf, LEN, "Mouse%d", m++);    break;
+-    default:                 XmuSnprintf(buf, LEN, "Other%d", o++);    break;
++    case DMX_LOCAL_KEYBOARD: snprintf(buf, LEN, "Keyboard%d", k++); break;
++    case DMX_LOCAL_MOUSE:    snprintf(buf, LEN, "Mouse%d", m++);    break;
++    default:                 snprintf(buf, LEN, "Other%d", o++);    break;
+     }
+ 
+     return buf;

@@ -1,0 +1,29 @@
+diff --git a/xfixes/xfixesint.h b/xfixes/xfixesint.h
+index f3d5361..9e50993 100644
+--- a/xfixes/xfixesint.h
++++ b/xfixes/xfixesint.h
+@@ -255,6 +255,15 @@ ProcXFixesExpandRegion (ClientPtr client);
+ int
+ SProcXFixesExpandRegion (ClientPtr client);
+ 
++int
++PanoramiXFixesSetGCClipRegion (ClientPtr client);
++
++int
++PanoramiXFixesSetWindowShapeRegion (ClientPtr client);
++
++int
++PanoramiXFixesSetPictureClipRegion (ClientPtr client);
++
+ /* Cursor Visibility (Version 4) */
+ 
+ int 
+@@ -269,4 +278,8 @@ ProcXFixesShowCursor (ClientPtr client);
+ int 
+ SProcXFixesShowCursor (ClientPtr client);
+ 
++extern int (*PanoramiXSaveXFixesVector[XFixesNumberRequests])(ClientPtr);
++void PanoramiXFixesInit (void);
++void PanoramiXFixesReset (void);
++
+ #endif /* _XFIXESINT_H_ */

@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winclipboardthread.c b/hw/xwin/winclipboardthread.c
+index 9040f40..8eb825f 100644
+--- a/hw/xwin/winclipboardthread.c
++++ b/hw/xwin/winclipboardthread.c
+@@ -39,6 +39,7 @@
+ #include <errno.h>
+ #endif
+ #include "X11/Xauth.h"
++#include "misc.h"
+ 
+ 
+ /*

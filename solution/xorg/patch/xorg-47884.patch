@@ -1,0 +1,14 @@
+diff --git a/render/glyph.c b/render/glyph.c
+index 0b864ad..f0f3b19 100644
+--- a/render/glyph.c
++++ b/render/glyph.c
+@@ -217,6 +217,9 @@ FindGlyphByHash (unsigned char sha1[20], int format)
+     GlyphRefPtr gr;
+     CARD32 signature = *(CARD32 *) sha1;
+ 
++    if (!globalGlyphs[format].hashSet)
++	return NULL;
++
+     gr = FindGlyphRef (&globalGlyphs[format],
+ 		       signature, TRUE, sha1);
+ 

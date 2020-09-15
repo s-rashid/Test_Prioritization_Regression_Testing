@@ -1,0 +1,10 @@
+diff --git a/hw/xnest/Events.h b/hw/xnest/Events.h
+index 2441acc..1c1b8cd 100644
+--- a/hw/xnest/Events.h
++++ b/hw/xnest/Events.h
+@@ -26,4 +26,4 @@ void xnestCollectExposures(void);
+ void xnestCollectEvents(void);
+ void xnestQueueKeyEvent(int type, unsigned int keycode);
+ 
+-#endif /* XNESTEVENTS_H */
++#endif                          /* XNESTEVENTS_H */

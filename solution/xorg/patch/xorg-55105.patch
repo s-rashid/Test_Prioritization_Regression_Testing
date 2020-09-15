@@ -1,0 +1,168 @@
+diff --git a/exa/exa.h b/exa/exa.h
+index 8c93d15..7534002 100644
+--- a/exa/exa.h
++++ b/exa/exa.h
+@@ -44,7 +44,8 @@
+ 
+ typedef struct _ExaOffscreenArea ExaOffscreenArea;
+ 
+-typedef void (*ExaOffscreenSaveProc) (ScreenPtr pScreen, ExaOffscreenArea *area);
++typedef void (*ExaOffscreenSaveProc) (ScreenPtr pScreen,
++                                      ExaOffscreenArea * area);
+ 
+ typedef enum _ExaOffscreenState {
+     ExaOffscreenAvail,
+@@ -190,9 +191,7 @@ typedef struct _ExaDriver {
+      * reason.  Failure results in a fallback to software rendering.
+      */
+     Bool        (*PrepareSolid) (PixmapPtr      pPixmap,
+-                                 int            alu,
+-                                 Pixel          planemask,
+-                                 Pixel          fg);
++                          int alu, Pixel planemask, Pixel fg);
+ 
+     /**
+      * Solid() performs a solid fill set up in the last PrepareSolid() call.
+@@ -266,10 +265,7 @@ typedef struct _ExaDriver {
+      */
+     Bool        (*PrepareCopy) (PixmapPtr       pSrcPixmap,
+                                 PixmapPtr       pDstPixmap,
+-                                int             dx,
+-                                int             dy,
+-                                int             alu,
+-                                Pixel           planemask);
++                         int dx, int dy, int alu, Pixel planemask);
+ 
+     /**
+      * Copy() performs a copy set up in the last PrepareCopy call.
+@@ -297,11 +293,7 @@ typedef struct _ExaDriver {
+      */
+     void        (*Copy) (PixmapPtr       pDstPixmap,
+                          int    srcX,
+-                         int    srcY,
+-                         int    dstX,
+-                         int    dstY,
+-                         int    width,
+-                         int    height);
++                  int srcY, int dstX, int dstY, int width, int height);
+ 
+     /**
+      * DoneCopy() finishes a set of copies.
+@@ -348,8 +340,7 @@ typedef struct _ExaDriver {
+      */
+     Bool        (*CheckComposite) (int          op,
+                                    PicturePtr   pSrcPicture,
+-                                   PicturePtr   pMaskPicture,
+-                                   PicturePtr   pDstPicture);
++                            PicturePtr pMaskPicture, PicturePtr pDstPicture);
+ 
+     /**
+      * PrepareComposite() sets up the driver for doing a Composite operation
+@@ -409,9 +400,7 @@ typedef struct _ExaDriver {
+                                      PicturePtr         pSrcPicture,
+                                      PicturePtr         pMaskPicture,
+                                      PicturePtr         pDstPicture,
+-                                     PixmapPtr          pSrc,
+-                                     PixmapPtr          pMask,
+-                                     PixmapPtr          pDst);
++                              PixmapPtr pSrc, PixmapPtr pMask, PixmapPtr pDst);
+ 
+     /**
+      * Composite() performs a Composite operation set up in the last
+@@ -441,11 +430,7 @@ typedef struct _ExaDriver {
+                               int       srcX,
+                               int        srcY,
+                               int        maskX,
+-                              int        maskY,
+-                              int        dstX,
+-                              int        dstY,
+-                              int        width,
+-                              int        height);
++                       int maskY, int dstX, int dstY, int width, int height);
+ 
+     /**
+      * DoneComposite() finishes a set of Composite operations.
+@@ -495,18 +480,13 @@ typedef struct _ExaDriver {
+      */
+     Bool        (*UploadToScreen) (PixmapPtr            pDst,
+ 				   int                  x,
+-				   int                  y,
+-				   int                  w,
+-				   int                  h,
+-                                   char                 *src,
+-                                   int                  src_pitch);
++                            int y, int w, int h, char *src, int src_pitch);
+ 
+     /**
+      * UploadToScratch() is no longer used and will be removed next time the EXA
+      * major version needs to be bumped.
+      */
+-    Bool        (*UploadToScratch) (PixmapPtr           pSrc,
+-                                    PixmapPtr           pDst);
++    Bool (*UploadToScratch) (PixmapPtr pSrc, PixmapPtr pDst);
+ 
+     /**
+      * DownloadFromScreen() loads a rectangle of data from pSrc into dst
+@@ -540,8 +520,7 @@ typedef struct _ExaDriver {
+      */
+     Bool (*DownloadFromScreen)(PixmapPtr pSrc,
+                                int x,  int y,
+-                               int w,  int h,
+-                               char *dst,  int dst_pitch);
++                                int w, int h, char *dst, int dst_pitch);
+ 
+     /**
+      * MarkSync() requests that the driver mark a synchronization point,
+@@ -772,12 +751,10 @@ typedef struct _ExaDriver {
+ /** @} */
+ 
+ /* in exa.c */
+-extern _X_EXPORT ExaDriverPtr
+-exaDriverAlloc(void);
++extern _X_EXPORT ExaDriverPtr exaDriverAlloc(void);
+ 
+ extern _X_EXPORT Bool
+-exaDriverInit(ScreenPtr      pScreen,
+-              ExaDriverPtr   pScreenInfo);
++ exaDriverInit(ScreenPtr pScreen, ExaDriverPtr pScreenInfo);
+ 
+ extern _X_EXPORT void
+ exaDriverFini(ScreenPtr      pScreen);
+@@ -796,19 +773,17 @@ exaGetPixmapPitch(PixmapPtr pPix);
+ extern _X_EXPORT unsigned long
+ exaGetPixmapSize(PixmapPtr pPix);
+ 
+-extern _X_EXPORT void *
+-exaGetPixmapDriverPrivate(PixmapPtr p);
+-
++extern _X_EXPORT void *exaGetPixmapDriverPrivate(PixmapPtr p);
+ 
+ /* in exa_offscreen.c */
+-extern _X_EXPORT ExaOffscreenArea *
+-exaOffscreenAlloc(ScreenPtr pScreen, int size, int align,
++extern _X_EXPORT ExaOffscreenArea *exaOffscreenAlloc(ScreenPtr pScreen,
++                                                     int size, int align,
+                   Bool locked,
+                   ExaOffscreenSaveProc save,
+                   pointer privData);
+ 
+-extern _X_EXPORT ExaOffscreenArea *
+-exaOffscreenFree(ScreenPtr pScreen, ExaOffscreenArea *area);
++extern _X_EXPORT ExaOffscreenArea *exaOffscreenFree(ScreenPtr pScreen,
++                                                    ExaOffscreenArea * area);
+ 
+ extern _X_EXPORT void
+ ExaOffscreenMarkUsed (PixmapPtr pPixmap);
+@@ -826,12 +801,10 @@ exaMoveInPixmap (PixmapPtr pPixmap);
+ extern _X_EXPORT void
+ exaMoveOutPixmap (PixmapPtr pPixmap);
+ 
+-
+ /* in exa_unaccel.c */
+ extern _X_EXPORT CARD32
+ exaGetPixmapFirstPixel (PixmapPtr pPixmap);
+ 
+-
+ /**
+  * Returns TRUE if the given planemask covers all the significant bits in the
+  * pixel values for pDrawable.

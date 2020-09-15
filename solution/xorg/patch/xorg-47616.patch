@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index fb0ee9c..6cbc23e 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -538,9 +538,9 @@ InputClassMatches(XF86ConfInputClassPtr iclass, InputAttributes *attrs)
+ }
+ 
+ /*
+- * Merge in any InputClass configurations. Each InputClass section can
+- * add to the original device configuration as well as any previous
+- * InputClass sections.
++ * Merge in any InputClass configurations. Options in each InputClass
++ * section have less priority than the original device configuration as
++ * well as any previous InputClass sections.
+  */
+ static int
+ MergeInputClasses(IDevPtr idev, InputAttributes *attrs)

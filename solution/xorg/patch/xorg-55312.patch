@@ -1,0 +1,163 @@
+diff --git a/hw/dmx/glxProxy/render2swap.c b/hw/dmx/glxProxy/render2swap.c
+index da9b565..166ec88 100644
+--- a/hw/dmx/glxProxy/render2swap.c
++++ b/hw/dmx/glxProxy/render2swap.c
+@@ -32,7 +32,8 @@
+ #include "unpack.h"
+ #include "g_disptab.h"
+ 
+-static GLint __glEvalComputeK(GLenum target)
++static GLint
++__glEvalComputeK(GLenum target)
+ {
+     switch (target) {
+     case GL_MAP1_VERTEX_4:
+@@ -62,12 +63,14 @@ static GLint __glEvalComputeK(GLenum target)
+     }
+ }
+ 
+-void __glXDispSwap_Map1f(GLbyte *pc)
++void
++__glXDispSwap_Map1f(GLbyte * pc)
+ {
+     GLint order, k;
+     GLfloat u1, u2, *points;
+     GLenum target;
+     GLint compsize;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -86,19 +89,22 @@ void __glXDispSwap_Map1f(GLbyte *pc)
+     if (order <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = order * k;
+     }
+     __GLX_SWAP_FLOAT_ARRAY(points, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_Map2f(GLbyte *pc)
++void
++__glXDispSwap_Map2f(GLbyte * pc)
+ {
+     GLint uorder, vorder, ustride, vstride, k;
+     GLfloat u1, u2, v1, v2, *points;
+     GLenum target;
+     GLint compsize;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -126,18 +132,21 @@ void __glXDispSwap_Map2f(GLbyte *pc)
+     if (vorder <= 0 || uorder <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = uorder * vorder * k;
+     }
+     __GLX_SWAP_FLOAT_ARRAY(points, compsize);
+ 
+ }
+ 
+-void __glXDispSwap_Map1d(GLbyte *pc)
++void
++__glXDispSwap_Map1d(GLbyte * pc)
+ {
+     GLint order, k, compsize;
+     GLenum target;
+     GLdouble u1, u2, *points;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -152,7 +161,8 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+     if (order <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = order * k;
+     }
+     __GLX_GET_DOUBLE(u1,pc);
+@@ -168,7 +178,8 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+@@ -176,11 +187,13 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+ #endif
+ }
+ 
+-void __glXDispSwap_Map2d(GLbyte *pc)
++void
++__glXDispSwap_Map2d(GLbyte * pc)
+ {
+     GLdouble u1, u2, v1, v2, *points;
+     GLint uorder, vorder, ustride, vstride, k, compsize;
+     GLenum target;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -199,7 +212,8 @@ void __glXDispSwap_Map2d(GLbyte *pc)
+     if (vorder <= 0 || uorder <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = uorder * vorder * k;
+     }
+     __GLX_GET_DOUBLE(u1,pc);
+@@ -219,7 +233,8 @@ void __glXDispSwap_Map2d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+@@ -227,10 +242,12 @@ void __glXDispSwap_Map2d(GLbyte *pc)
+ #endif
+ }
+ 
+-void __glXDispSwap_CallLists(GLbyte *pc)
++void
++__glXDispSwap_CallLists(GLbyte * pc)
+ {
+     GLenum type;
+     GLsizei n;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -261,11 +278,13 @@ void __glXDispSwap_CallLists(GLbyte *pc)
+ 
+ }
+ 
+-void __glXDispSwap_DrawArrays(GLbyte *pc)
++void
++__glXDispSwap_DrawArrays(GLbyte * pc)
+ {
+     __GLXdispatchDrawArraysHeader *hdr = (__GLXdispatchDrawArraysHeader *)pc;
+     __GLXdispatchDrawArraysComponentHeader *compHeader;
+     int i;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_INT(&hdr->numVertexes);

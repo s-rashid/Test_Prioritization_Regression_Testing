@@ -1,0 +1,13 @@
+diff --git a/exa/exa.h b/exa/exa.h
+index 6de6300..8c93d15 100644
+--- a/exa/exa.h
++++ b/exa/exa.h
+@@ -712,7 +712,7 @@ typedef struct _ExaDriver {
+      * driver MUST fill out new_fb_pitch with valid pitch of pixmap
+      */
+     void *(*CreatePixmap2)(ScreenPtr pScreen, int width, int height,
+-			   int depth, int class, int bitsPerPixel,
++			   int depth, int usage_hint, int bitsPerPixel,
+ 			   int *new_fb_pitch);
+     /** @} */
+ } ExaDriverRec, *ExaDriverPtr;

@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmultiwindowwindow.c b/hw/xwin/winmultiwindowwindow.c
+index 95d9d71..7312350 100644
+--- a/hw/xwin/winmultiwindowwindow.c
++++ b/hw/xwin/winmultiwindowwindow.c
+@@ -38,7 +38,6 @@
+ #include "win.h"
+ #include "dixevents.h"
+ #include "winmultiwindowclass.h"
+-#include "winprefs.h"
+ 
+ /*
+  * External global variables

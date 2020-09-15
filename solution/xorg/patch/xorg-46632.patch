@@ -1,0 +1,21 @@
+diff --git a/dix/dixutils.c b/dix/dixutils.c
+index 5cede5f..8278d44 100644
+--- a/dix/dixutils.c
++++ b/dix/dixutils.c
+@@ -165,16 +165,6 @@ ISOLatin1ToLower (unsigned char source)
+ }
+ 
+ 
+-void
+-CopyISOLatin1Lowered(unsigned char *dest, unsigned char *source, int length)
+-{
+-    int i;
+-
+-    for (i = 0; i < length; i++, source++, dest++)
+-	*dest = ISOLatin1ToLower (*source);
+-    *dest = '\0';
+-}
+-
+ int
+ CompareISOLatin1Lowered(unsigned char *s1, int s1len, 
+ 			unsigned char *s2, int s2len)

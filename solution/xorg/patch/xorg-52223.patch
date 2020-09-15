@@ -1,0 +1,10 @@
+diff --git a/hw/xquartz/threadSafety.h b/hw/xquartz/threadSafety.h
+index 7b00910..3ff9eaf 100644
+--- a/hw/xquartz/threadSafety.h
++++ b/hw/xquartz/threadSafety.h
+@@ -53,4 +53,4 @@ const char *threadSafetyID(pthread_t tid);
+ #define TA_APPKIT() 
+ #endif
+ 
+-#endif _XQ_THREAD_SAFETY_H_
++#endif /* _XQ_THREAD_SAFETY_H_ */

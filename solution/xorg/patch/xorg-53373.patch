@@ -1,0 +1,12 @@
+diff --git a/dix/eventconvert.c b/dix/eventconvert.c
+index 024f2e8..6ddcf9e 100644
+--- a/dix/eventconvert.c
++++ b/dix/eventconvert.c
+@@ -605,6 +605,7 @@ eventToDeviceEvent(DeviceEvent *ev, xEvent **xi)
+     xde->root_x         = FP1616(ev->root_x, ev->root_x_frac);
+     xde->root_y         = FP1616(ev->root_y, ev->root_y_frac);
+ 
++    xde->flags          = ev->flags;
+     if (ev->key_repeat)
+         xde->flags      |= XIKeyRepeat;
+ 

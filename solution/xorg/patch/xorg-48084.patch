@@ -1,0 +1,12 @@
+diff --git a/dix/events.c b/dix/events.c
+index 6d0137d..b26e28a 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -5355,7 +5355,6 @@ ProcGrabButton(ClientPtr client)
+ 	rc = dixLookupResourceByType((pointer *)&cursor, stuff->cursor, RT_CURSOR,
+ 			       client, DixUseAccess);
+ 	if (rc != Success)
+-	if (!cursor)
+ 	{
+ 	    client->errorValue = stuff->cursor;
+ 	    return (rc == BadValue) ? BadCursor : rc;

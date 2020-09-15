@@ -1,0 +1,15 @@
+diff --git a/dbe/dbe.c b/dbe/dbe.c
+index fba10d6..9b5474c 100644
+--- a/dbe/dbe.c
++++ b/dbe/dbe.c
+@@ -1576,10 +1576,6 @@ DbeExtensionInit(void)
+     if (!dbeWindowPrivResType)
+ 	return;
+ 
+-    if (!dixRegisterPrivateOffset(dbeDrawableResType,
+-				  offsetof(PixmapRec, devPrivates)))
+-	return;
+-
+     for (i = 0; i < screenInfo.numScreens; i++)
+     {
+         /* For each screen, set up DBE screen privates and init DIX and DDX

@@ -1,0 +1,14 @@
+diff --git a/xkb/xkmread.c b/xkb/xkmread.c
+index 814bb1d..9eb8601 100644
+--- a/xkb/xkmread.c
++++ b/xkb/xkmread.c
+@@ -534,8 +534,7 @@ XkbAction               *act;
+ 
+         case XkbSA_XFree86Private:
+             /* copy the kind of action */
+-            strncpy((char*)act->any.data, (char*)wire.actionData,
+-                    XkbAnyActionDataSize);
++            memcpy(act->any.data, wire.actionData, XkbAnyActionDataSize);
+             break ;
+ 
+         case XkbSA_Terminate:

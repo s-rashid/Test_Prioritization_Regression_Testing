@@ -1,0 +1,12 @@
+diff --git a/miext/shadow/shalloc.c b/miext/shadow/shalloc.c
+index 72aa28b..f57cb52 100644
+--- a/miext/shadow/shalloc.c
++++ b/miext/shadow/shalloc.c
+@@ -45,6 +45,6 @@ shadowAlloc (int width, int height, int bpp)
+ 
+     /* Cant use PixmapBytePad -- the structure is probably not initialized yet */
+     stride = BitmapBytePad (width * bpp);
+-    fb = xalloc (stride * height);
++    fb = malloc(stride * height);
+     return fb;
+ }

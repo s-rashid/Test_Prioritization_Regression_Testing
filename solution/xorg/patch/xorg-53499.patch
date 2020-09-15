@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/bsd/alpha_video.c b/hw/xfree86/os-support/bsd/alpha_video.c
+index bb3a5cb..15eb2a4 100644
+--- a/hw/xfree86/os-support/bsd/alpha_video.c
++++ b/hw/xfree86/os-support/bsd/alpha_video.c
+@@ -340,7 +340,7 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 	base = mmap(0, Size,
+ 		    (flags & VIDMEM_READONLY) ?
+ 		     PROT_READ : (PROT_READ | PROT_WRITE),
+-		    MAP_FLAGS, xf86Info.screenFd,
++		    MAP_FLAGS, xf86Info.consoleFd,
+ 		    (unsigned long)Base + BUS_BASE);
+ 	if (base == MAP_FAILED)
+ 	{

@@ -1,0 +1,13 @@
+diff --git a/render/picturestr.h b/render/picturestr.h
+index 5a796f4..a401108 100644
+--- a/render/picturestr.h
++++ b/render/picturestr.h
+@@ -412,7 +412,7 @@ extern _X_EXPORT RESTYPE	GlyphSetType;
+     int rc = dixLookupResourceByType((pointer)&(pPicture), pid,\
+ 	                             PictureType, client, mode);\
+     if (rc != Success)\
+-	return (rc == BadValue) ? RenderErrBase + BadPicture : rc;\
++	return rc;\
+ }
+ 
+ #define VERIFY_ALPHA(pPicture, pid, client, mode) {\

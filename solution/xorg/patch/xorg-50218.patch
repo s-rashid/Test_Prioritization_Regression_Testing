@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index ae8c4e1..0e094d2 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -677,7 +677,6 @@ xf86AllocateInput(InputDriverPtr drv, IDevPtr idev)
+     new->conversion_proc = NULL;
+     new->reverse_conversion_proc = NULL;
+     new->dev = NULL;
+-    new->always_core_feedback = NULL;
+     new->private = NULL;
+     new->conf_idev = idev;
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartzKeyboard.c b/hw/xquartz/quartzKeyboard.c
+index 54f709a..3ab5d52 100644
+--- a/hw/xquartz/quartzKeyboard.c
++++ b/hw/xquartz/quartzKeyboard.c
+@@ -56,8 +56,6 @@
+ 
+ #include "X11Application.h"
+ 
+-#include "threadSafety.h"
+-
+ #ifdef NDEBUG
+ #undef NDEBUG
+ #include <assert.h>

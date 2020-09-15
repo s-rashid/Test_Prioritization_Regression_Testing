@@ -1,0 +1,66 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index 9d7d6dc..b3d02a9 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -41,6 +41,7 @@ typedef struct {
+     unsigned int pitch;
+     unsigned int cpp;
+     unsigned int flags;
++    unsigned int format;
+     void *driverPrivate;
+ } DRI2BufferRec, *DRI2BufferPtr;
+ 
+@@ -58,8 +59,19 @@ typedef void		(*DRI2CopyRegionProcPtr)(DrawablePtr pDraw,
+ typedef void		(*DRI2WaitProcPtr)(WindowPtr pWin,
+ 					   unsigned int sequence);
+ 
++typedef DRI2BufferPtr	(*DRI2CreateBufferProcPtr)(DrawablePtr pDraw,
++						   unsigned int attachment,
++						   unsigned int format);
++typedef void		(*DRI2DestroyBufferProcPtr)(DrawablePtr pDraw,
++						    DRI2BufferPtr buffer);
++
++/**
++ * Version of the DRI2InfoRec structure defined in this header
++ */
++#define DRI2INFOREC_VERSION 2
++
+ typedef struct {
+-    unsigned int version;	/* Version of this struct */
++    unsigned int version;	/**< Version of this struct */
+     int fd;
+     const char *driverName;
+     const char *deviceName;
+@@ -69,6 +81,14 @@ typedef struct {
+     DRI2CopyRegionProcPtr	CopyRegion;
+     DRI2WaitProcPtr		Wait;
+ 
++    /**
++     * \name Fields added in version 2 of the structure.
++     */
++    /*@{*/
++    DRI2CreateBufferProcPtr	CreateBuffer;
++    DRI2DestroyBufferProcPtr	DestroyBuffer;
++    /*@}*/
++
+ }  DRI2InfoRec, *DRI2InfoPtr;
+ 
+ extern _X_EXPORT Bool DRI2ScreenInit(ScreenPtr	pScreen,
+@@ -88,7 +108,7 @@ extern _X_EXPORT int DRI2CreateDrawable(DrawablePtr pDraw);
+ 
+ extern _X_EXPORT void DRI2DestroyDrawable(DrawablePtr pDraw);
+ 
+-extern _X_EXPORT DRI2BufferPtr DRI2GetBuffers(DrawablePtr pDraw,
++extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffers(DrawablePtr pDraw,
+ 			     int *width,
+ 			     int *height,
+ 			     unsigned int *attachments,
+@@ -118,4 +138,8 @@ extern _X_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
+  */
+ extern _X_EXPORT void DRI2Version(int *major, int *minor);
+ 
++extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffersWithFormat(DrawablePtr pDraw,
++	int *width, int *height, unsigned int *attachments, int count,
++	int *out_count);
++
+ #endif

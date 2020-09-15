@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_video.c b/hw/xfree86/os-support/linux/lnx_video.c
+index b97757c..39c728d 100644
+--- a/hw/xfree86/os-support/linux/lnx_video.c
++++ b/hw/xfree86/os-support/linux/lnx_video.c
+@@ -530,6 +530,8 @@ xf86EnableIO(void)
+ 		return FALSE;
+         }
+ # if !defined(__alpha__)
++	/* XXX: this is actually not trapping anything because of iopl(3)
++	 * above */
+ 	ioperm(0x40,4,0); /* trap access to the timer chip */
+ 	ioperm(0x60,4,0); /* trap access to the keyboard controller */
+ # endif

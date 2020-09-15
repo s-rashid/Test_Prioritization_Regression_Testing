@@ -1,0 +1,26 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index 9d0c621..3093505 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -1064,8 +1064,8 @@ DGAProcessKeyboardEvent (ScreenPtr pScreen, DGAEvent *event, DeviceIntPtr keybd)
+         de.u.u.type = *XDGAEventBase + GetCoreType((InternalEvent*)&ev);
+         de.u.u.detail = event->detail;
+         de.u.event.time = event->time;
+-        de.u.event.dx = 0;
+-        de.u.event.dy = 0;
++        de.u.event.dx = event->dx;
++        de.u.event.dy = event->dy;
+         de.u.event.screen = pScreen->myNum;
+         de.u.event.state = ev.corestate;
+ 
+@@ -1120,8 +1120,8 @@ DGAProcessPointerEvent (ScreenPtr pScreen, DGAEvent *event, DeviceIntPtr mouse)
+         de.u.u.type = *XDGAEventBase + coreEquiv;
+         de.u.u.detail = event->detail;
+         de.u.event.time = event->time;
+-        de.u.event.dx = 0;
+-        de.u.event.dy = 0;
++        de.u.event.dx = event->dx;
++        de.u.event.dy = event->dy;
+         de.u.event.screen = pScreen->myNum;
+         de.u.event.state = ev.corestate;
+ 

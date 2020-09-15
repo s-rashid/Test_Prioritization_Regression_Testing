@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index b534bd5..99329c3 100755
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -319,7 +319,6 @@ winWindowsWMSendEvent (int type, unsigned int mask, int which, int arg,
+       se.y = y;
+       se.w = w;
+       se.h = h;
+-      se.sequenceNumber = client->sequence;
+       se.time = currentTime.milliseconds;
+       WriteEventsToClient (client, 1, (xEvent *) &se);
+     }

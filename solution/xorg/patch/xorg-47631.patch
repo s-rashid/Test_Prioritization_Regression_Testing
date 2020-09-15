@@ -1,0 +1,14 @@
+diff --git a/include/misc.h b/include/misc.h
+index 877c682..62d813e 100644
+--- a/include/misc.h
++++ b/include/misc.h
+@@ -210,6 +210,9 @@ pad_to_int32(const int bytes) {
+     return (((bytes) + 3) & ~3);
+ }
+ 
++extern char**
++xstrtokenize(const char *str, const char* separators);
++
+ /* some macros to help swap requests, replies, and events */
+ 
+ #define LengthRestB(stuff) \

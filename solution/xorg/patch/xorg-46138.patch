@@ -1,0 +1,21 @@
+diff --git a/dix/window.c b/dix/window.c
+index 9663578..caff1cb 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -3541,7 +3541,7 @@ ChangeWindowDeviceCursor(WindowPtr pWin,
+                     pWin->optional->deviceCursors = pNode->next;
+ 
+             xfree(pNode);
+-            return Success;
++            goto out;
+         }
+ 
+     } else
+@@ -3586,6 +3586,7 @@ ChangeWindowDeviceCursor(WindowPtr pWin,
+         }
+     }
+ 
++out:
+     if (pWin->realized)
+         WindowHasNewCursor(pWin);
+ 

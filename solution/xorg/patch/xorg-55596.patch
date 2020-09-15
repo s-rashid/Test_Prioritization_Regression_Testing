@@ -1,0 +1,25 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_agp.c b/hw/xfree86/os-support/solaris/sun_agp.c
+index 8c4e9f5..fb58eca 100644
+--- a/hw/xfree86/os-support/solaris/sun_agp.c
++++ b/hw/xfree86/os-support/solaris/sun_agp.c
+@@ -51,6 +51,7 @@
+ static int gartFd = -1;
+ static int acquiredScreen = -1;
+ static Bool initDone = FALSE;
++
+ /*
+  * Close /dev/agpgart.  This frees all associated memory allocated during
+  * this server generation.
+@@ -304,7 +305,6 @@ xf86UnbindGARTMemory(int screenNum, int key)
+ 	return TRUE;
+ }
+ 
+-
+ /* XXX Interface may change. */
+ Bool
+ xf86EnableAGP(int screenNum, CARD32 mode)
+@@ -324,4 +324,3 @@ xf86EnableAGP(int screenNum, CARD32 mode)
+ 
+ 	return TRUE;
+ }
+-

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86xv.h b/hw/xfree86/common/xf86xv.h
+index c3db6cc..1b43fcb 100644
+--- a/hw/xfree86/common/xf86xv.h
++++ b/hw/xfree86/common/xf86xv.h
+@@ -165,7 +165,7 @@ typedef struct {
+   GetPortAttributeFuncPtr GetPortAttribute;
+   QueryBestSizeFuncPtr QueryBestSize;
+   PutImageFuncPtr PutImage;
+-  ReputImageFuncPtr ReputImage;
++  ReputImageFuncPtr ReputImage; /* image/still */
+   QueryImageAttributesFuncPtr QueryImageAttributes;
+   ClipNotifyFuncPtr ClipNotify;
+ } XF86VideoAdaptorRec, *XF86VideoAdaptorPtr;

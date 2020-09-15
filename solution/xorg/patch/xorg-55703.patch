@@ -1,0 +1,869 @@
+diff --git a/hw/xfree86/xaa/xaaOverlayDF.c b/hw/xfree86/xaa/xaaOverlayDF.c
+index ca22368..5918f65 100644
+--- a/hw/xfree86/xaa/xaaOverlayDF.c
++++ b/hw/xfree86/xaa/xaaOverlayDF.c
+@@ -4,7 +4,6 @@
+    Written by Mark Vojkovich
+ */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -75,7 +74,8 @@ static void XAAOverImageGlyphBltNonTE(DrawablePtr, GCPtr, int, int,
+ 			unsigned int, CharInfoPtr *, pointer);
+ static void XAAOverPolyGlyphBltNonTE(DrawablePtr, GCPtr, int, int, 
+ 			unsigned int, CharInfoPtr *, pointer);
+-static void XAAOverPolyRectangleThinSolid(DrawablePtr, GCPtr, int, xRectangle*);
++static void XAAOverPolyRectangleThinSolid(DrawablePtr, GCPtr, int,
++                                          xRectangle *);
+ static void XAAOverPolylinesWideSolid(DrawablePtr, GCPtr, int, int, 
+ 			DDXPointPtr);
+ static void XAAOverPolylinesThinSolid(DrawablePtr, GCPtr, int, int, 
+@@ -96,7 +96,6 @@ static void XAAOverPolyFillArcSolid(DrawablePtr, GCPtr, int, xArc*);
+ static void XAAOverPutImage(DrawablePtr, GCPtr, int, int, int, int, int, 
+ 			int, int, char*);
+ 
+-
+ typedef struct {
+    ScrnInfoPtr		pScrn;
+    DepthChangeFuncPtr	callback;
+@@ -112,8 +111,10 @@ typedef struct {
+    void (*PolyFillRectOpaqueStippled)(DrawablePtr, GCPtr, int, xRectangle*);
+    void (*PolyFillRectTiled)(DrawablePtr, GCPtr, int, xRectangle*);
+    void (*FillSpansSolid)(DrawablePtr, GCPtr, int, DDXPointPtr, int*, int);
+-   void (*FillSpansStippled)(DrawablePtr, GCPtr, int, DDXPointPtr, int*, int);
+-   void (*FillSpansOpaqueStippled)(DrawablePtr,GCPtr,int,DDXPointPtr,int*,int);
++    void (*FillSpansStippled) (DrawablePtr, GCPtr, int, DDXPointPtr, int *,
++                               int);
++    void (*FillSpansOpaqueStippled) (DrawablePtr, GCPtr, int, DDXPointPtr,
++                                     int *, int);
+    void (*FillSpansTiled)(DrawablePtr, GCPtr, int, DDXPointPtr, int*, int);
+    int (*PolyText8TE)(DrawablePtr, GCPtr, int, int, int, char *);
+    int (*PolyText16TE)(DrawablePtr, GCPtr, int, int, int, unsigned short*);
+@@ -124,9 +125,11 @@ typedef struct {
+    void (*PolyGlyphBltTE)(DrawablePtr, GCPtr, int, int, unsigned int,
+ 			CharInfoPtr*, pointer);
+    int (*PolyText8NonTE)(DrawablePtr, GCPtr, int, int, int, char*);
+-   int (*PolyText16NonTE)(DrawablePtr, GCPtr, int, int, int, unsigned short*);
++    int (*PolyText16NonTE) (DrawablePtr, GCPtr, int, int, int,
++                            unsigned short *);
+    void (*ImageText8NonTE)(DrawablePtr, GCPtr, int, int, int, char*);
+-   void (*ImageText16NonTE)(DrawablePtr, GCPtr, int, int, int, unsigned short*);
++    void (*ImageText16NonTE) (DrawablePtr, GCPtr, int, int, int,
++                              unsigned short *);
+    void (*ImageGlyphBltNonTE)(DrawablePtr, GCPtr, int, int, unsigned int,
+ 			CharInfoPtr *, pointer);
+    void (*PolyGlyphBltNonTE)(DrawablePtr, GCPtr, int, int, unsigned int,
+@@ -139,7 +142,8 @@ typedef struct {
+    void (*PolylinesThinDashed)(DrawablePtr, GCPtr, int, int, DDXPointPtr);
+    void (*PolySegmentThinDashed)(DrawablePtr, GCPtr, int, xSegment*);
+    void (*FillPolygonSolid)(DrawablePtr, GCPtr, int, int, int, DDXPointPtr);
+-   void (*FillPolygonStippled)(DrawablePtr, GCPtr, int, int, int, DDXPointPtr);
++    void (*FillPolygonStippled) (DrawablePtr, GCPtr, int, int, int,
++                                 DDXPointPtr);
+    void (*FillPolygonOpaqueStippled)(DrawablePtr, GCPtr, int, int, int, 
+ 			DDXPointPtr);
+    void (*FillPolygonTiled)(DrawablePtr, GCPtr, int, int, int, DDXPointPtr);
+@@ -152,6 +156,7 @@ typedef struct {
+ } XAAOverlayRec, *XAAOverlayPtr;
+ 
+ static DevPrivateKeyRec XAAOverlayKeyRec;
++
+ #define XAAOverlayKey (&XAAOverlayKeyRec)
+ 
+ #define GET_OVERLAY_PRIV(pScreen) \
+@@ -163,12 +168,9 @@ static DevPrivateKeyRec XAAOverlayKeyRec;
+ 	pOverPriv->currentDepth = d; \
+    }
+ 
+-
+ Bool
+-XAAInitDualFramebufferOverlay(
+-    ScreenPtr pScreen, 
+-    DepthChangeFuncPtr callback
+-){
++XAAInitDualFramebufferOverlay(ScreenPtr pScreen, DepthChangeFuncPtr callback)
++{
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     XAAOverlayPtr pOverPriv;
+@@ -236,7 +238,6 @@ XAAInitDualFramebufferOverlay(
+     pOverPriv->PolyFillArcSolid = infoRec->PolyFillArcSolid;
+     pOverPriv->PutImage = infoRec->PutImage;
+ 
+-
+     if(infoRec->CopyArea)
+ 	infoRec->CopyArea = XAAOverCopyArea;
+     if(infoRec->CopyPlane)
+@@ -314,11 +315,8 @@ XAAInitDualFramebufferOverlay(
+ /***********************  Screen functions ************************/
+ 
+ void
+-XAAOverCopyWindow(
+-    WindowPtr pWin,
+-    DDXPointRec ptOldOrg,
+-    RegionPtr prgnSrc
+-){
++XAAOverCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
++{
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pScreen);
+@@ -329,7 +327,6 @@ XAAOverCopyWindow(
+     int i, nbox, dx, dy;
+     WindowPtr pRoot = pScreen->root;
+ 
+-
+     if (!pScrn->vtSema || !infoRec->ScreenToScreenBitBlt) { 
+ 	XAA_SCREEN_PROLOGUE (pScreen, CopyWindow);
+ 	if(pScrn->vtSema && infoRec->NeedToSync) {
+@@ -352,8 +349,7 @@ XAAOverCopyWindow(
+     RegionIntersect(&rgnDst, &pWin->borderClip, prgnSrc);
+ 
+     nbox = RegionNumRects(&rgnDst);
+-    if(nbox &&
+-	(pptSrc = (DDXPointPtr )malloc(nbox * sizeof(DDXPointRec)))) {
++    if (nbox && (pptSrc = (DDXPointPtr) malloc(nbox * sizeof(DDXPointRec)))) {
+ 
+ 	pbox = RegionRects(&rgnDst);
+ 	for (i = nbox, ppt = pptSrc; i--; ppt++, pbox++) {
+@@ -401,13 +397,9 @@ XAAOverCopyWindow(
+     }
+ }
+ 
+-
+ void
+-XAAOverWindowExposures(
+-   WindowPtr pWin,
+-   RegionPtr pReg,
+-   RegionPtr pOtherReg
+-){
++XAAOverWindowExposures(WindowPtr pWin, RegionPtr pReg, RegionPtr pOtherReg)
++{
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+ 
+@@ -418,10 +410,12 @@ XAAOverWindowExposures(
+ 	    SWITCH_DEPTH(8);
+ 	    (*infoRec->FillSolidRects)(infoRec->pScrn, 
+ 		infoRec->pScrn->colorKey, GXcopy, ~0,
+-			RegionNumRects(pReg), RegionRects(pReg));
++                                        RegionNumRects(pReg),
++                                        RegionRects(pReg));
+ 	    miWindowExposures(pWin, pReg, pOtherReg);
+ 	    return;
+-	} else if(infoRec->NeedToSync) {
++        }
++        else if (infoRec->NeedToSync) {
+             (*infoRec->Sync)(infoRec->pScrn);
+             infoRec->NeedToSync = FALSE;
+ 	}
+@@ -442,8 +436,7 @@ XAAOverStippledFillChooser(GCPtr pGC)
+ 
+     ret = (*pOverPriv->StippledFillChooser)(pGC);
+     
+-    if((pGC->depth == 8) && 
+-	((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
++    if ((pGC->depth == 8) && ((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
+ 	ret = 0;
+     }
+ 
+@@ -458,8 +451,7 @@ XAAOverOpaqueStippledFillChooser(GCPtr pGC)
+ 
+     ret = (*pOverPriv->OpaqueStippledFillChooser)(pGC);
+     
+-    if((pGC->depth == 8) && 
+-	((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
++    if ((pGC->depth == 8) && ((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
+ 	ret = 0;
+     }
+ 
+@@ -474,26 +466,21 @@ XAAOverTiledFillChooser(GCPtr pGC)
+ 
+     ret = (*pOverPriv->TiledFillChooser)(pGC);
+     
+-    if((pGC->depth == 8) && 
+-	((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
++    if ((pGC->depth == 8) && ((ret == DO_COLOR_8x8) || (ret == DO_CACHE_BLT))) {
+ 	ret = 0;
+     }
+ 
+     return ret;
+ }
+ 
+-
+ /**************************** GC Functions **************************/
+ 
+ static RegionPtr 
+-XAAOverCopyArea(
+-   DrawablePtr pSrc,
++XAAOverCopyArea(DrawablePtr pSrc,
+    DrawablePtr pDst,
+    GC *pGC,
+-   int srcx, int srcy,
+-   int width, int height,
+-   int dstx, int dsty
+-){
++                int srcx, int srcy, int width, int height, int dstx, int dsty)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -503,32 +490,28 @@ XAAOverCopyArea(
+ }
+ 
+ static RegionPtr 
+-XAAOverCopyPlane(
+-   DrawablePtr pSrc,
++XAAOverCopyPlane(DrawablePtr pSrc,
+    DrawablePtr pDst,
+    GCPtr pGC,
+    int srcx, int srcy,
+    int width, int height,
+-   int dstx, int dsty,
+-   unsigned long bitPlane
+-){
++                 int dstx, int dsty, unsigned long bitPlane)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+     return (*pOverPriv->CopyPlane)(pSrc, pDst,
+-	       pGC, srcx, srcy, width, height, dstx, dsty, bitPlane);
++                                    pGC, srcx, srcy, width, height, dstx, dsty,
++                                    bitPlane);
+ 
+ }
+ 
+ static void 
+-XAAOverPushPixelsSolid(
+-   GCPtr pGC,
++XAAOverPushPixelsSolid(GCPtr pGC,
+    PixmapPtr pBitMap,
+-   DrawablePtr pDraw,
+-   int dx, int dy, 
+-   int xOrg, int yOrg
+-){
++                       DrawablePtr pDraw, int dx, int dy, int xOrg, int yOrg)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -536,15 +519,10 @@ XAAOverPushPixelsSolid(
+     (*pOverPriv->PushPixelsSolid)(pGC, pBitMap, pDraw, dx, dy, xOrg, yOrg);
+ }
+ 
+-
+-
+ static void 
+-XAAOverPolyFillRectSolid(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int nrectFill, 	
+-   xRectangle *prectInit
+-){
++XAAOverPolyFillRectSolid(DrawablePtr pDraw,
++                         GCPtr pGC, int nrectFill, xRectangle *prectInit)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -553,12 +531,9 @@ XAAOverPolyFillRectSolid(
+ }  
+ 
+ static void 
+-XAAOverPolyFillRectStippled(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int nrectFill, 	
+-   xRectangle *prectInit
+-){
++XAAOverPolyFillRectStippled(DrawablePtr pDraw,
++                            GCPtr pGC, int nrectFill, xRectangle *prectInit)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -566,14 +541,11 @@ XAAOverPolyFillRectStippled(
+     (*pOverPriv->PolyFillRectStippled)(pDraw, pGC, nrectFill, prectInit);
+ }  
+ 
+-
+ static void 
+-XAAOverPolyFillRectOpaqueStippled(
+-   DrawablePtr pDraw,
++XAAOverPolyFillRectOpaqueStippled(DrawablePtr pDraw,
+    GCPtr pGC,
+-   int nrectFill, 	
+-   xRectangle *prectInit
+-){
++                                  int nrectFill, xRectangle *prectInit)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -582,12 +554,9 @@ XAAOverPolyFillRectOpaqueStippled(
+ }  
+ 
+ static void 
+-XAAOverPolyFillRectTiled(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int nrectFill, 	
+-   xRectangle *prectInit
+-){
++XAAOverPolyFillRectTiled(DrawablePtr pDraw,
++                         GCPtr pGC, int nrectFill, xRectangle *prectInit)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -595,34 +564,23 @@ XAAOverPolyFillRectTiled(
+     (*pOverPriv->PolyFillRectTiled)(pDraw, pGC, nrectFill, prectInit);
+ }  
+ 
+-
+ static void 
+-XAAOverFillSpansSolid(
+-   DrawablePtr	pDraw,
++XAAOverFillSpansSolid(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		nInit,
+-   DDXPointPtr 	ppt,
+-   int		*pwidth,
+-   int		fSorted 
+-){
++                      int nInit, DDXPointPtr ppt, int *pwidth, int fSorted)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->FillSpansSolid)(
+-		pDraw, pGC, nInit, ppt, pwidth, fSorted);
++    (*pOverPriv->FillSpansSolid) (pDraw, pGC, nInit, ppt, pwidth, fSorted);
+ }
+ 
+-
+ static void 
+-XAAOverFillSpansStippled(
+-   DrawablePtr	pDraw,
++XAAOverFillSpansStippled(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		nInit,
+-   DDXPointPtr 	ppt,
+-   int		*pwidth,
+-   int		fSorted 
+-){
++                         int nInit, DDXPointPtr ppt, int *pwidth, int fSorted)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -631,32 +589,24 @@ XAAOverFillSpansStippled(
+ }
+ 
+ static void 
+-XAAOverFillSpansOpaqueStippled(
+-   DrawablePtr	pDraw,
++XAAOverFillSpansOpaqueStippled(DrawablePtr pDraw,
+    GCPtr	pGC,
+    int		nInit,
+-   DDXPointPtr 	ppt,
+-   int		*pwidth,
+-   int		fSorted 
+-){
++                               DDXPointPtr ppt, int *pwidth, int fSorted)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->FillSpansOpaqueStippled)(
+-		pDraw, pGC, nInit, ppt, pwidth, fSorted);
++    (*pOverPriv->FillSpansOpaqueStippled) (pDraw, pGC, nInit, ppt, pwidth,
++                                           fSorted);
+ }
+ 
+-
+ static void 
+-XAAOverFillSpansTiled(
+-   DrawablePtr	pDraw,
++XAAOverFillSpansTiled(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		nInit,
+-   DDXPointPtr 	ppt,
+-   int		*pwidth,
+-   int		fSorted 
+-){
++                      int nInit, DDXPointPtr ppt, int *pwidth, int fSorted)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -665,13 +615,9 @@ XAAOverFillSpansTiled(
+ }
+ 
+ static int 
+-XAAOverPolyText8TE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   char *chars
+-){
++XAAOverPolyText8TE(DrawablePtr pDraw,
++                   GCPtr pGC, int x, int y, int count, char *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -679,15 +625,10 @@ XAAOverPolyText8TE(
+     return (*pOverPriv->PolyText8TE)(pDraw, pGC, x, y, count, chars);
+ }
+ 
+-
+ static int
+-XAAOverPolyText16TE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   unsigned short *chars
+-){
++XAAOverPolyText16TE(DrawablePtr pDraw,
++                    GCPtr pGC, int x, int y, int count, unsigned short *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -695,15 +636,10 @@ XAAOverPolyText16TE(
+     return (*pOverPriv->PolyText16TE)(pDraw, pGC, x, y, count, chars);
+ }
+ 
+-
+ static void 
+-XAAOverImageText8TE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   char *chars
+-){
++XAAOverImageText8TE(DrawablePtr pDraw,
++                    GCPtr pGC, int x, int y, int count, char *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -711,15 +647,10 @@ XAAOverImageText8TE(
+     (*pOverPriv->ImageText8TE)(pDraw, pGC, x, y, count, chars);
+ }
+ 
+-
+ static void 
+-XAAOverImageText16TE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   unsigned short *chars
+-){
++XAAOverImageText16TE(DrawablePtr pDraw,
++                     GCPtr pGC, int x, int y, int count, unsigned short *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -728,47 +659,39 @@ XAAOverImageText16TE(
+ }
+ 
+ static void 
+-XAAOverImageGlyphBltTE(
+-   DrawablePtr pDraw,
++XAAOverImageGlyphBltTE(DrawablePtr pDraw,
+    GCPtr pGC,
+    int xInit, int yInit,
+    unsigned int nglyph,
+-   CharInfoPtr *ppci,
+-   pointer pglyphBase 
+-){
++                       CharInfoPtr * ppci, pointer pglyphBase)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->ImageGlyphBltTE)(
+-	pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pOverPriv->ImageGlyphBltTE) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                                   pglyphBase);
+ }
+ 
+ static void 
+-XAAOverPolyGlyphBltTE(
+-   DrawablePtr pDraw,
++XAAOverPolyGlyphBltTE(DrawablePtr pDraw,
+    GCPtr pGC,
+    int xInit, int yInit,
+    unsigned int nglyph,
+-   CharInfoPtr *ppci,
+-   pointer pglyphBase 
+-){
++                      CharInfoPtr * ppci, pointer pglyphBase)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->PolyGlyphBltTE)(
+-	pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pOverPriv->PolyGlyphBltTE) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                                  pglyphBase);
+ }
+ 
+ static int 
+-XAAOverPolyText8NonTE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   char *chars
+-){
++XAAOverPolyText8NonTE(DrawablePtr pDraw,
++                      GCPtr pGC, int x, int y, int count, char *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -776,15 +699,11 @@ XAAOverPolyText8NonTE(
+     return (*pOverPriv->PolyText8NonTE)(pDraw, pGC, x, y, count, chars);
+ }
+ 
+-
+ static int 
+-XAAOverPolyText16NonTE(
+-   DrawablePtr pDraw,
++XAAOverPolyText16NonTE(DrawablePtr pDraw,
+    GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   unsigned short *chars
+-){
++                       int x, int y, int count, unsigned short *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -793,13 +712,9 @@ XAAOverPolyText16NonTE(
+ }
+ 
+ static void 
+-XAAOverImageText8NonTE(
+-   DrawablePtr pDraw,
+-   GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   char *chars
+-){
++XAAOverImageText8NonTE(DrawablePtr pDraw,
++                       GCPtr pGC, int x, int y, int count, char *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -808,13 +723,10 @@ XAAOverImageText8NonTE(
+ }
+ 
+ static void 
+-XAAOverImageText16NonTE(
+-   DrawablePtr pDraw,
++XAAOverImageText16NonTE(DrawablePtr pDraw,
+    GCPtr pGC,
+-   int x, int y,
+-   int count,
+-   unsigned short *chars
+-){
++                        int x, int y, int count, unsigned short *chars)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -822,48 +734,40 @@ XAAOverImageText16NonTE(
+     (*pOverPriv->ImageText16NonTE)(pDraw, pGC, x, y, count, chars);
+ }
+ 
+-
+ static void 
+-XAAOverImageGlyphBltNonTE(
+-   DrawablePtr pDraw,
++XAAOverImageGlyphBltNonTE(DrawablePtr pDraw,
+    GCPtr pGC,
+    int xInit, int yInit,
+    unsigned int nglyph,
+-   CharInfoPtr *ppci,
+-   pointer pglyphBase 
+-){
++                          CharInfoPtr * ppci, pointer pglyphBase)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->ImageGlyphBltNonTE)(
+-		pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pOverPriv->ImageGlyphBltNonTE) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                                      pglyphBase);
+ }
+ 
+ static void 
+-XAAOverPolyGlyphBltNonTE(
+-   DrawablePtr pDraw,
++XAAOverPolyGlyphBltNonTE(DrawablePtr pDraw,
+    GCPtr pGC,
+    int xInit, int yInit,
+    unsigned int nglyph,
+-   CharInfoPtr *ppci,
+-   pointer pglyphBase 
+-){
++                         CharInfoPtr * ppci, pointer pglyphBase)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->PolyGlyphBltNonTE)(
+-		pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pOverPriv->PolyGlyphBltNonTE) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                                     pglyphBase);
+ }
+ 
+ static void 
+-XAAOverPolyRectangleThinSolid(
+-   DrawablePtr  pDraw,
+-   GCPtr        pGC,    
+-   int	    	nRectsInit,
+-   xRectangle  *pRectsInit 
+-){
++XAAOverPolyRectangleThinSolid(DrawablePtr pDraw,
++                              GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -871,16 +775,10 @@ XAAOverPolyRectangleThinSolid(
+     (*pOverPriv->PolyRectangleThinSolid)(pDraw, pGC, nRectsInit, pRectsInit);
+ }
+ 
+-
+-
+ static void 
+-XAAOverPolylinesWideSolid(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		mode,
+-   int 		npt,
+-   DDXPointPtr pPts
+-){
++XAAOverPolylinesWideSolid(DrawablePtr pDraw,
++                          GCPtr pGC, int mode, int npt, DDXPointPtr pPts)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -888,15 +786,10 @@ XAAOverPolylinesWideSolid(
+     (*pOverPriv->PolylinesWideSolid)(pDraw, pGC, mode, npt, pPts);
+ }
+ 
+-
+ static void 
+-XAAOverPolylinesThinSolid(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		mode,
+-   int 		npt,
+-   DDXPointPtr pPts
+-){
++XAAOverPolylinesThinSolid(DrawablePtr pDraw,
++                          GCPtr pGC, int mode, int npt, DDXPointPtr pPts)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -905,12 +798,9 @@ XAAOverPolylinesThinSolid(
+ }
+ 
+ static void 
+-XAAOverPolySegmentThinSolid(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		nseg,
+-   xSegment	*pSeg
+-){
++XAAOverPolySegmentThinSolid(DrawablePtr pDraw,
++                            GCPtr pGC, int nseg, xSegment * pSeg)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -919,13 +809,9 @@ XAAOverPolySegmentThinSolid(
+ }
+ 
+ static void 
+-XAAOverPolylinesThinDashed(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		mode,
+-   int 		npt,
+-   DDXPointPtr pPts
+-){
++XAAOverPolylinesThinDashed(DrawablePtr pDraw,
++                           GCPtr pGC, int mode, int npt, DDXPointPtr pPts)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -934,12 +820,9 @@ XAAOverPolylinesThinDashed(
+ }
+ 
+ static void 
+-XAAOverPolySegmentThinDashed(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		nseg,
+-   xSegment	*pSeg
+-){
++XAAOverPolySegmentThinDashed(DrawablePtr pDraw,
++                             GCPtr pGC, int nseg, xSegment * pSeg)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -947,16 +830,11 @@ XAAOverPolySegmentThinDashed(
+     (*pOverPriv->PolySegmentThinDashed)(pDraw, pGC, nseg, pSeg);
+ }
+ 
+-
+ static void 
+-XAAOverFillPolygonSolid(
+-   DrawablePtr	pDraw,
++XAAOverFillPolygonSolid(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		shape,
+-   int		mode,
+-   int		count,
+-   DDXPointPtr	ptsIn 
+-){
++                        int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -965,14 +843,10 @@ XAAOverFillPolygonSolid(
+ }
+ 
+ static void 
+-XAAOverFillPolygonStippled(
+-   DrawablePtr	pDraw,
++XAAOverFillPolygonStippled(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		shape,
+-   int		mode,
+-   int		count,
+-   DDXPointPtr	ptsIn 
+-){
++                           int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -980,33 +854,25 @@ XAAOverFillPolygonStippled(
+     (*pOverPriv->FillPolygonStippled)(pDraw, pGC, shape, mode, count, ptsIn);
+ }
+ 
+-
+ static void 
+-XAAOverFillPolygonOpaqueStippled(
+-   DrawablePtr	pDraw,
++XAAOverFillPolygonOpaqueStippled(DrawablePtr pDraw,
+    GCPtr	pGC,
+    int		shape,
+-   int		mode,
+-   int		count,
+-   DDXPointPtr	ptsIn 
+-){
++                                 int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+ 
+-    (*pOverPriv->FillPolygonOpaqueStippled)(
+-			pDraw, pGC, shape, mode, count, ptsIn);
++    (*pOverPriv->FillPolygonOpaqueStippled) (pDraw, pGC, shape, mode, count,
++                                             ptsIn);
+ }
+ 
+ static void 
+-XAAOverFillPolygonTiled(
+-   DrawablePtr	pDraw,
++XAAOverFillPolygonTiled(DrawablePtr pDraw,
+    GCPtr	pGC,
+-   int		shape,
+-   int		mode,
+-   int		count,
+-   DDXPointPtr	ptsIn 
+-){
++                        int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -1014,14 +880,9 @@ XAAOverFillPolygonTiled(
+     (*pOverPriv->FillPolygonTiled)(pDraw, pGC, shape, mode, count, ptsIn);
+ }
+ 
+-
+ static void 
+-XAAOverPolyFillArcSolid(
+-   DrawablePtr	pDraw,
+-   GCPtr	pGC,
+-   int		narcs,
+-   xArc		*parcs
+-){
++XAAOverPolyFillArcSolid(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc * parcs)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -1029,20 +890,13 @@ XAAOverPolyFillArcSolid(
+     (*pOverPriv->PolyFillArcSolid)(pDraw, pGC, narcs, parcs);
+ }
+ 
+-
+ static void 
+-XAAOverPutImage(
+-   DrawablePtr	pDraw,
++XAAOverPutImage(DrawablePtr pDraw,
+    GCPtr	pGC,
+    int		depth, 
+    int		x, 
+-   int		y, 
+-   int		w, 
+-   int		h,
+-   int		leftPad,
+-   int		format,
+-   char		*pImage
+-){
++                int y, int w, int h, int leftPad, int format, char *pImage)
++{
+     XAAOverlayPtr pOverPriv = GET_OVERLAY_PRIV(pGC->pScreen);
+ 
+     SWITCH_DEPTH(pGC->depth);
+@@ -1050,4 +904,3 @@ XAAOverPutImage(
+     (*pOverPriv->PutImage)(pDraw, pGC, depth, x, y, w, h, 
+ 				leftPad, format, pImage);
+ }
+-

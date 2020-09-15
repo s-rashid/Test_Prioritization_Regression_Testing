@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fake/fake.h b/hw/kdrive/fake/fake.h
+index 88d2096..3c4a51b 100644
+--- a/hw/kdrive/fake/fake.h
++++ b/hw/kdrive/fake/fake.h
+@@ -38,7 +38,6 @@ typedef struct _fakePriv {
+ typedef struct _fakeScrPriv {
+     Rotation	randr;
+     Bool	shadow;
+-    PixmapPtr	pShadow;
+ } FakeScrPriv;
+ 
+ extern KdCardFuncs  fakeFuncs;

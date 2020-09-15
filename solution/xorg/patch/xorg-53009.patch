@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 29ab836..73685b0 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -505,6 +505,10 @@ void InitInput( int argc, char **argv )
+     QuartzInitInput(argc, argv);
+ }
+ 
++void CloseInput(void)
++{
++    DarwinEQFini();
++}
+ 
+ /*
+  * DarwinAdjustScreenOrigins

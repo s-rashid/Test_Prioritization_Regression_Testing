@@ -1,0 +1,13 @@
+diff --git a/include/dixgrabs.h b/include/dixgrabs.h
+index ea88770..4dd5eae 100644
+--- a/include/dixgrabs.h
++++ b/include/dixgrabs.h
+@@ -40,7 +40,7 @@ extern GrabPtr CreateGrab(
+ 	DeviceIntPtr /* device */,
+ 	DeviceIntPtr /* modDevice */,
+ 	WindowPtr /* window */,
+-        GrabType /* grabtype */,
++        enum InputLevel /* grabtype */,
+         GrabMask * /* mask */,
+         struct _GrabParameters * /* param */,
+ 	int /* type */,

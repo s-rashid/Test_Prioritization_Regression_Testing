@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/modes/xf86DiDGA.c b/hw/xfree86/modes/xf86DiDGA.c
+index 60fbdbf..a4cf4f0 100644
+--- a/hw/xfree86/modes/xf86DiDGA.c
++++ b/hw/xfree86/modes/xf86DiDGA.c
+@@ -61,7 +61,7 @@ xf86_dga_get_modes (ScreenPtr pScreen)
+     if (!num)
+ 	return FALSE;
+     
+-    modes = xalloc(num * sizeof(DGAModeRec));
++    modes = malloc(num * sizeof(DGAModeRec));
+     if (!modes)
+ 	return FALSE;
+     
+@@ -104,7 +104,7 @@ xf86_dga_get_modes (ScreenPtr pScreen)
+ 	    break;
+     }
+     if (xf86_config->dga_modes)
+-	xfree (xf86_config->dga_modes);
++	free(xf86_config->dga_modes);
+     xf86_config->dga_nmode = num;
+     xf86_config->dga_modes = modes;
+     return TRUE;

@@ -1,0 +1,34 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhw.c b/hw/xfree86/fbdevhw/fbdevhw.c
+index 2019741..309fa65 100644
+--- a/hw/xfree86/fbdevhw/fbdevhw.c
++++ b/hw/xfree86/fbdevhw/fbdevhw.c
+@@ -506,20 +506,22 @@ fbdevHWSetVideoModes(ScrnInfoPtr pScrn)
+ 	pScrn->virtualY = pScrn->display->virtualY;
+ 
+ 	for (modename = pScrn->display->modes; *modename != NULL; modename++) {
+-		for (mode = pScrn->monitor->Modes; mode != NULL; mode = mode->next)
+-			if (0 == strcmp(mode->name,*modename))
++		for (mode = pScrn->monitor->Modes; mode != NULL; mode = mode->next) {
++			if (0 == strcmp(mode->name,*modename)) {
++				if (fbdevHWSetMode(pScrn, mode, TRUE))
+ 				break;
+-		if (NULL == mode) {
++
+ 			xf86DrvMsg(pScrn->scrnIndex, X_INFO,
+-				   "\tmode \"%s\" not found\n", *modename);
+-			continue;
++					   "\tmode \"%s\" test failed\n", *modename);
++			}
+ 		}
+ 
+-		if (!fbdevHWSetMode(pScrn, mode, TRUE)) {
++		if (NULL == mode) {
+ 			xf86DrvMsg(pScrn->scrnIndex, X_INFO,
+-				   "\tmode \"%s\" test failed\n", *modename);
++				   "\tmode \"%s\" not found\n", *modename);
+ 			continue;
+ 		}
++
+ 		xf86DrvMsg(pScrn->scrnIndex, X_INFO,
+ 			   "\tmode \"%s\" ok\n", *modename);
+ 

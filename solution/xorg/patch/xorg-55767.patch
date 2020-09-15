@@ -1,0 +1,391 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 465a96d..a0ce377 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -79,7 +79,10 @@
+ 
+ aslclient aslc;
+ 
+-void xq_asl_log (int level, const char *subsystem, const char *file, const char *function, int line, const char *fmt, ...) {
++void
++xq_asl_log(int level, const char *subsystem, const char *file,
++           const char *function, int line, const char *fmt, ...)
++{
+     va_list args;
+     aslmsg msg = asl_new(ASL_TYPE_MSG);
+ 
+@@ -113,6 +116,7 @@ DevPrivateKeyRec        darwinScreenKeyRec;
+ io_connect_t            darwinParamConnect = 0;
+ int                     darwinEventReadFD = -1;
+ int                     darwinEventWriteFD = -1;
++
+ // int                     darwinMouseAccelChange = 1;
+ int                     darwinFakeButtons = 0;
+ 
+@@ -156,6 +160,7 @@ static PixmapFormatRec formats[] = {
+         { 24,   32,     BITMAP_SCANLINE_PAD },
+         { 32,   32,     BITMAP_SCANLINE_PAD }
+ };
++
+ const int NUMFORMATS = sizeof(formats)/sizeof(formats[0]);
+ 
+ void
+@@ -166,17 +171,19 @@ DarwinPrintBanner(void)
+   ErrorF("Build Date: %s\n", BUILD_DATE );
+ }
+ 
+-
+ /*
+  * DarwinSaveScreen
+  *  X screensaver support. Not implemented.
+  */
+-static Bool DarwinSaveScreen(ScreenPtr pScreen, int on)
++static Bool
++DarwinSaveScreen(ScreenPtr pScreen, int on)
+ {
+     // FIXME
+     if (on == SCREEN_SAVER_FORCER) {
+-    } else if (on == SCREEN_SAVER_ON) {
+-    } else {
++    }
++    else if (on == SCREEN_SAVER_ON) {
++    }
++    else {
+     }
+     return TRUE;
+ }
+@@ -186,7 +193,9 @@ static Bool DarwinSaveScreen(ScreenPtr pScreen, int on)
+  *  This is a callback from dix during AddScreen() from InitOutput().
+  *  Initialize the screen and communicate information about it back to dix.
+  */
+-static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv) {
++static Bool
++DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv)
++{
+     int         dpi;
+     static int  foundIndex = 0;
+     Bool        ret;
+@@ -226,9 +235,13 @@ static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv
+ //    if(dfb->depth > 8)
+ //        miSetVisualTypesAndMasks(8, PseudoColorMask, 8, PseudoColor, 0, 0, 0);
+     if(dfb->depth > 15)
+-        miSetVisualTypesAndMasks(15, TrueColorMask, 5, TrueColor, RM_ARGB(0,5,5,5), GM_ARGB(0,5,5,5), BM_ARGB(0,5,5,5));
++        miSetVisualTypesAndMasks(15, TrueColorMask, 5, TrueColor,
++                                 RM_ARGB(0, 5, 5, 5), GM_ARGB(0, 5, 5, 5),
++                                 BM_ARGB(0, 5, 5, 5));
+     if(dfb->depth > 24)
+-        miSetVisualTypesAndMasks(24, TrueColorMask, 8, TrueColor, RM_ARGB(0,8,8,8), GM_ARGB(0,8,8,8), BM_ARGB(0,8,8,8));
++        miSetVisualTypesAndMasks(24, TrueColorMask, 8, TrueColor,
++                                 RM_ARGB(0, 8, 8, 8), GM_ARGB(0, 8, 8, 8),
++                                 BM_ARGB(0, 8, 8, 8));
+ 
+     miSetPixmapDepths();
+ 
+@@ -240,8 +253,7 @@ static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv
+         dpi = 96;
+ 
+     // initialize fb
+-    if (! fbScreenInit(pScreen,
+-                dfb->framebuffer,                 // pointer to screen bitmap
++    if (!fbScreenInit(pScreen, dfb->framebuffer,        // pointer to screen bitmap
+                 dfb->width, dfb->height,          // screen size in pixels
+                 dpi, dpi,                         // dots per inch
+                 dfb->pitch/(dfb->bitsPerPixel/8), // pixel width of framebuffer
+@@ -292,7 +304,9 @@ static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv
+ /*
+  * DarwinMouseProc: Handle the initialization, etc. of a mouse
+  */
+-static int DarwinMouseProc(DeviceIntPtr pPointer, int what) {
++static int
++DarwinMouseProc(DeviceIntPtr pPointer, int what)
++{
+ #define NBUTTONS 7
+ #define NAXES 2
+ 	// 7 buttons: left, right, middle, then four scroll wheel "buttons"
+@@ -315,15 +329,15 @@ static int DarwinMouseProc(DeviceIntPtr pPointer, int what) {
+             axes_labels[0] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_X);
+             axes_labels[1] = XIGetKnownProperty(AXIS_LABEL_PROP_REL_Y);
+ 
+-
+             // Set button map.
+             InitPointerDeviceStruct((DevicePtr)pPointer, map, NBUTTONS,
+                                     btn_labels,
+                                     (PtrCtrlProcPtr)NoopDDA,
+-                                    GetMotionHistorySize(), NAXES,
+-                                    axes_labels);
+-            InitValuatorAxisStruct(pPointer, 0, axes_labels[0], NO_AXIS_LIMITS, NO_AXIS_LIMITS, 0, 0, 0, Absolute);
+-            InitValuatorAxisStruct(pPointer, 1, axes_labels[1], NO_AXIS_LIMITS, NO_AXIS_LIMITS, 0, 0, 0, Absolute);
++                                GetMotionHistorySize(), NAXES, axes_labels);
++        InitValuatorAxisStruct(pPointer, 0, axes_labels[0], NO_AXIS_LIMITS,
++                               NO_AXIS_LIMITS, 0, 0, 0, Absolute);
++        InitValuatorAxisStruct(pPointer, 1, axes_labels[1], NO_AXIS_LIMITS,
++                               NO_AXIS_LIMITS, 0, 0, 0, Absolute);
+             break;
+         case DEVICE_ON:
+             pPointer->public.on = TRUE;
+@@ -341,7 +355,9 @@ static int DarwinMouseProc(DeviceIntPtr pPointer, int what) {
+ #undef NAXES
+ }
+ 
+-static int DarwinTabletProc(DeviceIntPtr pPointer, int what) {
++static int
++DarwinTabletProc(DeviceIntPtr pPointer, int what)
++{
+ #define NBUTTONS 3
+ #define NAXES 5
+     CARD8 map[NBUTTONS + 1] = {0, 1, 2, 3};
+@@ -366,15 +382,21 @@ static int DarwinTabletProc(DeviceIntPtr pPointer, int what) {
+             InitPointerDeviceStruct((DevicePtr)pPointer, map, NBUTTONS,
+                                     btn_labels,
+                                     (PtrCtrlProcPtr)NoopDDA,
+-                                    GetMotionHistorySize(), NAXES,
+-                                    axes_labels);
++                                GetMotionHistorySize(), NAXES, axes_labels);
+             InitProximityClassDeviceStruct(pPointer);
+ 
+-            InitValuatorAxisStruct(pPointer, 0, axes_labels[0], 0, XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
+-            InitValuatorAxisStruct(pPointer, 1, axes_labels[1], 0, XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
+-            InitValuatorAxisStruct(pPointer, 2, axes_labels[2], 0, XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
+-            InitValuatorAxisStruct(pPointer, 3, axes_labels[3], -XQUARTZ_VALUATOR_LIMIT, XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
+-            InitValuatorAxisStruct(pPointer, 4, axes_labels[4], -XQUARTZ_VALUATOR_LIMIT, XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
++        InitValuatorAxisStruct(pPointer, 0, axes_labels[0], 0,
++                               XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
++        InitValuatorAxisStruct(pPointer, 1, axes_labels[1], 0,
++                               XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
++        InitValuatorAxisStruct(pPointer, 2, axes_labels[2], 0,
++                               XQUARTZ_VALUATOR_LIMIT, 1, 0, 1, Absolute);
++        InitValuatorAxisStruct(pPointer, 3, axes_labels[3],
++                               -XQUARTZ_VALUATOR_LIMIT, XQUARTZ_VALUATOR_LIMIT,
++                               1, 0, 1, Absolute);
++        InitValuatorAxisStruct(pPointer, 4, axes_labels[4],
++                               -XQUARTZ_VALUATOR_LIMIT, XQUARTZ_VALUATOR_LIMIT,
++                               1, 0, 1, Absolute);
+ //          pPointer->use = IsXExtensionDevice;
+             break;
+         case DEVICE_ON:
+@@ -396,7 +418,8 @@ static int DarwinTabletProc(DeviceIntPtr pPointer, int what) {
+  * DarwinKeybdProc
+  *  Callback from X
+  */
+-static int DarwinKeybdProc( DeviceIntPtr pDev, int onoff )
++static int
++DarwinKeybdProc(DeviceIntPtr pDev, int onoff)
+ {
+     switch ( onoff ) {
+         case DEVICE_INIT:
+@@ -429,7 +452,8 @@ static int DarwinKeybdProc( DeviceIntPtr pDev, int onoff )
+  * DarwinParseModifierList
+  *  Parse a list of modifier names and return a corresponding modifier mask
+  */
+-int DarwinParseModifierList(const char *constmodifiers, int separatelr)
++int
++DarwinParseModifierList(const char *constmodifiers, int separatelr)
+ {
+     int result = 0;
+ 
+@@ -464,10 +488,12 @@ int DarwinParseModifierList(const char *constmodifiers, int separatelr)
+  * InitInput
+  *  Register the keyboard and mouse devices
+  */
+-void InitInput( int argc, char **argv )
++void
++InitInput(int argc, char **argv)
+ {
+     XkbRMLVOSet rmlvo = { .rules = "base", .model = "empty", .layout = "empty",
+-                          .variant = NULL, .options = NULL };
++        .variant = NULL,.options = NULL
++    };
+     /* We need to really have rules... or something... */
+     XkbSetRulesDflts(&rmlvo);
+ 
+@@ -505,7 +531,8 @@ void InitInput( int argc, char **argv )
+     QuartzInitInput(argc, argv);
+ }
+ 
+-void CloseInput(void)
++void
++CloseInput(void)
+ {
+     DarwinEQFini();
+ }
+@@ -535,8 +562,8 @@ DarwinAdjustScreenOrigins(ScreenInfo *pScreenInfo)
+     /* Find leftmost screen. If there's a tie, take the topmost of the two. */
+     for (i = 1; i < pScreenInfo->numScreens; i++) {
+         if (pScreenInfo->screens[i]->x < left  ||
+-            (pScreenInfo->screens[i]->x == left && pScreenInfo->screens[i]->y < top))
+-        {
++            (pScreenInfo->screens[i]->x == left &&
++             pScreenInfo->screens[i]->y < top)) {
+             left = pScreenInfo->screens[i]->x;
+             top = pScreenInfo->screens[i]->y;
+         }
+@@ -557,12 +584,12 @@ DarwinAdjustScreenOrigins(ScreenInfo *pScreenInfo)
+             pScreenInfo->screens[i]->x -= darwinMainScreenX;
+             pScreenInfo->screens[i]->y -= darwinMainScreenY;
+             DEBUG_LOG("Screen %d placed at X11 coordinate (%d,%d).\n",
+-                      i, pScreenInfo->screens[i]->x, pScreenInfo->screens[i]->y);
++                      i, pScreenInfo->screens[i]->x,
++                      pScreenInfo->screens[i]->y);
+         }
+     }
+ }
+ 
+-
+ /*
+  * InitOutput
+  *  Initialize screenInfo for all actually accessible framebuffers.
+@@ -576,7 +603,8 @@ DarwinAdjustScreenOrigins(ScreenInfo *pScreenInfo)
+  *  After other screen setup has been done, a mode specific
+  *  SetupScreen function can be called to finalize screen setup.
+  */
+-void InitOutput( ScreenInfo *pScreenInfo, int argc, char **argv )
++void
++InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
+ {
+     int i;
+ 
+@@ -601,27 +629,30 @@ void InitOutput( ScreenInfo *pScreenInfo, int argc, char **argv )
+     DarwinAdjustScreenOrigins(pScreenInfo);
+ }
+ 
+-
+ /*
+  * OsVendorFatalError
+  */
+-void OsVendorFatalError( void )
++void
++OsVendorFatalError(void)
+ {
+     ErrorF( "   OsVendorFatalError\n" );
+ }
+ 
+-
+ /*
+  * OsVendorInit
+  *  Initialization of Darwin OS support.
+  */
+-void OsVendorInit(void)
++void
++OsVendorInit(void)
+ {
+     if (serverGeneration == 1) {
+         char *lf;
+         char *home = getenv("HOME");
++
+         assert(home);
+-        assert(0 < asprintf(&lf, "%s/Library/Logs/%s.X11.log", home, bundle_id_prefix));
++        assert(0 <
++               asprintf(&lf, "%s/Library/Logs/%s.X11.log", home,
++                        bundle_id_prefix));
+         LogInit(lf, ".old");
+         free(lf);
+ 
+@@ -629,12 +660,15 @@ void OsVendorInit(void)
+ #ifdef ENABLE_DEBUG_LOG
+ 	{
+ 	  char *home_dir=NULL, *log_file_path=NULL;
++
+ 	  home_dir = getenv("HOME");
+-	  if (home_dir) asprintf(&log_file_path, "%s/%s", home_dir, DEBUG_LOG_NAME);
++            if (home_dir)
++                asprintf(&log_file_path, "%s/%s", home_dir, DEBUG_LOG_NAME);
+ 	  if (log_file_path) {
+ 	    if (!access(log_file_path, F_OK)) {
+ 	      debug_log_fp = fopen(log_file_path, "a");
+-	      if (debug_log_fp) ErrorF("Debug logging enabled to %s\n", log_file_path);
++                    if (debug_log_fp)
++                        ErrorF("Debug logging enabled to %s\n", log_file_path);
+ 	    }
+ 	    free(log_file_path);
+ 	  }
+@@ -643,14 +677,14 @@ void OsVendorInit(void)
+     }
+ }
+ 
+-
+ /*
+  * ddxProcessArgument
+  *  Process device-dependent command line args. Returns 0 if argument is
+  *  not device dependent, otherwise Count of number of elements of argv
+  *  that are part of a device dependent commandline option.
+  */
+-int ddxProcessArgument( int argc, char *argv[], int i )
++int
++ddxProcessArgument(int argc, char *argv[], int i)
+ {
+ //    if ( !strcmp( argv[i], "-fullscreen" ) ) {
+ //        ErrorF( "Running full screen in parallel with Mac OS X Quartz window server.\n" );
+@@ -722,8 +756,7 @@ int ddxProcessArgument( int argc, char *argv[], int i )
+         darwinDesiredDepth = atoi( argv[i+1] );
+         if(darwinDesiredDepth != -1 &&
+            darwinDesiredDepth != 8 &&
+-           darwinDesiredDepth != 15 &&
+-           darwinDesiredDepth != 24) {
++            darwinDesiredDepth != 15 && darwinDesiredDepth != 24) {
+             FatalError( "Unsupported pixel depth. Use 8, 15, or 24 bits\n" );
+         }
+ 
+@@ -739,48 +772,51 @@ int ddxProcessArgument( int argc, char *argv[], int i )
+     return 0;
+ }
+ 
+-
+ /*
+  * ddxUseMsg --
+  *  Print out correct use of device dependent commandline options.
+  *  Maybe the user now knows what really to do ...
+  */
+-void ddxUseMsg( void )
++void
++ddxUseMsg(void)
+ {
+     ErrorF("\n");
+     ErrorF("\n");
+     ErrorF("Device Dependent Usage:\n");
+     ErrorF("\n");
+     ErrorF("-depth <8,15,24> : use this bit depth.\n");
+-    ErrorF("-fakebuttons : fake a three button mouse with Command and Option keys.\n");
++    ErrorF
++        ("-fakebuttons : fake a three button mouse with Command and Option keys.\n");
+     ErrorF("-nofakebuttons : don't fake a three button mouse.\n");
+-    ErrorF("-fakemouse2 <modifiers> : fake middle mouse button with modifier keys.\n");
+-    ErrorF("-fakemouse3 <modifiers> : fake right mouse button with modifier keys.\n");
+-    ErrorF("  ex: -fakemouse2 \"option,shift\" = option-shift-click is middle button.\n");
++    ErrorF
++        ("-fakemouse2 <modifiers> : fake middle mouse button with modifier keys.\n");
++    ErrorF
++        ("-fakemouse3 <modifiers> : fake right mouse button with modifier keys.\n");
++    ErrorF
++        ("  ex: -fakemouse2 \"option,shift\" = option-shift-click is middle button.\n");
+     ErrorF("-version : show the server version.\n");
+     ErrorF("\n");
+ }
+ 
+-
+ /*
+  * ddxGiveUp --
+  *      Device dependent cleanup. Called by dix before normal server death.
+  */
+-void ddxGiveUp( enum ExitCode error )
++void
++ddxGiveUp(enum ExitCode error)
+ {
+     LogClose(error);
+ }
+ 
+-
+ /*
+  * AbortDDX --
+  *      DDX - specific abort routine.  Called by AbortServer(). The attempt is
+  *      made to restore all original setting of the displays. Also all devices
+  *      are closed.
+  */
+-_X_NORETURN
+-void AbortDDX( enum ExitCode error ) {
++_X_NORETURN void
++AbortDDX(enum ExitCode error)
++{
+     ErrorF( "   AbortDDX\n" );
+     OsAbort();
+ }
+-

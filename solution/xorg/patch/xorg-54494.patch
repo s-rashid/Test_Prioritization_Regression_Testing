@@ -1,0 +1,14 @@
+diff --git a/render/animcur.c b/render/animcur.c
+index 31cbab9..8d4a9c2 100644
+--- a/render/animcur.c
++++ b/render/animcur.c
+@@ -208,6 +208,9 @@ AnimCurDisplayCursor (DeviceIntPtr pDev,
+     AnimCurScreenPtr    as = GetAnimCurScreen(pScreen);
+     Bool		ret;
+ 
++    if (IsFloating(pDev))
++	    return FALSE;
++
+     Unwrap (as, pScreen, DisplayCursor);
+     if (IsAnimCur(pCursor))
+     {

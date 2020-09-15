@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/os-support/bsd/bsd_VTsw.c b/hw/xfree86/os-support/bsd/bsd_VTsw.c
+index 476a0e9..4842be5 100644
+--- a/hw/xfree86/os-support/bsd/bsd_VTsw.c
++++ b/hw/xfree86/os-support/bsd/bsd_VTsw.c
+@@ -92,3 +92,12 @@ xf86VTSwitchTo()
+ #endif
+ 	return(TRUE);
+ }
++
++Bool
++xf86VTActivate(int vtno)
++{
++	if (ioctl(xf86Info.consoleFd, VT_ACTIVATE, vtno) < 0) {
++		return(FALSE);
++	}
++	return(TRUE);
++}

@@ -1,0 +1,13 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 192c8c3..2d17adf 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -3911,7 +3911,7 @@ AddScreen(
+ 	return -1;
+     }
+ 
+-    dixRegisterPrivateKey(&cursorScreenDevPriv[i], PRIVATE_CURSOR, 0);
++    dixRegisterScreenPrivateKey(&cursorScreenDevPriv, pScreen, PRIVATE_CURSOR, 0);
+ 
+     return i;
+ }

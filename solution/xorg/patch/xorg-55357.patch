@@ -1,0 +1,72 @@
+diff --git a/hw/kdrive/ephyr/ephyr_draw.c b/hw/kdrive/ephyr/ephyr_draw.c
+index cf5f553..5b8a1d5 100644
+--- a/hw/kdrive/ephyr/ephyr_draw.c
++++ b/hw/kdrive/ephyr/ephyr_draw.c
+@@ -93,6 +93,7 @@ static Bool
+ ephyrPrepareSolid(PixmapPtr pPix, int alu, Pixel pm, Pixel fg)
+ {
+     ScreenPtr pScreen = pPix->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -107,7 +108,8 @@ ephyrPrepareSolid(PixmapPtr pPix, int alu, Pixel pm, Pixel fg)
+     tmpval[0].val = alu;
+     tmpval[1].val = pm;
+     tmpval[2].val = fg;
+-    ChangeGC(NullClient, fakexa->pGC, GCFunction | GCPlaneMask | GCForeground, tmpval);
++    ChangeGC(NullClient, fakexa->pGC, GCFunction | GCPlaneMask | GCForeground,
++             tmpval);
+ 
+     ValidateGC(&pPix->drawable, fakexa->pGC);
+ 
+@@ -123,6 +125,7 @@ static void
+ ephyrSolid(PixmapPtr pPix, int x1, int y1, int x2, int y2)
+ {
+     ScreenPtr pScreen = pPix->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -138,6 +141,7 @@ static void
+ ephyrDoneSolid(PixmapPtr pPix)
+ {
+     ScreenPtr pScreen = pPix->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -157,6 +161,7 @@ ephyrPrepareCopy(PixmapPtr pSrc, PixmapPtr pDst, int dx, int dy, int alu,
+ 		 Pixel pm)
+ {
+     ScreenPtr pScreen = pDst->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -188,6 +193,7 @@ static void
+ ephyrCopy(PixmapPtr pDst, int srcX, int srcY, int dstX, int dstY, int w, int h)
+ {
+     ScreenPtr pScreen = pDst->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -204,6 +210,7 @@ static void
+ ephyrDoneCopy(PixmapPtr pDst)
+ {
+     ScreenPtr pScreen = pDst->drawable.pScreen;
++
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+     EphyrScrPriv *scrpriv = screen->driver;
+@@ -484,7 +491,8 @@ ephyrDrawInit(ScreenPtr pScreen)
+     if (success) {
+ 	ErrorF("Initialized fake EXA acceleration\n");
+ 	scrpriv->fakexa = fakexa;
+-    } else {
++    }
++    else {
+ 	ErrorF("Failed to initialize EXA\n");
+ 	free(fakexa->exa);
+ 	free(fakexa);

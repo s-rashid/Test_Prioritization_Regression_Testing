@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86dga2.c b/hw/xfree86/dixmods/extmod/xf86dga2.c
+index 6587af9..906f4d5 100644
+--- a/hw/xfree86/dixmods/extmod/xf86dga2.c
++++ b/hw/xfree86/dixmods/extmod/xf86dga2.c
+@@ -436,7 +436,7 @@ ProcXDGAInstallColormap(ClientPtr client)
+     rc = dixLookupResourceByType((pointer *)&cmap, stuff->cmap, RT_COLORMAP,
+ 				 client, DixInstallAccess);
+     if (rc != Success)
+-        return (rc == BadValue) ? BadColor : rc;
++        return rc;
+     DGAInstallCmap(cmap);
+     return Success;
+ }
+@@ -878,7 +878,7 @@ ProcXF86DGAInstallColormap(ClientPtr client)
+ 	DGAInstallCmap(pcmp);
+         return Success;
+     } else {
+-        return (rc == BadValue) ? BadColor : rc;
++        return rc;
+     }
+ }
+ 

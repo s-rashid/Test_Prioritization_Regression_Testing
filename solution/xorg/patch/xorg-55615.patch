@@ -1,0 +1,288 @@
+diff --git a/hw/xfree86/parser/Layout.c b/hw/xfree86/parser/Layout.c
+index 7dd4ebf..bd33d6d 100644
+--- a/hw/xfree86/parser/Layout.c
++++ b/hw/xfree86/parser/Layout.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -70,8 +69,7 @@ extern int xf86CheckBoolOption(void* optlist, const char *name, int deflt);
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec LayoutTab[] =
+-{
++static xf86ConfigSymTabRec LayoutTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{SCREEN, "screen"},
+ 	{IDENTIFIER, "identifier"},
+@@ -81,8 +79,7 @@ static xf86ConfigSymTabRec LayoutTab[] =
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec AdjTab[] =
+-{
++static xf86ConfigSymTabRec AdjTab[] = {
+ 	{RIGHTOF, "rightof"},
+ 	{LEFTOF, "leftof"},
+ 	{ABOVE, "above"},
+@@ -99,12 +96,11 @@ xf86parseLayoutSection (void)
+ {
+ 	int has_ident = FALSE;
+ 	int token;
++
+ 	parsePrologue (XF86ConfLayoutPtr, XF86ConfLayoutRec)
+ 
+-	while ((token = xf86getToken (LayoutTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(LayoutTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->lay_comment = xf86addComment(ptr->lay_comment, val.str);
+ 			break;
+@@ -155,8 +151,7 @@ xf86parseLayoutSection (void)
+ 				aptr->adj_screen_str = val.str;
+ 
+ 				token = xf86getSubTokenWithTab(&(ptr->lay_comment), AdjTab);
+-				switch (token)
+-				{
++            switch (token) {
+ 				case RIGHTOF:
+ 					aptr->adj_where = CONF_ADJ_RIGHTOF;
+ 					break;
+@@ -188,13 +183,11 @@ xf86parseLayoutSection (void)
+ 					else
+ 						aptr->adj_where = CONF_ADJ_ABSOLUTE;
+ 				}
+-				switch (aptr->adj_where)
+-				{
++            switch (aptr->adj_where) {
+ 				case CONF_ADJ_ABSOLUTE:
+ 					if (absKeyword) 
+ 						token = xf86getSubToken(&(ptr->lay_comment));
+-					if (token == NUMBER)
+-					{
++                if (token == NUMBER) {
+ 						aptr->adj_x = val.num;
+ 						token = xf86getSubToken(&(ptr->lay_comment));
+ 						if (token != NUMBER) {
+@@ -202,11 +195,13 @@ xf86parseLayoutSection (void)
+ 							Error(INVALID_SCR_MSG);
+ 						}
+ 						aptr->adj_y = val.num;
+-					} else {
++                }
++                else {
+ 						if (absKeyword) {
+ 							free(aptr);
+ 							Error(INVALID_SCR_MSG);
+-						} else
++                    }
++                    else
+ 							xf86unGetToken (token);
+ 					}
+ 					break;
+@@ -221,8 +216,7 @@ xf86parseLayoutSection (void)
+ 						Error(INVALID_SCR_MSG);
+ 					}
+ 					aptr->adj_refscreen = val.str;
+-					if (aptr->adj_where == CONF_ADJ_RELATIVE)
+-					{
++                if (aptr->adj_where == CONF_ADJ_RELATIVE) {
+ 						token = xf86getSubToken(&(ptr->lay_comment));
+ 						if (token != NUMBER) {
+ 							free(aptr);
+@@ -279,8 +273,7 @@ xf86parseLayoutSection (void)
+ 					Error (INPUTDEV_MSG);
+ 				}
+ 				iptr->iref_inputdev_str = val.str;
+-				while ((token = xf86getSubToken (&(ptr->lay_comment))) == STRING)
+-				{
++            while ((token = xf86getSubToken(&(ptr->lay_comment))) == STRING) {
+ 					iptr->iref_option_lst =
+ 						xf86addNewOption (iptr->iref_option_lst, val.str, NULL);
+ 				}
+@@ -321,24 +314,21 @@ xf86printLayoutSection (FILE * cf, XF86ConfLayoutPtr ptr)
+ 	XF86ConfInputrefPtr inptr;
+ 	XF86OptionPtr optr;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		fprintf (cf, "Section \"ServerLayout\"\n");
+ 		if (ptr->lay_comment)
+ 			fprintf (cf, "%s", ptr->lay_comment);
+ 		if (ptr->lay_identifier)
+ 			fprintf (cf, "\tIdentifier     \"%s\"\n", ptr->lay_identifier);
+ 
+-		for (aptr = ptr->lay_adjacency_lst; aptr; aptr = aptr->list.next)
+-		{
++        for (aptr = ptr->lay_adjacency_lst; aptr; aptr = aptr->list.next) {
+ 			fprintf (cf, "\tScreen     ");
+ 			if (aptr->adj_scrnum >= 0)
+ 				fprintf (cf, "%2d", aptr->adj_scrnum);
+ 			else
+ 				fprintf (cf, "  ");
+ 			fprintf (cf, "  \"%s\"", aptr->adj_screen_str);
+-			switch(aptr->adj_where)
+-			{
++            switch (aptr->adj_where) {
+ 			case CONF_ADJ_OBSOLETE:
+ 				fprintf (cf, " \"%s\"", aptr->adj_top_str);
+ 				fprintf (cf, " \"%s\"", aptr->adj_bottom_str);
+@@ -371,11 +361,9 @@ xf86printLayoutSection (FILE * cf, XF86ConfLayoutPtr ptr)
+ 		}
+ 		for (iptr = ptr->lay_inactive_lst; iptr; iptr = iptr->list.next)
+ 			fprintf (cf, "\tInactive       \"%s\"\n", iptr->inactive_device_str);
+-		for (inptr = ptr->lay_input_lst; inptr; inptr = inptr->list.next)
+-		{
++        for (inptr = ptr->lay_input_lst; inptr; inptr = inptr->list.next) {
+ 			fprintf (cf, "\tInputDevice    \"%s\"", inptr->iref_inputdev_str);
+-			for (optr = inptr->iref_option_lst; optr; optr = optr->list.next)
+-			{
++            for (optr = inptr->iref_option_lst; optr; optr = optr->list.next) {
+ 				fprintf(cf, " \"%s\"", optr->opt_name);
+ 			}
+ 			fprintf(cf, "\n");
+@@ -391,8 +379,7 @@ xf86freeAdjacencyList (XF86ConfAdjacencyPtr ptr)
+ {
+ 	XF86ConfAdjacencyPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->adj_screen_str);
+ 		TestFree (ptr->adj_top_str);
+ 		TestFree (ptr->adj_bottom_str);
+@@ -411,8 +398,7 @@ xf86freeInputrefList (XF86ConfInputrefPtr ptr)
+ {
+ 	XF86ConfInputrefPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->iref_inputdev_str);
+ 		xf86optionListFree (ptr->iref_option_lst);
+ 		prev = ptr;
+@@ -427,8 +413,7 @@ xf86freeLayoutList (XF86ConfLayoutPtr ptr)
+ {
+ 	XF86ConfLayoutPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->lay_identifier);
+ 		TestFree (ptr->lay_comment);
+ 		xf86freeAdjacencyList (ptr->lay_adjacency_lst);
+@@ -447,23 +432,21 @@ xf86layoutAddInputDevices(XF86ConfigPtr config, XF86ConfLayoutPtr layout)
+     XF86ConfInputrefPtr inptr;
+ 
+     /* add all AutoServerLayout devices to the server layout */
+-    while (input)
+-    {
+-	if (xf86CheckBoolOption(input->inp_option_lst, "AutoServerLayout", FALSE))
+-	{
++    while (input) {
++        if (xf86CheckBoolOption
++            (input->inp_option_lst, "AutoServerLayout", FALSE)) {
+ 	    XF86ConfInputrefPtr iref = layout->lay_input_lst;
+ 
+ 	    /* avoid duplicates if referenced but lists AutoServerLayout too */
+-	    while (iref)
+-	    {
++            while (iref) {
+ 		if (strcmp(iref->iref_inputdev_str, input->inp_identifier) == 0)
+ 		    break;
+ 		iref = iref->list.next;
+ 	    }
+ 
+-	    if (!iref)
+-	    {
++            if (!iref) {
+ 		XF86ConfInputrefPtr iptr;
++
+ 		iptr = calloc(1, sizeof(XF86ConfInputrefRec));
+ 		iptr->iref_inputdev_str = input->inp_identifier;
+ 		layout->lay_input_lst = (XF86ConfInputrefPtr)
+@@ -475,14 +458,12 @@ xf86layoutAddInputDevices(XF86ConfigPtr config, XF86ConfLayoutPtr layout)
+     }
+ 
+     inptr = layout->lay_input_lst;
+-    while (inptr)
+-    {
+-	input = xf86findInput (inptr->iref_inputdev_str,
+-		config->conf_input_lst);
+-	if (!input)
+-	{
++    while (inptr) {
++        input = xf86findInput(inptr->iref_inputdev_str, config->conf_input_lst);
++        if (!input) {
+ 	    xf86validationError (UNDEFINED_INPUT_MSG,
+-		    inptr->iref_inputdev_str, layout->lay_identifier);
++                                inptr->iref_inputdev_str,
++                                layout->lay_identifier);
+ 	    return -1;
+ 	}
+ 	else
+@@ -502,17 +483,15 @@ xf86validateLayout (XF86ConfigPtr p)
+ 	XF86ConfScreenPtr screen;
+ 	XF86ConfDevicePtr device;
+ 
+-	while (layout)
+-	{
++    while (layout) {
+ 		adj = layout->lay_adjacency_lst;
+-		while (adj)
+-		{
++        while (adj) {
+ 			/* the first one can't be "" but all others can */
+ 			screen = xf86findScreen (adj->adj_screen_str, p->conf_screen_lst);
+-			if (!screen)
+-			{
++            if (!screen) {
+ 				xf86validationError (UNDEFINED_SCREEN_MSG,
+-							   adj->adj_screen_str, layout->lay_identifier);
++                                    adj->adj_screen_str,
++                                    layout->lay_identifier);
+ 				return FALSE;
+ 			}
+ 			else
+@@ -521,14 +500,13 @@ xf86validateLayout (XF86ConfigPtr p)
+ 			adj = adj->list.next;
+ 		}
+ 		iptr = layout->lay_inactive_lst;
+-		while (iptr)
+-		{
++        while (iptr) {
+ 			device = xf86findDevice (iptr->inactive_device_str,
+ 									p->conf_device_lst);
+-			if (!device)
+-			{
++            if (!device) {
+ 				xf86validationError (UNDEFINED_DEVICE_LAY_MSG,
+-						iptr->inactive_device_str, layout->lay_identifier);
++                                    iptr->inactive_device_str,
++                                    layout->lay_identifier);
+ 				return FALSE;
+ 			}
+ 			else
+@@ -547,12 +525,10 @@ xf86validateLayout (XF86ConfigPtr p)
+ XF86ConfLayoutPtr
+ xf86findLayout (const char *name, XF86ConfLayoutPtr list)
+ {
+-	while (list)
+-	{
++    while (list) {
+ 		if (xf86nameCompare (list->lay_identifier, name) == 0)
+ 			return list;
+ 		list = list->list.next;
+ 	}
+ 	return NULL;
+ }
+-

@@ -1,0 +1,17 @@
+diff --git a/include/input.h b/include/input.h
+index cbfaba7..7c5ad3c 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -102,6 +102,12 @@ SOFTWARE.
+ #define RevertToFollowKeyboard	3
+ #endif
+ 
++enum InputLevel {
++    CORE,
++    XI,
++    XI2,
++};
++
+ typedef unsigned long Leds;
+ typedef struct _OtherClients *OtherClientsPtr;
+ typedef struct _InputClients *InputClientsPtr;

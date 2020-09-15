@@ -1,0 +1,29 @@
+diff --git a/hw/dmx/glxProxy/unpack.h b/hw/dmx/glxProxy/unpack.h
+index f4a9572..b4b7358 100644
+--- a/hw/dmx/glxProxy/unpack.h
++++ b/hw/dmx/glxProxy/unpack.h
+@@ -126,7 +126,6 @@ extern xGLXSingleReply __glXReply;
+ #define __GLX_SEND_DOUBLE_ARRAY(len) \
+ 	WriteToClient(client, (len)*__GLX_SIZE_FLOAT64, (char *)answer)
+ 
+-
+ #define __GLX_SEND_VOID_ARRAY(len)  __GLX_SEND_BYTE_ARRAY(len)
+ #define __GLX_SEND_UBYTE_ARRAY(len)  __GLX_SEND_BYTE_ARRAY(len)
+ #define __GLX_SEND_USHORT_ARRAY(len) __GLX_SEND_SHORT_ARRAY(len)
+@@ -144,7 +143,6 @@ extern xGLXSingleReply __glXReply;
+   	GLbyte *swapPC;		\
+   	GLbyte *swapEnd
+ 
+-
+ #define __GLX_SWAP_INT(pc) 			\
+   	sw = ((GLbyte *)(pc))[0]; 		\
+   	((GLbyte *)(pc))[0] = ((GLbyte *)(pc))[3]; 	\
+@@ -223,8 +221,3 @@ extern xGLXSingleReply __glXReply;
+   	__GLX_SWAP_INT(&__glXReply.size)
+ 
+ #endif /* !__GLX_unpack_h__ */
+-
+-
+-
+-
+-

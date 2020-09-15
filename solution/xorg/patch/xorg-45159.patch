@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/compiler.h b/hw/xfree86/common/compiler.h
+index 40b463e..2ef95d8 100644
+--- a/hw/xfree86/common/compiler.h
++++ b/hw/xfree86/common/compiler.h
+@@ -462,7 +462,7 @@ extern _X_EXPORT unsigned int inb(unsigned long port);
+ extern _X_EXPORT unsigned int inw(unsigned long port);
+ extern _X_EXPORT unsigned int inl(unsigned long port);
+  
+-#   elif defined(linux) && defined(__amd64__)
++#   elif (defined(linux) || defined(__FreeBSD__)) && defined(__amd64__)
+  
+ #    include <inttypes.h>
+ 

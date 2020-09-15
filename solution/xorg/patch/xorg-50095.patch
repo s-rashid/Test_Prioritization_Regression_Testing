@@ -1,0 +1,11 @@
+diff --git a/mi/mivaltree.c b/mi/mivaltree.c
+index 7e0c22a..0e00c2f 100644
+--- a/mi/mivaltree.c
++++ b/mi/mivaltree.c
+@@ -809,5 +809,5 @@ miValidateTree (
+     RegionUninit(&exposed);
+     if (pScreen->ClipNotify)
+ 	(*pScreen->ClipNotify) (pParent, 0, 0);
+-    return (1);
++    return 1;
+ }

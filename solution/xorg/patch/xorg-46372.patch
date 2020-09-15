@@ -1,0 +1,21 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index f082db3..509982b 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -221,12 +221,12 @@ union _InternalEvent {
+             int length;           /**< Length in bytes */
+             Time time;            /**< Time in ms. */
+         } any;
+-        DeviceEvent device;
+-        DeviceChangedEvent changed;
++        DeviceEvent device_event;
++        DeviceChangedEvent changed_event;
+ #if XFreeXDGA
+-        DGAEvent dga;
++        DGAEvent dga_event;
+ #endif
+-        RawDeviceEvent raw;
++        RawDeviceEvent raw_event;
+ };
+ 
+ #endif

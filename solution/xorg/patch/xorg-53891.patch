@@ -1,0 +1,13 @@
+diff --git a/include/misc.h b/include/misc.h
+index dc03911..2e8dd1b 100644
+--- a/include/misc.h
++++ b/include/misc.h
+@@ -269,7 +269,7 @@ static inline void wrong_size(void)
+ }
+ #endif
+ 
+-#if !(defined(__GNUC__) || (defined(__SUNPRO_C) && (__SUNPRO_C < 0x590)))
++#if !(defined(__GNUC__) || (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)))
+ static inline int __builtin_constant_p(int x)
+ {
+ 	return 0;

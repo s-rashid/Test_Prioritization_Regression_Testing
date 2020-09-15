@@ -1,0 +1,33 @@
+diff --git a/exa/exa_migration_mixed.c b/exa/exa_migration_mixed.c
+index 4f49905..fb47151 100644
+--- a/exa/exa_migration_mixed.c
++++ b/exa/exa_migration_mixed.c
+@@ -138,7 +138,6 @@ void
+ exaDamageReport_mixed(DamagePtr pDamage, RegionPtr pRegion, void *closure)
+ {
+     PixmapPtr pPixmap = closure;
+-    ScreenPtr pScreen = pPixmap->drawable.pScreen;
+     ExaPixmapPriv(pPixmap);
+ 
+     /* Move back results of software rendering on system memory copy of mixed driver
+@@ -150,20 +149,12 @@ exaDamageReport_mixed(DamagePtr pDamage, RegionPtr pRegion, void *closure)
+     if (!pExaPixmap->use_gpu_copy && exaPixmapHasGpuCopy(pPixmap)) {
+ 	ExaScreenPriv(pPixmap->drawable.pScreen);
+ 
+-	/* Front buffer: Don't wait for the block handler to copy back the data.
+-	 * This avoids annoying latency if you encounter a lot of software rendering.
+-	 */
+-	if (pPixmap == pScreen->GetScreenPixmap(pScreen))
+-		exaMoveInPixmap_mixed(pPixmap);
+-	else {
+ 		if (pExaScr->deferred_mixed_pixmap &&
+ 		    pExaScr->deferred_mixed_pixmap != pPixmap)
+ 		    exaMoveInPixmap_mixed(pExaScr->deferred_mixed_pixmap);
+-
+ 		pExaScr->deferred_mixed_pixmap = pPixmap;
+ 	}
+     }
+-}
+ 
+ /* With mixed pixmaps, if we fail to get direct access to the driver pixmap, we
+  * use the DownloadFromScreen hook to retrieve contents to a copy in system

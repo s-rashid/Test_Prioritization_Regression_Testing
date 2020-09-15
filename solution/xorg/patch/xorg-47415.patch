@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/linux/bus.c b/hw/kdrive/linux/bus.c
+index 93c3ea5..de9b90f 100644
+--- a/hw/kdrive/linux/bus.c
++++ b/hw/kdrive/linux/bus.c
+@@ -75,7 +75,6 @@ BusInit (KdPointerInfo *pi)
+             if ((fd = open (BusNames[i], 0)) >= 0)
+             {
+                 close(fd);
+-                if (pi->path)
+                     xfree(pi->path);
+                 pi->path = strdup(BusNames[i]);
+                 return Success;

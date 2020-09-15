@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/modes/xf86EdidModes.c b/hw/xfree86/modes/xf86EdidModes.c
+index 9e6a666..4340edd 100644
+--- a/hw/xfree86/modes/xf86EdidModes.c
++++ b/hw/xfree86/modes/xf86EdidModes.c
+@@ -160,6 +160,11 @@ static Bool quirk_detailed_v_in_cm (int scrnIndex, xf86MonPtr DDC)
+ 	DDC->vendor.prod_id == 47360)
+ 	return TRUE;
+ 
++    /* Bug #21750: Samsung Syncmaster 2333HD */
++    if (memcmp (DDC->vendor.name, "SAM", 4) == 0 &&
++	DDC->vendor.prod_id == 1157)
++	return TRUE;
++
+     return FALSE;
+ }
+ 

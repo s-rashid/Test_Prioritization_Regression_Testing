@@ -1,0 +1,25 @@
+diff --git a/randr/rroutput.c b/randr/rroutput.c
+index 937b14d..5edeb7d 100644
+--- a/randr/rroutput.c
++++ b/randr/rroutput.c
+@@ -418,10 +418,19 @@ RROutputInit (void)
+     RROutputType = CreateNewResourceType (RROutputDestroyResource, "OUTPUT");
+     if (!RROutputType)
+ 	return FALSE;
+-    SetResourceTypeErrorValue(RROutputType, RRErrorBase + BadRROutput);
++
+     return TRUE;
+ }
+ 
++/*
++ * Initialize output type error value
++ */
++void
++RROutputInitErrorValue(void)
++{
++    SetResourceTypeErrorValue(RROutputType, RRErrorBase + BadRROutput);
++}
++
+ #define OutputInfoExtra	(SIZEOF(xRRGetOutputInfoReply) - 32)
+ 
+ int

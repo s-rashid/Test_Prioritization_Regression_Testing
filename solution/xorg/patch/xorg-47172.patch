@@ -1,0 +1,12 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index 60d4222..c3e1e35 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -1095,6 +1095,6 @@ XFixesCursorInit (void)
+ 	}
+     }
+ 
+-    return CursorClientType && CursorWindowType;
++    return CursorClientType && CursorHideCountType && CursorWindowType;
+ }
+ 

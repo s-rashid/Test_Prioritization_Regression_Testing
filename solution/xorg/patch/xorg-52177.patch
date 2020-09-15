@@ -1,0 +1,13 @@
+diff --git a/render/picturestr.h b/render/picturestr.h
+index ae69eef..7c7edb1 100644
+--- a/render/picturestr.h
++++ b/render/picturestr.h
+@@ -381,8 +381,6 @@ typedef struct _PictureScreen {
+ 
+     TrapezoidsProcPtr		Trapezoids;
+     TrianglesProcPtr		Triangles;
+-    TriStripProcPtr		TriStrip;
+-    TriFanProcPtr		TriFan;
+ 
+     RasterizeTrapezoidProcPtr	RasterizeTrapezoid;
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxinput.h b/hw/dmx/dmxinput.h
+index 7af7b18..c60ce95 100644
+--- a/hw/dmx/dmxinput.h
++++ b/hw/dmx/dmxinput.h
+@@ -140,8 +140,6 @@ extern void dmxInputLogDevices(void);
+ extern void dmxUpdateWindowInfo(DMXUpdateType type, WindowPtr pWindow);
+ 
+ /* These functions are defined in input/dmxeq.c */
+-extern Bool dmxeqInitialized(void);
+-extern void dmxeqEnqueue(DeviceIntPtr pDev, xEvent *e);
+ extern void dmxeqSwitchScreen(DeviceIntPtr pDev, ScreenPtr pScreen, Bool fromDIX);
+ 
+ /* This type is used in input/dmxevents.c.  Also, these functions are

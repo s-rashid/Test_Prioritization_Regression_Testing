@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/render2swap.c b/hw/dmx/glxProxy/render2swap.c
+index 81bb501..da9b565 100644
+--- a/hw/dmx/glxProxy/render2swap.c
++++ b/hw/dmx/glxProxy/render2swap.c
+@@ -32,7 +32,7 @@
+ #include "unpack.h"
+ #include "g_disptab.h"
+ 
+-GLint __glEvalComputeK(GLenum target)
++static GLint __glEvalComputeK(GLenum target)
+ {
+     switch (target) {
+     case GL_MAP1_VERTEX_4:

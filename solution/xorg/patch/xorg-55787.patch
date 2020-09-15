@@ -1,0 +1,226 @@
+diff --git a/hw/xquartz/pseudoramiX.c b/hw/xquartz/pseudoramiX.c
+index 5a5b9c2..f537503 100644
+--- a/hw/xquartz/pseudoramiX.c
++++ b/hw/xquartz/pseudoramiX.c
+@@ -67,7 +67,6 @@ static int SProcPseudoramiXIsActive(ClientPtr client);
+ static int SProcPseudoramiXQueryScreens(ClientPtr client);
+ static int SProcPseudoramiXDispatch(ClientPtr client);
+ 
+-
+ typedef struct {
+     int x;
+     int y;
+@@ -80,7 +79,6 @@ static int pseudoramiXScreensAllocated = 0;
+ static int pseudoramiXNumScreens = 0;
+ static unsigned long pseudoramiXGeneration = 0;
+ 
+-
+ // Add a PseudoramiX screen.
+ // The rest of the X server will know nothing about this screen.
+ // Can be called before or after extension init.
+@@ -90,7 +88,8 @@ PseudoramiXAddScreen(int x, int y, int w, int h)
+ {
+     PseudoramiXScreenRec *s;
+ 
+-    if (noPseudoramiXExtension) return;
++    if (noPseudoramiXExtension)
++        return;
+ 
+     if (pseudoramiXNumScreens == pseudoramiXScreensAllocated) {
+         pseudoramiXScreensAllocated += pseudoramiXScreensAllocated + 1;
+@@ -108,15 +107,16 @@ PseudoramiXAddScreen(int x, int y, int w, int h)
+     s->h = h;
+ }
+ 
+-
+ // Initialize PseudoramiX.
+ // Copied from PanoramiXExtensionInit
+-void PseudoramiXExtensionInit(int argc, char *argv[])
++void
++PseudoramiXExtensionInit(int argc, char *argv[])
+ {
+     Bool	     	success = FALSE;
+     ExtensionEntry 	*extEntry;
+ 
+-    if (noPseudoramiXExtension) return;
++    if (noPseudoramiXExtension)
++        return;
+ 
+     TRACE();
+ 
+@@ -134,11 +134,11 @@ void PseudoramiXExtensionInit(int argc, char *argv[])
+         extEntry = AddExtension(PANORAMIX_PROTOCOL_NAME, 0, 0,
+                                 ProcPseudoramiXDispatch,
+                                 SProcPseudoramiXDispatch,
+-                                PseudoramiXResetProc,
+-                                StandardMinorOpcode);
++                                PseudoramiXResetProc, StandardMinorOpcode);
+         if (!extEntry) {
+             ErrorF("PseudoramiXExtensionInit(): AddExtension failed\n");
+-        } else {
++        }
++        else {
+             pseudoramiXGeneration = serverGeneration;
+             success = TRUE;
+         }
+@@ -151,34 +151,34 @@ void PseudoramiXExtensionInit(int argc, char *argv[])
+     }
+ }
+ 
+-
+-void PseudoramiXResetScreens(void)
++void
++PseudoramiXResetScreens(void)
+ {
+     TRACE();
+ 
+     pseudoramiXNumScreens = 0;
+ }
+ 
+-
+-static void PseudoramiXResetProc(ExtensionEntry *extEntry)
++static void
++PseudoramiXResetProc(ExtensionEntry * extEntry)
+ {
+     TRACE();
+ 
+     PseudoramiXResetScreens();
+ }
+ 
+-
+ // was PanoramiX
+-static int ProcPseudoramiXQueryVersion(ClientPtr client)
++static int
++ProcPseudoramiXQueryVersion(ClientPtr client)
+ {
+     TRACE();
+ 
+     return ProcPanoramiXQueryVersion(client);
+ }
+ 
+-
+ // was PanoramiX
+-static int ProcPseudoramiXGetState(ClientPtr client)
++static int
++ProcPseudoramiXGetState(ClientPtr client)
+ {
+     REQUEST(xPanoramiXGetStateReq);
+     WindowPtr pWin;
+@@ -205,9 +205,9 @@ static int ProcPseudoramiXGetState(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ // was PanoramiX
+-static int ProcPseudoramiXGetScreenCount(ClientPtr client)
++static int
++ProcPseudoramiXGetScreenCount(ClientPtr client)
+ {
+     REQUEST(xPanoramiXGetScreenCountReq);
+     WindowPtr pWin;
+@@ -234,9 +234,9 @@ static int ProcPseudoramiXGetScreenCount(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ // was PanoramiX
+-static int ProcPseudoramiXGetScreenSize(ClientPtr client)
++static int
++ProcPseudoramiXGetScreenSize(ClientPtr client)
+ {
+     REQUEST(xPanoramiXGetScreenSizeReq);
+     WindowPtr			pWin;
+@@ -268,9 +268,9 @@ static int ProcPseudoramiXGetScreenSize(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ // was Xinerama
+-static int ProcPseudoramiXIsActive(ClientPtr client)
++static int
++ProcPseudoramiXIsActive(ClientPtr client)
+ {
+     /* REQUEST(xXineramaIsActiveReq); */
+     xXineramaIsActiveReply	rep;
+@@ -292,14 +292,15 @@ static int ProcPseudoramiXIsActive(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ // was Xinerama
+-static int ProcPseudoramiXQueryScreens(ClientPtr client)
++static int
++ProcPseudoramiXQueryScreens(ClientPtr client)
+ {
+     /* REQUEST(xXineramaQueryScreensReq); */
+     xXineramaQueryScreensReply	rep;
+ 
+-    DEBUG_LOG("noPseudoramiXExtension=%d, pseudoramiXNumScreens=%d\n", noPseudoramiXExtension, pseudoramiXNumScreens);
++    DEBUG_LOG("noPseudoramiXExtension=%d, pseudoramiXNumScreens=%d\n",
++              noPseudoramiXExtension, pseudoramiXNumScreens);
+     
+     REQUEST_SIZE_MATCH(xXineramaQueryScreensReq);
+ 
+@@ -337,13 +338,13 @@ static int ProcPseudoramiXQueryScreens(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ // was PanoramiX
+-static int ProcPseudoramiXDispatch (ClientPtr client)
+-{   REQUEST(xReq);
+-    TRACE();
+-    switch (stuff->data)
++static int
++ProcPseudoramiXDispatch(ClientPtr client)
+     {
++    REQUEST(xReq);
++    TRACE();
++    switch (stuff->data) {
+ 	case X_PanoramiXQueryVersion:
+ 	     return ProcPseudoramiXQueryVersion(client);
+ 	case X_PanoramiXGetState:
+@@ -360,8 +361,6 @@ static int ProcPseudoramiXDispatch (ClientPtr client)
+     return BadRequest;
+ }
+ 
+-
+-
+ static int
+ SProcPseudoramiXQueryVersion (ClientPtr client)
+ {
+@@ -410,7 +409,6 @@ SProcPseudoramiXGetScreenSize(ClientPtr client)
+ 	return ProcPseudoramiXGetScreenSize(client);
+ }
+ 
+-
+ static int
+ SProcPseudoramiXIsActive(ClientPtr client)
+ {
+@@ -423,7 +421,6 @@ SProcPseudoramiXIsActive(ClientPtr client)
+ 	return ProcPseudoramiXIsActive(client);
+ }
+ 
+-
+ static int
+ SProcPseudoramiXQueryScreens(ClientPtr client)
+ {
+@@ -436,15 +433,14 @@ SProcPseudoramiXQueryScreens(ClientPtr client)
+ 	return ProcPseudoramiXQueryScreens(client);
+ }
+ 
+-
+ static int
+ SProcPseudoramiXDispatch (ClientPtr client)
+-{   REQUEST(xReq);
++{
++    REQUEST(xReq);
+ 
+     TRACE();
+ 
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+ 	case X_PanoramiXQueryVersion:
+ 	     return SProcPseudoramiXQueryVersion(client);
+ 	case X_PanoramiXGetState:

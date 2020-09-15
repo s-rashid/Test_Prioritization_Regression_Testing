@@ -1,0 +1,14 @@
+diff --git a/mi/mi.h b/mi/mi.h
+index 812edce..321523b 100644
+--- a/mi/mi.h
++++ b/mi/mi.h
+@@ -567,7 +567,8 @@ extern _X_EXPORT WindowPtr miGetLayerWindow(
+ );
+ 
+ extern _X_EXPORT void miSetShape(
+-    WindowPtr /*pWin*/
++    WindowPtr /*pWin*/,
++    int /*kind*/
+ );
+ 
+ extern _X_EXPORT void miChangeBorderWidth(

@@ -1,0 +1,313 @@
+diff --git a/randr/rroutput.c b/randr/rroutput.c
+index b57be19..0890c55 100644
+--- a/randr/rroutput.c
++++ b/randr/rroutput.c
+@@ -34,8 +34,7 @@ RROutputChanged (RROutputPtr output, Bool configChanged)
+     ScreenPtr	pScreen = output->pScreen;
+     
+     output->changed = TRUE;
+-    if (pScreen)
+-    {
++    if (pScreen) {
+ 	rrScrPriv (pScreen);
+ 	pScrPriv->changed = TRUE;
+ 	if (configChanged)
+@@ -49,9 +48,7 @@ RROutputChanged (RROutputPtr output, Bool configChanged)
+ 
+ RROutputPtr
+ RROutputCreate (ScreenPtr   pScreen,
+-		const char  *name,
+-		int	    nameLength,
+-		void	    *devPrivate)
++               const char *name, int nameLength, void *devPrivate)
+ {
+     RROutputPtr	    output;
+     RROutputPtr	    *outputs;
+@@ -111,23 +108,19 @@ RROutputCreate (ScreenPtr   pScreen,
+  * Notify extension that output parameters have been changed
+  */
+ Bool
+-RROutputSetClones (RROutputPtr  output,
+-		   RROutputPtr  *clones,
+-		   int		numClones)
++RROutputSetClones(RROutputPtr output, RROutputPtr * clones, int numClones)
+ {
+     RROutputPtr	*newClones;
+     int		i;
+ 
+-    if (numClones == output->numClones)
+-    {
++    if (numClones == output->numClones) {
+ 	for (i = 0; i < numClones; i++)
+ 	    if (output->clones[i] != clones[i])
+ 		break;
+ 	if (i == numClones)
+ 	    return TRUE;
+     }
+-    if (numClones)
+-    {
++    if (numClones) {
+ 	newClones = malloc(numClones * sizeof (RROutputPtr));
+ 	if (!newClones)
+ 	    return FALSE;
+@@ -144,36 +137,30 @@ RROutputSetClones (RROutputPtr  output,
+ 
+ Bool
+ RROutputSetModes (RROutputPtr	output,
+-		  RRModePtr	*modes,
+-		  int		numModes,
+-		  int		numPreferred)
++                 RRModePtr * modes, int numModes, int numPreferred)
+ {
+     RRModePtr	*newModes;
+     int		i;
+ 
+-    if (numModes == output->numModes && numPreferred == output->numPreferred)
+-    {
++    if (numModes == output->numModes && numPreferred == output->numPreferred) {
+ 	for (i = 0; i < numModes; i++)
+ 	    if (output->modes[i] != modes[i])
+ 		break;
+-	if (i == numModes)
+-	{
++        if (i == numModes) {
+ 	    for (i = 0; i < numModes; i++)
+ 		RRModeDestroy (modes[i]);
+ 	    return TRUE;
+ 	}
+     }
+ 
+-    if (numModes)
+-    {
++    if (numModes) {
+ 	newModes = malloc(numModes * sizeof (RRModePtr));
+ 	if (!newModes)
+ 	    return FALSE;
+     }
+     else
+ 	newModes = NULL;
+-    if (output->modes)
+-    {
++    if (output->modes) {
+ 	for (i = 0; i < output->numModes; i++)
+ 	    RRModeDestroy (output->modes[i]);
+ 	free(output->modes);
+@@ -187,17 +174,16 @@ RROutputSetModes (RROutputPtr	output,
+ }
+ 
+ int
+-RROutputAddUserMode (RROutputPtr    output,
+-		     RRModePtr	    mode)
++RROutputAddUserMode(RROutputPtr output, RRModePtr mode)
+ {
+     int		m;
+     ScreenPtr	pScreen = output->pScreen;
++
+     rrScrPriv(pScreen);
+     RRModePtr	*newModes;
+ 
+     /* Check to see if this mode is already listed for this output */
+-    for (m = 0; m < output->numModes + output->numUserModes; m++)
+-    {
++    for (m = 0; m < output->numModes + output->numUserModes; m++) {
+ 	RRModePtr   e = (m < output->numModes ?
+ 			 output->modes[m] :
+ 			 output->userModes[m - output->numModes]);
+@@ -227,14 +213,12 @@ RROutputAddUserMode (RROutputPtr    output,
+ }
+ 
+ int
+-RROutputDeleteUserMode (RROutputPtr output,
+-			RRModePtr   mode)
++RROutputDeleteUserMode(RROutputPtr output, RRModePtr mode)
+ {
+     int		m;
+     
+     /* Find this mode in the user mode list */
+-    for (m = 0; m < output->numUserModes; m++)
+-    {
++    for (m = 0; m < output->numUserModes; m++) {
+ 	RRModePtr   e = output->userModes[m];
+ 
+ 	if (mode == e)
+@@ -256,23 +240,19 @@ RROutputDeleteUserMode (RROutputPtr output,
+ }
+ 
+ Bool
+-RROutputSetCrtcs (RROutputPtr	output,
+-		  RRCrtcPtr	*crtcs,
+-		  int		numCrtcs)
++RROutputSetCrtcs(RROutputPtr output, RRCrtcPtr * crtcs, int numCrtcs)
+ {
+     RRCrtcPtr	*newCrtcs;
+     int		i;
+ 
+-    if (numCrtcs == output->numCrtcs)
+-    {
++    if (numCrtcs == output->numCrtcs) {
+ 	for (i = 0; i < numCrtcs; i++)
+ 	    if (output->crtcs[i] != crtcs[i])
+ 		break;
+ 	if (i == numCrtcs)
+ 	    return TRUE;
+     }
+-    if (numCrtcs)
+-    {
++    if (numCrtcs) {
+ 	newCrtcs = malloc(numCrtcs * sizeof (RRCrtcPtr));
+ 	if (!newCrtcs)
+ 	    return FALSE;
+@@ -288,8 +268,7 @@ RROutputSetCrtcs (RROutputPtr	output,
+ }
+ 
+ Bool
+-RROutputSetConnection (RROutputPtr  output,
+-		       CARD8	    connection)
++RROutputSetConnection(RROutputPtr output, CARD8 connection)
+ {
+     if (output->connection == connection)
+ 	return TRUE;
+@@ -299,8 +278,7 @@ RROutputSetConnection (RROutputPtr  output,
+ }
+ 
+ Bool
+-RROutputSetSubpixelOrder (RROutputPtr output,
+-			  int	      subpixelOrder)
++RROutputSetSubpixelOrder(RROutputPtr output, int subpixelOrder)
+ {
+     if (output->subpixelOrder == subpixelOrder)
+ 	return TRUE;
+@@ -311,9 +289,7 @@ RROutputSetSubpixelOrder (RROutputPtr output,
+ }
+ 
+ Bool
+-RROutputSetPhysicalSize (RROutputPtr	output,
+-			 int		mmWidth,
+-			 int		mmHeight)
++RROutputSetPhysicalSize(RROutputPtr output, int mmWidth, int mmHeight)
+ {
+     if (output->mmWidth == mmWidth && output->mmHeight == mmHeight)
+ 	return TRUE;
+@@ -323,11 +299,11 @@ RROutputSetPhysicalSize (RROutputPtr	output,
+     return TRUE;
+ }
+ 
+-
+ void
+ RRDeliverOutputEvent(ClientPtr client, WindowPtr pWin, RROutputPtr output)
+ {
+     ScreenPtr pScreen = pWin->drawable.pScreen;
++
+     rrScrPriv (pScreen);
+     xRROutputChangeNotifyEvent	oe;
+     RRCrtcPtr	crtc = output->crtc;
+@@ -339,14 +315,12 @@ RRDeliverOutputEvent(ClientPtr client, WindowPtr pWin, RROutputPtr output)
+     oe.configTimestamp = pScrPriv->lastConfigTime.milliseconds;
+     oe.window = pWin->drawable.id;
+     oe.output = output->id;
+-    if (crtc)
+-    {
++    if (crtc) {
+ 	oe.crtc = crtc->id;
+ 	oe.mode = mode ? mode->mode.id : None;
+ 	oe.rotation = crtc->rotation;
+     }
+-    else
+-    {
++    else {
+ 	oe.crtc = None;
+ 	oe.mode = None;
+ 	oe.rotation = RR_Rotate_0;
+@@ -372,18 +346,15 @@ RROutputDestroyResource (pointer value, XID pid)
+     ScreenPtr	pScreen = output->pScreen;
+     int		m;
+ 
+-    if (pScreen)
+-    {
++    if (pScreen) {
+ 	rrScrPriv(pScreen);
+ 	int		i;
+ 
+ 	if (pScrPriv->primaryOutput == output)
+ 	    pScrPriv->primaryOutput = NULL;
+     
+-	for (i = 0; i < pScrPriv->numOutputs; i++)
+-	{
+-	    if (pScrPriv->outputs[i] == output)
+-	    {
++        for (i = 0; i < pScrPriv->numOutputs; i++) {
++            if (pScrPriv->outputs[i] == output) {
+ 		memmove (pScrPriv->outputs + i, pScrPriv->outputs + i + 1,
+ 			 (pScrPriv->numOutputs - (i + 1)) * sizeof (RROutputPtr));
+ 		--pScrPriv->numOutputs;
+@@ -391,8 +362,7 @@ RROutputDestroyResource (pointer value, XID pid)
+ 	    }
+ 	}
+     }
+-    if (output->modes)
+-    {
++    if (output->modes) {
+ 	for (m = 0; m < output->numModes; m++)
+ 	    RRModeDestroy (output->modes[m]);
+ 	free(output->modes);
+@@ -472,11 +442,9 @@ ProcRRGetOutputInfo (ClientPtr client)
+     
+     extraLen = ((output->numCrtcs +
+ 		 output->numModes + output->numUserModes +
+-		 output->numClones +
+-		 bytes_to_int32(rep.nameLength)) << 2);
++                 output->numClones + bytes_to_int32(rep.nameLength)) << 2);
+ 
+-    if (extraLen)
+-    {
++    if (extraLen) {
+ 	rep.length += bytes_to_int32(extraLen);
+ 	extra = malloc(extraLen);
+ 	if (!extra)
+@@ -490,14 +458,12 @@ ProcRRGetOutputInfo (ClientPtr client)
+     clones = (RROutput *) (modes + output->numModes + output->numUserModes);
+     name = (char *) (clones + output->numClones);
+     
+-    for (i = 0; i < output->numCrtcs; i++)
+-    {
++    for (i = 0; i < output->numCrtcs; i++) {
+ 	crtcs[i] = output->crtcs[i]->id;
+ 	if (client->swapped)
+ 	    swapl(&crtcs[i]);
+     }
+-    for (i = 0; i < output->numModes + output->numUserModes; i++)
+-    {
++    for (i = 0; i < output->numModes + output->numUserModes; i++) {
+ 	if (i < output->numModes)
+ 	    modes[i] = output->modes[i]->mode.id;
+ 	else
+@@ -505,8 +471,7 @@ ProcRRGetOutputInfo (ClientPtr client)
+ 	if (client->swapped)
+ 	    swapl(&modes[i]);
+     }
+-    for (i = 0; i < output->numClones; i++)
+-    {
++    for (i = 0; i < output->numClones; i++) {
+ 	clones[i] = output->clones[i]->id;
+ 	if (client->swapped)
+ 	    swapl(&clones[i]);
+@@ -525,8 +490,7 @@ ProcRRGetOutputInfo (ClientPtr client)
+ 	swaps(&rep.nameLength);
+     }
+     WriteToClient(client, sizeof(xRRGetOutputInfoReply), (char *)&rep);
+-    if (extraLen)
+-    {
++    if (extraLen) {
+ 	WriteToClient (client, extraLen, (char *) extra);
+ 	free(extra);
+     }
+@@ -535,8 +499,7 @@ ProcRRGetOutputInfo (ClientPtr client)
+ }
+ 
+ static void
+-RRSetPrimaryOutput(ScreenPtr pScreen, rrScrPrivPtr pScrPriv,
+-		   RROutputPtr output)
++RRSetPrimaryOutput(ScreenPtr pScreen, rrScrPrivPtr pScrPriv, RROutputPtr output)
+ {
+     if (pScrPriv->primaryOutput == output)
+ 	return;

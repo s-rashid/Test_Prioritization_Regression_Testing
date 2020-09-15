@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxgc.h b/hw/dmx/dmxgc.h
+index 4ff3cd8..7b99d88 100644
+--- a/hw/dmx/dmxgc.h
++++ b/hw/dmx/dmxgc.h
+@@ -47,7 +47,6 @@ typedef struct _dmxGCPriv {
+     Bool     msc;
+ } dmxGCPrivRec, *dmxGCPrivPtr;
+ 
+-
+ extern Bool dmxInitGC(ScreenPtr pScreen);
+ 
+ extern Bool dmxCreateGC(GCPtr pGC);

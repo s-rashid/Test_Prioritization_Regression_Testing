@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 72241a7..71ac9a9 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -1269,7 +1269,9 @@ AbortDDX(void)
+ 	       * we might not have been wrapped yet. Therefore enable
+ 	       * screen explicitely.
+ 	       */
++	      xf86VGAarbiterLock(xf86Screens[i]);
+ 	      (xf86Screens[i]->LeaveVT)(i, 0);
++	      xf86VGAarbiterUnlock(xf86Screens[i]);
+ 	  }
+   }
+ 

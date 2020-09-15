@@ -1,0 +1,15 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 5a7c57d..5538936 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -615,10 +615,8 @@ typedef struct _ScreenInfo {
+     int		numPixmapFormats;
+     PixmapFormatRec
+ 		formats[MAXFORMATS];
+-    int		unused2;
+     int		numScreens;
+     ScreenPtr	screens[MAXSCREENS];
+-    int		unused;
+ } ScreenInfo;
+ 
+ extern _X_EXPORT ScreenInfo screenInfo;

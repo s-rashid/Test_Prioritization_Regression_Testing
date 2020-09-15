@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winrandr.c b/hw/xwin/winrandr.c
+index 7b5b135..fd1d97e 100644
+--- a/hw/xwin/winrandr.c
++++ b/hw/xwin/winrandr.c
+@@ -86,8 +86,8 @@ winRandRGetInfo (ScreenPtr pScreen, Rotation *pRotations)
+   pSize = RRRegisterSize (pScreen,
+ 			  pScreenInfo->dwWidth,
+ 			  pScreenInfo->dwHeight,
+-			  pScreenInfo->dwWidth_mm,
+-			  pScreenInfo->dwHeight_mm);
++                          (pScreenInfo->dwWidth / monitorResolution) * 25.4,
++                          (pScreenInfo->dwHeight / monitorResolution) * 25.4);
+ 
+   /* Tell RandR what the current config is */
+   RRSetCurrentConfig (pScreen,

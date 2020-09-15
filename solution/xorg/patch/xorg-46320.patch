@@ -1,0 +1,13 @@
+diff --git a/Xext/securitysrv.h b/Xext/securitysrv.h
+index f4f3e32..3d3894a 100644
+--- a/Xext/securitysrv.h
++++ b/Xext/securitysrv.h
+@@ -40,7 +40,7 @@ from The Open Group.
+ # define NEED_UNDEF_Display
+ #endif
+ 
+-#include <X11/extensions/security.h>
++#include <X11/extensions/secur.h>
+ 
+ #ifdef NEED_UNDEF_Status
+ # undef Status

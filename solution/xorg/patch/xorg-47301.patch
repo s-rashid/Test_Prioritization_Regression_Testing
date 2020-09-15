@@ -1,0 +1,24 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index 9642dda..1396193 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -21,7 +21,6 @@
+  */
+ 
+ #include "randrstr.h"
+-#include "registry.h"
+ 
+ RESTYPE	RRModeType;
+ 
+@@ -266,10 +265,9 @@ RRModeInit (void)
+ {
+     assert (num_modes == 0);
+     assert (modes == NULL);
+-    RRModeType = CreateNewResourceType (RRModeDestroyResource);
++    RRModeType = CreateNewResourceType (RRModeDestroyResource, "MODE");
+     if (!RRModeType)
+ 	return FALSE;
+-    RegisterResourceName (RRModeType, "MODE");
+     return TRUE;
+ }
+ 

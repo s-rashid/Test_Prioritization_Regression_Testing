@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index d9b884a..18df675 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -3404,7 +3404,7 @@ int __glXGetDrawableAttributes(__GLXclientState *cl, GLbyte *pc)
+       WriteToClient(client, attribs_size, (char *)attribs);
+    }
+ 
+-   Xfree(attribs);
++   free(attribs);
+ 
+    return Success;
+ }

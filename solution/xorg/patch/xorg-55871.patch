@@ -1,0 +1,119 @@
+diff --git a/hw/xwin/winmultiwindowshape.c b/hw/xwin/winmultiwindowshape.c
+index 6b7042e..d5200cd 100644
+--- a/hw/xwin/winmultiwindowshape.c
++++ b/hw/xwin/winmultiwindowshape.c
+@@ -35,7 +35,6 @@
+ 
+ #include "win.h"
+ 
+-
+ /*
+  * winSetShapeMultiWindow - See Porting Layer Definition - p. 42
+  */
+@@ -44,6 +43,7 @@ void
+ winSetShapeMultiWindow (WindowPtr pWin, int kind)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGMULTIWINDOW_DEBUG
+@@ -61,7 +61,6 @@ winSetShapeMultiWindow (WindowPtr pWin, int kind)
+   return;
+ }
+ 
+-
+ /*
+  * winUpdateRgnMultiWindow - Local function to update a Windows window region
+  */
+@@ -76,7 +75,6 @@ winUpdateRgnMultiWindow (WindowPtr pWin)
+   winGetWindowPriv(pWin)->hRgn = NULL;
+ }
+ 
+-
+ /*
+  * winReshapeMultiWindow - Computes the composite clipping region for a window
+  */
+@@ -88,6 +86,7 @@ winReshapeMultiWindow (WindowPtr pWin)
+   RegionRec	rrNewShape;
+   BoxPtr	pShape, pRects, pEnd;
+   HRGN		hRgn, hRgnRect;
++
+   winWindowPriv(pWin);
+ 
+ #if CYGDEBUG
+@@ -107,8 +106,7 @@ winReshapeMultiWindow (WindowPtr pWin)
+     return;
+   
+   /* Free any existing window region stored in the window privates */
+-  if (pWinPriv->hRgn != NULL)
+-    {
++    if (pWinPriv->hRgn != NULL) {
+       DeleteObject (pWinPriv->hRgn);
+       pWinPriv->hRgn = NULL;
+     }
+@@ -125,15 +123,13 @@ winReshapeMultiWindow (WindowPtr pWin)
+   pShape = RegionRects(&rrNewShape);
+   
+   /* Don't do anything if there are no rectangles in the region */
+-  if (nRects > 0)
+-    {
++    if (nRects > 0) {
+       RECT			rcClient;
+       RECT			rcWindow;
+       int			iOffsetX, iOffsetY;
+       
+       /* Get client rectangle */
+-      if (!GetClientRect (pWinPriv->hWnd, &rcClient))
+-	{
++        if (!GetClientRect(pWinPriv->hWnd, &rcClient)) {
+ 	  ErrorF ("winReshape - GetClientRect failed, bailing: %d\n",
+ 		  (int) GetLastError ());
+ 	  return;
+@@ -144,8 +140,7 @@ winReshapeMultiWindow (WindowPtr pWin)
+       ClientToScreen (pWinPriv->hWnd, (LPPOINT) &rcClient);
+ 
+       /* Get window rectangle */
+-      if (!GetWindowRect (pWinPriv->hWnd, &rcWindow))
+-	{
++        if (!GetWindowRect(pWinPriv->hWnd, &rcWindow)) {
+ 	  ErrorF ("winReshape - GetWindowRect failed, bailing: %d\n",
+ 		  (int) GetLastError ());
+ 	  return;
+@@ -158,23 +153,20 @@ winReshapeMultiWindow (WindowPtr pWin)
+       /* Create initial Windows region for title bar */
+       /* FIXME: Mean, nasty, ugly hack!!! */
+       hRgn = CreateRectRgn (0, 0, rcWindow.right, iOffsetY);
+-      if (hRgn == NULL)
+-	{
++        if (hRgn == NULL) {
+ 	  ErrorF ("winReshape - Initial CreateRectRgn (%d, %d, %d, %d) "
+ 		  "failed: %d\n",
+ 		  0, 0, (int) rcWindow.right, iOffsetY, (int) GetLastError ());
+ 	}
+ 
+       /* Loop through all rectangles in the X region */
+-      for (pRects = pShape, pEnd = pShape + nRects; pRects < pEnd; pRects++)
+-        {
++        for (pRects = pShape, pEnd = pShape + nRects; pRects < pEnd; pRects++) {
+ 	  /* Create a Windows region for the X rectangle */
+ 	  hRgnRect = CreateRectRgn (pRects->x1 + iOffsetX,
+ 				    pRects->y1 + iOffsetY,
+ 				    pRects->x2 + iOffsetX,
+ 				    pRects->y2 + iOffsetY);
+-	  if (hRgnRect == NULL)
+-	    {
++            if (hRgnRect == NULL) {
+ 	      ErrorF ("winReshape - Loop CreateRectRgn (%d, %d, %d, %d) "
+ 		      "failed: %d\n"
+ 		      "\tx1: %d x2: %d xOff: %d y1: %d y2: %d yOff: %d\n",
+@@ -188,8 +180,7 @@ winReshapeMultiWindow (WindowPtr pWin)
+ 	    }
+ 
+ 	  /* Merge the Windows region with the accumulated region */
+-	  if (CombineRgn (hRgn, hRgn, hRgnRect, RGN_OR) == ERROR)
+-	    {
++            if (CombineRgn(hRgn, hRgn, hRgnRect, RGN_OR) == ERROR) {
+ 	      ErrorF ("winReshape - CombineRgn () failed: %d\n",
+ 		      (int) GetLastError ());
+ 	    }

@@ -1,0 +1,13 @@
+diff --git a/mi/migc.c b/mi/migc.c
+index a797099..7b2b1c3 100644
+--- a/mi/migc.c
++++ b/mi/migc.c
+@@ -95,7 +95,7 @@ miChangeClip( GCPtr pGC, int type, pointer pvalue, int nrects)
+ 	pGC->clientClip = (pointer) RECTS_TO_REGION(pGC->pScreen, nrects,
+ 						      (xRectangle *) pvalue,
+ 								    type);
+-	xfree(pvalue);
++	free(pvalue);
+     }
+     pGC->clientClipType = (type != CT_NONE && pGC->clientClip) ? CT_REGION : CT_NONE;
+     pGC->stateChanges |= GCClipMask;

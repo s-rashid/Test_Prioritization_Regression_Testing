@@ -1,0 +1,13 @@
+diff --git a/glx/glxext.c b/glx/glxext.c
+index 593e053..b234afc 100644
+--- a/glx/glxext.c
++++ b/glx/glxext.c
+@@ -583,7 +583,7 @@ static int __glXDispatch(ClientPtr client)
+ 	ResetCurrentRequest(client);
+ 	client->sequence--;
+ 	IgnoreClient(client);
+-	return(client->noClientException);
++	return Success;
+     }
+ 
+     /*

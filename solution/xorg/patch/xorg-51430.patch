@@ -1,0 +1,32 @@
+diff --git a/composite/compalloc.c b/composite/compalloc.c
+index e628c45..86a6f8e 100644
+--- a/composite/compalloc.c
++++ b/composite/compalloc.c
+@@ -50,14 +50,8 @@
+ static void
+ compScreenUpdate (ScreenPtr pScreen)
+ {
+-    CompScreenPtr   cs = GetCompScreen (pScreen);
+-
+     compCheckTree (pScreen);
+-    if (cs->damaged)
+-    {
+ 	compWindowUpdate (pScreen->root);
+-	cs->damaged = FALSE;
+-    }
+ }
+ 
+ static void
+@@ -85,11 +79,9 @@ compReportDamage (DamagePtr pDamage, RegionPtr pRegion, void *closure)
+     CompScreenPtr   cs = GetCompScreen (pScreen);
+     CompWindowPtr   cw = GetCompWindow (pWin);
+ 
+-    if (!cs->damaged) {
++    if (!cs->BlockHandler) {
+         cs->BlockHandler = pScreen->BlockHandler;
+         pScreen->BlockHandler = compBlockHandler;
+-
+-        cs->damaged = TRUE;
+     }
+     cw->damaged = TRUE;
+ }

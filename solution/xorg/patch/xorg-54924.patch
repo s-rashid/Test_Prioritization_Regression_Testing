@@ -1,0 +1,22 @@
+diff --git a/Xext/sleepuntil.h b/Xext/sleepuntil.h
+index a3618d9..5c70848 100644
+--- a/Xext/sleepuntil.h
++++ b/Xext/sleepuntil.h
+@@ -33,14 +33,10 @@
+ 
+ #include "dix.h"
+ 
+-extern int ClientSleepUntil(
+-    ClientPtr client,
++extern int ClientSleepUntil(ClientPtr client,
+     TimeStamp *revive,
+-    void (*notifyFunc)(
+-	ClientPtr /* client */,
++                            void (*notifyFunc) (ClientPtr /* client */ ,
+ 	pointer   /* closure */
+-	),
+-    pointer Closure
+-);
++                            ), pointer Closure);
+ 
+ #endif

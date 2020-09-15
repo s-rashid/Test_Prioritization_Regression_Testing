@@ -1,0 +1,12 @@
+diff --git a/exa/exa_priv.h b/exa/exa_priv.h
+index 69c0d24..0852355 100644
+--- a/exa/exa_priv.h
++++ b/exa/exa_priv.h
+@@ -194,6 +194,7 @@ typedef struct {
+     struct {
+ 	PixmapPtr pixmap;
+ 	int count;
++	Bool retval;
+     } access[EXA_NUM_PREPARE_INDICES];
+ 
+     /* Holds information on fallbacks that cannot be relayed otherwise. */

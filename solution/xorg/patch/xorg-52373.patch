@@ -1,0 +1,14 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index a3dcab5..0736a5a 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -116,7 +116,9 @@ void XISendDeviceHierarchyEvent(int flags[MAXDEVICES])
+ 
+     ev->length = bytes_to_int32(ev->num_info * sizeof(xXIHierarchyInfo));
+ 
++    memset(&dummyDev, 0, sizeof(dummyDev));
+     dummyDev.id = XIAllDevices;
++    dummyDev.type = SLAVE;
+     SendEventToAllWindows(&dummyDev, (XI_HierarchyChangedMask >> 8), (xEvent*)ev, 1);
+     free(ev);
+ }

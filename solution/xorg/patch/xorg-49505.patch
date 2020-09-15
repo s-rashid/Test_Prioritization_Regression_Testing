@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/xaa/xaaWideLine.c b/hw/xfree86/xaa/xaaWideLine.c
+index a684d66..79a6159 100644
+--- a/hw/xfree86/xaa/xaaWideLine.c
++++ b/hw/xfree86/xaa/xaaWideLine.c
+@@ -804,10 +804,10 @@ XAAPolylinesWideSolid (
+     int		    yorg = pDrawable->y;
+     Bool	    hardClip = FALSE;
+ 
+-    if(!REGION_NUM_RECTS(pGC->pCompositeClip))
++    if(!RegionNumRects(pGC->pCompositeClip))
+ 	return;
+ 
+-    if(REGION_NUM_RECTS(pGC->pCompositeClip) != 1) {
++    if(RegionNumRects(pGC->pCompositeClip) != 1) {
+ 	miWideLine(pDrawable, pGC, mode, npt, pPts);
+ 	return;
+     }

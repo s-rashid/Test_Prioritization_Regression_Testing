@@ -1,0 +1,10 @@
+diff --git a/hw/xnest/Init.h b/hw/xnest/Init.h
+index 4bed0ee..7c0291e 100644
+--- a/hw/xnest/Init.h
++++ b/hw/xnest/Init.h
+@@ -17,4 +17,4 @@ is" without express or implied warranty.
+ 
+ extern Bool xnestDoFullGeneration;
+ 
+-#endif /* XNESTINIT_H */
++#endif                          /* XNESTINIT_H */

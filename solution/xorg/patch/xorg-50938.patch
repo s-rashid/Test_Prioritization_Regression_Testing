@@ -1,0 +1,12 @@
+diff --git a/test/xi2/protocol-common.c b/test/xi2/protocol-common.c
+index 50f2b86..10d82a5 100644
+--- a/test/xi2/protocol-common.c
++++ b/test/xi2/protocol-common.c
+@@ -28,6 +28,7 @@
+ #include <stdint.h>
+ #include "extinit.h" /* for XInputExtensionInit */
+ #include "exglobals.h"
++#include "xkbsrv.h" /* for XkbInitPrivates */
+ #include <glib.h>
+ 
+ #include "protocol-common.h"

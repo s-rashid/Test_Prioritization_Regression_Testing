@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 8b7b699..ceb001c 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -481,11 +481,6 @@ typedef struct _winPrivScreenRec
+   /* Handle to icons that must be freed */
+   HICON			hiconNotifyIcon;
+ 
+-  /* Last width, height, and depth of the Windows display */
+-  DWORD			dwLastWindowsWidth;
+-  DWORD			dwLastWindowsHeight;
+-  DWORD			dwLastWindowsBitsPixel;
+-
+   /* Palette management */
+   ColormapPtr		pcmapInstalled;
+ 

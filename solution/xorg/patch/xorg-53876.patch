@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhw.c b/hw/xfree86/fbdevhw/fbdevhw.c
+index dee731b..30a2a91 100644
+--- a/hw/xfree86/fbdevhw/fbdevhw.c
++++ b/hw/xfree86/fbdevhw/fbdevhw.c
+@@ -9,7 +9,6 @@
+ #include "xf86_OSproc.h"
+ 
+ /* pci stuff */
+-#include "xf86PciInfo.h"
+ #include "xf86Pci.h"
+ 
+ #include "xf86cmap.h"

@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 3cdffdb..f8e6c8b 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -1198,9 +1198,9 @@ xf86LogInit(void)
+ }
+ 
+ void
+-xf86CloseLog(void)
++xf86CloseLog(enum ExitCode error)
+ {
+-    LogClose();
++    LogClose(error);
+ }
+ 
+ 

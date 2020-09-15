@@ -1,0 +1,16 @@
+diff --git a/composite/compwindow.c b/composite/compwindow.c
+index bcbdf35..d2a866d 100644
+--- a/composite/compwindow.c
++++ b/composite/compwindow.c
+@@ -171,6 +171,11 @@ compCheckRedirect (WindowPtr pWin)
+ 	    compRestoreWindow (pWin, pPixmap);
+ 	    (*pScreen->DestroyPixmap) (pPixmap);
+ 	}
++    } else if (should) {
++	if (cw->update == CompositeRedirectAutomatic)
++	    pWin->redirectDraw = RedirectDrawAutomatic;
++	else
++	    pWin->redirectDraw = RedirectDrawManual;
+     }
+     return TRUE;
+ }

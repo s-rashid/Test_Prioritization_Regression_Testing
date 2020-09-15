@@ -1,0 +1,43 @@
+diff --git a/Xi/setcptr.c b/Xi/setcptr.c
+index 9d1a54c..0589381 100644
+--- a/Xi/setcptr.c
++++ b/Xi/setcptr.c
+@@ -79,29 +79,34 @@ ProcXISetClientPointer(ClientPtr client)
+ 
+     rc = dixLookupDevice(&pDev, stuff->deviceid, client, DixWriteAccess);
+     if (rc != Success)
++    {
++        client->errorValue = stuff->deviceid;
+         return rc;
++    }
+ 
+-    if (!IsPointerDevice(pDev) || !IsMaster(pDev))
++    if (!IsMaster(pDev))
+     {
+         client->errorValue = stuff->deviceid;
+         return BadDevice;
+     }
+ 
++    pDev = GetMaster(pDev, MASTER_POINTER);
++
+     if (stuff->win != None)
+     {
+         rc = dixLookupClient(&targetClient, stuff->win, client,
+                 DixWriteAccess);
+ 
+         if (rc != Success)
+-            return rc;
++            return BadWindow;
+ 
+     } else
+         targetClient = client;
+ 
+     if (!SetClientPointer(targetClient, client, pDev))
+     {
+-        client->errorValue = stuff->win;
+-        return BadAccess;
++        client->errorValue = stuff->deviceid;
++        return BadDevice;
+     }
+ 
+     return Success;

@@ -1,0 +1,21 @@
+diff --git a/Xi/setfocus.c b/Xi/setfocus.c
+index 03bc37a..feec3fc 100644
+--- a/Xi/setfocus.c
++++ b/Xi/setfocus.c
+@@ -74,13 +74,11 @@ SOFTWARE.
+ int
+ SProcXSetDeviceFocus(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xSetDeviceFocusReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xSetDeviceFocusReq);
+-    swapl(&stuff->focus, n);
+-    swapl(&stuff->time, n);
++    swapl(&stuff->focus);
++    swapl(&stuff->time);
+     return (ProcXSetDeviceFocus(client));
+ }
+ 

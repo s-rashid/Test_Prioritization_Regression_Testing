@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/driWrap.c b/hw/xquartz/xpr/driWrap.c
+index 8c57fd4..f1a5c83 100644
+--- a/hw/xquartz/xpr/driWrap.c
++++ b/hw/xquartz/xpr/driWrap.c
+@@ -533,7 +533,7 @@ DRIWrapInit(ScreenPtr pScreen) {
+     if(!dixRequestPrivate(driWrapScreenKey, sizeof(DRIWrapScreenRec)))
+ 	return FALSE;
+     
+-    pScreenPriv = xalloc(sizeof(*pScreenPriv));
++    pScreenPriv = malloc(sizeof(*pScreenPriv));
+ 
+     if(NULL == pScreenPriv)
+ 	return FALSE;

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprEvent.c b/hw/xquartz/xpr/xprEvent.c
+index 6245cce..342b54c 100644
+--- a/hw/xquartz/xpr/xprEvent.c
++++ b/hw/xquartz/xpr/xprEvent.c
+@@ -73,7 +73,7 @@ Bool QuartzModeEventHandler(int screenNum, XQuartzEvent *e, DeviceIntPtr dev) {
+             
+         case kXquartzBringAllToFront:
+             DEBUG_LOG("kXquartzBringAllToFront\n");
+-            RootlessOrderAllWindows();
++            RootlessOrderAllWindows(e->data[0]);
+             return TRUE;
+         default:
+             return FALSE;

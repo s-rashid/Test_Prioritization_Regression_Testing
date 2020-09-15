@@ -1,0 +1,22 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 24fce76..fd1afb2 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -47,7 +47,7 @@ ExaGetPixmapAddress(PixmapPtr p)
+  */
+ PixmapPtr
+ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+-		unsigned class)
++		unsigned usage_hint)
+ {
+     PixmapPtr pPixmap;
+     ExaPixmapPrivPtr	pExaPixmap;
+@@ -59,7 +59,7 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+ 	return NullPixmap;
+ 
+     swap(pExaScr, pScreen, CreatePixmap);
+-    pPixmap = pScreen->CreatePixmap(pScreen, 0, 0, depth, class);
++    pPixmap = pScreen->CreatePixmap(pScreen, 0, 0, depth, usage_hint);
+     swap(pExaScr, pScreen, CreatePixmap);
+ 
+     if (!pPixmap)

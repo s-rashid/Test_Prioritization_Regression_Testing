@@ -1,0 +1,163 @@
+diff --git a/hw/dmx/dmxstat.c b/hw/dmx/dmxstat.c
+index c3f1d3b..0d8c22a 100644
+--- a/hw/dmx/dmxstat.c
++++ b/hw/dmx/dmxstat.c
+@@ -76,22 +76,26 @@ static OsTimerPtr dmxStatTimer;
+ 
+ /** Return the number of microseconds as an unsigned long.
+  * Unfortunately, this is only useful for intervals < about 4 sec.  */
+-static unsigned long usec(struct timeval *stop, struct timeval *start)
++static unsigned long
++usec(struct timeval *stop, struct timeval *start)
+ {
+     return (stop->tv_sec - start->tv_sec) * 1000000
+         + stop->tv_usec - start->tv_usec;
+ }
+ 
+-static unsigned long avg(DMXStatAvg *data, unsigned long *max)
++static unsigned long
++avg(DMXStatAvg * data, unsigned long *max)
+ {
+     unsigned long sum;
+     int           i;
+ 
+     *max = 0;
+-    if (!data->count) return 0;
++    if (!data->count)
++        return 0;
+ 
+     for (i = 0, sum = 0; i < data->count; i++) {
+-        if (data->value[i] > *max) *max = data->value[i];
++        if (data->value[i] > *max)
++            *max = data->value[i];
+         sum += data->value[i];
+     }
+     return sum / data->count;
+@@ -103,32 +107,41 @@ static unsigned long avg(DMXStatAvg *data, unsigned long *max)
+  * used (meaning a line for every display will be printed).  Note that
+  * this function takes string arguments because it will usually be
+  * called from #ddxProcessArgument in \a dmxinit.c. */
+-void dmxStatActivate(const char *interval, const char *displays)
++void
++dmxStatActivate(const char *interval, const char *displays)
+ {
+     dmxStatInterval = (interval ? atoi(interval) : 1) * 1000;
+     dmxStatDisplays = (displays ? atoi(displays) : 0);
+ 
+-    if (dmxStatInterval < 1000) dmxStatInterval = 1000;
+-    if (dmxStatDisplays < 0)    dmxStatDisplays = 0;
++    if (dmxStatInterval < 1000)
++        dmxStatInterval = 1000;
++    if (dmxStatDisplays < 0)
++        dmxStatDisplays = 0;
+ }
+ 
+ /** Allocate a \a DMXStatInfo structure. */
+-DMXStatInfo *dmxStatAlloc(void)
++DMXStatInfo *
++dmxStatAlloc(void)
+ {
+     DMXStatInfo *pt = calloc(1, sizeof(*pt));
++
+     return pt;
+ }
+ 
+ /** Free the memory used by a \a DMXStatInfo structure. */
+-void dmxStatFree(DMXStatInfo *pt)
++void
++dmxStatFree(DMXStatInfo * pt)
+ {
+     free(pt);
+ }
+ 
+-static void dmxStatValue(DMXStatAvg *data, unsigned long value)
++static void
++dmxStatValue(DMXStatAvg * data, unsigned long value)
+ {
+-    if (data->count != DMX_STAT_LENGTH) ++data->count;
+-    if (data->pos >= DMX_STAT_LENGTH-1) data->pos = 0;
++    if (data->count != DMX_STAT_LENGTH)
++        ++data->count;
++    if (data->pos >= DMX_STAT_LENGTH - 1)
++        data->pos = 0;
+     data->value[data->pos++] = value;
+ }
+ 
+@@ -136,9 +149,9 @@ static void dmxStatValue(DMXStatAvg *data, unsigned long value)
+  * and \a stop times (from gettimeofday()) and the number of
+  * pending-but-not-yet-processed XSync requests.  This routine is called
+  * from #dmxDoSync in \a dmxsync.c */
+-void dmxStatSync(DMXScreenInfo *dmxScreen,
+-                 struct timeval *stop, struct timeval *start,
+-                 unsigned long pending)
++void
++dmxStatSync(DMXScreenInfo * dmxScreen,
++            struct timeval *stop, struct timeval *start, unsigned long pending)
+ {
+     DMXStatInfo   *s      = dmxScreen->stat;
+     unsigned long elapsed = usec(stop, start);
+@@ -156,11 +169,13 @@ void dmxStatSync(DMXScreenInfo *dmxScreen,
+         }
+         thresh *= DMX_STAT_BINMULT;
+     }
+-    if (i == DMX_STAT_BINS-1) ++s->bins[i];
++    if (i == DMX_STAT_BINS - 1)
++        ++s->bins[i];
+ }
+ 
+ /* Actually do the work of printing out the human-readable message. */
+-static CARD32 dmxStatCallback(OsTimerPtr timer, CARD32 t, pointer arg)
++static CARD32
++dmxStatCallback(OsTimerPtr timer, CARD32 t, pointer arg)
+ {
+     int         i, j;
+     static int  header = 0;
+@@ -177,22 +192,22 @@ static CARD32 dmxStatCallback(OsTimerPtr timer, CARD32 t, pointer arg)
+                "<10ms   <1s   >1s\n");
+     }
+ 
+-    if (dmxStatDisplays && dmxStatDisplays < limit) limit = dmxStatDisplays;
++    if (dmxStatDisplays && dmxStatDisplays < limit)
++        limit = dmxStatDisplays;
+     for (i = 0; i < limit; i++) {
+         DMXScreenInfo *dmxScreen = &dmxScreens[i];
+         DMXStatInfo   *s         = dmxScreen->stat;
+         unsigned long aSync, mSync;
+         unsigned long aPend, mPend;
+         
+-        if (!s) continue;
++        if (!s)
++            continue;
+ 
+         aSync = avg(&s->usec,    &mSync);
+         aPend = avg(&s->pending, &mPend);
+-        dmxLog(dmxDebug, "%2d %9lu %7lu %6lu %6lu %6lu %6lu |",
+-               i,                                               /* S */
++        dmxLog(dmxDebug, "%2d %9lu %7lu %6lu %6lu %6lu %6lu |", i,      /* S */
+                s->syncCount,                                    /* SyncCount */
+-               (s->syncCount
+-                - s->oldSyncCount) * 1000 / dmxStatInterval,    /* Sync/s */
++               (s->syncCount - s->oldSyncCount) * 1000 / dmxStatInterval,       /* Sync/s */
+                aSync,                                           /* us/Sync */
+                mSync,                                           /* max/Sync */
+                aPend,                                           /* avgPend */
+@@ -203,7 +218,8 @@ static CARD32 dmxStatCallback(OsTimerPtr timer, CARD32 t, pointer arg)
+ 
+                                 /* Reset/clear */
+         s->oldSyncCount = s->syncCount;
+-        for (j = 0; j < DMX_STAT_BINS; j++) s->bins[j] = 0;
++        for (j = 0; j < DMX_STAT_BINS; j++)
++            s->bins[j] = 0;
+     }
+     return DMX_STAT_INTERVAL;   /* Place on queue again */
+ }
+@@ -213,7 +229,8 @@ static CARD32 dmxStatCallback(OsTimerPtr timer, CARD32 t, pointer arg)
+  * called.  We don't need the same generation protection that we used in
+  * dmxSyncInit because our timer is always on a queue -- hence, server
+  * generation will always free it. */
+-void dmxStatInit(void)
++void
++dmxStatInit(void)
+ {
+     if (dmxStatInterval)
+         dmxStatTimer = TimerSet(NULL, 0,

@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/darwinXinput.c b/hw/xquartz/darwinXinput.c
+index 8bb83ca..3ef34fe 100644
+--- a/hw/xquartz/darwinXinput.c
++++ b/hw/xquartz/darwinXinput.c
+@@ -117,17 +117,7 @@ ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
+ {
+ 
+   DEBUG_LOG("ChangeDeviceControl(%p, %p, %p)\n", client, dev, control);
+-    switch (control->control) {
+-    case DEVICE_RESOLUTION:
+ 	return BadMatch;
+-    case DEVICE_ABS_CALIB:
+-    case DEVICE_ABS_AREA:
+-        return BadMatch;
+-    case DEVICE_CORE:
+-        return BadMatch;
+-    default:
+-	return BadMatch;
+-    }
+ }
+ 
+ 

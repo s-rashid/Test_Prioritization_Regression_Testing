@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/bsd/alpha_video.c b/hw/xfree86/os-support/bsd/alpha_video.c
+index 15eb2a4..ee5c86a 100644
+--- a/hw/xfree86/os-support/bsd/alpha_video.c
++++ b/hw/xfree86/os-support/bsd/alpha_video.c
+@@ -197,7 +197,6 @@ static int  devMemFd = -1;
+ #ifdef HAS_APERTURE_DRV
+ #define DEV_APERTURE "/dev/xf86"
+ #endif
+-#define DEV_MEM "/dev/mem"
+ 
+ static pointer mapVidMem(int, unsigned long, unsigned long, int);
+ static void unmapVidMem(int, pointer, unsigned long);

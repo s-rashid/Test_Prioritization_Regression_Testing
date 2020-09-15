@@ -1,0 +1,149 @@
+diff --git a/xkb/xkbDflts.h b/xkb/xkbDflts.h
+index 5d86906..994726c 100644
+--- a/xkb/xkbDflts.h
++++ b/xkb/xkbDflts.h
+@@ -29,37 +29,44 @@ static Atom lnames_ONE_LEVEL[1];
+ static XkbKTMapEntryRec map_TWO_LEVEL[1]= {
+     { 1,      1, {       ShiftMask,       ShiftMask,               0 } }
+ };
++
+ static Atom lnames_TWO_LEVEL[2];
+ 
+ static XkbKTMapEntryRec map_ALPHABETIC[2]= {
+     { 1,      1, {       ShiftMask,       ShiftMask,               0 } },
+     { 1,      0, {        LockMask,        LockMask,               0 } }
+ };
++
+ static XkbModsRec preserve_ALPHABETIC[2]= {
+     {                 0,               0,               0 },
+     {          LockMask,        LockMask,               0 }
+ };
++
+ static Atom lnames_ALPHABETIC[2];
+ 
+ static XkbKTMapEntryRec map_KEYPAD[2]= {
+     { 1,      1, {       ShiftMask,       ShiftMask,               0 } },
+     { 0,      1, {               0,               0, vmod_NumLockMask } }
+ };
++
+ static Atom lnames_KEYPAD[2];
+ 
+ static XkbKTMapEntryRec map_PC_BREAK[1]= {
+     { 1,      1, {     ControlMask,     ControlMask,               0 } }
+ };
++
+ static Atom lnames_PC_BREAK[2];
+ 
+ static XkbKTMapEntryRec map_PC_SYSRQ[1]= {
+     { 0,      1, {               0,               0,    vmod_AltMask } }
+ };
++
+ static Atom lnames_PC_SYSRQ[2];
+ 
+ static XkbKTMapEntryRec map_CTRL_ALT[1]= {
+     { 0,      1, {     ControlMask,     ControlMask,    vmod_AltMask } }
+ };
++
+ static Atom lnames_CTRL_ALT[2];
+ 
+ static XkbKTMapEntryRec map_THREE_LEVEL[3]= {
+@@ -67,11 +74,13 @@ static XkbKTMapEntryRec map_THREE_LEVEL[3]= {
+     { 0,      2, {               0,               0, vmod_LevelThreeMask } },
+     { 0,      2, {       ShiftMask,       ShiftMask, vmod_LevelThreeMask } }
+ };
++
+ static Atom lnames_THREE_LEVEL[3];
+ 
+ static XkbKTMapEntryRec map_SHIFT_ALT[1]= {
+     { 0,      1, {       ShiftMask,       ShiftMask,    vmod_AltMask } }
+ };
++
+ static Atom lnames_SHIFT_ALT[2];
+ 
+ static XkbKeyTypeRec dflt_types[]= {
+@@ -79,59 +88,50 @@ static XkbKeyTypeRec dflt_types[]= {
+ 	{               0,               0,               0 },
+ 	1,
+ 	0,	NULL,	NULL,
+-	None,	lnames_ONE_LEVEL
+-    },
++     None, lnames_ONE_LEVEL},
+     {
+ 	{       ShiftMask,       ShiftMask,               0 },
+ 	2,
+ 	1,	map_TWO_LEVEL,	NULL,
+-	None,	lnames_TWO_LEVEL
+-    },
++     None, lnames_TWO_LEVEL},
+     {
+ 	{ ShiftMask|LockMask, ShiftMask|LockMask,               0 },
+ 	2,
+ 	2,	map_ALPHABETIC,	preserve_ALPHABETIC,
+-	None,	lnames_ALPHABETIC
+-    },
++     None, lnames_ALPHABETIC},
+     {
+ 	{       ShiftMask,       ShiftMask, vmod_NumLockMask },
+ 	2,
+ 	2,	map_KEYPAD,	NULL,
+-	None,	lnames_KEYPAD
+-    },
++     None, lnames_KEYPAD},
+     {
+ 	{     ControlMask,     ControlMask,               0 },
+ 	2,
+ 	1,	map_PC_BREAK,	NULL,
+-	None,	lnames_PC_BREAK
+-    },
++     None, lnames_PC_BREAK},
+     {
+ 	{               0,               0,    vmod_AltMask },
+ 	2,
+ 	1,	map_PC_SYSRQ,	NULL,
+-	None,	lnames_PC_SYSRQ
+-    },
++     None, lnames_PC_SYSRQ},
+     {
+ 	{     ControlMask,     ControlMask,    vmod_AltMask },
+ 	2,
+ 	1,	map_CTRL_ALT,	NULL,
+-	None,	lnames_CTRL_ALT
+-    },
++     None, lnames_CTRL_ALT},
+     {
+ 	{       ShiftMask,       ShiftMask, vmod_LevelThreeMask },
+ 	3,
+ 	3,	map_THREE_LEVEL,	NULL,
+-	None,	lnames_THREE_LEVEL
+-    },
++     None, lnames_THREE_LEVEL},
+     {
+ 	{       ShiftMask,       ShiftMask,    vmod_AltMask },
+ 	2,
+ 	1,	map_SHIFT_ALT,	NULL,
+-	None,	lnames_SHIFT_ALT
+-    }
++     None, lnames_SHIFT_ALT}
+ };
+-#define num_dflt_types (sizeof(dflt_types)/sizeof(XkbKeyTypeRec))
+ 
++#define num_dflt_types (sizeof(dflt_types)/sizeof(XkbKeyTypeRec))
+ 
+ static void
+ initTypeNames(DPYTYPE dpy)
+@@ -164,6 +164,7 @@ initTypeNames(DPYTYPE dpy)
+     lnames_SHIFT_ALT[0]=	GET_ATOM(dpy,"Base");
+     lnames_SHIFT_ALT[1]=	GET_ATOM(dpy,"Shift+Alt");
+ }
++
+ /* compat name is "default" */
+ static XkbSymInterpretRec dfltSI[69]= {
+     {    XK_ISO_Level2_Latch, 0x0000,
+@@ -443,6 +444,7 @@ static XkbSymInterpretRec dfltSI[69]= {
+          255,
+        {        XkbSA_SetMods, { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } } }
+ };
++
+ #define num_dfltSI (sizeof(dfltSI)/sizeof(XkbSymInterpretRec))
+ 
+ static XkbCompatMapRec compatMap= {

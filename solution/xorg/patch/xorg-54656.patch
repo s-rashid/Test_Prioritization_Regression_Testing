@@ -1,0 +1,13 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 3764dbf..f2bcd25 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -921,7 +921,7 @@ static int FreeCounter(void *, XID);
+  * ***** System Counter utilities
+  */
+ 
+-pointer
++SyncCounter*
+ SyncCreateSystemCounter(const char *name,
+                         CARD64 initial,
+                         CARD64 resolution,

@@ -1,0 +1,305 @@
+diff --git a/hw/xfree86/parser/Screen.c b/hw/xfree86/parser/Screen.c
+index 2ca2c57..71778d8 100644
+--- a/hw/xfree86/parser/Screen.c
++++ b/hw/xfree86/parser/Screen.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,8 +64,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec DisplayTab[] =
+-{
++static xf86ConfigSymTabRec DisplayTab[] = {
+ 	{ENDSUBSECTION, "endsubsection"},
+ 	{MODES, "modes"},
+ 	{VIEWPORT, "viewport"},
+@@ -87,15 +85,14 @@ static XF86ConfDisplayPtr
+ xf86parseDisplaySubSection (void)
+ {
+ 	int token;
++
+ 	parsePrologue (XF86ConfDisplayPtr, XF86ConfDisplayRec)
+ 
+ 	ptr->disp_black.red = ptr->disp_black.green = ptr->disp_black.blue = -1;
+ 	ptr->disp_white.red = ptr->disp_white.green = ptr->disp_white.blue = -1;
+ 	ptr->disp_frameX0 = ptr->disp_frameY0 = -1;
+-	while ((token = xf86getToken (DisplayTab)) != ENDSUBSECTION)
+-	{
+-		switch (token)
+-		{
++    while ((token = xf86getToken(DisplayTab)) != ENDSUBSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->disp_comment = xf86addComment(ptr->disp_comment, val.str);
+ 			break;
+@@ -167,8 +164,9 @@ xf86parseDisplaySubSection (void)
+ 			{
+ 				XF86ModePtr mptr;
+ 
+-				while ((token = xf86getSubTokenWithTab (&(ptr->disp_comment), DisplayTab)) == STRING)
+-				{
++            while ((token =
++                    xf86getSubTokenWithTab(&(ptr->disp_comment),
++                                           DisplayTab)) == STRING) {
+ 					mptr = calloc (1, sizeof (XF86ModeRec));
+ 					mptr->mode_name = val.str;
+ 					mptr->list.next = NULL;
+@@ -200,8 +198,7 @@ xf86parseDisplaySubSection (void)
+ 
+ #undef CLEANUP
+ 
+-static xf86ConfigSymTabRec ScreenTab[] =
+-{
++static xf86ConfigSymTabRec ScreenTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{IDENTIFIER, "identifier"},
+ 	{OBSDRIVER, "driver"},
+@@ -229,10 +226,8 @@ xf86parseScreenSection (void)
+ 
+ 	parsePrologue (XF86ConfScreenPtr, XF86ConfScreenRec)
+ 
+-		while ((token = xf86getToken (ScreenTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(ScreenTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->scrn_comment = xf86addComment(ptr->scrn_comment, val.str);
+ 			break;
+@@ -290,8 +285,7 @@ xf86parseScreenSection (void)
+ 					if (xf86nameCompare (val.str, aptr->al_adaptor_str) == 0)
+ 						break;
+ 
+-				if (aptr == NULL)
+-				{
++            if (aptr == NULL) {
+ 					aptr = calloc (1, sizeof (XF86ConfAdaptorLinkRec));
+ 					aptr->list.next = NULL;
+ 					aptr->al_adaptor_str = val.str;
+@@ -346,8 +340,7 @@ xf86printScreenSection (FILE * cf, XF86ConfScreenPtr ptr)
+ 	XF86ConfDisplayPtr dptr;
+ 	XF86ModePtr mptr;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		fprintf (cf, "Section \"Screen\"\n");
+ 		if (ptr->scrn_comment)
+ 			fprintf (cf, "%s", ptr->scrn_comment);
+@@ -360,75 +353,61 @@ xf86printScreenSection (FILE * cf, XF86ConfScreenPtr ptr)
+ 		if (ptr->scrn_monitor_str)
+ 			fprintf (cf, "\tMonitor    \"%s\"\n", ptr->scrn_monitor_str);
+ 		if (ptr->scrn_defaultdepth)
+-			fprintf (cf, "\tDefaultDepth     %d\n",
+-					 ptr->scrn_defaultdepth);
++            fprintf(cf, "\tDefaultDepth     %d\n", ptr->scrn_defaultdepth);
+ 		if (ptr->scrn_defaultbpp)
+-			fprintf (cf, "\tDefaultBPP     %d\n",
+-					 ptr->scrn_defaultbpp);
++            fprintf(cf, "\tDefaultBPP     %d\n", ptr->scrn_defaultbpp);
+ 		if (ptr->scrn_defaultfbbpp)
+-			fprintf (cf, "\tDefaultFbBPP     %d\n",
+-					 ptr->scrn_defaultfbbpp);
++            fprintf(cf, "\tDefaultFbBPP     %d\n", ptr->scrn_defaultfbbpp);
+ 		xf86printOptionList(cf, ptr->scrn_option_lst, 1);
+-		for (aptr = ptr->scrn_adaptor_lst; aptr; aptr = aptr->list.next)
+-		{
++        for (aptr = ptr->scrn_adaptor_lst; aptr; aptr = aptr->list.next) {
+ 			fprintf (cf, "\tVideoAdaptor \"%s\"\n", aptr->al_adaptor_str);
+ 		}
+ 		if (ptr->scrn_virtualX && ptr->scrn_virtualY)
+ 			fprintf (cf, "\tVirtual     %d %d\n",
+-				 ptr->scrn_virtualX,
+-				 ptr->scrn_virtualY);
+-		for (dptr = ptr->scrn_display_lst; dptr; dptr = dptr->list.next)
+-		{
++                    ptr->scrn_virtualX, ptr->scrn_virtualY);
++        for (dptr = ptr->scrn_display_lst; dptr; dptr = dptr->list.next) {
+ 			fprintf (cf, "\tSubSection \"Display\"\n");
+ 			if (dptr->disp_comment)
+ 				fprintf (cf, "%s", dptr->disp_comment);
+-			if (dptr->disp_frameX0 >= 0 || dptr->disp_frameY0 >= 0)
+-			{
++            if (dptr->disp_frameX0 >= 0 || dptr->disp_frameY0 >= 0) {
+ 				fprintf (cf, "\t\tViewport   %d %d\n",
+ 						 dptr->disp_frameX0, dptr->disp_frameY0);
+ 			}
+-			if (dptr->disp_virtualX != 0 || dptr->disp_virtualY != 0)
+-			{
++            if (dptr->disp_virtualX != 0 || dptr->disp_virtualY != 0) {
+ 				fprintf (cf, "\t\tVirtual   %d %d\n",
+ 						 dptr->disp_virtualX, dptr->disp_virtualY);
+ 			}
+-			if (dptr->disp_depth)
+-			{
++            if (dptr->disp_depth) {
+ 				fprintf (cf, "\t\tDepth     %d\n", dptr->disp_depth);
+ 			}
+-			if (dptr->disp_bpp)
+-			{
++            if (dptr->disp_bpp) {
+ 				fprintf (cf, "\t\tFbBPP     %d\n", dptr->disp_bpp);
+ 			}
+-			if (dptr->disp_visual)
+-			{
++            if (dptr->disp_visual) {
+ 				fprintf (cf, "\t\tVisual    \"%s\"\n", dptr->disp_visual);
+ 			}
+-			if (dptr->disp_weight.red != 0)
+-			{
++            if (dptr->disp_weight.red != 0) {
+ 				fprintf (cf, "\t\tWeight    %d %d %d\n",
+-					 dptr->disp_weight.red, dptr->disp_weight.green, dptr->disp_weight.blue);
++                        dptr->disp_weight.red, dptr->disp_weight.green,
++                        dptr->disp_weight.blue);
+ 			}
+-			if (dptr->disp_black.red != -1)
+-			{
++            if (dptr->disp_black.red != -1) {
+ 				fprintf (cf, "\t\tBlack     0x%04x 0x%04x 0x%04x\n",
+-					  dptr->disp_black.red, dptr->disp_black.green, dptr->disp_black.blue);
++                        dptr->disp_black.red, dptr->disp_black.green,
++                        dptr->disp_black.blue);
+ 			}
+-			if (dptr->disp_white.red != -1)
+-			{
++            if (dptr->disp_white.red != -1) {
+ 				fprintf (cf, "\t\tWhite     0x%04x 0x%04x 0x%04x\n",
+-					  dptr->disp_white.red, dptr->disp_white.green, dptr->disp_white.blue);
++                        dptr->disp_white.red, dptr->disp_white.green,
++                        dptr->disp_white.blue);
+ 			}
+-			if (dptr->disp_mode_lst)
+-			{
++            if (dptr->disp_mode_lst) {
+ 				fprintf (cf, "\t\tModes   ");
+ 			}
+-			for (mptr = dptr->disp_mode_lst; mptr; mptr = mptr->list.next)
+-			{
++            for (mptr = dptr->disp_mode_lst; mptr; mptr = mptr->list.next) {
+ 				fprintf (cf, " \"%s\"", mptr->mode_name);
+ 			}
+-			if (dptr->disp_mode_lst)
+-			{
++            if (dptr->disp_mode_lst) {
+ 				fprintf (cf, "\n");
+ 			}
+ 			xf86printOptionList(cf, dptr->disp_option_lst, 2);
+@@ -445,8 +424,7 @@ xf86freeScreenList (XF86ConfScreenPtr ptr)
+ {
+ 	XF86ConfScreenPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->scrn_identifier);
+ 		TestFree (ptr->scrn_monitor_str);
+ 		TestFree (ptr->scrn_device_str);
+@@ -465,8 +443,7 @@ xf86freeAdaptorLinkList (XF86ConfAdaptorLinkPtr ptr)
+ {
+ 	XF86ConfAdaptorLinkPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->al_adaptor_str);
+ 		prev = ptr;
+ 		ptr = ptr->list.next;
+@@ -479,8 +456,7 @@ xf86freeDisplayList (XF86ConfDisplayPtr ptr)
+ {
+ 	XF86ConfDisplayPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		xf86freeModeList (ptr->disp_mode_lst);
+ 		xf86optionListFree (ptr->disp_option_lst);
+ 		prev = ptr;
+@@ -494,8 +470,7 @@ xf86freeModeList (XF86ModePtr ptr)
+ {
+ 	XF86ModePtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->mode_name);
+ 		prev = ptr;
+ 		ptr = ptr->list.next;
+@@ -510,36 +485,37 @@ xf86validateScreen (XF86ConfigPtr p)
+ 	XF86ConfMonitorPtr monitor;
+ 	XF86ConfAdaptorLinkPtr adaptor;
+ 
+-	while (screen)
+-	{
++    while (screen) {
+ 		if (screen->scrn_obso_driver && !screen->scrn_identifier)
+ 			screen->scrn_identifier = screen->scrn_obso_driver;
+ 
+-		monitor = xf86findMonitor (screen->scrn_monitor_str, p->conf_monitor_lst);
+-		if (screen->scrn_monitor_str)
+-		{
+-			if (monitor)
+-			{
++        monitor =
++            xf86findMonitor(screen->scrn_monitor_str, p->conf_monitor_lst);
++        if (screen->scrn_monitor_str) {
++            if (monitor) {
+ 				screen->scrn_monitor = monitor;
+ 				if (!xf86validateMonitor(p, screen))
+ 					return FALSE;
+ 			}
+ 		}
+ 
+-		screen->scrn_device= xf86findDevice (screen->scrn_device_str, p->conf_device_lst);
++        screen->scrn_device =
++            xf86findDevice(screen->scrn_device_str, p->conf_device_lst);
+ 
+ 		adaptor = screen->scrn_adaptor_lst;
+-		while (adaptor)
+-		{
+-			adaptor->al_adaptor = xf86findVideoAdaptor (adaptor->al_adaptor_str, p->conf_videoadaptor_lst);
+-			if (!adaptor->al_adaptor)
+-			{
+-				xf86validationError (UNDEFINED_ADAPTOR_MSG, adaptor->al_adaptor_str, screen->scrn_identifier);
++        while (adaptor) {
++            adaptor->al_adaptor =
++                xf86findVideoAdaptor(adaptor->al_adaptor_str,
++                                     p->conf_videoadaptor_lst);
++            if (!adaptor->al_adaptor) {
++                xf86validationError(UNDEFINED_ADAPTOR_MSG,
++                                    adaptor->al_adaptor_str,
++                                    screen->scrn_identifier);
+ 				return FALSE;
+ 			}
+-			else if (adaptor->al_adaptor->va_fwdref)
+-			{
+-				xf86validationError (ADAPTOR_REF_TWICE_MSG, adaptor->al_adaptor_str,
++            else if (adaptor->al_adaptor->va_fwdref) {
++                xf86validationError(ADAPTOR_REF_TWICE_MSG,
++                                    adaptor->al_adaptor_str,
+ 						     adaptor->al_adaptor->va_fwdref);
+ 				return FALSE;
+ 			}
+@@ -557,8 +533,7 @@ xf86validateScreen (XF86ConfigPtr p)
+ XF86ConfScreenPtr
+ xf86findScreen (const char *ident, XF86ConfScreenPtr p)
+ {
+-	while (p)
+-	{
++    while (p) {
+ 		if (xf86nameCompare (ident, p->scrn_identifier) == 0)
+ 			return p;
+ 
+@@ -566,4 +541,3 @@ xf86findScreen (const char *ident, XF86ConfScreenPtr p)
+ 	}
+ 	return NULL;
+ }
+-

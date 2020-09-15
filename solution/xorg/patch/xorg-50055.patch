@@ -1,0 +1,31 @@
+diff --git a/xfixes/select.c b/xfixes/select.c
+index 5ba7896..6d86f63 100644
+--- a/xfixes/select.c
++++ b/xfixes/select.c
+@@ -160,7 +160,7 @@ XFixesSelectSelectionInput (ClientPtr	pClient,
+     }
+     if (!e)
+     {
+-	e = (SelectionEventPtr) xalloc (sizeof (SelectionEventRec));
++	e = (SelectionEventPtr) malloc(sizeof (SelectionEventRec));
+ 	if (!e)
+ 	    return BadAlloc;
+ 
+@@ -181,7 +181,7 @@ XFixesSelectSelectionInput (ClientPtr	pClient,
+ 	    if (!AddResource (pWindow->drawable.id, SelectionWindowType,
+ 			      (pointer) pWindow))
+ 	    {
+-		xfree (e);
++		free(e);
+ 		return BadAlloc;
+ 	    }
+ 
+@@ -256,7 +256,7 @@ SelectionFreeClient (pointer data, XID id)
+ 	if (e == old)
+ 	{
+ 	    *prev = e->next;
+-	    xfree (e);
++	    free(e);
+ 	    CheckSelectionCallback ();
+ 	    break;
+ 	}

@@ -1,0 +1,13 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index d3a207d..5f08db7 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -690,7 +690,7 @@ ReplaceCursor (CursorPtr pCursor,
+ 	}
+     }
+     /* this "knows" that WindowHasNewCursor doesn't depend on it's argument */
+-    WindowHasNewCursor (WindowTable[0]);
++    WindowHasNewCursor (screenInfo.screens[0]->root);
+ }
+ 
+ static Bool 

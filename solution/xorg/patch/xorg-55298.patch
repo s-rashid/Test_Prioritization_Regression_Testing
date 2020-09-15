@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxfbconfig.h b/hw/dmx/glxProxy/glxfbconfig.h
+index c5e9404..6626410 100644
+--- a/hw/dmx/glxProxy/glxfbconfig.h
++++ b/hw/dmx/glxProxy/glxfbconfig.h
+@@ -33,6 +33,7 @@
+ #include <GL/glxint.h>
+ 
+ int AreFBConfigsMatch( __GLXFBConfig *c1, __GLXFBConfig *c2 );
+-__GLXFBConfig *FindMatchingFBConfig( __GLXFBConfig *c, __GLXFBConfig *configs, int nconfigs );
++__GLXFBConfig *FindMatchingFBConfig(__GLXFBConfig * c, __GLXFBConfig * configs,
++                                    int nconfigs);
+ 
+ #endif

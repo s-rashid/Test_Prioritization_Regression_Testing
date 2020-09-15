@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index f6a7129..d2968dc 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -253,7 +253,7 @@ xprDisplayInit(void)
+ {
+     CGDisplayCount displayCount;
+ 
+-    DEBUG_LOG("");
++    TRACE();
+ 
+     CGGetActiveDisplayList(0, NULL, &displayCount);
+ 

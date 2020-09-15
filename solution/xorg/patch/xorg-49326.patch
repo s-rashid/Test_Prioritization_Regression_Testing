@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxconsole.c b/hw/dmx/input/dmxconsole.c
+index 297166e..80df064 100644
+--- a/hw/dmx/input/dmxconsole.c
++++ b/hw/dmx/input/dmxconsole.c
+@@ -226,7 +226,7 @@ static void dmxConsoleDrawWindows(pointer private)
+                        pChild->drawable.height,
+                        pChild->visibility,
+                        pChild->overrideRedirect,
+-                       REGION_NUM_RECTS(&pChild->clipList));
++                       RegionNumRects(&pChild->clipList));
+ #endif
+                 rect.x      = scalex(priv, pChild->drawable.x + pScreen->x);
+                 rect.y      = scaley(priv, pChild->drawable.y + pScreen->y);

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/mach-startup/stub.c b/hw/xquartz/mach-startup/stub.c
+index 7eb894c..cee8116 100644
+--- a/hw/xquartz/mach-startup/stub.c
++++ b/hw/xquartz/mach-startup/stub.c
+@@ -222,7 +222,7 @@ int main(int argc, char **argv, char **envp) {
+     sig_t handler;
+ 
+     if(argc == 2 && !strcmp(argv[1], "-version")) {
+-        fprintf(stderr, "X.org Release 7.3\n");
++        fprintf(stderr, "X.org Release 7.4\n");
+         fprintf(stderr, "X.Org X Server %s\n", XSERVER_VERSION);
+         fprintf(stderr, "Build Date: %s\n", BUILD_DATE);
+         return EXIT_SUCCESS;

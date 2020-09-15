@@ -1,0 +1,12 @@
+diff --git a/Xi/grabdevk.c b/Xi/grabdevk.c
+index 96e2e62..5ffecd2 100644
+--- a/Xi/grabdevk.c
++++ b/Xi/grabdevk.c
+@@ -137,6 +137,7 @@ ProcXGrabDeviceKey(ClientPtr client)
+ 
+ 
+     memset(&param, 0, sizeof(param));
++    param.grabtype = GRABTYPE_XI;
+     param.ownerEvents = stuff->ownerEvents;
+     param.this_device_mode = stuff->this_device_mode;
+     param.other_devices_mode = stuff->other_devices_mode;

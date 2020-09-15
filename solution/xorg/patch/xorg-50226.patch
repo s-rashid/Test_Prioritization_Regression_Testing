@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.h b/hw/xfree86/common/xf86Xinput.h
+index ad59339..0ddfe70 100644
+--- a/hw/xfree86/common/xf86Xinput.h
++++ b/hw/xfree86/common/xf86Xinput.h
+@@ -130,7 +130,6 @@ typedef struct _InputInfoRec {
+     InputDriverPtr	    drv;
+     pointer		    module;
+     pointer		    options;
+-    unsigned int            history_size;
+     InputAttributes         *attrs;
+ } InputInfoRec, *InputInfoPtr;
+ 

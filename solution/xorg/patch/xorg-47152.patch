@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dri/dri.c b/hw/xfree86/dri/dri.c
+index 0de9be6..1a6cb4d 100644
+--- a/hw/xfree86/dri/dri.c
++++ b/hw/xfree86/dri/dri.c
+@@ -792,6 +792,9 @@ DRIExtensionInit(void)
+     DRIDrawablePrivResType = CreateNewResourceType(DRIDrawablePrivDelete);
+     DRIContextPrivResType = CreateNewResourceType(DRIContextPrivDelete);
+ 
++    if (!DRIDrawablePrivResType || !DRIContextPrivResType)
++	return FALSE;
++
+     RegisterBlockAndWakeupHandlers(DRIBlockHandler, DRIWakeupHandler, NULL);
+ 
+     return TRUE;

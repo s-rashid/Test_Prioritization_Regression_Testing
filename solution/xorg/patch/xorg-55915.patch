@@ -1,0 +1,14 @@
+diff --git a/include/dixfont.h b/include/dixfont.h
+index 617b94a..9333041 100644
+--- a/include/dixfont.h
++++ b/include/dixfont.h
+@@ -102,8 +102,7 @@ extern _X_EXPORT int SetDefaultFontPath(char * /*path*/);
+ 
+ extern _X_EXPORT int GetFontPath(ClientPtr client,
+ 		       int *count,
+-		       int *length,
+-		       unsigned char **result);
++                                 int *length, unsigned char **result);
+ 
+ extern _X_EXPORT void DeleteClientFontStuff(ClientPtr /*client*/);
+ 

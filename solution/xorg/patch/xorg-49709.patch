@@ -1,0 +1,30 @@
+diff --git a/test/input.c b/test/input.c
+index dd197dd..b90d3b4 100644
+--- a/test/input.c
++++ b/test/input.c
+@@ -808,6 +808,13 @@ static void cmp_attr_fields(InputAttributes *attr1,
+     } else
+         g_assert(attr2->pnp_id == NULL);
+ 
++    if (attr1->usb_id != NULL)
++    {
++        g_assert(attr1->usb_id != attr2->usb_id);
++        g_assert(strcmp(attr1->usb_id, attr2->usb_id) == 0);
++    } else
++        g_assert(attr2->usb_id == NULL);
++
+     tags1 = attr1->tags;
+     tags2 = attr2->tags;
+ 
+@@ -878,6 +885,11 @@ static void dix_input_attributes(void)
+     cmp_attr_fields(&orig, new);
+     FreeInputAttributes(new);
+ 
++    orig.usb_id = "USBID";
++    new = DuplicateInputAttributes(&orig);
++    cmp_attr_fields(&orig, new);
++    FreeInputAttributes(new);
++
+     orig.flags = 0xF0;
+     new = DuplicateInputAttributes(&orig);
+     cmp_attr_fields(&orig, new);

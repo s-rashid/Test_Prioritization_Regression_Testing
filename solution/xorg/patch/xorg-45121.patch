@@ -1,0 +1,13 @@
+diff --git a/randr/rrsdispatch.c b/randr/rrsdispatch.c
+index 9fbf8f0..f6821c3 100644
+--- a/randr/rrsdispatch.c
++++ b/randr/rrsdispatch.c
+@@ -453,7 +453,7 @@ static int
+ SProcRRGetOutputPrimary (ClientPtr client)
+ {
+     int n;
+-    REQUEST(xRRSetOutputPrimaryReq);
++    REQUEST(xRRGetOutputPrimaryReq);
+ 
+     REQUEST_SIZE_MATCH(xRRGetOutputPrimaryReq);
+     swaps(&stuff->length, n);

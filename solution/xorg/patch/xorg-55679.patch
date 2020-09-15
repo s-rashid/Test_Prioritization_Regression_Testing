@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/x86emu/x86emu/x86emui.h b/hw/xfree86/x86emu/x86emu/x86emui.h
+index 112ee36..f11dc10 100644
+--- a/hw/xfree86/x86emu/x86emu/x86emui.h
++++ b/hw/xfree86/x86emu/x86emu/x86emui.h
+@@ -38,7 +38,6 @@
+ *
+ ****************************************************************************/
+ 
+-
+ #ifndef __X86EMU_X86EMUI_H
+ #define __X86EMU_X86EMUI_H
+ 
+@@ -98,5 +97,4 @@ extern void	(X86APIP sys_outl)(X86EMU_pioAddr addr,u32 val);
+ #ifdef  __cplusplus
+ }                       			/* End of "C" linkage for C++   	*/
+ #endif
+-
+ #endif /* __X86EMU_X86EMUI_H */

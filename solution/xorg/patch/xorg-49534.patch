@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/ramdac/xf86RamDac.c b/hw/xfree86/ramdac/xf86RamDac.c
+index 0015b76..f4d1274 100644
+--- a/hw/xfree86/ramdac/xf86RamDac.c
++++ b/hw/xfree86/ramdac/xf86RamDac.c
+@@ -132,11 +132,9 @@ RamDacFreeRec(ScrnInfoPtr pScrn)
+     ramdacScrPtr = ((RamDacScreenRecPtr)
+ 				(pScrn)->privates[RamDacGetScreenIndex()].ptr);
+     
+-    if (ramdacHWPtr)
+ 	free(ramdacHWPtr);
+     ramdacHWPtr = NULL;
+ 
+-    if (ramdacScrPtr)
+ 	free(ramdacScrPtr);
+     ramdacScrPtr = NULL;
+ }

@@ -1,0 +1,332 @@
+diff --git a/hw/xquartz/xpr/driWrap.c b/hw/xquartz/xpr/driWrap.c
+index de5c4a2..eca31b2 100644
+--- a/hw/xquartz/xpr/driWrap.c
++++ b/hw/xquartz/xpr/driWrap.c
+@@ -55,9 +55,11 @@ typedef struct {
+ } DRISavedDrawableState;
+ 
+ static DevPrivateKeyRec driGCKeyRec;
++
+ #define driGCKey (&driGCKeyRec)
+ 
+ static DevPrivateKeyRec driWrapScreenKeyRec;
++
+ #define driWrapScreenKey (&driWrapScreenKeyRec)
+ 
+ static GCOps driGCOps;
+@@ -72,25 +74,28 @@ static GCOps driGCOps;
+     }
+ 
+ static DRIGCRec *
+-DRIGetGCPriv(GCPtr pGC) {
++DRIGetGCPriv(GCPtr pGC)
++{
+     return dixLookupPrivate(&pGC->devPrivates, driGCKey);
+ }
+ 
+ static void
+-DRIUnwrapGC(GCPtr pGC) {
++DRIUnwrapGC(GCPtr pGC)
++{
+     DRIGCRec *pGCPriv = DRIGetGCPriv(pGC);
+ 
+     pGC->ops = pGCPriv->originalOps;
+ }
+ 
+ static void 
+-DRIWrapGC(GCPtr pGC) {
++DRIWrapGC(GCPtr pGC)
++{
+     pGC->ops = &driGCOps;
+ }
+ 
+ static void
+-DRISurfaceSetDrawable(DrawablePtr pDraw, 
+-				  DRISavedDrawableState *saved) {
++DRISurfaceSetDrawable(DrawablePtr pDraw, DRISavedDrawableState * saved)
++{
+     saved->didSave = FALSE;
+     
+     if(pDraw->type == DRAWABLE_PIXMAP) {
+@@ -111,8 +116,8 @@ DRISurfaceSetDrawable(DrawablePtr pDraw,
+ }
+ 
+ static void
+-DRISurfaceRestoreDrawable(DrawablePtr pDraw,
+-				      DRISavedDrawableState *saved) {
++DRISurfaceRestoreDrawable(DrawablePtr pDraw, DRISavedDrawableState * saved)
++{
+     PixmapPtr pPix = (PixmapPtr)pDraw;
+ 
+     if(!saved->didSave) 
+@@ -124,8 +129,8 @@ DRISurfaceRestoreDrawable(DrawablePtr pDraw,
+ 
+ static void
+ DRIFillSpans(DrawablePtr dst, GCPtr pGC, int nInit,
+-			 DDXPointPtr pptInit, int *pwidthInit, 
+-			 int sorted) {
++             DDXPointPtr pptInit, int *pwidthInit, int sorted)
++{
+     DRISavedDrawableState saved;
+ 
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -141,8 +146,8 @@ DRIFillSpans(DrawablePtr dst, GCPtr pGC, int nInit,
+ 
+ static void
+ DRISetSpans(DrawablePtr dst, GCPtr pGC, char *pSrc,
+-			DDXPointPtr pptInit, int *pwidthInit,
+-			int nspans, int sorted) {
++            DDXPointPtr pptInit, int *pwidthInit, int nspans, int sorted)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -159,7 +164,8 @@ DRISetSpans(DrawablePtr dst, GCPtr pGC, char *pSrc,
+ static void
+ DRIPutImage(DrawablePtr dst, GCPtr pGC,
+ 			int depth, int x, int y, int w, int h,
+-			int leftPad, int format, char *pBits) {
++            int leftPad, int format, char *pBits)
++{
+     DRISavedDrawableState saved;
+ 
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -175,8 +181,8 @@ DRIPutImage(DrawablePtr dst, GCPtr pGC,
+ 
+ static RegionPtr
+ DRICopyArea(DrawablePtr pSrc, DrawablePtr dst, GCPtr pGC,
+-			     int srcx, int srcy, int w, int h,
+-			     int dstx, int dsty) {
++            int srcx, int srcy, int w, int h, int dstx, int dsty)
++{
+     RegionPtr pReg;
+     DRISavedDrawableState pSrcSaved, dstSaved;
+     
+@@ -198,15 +204,14 @@ DRICopyArea(DrawablePtr pSrc, DrawablePtr dst, GCPtr pGC,
+ static RegionPtr
+ DRICopyPlane(DrawablePtr pSrc, DrawablePtr dst,
+ 			     GCPtr pGC, int srcx, int srcy,
+-			     int w, int h, int dstx, int dsty,
+-			     unsigned long plane) {
++             int w, int h, int dstx, int dsty, unsigned long plane)
++{
+     RegionPtr pReg;
+     DRISavedDrawableState pSrcSaved, dstSaved;
+ 
+     DRISurfaceSetDrawable(pSrc, &pSrcSaved);
+     DRISurfaceSetDrawable(dst, &dstSaved);
+ 
+-
+     DRIUnwrapGC(pGC);
+     
+     pReg = pGC->ops->CopyPlane(pSrc, dst, pGC, srcx, srcy, w, h, dstx, dsty,
+@@ -221,8 +226,8 @@ DRICopyPlane(DrawablePtr pSrc, DrawablePtr dst,
+ }
+ 
+ static void
+-DRIPolyPoint(DrawablePtr dst, GCPtr pGC,
+-			 int mode, int npt, DDXPointPtr pptInit) {
++DRIPolyPoint(DrawablePtr dst, GCPtr pGC, int mode, int npt, DDXPointPtr pptInit)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -237,8 +242,8 @@ DRIPolyPoint(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static void
+-DRIPolylines(DrawablePtr dst, GCPtr pGC,
+-			 int mode, int npt, DDXPointPtr pptInit) {
++DRIPolylines(DrawablePtr dst, GCPtr pGC, int mode, int npt, DDXPointPtr pptInit)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -253,8 +258,8 @@ DRIPolylines(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static void
+-DRIPolySegment(DrawablePtr dst, GCPtr pGC,
+-			   int nseg, xSegment *pSeg) {
++DRIPolySegment(DrawablePtr dst, GCPtr pGC, int nseg, xSegment * pSeg)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -269,8 +274,8 @@ DRIPolySegment(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static void
+-DRIPolyRectangle(DrawablePtr dst, GCPtr pGC,
+-                                  int nRects, xRectangle *pRects) {
++DRIPolyRectangle(DrawablePtr dst, GCPtr pGC, int nRects, xRectangle *pRects)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -283,8 +288,10 @@ DRIPolyRectangle(DrawablePtr dst, GCPtr pGC,
+ 
+     DRISurfaceRestoreDrawable(dst, &saved);
+ }
++
+ static void
+-DRIPolyArc(DrawablePtr dst, GCPtr pGC, int narcs, xArc *parcs) {
++DRIPolyArc(DrawablePtr dst, GCPtr pGC, int narcs, xArc * parcs)
++{
+     DRISavedDrawableState saved;
+       
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -300,8 +307,8 @@ DRIPolyArc(DrawablePtr dst, GCPtr pGC, int narcs, xArc *parcs) {
+ 
+ static void
+ DRIFillPolygon(DrawablePtr dst, GCPtr pGC,
+-			   int shape, int mode, int count,
+-			   DDXPointPtr pptInit) {
++               int shape, int mode, int count, DDXPointPtr pptInit)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -317,7 +324,8 @@ DRIFillPolygon(DrawablePtr dst, GCPtr pGC,
+ 
+ static void
+ DRIPolyFillRect(DrawablePtr dst, GCPtr pGC,
+-			    int nRectsInit, xRectangle *pRectsInit) {
++                int nRectsInit, xRectangle *pRectsInit)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -332,8 +340,8 @@ DRIPolyFillRect(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static void
+-DRIPolyFillArc(DrawablePtr dst, GCPtr pGC,
+-			   int narcsInit, xArc *parcsInit) {
++DRIPolyFillArc(DrawablePtr dst, GCPtr pGC, int narcsInit, xArc * parcsInit)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -348,8 +356,8 @@ DRIPolyFillArc(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static int
+-DRIPolyText8(DrawablePtr dst, GCPtr pGC,
+-			int x, int y, int count, char *chars) {
++DRIPolyText8(DrawablePtr dst, GCPtr pGC, int x, int y, int count, char *chars)
++{
+     int ret;
+     DRISavedDrawableState saved;
+     
+@@ -368,7 +376,8 @@ DRIPolyText8(DrawablePtr dst, GCPtr pGC,
+ 
+ static int
+ DRIPolyText16(DrawablePtr dst, GCPtr pGC,
+-			 int x, int y, int count, unsigned short *chars) {
++              int x, int y, int count, unsigned short *chars)
++{
+     int ret;
+     DRISavedDrawableState saved;
+     
+@@ -386,8 +395,8 @@ DRIPolyText16(DrawablePtr dst, GCPtr pGC,
+ }
+ 
+ static void
+-DRIImageText8(DrawablePtr dst, GCPtr pGC,
+-			  int x, int y, int count, char *chars) {
++DRIImageText8(DrawablePtr dst, GCPtr pGC, int x, int y, int count, char *chars)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -403,7 +412,8 @@ DRIImageText8(DrawablePtr dst, GCPtr pGC,
+ 
+ static void
+ DRIImageText16(DrawablePtr dst, GCPtr pGC,
+-			   int x, int y, int count, unsigned short *chars) {
++               int x, int y, int count, unsigned short *chars)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -420,7 +430,8 @@ DRIImageText16(DrawablePtr dst, GCPtr pGC,
+ static void
+ DRIImageGlyphBlt(DrawablePtr dst, GCPtr pGC,
+ 			     int x, int y, unsigned int nglyphInit,
+-			     CharInfoPtr *ppciInit, pointer unused) {
++                 CharInfoPtr * ppciInit, pointer unused)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -434,9 +445,11 @@ DRIImageGlyphBlt(DrawablePtr dst, GCPtr pGC,
+     DRISurfaceRestoreDrawable(dst, &saved);
+ }
+ 
+-static void DRIPolyGlyphBlt(DrawablePtr dst, GCPtr pGC,
++static void
++DRIPolyGlyphBlt(DrawablePtr dst, GCPtr pGC,
+ 			    int x, int y, unsigned int nglyph,
+-			    CharInfoPtr *ppci, pointer pglyphBase) {
++                CharInfoPtr * ppci, pointer pglyphBase)
++{
+     DRISavedDrawableState saved;
+     
+     DRISurfaceSetDrawable(dst, &saved);
+@@ -452,7 +465,8 @@ static void DRIPolyGlyphBlt(DrawablePtr dst, GCPtr pGC,
+ 
+ static void
+ DRIPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr dst,
+-			  int dx, int dy, int xOrg, int yOrg) {
++              int dx, int dy, int xOrg, int yOrg)
++{
+     DRISavedDrawableState bitMapSaved, dstSaved;
+         
+     DRISurfaceSetDrawable(&pBitMap->drawable, &bitMapSaved);
+@@ -468,7 +482,6 @@ DRIPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr dst,
+     DRISurfaceRestoreDrawable(dst, &dstSaved);
+ }
+ 
+-
+ static GCOps driGCOps = {
+     DRIFillSpans,
+     DRISetSpans,
+@@ -492,9 +505,9 @@ static GCOps driGCOps = {
+     DRIPushPixels
+ };
+ 
+-
+ static Bool
+-DRICreateGC(GCPtr pGC) {
++DRICreateGC(GCPtr pGC)
++{
+     ScreenPtr pScreen = pGC->pScreen;
+     DRIWrapScreenRec *pScreenPriv;
+     DRIGCRec *pGCPriv;
+@@ -517,19 +530,21 @@ DRICreateGC(GCPtr pGC) {
+     return ret;
+ }
+ 
+-
+ /* Return false if an error occurred. */
+ Bool 
+-DRIWrapInit(ScreenPtr pScreen) {
++DRIWrapInit(ScreenPtr pScreen)
++{
+     DRIWrapScreenRec *pScreenPriv;
+ 
+     if(!dixRegisterPrivateKey(&driGCKeyRec, PRIVATE_GC, sizeof(DRIGCRec)))
+ 	return FALSE;
+ 
+-    if(!dixRegisterPrivateKey(&driWrapScreenKeyRec, PRIVATE_SCREEN, sizeof(DRIWrapScreenRec)))
++    if (!dixRegisterPrivateKey
++        (&driWrapScreenKeyRec, PRIVATE_SCREEN, sizeof(DRIWrapScreenRec)))
+ 	return FALSE;
+ 
+-    pScreenPriv = dixGetPrivateAddr(&pScreen->devPrivates, &driWrapScreenKeyRec);
++    pScreenPriv =
++        dixGetPrivateAddr(&pScreen->devPrivates, &driWrapScreenKeyRec);
+     pScreenPriv->CreateGC = pScreen->CreateGC;
+     pScreen->CreateGC = DRICreateGC;
+     

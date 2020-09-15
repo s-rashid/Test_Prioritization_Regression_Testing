@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/config/dmxprint.h b/hw/dmx/config/dmxprint.h
+index d162dea..d77bafc 100644
+--- a/hw/dmx/config/dmxprint.h
++++ b/hw/dmx/config/dmxprint.h
+@@ -37,7 +37,7 @@
+ #ifndef _DMXPRINT_H_
+ #define _DMXPRINT_H_
+ 
+-void dmxConfigPrint(FILE *str, DMXConfigEntryPtr entry);
+-void dmxConfigVirtualPrint(FILE *str, DMXConfigVirtualPtr p);
++void dmxConfigPrint(FILE * str, DMXConfigEntryPtr entry);
++void dmxConfigVirtualPrint(FILE * str, DMXConfigVirtualPtr p);
+ 
+ #endif

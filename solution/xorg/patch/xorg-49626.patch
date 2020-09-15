@@ -1,0 +1,13 @@
+diff --git a/fb/fbcmap.c b/fb/fbcmap.c
+index 02b7268..3251a4c 100644
+--- a/fb/fbcmap.c
++++ b/fb/fbcmap.c
+@@ -48,7 +48,7 @@ fbListInstalledColormaps(ScreenPtr pScreen, Colormap *pmaps)
+     /* By the time we are processing requests, we can guarantee that there
+      * is always a colormap installed */
+     *pmaps = GetInstalledColormap(pScreen)->mid;
+-    return (1);
++    return 1;
+ }
+ 
+ 

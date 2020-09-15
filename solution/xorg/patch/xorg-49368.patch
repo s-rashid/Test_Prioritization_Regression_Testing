@@ -1,0 +1,14 @@
+diff --git a/glx/xfont.c b/glx/xfont.c
+index f0b5644..b4081cf 100644
+--- a/glx/xfont.c
++++ b/glx/xfont.c
+@@ -97,9 +97,7 @@ static int __glXMakeBitmapFromGlyph(FontPtr font, CharInfoPtr pci)
+ 				  pci->metrics.characterWidth, 0, 
+ 				  allocbuf ? allocbuf : buf) );
+ 
+-    if (allocbuf) {
+ 	free(allocbuf);
+-    }
+     return Success;
+ #undef __GL_CHAR_BUF_SIZE
+ }

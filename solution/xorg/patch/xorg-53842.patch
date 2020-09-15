@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winwin32rootlesswndproc.c b/hw/xwin/winwin32rootlesswndproc.c
+index 21506df..c60a76c 100644
+--- a/hw/xwin/winwin32rootlesswndproc.c
++++ b/hw/xwin/winwin32rootlesswndproc.c
+@@ -547,8 +547,8 @@ winMWExtWMWindowProc (HWND hwnd, UINT message,
+ 	  tme.hwndTrack = hwnd;
+ 
+ 	  /* Call the tracking function */
+-	  if (!(*g_fpTrackMouseEvent) (&tme))
+-	    ErrorF ("winMWExtWMWindowProc - _TrackMouseEvent failed\n");
++	  if (!TrackMouseEvent(&tme))
++	    ErrorF ("winMWExtWMWindowProc - TrackMouseEvent failed\n");
+ 
+ 	  /* Flag that we are tracking now */
+ 	  s_fTracking = TRUE;

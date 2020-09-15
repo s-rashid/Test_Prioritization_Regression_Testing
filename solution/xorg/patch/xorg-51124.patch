@@ -1,0 +1,14 @@
+diff --git a/mi/mivalidate.h b/mi/mivalidate.h
+index ef258c0..18700ac 100644
+--- a/mi/mivalidate.h
++++ b/mi/mivalidate.h
+@@ -40,8 +40,7 @@ typedef union _Validate {
+ 	DDXPointRec	oldAbsCorner;	/* old window position */
+ 	RegionPtr	borderVisible;	/* visible region of border, */
+ 					/* non-null when size changes */
+-	Bool		resized;	/* unclipped winSize has changed - */
+-					/* don't call SaveDoomedAreas */
++	Bool		resized;	/* unclipped winSize has changed */
+     } before;
+     struct AfterValidate {
+ 	RegionRec	exposed;	/* exposed regions, absolute pos */

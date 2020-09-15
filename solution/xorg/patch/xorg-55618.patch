@@ -1,0 +1,101 @@
+diff --git a/hw/xfree86/parser/Pointer.c b/hw/xfree86/parser/Pointer.c
+index 4edbf74..cdbc09c 100644
+--- a/hw/xfree86/parser/Pointer.c
++++ b/hw/xfree86/parser/Pointer.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -66,8 +65,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec PointerTab[] =
+-{
++static xf86ConfigSymTabRec PointerTab[] = {
+ 	{PROTOCOL, "protocol"},
+ 	{EMULATE3, "emulate3buttons"},
+ 	{EM3TIMEOUT, "emulate3timeout"},
+@@ -88,8 +86,7 @@ static xf86ConfigSymTabRec PointerTab[] =
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec ZMapTab[] =
+-{
++static xf86ConfigSymTabRec ZMapTab[] = {
+ 	{XAXIS, "x"},
+ 	{YAXIS, "y"},
+ 	{-1, ""},
+@@ -103,12 +100,11 @@ xf86parsePointerSection (void)
+ 	char *s;
+ 	unsigned long val1;
+ 	int token;
++
+ 	parsePrologue (XF86ConfInputPtr, XF86ConfInputRec)
+ 
+-	while ((token = xf86getToken (PointerTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(PointerTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->inp_comment = xf86addComment(ptr->inp_comment, val.str);
+ 			break;
+@@ -116,15 +112,13 @@ xf86parsePointerSection (void)
+ 			if (xf86getSubToken (&(ptr->inp_comment)) != STRING)
+ 				Error (QUOTE_MSG, "Protocol");
+ 			ptr->inp_option_lst = xf86addNewOption(ptr->inp_option_lst,
+-												strdup("Protocol"),
+-												val.str);
++                                                   strdup("Protocol"), val.str);
+ 			break;
+ 		case PDEVICE:
+ 			if (xf86getSubToken (&(ptr->inp_comment)) != STRING)
+ 				Error (QUOTE_MSG, "Device");
+ 			ptr->inp_option_lst = xf86addNewOption(ptr->inp_option_lst,
+-												strdup("Device"),
+-												val.str);
++                                                   strdup("Device"), val.str);
+ 			break;
+ 		case EMULATE3:
+ 			ptr->inp_option_lst = xf86addNewOption(ptr->inp_option_lst,
+@@ -141,8 +135,7 @@ xf86parsePointerSection (void)
+ 			break;
+ 		case CHORDMIDDLE:
+ 			ptr->inp_option_lst = xf86addNewOption(ptr->inp_option_lst,
+-												strdup("ChordMiddle"),
+-												NULL);
++                                                   strdup("ChordMiddle"), NULL);
+ 			break;
+ 		case PBUTTONS:
+ 			if (xf86getSubToken (&(ptr->inp_comment)) != NUMBER || val.num < 0)
+@@ -186,7 +179,8 @@ xf86parsePointerSection (void)
+ 				if (val.num < 0)
+ 					Error (ZAXISMAPPING_MSG);
+ 				val1 = val.num;
+-				if (xf86getSubToken (&(ptr->inp_comment)) != NUMBER || val.num < 0) {
++                if (xf86getSubToken(&(ptr->inp_comment)) != NUMBER ||
++                    val.num < 0) {
+ 					Error (ZAXISMAPPING_MSG);
+ 				}
+ 				if (asprintf(&s, "%lu %u", val1, val.num) == -1)
+@@ -203,8 +197,7 @@ xf86parsePointerSection (void)
+ 				break;
+ 			}
+ 			ptr->inp_option_lst = xf86addNewOption(ptr->inp_option_lst,
+-												strdup("ZAxisMapping"),
+-												s);
++                                                   strdup("ZAxisMapping"), s);
+ 			break;
+ 		case ALWAYSCORE:
+ 			break;
+@@ -230,4 +223,3 @@ xf86parsePointerSection (void)
+ }
+ 
+ #undef CLEANUP
+-

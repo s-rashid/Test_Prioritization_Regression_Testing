@@ -1,0 +1,17 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 2946b16..1547059 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1878,8 +1878,12 @@ GetTouchEvents(InternalEvent *events, DeviceIntPtr dev, uint32_t ddx_touchid,
+                              &devx, &devy, &screenx, &screeny);
+ 
+     /* see fill_pointer_events for coordinate systems */
++    if (emulate_pointer)
+     updateHistory(dev, &mask, ms);
++
+     clipValuators(dev, &mask);
++
++    if (emulate_pointer)
+     storeLastValuators(dev, &mask, 0, 1, devx, devy);
+ 
+     event->root = scr->root->drawable.id;

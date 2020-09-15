@@ -1,0 +1,15 @@
+diff --git a/mi/mi.h b/mi/mi.h
+index 3db8bfc..812edce 100644
+--- a/mi/mi.h
++++ b/mi/mi.h
+@@ -196,9 +196,7 @@ extern _X_EXPORT Bool mieqInit(
+     void
+ );
+ 
+-extern _X_EXPORT void mieqResizeEvents(
+-    int /* min_size */
+-);
++extern _X_EXPORT void mieqFini(void);
+ 
+ extern _X_EXPORT void mieqEnqueue(
+     DeviceIntPtr /*pDev*/,

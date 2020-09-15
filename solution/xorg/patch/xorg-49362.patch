@@ -1,0 +1,14 @@
+diff --git a/glx/single2.c b/glx/single2.c
+index 0700626..56ad86d 100644
+--- a/glx/single2.c
++++ b/glx/single2.c
+@@ -272,9 +272,7 @@ char *__glXcombine_strings(const char *cext_string, const char *sext_string)
+ 	s2 = sext_string;
+    }
+    if (!combo_string || !s1) {
+-	if (combo_string)
+ 	    free(combo_string);
+-	if (s1)
+ 	    free(s1);
+ 	return NULL;
+    }

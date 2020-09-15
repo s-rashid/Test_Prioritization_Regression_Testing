@@ -1,0 +1,13 @@
+diff --git a/config/config.c b/config/config.c
+index 7bf5e41..65ef679 100644
+--- a/config/config.c
++++ b/config/config.c
+@@ -130,7 +130,7 @@ add_option(InputOption **options, const char *key, const char *value)
+ 
+     for (; *options; options = &(*options)->next)
+         ;
+-    *options = xcalloc(sizeof(**options), 1);
++    *options = calloc(sizeof(**options), 1);
+     if (!*options) /* Yeesh. */
+         return;
+     (*options)->key = xstrdup(key);

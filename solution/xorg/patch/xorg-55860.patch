@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmessages.h b/hw/xwin/winmessages.h
+index ae50dc4..3d3fab2 100644
+--- a/hw/xwin/winmessages.h
++++ b/hw/xwin/winmessages.h
+@@ -1,6 +1,7 @@
+ #ifndef __WINMESSAGES_H__
+ #define __WINMESSAGES_H__
+ static const unsigned MESSAGE_NAMES_LEN =1024;
++
+ static const char *MESSAGE_NAMES[1024] = {
+ 	"WM_NULL",
+ 	"WM_CREATE",

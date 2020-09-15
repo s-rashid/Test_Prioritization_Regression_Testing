@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winsetsp.c b/hw/xwin/winsetsp.c
+index d1bf90b..6a90781 100644
+--- a/hw/xwin/winsetsp.c
++++ b/hw/xwin/winsetsp.c
+@@ -175,10 +175,6 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+       FatalError ("\nwinSetSpansNativeGDI - UNDRAWABLE_WINDOW\n\n");
+       break;
+ 
+-    case DRAWABLE_BUFFER:
+-      FatalError ("\nwinSetSpansNativeGDI - DRAWABLE_BUFFER\n\n");
+-      break;
+-      
+     default:
+       FatalError ("\nwinSetSpansNativeGDI - Unknown drawable type\n\n");
+       break;

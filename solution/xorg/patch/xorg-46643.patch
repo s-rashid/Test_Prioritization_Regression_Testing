@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/linux/tslib.c b/hw/kdrive/linux/tslib.c
+index 59011b0..7cc23e6 100644
+--- a/hw/kdrive/linux/tslib.c
++++ b/hw/kdrive/linux/tslib.c
+@@ -151,10 +151,6 @@ TslibDisable (KdPointerInfo *pi)
+ static Status
+ TslibInit (KdPointerInfo *pi)
+ {
+-    int		        fd = 0, i = 0;
+-    DIR                 *inputdir = NULL;
+-    struct dirent       *inputent = NULL;
+-    struct tsdev        *tsDev = NULL;
+     struct TslibPrivate *private = NULL;
+ 
+     if (!pi || !pi->dixdev)

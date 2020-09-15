@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/shadowfb/sfbmodule.c b/hw/xfree86/shadowfb/sfbmodule.c
+index ec37a1f..c20efc0 100644
+--- a/hw/xfree86/shadowfb/sfbmodule.c
++++ b/hw/xfree86/shadowfb/sfbmodule.c
+@@ -4,8 +4,7 @@
+ 
+ #include "xf86Module.h"
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+         "shadowfb",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,

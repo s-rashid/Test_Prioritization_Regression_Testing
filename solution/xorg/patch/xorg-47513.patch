@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/xpr/x-hook.c b/hw/xquartz/xpr/x-hook.c
+index 03e7f85..5b850fe 100644
+--- a/hw/xquartz/xpr/x-hook.c
++++ b/hw/xquartz/xpr/x-hook.c
+@@ -79,6 +79,9 @@ X_PFX (hook_run) (x_list *lst, void *arg)
+     void **data;
+     int length, i;
+ 
++    if(!lst)
++        return;
++
+     length = X_PFX (list_length) (lst);
+     fun = xalloc (sizeof (x_hook_function *) * length);
+     data = xalloc (sizeof (void *) * length);

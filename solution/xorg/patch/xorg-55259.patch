@@ -1,0 +1,10 @@
+diff --git a/hw/dmx/dmxshadow.h b/hw/dmx/dmxshadow.h
+index cafe879..081b4d1 100644
+--- a/hw/dmx/dmxshadow.h
++++ b/hw/dmx/dmxshadow.h
+@@ -43,4 +43,4 @@
+ 
+ extern void dmxShadowUpdateProc(ScreenPtr pScreen, shadowBufPtr pBuf);
+ 
+-#endif /* DMXSHADOW_H */
++#endif                          /* DMXSHADOW_H */

@@ -1,0 +1,15 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index db49e31..b3b05f7 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1803,7 +1803,9 @@ DeliverTouchEndEvent(DeviceIntPtr dev, TouchPointInfoPtr ti, InternalEvent *ev,
+                 rc = DeliverOneTouchEvent(client, dev, ti, grab, win, ev);
+             listener->state = LISTENER_HAS_END;
+         }
+-        if (ti->num_listeners > 1 &&
++        if ((ti->num_listeners > 1 ||
++             (listener->type == LISTENER_GRAB &&
++              xi2mask_isset(xi2mask, dev, XI_TouchOwnership))) &&
+            (ev->device_event.flags & (TOUCH_ACCEPT|TOUCH_REJECT)) == 0)
+         {
+             ev->any.type = ET_TouchUpdate;

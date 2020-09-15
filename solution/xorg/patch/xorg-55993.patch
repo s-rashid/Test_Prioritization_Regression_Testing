@@ -1,0 +1,12 @@
+diff --git a/mi/mipointrst.h b/mi/mipointrst.h
+index c912a17..104e45c 100644
+--- a/mi/mipointrst.h
++++ b/mi/mipointrst.h
+@@ -3,7 +3,6 @@
+  *
+  */
+ 
+-
+ /*
+ 
+ Copyright 1989, 1998  The Open Group

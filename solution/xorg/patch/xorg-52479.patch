@@ -1,0 +1,12 @@
+diff --git a/test/xi2/protocol-common.h b/test/xi2/protocol-common.h
+index 18c61e6..b55f57c 100644
+--- a/test/xi2/protocol-common.h
++++ b/test/xi2/protocol-common.h
+@@ -27,7 +27,6 @@
+ 
+ #include "scrnintstr.h"
+ #include "windowstr.h"
+-#include "scrnintstr.h"
+ #include "exevents.h"
+ #include <assert.h>
+ 

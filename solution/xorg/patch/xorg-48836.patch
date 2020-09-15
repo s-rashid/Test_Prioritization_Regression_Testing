@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/glxProxy/render2swap.c b/hw/dmx/glxProxy/render2swap.c
+index 37e43d8..0daeed1 100644
+--- a/hw/dmx/glxProxy/render2swap.c
++++ b/hw/dmx/glxProxy/render2swap.c
+@@ -333,9 +333,3 @@ void __glXDispSwap_DrawArrays(GLbyte *pc)
+     }
+ 
+ }
+-
+-void __glXDispSwap_DrawArraysEXT(GLbyte *pc)
+-{
+-#ifdef XXX_STUB
+-#endif /*XXX_STUB*/
+-}

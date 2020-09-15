@@ -1,0 +1,51 @@
+diff --git a/hw/xwin/winerror.c b/hw/xwin/winerror.c
+index 0440d13..4049e97 100644
+--- a/hw/xwin/winerror.c
++++ b/hw/xwin/winerror.c
+@@ -62,7 +62,6 @@ OsVendorVErrorF (const char *pszFormat, va_list va_args)
+ }
+ #endif
+ 
+-
+ /*
+  * os/util.c/FatalError () calls our vendor ErrorF, so the message
+  * from a FatalError will be logged.  Thus, the message for the
+@@ -83,13 +82,11 @@ OsVendorFatalError (void)
+   }
+   LogClose (EXIT_ERR_ABORT);
+ 
+-  winMessageBoxF (
+-          "A fatal error has occurred and " PROJECT_NAME " will now exit.\n" \
+-		  "Please open %s for more information.\n",
++    winMessageBoxF("A fatal error has occurred and " PROJECT_NAME
++                   " will now exit.\n" "Please open %s for more information.\n",
+ 		  MB_ICONERROR, (g_pszLogFile?g_pszLogFile:"the logfile"));
+ }
+ 
+-
+ /*
+  * winMessageBoxF - Print a formatted error message in a useful
+  * message box.
+@@ -124,9 +121,7 @@ winMessageBoxF (const char *pszError, UINT uType, ...)
+ 		   pszErrorF, XVENDORNAME,
+ 		   XORG_VERSION_MAJOR, XORG_VERSION_MINOR, XORG_VERSION_PATCH,
+ 		    XORG_VERSION_SNAP, XORG_VERSION_CURRENT,
+-		   BUILDERADDR,
+-		   BUILDERSTRING,
+-		   g_pszCommandLine);
++                    BUILDERADDR, BUILDERSTRING, g_pszCommandLine);
+ 
+   if (size == -1) {
+     pszMsgBox = NULL;
+@@ -134,10 +129,7 @@ winMessageBoxF (const char *pszError, UINT uType, ...)
+   }
+ 
+   /* Display the message box string */
+-  MessageBox (NULL,
+-	      pszMsgBox,
+-	      PROJECT_NAME,
+-	      MB_OK | uType);
++    MessageBox(NULL, pszMsgBox, PROJECT_NAME, MB_OK | uType);
+ 
+  winMessageBoxF_Cleanup:
+   free(pszErrorF);

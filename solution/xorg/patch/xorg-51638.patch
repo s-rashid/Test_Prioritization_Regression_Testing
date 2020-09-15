@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winvalargs.c b/hw/xwin/winvalargs.c
+index 6680aba..04db777 100644
+--- a/hw/xwin/winvalargs.c
++++ b/hw/xwin/winvalargs.c
+@@ -154,8 +154,8 @@ winValidateArgs (void)
+       
+       /* Check for !fullscreen and any fullscreen-only parameters */
+       if (!g_ScreenInfo[i].fFullScreen
+-	  && (g_ScreenInfo[i].dwRefreshRate != WIN_DEFAULT_BPP
+-	      || g_ScreenInfo[i].dwBPP != WIN_DEFAULT_REFRESH))
++	  && (g_ScreenInfo[i].dwRefreshRate != WIN_DEFAULT_REFRESH
++	      || g_ScreenInfo[i].dwBPP != WIN_DEFAULT_BPP))
+ 	{
+ 	  ErrorF ("winValidateArgs - -refresh and -depth are only valid "
+ 		  "with -fullscreen.\n");

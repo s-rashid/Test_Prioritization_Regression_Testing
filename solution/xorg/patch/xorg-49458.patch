@@ -1,0 +1,13 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index 8b3913d..8f0ddd9 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -134,7 +134,7 @@ CheckForShmSyscall(void)
+         badSysCall = TRUE;
+     }
+     signal(SIGSYS, oldHandler);
+-    return (!badSysCall);
++    return !badSysCall;
+ }
+ 
+ #define MUST_CHECK_FOR_SHM_SYSCALL

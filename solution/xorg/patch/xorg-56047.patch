@@ -1,0 +1,28 @@
+diff --git a/miext/sync/misyncstr.h b/miext/sync/misyncstr.h
+index 40a865c..e19256f 100644
+--- a/miext/sync/misyncstr.h
++++ b/miext/sync/misyncstr.h
+@@ -65,15 +65,12 @@ struct _SyncTrigger {
+     unsigned int value_type;	/* Absolute or Relative */
+     unsigned int test_type;	/* transition or Comparision type */
+     CARD64	test_value;	/* trigger event threshold value */
+-    Bool	(*CheckTrigger)(
+-				struct _SyncTrigger * /*pTrigger*/,
++    Bool (*CheckTrigger) (struct _SyncTrigger * /*pTrigger */ ,
+ 				CARD64 /*newval*/
+ 				);
+-    void	(*TriggerFired)(
+-				struct _SyncTrigger * /*pTrigger*/
++    void (*TriggerFired) (struct _SyncTrigger * /*pTrigger */
+ 				);
+-    void	(*CounterDestroyed)(
+-				struct _SyncTrigger * /*pTrigger*/
++    void (*CounterDestroyed) (struct _SyncTrigger *     /*pTrigger */
+ 				    );
+ };
+ 
+@@ -83,4 +80,3 @@ typedef struct _SyncTriggerList {
+ } SyncTriggerList;
+ 
+ #endif /* _MISYNCSTR_H_ */
+-

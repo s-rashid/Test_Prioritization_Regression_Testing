@@ -1,0 +1,15 @@
+diff --git a/dix/grabs.c b/dix/grabs.c
+index f850e3d..69c58df 100644
+--- a/dix/grabs.c
++++ b/dix/grabs.c
+@@ -117,10 +117,7 @@ CreateGrab(
+ static void
+ FreeGrab(GrabPtr pGrab)
+ {
+-    if (pGrab->modifiersDetail.pMask != NULL)
+ 	free(pGrab->modifiersDetail.pMask);
+-
+-    if (pGrab->detail.pMask != NULL)
+ 	free(pGrab->detail.pMask);
+ 
+     if (pGrab->cursor)

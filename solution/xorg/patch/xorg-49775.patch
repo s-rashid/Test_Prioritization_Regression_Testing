@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86sbusBus.c b/hw/xfree86/common/xf86sbusBus.c
+index 30a4202..fe3f0a8 100644
+--- a/hw/xfree86/common/xf86sbusBus.c
++++ b/hw/xfree86/common/xf86sbusBus.c
+@@ -530,7 +530,7 @@ xf86GetSbusInfoForEntity(int entityIndex)
+ 
+     for (psdpp = xf86SbusInfo; *psdpp != NULL; psdpp++) {
+ 	if (p->bus.id.sbus.fbNum == (*psdpp)->fbNum)
+-	    return (*psdpp);
++	    return *psdpp;
+     }
+     return NULL;
+ }

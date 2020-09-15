@@ -1,0 +1,17 @@
+diff --git a/fb/fbcmap.c b/fb/fbcmap.c
+index c29a513..207c6ae 100644
+--- a/fb/fbcmap.c
++++ b/fb/fbcmap.c
+@@ -85,8 +85,10 @@ fbUninstallColormap(ColormapPtr pmap)
+     {
+ 	if (pmap->mid != pmap->pScreen->defColormap)
+ 	{
+-	    curpmap = (ColormapPtr) LookupIDByType(pmap->pScreen->defColormap,
+-						   RT_COLORMAP);
++	    dixLookupResourceByType((pointer *)&curpmap,
++				    pmap->pScreen->defColormap,
++				    RT_COLORMAP,
++				    serverClient, DixInstallAccess);
+ 	    (*pmap->pScreen->InstallColormap)(curpmap);
+ 	}
+     }

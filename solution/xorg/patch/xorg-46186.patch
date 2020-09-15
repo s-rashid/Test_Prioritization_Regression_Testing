@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index 2e82f33..4a288d7 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -41,8 +41,7 @@ from Kaleb S. KEITHLEY
+ #include "extnsionst.h"
+ #include "scrnintstr.h"
+ #include "servermd.h"
+-#define _XF86VIDMODE_SERVER_
+-#include <X11/extensions/xf86vmstr.h>
++#include <X11/extensions/xf86vmproto.h>
+ #include "swaprep.h"
+ #include "xf86.h"
+ #include "vidmodeproc.h"

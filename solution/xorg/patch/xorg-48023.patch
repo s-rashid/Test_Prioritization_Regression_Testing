@@ -1,0 +1,21 @@
+diff --git a/exa/exa_classic.c b/exa/exa_classic.c
+index c31e2d4..e1ead6c 100644
+--- a/exa/exa_classic.c
++++ b/exa/exa_classic.c
+@@ -148,7 +148,7 @@ Bool
+ exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height, int depth,
+ 		      int bitsPerPixel, int devKind, pointer pPixData)
+ {
+-    ScreenPtr pScreen = pPixmap->drawable.pScreen;
++    ScreenPtr pScreen;
+     ExaScreenPrivPtr pExaScr;
+     ExaPixmapPrivPtr pExaPixmap;
+     Bool ret;
+@@ -156,6 +156,7 @@ exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height, int dept
+     if (!pPixmap)
+         return FALSE;
+ 
++    pScreen = pPixmap->drawable.pScreen;
+     pExaScr = ExaGetScreenPriv(pScreen);
+     pExaPixmap = ExaGetPixmapPriv(pPixmap);
+ 

@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index 8200aad..a23f962 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -37,6 +37,9 @@
+ #include "winprefs.h"
+ 
+ 
++#include "propertyst.h"
++#include "windowstr.h"
++
+ /*
+  * External global variables
+  */

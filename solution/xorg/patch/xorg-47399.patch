@@ -1,0 +1,19 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index c084591..09b5d3b 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -2281,6 +2281,14 @@ NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
+             return BadValue;
+         }
+ #endif
++#ifdef CONFIG_UDEV
++        else if (strcmp(option->key, "_source") == 0 &&
++                 strcmp(option->value, "server/udev") == 0)
++        {
++            ErrorF("Ignoring device from udev.\n");
++            return BadValue;
++        }
++#endif
+     }
+ 
+     if (!ki && !pi) {

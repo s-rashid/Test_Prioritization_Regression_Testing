@@ -1,0 +1,12 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 9e91b71..142758c 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -1443,7 +1443,6 @@ SProcScreenSaverSuspend (ClientPtr client)
+ 
+     swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xScreenSaverSuspendReq);
+-    swapl(&stuff->suspend);
+     return ProcScreenSaverSuspend (client);
+ }
+ 

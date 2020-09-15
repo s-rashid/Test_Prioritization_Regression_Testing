@@ -1,0 +1,19 @@
+diff --git a/os/client.c b/os/client.c
+index b534977..4aec097 100644
+--- a/os/client.c
++++ b/os/client.c
+@@ -149,13 +149,7 @@ void DetermineClientCmd(pid_t pid, const char **cmdname, const char **cmdargs)
+     cmdsize = strlen(path) + 1;
+     if (cmdname)
+     {
+-        char *name = malloc(cmdsize);
+-        if (name)
+-        {
+-            strncpy(name, path, cmdsize);
+-            name[cmdsize - 1] = '\0';
+-            *cmdname = name;
+-        }
++        *cmdname = strdup(path);
+     }
+ 
+     /* Construct the arguments for client process. */

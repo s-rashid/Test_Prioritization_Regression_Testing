@@ -1,0 +1,121 @@
+diff --git a/dbe/dbestruct.h b/dbe/dbestruct.h
+index 9c383ce..9ea9eb6 100644
+--- a/dbe/dbestruct.h
++++ b/dbe/dbestruct.h
+@@ -33,7 +33,6 @@
+ #ifndef DBE_STRUCT_H
+ #define DBE_STRUCT_H
+ 
+-
+ /* INCLUDES */
+ 
+ #define NEED_DBE_PROTOCOL
+@@ -41,20 +40,16 @@
+ #include "windowstr.h"
+ #include "privates.h"
+ 
+-typedef struct
+-{
++typedef struct {
+     VisualID    visual;    /* one visual ID that supports double-buffering */
+     int         depth;     /* depth of visual in bits                      */
+     int         perflevel; /* performance level of visual                  */
+-}
+-XdbeVisualInfo;
++} XdbeVisualInfo;
+ 
+-typedef struct
+-{
++typedef struct {
+     int                 count;          /* number of items in visual_depth   */
+     XdbeVisualInfo      *visinfo;       /* list of visuals & depths for scrn */
+-}
+-XdbeScreenVisualInfo;
++} XdbeScreenVisualInfo;
+ 
+ /* DEFINES */
+ 
+@@ -95,8 +90,7 @@ extern _X_EXPORT void DbeExtensionInit (void);
+ /* Record used to pass swap information between DIX and DDX swapping
+  * procedures.
+  */
+-typedef struct _DbeSwapInfoRec
+-{
++typedef struct _DbeSwapInfoRec {
+     WindowPtr		pWindow;
+     unsigned char	swapAction;
+ 
+@@ -108,8 +102,7 @@ typedef struct _DbeSwapInfoRec
+  ******************************************************************************
+  */
+ 
+-typedef struct _DbeWindowPrivRec
+-{
++typedef struct _DbeWindowPrivRec {
+     /* A pointer to the window with which the DBE window private (buffer) is
+      * associated.
+      */
+@@ -158,15 +151,13 @@ typedef struct _DbeWindowPrivRec
+ 
+ } DbeWindowPrivRec, *DbeWindowPrivPtr;
+ 
+-
+ /*
+  ******************************************************************************
+  ** Per-screen data
+  ******************************************************************************
+  */
+ 
+-typedef struct _DbeScreenPrivRec
+-{
++typedef struct _DbeScreenPrivRec {
+     /* Wrapped functions
+      * It is the responsibilty of the DDX layer to wrap PositionWindow().
+      * DbeExtensionInit wraps DestroyWindow().
+@@ -175,38 +166,30 @@ typedef struct _DbeScreenPrivRec
+     DestroyWindowProcPtr  DestroyWindow;
+ 
+     /* Per-screen DIX routines */
+-    Bool	(*SetupBackgroundPainter)(
+-		WindowPtr /*pWin*/,
++    Bool (*SetupBackgroundPainter) (WindowPtr /*pWin */ ,
+ 		GCPtr /*pGC*/
+ );
+ 
+     /* Per-screen DDX routines */
+-    Bool	(*GetVisualInfo)(
+-		ScreenPtr /*pScreen*/,
++    Bool (*GetVisualInfo) (ScreenPtr /*pScreen */ ,
+ 		XdbeScreenVisualInfo * /*pVisInfo*/
+ );
+-    int		(*AllocBackBufferName)(
+-		WindowPtr /*pWin*/,
++    int (*AllocBackBufferName) (WindowPtr /*pWin */ ,
+ 		XID /*bufId*/,
+ 		int /*swapAction*/
+ );
+-    int		(*SwapBuffers)(
+-		ClientPtr /*client*/,
++    int (*SwapBuffers) (ClientPtr /*client */ ,
+ 		int * /*pNumWindows*/,
+ 		DbeSwapInfoPtr /*swapInfo*/
+ );
+-    void	(*BeginIdiom)(
+-		ClientPtr /*client*/
++    void (*BeginIdiom) (ClientPtr       /*client */
+ );
+-    void	(*EndIdiom)(
+-		ClientPtr /*client*/
++    void (*EndIdiom) (ClientPtr /*client */
+ );
+-    void	(*WinPrivDelete)(
+-		DbeWindowPrivPtr /*pDbeWindowPriv*/,
++    void (*WinPrivDelete) (DbeWindowPrivPtr /*pDbeWindowPriv */ ,
+ 		XID /*bufId*/
+ );
+-    void	(*ResetProc)(
+-		ScreenPtr /*pScreen*/
++    void (*ResetProc) (ScreenPtr        /*pScreen */
+ );
+ 
+ } DbeScreenPrivRec, *DbeScreenPrivPtr;

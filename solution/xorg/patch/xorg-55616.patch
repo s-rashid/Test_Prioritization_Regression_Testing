@@ -1,0 +1,120 @@
+diff --git a/hw/xfree86/parser/Module.c b/hw/xfree86/parser/Module.c
+index 3c4cefc..1c458ae 100644
+--- a/hw/xfree86/parser/Module.c
++++ b/hw/xfree86/parser/Module.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,15 +64,13 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec SubModuleTab[] =
+-{
++static xf86ConfigSymTabRec SubModuleTab[] = {
+ 	{ENDSUBSECTION, "endsubsection"},
+ 	{OPTION, "option"},
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec ModuleTab[] =
+-{
++static xf86ConfigSymTabRec ModuleTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{LOAD, "load"},
+     {DISABLE, "disable"}, 
+@@ -88,6 +85,7 @@ static XF86LoadPtr
+ xf86parseModuleSubSection (XF86LoadPtr head, char *name)
+ {
+ 	int token;
++
+ 	parsePrologue (XF86LoadPtr, XF86LoadRec)
+ 
+ 	ptr->load_name = name;
+@@ -96,10 +94,8 @@ xf86parseModuleSubSection (XF86LoadPtr head, char *name)
+ 	ptr->load_opt  = NULL;
+ 	ptr->list.next = NULL;
+ 
+-	while ((token = xf86getToken (SubModuleTab)) != ENDSUBSECTION)
+-	{
+-		switch (token)
+-		{
++    while ((token = xf86getToken(SubModuleTab)) != ENDSUBSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->load_comment = xf86addComment(ptr->load_comment, val.str);
+ 			break;
+@@ -126,12 +122,11 @@ XF86ConfModulePtr
+ xf86parseModuleSection (void)
+ {
+ 	int token;
++
+ 	parsePrologue (XF86ConfModulePtr, XF86ConfModuleRec)
+ 
+-	while ((token = xf86getToken (ModuleTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(ModuleTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->mod_comment = xf86addComment(ptr->mod_comment, val.str);
+ 			break;
+@@ -190,10 +185,8 @@ xf86printModuleSection (FILE * cf, XF86ConfModulePtr ptr)
+ 
+ 	if (ptr->mod_comment)
+ 		fprintf(cf, "%s", ptr->mod_comment);
+-	for (lptr = ptr->mod_load_lst; lptr; lptr = lptr->list.next)
+-	{
+-		switch (lptr->load_type)
+-		{
++    for (lptr = ptr->mod_load_lst; lptr; lptr = lptr->list.next) {
++        switch (lptr->load_type) {
+ 		case XF86_LOAD_MODULE:
+ 			if( lptr->load_opt == NULL ) {
+ 				fprintf (cf, "\tLoad  \"%s\"", lptr->load_name);
+@@ -202,8 +195,7 @@ xf86printModuleSection (FILE * cf, XF86ConfModulePtr ptr)
+ 				else
+ 					fputc('\n', cf);
+ 			}
+-			else
+-			{
++            else {
+ 				fprintf (cf, "\tSubSection \"%s\"\n", lptr->load_name);
+ 				if (lptr->load_comment)
+ 					fprintf(cf, "%s", lptr->load_comment);
+@@ -228,7 +220,8 @@ xf86printModuleSection (FILE * cf, XF86ConfModulePtr ptr)
+ }
+ 
+ XF86LoadPtr
+-xf86addNewLoadDirective (XF86LoadPtr head, char *name, int type, XF86OptionPtr opts)
++xf86addNewLoadDirective(XF86LoadPtr head, char *name, int type,
++                        XF86OptionPtr opts)
+ {
+ 	XF86LoadPtr new;
+ 	int token;
+@@ -257,8 +250,7 @@ xf86freeModules (XF86ConfModulePtr ptr)
+ 	if (ptr == NULL)
+ 		return;
+ 	lptr = ptr->mod_load_lst;
+-	while (lptr)
+-	{
++    while (lptr) {
+ 		TestFree (lptr->load_name);
+ 		TestFree (lptr->load_comment);
+ 		prev = lptr;
+@@ -266,8 +258,7 @@ xf86freeModules (XF86ConfModulePtr ptr)
+ 		free (prev);
+ 	}
+ 	lptr = ptr->mod_disable_lst;
+-	while (lptr)
+-	{
++    while (lptr) {
+ 		TestFree (lptr->load_name);
+ 		TestFree (lptr->load_comment);
+ 		prev = lptr;

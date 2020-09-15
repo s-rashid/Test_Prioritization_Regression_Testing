@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/input/dmxcommon.c b/hw/dmx/input/dmxcommon.c
+index 2bffb17..8c8cefa 100644
+--- a/hw/dmx/input/dmxcommon.c
++++ b/hw/dmx/input/dmxcommon.c
+@@ -264,7 +264,6 @@ void dmxCommonKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ 
+     dmxCommonSaveState(priv);
+     if (priv->xkb) {
+-        info->names.keymap   = NULL;
+ #define NAME(x) \
+  priv->xkb->names->x ? XGetAtomName(priv->display,priv->xkb->names->x) : NULL
+         info->names.keycodes = NAME(keycodes);

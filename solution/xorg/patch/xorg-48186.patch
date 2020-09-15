@@ -1,0 +1,16 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index d3f4488..1fb158b 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -240,11 +240,9 @@ static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv
+         return FALSE;
+     }
+ 
+-#ifdef RENDER
+     if (! fbPictureInit(pScreen, 0, 0)) {
+         return FALSE;
+     }
+-#endif
+ 
+ #ifdef MITSHM
+     ShmRegisterFbFuncs(pScreen);

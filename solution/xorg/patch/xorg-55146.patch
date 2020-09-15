@@ -1,0 +1,70 @@
+diff --git a/fb/fbsetsp.c b/fb/fbsetsp.c
+index 65ec8b8..e09d2e3 100644
+--- a/fb/fbsetsp.c
++++ b/fb/fbsetsp.c
+@@ -29,11 +29,7 @@
+ void
+ fbSetSpans (DrawablePtr	    pDrawable,
+ 	    GCPtr	    pGC,
+-	    char	    *src,
+-	    DDXPointPtr	    ppt,
+-	    int		    *pwidth,
+-	    int		    nspans,
+-	    int		    fSorted)
++           char *src, DDXPointPtr ppt, int *pwidth, int nspans, int fSorted)
+ {
+     FbGCPrivPtr	    pPriv = fbGetGCPrivate (pGC);
+     RegionPtr	    pClip = fbGetCompositeClip(pGC);
+@@ -46,26 +42,22 @@ fbSetSpans (DrawablePtr	    pDrawable,
+     int		    xoff;
+     int		    x1, x2;
+     
+-    if (pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth))
+-    {
++    if (pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth)) {
+ 	fb24_32SetSpans (pDrawable, pGC, src, ppt, pwidth, nspans, fSorted);
+ 	return;
+     }
+     fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+-    while (nspans--)
+-    {
++    while (nspans--) {
+ 	d = dst + (ppt->y + dstYoff) * dstStride;
+ 	xoff = (int) (((long) src) & (FB_MASK >> 3));
+ 	s = (FbBits *) (src - xoff);
+ 	xoff <<= 3;
+ 	n = RegionNumRects(pClip);
+ 	pbox = RegionRects (pClip);
+-	while (n--)
+-	{
++        while (n--) {
+ 	    if (pbox->y1 > ppt->y)
+ 		break;
+-	    if (pbox->y2 > ppt->y)
+-	    {
++            if (pbox->y2 > ppt->y) {
+ 		x1 = ppt->x;
+ 		x2 = x1 + *pwidth;
+ 		if (pbox->x1 > x1)
+@@ -79,15 +71,8 @@ fbSetSpans (DrawablePtr	    pDrawable,
+ 			   d,
+ 			   dstStride,
+ 			   (x1 + dstXoff) * dstBpp,
+-
+ 			   (x2 - x1) * dstBpp,
+-			   1,
+-			   pGC->alu,
+-			   pPriv->pm,
+-			   dstBpp,
+-			   
+-			   FALSE,
+-			   FALSE);
++                          1, pGC->alu, pPriv->pm, dstBpp, FALSE, FALSE);
+ 	    }
+ 	}
+ 	src += PixmapBytePad (*pwidth, pDrawable->depth);
+@@ -97,4 +82,3 @@ fbSetSpans (DrawablePtr	    pDrawable,
+     fbValidateDrawable (pDrawable);
+     fbFinishAccess (pDrawable);
+ }
+-	    

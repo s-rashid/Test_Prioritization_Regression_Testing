@@ -1,0 +1,82 @@
+diff --git a/miext/shadow/shplanar.c b/miext/shadow/shplanar.c
+index 3504051..4f6542c 100644
+--- a/miext/shadow/shplanar.c
++++ b/miext/shadow/shplanar.c
+@@ -87,8 +87,7 @@
+ #endif
+ 
+ void
+-shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+-		     shadowBufPtr   pBuf)
++shadowUpdatePlanar4(ScreenPtr pScreen, shadowBufPtr pBuf)
+ {
+     RegionPtr	damage = shadowDamage (pBuf);
+     PixmapPtr	pShadow = pBuf->pPixmap;
+@@ -107,9 +106,9 @@ shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+     CARD32	m,m5,m6;
+     CARD8	s1, s2, s3, s4;
+ 
+-    fbGetStipDrawable (&pShadow->drawable, shaBase, shaStride, shaBpp, shaXoff, shaYoff);
+-    while (nbox--)
+-    {
++    fbGetStipDrawable(&pShadow->drawable, shaBase, shaStride, shaBpp, shaXoff,
++                      shaYoff);
++    while (nbox--) {
+ 	x = (pbox->x1) * shaBpp;
+ 	y = (pbox->y1);
+ 	w = (pbox->x2 - pbox->x1) * shaBpp;
+@@ -121,10 +120,8 @@ shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+ 	scrLine = (x >> PL_SHIFT);
+ 	shaLine = shaBase + y * shaStride + (x >> FB_SHIFT);
+ 	
+-	while (h--)
+-	{
+-	    for (plane = 0; plane < 4; plane++)
+-	    {
++        while (h--) {
++            for (plane = 0; plane < 4; plane++) {
+ 		width = w;
+ 		scr = scrLine;
+ 		sha = shaLine;
+@@ -133,11 +130,11 @@ shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+ 		while (width) {
+ 		    /* how much remains in this window */
+ 		    i = scrBase + winSize - scr;
+-		    if (i <= 0 || scr < scrBase)
+-		    {
++                    if (i <= 0 || scr < scrBase) {
+ 			winBase = (CARD32 *) (*pBuf->window) (pScreen,
+ 							      y,
+-							      (scr << 4) | (plane),
++                                                              (scr << 4) |
++                                                              (plane),
+ 							      SHADOW_WINDOW_WRITE,
+ 							      &winSize,
+ 							      pBuf->closure);
+@@ -153,8 +150,7 @@ shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+ 		    width -= i;
+ 		    scr += i;
+ 		   
+-		    while (i--)
+-		    {
++                    while (i--) {
+ 			GetBits(plane,0,s1);
+ 			GetBits(plane,1,s2);
+ 			GetBits(plane,2,s3);
+@@ -171,10 +167,14 @@ shadowUpdatePlanar4 (ScreenPtr	    pScreen,
+     }
+ }
+ 
+-shadowUpdateProc shadowUpdatePlanar4Weak(void) {
++shadowUpdateProc
++shadowUpdatePlanar4Weak(void)
++{
+     return shadowUpdatePlanar4;
+ }
+ 
+-shadowUpdateProc shadowUpdatePlanar4x8Weak(void) {
++shadowUpdateProc
++shadowUpdatePlanar4x8Weak(void)
++{
+     return shadowUpdatePlanar4x8;
+ }

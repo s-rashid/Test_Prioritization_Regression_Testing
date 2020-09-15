@@ -1,0 +1,24 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 239b7a1..a5d25d0 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -768,19 +768,6 @@ extern _X_EXPORT void XkbDDXUpdateDeviceIndicators(
+ 	CARD32			/* newState */
+ );
+ 
+-extern _X_EXPORT void XkbDDXFakePointerMotion(
+-	DeviceIntPtr	/* dev */,
+- 	unsigned int	/* flags */,
+-	int		/* x */,
+-	int		/* y */
+-);
+-
+-extern _X_EXPORT void XkbDDXFakeDeviceButton(
+-	DeviceIntPtr	/* dev */,
+-	Bool		/* press */,
+-	int		/* button */
+-);
+-
+ extern _X_EXPORT int XkbDDXTerminateServer(
+ 	DeviceIntPtr	/* dev */,
+ 	KeyCode		/* key */,

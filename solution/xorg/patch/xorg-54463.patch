@@ -1,0 +1,13 @@
+diff --git a/mi/mibitblt.c b/mi/mibitblt.c
+index 2dfff14..fc6eb8d 100644
+--- a/mi/mibitblt.c
++++ b/mi/mibitblt.c
+@@ -648,7 +648,7 @@ miGetImage( DrawablePtr pDraw, int sx, int sy, int w, int h,
+     depth = pDraw->depth;
+     if(format == ZPixmap)
+     {
+-	if ( (((1<<depth)-1)&planeMask) != (1<<depth)-1 )
++	if ( (((1LL<<depth)-1)&planeMask) != (1LL<<depth)-1 )
+ 	{
+ 	    ChangeGCVal gcv;
+ 	    xPoint pt;

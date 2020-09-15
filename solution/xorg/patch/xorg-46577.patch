@@ -1,0 +1,15 @@
+diff --git a/dix/events.c b/dix/events.c
+index 14e3900..aaf28b5 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -345,7 +345,9 @@ DevHasCursor(DeviceIntPtr pDev)
+ Bool
+ IsPointerDevice(DeviceIntPtr dev)
+ {
+-    return (dev->type == MASTER_POINTER) || (dev->valuator && dev->button);
++    return (dev->type == MASTER_POINTER) ||
++            (dev->valuator && dev->button) ||
++            (dev->valuator && !dev->key);
+ }
+ 
+ /*

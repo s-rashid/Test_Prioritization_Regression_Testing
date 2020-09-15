@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index 2b33f25..efed677 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -1881,7 +1881,7 @@ xf86XVFillKeyHelperDrawable (DrawablePtr pDraw, CARD32 key, RegionPtr clipboxes)
+ void
+ xf86XVFillKeyHelper (ScreenPtr pScreen, CARD32 key, RegionPtr clipboxes)
+ {
+-   DrawablePtr root = &WindowTable[pScreen->myNum]->drawable;
++   DrawablePtr root = &pScreen->root->drawable;
+    ChangeGCVal pval[2];
+    BoxPtr pbox = REGION_RECTS(clipboxes);
+    int i, nbox = REGION_NUM_RECTS(clipboxes);

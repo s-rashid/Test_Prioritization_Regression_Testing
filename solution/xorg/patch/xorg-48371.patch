@@ -1,0 +1,13 @@
+diff --git a/include/gcstruct.h b/include/gcstruct.h
+index 8d9b055..b9fc5ca 100644
+--- a/include/gcstruct.h
++++ b/include/gcstruct.h
+@@ -59,6 +59,8 @@ SOFTWARE.
+ #include "privates.h"
+ #include <X11/Xprotostr.h>
+ 
++#define GCAllBits ((1 << (GCLastBit + 1)) - 1)
++
+ /*
+  * functions which modify the state of the GC
+  */

@@ -1,0 +1,20 @@
+diff --git a/Xext/xselinux_ext.c b/Xext/xselinux_ext.c
+index 93c1b59..374571c 100644
+--- a/Xext/xselinux_ext.c
++++ b/Xext/xselinux_ext.c
+@@ -231,13 +231,11 @@ ProcSELinuxGetDrawableContext(ClientPtr client)
+     REQUEST(SELinuxGetContextReq);
+     REQUEST_SIZE_MATCH(SELinuxGetContextReq);
+ 
+-    rc = dixLookupDrawable(&pDraw, stuff->id, client,
+-			   M_WINDOW | M_DRAWABLE_PIXMAP,
+-			   DixGetAttrAccess);
++    rc = dixLookupDrawable(&pDraw, stuff->id, client, 0, DixGetAttrAccess);
+     if (rc != Success)
+ 	return rc;
+ 
+-    if (pDraw->type == M_DRAWABLE_PIXMAP)
++    if (pDraw->type == DRAWABLE_PIXMAP)
+ 	privatePtr = &((PixmapPtr)pDraw)->devPrivates;
+     else
+ 	privatePtr = &((WindowPtr)pDraw)->devPrivates;

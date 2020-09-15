@@ -1,0 +1,13 @@
+diff --git a/Xi/xiqueryversion.h b/Xi/xiqueryversion.h
+index 06bb729..6dcedac 100644
+--- a/Xi/xiqueryversion.h
++++ b/Xi/xiqueryversion.h
+@@ -35,6 +35,6 @@
+ 
+ int SProcXIQueryVersion(ClientPtr client);
+ int ProcXIQueryVersion(ClientPtr client);
+-void SRepXIQueryVersion(ClientPtr client, int size, xXIQueryVersionReply* rep);
++void SRepXIQueryVersion(ClientPtr client, int size, xXIQueryVersionReply * rep);
+ 
+-#endif /* QUERYVERSION_H */
++#endif                          /* QUERYVERSION_H */

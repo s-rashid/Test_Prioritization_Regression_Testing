@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaaStateChange.c b/hw/xfree86/xaa/xaaStateChange.c
+index f332614..0e86e67 100644
+--- a/hw/xfree86/xaa/xaaStateChange.c
++++ b/hw/xfree86/xaa/xaaStateChange.c
+@@ -1500,7 +1500,7 @@ XAAInitStateWrap(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+    XAAStateWrapPtr pStatePriv;
+    int i = 0;
+    
+-   if(!(pStatePriv = xalloc(sizeof(XAAStateWrapRec)))) return FALSE;
++   if(!(pStatePriv = malloc(sizeof(XAAStateWrapRec)))) return FALSE;
+    dixSetPrivate(&pScreen->devPrivates, XAAStateKey, pStatePriv);
+    pStatePriv->RestoreAccelState = infoRec->RestoreAccelState;
+    pStatePriv->pScrn = pScrn;

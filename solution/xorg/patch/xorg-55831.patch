@@ -1,0 +1,66 @@
+diff --git a/hw/xwin/winblock.c b/hw/xwin/winblock.c
+index e165d54..c18d080 100644
+--- a/hw/xwin/winblock.c
++++ b/hw/xwin/winblock.c
+@@ -37,18 +37,17 @@
+ /* See Porting Layer Definition - p. 6 */
+ void
+ winBlockHandler (int nScreen,
+-		 pointer pBlockData,
+-		 pointer pTimeout,
+-		 pointer pReadMask)
++                pointer pBlockData, pointer pTimeout, pointer pReadMask)
+ {
+ #if defined(XWIN_CLIPBOARD) || defined(XWIN_MULTIWINDOW)
+   winScreenPriv((ScreenPtr)pBlockData);
+ #endif
+   MSG			msg;
++
+ #ifndef HAS_DEVWINDOWS
+   struct timeval **tvp = pTimeout;
+-  if (*tvp != NULL) 
+-  {
++
++    if (*tvp != NULL) {
+     (*tvp)->tv_sec = 0;
+     (*tvp)->tv_usec = 100;
+   }
+@@ -56,8 +55,7 @@ winBlockHandler (int nScreen,
+ 
+ #if defined(XWIN_CLIPBOARD) || defined(XWIN_MULTIWINDOW)
+   /* Signal threaded modules to begin */
+-  if (pScreenPriv != NULL && !pScreenPriv->fServerStarted)
+-    {
++    if (pScreenPriv != NULL && !pScreenPriv->fServerStarted) {
+       int		iReturn;
+       
+       winDebug ("winBlockHandler - Releasing pmServerStarted\n");
+@@ -67,8 +65,7 @@ winBlockHandler (int nScreen,
+ 
+       /* Unlock the mutex for threaded modules */
+       iReturn = pthread_mutex_unlock (&pScreenPriv->pmServerStarted);
+-      if (iReturn != 0)
+-	{
++        if (iReturn != 0) {
+ 	  ErrorF ("winBlockHandler - pthread_mutex_unlock () failed: %d\n",
+ 		  iReturn);
+ 	  goto winBlockHandler_ProcessMessages; 
+@@ -81,15 +78,11 @@ winBlockHandler_ProcessMessages:
+ #endif
+ 
+   /* Process all messages on our queue */
+-  while (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
+-    {
++    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+       if ((g_hDlgDepthChange == 0
+ 	   || !IsDialogMessage (g_hDlgDepthChange, &msg))
+-	  && (g_hDlgExit == 0
+-	      || !IsDialogMessage (g_hDlgExit, &msg))
+-	  && (g_hDlgAbout == 0
+-	      || !IsDialogMessage (g_hDlgAbout, &msg)))
+-	{
++            && (g_hDlgExit == 0 || !IsDialogMessage(g_hDlgExit, &msg))
++            && (g_hDlgAbout == 0 || !IsDialogMessage(g_hDlgAbout, &msg))) {
+ 	  DispatchMessage (&msg);
+ 	}
+     }

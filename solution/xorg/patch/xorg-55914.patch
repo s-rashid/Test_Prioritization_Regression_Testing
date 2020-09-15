@@ -1,0 +1,40 @@
+diff --git a/include/dixevents.h b/include/dixevents.h
+index b915345..c8f384e 100644
+--- a/include/dixevents.h
++++ b/include/dixevents.h
+@@ -32,8 +32,7 @@ extern _X_EXPORT CursorPtr GetSpriteCursor(DeviceIntPtr /*pDev*/);
+ 
+ extern _X_EXPORT int ProcAllowEvents(ClientPtr /* client */);
+ 
+-extern _X_EXPORT int MaybeDeliverEventsToClient(
+-	WindowPtr              /* pWin */,
++extern _X_EXPORT int MaybeDeliverEventsToClient(WindowPtr /* pWin */ ,
+ 	xEvent *               /* pEvents */,
+ 	int                    /* count */,
+ 	Mask                   /* filter */,
+@@ -41,13 +40,11 @@ extern _X_EXPORT int MaybeDeliverEventsToClient(
+ 
+ extern _X_EXPORT int ProcWarpPointer(ClientPtr /* client */);
+ 
+-extern _X_EXPORT int EventSelectForWindow(
+-	WindowPtr              /* pWin */,
++extern _X_EXPORT int EventSelectForWindow(WindowPtr /* pWin */ ,
+ 	ClientPtr              /* client */,
+ 	Mask                   /* mask */);
+ 
+-extern _X_EXPORT int EventSuppressForWindow(
+-	WindowPtr              /* pWin */,
++extern _X_EXPORT int EventSuppressForWindow(WindowPtr /* pWin */ ,
+ 	ClientPtr              /* client */,
+ 	Mask                   /* mask */,
+ 	Bool *                 /* checkOptional */);
+@@ -84,8 +81,7 @@ extern _X_EXPORT int ProcRecolorCursor(ClientPtr /* client */);
+ extern _X_EXPORT void PostSyntheticMotion(DeviceIntPtr pDev,
+                                 int x, 
+                                 int y, 
+-                                int screen,
+-                                unsigned long time);
++                                          int screen, unsigned long time);
+ #endif
+ 
+ #endif /* DIXEVENTS_H */

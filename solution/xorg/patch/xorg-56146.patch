@@ -1,0 +1,364 @@
+diff --git a/xkb/maprules.c b/xkb/maprules.c
+index 6680047..c6900ec 100644
+--- a/xkb/maprules.c
++++ b/xkb/maprules.c
+@@ -52,8 +52,6 @@
+ 
+ /***====================================================================***/
+ 
+-
+-
+ #define DFLT_LINE_SIZE	128
+ 
+ typedef struct {
+@@ -265,7 +263,6 @@ int		len, ndx;
+ _Xstrtokparams	strtok_buf;
+ Bool		found;
+ 
+-
+    l_ndx_present = v_ndx_present = present= 0;
+    str= &line->line[1];
+    len = remap->number;
+@@ -281,6 +278,7 @@ Bool		found;
+ 	    if (strncmp(cname[i],tok,len)==0) {
+ 		if(strlen(tok) > len) {
+ 		    char *end = get_index(tok+len, &ndx);
++
+ 		    if ((i != LAYOUT && i != VARIANT) ||
+ 			*end != '\0' || ndx == -1)
+ 		        break;
+@@ -290,7 +288,8 @@ Bool		found;
+ 				   XkbNumKbdGroups);
+ 			break;
+ 		     }
+-                } else {
++                }
++                else {
+ 		    ndx = 0;
+                 }
+ 		found= TRUE;
+@@ -318,12 +317,15 @@ Bool		found;
+    }
+    if ((present&PART_MASK)==0) {
+ 	unsigned mask= PART_MASK;
++
+ 	ErrorF("Mapping needs at least one of ");
+ 	for (i=0; (i<MAX_WORDS); i++) {
+ 	    if ((1L<<i)&mask) {
+ 		mask&= ~(1L<<i);
+-		if (mask)	DebugF("\"%s,\" ",cname[i]);
+-		else		DebugF("or \"%s\"\n",cname[i]);
++                if (mask)
++                    DebugF("\"%s,\" ", cname[i]);
++                else
++                    DebugF("or \"%s\"\n", cname[i]);
+ 	    }
+ 	}
+ 	DebugF("Illegal mapping ignored\n");
+@@ -348,6 +350,7 @@ int	want_len= strlen(wanted);
+ 
+     for (str=vals_defined,next=NULL;str!=NULL;str=next) {
+ 	int len;
++
+ 	next= strchr(str,',');
+ 	if (next) {
+ 	    len= next-str;
+@@ -366,9 +369,7 @@ int	want_len= strlen(wanted);
+ 
+ static Bool
+ CheckLine(	InputLine *		line,
+-		RemapSpec *		remap,
+-		XkbRF_RulePtr		rule,
+-		XkbRF_GroupPtr		group)
++          RemapSpec * remap, XkbRF_RulePtr rule, XkbRF_GroupPtr group)
+ {
+ char *		str,*tok;
+ register int	nread, i;
+@@ -381,6 +382,7 @@ Bool 		append = FALSE;
+             (line->line[1] == ' ' && line->line[2] == '$')) {
+             char *gname = strchr(line->line, '$');
+             char *words = strchr(gname, ' ');
++
+             if(!words)
+                 return FALSE;
+             *words++ = '\0';
+@@ -400,7 +402,8 @@ Bool 		append = FALSE;
+             }
+             group->number = i;
+             return TRUE;
+-        } else {
++        }
++        else {
+ 	    SetUpRemap(line,remap);
+ 	    return FALSE;
+         }
+@@ -483,9 +486,11 @@ static void
+ squeeze_spaces(char *p1)
+ {
+    char *p2;
++
+    for (p2 = p1; *p2; p2++) {
+        *p1 = *p2;
+-       if (*p1 != ' ') p1++;
++        if (*p1 != ' ')
++            p1++;
+    }
+    *p1 = '\0';
+ }
+@@ -497,14 +502,17 @@ MakeMultiDefs(XkbRF_MultiDefsPtr mdefs, XkbRF_VarDefsPtr defs)
+    memset((char *)mdefs, 0, sizeof(XkbRF_MultiDefsRec));
+    mdefs->model = defs->model;
+    mdefs->options = Xstrdup(defs->options);
+-   if (mdefs->options) squeeze_spaces(mdefs->options); 
++    if (mdefs->options)
++        squeeze_spaces(mdefs->options);
+ 
+    if (defs->layout) {
+        if (!strchr(defs->layout, ',')) {
+            mdefs->layout[0] = defs->layout;
+-       } else {
++        }
++        else {
+            char *p;
+            int i;
++
+            mdefs->layout[1] = Xstrdup(defs->layout);
+ 	   if (mdefs->layout[1] == NULL)
+ 	      return FALSE;
+@@ -514,7 +522,8 @@ MakeMultiDefs(XkbRF_MultiDefsPtr mdefs, XkbRF_VarDefsPtr defs)
+               if ((p = strchr(p, ','))) {
+                  *p++ = '\0';
+                  mdefs->layout[i] = p;
+-              } else {
++                }
++                else {
+                  break;
+               }
+            }
+@@ -526,9 +535,11 @@ MakeMultiDefs(XkbRF_MultiDefsPtr mdefs, XkbRF_VarDefsPtr defs)
+    if (defs->variant) {
+        if (!strchr(defs->variant, ',')) {
+            mdefs->variant[0] = defs->variant;
+-       } else {
++        }
++        else {
+            char *p;
+            int i;
++
+            mdefs->variant[1] = Xstrdup(defs->variant);
+ 	   if (mdefs->variant[1] == NULL)
+ 	      return FALSE;
+@@ -538,7 +549,8 @@ MakeMultiDefs(XkbRF_MultiDefsPtr mdefs, XkbRF_VarDefsPtr defs)
+               if ((p = strchr(p, ','))) {
+                  *p++ = '\0';
+                  mdefs->variant[i] = p;
+-              } else {
++                }
++                else {
+                  break;
+               }
+            }
+@@ -563,7 +575,8 @@ Apply(char *src, char **dst)
+     if (src) {
+         if (*src == '+' || *src == '!') {
+ 	    *dst= _Concat(*dst, src);
+-        } else {
++        }
++        else {
+             if (*dst == NULL)
+ 	        *dst= Xstrdup(src);
+         }
+@@ -571,8 +584,7 @@ Apply(char *src, char **dst)
+ }
+ 
+ static void
+-XkbRF_ApplyRule(	XkbRF_RulePtr 		rule,
+-			XkbComponentNamesPtr	names)
++XkbRF_ApplyRule(XkbRF_RulePtr rule, XkbComponentNamesPtr names)
+ {
+     rule->flags&= ~XkbRF_PendingMatch; /* clear the flag because it's applied */
+ 
+@@ -584,9 +596,7 @@ XkbRF_ApplyRule(	XkbRF_RulePtr 		rule,
+ }
+ 
+ static Bool
+-CheckGroup(	XkbRF_RulesPtr          rules,
+-		char * 			group_name,
+-		char * 			name)
++CheckGroup(XkbRF_RulesPtr rules, char *group_name, char *name)
+ {
+    int i;
+    char *p;
+@@ -610,8 +620,7 @@ CheckGroup(	XkbRF_RulesPtr          rules,
+ static int
+ XkbRF_CheckApplyRule(	XkbRF_RulePtr 		rule,
+ 			XkbRF_MultiDefsPtr	mdefs,
+-			XkbComponentNamesPtr	names,
+-			XkbRF_RulesPtr          rules)
++                     XkbComponentNamesPtr names, XkbRF_RulesPtr rules)
+ {
+     Bool pending = FALSE;
+ 
+@@ -620,11 +629,13 @@ XkbRF_CheckApplyRule(	XkbRF_RulePtr 		rule,
+             return 0;
+         if (strcmp(rule->model, "*") == 0) {
+             pending = TRUE;
+-        } else {
++        }
++        else {
+             if (rule->model[0] == '$') {
+                if (!CheckGroup(rules, rule->model, mdefs->model))
+                   return 0;
+-            } else {
++            }
++            else {
+ 	       if (strcmp(rule->model, mdefs->model) != 0)
+ 	          return 0;
+ 	    }
+@@ -643,12 +654,14 @@ XkbRF_CheckApplyRule(	XkbRF_RulePtr 		rule,
+ 	    return 0;
+         if (strcmp(rule->layout, "*") == 0) {
+             pending = TRUE;
+-        } else {
++        }
++        else {
+             if (rule->layout[0] == '$') {
+                if (!CheckGroup(rules, rule->layout,
+                                mdefs->layout[rule->layout_num]))
+                   return 0;
+-	    } else {
++            }
++            else {
+ 	       if (strcmp(rule->layout, mdefs->layout[rule->layout_num]) != 0)
+ 	           return 0;
+ 	    }
+@@ -660,12 +673,14 @@ XkbRF_CheckApplyRule(	XkbRF_RulePtr 		rule,
+ 	    return 0;
+         if (strcmp(rule->variant, "*") == 0) {
+             pending = TRUE;
+-        } else {
++        }
++        else {
+             if (rule->variant[0] == '$') {
+                if (!CheckGroup(rules, rule->variant,
+                                mdefs->variant[rule->variant_num]))
+                   return 0;
+-            } else {
++            }
++            else {
+ 	       if (strcmp(rule->variant,
+                           mdefs->variant[rule->variant_num]) != 0)
+ 	           return 0;
+@@ -708,8 +723,7 @@ XkbRF_RulePtr	rule;
+ static void
+ XkbRF_CheckApplyRules(	XkbRF_RulesPtr 		rules,
+ 			XkbRF_MultiDefsPtr	mdefs,
+-			XkbComponentNamesPtr	names,
+-			int			flags)
++                      XkbComponentNamesPtr names, int flags)
+ {
+ int		i;
+ XkbRF_RulePtr	rule;
+@@ -722,7 +736,8 @@ int		skip;
+ 	if (skip && !(flags & XkbRF_Option)) {
+ 	    for ( ;(i < rules->num_rules) && (rule->number == skip);
+ 		  rule++, i++);
+-	    rule--; i--;
++            rule--;
++            i--;
+ 	}
+     }
+ }
+@@ -743,6 +758,7 @@ int	len, ndx;
+     while (str!=NULL) {
+ 	char pfx= str[1];
+ 	int   extra_len= 0;
++
+ 	if ((pfx=='+')||(pfx=='|')||(pfx=='_')||(pfx=='-')) {
+ 	    extra_len= 1;
+ 	    str++;
+@@ -774,6 +790,7 @@ int	len, ndx;
+     while (*str!='\0') {
+ 	if (str[0]=='%') {
+ 	    char pfx,sfx;
++
+ 	    str++;
+ 	    pfx= str[0];
+ 	    sfx= '\0';
+@@ -784,7 +801,8 @@ int	len, ndx;
+ 		sfx= ')';
+ 		str++;
+ 	    }
+-	    else pfx= '\0';
++            else
++                pfx = '\0';
+ 
+ 	    var = str;
+ 	    str = get_index(var + 1, &ndx);
+@@ -792,22 +810,29 @@ int	len, ndx;
+ 	        continue;
+             }
+ 	    if ((*var=='l') && mdefs->layout[ndx] && *mdefs->layout[ndx]) {
+-		if (pfx) *outstr++= pfx;
++                if (pfx)
++                    *outstr++ = pfx;
+ 		strcpy(outstr,mdefs->layout[ndx]);
+ 		outstr+= strlen(mdefs->layout[ndx]);
+-		if (sfx) *outstr++= sfx;
++                if (sfx)
++                    *outstr++ = sfx;
+ 	    }
+ 	    else if ((*var=='m')&&(mdefs->model)) {
+-		if (pfx) *outstr++= pfx;
++                if (pfx)
++                    *outstr++ = pfx;
+ 		strcpy(outstr,mdefs->model);
+ 		outstr+= strlen(mdefs->model);
+-		if (sfx) *outstr++= sfx;
++                if (sfx)
++                    *outstr++ = sfx;
+ 	    }
+-	    else if ((*var=='v') && mdefs->variant[ndx] && *mdefs->variant[ndx]) {
+-		if (pfx) *outstr++= pfx;
++            else if ((*var == 'v') && mdefs->variant[ndx] &&
++                     *mdefs->variant[ndx]) {
++                if (pfx)
++                    *outstr++ = pfx;
+ 		strcpy(outstr,mdefs->variant[ndx]);
+ 		outstr+= strlen(mdefs->variant[ndx]);
+-		if (sfx) *outstr++= sfx;
++                if (sfx)
++                    *outstr++ = sfx;
+ 	    }
+ 	    if ((pfx=='(')&&(*str==')'))
+ 		str++;
+@@ -826,8 +851,7 @@ int	len, ndx;
+ 
+ Bool
+ XkbRF_GetComponents(	XkbRF_RulesPtr		rules,
+-			XkbRF_VarDefsPtr	defs,
+-			XkbComponentNamesPtr	names)
++                    XkbRF_VarDefsPtr defs, XkbComponentNamesPtr names)
+ {
+     XkbRF_MultiDefsRec mdefs;
+ 
+@@ -897,7 +921,8 @@ XkbRF_AddGroup(XkbRF_RulesPtr	rules)
+ 	return NULL;
+     }
+ 
+-    memset((char *)&rules->groups[rules->num_groups], 0, sizeof(XkbRF_GroupRec));
++    memset((char *) &rules->groups[rules->num_groups], 0,
++           sizeof(XkbRF_GroupRec));
+     return &rules->groups[rules->num_groups++];
+ }
+ 
+@@ -921,7 +946,8 @@ XkbRF_GroupRec  tgroup,*group;
+ 		    *group= tgroup;
+ 		    memset((char *)&tgroup, 0, sizeof(XkbRF_GroupRec));
+ 	        }
+-	    } else {
++            }
++            else {
+ 	        if ((rule= XkbRF_AddRule(rules))!=NULL) {
+ 		    *rule= trule;
+ 		    memset((char *)&trule, 0, sizeof(XkbRF_RuleRec));

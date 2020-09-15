@@ -1,0 +1,24 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index 520583f..c578d0b 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -272,6 +272,9 @@ miPointerSetCursorPosition(DeviceIntPtr pDev, ScreenPtr pScreen,
+ 
+     pPointer->generateEvent = generateEvent;
+ 
++    if (pScreen->ConstrainCursorHarder)
++	pScreen->ConstrainCursorHarder(pDev, pScreen, Absolute, &x, &y);
++
+     /* device dependent - must pend signal and call miPointerWarpCursor */
+     (*pScreenPriv->screenFuncs->WarpCursor) (pDev, pScreen, x, y);
+     if (!generateEvent)
+@@ -616,6 +619,9 @@ miPointerSetPosition(DeviceIntPtr pDev, int mode, int *x, int *y)
+     if (*y >= pPointer->limits.y2)
+ 	*y = pPointer->limits.y2 - 1;
+ 
++    if (pScreen->ConstrainCursorHarder)
++       pScreen->ConstrainCursorHarder(pDev, pScreen, mode, x, y);
++
+     if (pPointer->x == *x && pPointer->y == *y && 
+             pPointer->pScreen == pScreen) 
+         return;

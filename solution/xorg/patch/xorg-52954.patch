@@ -1,0 +1,32 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index c935c97..fbc15e0 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1164,14 +1164,17 @@ GetPointerEvents(InternalEvent *events, DeviceIntPtr pDev, int type, int buttons
+ 
+     events = UpdateFromMaster(events, pDev, DEVCHANGE_POINTER_EVENT, &num_events);
+ 
++    valuator_mask_copy(&mask, mask_in);
++
++    if ((flags & POINTER_NORAW) == 0)
++    {
+     raw = &events->raw_event;
+     events++;
+     num_events++;
+ 
+-    valuator_mask_copy(&mask, mask_in);
+-
+     init_raw(pDev, raw, ms, type, buttons);
+     set_raw_valuators(raw, &mask, raw->valuators.data_raw);
++    }
+ 
+     if (flags & POINTER_ABSOLUTE)
+     {
+@@ -1210,6 +1213,7 @@ GetPointerEvents(InternalEvent *events, DeviceIntPtr pDev, int type, int buttons
+         moveRelative(pDev, &x, &y, &mask);
+     }
+ 
++    if ((flags & POINTER_NORAW) == 0)
+     set_raw_valuators(raw, &mask, raw->valuators.data);
+ 
+     positionSprite(pDev, (flags & POINTER_ABSOLUTE) ? Absolute : Relative,

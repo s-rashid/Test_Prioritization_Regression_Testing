@@ -1,0 +1,13 @@
+diff --git a/randr/rrxinerama.c b/randr/rrxinerama.c
+index 457b2b4..c1bd5bb 100644
+--- a/randr/rrxinerama.c
++++ b/randr/rrxinerama.c
+@@ -216,7 +216,7 @@ ProcRRXineramaGetScreenSize(ClientPtr client)
+ 	return rc;
+ 
+     pScreen = pWin->drawable.pScreen;
+-    pRoot = WindowTable[pScreen->myNum];
++    pRoot = pScreen->root;
+     
+     rep.type = X_Reply;
+     rep.length = 0;

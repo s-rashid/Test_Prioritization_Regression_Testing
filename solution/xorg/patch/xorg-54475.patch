@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/winengine.c b/hw/xwin/winengine.c
+index e866e1e..752c4fe 100644
+--- a/hw/xwin/winengine.c
++++ b/hw/xwin/winengine.c
+@@ -192,15 +192,12 @@ winSetEngine (ScreenPtr pScreen)
+ 
+   /* ShadowGDI is the only engine that supports Multi Window Mode */
+   if (
+-#ifdef XWIN_MULTIWINDOWEXTWM
+-      pScreenInfo->fMWExtWM
+-#else
+       FALSE
++#ifdef XWIN_MULTIWINDOWEXTWM
++      || pScreenInfo->fMWExtWM
+ #endif
+ #ifdef XWIN_MULTIWINDOW
+       || pScreenInfo->fMultiWindow
+-#else
+-      || FALSE
+ #endif
+       )
+     {

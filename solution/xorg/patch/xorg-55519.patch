@@ -1,0 +1,84 @@
+diff --git a/hw/xfree86/int10/generic.c b/hw/xfree86/int10/generic.c
+index fbc9b85..8614e0b 100644
+--- a/hw/xfree86/int10/generic.c
++++ b/hw/xfree86/int10/generic.c
+@@ -55,6 +55,7 @@ int10MemRec genericMem = {
+ 
+ static void MapVRam(xf86Int10InfoPtr pInt);
+ static void UnmapVRam(xf86Int10InfoPtr pInt);
++
+ #ifdef _PC
+ #define GET_HIGH_BASE(x) (((V_BIOS + (x) + getpagesize() - 1)/getpagesize()) \
+                               * getpagesize())
+@@ -130,7 +131,8 @@ xf86ExtendedInitInt10(int entityIndex, int Flags)
+ 	    pInt->Flags &= ~RESTORE_BIOS_SCRATCH;
+ 	xf86Int10SaveRestoreBIOSVars(pInt, TRUE);
+ 	
+-    } else {
++    }
++    else {
+ 	const BusType location_type = xf86int10GetBiosLocationType(pInt);
+ 	int bios_location = V_BIOS;
+ 
+@@ -188,6 +190,7 @@ xf86ExtendedInitInt10(int entityIndex, int Flags)
+     {
+ 	int bios_location = V_BIOS;
+ 	Bool done = FALSE;
++
+ 	vbiosMem = (unsigned char *)base + bios_location;
+ 	
+ 	if (xf86IsEntityPrimary(entityIndex)) {
+@@ -238,7 +241,8 @@ MapVRam(xf86Int10InfoPtr pInt)
+     int pagesize = getpagesize();
+     int size = ((VRAM_SIZE + pagesize - 1) / pagesize) * pagesize;
+ 
+-    pci_device_map_legacy(pInt->dev, V_RAM, size, PCI_DEV_MAP_FLAG_WRITABLE, &(INTPriv(pInt)->vRam));
++    pci_device_map_legacy(pInt->dev, V_RAM, size, PCI_DEV_MAP_FLAG_WRITABLE,
++                          &(INTPriv(pInt)->vRam));
+     pInt->io = pci_legacy_open_io(pInt->dev, 0, 64 * 1024);
+ }
+ 
+@@ -310,7 +314,8 @@ void
+ xf86Int10FreePages(xf86Int10InfoPtr pInt, void *pbase, int num)
+ {
+     int pagesize = getpagesize();
+-    int first = (((char *)pbase - (char *)INTPriv(pInt)->base) / pagesize) - 1;
++    int first =
++        (((char *) pbase - (char *) INTPriv(pInt)->base) / pagesize) - 1;
+     int i;
+ 
+     for (i = first; i < (first + num); i++)
+@@ -385,8 +390,7 @@ read_l(xf86Int10InfoPtr pInt, int addr)
+ #endif
+     return V_ADDR_RB(addr) |
+ 	   (V_ADDR_RB(addr + 1) << 8) |
+-	   (V_ADDR_RB(addr + 2) << 16) |
+-	   (V_ADDR_RB(addr + 3) << 24);
++        (V_ADDR_RB(addr + 2) << 16) | (V_ADDR_RB(addr + 3) << 24);
+ }
+ 
+ static void
+@@ -399,8 +403,9 @@ static void
+ write_w(xf86Int10InfoPtr pInt, int addr, CARD16 val)
+ {
+ #if X_BYTE_ORDER == X_LITTLE_ENDIAN
+-    if (OFF(addr + 1) > 0)
+-      { V_ADDR_WW(addr, val); }
++    if (OFF(addr + 1) > 0) {
++        V_ADDR_WW(addr, val);
++    }
+ #endif
+     V_ADDR_WB(addr, val);
+     V_ADDR_WB(addr + 1, val >> 8);
+@@ -410,8 +415,9 @@ static void
+ write_l(xf86Int10InfoPtr pInt, int addr, CARD32 val)
+ {
+ #if X_BYTE_ORDER == X_LITTLE_ENDIAN
+-    if (OFF(addr + 3) > 2)
+-      { V_ADDR_WL(addr, val); }
++    if (OFF(addr + 3) > 2) {
++        V_ADDR_WL(addr, val);
++    }
+ #endif
+     V_ADDR_WB(addr, val);
+     V_ADDR_WB(addr + 1, val >> 8);

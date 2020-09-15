@@ -1,0 +1,25 @@
+diff --git a/hw/dmx/dmxextension.h b/hw/dmx/dmxextension.h
+index 5a6fd0e..036417b 100644
+--- a/hw/dmx/dmxextension.h
++++ b/hw/dmx/dmxextension.h
+@@ -87,18 +87,15 @@ typedef struct {
+     int          detached;
+ } DMXInputAttributesRec, *DMXInputAttributesPtr;
+ 
+-
+ extern unsigned long dmxGetNumScreens(void);
+ extern void          dmxForceWindowCreation(WindowPtr pWindow);
+ extern void          dmxFlushPendingSyncs(void);
+-extern Bool          dmxGetScreenAttributes(int physical,
+-                                            DMXScreenAttributesPtr attr);
++extern Bool dmxGetScreenAttributes(int physical, DMXScreenAttributesPtr attr);
+ extern Bool          dmxGetWindowAttributes(WindowPtr pWindow,
+                                             DMXWindowAttributesPtr attr);
+ extern void          dmxGetDesktopAttributes(DMXDesktopAttributesPtr attr);
+ extern int           dmxGetInputCount(void);
+-extern int           dmxGetInputAttributes(int deviceId,
+-                                           DMXInputAttributesPtr attr);
++extern int dmxGetInputAttributes(int deviceId, DMXInputAttributesPtr attr);
+ extern int           dmxAddInput(DMXInputAttributesPtr attr, int *deviceId);
+ extern int           dmxRemoveInput(int deviceId);
+ 

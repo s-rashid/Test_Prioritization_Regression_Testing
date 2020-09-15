@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index d688c66..c74b7fa 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -53,7 +53,7 @@
+ 
+ /* DRI2 */
+ #define SERVER_DRI2_MAJOR_VERSION		1
+-#define SERVER_DRI2_MINOR_VERSION		1
++#define SERVER_DRI2_MINOR_VERSION		2
+ 
+ /* Generic event extension */
+ #define SERVER_GE_MAJOR_VERSION                 1

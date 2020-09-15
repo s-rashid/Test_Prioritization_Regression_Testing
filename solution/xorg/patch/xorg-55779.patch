@@ -1,0 +1,236 @@
+diff --git a/hw/xquartz/mach-startup/stub.c b/hw/xquartz/mach-startup/stub.c
+index d8e4abd..f457aab 100644
+--- a/hw/xquartz/mach-startup/stub.c
++++ b/hw/xquartz/mach-startup/stub.c
+@@ -58,22 +58,29 @@ static char x11_path[PATH_MAX + 1];
+ static pid_t x11app_pid = 0;
+ aslclient aslc;
+ 
+-static void set_x11_path(void) {
++static void
++set_x11_path(void)
++{
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+ 
+     CFURLRef appURL = NULL;
+-    OSStatus osstatus = LSFindApplicationForInfo(kLSUnknownCreator, CFSTR(kX11AppBundleId), nil, nil, &appURL);
++    OSStatus osstatus =
++        LSFindApplicationForInfo(kLSUnknownCreator, CFSTR(kX11AppBundleId), nil,
++                                 nil, &appURL);
+ 
+     switch (osstatus) {
+         case noErr:
+             if (appURL == NULL) {
+-                asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Invalid response from LSFindApplicationForInfo(%s)", 
++            asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                    "Xquartz: Invalid response from LSFindApplicationForInfo(%s)",
+                         kX11AppBundleId);
+                 exit(1);
+             }
+ 
+-            if (!CFURLGetFileSystemRepresentation(appURL, true, (unsigned char *)x11_path, sizeof(x11_path))) {
+-                asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Error resolving URL for %s", kX11AppBundleId);
++        if (!CFURLGetFileSystemRepresentation
++            (appURL, true, (unsigned char *) x11_path, sizeof(x11_path))) {
++            asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                    "Xquartz: Error resolving URL for %s", kX11AppBundleId);
+                 exit(3);
+             }
+ 
+@@ -81,20 +88,25 @@ static void set_x11_path(void) {
+             asl_log(aslc, NULL, ASL_LEVEL_INFO, "Xquartz: X11.app = %s", x11_path);
+             break;
+         case kLSApplicationNotFoundErr:
+-            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Unable to find application for %s", kX11AppBundleId);
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Unable to find application for %s", kX11AppBundleId);
+             exit(10);
+         default:
+-            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Unable to find application for %s, error code = %d", 
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Unable to find application for %s, error code = %d",
+                     kX11AppBundleId, (int)osstatus);
+             exit(11);
+     }
+ #else
+     /* TODO: Make Tiger smarter... but TBH, this should never get called on Tiger... */
+-    strlcpy(x11_path, "/Applications/Utilities/X11.app/Contents/MacOS/X11", sizeof(x11_path));
++    strlcpy(x11_path, "/Applications/Utilities/X11.app/Contents/MacOS/X11",
++            sizeof(x11_path));
+ #endif
+ }
+ 
+-static int connect_to_socket(const char *filename) {
++static int
++connect_to_socket(const char *filename)
++{
+     struct sockaddr_un servaddr_un;
+     struct sockaddr *servaddr;
+     socklen_t servaddr_len;
+@@ -106,16 +118,22 @@ static int connect_to_socket(const char *filename) {
+     strlcpy(servaddr_un.sun_path, filename, sizeof(servaddr_un.sun_path));
+     
+     servaddr = (struct sockaddr *) &servaddr_un;
+-    servaddr_len = sizeof(struct sockaddr_un) - sizeof(servaddr_un.sun_path) + strlen(filename);
++    servaddr_len =
++        sizeof(struct sockaddr_un) - sizeof(servaddr_un.sun_path) +
++        strlen(filename);
+     
+     ret_fd = socket(PF_UNIX, SOCK_STREAM, 0);
+     if(ret_fd == -1) {
+-        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Failed to create socket: %s - %s", filename, strerror(errno));
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Failed to create socket: %s - %s", filename,
++                strerror(errno));
+         return -1;
+     }
+ 
+     if(connect(ret_fd, servaddr, servaddr_len) < 0) {
+-        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Failed to connect to socket: %s - %d - %s", filename, errno, strerror(errno));
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Failed to connect to socket: %s - %d - %s", filename,
++                errno, strerror(errno));
+         close(ret_fd);
+         return -1;
+     }
+@@ -123,7 +141,9 @@ static int connect_to_socket(const char *filename) {
+     return ret_fd;
+ }
+ 
+-static void send_fd_handoff(int connected_fd, int launchd_fd) {
++static void
++send_fd_handoff(int connected_fd, int launchd_fd)
++{
+     char databuf[] = "display";
+     struct iovec iov[1];
+     
+@@ -156,22 +176,29 @@ static void send_fd_handoff(int connected_fd, int launchd_fd) {
+     *((int*)CMSG_DATA(cmsg)) = launchd_fd;
+     
+     if(sendmsg(connected_fd, &msg, 0) < 0) {
+-        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Error sending $DISPLAY file descriptor over fd %d: %d -- %s", connected_fd, errno, strerror(errno));
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Error sending $DISPLAY file descriptor over fd %d: %d -- %s",
++                connected_fd, errno, strerror(errno));
+         return;
+     }
+ 
+-    asl_log(aslc, NULL, ASL_LEVEL_DEBUG, "Xquartz: Message sent.  Closing handoff fd.");
++    asl_log(aslc, NULL, ASL_LEVEL_DEBUG,
++            "Xquartz: Message sent.  Closing handoff fd.");
+     close(connected_fd);
+ }
+ 
+ __attribute__((__noreturn__))
+-static void signal_handler(int sig) {
++static void
++signal_handler(int sig)
++{
+     if(x11app_pid)
+         kill(x11app_pid, sig);
+     _exit(0);
+ }
+ 
+-int main(int argc, char **argv, char **envp) {
++int
++main(int argc, char **argv, char **envp)
++{
+     int envpc;
+     kern_return_t kr;
+     mach_port_t mp;
+@@ -220,22 +247,27 @@ int main(int argc, char **argv, char **envp) {
+     if(kr != KERN_SUCCESS) {
+         pid_t child;
+ 
+-        asl_log(aslc, NULL, ASL_LEVEL_WARNING, "Xquartz: Unable to locate waiting server: %s", server_bootstrap_name);
++        asl_log(aslc, NULL, ASL_LEVEL_WARNING,
++                "Xquartz: Unable to locate waiting server: %s",
++                server_bootstrap_name);
+         set_x11_path();
+ 
+         /* This forking is ugly and will be cleaned up later */
+         child = fork();
+         if(child == -1) {
+-            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Could not fork: %s", strerror(errno));
++            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Could not fork: %s",
++                    strerror(errno));
+             return EXIT_FAILURE;
+         }
+ 
+         if(child == 0) {
+             char *_argv[3];
++
+             _argv[0] = x11_path;
+             _argv[1] = "--listenonly";
+             _argv[2] = NULL;
+-            asl_log(aslc, NULL, ASL_LEVEL_NOTICE, "Xquartz: Starting X server: %s --listenonly", x11_path);
++            asl_log(aslc, NULL, ASL_LEVEL_NOTICE,
++                    "Xquartz: Starting X server: %s --listenonly", x11_path);
+             return execvp(x11_path, _argv);
+         }
+ 
+@@ -249,9 +281,11 @@ int main(int argc, char **argv, char **envp) {
+ 
+         if(kr != KERN_SUCCESS) {
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+-            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: bootstrap_look_up(): %s", bootstrap_strerror(kr));
++            asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                    "Xquartz: bootstrap_look_up(): %s", bootstrap_strerror(kr));
+ #else
+-            asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: bootstrap_look_up(): %ul", (unsigned long)kr);
++            asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                    "Xquartz: bootstrap_look_up(): %ul", (unsigned long) kr);
+ #endif
+             return EXIT_FAILURE;
+         }
+@@ -266,18 +300,26 @@ int main(int argc, char **argv, char **envp) {
+         int handoff_fd = -1;
+ 
+         for(try=0, try_max=5; try < try_max; try++) {
+-            if(request_fd_handoff_socket(mp, handoff_socket_filename) != KERN_SUCCESS) {
+-                asl_log(aslc, NULL, ASL_LEVEL_INFO, "Xquartz: Failed to request a socket from the server to send the $DISPLAY fd over (try %d of %d)", (int)try+1, (int)try_max);
++            if (request_fd_handoff_socket(mp, handoff_socket_filename) !=
++                KERN_SUCCESS) {
++                asl_log(aslc, NULL, ASL_LEVEL_INFO,
++                        "Xquartz: Failed to request a socket from the server to send the $DISPLAY fd over (try %d of %d)",
++                        (int) try + 1, (int) try_max);
+                 continue;
+             }
+ 
+             handoff_fd = connect_to_socket(handoff_socket_filename);
+             if(handoff_fd == -1) {
+-                asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Failed to connect to socket (try %d of %d)", (int)try+1, (int)try_max);
++                asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                        "Xquartz: Failed to connect to socket (try %d of %d)",
++                        (int) try + 1, (int) try_max);
+                 continue;
+             }
+ 
+-            asl_log(aslc, NULL, ASL_LEVEL_INFO, "Xquartz: Handoff connection established (try %d of %d) on fd %d, \"%s\".  Sending message.", (int)try+1, (int)try_max, handoff_fd, handoff_socket_filename);
++            asl_log(aslc, NULL, ASL_LEVEL_INFO,
++                    "Xquartz: Handoff connection established (try %d of %d) on fd %d, \"%s\".  Sending message.",
++                    (int) try + 1, (int) try_max, handoff_fd,
++                    handoff_socket_filename);
+             send_fd_handoff(handoff_fd, launchd_fd);            
+             close(handoff_fd);
+             break;
+@@ -294,7 +336,8 @@ int main(int argc, char **argv, char **envp) {
+     newenvp = (string_array_t)calloc((1 + envpc), sizeof(string_t));
+ 
+     if(!newargv || !newenvp) {
+-        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: Memory allocation failure");
++        asl_log(aslc, NULL, ASL_LEVEL_ERR,
++                "Xquartz: Memory allocation failure");
+         return EXIT_FAILURE;
+     }
+     
+@@ -311,7 +354,8 @@ int main(int argc, char **argv, char **envp) {
+     free(newenvp);
+ 
+     if (kr != KERN_SUCCESS) {
+-        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: start_x11_server: %s", mach_error_string(kr));
++        asl_log(aslc, NULL, ASL_LEVEL_ERR, "Xquartz: start_x11_server: %s",
++                mach_error_string(kr));
+         return EXIT_FAILURE;
+     }
+     return EXIT_SUCCESS;

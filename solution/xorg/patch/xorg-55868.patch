@@ -1,0 +1,203 @@
+diff --git a/hw/xwin/winmultiwindowclass.c b/hw/xwin/winmultiwindowclass.c
+index a5cf212..1af104d 100644
+--- a/hw/xwin/winmultiwindowclass.c
++++ b/hw/xwin/winmultiwindowclass.c
+@@ -43,7 +43,6 @@
+ 
+ DEFINE_ATOM_HELPER(AtmWmWindowRole, "WM_WINDOW_ROLE")
+ 
+-
+ int
+ winMultiWindowGetClassHint (WindowPtr pWin, char **res_name, char **res_class)
+ {
+@@ -51,8 +50,7 @@ winMultiWindowGetClassHint (WindowPtr pWin, char **res_name, char **res_class)
+   struct _Property	*prop;
+   int			len_name, len_class;
+ 
+-  if (!pWin || !res_name || !res_class)
+-    {
++    if (!pWin || !res_name || !res_class) {
+       ErrorF ("winMultiWindowGetClassHint - pWin, res_name, or res_class was "
+ 	      "NULL\n");
+       return 0;  
+@@ -67,19 +65,14 @@ winMultiWindowGetClassHint (WindowPtr pWin, char **res_name, char **res_class)
+   
+   *res_name = *res_class = NULL;
+ 
+-  while (prop)
+-    {
++    while (prop) {
+       if (prop->propertyName == XA_WM_CLASS
+-	  && prop->type == XA_STRING
+-	  && prop->format == 8
+-	  && prop->data)
+-	{
++            && prop->type == XA_STRING && prop->format == 8 && prop->data) {
+ 	  len_name = strlen ((char *) prop->data);
+ 
+ 	  (*res_name) = malloc (len_name + 1);
+ 	  
+-	  if (!*res_name)
+-	    {
++            if (!*res_name) {
+ 	      ErrorF ("winMultiWindowGetClassHint - *res_name was NULL\n");
+ 	      return 0;
+ 	    }
+@@ -94,8 +87,7 @@ winMultiWindowGetClassHint (WindowPtr pWin, char **res_name, char **res_class)
+ 
+ 	  (*res_class) = malloc (len_class + 1);
+ 
+-	  if (!*res_class)
+-	    {
++            if (!*res_class) {
+ 	      ErrorF ("winMultiWindowGetClassHint - *res_class was NULL\n");
+ 	      
+ 	      /* Free the previously allocated res_name */
+@@ -114,15 +106,13 @@ winMultiWindowGetClassHint (WindowPtr pWin, char **res_name, char **res_class)
+   return 0;
+ }
+ 
+-
+ int
+ winMultiWindowGetWMHints (WindowPtr pWin, WinXWMHints *hints)
+ {
+   struct _Window	*pwin;
+   struct _Property	*prop;
+ 
+-  if (!pWin || !hints)
+-    {
++    if (!pWin || !hints) {
+       ErrorF ("winMultiWindowGetWMHints - pWin or hints was NULL\n");
+       return 0; 
+     }
+@@ -136,11 +126,8 @@ winMultiWindowGetWMHints (WindowPtr pWin, WinXWMHints *hints)
+   
+   memset (hints, 0, sizeof (WinXWMHints));
+ 
+-  while (prop)
+-    {
+-      if (prop->propertyName == XA_WM_HINTS
+-	  && prop->data)
+-	{
++    while (prop) {
++        if (prop->propertyName == XA_WM_HINTS && prop->data) {
+ 	  memcpy (hints, prop->data, sizeof (WinXWMHints));
+ 	  return 1;
+ 	}
+@@ -151,7 +138,6 @@ winMultiWindowGetWMHints (WindowPtr pWin, WinXWMHints *hints)
+   return 0;
+ }
+ 
+-
+ int
+ winMultiWindowGetWindowRole (WindowPtr pWin, char **res_role)
+ {
+@@ -170,19 +156,14 @@ winMultiWindowGetWindowRole (WindowPtr pWin, char **res_role)
+     prop = NULL;
+   
+   *res_role = NULL;
+-  while (prop)
+-    {
++    while (prop) {
+       if (prop->propertyName == AtmWmWindowRole ()
+-	  && prop->type == XA_STRING
+-	  && prop->format == 8
+-	  && prop->data)
+-	{
++            && prop->type == XA_STRING && prop->format == 8 && prop->data) {
+ 	  len_role= prop->size;
+ 
+ 	  (*res_role) = malloc (len_role + 1);
+ 
+-	  if (!*res_role)
+-	    {
++            if (!*res_role) {
+ 	      ErrorF ("winMultiWindowGetWindowRole - *res_role was NULL\n");
+ 	      return 0; 
+ 	    }
+@@ -199,15 +180,13 @@ winMultiWindowGetWindowRole (WindowPtr pWin, char **res_role)
+   return 0;
+ }
+ 
+-
+ int
+ winMultiWindowGetWMNormalHints (WindowPtr pWin, WinXSizeHints *hints)
+ {
+   struct _Window	*pwin;
+   struct _Property	*prop;
+ 
+-  if (!pWin || !hints)
+-    {
++    if (!pWin || !hints) {
+       ErrorF ("winMultiWindowGetWMNormalHints - pWin or hints was NULL\n");
+       return 0; 
+     }
+@@ -221,11 +200,8 @@ winMultiWindowGetWMNormalHints (WindowPtr pWin, WinXSizeHints *hints)
+   
+   memset (hints, 0, sizeof (WinXSizeHints));
+ 
+-  while (prop)
+-    {
+-      if (prop->propertyName == XA_WM_NORMAL_HINTS
+-	  && prop->data)
+-	{
++    while (prop) {
++        if (prop->propertyName == XA_WM_NORMAL_HINTS && prop->data) {
+ 	  memcpy (hints, prop->data, sizeof (WinXSizeHints));
+ 	  return 1;
+ 	}
+@@ -242,8 +218,7 @@ winMultiWindowGetTransientFor (WindowPtr pWin, WindowPtr *ppDaddy)
+   struct _Window        *pwin;
+   struct _Property      *prop;
+ 
+-  if (!pWin)
+-    {
++    if (!pWin) {
+       ErrorF ("winMultiWindowGetTransientFor - pWin was NULL\n");
+       return 0;
+     }
+@@ -258,10 +233,8 @@ winMultiWindowGetTransientFor (WindowPtr pWin, WindowPtr *ppDaddy)
+   if (ppDaddy)
+     *ppDaddy = NULL;
+ 
+-  while (prop)
+-    {
+-      if (prop->propertyName == XA_WM_TRANSIENT_FOR)
+-        {
++    while (prop) {
++        if (prop->propertyName == XA_WM_TRANSIENT_FOR) {
+           if (ppDaddy)
+             memcpy (ppDaddy, prop->data, sizeof (WindowPtr));
+           return 1;
+@@ -280,8 +253,7 @@ winMultiWindowGetWMName (WindowPtr pWin, char **wmName)
+   struct _Property	*prop;
+   int			len_name;
+ 
+-  if (!pWin || !wmName)
+-    {
++    if (!pWin || !wmName) {
+       ErrorF ("winMultiWindowGetClassHint - pWin, res_name, or res_class was "
+ 	      "NULL\n");
+       return 0;  
+@@ -296,18 +268,14 @@ winMultiWindowGetWMName (WindowPtr pWin, char **wmName)
+   
+   *wmName = NULL;
+ 
+-  while (prop)
+-    {
++    while (prop) {
+       if (prop->propertyName == XA_WM_NAME
+-	  && prop->type == XA_STRING
+-	  && prop->data)
+-	{
++            && prop->type == XA_STRING && prop->data) {
+ 	  len_name = prop->size;
+ 
+ 	  (*wmName) = malloc (len_name + 1);
+ 	  
+-	  if (!*wmName)
+-	    {
++            if (!*wmName) {
+ 	      ErrorF ("winMultiWindowGetWMName - *wmName was NULL\n");
+ 	      return 0;
+ 	    }

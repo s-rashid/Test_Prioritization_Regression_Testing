@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index 665f743..0b7f75e 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -344,8 +344,6 @@ SendXF86VidModeNotify(ScreenPtr pScreen, int state, Bool forced)
+     for (pEv = pPriv->events; pEv; pEv = pEv->next)
+     {
+ 	client = pEv->client;
+-	if (client->clientGone)
+-	    continue;
+ 	if (!(pEv->mask & mask))
+ 	    continue;
+ 	ev.type = XF86VidModeNotify + XF86VidModeEventBase;

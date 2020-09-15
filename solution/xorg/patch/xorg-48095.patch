@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxwindow.h b/hw/dmx/dmxwindow.h
+index 353d0a3..740a21f 100644
+--- a/hw/dmx/dmxwindow.h
++++ b/hw/dmx/dmxwindow.h
+@@ -49,9 +49,7 @@ typedef struct _dmxWinPriv {
+     Colormap       cmap;
+     Visual        *visual;
+     Bool           isShaped;
+-#ifdef RENDER
+     Bool           hasPict;
+-#endif
+ #ifdef GLXEXT
+     void          *swapGroup;
+     int            barrier;

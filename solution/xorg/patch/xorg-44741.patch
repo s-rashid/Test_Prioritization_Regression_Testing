@@ -1,0 +1,22 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index df33085..74d5f29 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -334,8 +334,6 @@ extern	_X_EXPORT int	DeviceEnterNotify,DeviceLeaveNotify;
+ #define	False	FALSE
+ #endif
+ 
+-_XFUNCPROTOBEGIN
+-
+ extern _X_EXPORT void XkbUseMsg(
+     void
+ );
+@@ -1000,8 +998,6 @@ extern _X_EXPORT XkbDescPtr XkbCompileKeymap(
+         XkbRMLVOSet *   /* rmlvo */
+ );
+ 
+-_XFUNCPROTOEND
+-
+ #define	XkbAtomGetString(s)	NameForAtom(s)
+ 
+ #endif /* _XKBSRV_H_ */

@@ -1,0 +1,32 @@
+diff --git a/xkb/ddxLoad.c b/xkb/ddxLoad.c
+index dc3c844..e102035 100644
+--- a/xkb/ddxLoad.c
++++ b/xkb/ddxLoad.c
+@@ -447,14 +447,12 @@ XkbRMLVOtoKcCGST(DeviceIntPtr dev, XkbRMLVOSet *rmlvo, XkbComponentNamesPtr kccg
+ static XkbDescPtr
+ XkbCompileKeymapForDevice(DeviceIntPtr dev, XkbRMLVOSet *rmlvo, int need)
+ {
+-    XkbDescPtr xkb;
++    XkbDescPtr xkb = NULL;
+     unsigned int provided;
+-    XkbComponentNamesRec kccgst;
++    XkbComponentNamesRec kccgst = {0};
+     char name[PATH_MAX];
+ 
+-    if (!XkbRMLVOtoKcCGST(dev, rmlvo, &kccgst))
+-        return NULL;
+-
++    if (XkbRMLVOtoKcCGST(dev, rmlvo, &kccgst)) {
+     provided = XkbDDXLoadKeymapByNames(dev, &kccgst, XkmAllIndicesMask, need,
+                                        &xkb, name, PATH_MAX);
+     if ((need & provided) != need) {
+@@ -463,7 +461,9 @@ XkbCompileKeymapForDevice(DeviceIntPtr dev, XkbRMLVOSet *rmlvo, int need)
+             xkb = NULL;
+         }
+     }
++    }
+ 
++    XkbFreeComponentNames(&kccgst, FALSE);
+     return xkb;
+ }
+ 

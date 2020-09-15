@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/bus/linuxPci.c b/hw/xfree86/os-support/bus/linuxPci.c
+index 3d77d7f..920a149 100644
+--- a/hw/xfree86/os-support/bus/linuxPci.c
++++ b/hw/xfree86/os-support/bus/linuxPci.c
+@@ -52,7 +52,6 @@
+ #include "compiler.h"
+ #include "xf86.h"
+ #include "xf86Priv.h"
+-#define NEED_OS_RAC_PROTOS
+ #include "xf86_OSlib.h"
+ #include "Pci.h"
+ #include <dirent.h>

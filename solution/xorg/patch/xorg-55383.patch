@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fake/mouse.c b/hw/kdrive/fake/mouse.c
+index 758f6cd..bb4c25e 100644
+--- a/hw/kdrive/fake/mouse.c
++++ b/hw/kdrive/fake/mouse.c
+@@ -56,7 +56,6 @@ MouseFini (KdPointerInfo *pi)
+     return;
+ }
+ 
+-
+ KdPointerDriver FakePointerDriver = {
+     "fake",
+     MouseInit,

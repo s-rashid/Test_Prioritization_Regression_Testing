@@ -1,0 +1,13 @@
+diff --git a/include/globals.h b/include/globals.h
+index 8b80a65..17bca82 100644
+--- a/include/globals.h
++++ b/include/globals.h
+@@ -21,7 +21,7 @@ extern _X_EXPORT int defaultColorVisualClass;
+ 
+ extern _X_EXPORT int GrabInProgress;
+ extern _X_EXPORT Bool noTestExtensions;
+-
++extern _X_EXPORT char *SeatId;
+ extern _X_EXPORT char *ConnectionInfo;
+ 
+ #ifdef DPMSExtension

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/parser/xf86Parser.h b/hw/xfree86/parser/xf86Parser.h
+index a8785c5..c12bd56 100644
+--- a/hw/xfree86/parser/xf86Parser.h
++++ b/hw/xfree86/parser/xf86Parser.h
+@@ -479,7 +479,7 @@ XF86ConfigRec, *XF86ConfigPtr;
+ typedef struct
+ {
+ 	int token;			/* id of the token */
+-	char *name;			/* pointer to the LOWERCASED name */
++	const char *name;		/* pointer to the LOWERCASED name */
+ }
+ xf86ConfigSymTabRec, *xf86ConfigSymTabPtr;
+ 

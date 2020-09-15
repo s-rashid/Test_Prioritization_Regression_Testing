@@ -1,0 +1,74 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index ca3dbc3..4027539 100755
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -44,8 +44,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #include "protocol-versions.h"
+ 
+ static int WMErrorBase;
+-
+-
+ static unsigned char WMReqCode = 0;
+ static int WMEventBase = 0;
+ 
+@@ -78,31 +76,6 @@ make_box (int x, int y, int w, int h)
+   return r;
+ }
+ 
+-void
+-winWindowsWMExtensionInit (void)
+-{
+-  ExtensionEntry* extEntry;
+-
+-  ClientType = CreateNewResourceType(WMFreeClient, "WMClient");
+-  eventResourceType = CreateNewResourceType(WMFreeEvents, "WMEvent");
+-  eventResource = FakeClientID(0);
+-
+-  if (ClientType && eventResourceType &&
+-      (extEntry = AddExtension(WINDOWSWMNAME,
+-			       WindowsWMNumberEvents,
+-			       WindowsWMNumberErrors,
+-			       ProcWindowsWMDispatch,
+-			       SProcWindowsWMDispatch,
+-			       NULL,
+-			       StandardMinorOpcode)))
+-    {
+-      WMReqCode = (unsigned char)extEntry->base;
+-      WMErrorBase = extEntry->errorBase;
+-      WMEventBase = extEntry->eventBase;
+-      EventSwapVector[WMEventBase] = (EventSwapPtr) SNotifyEvent;
+-    }
+-}
+-
+ static int
+ ProcWindowsWMQueryVersion(register ClientPtr client)
+ {
+@@ -639,3 +612,28 @@ SProcWindowsWMDispatch (register ClientPtr client)
+       return BadRequest;
+     }
+ }
++
++void
++winWindowsWMExtensionInit (void)
++{
++  ExtensionEntry* extEntry;
++
++  ClientType = CreateNewResourceType(WMFreeClient, "WMClient");
++  eventResourceType = CreateNewResourceType(WMFreeEvents, "WMEvent");
++  eventResource = FakeClientID(0);
++
++  if (ClientType && eventResourceType &&
++      (extEntry = AddExtension(WINDOWSWMNAME,
++			       WindowsWMNumberEvents,
++			       WindowsWMNumberErrors,
++			       ProcWindowsWMDispatch,
++			       SProcWindowsWMDispatch,
++			       NULL,
++			       StandardMinorOpcode)))
++    {
++      WMReqCode = (unsigned char)extEntry->base;
++      WMErrorBase = extEntry->errorBase;
++      WMEventBase = extEntry->eventBase;
++      EventSwapVector[WMEventBase] = (EventSwapPtr) SNotifyEvent;
++    }
++}

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index 00572a1..7dce7e3 100755
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -81,7 +81,7 @@ make_box (int x, int y, int w, int h)
+ }
+ 
+ void
+-winWindowsWMExtensionInit ()
++winWindowsWMExtensionInit (void)
+ {
+   ExtensionEntry* extEntry;
+ 

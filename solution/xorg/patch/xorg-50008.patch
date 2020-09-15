@@ -1,0 +1,33 @@
+diff --git a/dbe/midbestr.h b/dbe/midbestr.h
+index ae9f206..a47d8d9 100644
+--- a/dbe/midbestr.h
++++ b/dbe/midbestr.h
+@@ -48,11 +48,6 @@
+ #define MI_DBE_WINDOW_PRIV_PRIV_FROM_WINDOW(pWin)\
+     MI_DBE_WINDOW_PRIV_PRIV(DBE_WINDOW_PRIV(pWin))
+ 
+-#define MI_DBE_SCREEN_PRIV_PRIV(pDbeScreenPriv) \
+-    (!(pDbeScreenPriv) ? NULL : (MiDbeScreenPrivPrivPtr) \
+-     dixLookupPrivate(&(pDbeScreenPriv)->devPrivates, miDbeScreenPrivPrivKey))
+-
+-
+ /* TYPEDEFS */
+ 
+ typedef struct _MiDbeWindowPrivPrivRec
+@@ -80,16 +75,5 @@ typedef struct _MiDbeWindowPrivPrivRec
+ 
+ } MiDbeWindowPrivPrivRec, *MiDbeWindowPrivPrivPtr;
+ 
+-typedef struct _MiDbeScreenPrivPrivRec
+-{
+-    /* Place machine-specific fields in here.
+-     * Since this is mi code, we do not really have machine-specific fields.
+-     */
+-
+-    /* Pointer back to our screen private with which we are associated. */
+-    DbeScreenPrivPtr	pDbeScreenPriv;
+-
+-} MiDbeScreenPrivPrivRec, *MiDbeScreenPrivPrivPtr;
+-
+ #endif /* MIDBE_STRUCT_H */
+ 

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/parser/Flags.c b/hw/xfree86/parser/Flags.c
+index 699f15c..f4fea28 100644
+--- a/hw/xfree86/parser/Flags.c
++++ b/hw/xfree86/parser/Flags.c
+@@ -451,7 +451,6 @@ xf86parseOption(XF86OptionPtr head)
+ 
+ 	if ((token = xf86getSubToken(&comment)) != STRING) {
+ 		xf86parseError(BAD_OPTION_MSG, NULL);
+-		if (comment)
+ 			free(comment);
+ 		return (head);
+ 	}

@@ -1,0 +1,18 @@
+diff --git a/Xext/panoramiX.h b/Xext/panoramiX.h
+index 35de179..a8684f0 100644
+--- a/Xext/panoramiX.h
++++ b/Xext/panoramiX.h
+@@ -46,13 +46,6 @@ Equipment Corporation.
+ #include "gcstruct.h"
+ 
+ 
+-typedef struct _PanoramiXData {
+-    int x;
+-    int y;
+-    int width;
+-    int height;
+-} PanoramiXData;
+-
+ typedef struct _PanoramiXInfo {
+     XID id ;
+ } PanoramiXInfo;

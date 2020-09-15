@@ -1,0 +1,28 @@
+diff --git a/glx/indirect_size_get.c b/glx/indirect_size_get.c
+index 3e5687d..da3a6cb 100644
+--- a/glx/indirect_size_get.c
++++ b/glx/indirect_size_get.c
+@@ -25,7 +25,6 @@
+  * SOFTWARE.
+  */
+ 
+-
+ #include <X11/Xfuncproto.h>
+ #include <GL/gl.h>
+ #include "indirect_size_get.h"
+@@ -45,7 +44,6 @@
+ #define FASTCALL
+ #endif
+ 
+-
+ #if defined(__CYGWIN__) || defined(__MINGW32__) || defined(GLX_USE_APPLEGL)
+ #undef HAVE_ALIAS
+ #endif
+@@ -60,7 +58,6 @@
+     { return __gl ## to ## _size( e ); }
+ #endif
+ 
+-
+ _X_INTERNAL PURE FASTCALL GLint
+ __glCallLists_size(GLenum e)
+ {

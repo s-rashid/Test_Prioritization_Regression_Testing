@@ -1,0 +1,13 @@
+diff --git a/os/osdep.h b/os/osdep.h
+index e719f9a..b0d30e9 100644
+--- a/os/osdep.h
++++ b/os/osdep.h
+@@ -204,7 +204,7 @@ extern Bool AnyClientsWriteBlocked;
+ 
+ extern WorkQueuePtr workQueue;
+ 
+-/* added by raphael */
++/* in WaitFor.c */
+ #ifdef WIN32
+ typedef long int fd_mask;
+ #endif

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 8276257..7876ba9 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -654,7 +654,7 @@ xf86AllocateEntityPrivateIndex(void)
+ 	nprivs = xnfrealloc(pEnt->entityPrivates,
+ 			    xf86EntityPrivateCount * sizeof(DevUnion));
+ 	/* Zero the new private */
+-	bzero(&nprivs[idx], sizeof(DevUnion));
++	memset(&nprivs[idx], 0, sizeof(DevUnion));
+ 	pEnt->entityPrivates = nprivs;
+     }
+     return idx;

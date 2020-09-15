@@ -1,0 +1,17 @@
+diff --git a/include/dix.h b/include/dix.h
+index e2db6b6..49dfe37 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -229,6 +229,12 @@ extern _X_EXPORT void WakeupHandler(
+     int /*result*/,
+     pointer /*pReadmask*/);
+ 
++void
++EnableLimitedSchedulingLatency(void);
++
++void
++DisableLimitedSchedulingLatency(void);
++
+ typedef void (* WakeupHandlerProcPtr)(
+     pointer /* blockData */,
+     int /* result */,

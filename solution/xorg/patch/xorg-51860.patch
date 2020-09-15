@@ -1,0 +1,13 @@
+diff --git a/randr/rrinfo.c b/randr/rrinfo.c
+index 549ebcc..fdf3726 100644
+--- a/randr/rrinfo.c
++++ b/randr/rrinfo.c
+@@ -168,7 +168,7 @@ RRScanOldConfig (ScreenPtr pScreen, Rotation rotations)
+     /* notice current mode */
+     if (newMode)
+ 	RRCrtcNotify (crtc, newMode, 0, 0, pScrPriv->rotation,
+-		      NULL, 1, &output, NULL);
++		      NULL, 1, &output);
+ }
+ #endif
+ 

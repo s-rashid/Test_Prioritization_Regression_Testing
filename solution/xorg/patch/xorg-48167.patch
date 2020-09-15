@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/xaa/xaaInitAccel.c b/hw/xfree86/xaa/xaaInitAccel.c
+index 157325e..6f3d622 100644
+--- a/hw/xfree86/xaa/xaaInitAccel.c
++++ b/hw/xfree86/xaa/xaaInitAccel.c
+@@ -1251,7 +1251,6 @@ XAAInitAccel(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+ 	   infoRec->ComputeDash = XAAComputeDash;
+     }
+ 
+-#ifdef RENDER
+     {
+ 	Bool haveTexture = infoRec->CPUToScreenTextureFormats &&
+ 			   infoRec->CPUToScreenTextureDstFormats &&
+@@ -1271,7 +1270,6 @@ XAAInitAccel(ScreenPtr pScreen, XAAInfoRecPtr infoRec)
+             infoRec->Glyphs = XAADoGlyphs;
+         }	
+     }
+-#endif
+ 
+     /************  Validation Functions **************/
+ 

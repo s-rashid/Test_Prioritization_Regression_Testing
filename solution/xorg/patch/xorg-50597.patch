@@ -1,0 +1,13 @@
+diff --git a/include/dix.h b/include/dix.h
+index a282a08..7485e8e 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -401,7 +401,7 @@ extern _X_EXPORT void WindowHasNewCursor(
+ extern Bool CheckDeviceGrabs(
+     DeviceIntPtr /* device */,
+     DeviceEvent* /* event */,
+-    int /* checkFirst */);
++    WindowPtr /* ancestor */);
+ 
+ extern void DeliverFocusedEvent(
+     DeviceIntPtr /* keybd */,

@@ -1,0 +1,32 @@
+diff --git a/os/log.c b/os/log.c
+index 2eddf06..9ee32c9 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -87,7 +87,6 @@ OR PERFORMANCE OF THIS SOFTWARE.
+ #include <sys/stat.h>
+ #include <stdarg.h>
+ #include <stdlib.h>	/* for malloc() */
+-#include <errno.h>
+ 
+ #include "input.h"
+ #include "site.h"
+@@ -638,19 +637,6 @@ ErrorF(const char * f, ...)
+     va_end(args);
+ }
+ 
+-/* A perror() workalike. */
+-
+-void
+-Error(const char *str)
+-{
+-    const char *err = strerror(errno);
+-
+-    if (str)
+-	LogWrite(-1, "%s: %s", str, err);
+-    else
+-	LogWrite(-1, "%s", err);
+-}
+-
+ void
+ LogPrintMarkers(void)
+ {

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 1fac9ec..9a2b1b4 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -48,6 +48,8 @@
+ #include "applewmExt.h"
+ #include "micmap.h"
+ 
++#include "rootlessCommon.h"
++
+ #ifdef DAMAGE
+ # include "damage.h"
+ #endif

@@ -1,0 +1,12 @@
+diff --git a/dix/enterleave.h b/dix/enterleave.h
+index 746c5d4..4da4e02 100644
+--- a/dix/enterleave.h
++++ b/dix/enterleave.h
+@@ -92,6 +92,5 @@ extern void DeviceFocusEvent(DeviceIntPtr kbd,
+ extern void SetFocusIn(DeviceIntPtr kbd,
+                        WindowPtr win);
+ 
+-extern void SetFocusOut(DeviceIntPtr dev,
+-                        WindowPtr win);
++extern void SetFocusOut(DeviceIntPtr dev);
+ #endif /* _ENTERLEAVE_H_ */

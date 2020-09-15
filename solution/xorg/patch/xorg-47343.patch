@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winconfig.h b/hw/xwin/winconfig.h
+index 63d6211..058884a 100644
+--- a/hw/xwin/winconfig.h
++++ b/hw/xwin/winconfig.h
+@@ -188,6 +188,7 @@ typedef struct
+   /* Files */
+ #ifdef XWIN_XF86CONFIG
+   char *configFile;
++  char *configDir;
+ #endif
+   char *fontPath;
+   /* input devices - keyboard */

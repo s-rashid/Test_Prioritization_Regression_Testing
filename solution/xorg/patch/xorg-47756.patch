@@ -1,0 +1,22 @@
+diff --git a/os/log.c b/os/log.c
+index 03dc11f..0002e59 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -413,7 +413,7 @@ AbortServer(void)
+     AbortDDX();
+     fflush(stderr);
+     if (CoreDump)
+-	abort();
++	OsAbort();
+     exit (1);
+ }
+ 
+@@ -537,7 +537,7 @@ FatalError(const char *f, ...)
+ 	beenhere = TRUE;
+ 	AbortServer();
+     } else
+-	abort();
++	OsAbort();
+     /*NOTREACHED*/
+ }
+ 

@@ -1,0 +1,10 @@
+diff --git a/hw/xnest/Drawable.h b/hw/xnest/Drawable.h
+index 4268b7b..ea7b5bb 100644
+--- a/hw/xnest/Drawable.h
++++ b/hw/xnest/Drawable.h
+@@ -23,4 +23,4 @@ is" without express or implied warranty.
+    xnestWindow((WindowPtr)pDrawable) : \
+    xnestPixmap((PixmapPtr)pDrawable))
+ 
+-#endif /* XNESTDRAWABLE_H */
++#endif                          /* XNESTDRAWABLE_H */

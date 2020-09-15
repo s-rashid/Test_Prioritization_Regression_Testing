@@ -1,0 +1,12 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 278ff76..239b7a1 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -769,6 +769,7 @@ extern _X_EXPORT void XkbDDXUpdateDeviceIndicators(
+ );
+ 
+ extern _X_EXPORT void XkbDDXFakePointerMotion(
++	DeviceIntPtr	/* dev */,
+  	unsigned int	/* flags */,
+ 	int		/* x */,
+ 	int		/* y */

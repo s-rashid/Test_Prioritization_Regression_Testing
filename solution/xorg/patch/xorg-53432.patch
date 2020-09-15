@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 8a3c256..a6455e6 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1073,7 +1073,7 @@ InitValuatorAxisStruct(DeviceIntPtr dev, int axnum, Atom label, int minval, int
+ {
+     AxisInfoPtr ax;
+ 
+-    if (!dev || !dev->valuator || minval > maxval)
++    if (!dev || !dev->valuator || (minval > maxval && mode == Absolute))
+         return FALSE;
+     if (axnum >= dev->valuator->numAxes)
+         return FALSE;

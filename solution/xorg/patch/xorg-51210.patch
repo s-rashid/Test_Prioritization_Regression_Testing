@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 5bf12f0..08d384f 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -414,10 +414,6 @@ done:
+ 	crtc->active = TRUE;
+ 	if (scrn->pScreen)
+ 	    xf86CrtcSetScreenSubpixelOrder (scrn->pScreen);
+-	if (crtc->scanoutPixmap)
+-	    ++crtc->scanoutPixmap->refcnt;
+-	if (saved_scanout_pixmap)
+-	    (*scrn->pScreen->DestroyPixmap)(saved_scanout_pixmap);
+ 	if (scrn->ModeSet)
+ 	    scrn->ModeSet(scrn);
+     } else {

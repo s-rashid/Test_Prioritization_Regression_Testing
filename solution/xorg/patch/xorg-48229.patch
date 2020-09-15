@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/indirect.c b/hw/xquartz/GL/indirect.c
+index 70558ed..ad9ebbd 100644
+--- a/hw/xquartz/GL/indirect.c
++++ b/hw/xquartz/GL/indirect.c
+@@ -42,6 +42,8 @@
+ #define GL_GLEXT_WUNDEF_SUPPORT
+ 
+ #include <OpenGL/OpenGL.h>
++#include <OpenGL/gl.h>
++#include <OpenGL/glext.h>
+ #include <OpenGL/CGLContext.h>
+ 
+ /* These next few GL_EXT pre-processing blocks are to explicitly define 

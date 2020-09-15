@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/GL/indirect.c b/hw/xquartz/GL/indirect.c
+index 32fb12a..6da27c7 100644
+--- a/hw/xquartz/GL/indirect.c
++++ b/hw/xquartz/GL/indirect.c
+@@ -139,7 +139,6 @@
+ #include <glxcontext.h>
+ #include <glxext.h>
+ #include <glxutil.h>
+-#include <glxscreens.h>
+ #include <GL/internal/glcore.h>
+ #include "x-hash.h"
+ #include "x-list.h"

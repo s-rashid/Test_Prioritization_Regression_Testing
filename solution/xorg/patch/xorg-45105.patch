@@ -1,0 +1,12 @@
+diff --git a/Xi/getcptr.c b/Xi/getcptr.c
+index 5c69942..9cce5c3 100644
+--- a/Xi/getcptr.c
++++ b/Xi/getcptr.c
+@@ -101,6 +101,7 @@ SRepXIGetClientPointer(ClientPtr client, int size,
+     char n;
+     swaps(&rep->sequenceNumber, n);
+     swapl(&rep->length, n);
++    swaps(&rep->deviceid, n);
+     WriteToClient(client, size, (char *)rep);
+ }
+ 

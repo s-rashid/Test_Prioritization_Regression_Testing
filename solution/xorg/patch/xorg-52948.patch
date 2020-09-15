@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index 5cbd620..1b067c7 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -546,9 +546,6 @@ static void dmxProcessInputEvents(DMXInputInfo *dmxInput)
+         return;
+     for (i = 0; i < dmxInput->numDevs; i += dmxInput->devs[i]->binding)
+         if (dmxInput->devs[i]->process_input) {
+-#if 11 /*BP*/
+-            miPointerUpdateSprite(dmxInput->devs[i]->pDevice);
+-#endif
+             dmxInput->devs[i]->process_input(dmxInput->devs[i]->private);
+         }
+ 

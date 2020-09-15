@@ -1,0 +1,1763 @@
+diff --git a/mi/miwideline.c b/mi/miwideline.c
+index 057339d..ca18f15 100644
+--- a/mi/miwideline.c
++++ b/mi/miwideline.c
+@@ -59,8 +59,7 @@ InitSpans(Spans *spans, size_t nspans)
+     if (!spans->points)
+ 	return FALSE;
+     spans->widths = malloc(nspans * sizeof (*spans->widths));
+-    if (!spans->widths)
+-    {
++    if (!spans->widths) {
+ 	free(spans->points);
+ 	return FALSE;
+     }
+@@ -76,53 +75,51 @@ typedef struct _SpanData {
+ } SpanDataRec, *SpanDataPtr;
+ 
+ static void
+-AppendSpanGroup(GCPtr pGC, unsigned long pixel, Spans *spanPtr, SpanDataPtr spanData)
++AppendSpanGroup(GCPtr pGC, unsigned long pixel, Spans * spanPtr,
++                SpanDataPtr spanData)
+ {
+     SpanGroup *group, *othergroup = NULL;
+-    if (pixel == pGC->fgPixel)
+-    {
++
++    if (pixel == pGC->fgPixel) {
+ 	group = &spanData->fgGroup;
+ 	if (pGC->lineStyle == LineDoubleDash)
+ 	    othergroup = &spanData->bgGroup;
+     }
+-    else
+-    {
++    else {
+ 	group = &spanData->bgGroup;
+ 	othergroup = &spanData->fgGroup;
+     }
+     miAppendSpans (group, othergroup, spanPtr);
+ }
+ 
+-
+ static void miLineArc(DrawablePtr pDraw, GCPtr pGC,
+ 		      unsigned long pixel, SpanDataPtr spanData,
+ 		      LineFacePtr leftFace,
+ 		      LineFacePtr rightFace,
+ 		      double xorg, double yorg, Bool isInt);
+ 
+-
+ /*
+  * spans-based polygon filler
+  */
+ 
+ static void
+-fillSpans(DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel, Spans *spans, SpanDataPtr spanData)
+-{
+-    if (!spanData)
++fillSpans(DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel, Spans * spans,
++          SpanDataPtr spanData)
+     {
++    if (!spanData) {
+ 	ChangeGCVal oldPixel, tmpPixel;
++
+ 	oldPixel.val = pGC->fgPixel;
+-	if (pixel != oldPixel.val)
+-	{
++        if (pixel != oldPixel.val) {
+ 	    tmpPixel.val = (XID)pixel;
+ 	    ChangeGC (NullClient, pGC, GCForeground, &tmpPixel);
+ 	    ValidateGC (pDrawable, pGC);
+ 	}
+-	(*pGC->ops->FillSpans) (pDrawable, pGC, spans->count, spans->points, spans->widths, TRUE);
++        (*pGC->ops->FillSpans) (pDrawable, pGC, spans->count, spans->points,
++                                spans->widths, TRUE);
+ 	free(spans->widths);
+ 	free(spans->points);
+-	if (pixel != oldPixel.val)
+-	{
++        if (pixel != oldPixel.val) {
+ 	    ChangeGC (NullClient, pGC, GCForeground, &oldPixel);
+ 	    ValidateGC (pDrawable, pGC);
+ 	}
+@@ -161,16 +158,12 @@ miFillPolyHelper (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+     pwidth = spanRec.widths;
+ 
+     xorg = 0;
+-    if (pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	y += pDrawable->y;
+ 	xorg = pDrawable->x;
+     }
+-    while ((left_count || left_height) &&
+-	   (right_count || right_height))
+-    {
+-	if (!left_height && left_count)
+-	{
++    while ((left_count || left_height) && (right_count || right_height)) {
++        if (!left_height && left_count) {
+ 	    left_height = left->height;
+ 	    left_x = left->x;
+ 	    left_stepx = left->stepx;
+@@ -182,8 +175,7 @@ miFillPolyHelper (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 	    ++left;
+ 	}
+ 
+-	if (!right_height && right_count)
+-	{
++        if (!right_height && right_count) {
+ 	    right_height = right->height;
+ 	    right_x = right->x;
+ 	    right_stepx = right->stepx;
+@@ -202,10 +194,8 @@ miFillPolyHelper (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 	left_height -= height;
+ 	right_height -= height;
+ 
+-	while (--height >= 0)
+-	{
+-	    if (right_x >= left_x)
+-	    {
++        while (--height >= 0) {
++            if (right_x >= left_x) {
+ 		ppt->y = y;
+ 		ppt->x = left_x + xorg;
+ 		ppt++;
+@@ -215,16 +205,14 @@ miFillPolyHelper (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 
+ 	    left_x += left_stepx;
+ 	    left_e += left_dx;
+-	    if (left_e > 0)
+-	    {
++            if (left_e > 0) {
+ 		left_x += left_signdx;
+ 		left_e -= left_dy;
+ 	    }
+ 
+ 	    right_x += right_stepx;
+ 	    right_e += right_dx;
+-	    if (right_e > 0)
+-	    {
++            if (right_e > 0) {
+ 		right_x += right_signdx;
+ 		right_e -= right_dy;
+ 	    }
+@@ -235,15 +223,10 @@ miFillPolyHelper (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ }
+ 
+ static void
+-miFillRectPolyHelper (
+-    DrawablePtr	pDrawable,
++miFillRectPolyHelper(DrawablePtr pDrawable,
+     GCPtr	pGC,
+     unsigned long   pixel,
+-    SpanDataPtr	spanData,
+-    int		x,
+-    int		y,
+-    int		w,
+-    int		h)
++                     SpanDataPtr spanData, int x, int y, int w, int h)
+ {
+     DDXPointPtr ppt;
+     int 	*pwidth;
+@@ -251,40 +234,34 @@ miFillRectPolyHelper (
+     Spans	spanRec;
+     xRectangle  rect;
+ 
+-    if (!spanData)
+-    {
++    if (!spanData) {
+ 	rect.x = x;
+ 	rect.y = y;
+ 	rect.width = w;
+ 	rect.height = h;
+ 	oldPixel.val = pGC->fgPixel;
+-	if (pixel != oldPixel.val)
+-    	{
++        if (pixel != oldPixel.val) {
+ 	    tmpPixel.val = (XID)pixel;
+ 	    ChangeGC (NullClient, pGC, GCForeground, &tmpPixel);
+     	    ValidateGC (pDrawable, pGC);
+     	}
+ 	(*pGC->ops->PolyFillRect) (pDrawable, pGC, 1, &rect);
+-	if (pixel != oldPixel.val)
+-    	{
++        if (pixel != oldPixel.val) {
+ 	    ChangeGC (NullClient, pGC, GCForeground, &oldPixel);
+ 	    ValidateGC (pDrawable, pGC);
+     	}
+     }
+-    else
+-    {
++    else {
+ 	if (!InitSpans(&spanRec, h))
+ 	    return;
+ 	ppt = spanRec.points;
+ 	pwidth = spanRec.widths;
+ 
+-    	if (pGC->miTranslate)
+-    	{
++        if (pGC->miTranslate) {
+ 	    y += pDrawable->y;
+ 	    x += pDrawable->x;
+     	}
+-	while (h--)
+-	{
++        while (h--) {
+ 	    ppt->x = x;
+ 	    ppt->y = y;
+ 	    ppt++;
+@@ -297,22 +274,13 @@ miFillRectPolyHelper (
+ }
+ 
+ /* static */ int
+-miPolyBuildEdge (
+-    double	x0,
+-    double	y0,
+-    double	k,  /* x0 * dy - y0 * dx */
+-    int		dx,
+-    int		dy,
+-    int		xi,
+-    int		yi,
+-    int		left,
+-    PolyEdgePtr edge)
++miPolyBuildEdge(double x0, double y0, double k, /* x0 * dy - y0 * dx */
++                int dx, int dy, int xi, int yi, int left, PolyEdgePtr edge)
+ {
+     int	    x, y, e;
+     int	    xady;
+ 
+-    if (dy < 0)
+-    {
++    if (dy < 0) {
+ 	dy = -dy;
+ 	dx = -dx;
+ 	k = -k;
+@@ -321,6 +289,7 @@ miPolyBuildEdge (
+ #ifdef NOTDEF
+     {
+ 	double	realk, kerror;
++
+     	realk = x0 * dy - y0 * dx;
+ 	kerror = fabs (realk - k);
+     	if (kerror > .1)
+@@ -337,14 +306,12 @@ miPolyBuildEdge (
+ 
+     e = xady - x * dy;
+ 
+-    if (dx >= 0)
+-    {
++    if (dx >= 0) {
+ 	edge->signdx = 1;
+ 	edge->stepx = dx / dy;
+ 	edge->dx = dx % dy;
+     }
+-    else
+-    {
++    else {
+ 	edge->signdx = -1;
+ 	edge->stepx = - (-dx / dy);
+ 	edge->dx = -dx % dy;
+@@ -359,17 +326,13 @@ miPolyBuildEdge (
+ #define StepAround(v, incr, max) (((v) + (incr) < 0) ? (max - 1) : ((v) + (incr) == max) ? 0 : ((v) + (incr)))
+ 
+ /* static */ int
+-miPolyBuildPoly (
+-    PolyVertexPtr	vertices,
++miPolyBuildPoly(PolyVertexPtr vertices,
+     PolySlopePtr	slopes,
+     int			count,
+     int			xi,
+     int			yi,
+     PolyEdgePtr		left,
+-    PolyEdgePtr		right,
+-    int			*pnleft,
+-    int			*pnright,
+-    int			*h)
++                PolyEdgePtr right, int *pnleft, int *pnright, int *h)
+ {
+     int 	top, bottom;
+     double 	miny, maxy;
+@@ -384,15 +347,12 @@ miPolyBuildPoly (
+     /* find the top of the polygon */
+     maxy = miny = vertices[0].y;
+     bottom = top = 0;
+-    for (i = 1; i < count; i++)
+-    {
+-	if (vertices[i].y < miny)
+-	{
++    for (i = 1; i < count; i++) {
++        if (vertices[i].y < miny) {
+ 	    top = i;
+ 	    miny = vertices[i].y;
+ 	}
+-	if (vertices[i].y >= maxy)
+-	{
++        if (vertices[i].y >= maxy) {
+ 	    bottom = i;
+ 	    maxy = vertices[i].y;
+ 	}
+@@ -403,8 +363,8 @@ miPolyBuildPoly (
+     i = top;
+     j = StepAround (top, -1, count);
+ 
+-    if ((int64_t)slopes[j].dy * slopes[i].dx > (int64_t)slopes[i].dy * slopes[j].dx)
+-    {
++    if ((int64_t) slopes[j].dy * slopes[i].dx >
++        (int64_t) slopes[i].dy * slopes[j].dx) {
+ 	clockwise = -1;
+ 	slopeoff = -1;
+     }
+@@ -415,15 +375,12 @@ miPolyBuildPoly (
+ 
+     s = StepAround (top, slopeoff, count);
+     i = top;
+-    while (i != bottom)
+-    {
+-	if (slopes[s].dy != 0)
+-	{
++    while (i != bottom) {
++        if (slopes[s].dy != 0) {
+ 	    y = miPolyBuildEdge (vertices[i].x, vertices[i].y,
+ 			slopes[s].k,
+ 			slopes[s].dx, slopes[s].dy,
+-			xi, yi, 0,
+-			&right[nright]);
++                                xi, yi, 0, &right[nright]);
+ 	    if (nright != 0)
+ 	    	right[nright-1].height = y - lasty;
+ 	    else
+@@ -446,10 +403,8 @@ miPolyBuildPoly (
+     nleft = 0;
+     s = StepAround (top, slopeoff, count);
+     i = top;
+-    while (i != bottom)
+-    {
+-	if (slopes[s].dy != 0)
+-	{
++    while (i != bottom) {
++        if (slopes[s].dy != 0) {
+ 	    y = miPolyBuildEdge (vertices[i].x, vertices[i].y,
+ 			   slopes[s].k,
+ 		       	   slopes[s].dx,  slopes[s].dy, xi, yi, 1,
+@@ -472,30 +427,23 @@ miPolyBuildPoly (
+ }
+ 
+ static void
+-miLineOnePoint (
+-    DrawablePtr	    pDrawable,
++miLineOnePoint(DrawablePtr pDrawable,
+     GCPtr	    pGC,
+-    unsigned long   pixel,
+-    SpanDataPtr	    spanData,
+-    int		    x,
+-    int		    y)
++               unsigned long pixel, SpanDataPtr spanData, int x, int y)
+ {
+     DDXPointRec pt;
+     int	    wid;
+     unsigned long	oldPixel;
+ 
+     MILINESETPIXEL (pDrawable, pGC, pixel, oldPixel);
+-    if (pGC->fillStyle == FillSolid)
+-    {
++    if (pGC->fillStyle == FillSolid) {
+ 	pt.x = x;
+ 	pt.y = y;
+ 	(*pGC->ops->PolyPoint) (pDrawable, pGC, CoordModeOrigin, 1, &pt);
+     }
+-    else
+-    {
++    else {
+ 	wid = 1;
+-	if (pGC->miTranslate) 
+-	{
++        if (pGC->miTranslate) {
+ 	    x += pDrawable->x;
+ 	    y += pDrawable->y;
+ 	}
+@@ -507,13 +455,10 @@ miLineOnePoint (
+ }
+ 
+ static void
+-miLineJoin (
+-    DrawablePtr 	pDrawable,
++miLineJoin(DrawablePtr pDrawable,
+     GCPtr		pGC,
+     unsigned long	pixel,
+-    SpanDataPtr		spanData,
+-    LineFacePtr		pLeft,
+-    LineFacePtr 	pRight)
++           SpanDataPtr spanData, LineFacePtr pLeft, LineFacePtr pRight)
+ {
+     double	    mx = 0, my = 0;
+     double	    denom = 0.0;
+@@ -534,7 +479,9 @@ miLineJoin (
+ 	if (pRight->dx > 0 || (pRight->dx == 0 && pRight->dy > 0))
+ 	    return;
+ 	if (joinStyle != JoinRound) {
+-    	    denom = - pLeft->dx * (double)pRight->dy + pRight->dx * (double)pLeft->dy;
++            denom =
++                -pLeft->dx * (double) pRight->dy +
++                pRight->dx * (double) pLeft->dy;
+     	    if (denom == 0)
+ 	    	return;	/* no join to draw */
+ 	}
+@@ -542,29 +489,27 @@ miLineJoin (
+ 	    miLineOnePoint (pDrawable, pGC, pixel, spanData, pLeft->x, pLeft->y);
+ 	    return;
+ 	}
+-    } else {
+-    	if (joinStyle == JoinRound)
+-    	{
++    }
++    else {
++        if (joinStyle == JoinRound) {
+ 	    miLineArc(pDrawable, pGC, pixel, spanData,
+-		      pLeft, pRight,
+-		      (double)0.0, (double)0.0, TRUE);
++                      pLeft, pRight, (double) 0.0, (double) 0.0, TRUE);
+ 	    return;
+     	}
+-    	denom = - pLeft->dx * (double)pRight->dy + pRight->dx * (double)pLeft->dy;
++        denom =
++            -pLeft->dx * (double) pRight->dy + pRight->dx * (double) pLeft->dy;
+     	if (denom == 0.0)
+ 	    return;	/* no join to draw */
+     }
+ 
+     swapslopes = 0;
+-    if (denom > 0)
+-    {
++    if (denom > 0) {
+ 	pLeft->xa = -pLeft->xa;
+ 	pLeft->ya = -pLeft->ya;
+ 	pLeft->dx = -pLeft->dx;
+ 	pLeft->dy = -pLeft->dy;
+     }
+-    else
+-    {
++    else {
+ 	swapslopes = 1;
+ 	pRight->xa = -pRight->xa;
+ 	pRight->ya = -pRight->ya;
+@@ -587,18 +532,15 @@ miLineJoin (
+     vertices[2].x = pLeft->xa;
+     vertices[2].y = pLeft->ya;
+ 
+-    if (joinStyle == JoinMiter)
+-    {
++    if (joinStyle == JoinMiter) {
+     	my = (pLeft->dy  * (pRight->xa * pRight->dy - pRight->ya * pRight->dx) -
+               pRight->dy * (pLeft->xa  * pLeft->dy  - pLeft->ya  * pLeft->dx )) /
+ 	      denom;
+-    	if (pLeft->dy != 0)
+-    	{
++        if (pLeft->dy != 0) {
+ 	    mx = pLeft->xa + (my - pLeft->ya) *
+ 			    (double) pLeft->dx / (double) pLeft->dy;
+     	}
+-    	else
+-    	{
++        else {
+ 	    mx = pRight->xa + (my - pRight->ya) *
+ 			    (double) pRight->dx / (double) pRight->dy;
+     	}
+@@ -607,13 +549,11 @@ miLineJoin (
+ 	    joinStyle = JoinBevel;
+     }
+ 
+-    if (joinStyle == JoinMiter)
+-    {
++    if (joinStyle == JoinMiter) {
+ 	slopes[2].dx = pLeft->dx;
+ 	slopes[2].dy = pLeft->dy;
+ 	slopes[2].k =  pLeft->k;
+-	if (swapslopes)
+-	{
++        if (swapslopes) {
+ 	    slopes[2].dx = -slopes[2].dx;
+ 	    slopes[2].dy = -slopes[2].dy;
+ 	    slopes[2].k  = -slopes[2].k;
+@@ -623,16 +563,14 @@ miLineJoin (
+ 	slopes[3].dx = pRight->dx;
+ 	slopes[3].dy = pRight->dy;
+ 	slopes[3].k  = pRight->k;
+-	if (swapslopes)
+-	{
++        if (swapslopes) {
+ 	    slopes[3].dx = -slopes[3].dx;
+ 	    slopes[3].dy = -slopes[3].dy;
+ 	    slopes[3].k  = -slopes[3].k;
+ 	}
+ 	edgecount = 4;
+     }
+-    else
+-    {
++    else {
+ 	double	scale, dx, dy, adx, ady;
+ 
+ 	adx = dx = pRight->xa - pLeft->xa;
+@@ -653,17 +591,13 @@ miLineJoin (
+ 
+     y = miPolyBuildPoly (vertices, slopes, edgecount, pLeft->x, pLeft->y,
+ 		   left, right, &nleft, &nright, &height);
+-    miFillPolyHelper (pDrawable, pGC, pixel, spanData, y, height, left, right, nleft, nright);
++    miFillPolyHelper(pDrawable, pGC, pixel, spanData, y, height, left, right,
++                     nleft, nright);
+ }
+ 
+ static int
+-miLineArcI (
+-    DrawablePtr	    pDraw,
+-    GCPtr	    pGC,
+-    int		    xorg,
+-    int		    yorg,
+-    DDXPointPtr	    points,
+-    int		    *widths)
++miLineArcI(DrawablePtr pDraw,
++           GCPtr pGC, int xorg, int yorg, DDXPointPtr points, int *widths)
+ {
+     DDXPointPtr tpts, bpts;
+     int *twids, *bwids;
+@@ -671,14 +605,12 @@ miLineArcI (
+ 
+     tpts = points;
+     twids = widths;
+-    if (pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	xorg += pDraw->x;
+ 	yorg += pDraw->y;
+     }
+     slw = pGC->lineWidth;
+-    if (slw == 1)
+-    {
++    if (slw == 1) {
+ 	tpts->x = xorg;
+ 	tpts->y = yorg;
+ 	*twids = 1;
+@@ -693,11 +625,9 @@ miLineArcI (
+ 	e = - (y << 3);
+     ex = -4;
+     x = 0;
+-    while (y)
+-    {
++    while (y) {
+ 	e += (y << 3) - 4;
+-	while (e >= 0)
+-	{
++        while (e >= 0) {
+ 	    x++;
+ 	    e += (ex = -((x << 3) + 4));
+ 	}
+@@ -709,8 +639,7 @@ miLineArcI (
+ 	tpts->y = yorg - y;
+ 	tpts++;
+ 	*twids++ = slw;
+-	if ((y != 0) && ((slw > 1) || (e != ex)))
+-	{
++        if ((y != 0) && ((slw > 1) || (e != ex))) {
+ 	    bpts--;
+ 	    bpts->x = xorg - x;
+ 	    bpts->y = yorg + y;
+@@ -744,8 +673,7 @@ miLineArcI (
+     }
+ 
+ static int
+-miLineArcD (
+-    DrawablePtr	    pDraw,
++miLineArcD(DrawablePtr pDraw,
+     GCPtr	    pGC,
+     double	    xorg,
+     double	    yorg,
+@@ -753,10 +681,7 @@ miLineArcD (
+     int		    *widths,
+     PolyEdgePtr	    edge1,
+     int		    edgey1,
+-    Bool	    edgeleft1,
+-    PolyEdgePtr	    edge2,
+-    int		    edgey2,
+-    Bool	    edgeleft2)
++           Bool edgeleft1, PolyEdgePtr edge2, int edgey2, Bool edgeleft2)
+ {
+     DDXPointPtr pts;
+     int *wids;
+@@ -772,8 +697,7 @@ miLineArcD (
+     x0 = xorg - xbase;
+     ybase = ICEIL (yorg);
+     y0 = yorg - ybase;
+-    if (pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	xbase += pDraw->x;
+ 	ybase += pDraw->y;
+ 	edge1->x += pDraw->x;
+@@ -791,71 +715,61 @@ miLineArcD (
+     ymax = 65536;
+     edge1IsMin = FALSE;
+     ymin1 = edgey1;
+-    if (edge1->dy >= 0)
+-    {
+-    	if (!edge1->dy)
+-    	{
++    if (edge1->dy >= 0) {
++        if (!edge1->dy) {
+ 	    if (edgeleft1)
+ 	    	edge1IsMin = TRUE;
+ 	    else
+ 	    	ymax = edgey1;
+ 	    edgey1 = 65536;
+     	}
+-    	else
+-    	{
++        else {
+ 	    if ((edge1->signdx < 0) == edgeleft1)
+ 	    	edge1IsMin = TRUE;
+     	}
+     }
+     edge2IsMin = FALSE;
+     ymin2 = edgey2;
+-    if (edge2->dy >= 0)
+-    {
+-    	if (!edge2->dy)
+-    	{
++    if (edge2->dy >= 0) {
++        if (!edge2->dy) {
+ 	    if (edgeleft2)
+ 	    	edge2IsMin = TRUE;
+ 	    else
+ 	    	ymax = edgey2;
+ 	    edgey2 = 65536;
+     	}
+-    	else
+-    	{
++        else {
+ 	    if ((edge2->signdx < 0) == edgeleft2)
+ 	    	edge2IsMin = TRUE;
+     	}
+     }
+-    if (edge1IsMin)
+-    {
++    if (edge1IsMin) {
+ 	ymin = ymin1;
+ 	if (edge2IsMin && ymin1 > ymin2)
+ 	    ymin = ymin2;
+-    } else if (edge2IsMin)
++    }
++    else if (edge2IsMin)
+ 	ymin = ymin2;
+     el = radius * radius - ((y + y0) * (y + y0)) - (x0 * x0);
+     er = el + xrk;
+     xl = 1;
+     xr = 0;
+-    if (x0 < 0.5)
+-    {
++    if (x0 < 0.5) {
+ 	xl = 0;
+ 	el -= xlk;
+     }
+     boty = (y0 < -0.5) ? 1 : 0;
+     if (ybase + y - boty > ymax)
+ 	boty = ymax - ybase - y;
+-    while (y > boty)
+-    {
++    while (y > boty) {
+ 	k = (y << 1) + yk;
+ 	er += k;
+-	while (er > 0.0)
+-	{
++        while (er > 0.0) {
+ 	    xr++;
+ 	    er += xrk - (xr << 1);
+ 	}
+ 	el += k;
+-	while (el >= 0.0)
+-	{
++        while (el >= 0.0) {
+ 	    xl--;
+ 	    el += (xl << 1) - xlk;
+ 	}
+@@ -867,8 +781,7 @@ miLineArcD (
+ 	xcr = xr + xbase;
+ 	CLIPSTEPEDGE(edgey1, edge1, edgeleft1);
+ 	CLIPSTEPEDGE(edgey2, edge2, edgeleft2);
+-	if (xcr >= xcl)
+-	{
++        if (xcr >= xcl) {
+ 	    pts->x = xcl;
+ 	    pts->y = ybase;
+ 	    pts++;
+@@ -880,18 +793,15 @@ miLineArcD (
+     boty = floor(-y0 - radius + 1.0);
+     if (ybase + y - boty > ymax)
+ 	boty = ymax - ybase - y;
+-    while (y > boty)
+-    {
++    while (y > boty) {
+ 	k = (y << 1) + yk;
+ 	er -= k;
+-	while ((er >= 0.0) && (xr >= 0))
+-	{
++        while ((er >= 0.0) && (xr >= 0)) {
+ 	    xr--;
+ 	    er += xrk - (xr << 1);
+ 	}
+ 	el -= k;
+-	while ((el > 0.0) && (xl <= 0))
+-	{
++        while ((el > 0.0) && (xl <= 0)) {
+ 	    xl++;
+ 	    el += (xl << 1) - xlk;
+ 	}
+@@ -903,8 +813,7 @@ miLineArcD (
+ 	xcr = xr + xbase;
+ 	CLIPSTEPEDGE(edgey1, edge1, edgeleft1);
+ 	CLIPSTEPEDGE(edgey2, edge2, edgeleft2);
+-	if (xcr >= xcl)
+-	{
++        if (xcr >= xcl) {
+ 	    pts->x = xcl;
+ 	    pts->y = ybase;
+ 	    pts++;
+@@ -927,21 +836,18 @@ miRoundJoinFace (LineFacePtr face, PolyEdgePtr edge, Bool *leftEdge)
+     xa = face->xa;
+     ya = face->ya;
+     left = 1;
+-    if (ya > 0)
+-    {
++    if (ya > 0) {
+ 	ya = 0.0;
+ 	xa = 0.0;
+     }
+-    if (dy < 0 || (dy == 0 && dx > 0))
+-    {
++    if (dy < 0 || (dy == 0 && dx > 0)) {
+ 	dx = -dx;
+ 	dy = -dy;
+ 	left = !left;
+     }
+     if (dx == 0 && dy == 0)
+ 	dy = 1;
+-    if (dy == 0)
+-    {
++    if (dy == 0) {
+ 	y = ICEIL (face->ya) + face->y;
+ 	edge->x = -32767;
+ 	edge->stepx = 0;
+@@ -951,8 +857,7 @@ miRoundJoinFace (LineFacePtr face, PolyEdgePtr edge, Bool *leftEdge)
+ 	edge->dx = 0;
+ 	edge->height = 0;
+     }
+-    else
+-    {
++    else {
+ 	y = miPolyBuildEdge (xa, ya, 0.0, dx, dy, face->x, face->y, !left, edge);
+ 	edge->height = 32767;
+     }
+@@ -969,13 +874,11 @@ miRoundJoinClip (LineFacePtr pLeft, LineFacePtr pRight,
+ 
+     denom = - pLeft->dx * (double)pRight->dy + pRight->dx * (double)pLeft->dy;
+ 
+-    if (denom >= 0)
+-    {
++    if (denom >= 0) {
+ 	pLeft->xa = -pLeft->xa;
+ 	pLeft->ya = -pLeft->ya;
+     }
+-    else
+-    {
++    else {
+ 	pRight->xa = -pRight->xa;
+ 	pRight->ya = -pRight->ya;
+     }
+@@ -999,8 +902,7 @@ miRoundCapClip (LineFacePtr face, Bool isInt, PolyEdgePtr edge, Bool *leftEdge)
+     if (!isInt)
+ 	k = face->k;
+     left = 1;
+-    if (dy < 0 || (dy == 0 && dx > 0))
+-    {
++    if (dy < 0 || (dy == 0 && dx > 0)) {
+ 	dx = -dx;
+ 	dy = -dy;
+ 	xa = -xa;
+@@ -1009,8 +911,7 @@ miRoundCapClip (LineFacePtr face, Bool isInt, PolyEdgePtr edge, Bool *leftEdge)
+     }
+     if (dx == 0 && dy == 0)
+ 	dy = 1;
+-    if (dy == 0)
+-    {
++    if (dy == 0) {
+ 	y = ICEIL (face->ya) + face->y;
+ 	edge->x = -32767;
+ 	edge->stepx = 0;
+@@ -1020,8 +921,7 @@ miRoundCapClip (LineFacePtr face, Bool isInt, PolyEdgePtr edge, Bool *leftEdge)
+ 	edge->dx = 0;
+ 	edge->height = 0;
+     }
+-    else
+-    {
++    else {
+ 	y = miPolyBuildEdge (xa, ya, k, dx, dy, face->x, face->y, !left, edge);
+ 	edge->height = 32767;
+     }
+@@ -1030,16 +930,12 @@ miRoundCapClip (LineFacePtr face, Bool isInt, PolyEdgePtr edge, Bool *leftEdge)
+ }
+ 
+ static void
+-miLineArc (
+-    DrawablePtr		pDraw,
++miLineArc(DrawablePtr pDraw,
+     GCPtr  		pGC,
+     unsigned long	pixel,
+     SpanDataPtr		spanData,
+     LineFacePtr		leftFace,
+-    LineFacePtr 	rightFace,
+-    double	    	xorg,
+-    double          	yorg,
+-    Bool	    	isInt)
++          LineFacePtr rightFace, double xorg, double yorg, Bool isInt)
+ {
+     int xorgi = 0, yorgi = 0;
+     Spans spanRec;
+@@ -1048,8 +944,7 @@ miLineArc (
+     int		edgey1, edgey2;
+     Bool	edgeleft1, edgeleft2;
+ 
+-    if (isInt)
+-    {
++    if (isInt) {
+ 	xorgi = leftFace ? leftFace->x : rightFace->x;
+ 	yorgi = leftFace ? leftFace->y : rightFace->y;
+     }
+@@ -1063,24 +958,19 @@ miLineArc (
+     edgeleft2 = FALSE;
+     if ((pGC->lineStyle != LineSolid || pGC->lineWidth > 2) &&
+ 	((pGC->capStyle == CapRound && pGC->joinStyle != JoinRound) ||
+-	 (pGC->joinStyle == JoinRound && pGC->capStyle == CapButt)))
+-    {
+-	if (isInt)
+-	{
++         (pGC->joinStyle == JoinRound && pGC->capStyle == CapButt))) {
++        if (isInt) {
+ 	    xorg = (double) xorgi;
+ 	    yorg = (double) yorgi;
+ 	}
+-	if (leftFace && rightFace)
+-	{
++        if (leftFace && rightFace) {
+ 	    miRoundJoinClip (leftFace, rightFace, &edge1, &edge2,
+ 			     &edgey1, &edgey2, &edgeleft1, &edgeleft2);
+ 	}
+-	else if (leftFace)
+-	{
++        else if (leftFace) {
+ 	    edgey1 = miRoundCapClip (leftFace, isInt, &edge1, &edgeleft1);
+ 	}
+-	else if (rightFace)
+-	{
++        else if (rightFace) {
+ 	    edgey2 = miRoundCapClip (rightFace, isInt, &edge2, &edgeleft2);
+ 	}
+ 	isInt = FALSE;
+@@ -1088,11 +978,11 @@ miLineArc (
+     if (!InitSpans(&spanRec, pGC->lineWidth))
+ 	return;
+     if (isInt)
+-	n = miLineArcI(pDraw, pGC, xorgi, yorgi, spanRec.points, spanRec.widths);
++        n = miLineArcI(pDraw, pGC, xorgi, yorgi, spanRec.points,
++                       spanRec.widths);
+     else
+ 	n = miLineArcD(pDraw, pGC, xorg, yorg, spanRec.points, spanRec.widths,
+-		       &edge1, edgey1, edgeleft1,
+-		       &edge2, edgey2, edgeleft2);
++                       &edge1, edgey1, edgeleft1, &edge2, edgey2, edgeleft2);
+     spanRec.count = n;
+     fillSpans (pDraw, pGC, pixel, &spanRec, spanData);
+ }
+@@ -1116,8 +1006,7 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+     double	maxy;
+     int		finaly;
+     
+-    if (isInt)
+-    {
++    if (isInt) {
+ 	xorgi = face->x;
+ 	yorgi = face->y;
+     }
+@@ -1125,8 +1014,7 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+     dx = face->dx;
+     dy = face->dy;
+     k = face->k;
+-    if (dy == 0)
+-    {
++    if (dy == 0) {
+ 	lefts[0].height = lw;
+ 	lefts[0].x = xorgi;
+ 	if (isLeft)
+@@ -1148,8 +1036,7 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 	miFillPolyHelper (pDrawable, pGC, pixel, spanData, yorgi - (lw >> 1), lw,
+ 		     lefts, rights, 1, 1);
+     }
+-    else if (dx == 0)
+-    {
++    else if (dx == 0) {
+ 	if (dy < 0) {
+ 	    dy = -dy;
+ 	    isLeft = !isLeft;
+@@ -1175,40 +1062,35 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 	rights[0].e = -dy;
+ 	rights[0].dx = dx;
+ 	rights[0].dy = dy;
+-	miFillPolyHelper (pDrawable, pGC, pixel, spanData, topy, bottomy - topy, lefts, rights, 1, 1);
++        miFillPolyHelper(pDrawable, pGC, pixel, spanData, topy, bottomy - topy,
++                         lefts, rights, 1, 1);
+     }
+-    else
+-    {
++    else {
+ 	xa = face->xa;
+ 	ya = face->ya;
+ 	projectXoff = -ya;
+ 	projectYoff = xa;
+-	if (dx < 0)
+-	{
++        if (dx < 0) {
+ 	    right = &rights[1];
+ 	    left = &lefts[0];
+ 	    top = &rights[0];
+ 	    bottom = &lefts[1];
+ 	}
+-	else
+-	{
++        else {
+ 	    right = &rights[0];
+ 	    left = &lefts[1];
+ 	    top = &lefts[0];
+ 	    bottom = &rights[1];
+ 	}
+-	if (isLeft)
+-	{
+-	    righty = miPolyBuildEdge (xa, ya,
+-		     k, dx, dy, xorgi, yorgi, 0, right);
++        if (isLeft) {
++            righty = miPolyBuildEdge(xa, ya, k, dx, dy, xorgi, yorgi, 0, right);
+ 	    
+ 	    xa = -xa;
+ 	    ya = -ya;
+ 	    k = -k;
+ 	    lefty = miPolyBuildEdge (xa - projectXoff, ya - projectYoff,
+ 				     k, dx, dy, xorgi, yorgi, 1, left);
+-	    if (dx > 0)
+-	    {
++            if (dx > 0) {
+ 		ya = -ya;
+ 		xa = -xa;
+ 	    }
+@@ -1217,40 +1099,39 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ 	    topy = miPolyBuildEdge (xap, yap, xap * dx + yap * dy,
+ 				    -dy, dx, xorgi, yorgi, dx > 0, top);
+ 	    bottomy = miPolyBuildEdge (xa, ya,
+-				       0.0, -dy, dx, xorgi, yorgi, dx < 0, bottom);
++                                      0.0, -dy, dx, xorgi, yorgi, dx < 0,
++                                      bottom);
+ 	    maxy = -ya;
+ 	}
+-	else
+-	{
++        else {
+ 	    righty = miPolyBuildEdge (xa - projectXoff, ya - projectYoff,
+ 		     k, dx, dy, xorgi, yorgi, 0, right);
+ 	    
+ 	    xa = -xa;
+ 	    ya = -ya;
+ 	    k = -k;
+-	    lefty = miPolyBuildEdge (xa, ya,
+-		    k, dx, dy, xorgi, yorgi, 1, left);
+-	    if (dx > 0)
+-	    {
++            lefty = miPolyBuildEdge(xa, ya, k, dx, dy, xorgi, yorgi, 1, left);
++            if (dx > 0) {
+ 		ya = -ya;
+ 		xa = -xa;
+ 	    }
+ 	    xap = xa - projectXoff;
+ 	    yap = ya - projectYoff;
+-	    topy = miPolyBuildEdge (xa, ya, 0.0, -dy, dx, xorgi, xorgi, dx > 0, top);
+-	    bottomy = miPolyBuildEdge (xap, yap, xap * dx + yap * dy,
+-				       -dy, dx, xorgi, xorgi, dx < 0, bottom);
++            topy =
++                miPolyBuildEdge(xa, ya, 0.0, -dy, dx, xorgi, xorgi, dx > 0,
++                                top);
++            bottomy =
++                miPolyBuildEdge(xap, yap, xap * dx + yap * dy, -dy, dx, xorgi,
++                                xorgi, dx < 0, bottom);
+ 	    maxy = -ya + projectYoff;
+ 	}
+ 	finaly = ICEIL(maxy) + yorgi;
+-	if (dx < 0)
+-	{
++        if (dx < 0) {
+ 	    left->height = bottomy - lefty;
+ 	    right->height = finaly - righty;
+ 	    top->height = righty - topy;
+ 	}
+-	else
+-	{
++        else {
+ 	    right->height =  bottomy - righty;
+ 	    left->height = finaly - lefty;
+ 	    top->height = lefty - topy;
+@@ -1262,8 +1143,7 @@ miLineProjectingCap (DrawablePtr pDrawable, GCPtr pGC, unsigned long pixel,
+ }
+ 
+ static void
+-miWideSegment (
+-    DrawablePtr		pDrawable,
++miWideSegment(DrawablePtr pDrawable,
+     GCPtr		pGC,
+     unsigned long	pixel,
+     SpanDataPtr		spanData,
+@@ -1272,9 +1152,7 @@ miWideSegment (
+     int    		x2,
+     int    		y2,
+     Bool		projectLeft,
+-    Bool		projectRight,
+-    LineFacePtr 	leftFace,
+-    LineFacePtr 	rightFace)
++              Bool projectRight, LineFacePtr leftFace, LineFacePtr rightFace)
+ {
+     double	l, L, r;
+     double	xa, ya;
+@@ -1293,8 +1171,7 @@ miWideSegment (
+     int		lw = pGC->lineWidth;
+ 
+     /* draw top-to-bottom always */
+-    if (y2 < y1 || (y2 == y1 && x2 < x1))
+-    {
++    if (y2 < y1 || (y2 == y1 && x2 < x1)) {
+ 	x = x1;
+ 	x1 = x2;
+ 	x2 = x;
+@@ -1328,8 +1205,7 @@ miWideSegment (
+     rightFace->dx = -dx;
+     rightFace->dy = -dy;
+ 
+-    if (dy == 0)
+-    {
++    if (dy == 0) {
+ 	rightFace->xa = 0;
+ 	rightFace->ya = (double) lw / 2.0;
+ 	rightFace->k = -(double) (lw * dx) / 2.0;
+@@ -1344,11 +1220,9 @@ miWideSegment (
+ 	if (projectRight)
+ 	    dx += ((lw + 1) >> 1);
+ 	dy = lw;
+-	miFillRectPolyHelper (pDrawable, pGC, pixel, spanData,
+-			      x, y, dx, dy);
++        miFillRectPolyHelper(pDrawable, pGC, pixel, spanData, x, y, dx, dy);
+     }
+-    else if (dx == 0)
+-    {
++    else if (dx == 0) {
+ 	leftFace->xa =  (double) lw / 2.0;
+ 	leftFace->ya = 0;
+ 	leftFace->k = (double) (lw * dy) / 2.0;
+@@ -1363,23 +1237,19 @@ miWideSegment (
+ 	if (projectRight)
+ 	    dy += ((lw + 1) >> 1);
+ 	dx = lw;
+-	miFillRectPolyHelper (pDrawable, pGC, pixel, spanData,
+-			      x, y, dx, dy);
++        miFillRectPolyHelper(pDrawable, pGC, pixel, spanData, x, y, dx, dy);
+     }
+-    else
+-    {
++    else {
+     	l = ((double) lw) / 2.0;
+     	L = hypot ((double) dx, (double) dy);
+ 
+-	if (dx < 0)
+-	{
++        if (dx < 0) {
+ 	    right = &rights[1];
+ 	    left = &lefts[0];
+ 	    top = &rights[0];
+ 	    bottom = &lefts[1];
+ 	}
+-	else
+-	{
++        else {
+ 	    right = &rights[0];
+ 	    left = &lefts[1];
+ 	    top = &lefts[0];
+@@ -1391,8 +1261,7 @@ miWideSegment (
+ 	ya = -r * dx;
+ 	xa = r * dy;
+ 
+-	if (projectLeft | projectRight)
+-	{
++        if (projectLeft | projectRight) {
+ 	    projectXoff = -ya;
+ 	    projectYoff = xa;
+ 	}
+@@ -1411,8 +1280,7 @@ miWideSegment (
+ 	    righty = miPolyBuildEdge (xa - projectXoff, ya - projectYoff,
+ 				      k, dx, dy, x1, y1, 0, right);
+ 	else
+-	    righty = miPolyBuildEdge (xa, ya,
+-				      k, dx, dy, x1, y1, 0, right);
++            righty = miPolyBuildEdge(xa, ya, k, dx, dy, x1, y1, 0, right);
+ 
+ 	/* coord of lower bound at integral y */
+ 	ya = -ya;
+@@ -1425,21 +1293,19 @@ miWideSegment (
+ 	    lefty = miPolyBuildEdge (xa - projectXoff, ya - projectYoff,
+ 				     k, dx, dy, x1, y1, 1, left);
+ 	else
+-	    lefty = miPolyBuildEdge (xa, ya,
+-				     k, dx, dy, x1, y1, 1, left);
++            lefty = miPolyBuildEdge(xa, ya, k, dx, dy, x1, y1, 1, left);
+ 
+ 	/* coord of top face at integral y */
+ 
+-	if (signdx > 0)
+-	{
++        if (signdx > 0) {
+ 	    ya = -ya;
+ 	    xa = -xa;
+ 	}
+ 
+-	if (projectLeft)
+-	{
++        if (projectLeft) {
+ 	    double xap = xa - projectXoff;
+ 	    double yap = ya - projectYoff;
++
+ 	    topy = miPolyBuildEdge (xap, yap, xap * dx + yap * dy,
+ 				    -dy, dx, x1, y1, dx > 0, top);
+ 	}
+@@ -1448,16 +1314,15 @@ miWideSegment (
+ 
+ 	/* coord of bottom face at integral y */
+ 
+-	if (projectRight)
+-	{
++        if (projectRight) {
+ 	    double xap = xa + projectXoff;
+ 	    double yap = ya + projectYoff;
++
+ 	    bottomy = miPolyBuildEdge (xap, yap, xap * dx + yap * dy,
+ 				       -dy, dx, x2, y2, dx < 0, bottom);
+ 	    maxy = -ya + projectYoff;
+ 	}
+-	else
+-	{
++        else {
+ 	    bottomy = miPolyBuildEdge (xa, ya,
+ 				       0.0, -dy, dx, x2, y2, dx < 0, bottom);
+ 	    maxy = -ya;
+@@ -1465,14 +1330,12 @@ miWideSegment (
+ 
+ 	finaly = ICEIL (maxy) + y2;
+ 
+-	if (dx < 0)
+-	{
++        if (dx < 0) {
+ 	    left->height = bottomy - lefty;
+ 	    right->height = finaly - righty;
+ 	    top->height = righty - topy;
+ 	}
+-	else
+-	{
++        else {
+ 	    right->height =  bottomy - righty;
+ 	    left->height = finaly - lefty;
+ 	    top->height = lefty - topy;
+@@ -1497,20 +1360,18 @@ miSetupSpanData (GCPtr pGC, SpanDataPtr spanData, int npt)
+ static void
+ miCleanupSpanData (DrawablePtr pDrawable, GCPtr pGC, SpanDataPtr spanData)
+ {
+-    if (pGC->lineStyle == LineDoubleDash)
+-    {
++    if (pGC->lineStyle == LineDoubleDash) {
+ 	ChangeGCVal oldPixel, pixel;
++
+ 	pixel.val = pGC->bgPixel;
+ 	oldPixel.val = pGC->fgPixel;
+-	if (pixel.val != oldPixel.val)
+-    	{
++        if (pixel.val != oldPixel.val) {
+ 	    ChangeGC (NullClient, pGC, GCForeground, &pixel);
+     	    ValidateGC (pDrawable, pGC);
+     	}
+ 	miFillUniqueSpanGroup (pDrawable, pGC, &spanData->bgGroup);
+ 	miFreeSpanGroup (&spanData->bgGroup);
+-	if (pixel.val != oldPixel.val)
+-    	{
++        if (pixel.val != oldPixel.val) {
+ 	    ChangeGC (NullClient, pGC, GCForeground, &oldPixel);
+ 	    ValidateGC (pDrawable, pGC);
+     	}
+@@ -1540,10 +1401,8 @@ miWideLine (DrawablePtr pDrawable, GCPtr pGC,
+     y2 = pPts->y;
+     first = TRUE;
+     selfJoin = FALSE;
+-    if (npt > 1)
+-    {
+-    	if (mode == CoordModePrevious)
+-    	{
++    if (npt > 1) {
++        if (mode == CoordModePrevious) {
+ 	    int nptTmp;
+ 	    DDXPointPtr pPtsTmp;
+     
+@@ -1551,8 +1410,7 @@ miWideLine (DrawablePtr pDrawable, GCPtr pGC,
+ 	    y1 = y2;
+ 	    nptTmp = npt;
+ 	    pPtsTmp = pPts + 1;
+-	    while (--nptTmp)
+-	    {
++            while (--nptTmp) {
+ 	    	x1 += pPtsTmp->x;
+ 	    	y1 += pPtsTmp->y;
+ 	    	++pPtsTmp;
+@@ -1560,49 +1418,41 @@ miWideLine (DrawablePtr pDrawable, GCPtr pGC,
+ 	    if (x2 == x1 && y2 == y1)
+ 	    	selfJoin = TRUE;
+     	}
+-    	else if (x2 == pPts[npt-1].x && y2 == pPts[npt-1].y)
+-    	{
++        else if (x2 == pPts[npt - 1].x && y2 == pPts[npt - 1].y) {
+ 	    selfJoin = TRUE;
+     	}
+     }
+     projectLeft = pGC->capStyle == CapProjecting && !selfJoin;
+     projectRight = FALSE;
+-    while (--npt)
+-    {
++    while (--npt) {
+ 	x1 = x2;
+ 	y1 = y2;
+ 	++pPts;
+ 	x2 = pPts->x;
+ 	y2 = pPts->y;
+-	if (mode == CoordModePrevious)
+-	{
++        if (mode == CoordModePrevious) {
+ 	    x2 += x1;
+ 	    y2 += y1;
+ 	}
+-	if (x1 != x2 || y1 != y2)
+-	{
++        if (x1 != x2 || y1 != y2) {
+ 	    somethingDrawn = TRUE;
+ 	    if (npt == 1 && pGC->capStyle == CapProjecting && !selfJoin)
+ 	    	projectRight = TRUE;
+ 	    miWideSegment (pDrawable, pGC, pixel, spanData, x1, y1, x2, y2,
+ 		       	   projectLeft, projectRight, &leftFace, &rightFace);
+-	    if (first)
+-	    {
++            if (first) {
+ 	    	if (selfJoin)
+ 		    firstFace = leftFace;
+-	    	else if (pGC->capStyle == CapRound)
+-		{
++                else if (pGC->capStyle == CapRound) {
+ 		    if (pGC->lineWidth == 1 && !spanData)
+ 			miLineOnePoint (pDrawable, pGC, pixel, spanData, x1, y1);
+ 		    else
+ 		    	miLineArc (pDrawable, pGC, pixel, spanData,
+ 			       	   &leftFace, (LineFacePtr) NULL,
+- 			       	   (double)0.0, (double)0.0,
+-			       	   TRUE);
++                                  (double) 0.0, (double) 0.0, TRUE);
+ 		}
+ 	    }
+-	    else
+-	    {
++            else {
+ 	    	miLineJoin (pDrawable, pGC, pixel, spanData, &leftFace,
+ 		            &prevRightFace);
+ 	    }
+@@ -1610,41 +1460,34 @@ miWideLine (DrawablePtr pDrawable, GCPtr pGC,
+ 	    first = FALSE;
+ 	    projectLeft = FALSE;
+ 	}
+-	if (npt == 1 && somethingDrawn)
+- 	{
++        if (npt == 1 && somethingDrawn) {
+ 	    if (selfJoin)
+ 		miLineJoin (pDrawable, pGC, pixel, spanData, &firstFace,
+ 			    &rightFace);
+-	    else if (pGC->capStyle == CapRound)
+-	    {
++            else if (pGC->capStyle == CapRound) {
+ 		if (pGC->lineWidth == 1 && !spanData)
+ 		    miLineOnePoint (pDrawable, pGC, pixel, spanData, x2, y2);
+ 		else
+ 		    miLineArc (pDrawable, pGC, pixel, spanData,
+ 			       (LineFacePtr) NULL, &rightFace,
+-			       (double)0.0, (double)0.0,
+-			       TRUE);
++                              (double) 0.0, (double) 0.0, TRUE);
+ 	    }
+ 	}
+     }
+     /* handle crock where all points are coincedent */
+-    if (!somethingDrawn)
+-    {
++    if (!somethingDrawn) {
+ 	projectLeft = pGC->capStyle == CapProjecting;
+ 	miWideSegment (pDrawable, pGC, pixel, spanData,
+ 		       x2, y2, x2, y2, projectLeft, projectLeft,
+ 		       &leftFace, &rightFace);
+-	if (pGC->capStyle == CapRound)
+-	{
++        if (pGC->capStyle == CapRound) {
+ 	    miLineArc (pDrawable, pGC, pixel, spanData,
+ 		       &leftFace, (LineFacePtr) NULL,
+-		       (double)0.0, (double)0.0,
+-		       TRUE);
++                      (double) 0.0, (double) 0.0, TRUE);
+ 	    rightFace.dx = -1;	/* sleezy hack to make it work */
+ 	    miLineArc (pDrawable, pGC, pixel, spanData,
+ 		       (LineFacePtr) NULL, &rightFace,
+- 		       (double)0.0, (double)0.0,
+-		       TRUE);
++                      (double) 0.0, (double) 0.0, TRUE);
+ 	}
+     }
+     if (spanData)
+@@ -1657,8 +1500,7 @@ miWideLine (DrawablePtr pDrawable, GCPtr pGC,
+ #define V_LEFT	    3
+ 
+ static void
+-miWideDashSegment (
+-    DrawablePtr	    pDrawable,
++miWideDashSegment(DrawablePtr pDrawable,
+     GCPtr  	    pGC,
+     SpanDataPtr	    spanData,
+     int		    *pDashOffset,
+@@ -1669,8 +1511,7 @@ miWideDashSegment (
+     int		    y2,
+     Bool	    projectLeft,
+     Bool	    projectRight,
+-    LineFacePtr	    leftFace,
+-    LineFacePtr	    rightFace)
++                  LineFacePtr leftFace, LineFacePtr rightFace)
+ {
+     int		    dashIndex, dashRemain;
+     unsigned char   *pDash;
+@@ -1702,37 +1543,30 @@ miWideDashSegment (
+     dashRemain = pDash[dashIndex] - *pDashOffset;
+     fgPixel = pGC->fgPixel;
+     bgPixel = pGC->bgPixel;
+-    if (pGC->fillStyle == FillOpaqueStippled ||
+-	pGC->fillStyle == FillTiled)
+-    {
++    if (pGC->fillStyle == FillOpaqueStippled || pGC->fillStyle == FillTiled) {
+ 	bgPixel = fgPixel;
+     }
+ 
+     l = ((double) pGC->lineWidth) / 2.0;
+-    if (dx == 0)
+-    {
++    if (dx == 0) {
+ 	L = dy;
+ 	rdx = 0;
+ 	rdy = l;
+-	if (dy < 0)
+-	{
++        if (dy < 0) {
+ 	    L = -dy;
+ 	    rdy = -l;
+ 	}
+     }
+-    else if (dy == 0)
+-    {
++    else if (dy == 0) {
+ 	L = dx;
+ 	rdx = l;
+ 	rdy = 0;
+-	if (dx < 0)
+-	{
++        if (dx < 0) {
+ 	    L = -dx;
+ 	    rdx = -l;
+ 	}
+     }
+-    else
+-    {
++    else {
+ 	L = hypot ((double) dx, (double) dy);
+ 	r = l / L;
+ 
+@@ -1767,8 +1601,7 @@ miWideDashSegment (
+     vertices[V_BOTTOM].x = vertices[V_LEFT].x = -rdy;
+     vertices[V_BOTTOM].y = vertices[V_LEFT].y = rdx;
+ 
+-    if (projectLeft)
+-    {
++    if (projectLeft) {
+ 	vertices[V_TOP].x -= rdx;
+ 	vertices[V_TOP].y -= rdy;
+ 
+@@ -1781,8 +1614,7 @@ miWideDashSegment (
+     lcenterx = x1;
+     lcentery = y1;
+ 
+-    if (pGC->capStyle == CapRound)
+-    {
++    if (pGC->capStyle == CapRound) {
+ 	lcapFace.dx = dx;
+ 	lcapFace.dy = dy;
+ 	lcapFace.x = x1;
+@@ -1793,8 +1625,7 @@ miWideDashSegment (
+ 	rcapFace.x = x1;
+ 	rcapFace.y = y1;
+     }
+-    while (LRemain > dashRemain)
+-    {
++    while (LRemain > dashRemain) {
+ 	dashDx = (dashRemain * dx) / L;
+ 	dashDy = (dashRemain * dy) / L;
+ 
+@@ -1809,17 +1640,14 @@ miWideDashSegment (
+ 
+ 	slopes[V_RIGHT].k = vertices[V_RIGHT].x * dx + vertices[V_RIGHT].y * dy;
+ 
+-	if (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1))
+-	{
++        if (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1)) {
+ 	    if (pGC->lineStyle == LineOnOffDash &&
+- 	        pGC->capStyle == CapProjecting)
+-	    {
++                pGC->capStyle == CapProjecting) {
+ 		saveRight = vertices[V_RIGHT];
+ 		saveBottom = vertices[V_BOTTOM];
+ 		saveK = slopes[V_RIGHT].k;
+ 		
+-		if (!first)
+-		{
++                if (!first) {
+ 		    vertices[V_TOP].x -= rdx;
+ 		    vertices[V_TOP].y -= rdy;
+     
+@@ -1828,8 +1656,7 @@ miWideDashSegment (
+ 
+ 		    slopes[V_LEFT].k = vertices[V_LEFT].x *
+ 				       slopes[V_LEFT].dy -
+-				       vertices[V_LEFT].y *
+-				       slopes[V_LEFT].dx;
++                        vertices[V_LEFT].y * slopes[V_LEFT].dx;
+ 		}
+ 		
+ 		vertices[V_RIGHT].x += rdx;
+@@ -1840,34 +1667,29 @@ miWideDashSegment (
+ 
+ 		slopes[V_RIGHT].k = vertices[V_RIGHT].x *
+ 				   slopes[V_RIGHT].dy -
+-				   vertices[V_RIGHT].y *
+-				   slopes[V_RIGHT].dx;
++                    vertices[V_RIGHT].y * slopes[V_RIGHT].dx;
+ 	    }
+ 	    y = miPolyBuildPoly (vertices, slopes, 4, x1, y1,
+ 			     	 left, right, &nleft, &nright, &h);
+ 	    pixel = (dashIndex & 1) ? bgPixel : fgPixel;
+-	    miFillPolyHelper (pDrawable, pGC, pixel, spanData, y, h, left, right, nleft, nright);
++            miFillPolyHelper(pDrawable, pGC, pixel, spanData, y, h, left, right,
++                             nleft, nright);
+ 
+-	    if (pGC->lineStyle == LineOnOffDash)
+-	    {
+-		switch (pGC->capStyle)
+-		{
++            if (pGC->lineStyle == LineOnOffDash) {
++                switch (pGC->capStyle) {
+ 		case CapProjecting:
+ 		    vertices[V_BOTTOM] = saveBottom;
+ 		    vertices[V_RIGHT] = saveRight;
+ 		    slopes[V_RIGHT].k = saveK;
+ 		    break;
+ 		case CapRound:
+-		    if (!first)
+-		    {
+-		    	if (dx < 0)
+-		    	{
++                    if (!first) {
++                        if (dx < 0) {
+ 		    	    lcapFace.xa = -vertices[V_LEFT].x;
+ 		    	    lcapFace.ya = -vertices[V_LEFT].y;
+ 			    lcapFace.k = slopes[V_LEFT].k;
+ 		    	}
+-		    	else
+-		    	{
++                        else {
+ 		    	    lcapFace.xa = vertices[V_TOP].x;
+ 		    	    lcapFace.ya = vertices[V_TOP].y;
+ 			    lcapFace.k = -slopes[V_LEFT].k;
+@@ -1876,14 +1698,12 @@ miWideDashSegment (
+ 			       	   &lcapFace, (LineFacePtr) NULL,
+ 			       	   lcenterx, lcentery, FALSE);
+ 		    }
+-		    if (dx < 0)
+-		    {
++                    if (dx < 0) {
+ 		    	rcapFace.xa = vertices[V_BOTTOM].x;
+ 		    	rcapFace.ya = vertices[V_BOTTOM].y;
+ 			rcapFace.k = slopes[V_RIGHT].k;
+ 		    }
+-		    else
+-		    {
++                    else {
+ 		    	rcapFace.xa = -vertices[V_RIGHT].x;
+ 		    	rcapFace.ya = -vertices[V_RIGHT].y;
+ 			rcapFace.k = -slopes[V_RIGHT].k;
+@@ -1910,8 +1730,7 @@ miWideDashSegment (
+ 	first = FALSE;
+     }
+ 
+-    if (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1))
+-    {
++    if (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1)) {
+     	vertices[V_TOP].x -= dx;
+     	vertices[V_TOP].y -= dy;
+ 
+@@ -1924,69 +1743,57 @@ miWideDashSegment (
+ 	vertices[V_BOTTOM].x = -rdy;
+ 	vertices[V_BOTTOM].y = rdx;
+ 
+-	
+-	if (projectRight)
+-	{
++        if (projectRight) {
+ 	    vertices[V_RIGHT].x += rdx;
+ 	    vertices[V_RIGHT].y += rdy;
+     
+ 	    vertices[V_BOTTOM].x += rdx;
+ 	    vertices[V_BOTTOM].y += rdy;
+ 	    slopes[V_RIGHT].k = vertices[V_RIGHT].x *
+-				slopes[V_RIGHT].dy -
+-				vertices[V_RIGHT].y *
+-				slopes[V_RIGHT].dx;
++                slopes[V_RIGHT].dy - vertices[V_RIGHT].y * slopes[V_RIGHT].dx;
+ 	}
+ 	else
+ 	    slopes[V_RIGHT].k = 0;
+ 
+ 	if (!first && pGC->lineStyle == LineOnOffDash &&
+-	    pGC->capStyle == CapProjecting)
+-	{
++            pGC->capStyle == CapProjecting) {
+ 	    vertices[V_TOP].x -= rdx;
+ 	    vertices[V_TOP].y -= rdy;
+ 
+ 	    vertices[V_LEFT].x -= rdx;
+ 	    vertices[V_LEFT].y -= rdy;
+ 	    slopes[V_LEFT].k = vertices[V_LEFT].x *
+-			       slopes[V_LEFT].dy -
+-			       vertices[V_LEFT].y *
+-			       slopes[V_LEFT].dx;
++                slopes[V_LEFT].dy - vertices[V_LEFT].y * slopes[V_LEFT].dx;
+ 	}
+ 	else
+ 	    slopes[V_LEFT].k += dx * dx + dy * dy;
+ 
+-
+ 	y = miPolyBuildPoly (vertices, slopes, 4, x2, y2,
+ 			     left, right, &nleft, &nright, &h);
+ 
+ 	pixel = (dashIndex & 1) ? pGC->bgPixel : pGC->fgPixel;
+-	miFillPolyHelper (pDrawable, pGC, pixel, spanData, y, h, left, right, nleft, nright);
++        miFillPolyHelper(pDrawable, pGC, pixel, spanData, y, h, left, right,
++                         nleft, nright);
+ 	if (!first && pGC->lineStyle == LineOnOffDash &&
+-	    pGC->capStyle == CapRound)
+-	{
++            pGC->capStyle == CapRound) {
+ 	    lcapFace.x = x2;
+ 	    lcapFace.y = y2;
+-	    if (dx < 0)
+-	    {
++            if (dx < 0) {
+ 		lcapFace.xa = -vertices[V_LEFT].x;
+ 		lcapFace.ya = -vertices[V_LEFT].y;
+ 		lcapFace.k = slopes[V_LEFT].k;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		lcapFace.xa = vertices[V_TOP].x;
+ 		lcapFace.ya = vertices[V_TOP].y;
+ 		lcapFace.k = -slopes[V_LEFT].k;
+ 	    }
+ 	    miLineArc (pDrawable, pGC, pixel, spanData,
+-		       &lcapFace, (LineFacePtr) NULL,
+-		       rcenterx, rcentery, FALSE);
++                      &lcapFace, (LineFacePtr) NULL, rcenterx, rcentery, FALSE);
+ 	}
+     }
+     dashRemain = ((double) dashRemain) - LRemain;
+-    if (dashRemain == 0)
+-    {
++    if (dashRemain == 0) {
+ 	dashIndex++;
+ 	if (dashIndex == pGC->numInDashList)
+ 	    dashIndex = 0;
+@@ -2034,15 +1841,13 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 
+ #if 0
+     /* XXX backward compatibility */
+-    if (pGC->lineWidth == 0)
+-    {
++    if (pGC->lineWidth == 0) {
+ 	miZeroDashLine (pDrawable, pGC, mode, npt, pPts);
+ 	return;
+     }
+ #endif
+     if (pGC->lineStyle == LineDoubleDash && 
+-	(pGC->fillStyle == FillOpaqueStippled || pGC->fillStyle == FillTiled))
+-    {
++        (pGC->fillStyle == FillOpaqueStippled || pGC->fillStyle == FillTiled)) {
+ 	miWideLine (pDrawable, pGC, mode, npt, pPts);
+ 	return;
+     }
+@@ -2053,8 +1858,7 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+     y2 = pPts->y;
+     first = TRUE;
+     selfJoin = FALSE;
+-    if (mode == CoordModePrevious)
+-    {
++    if (mode == CoordModePrevious) {
+ 	int nptTmp;
+ 	DDXPointPtr pPtsTmp;
+ 
+@@ -2062,8 +1866,7 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 	y1 = y2;
+ 	nptTmp = npt;
+ 	pPtsTmp = pPts + 1;
+-	while (--nptTmp)
+-	{
++        while (--nptTmp) {
+ 	    x1 += pPtsTmp->x;
+ 	    y1 += pPtsTmp->y;
+ 	    ++pPtsTmp;
+@@ -2071,8 +1874,7 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 	if (x2 == x1 && y2 == y1)
+ 	    selfJoin = TRUE;
+     }
+-    else if (x2 == pPts[npt-1].x && y2 == pPts[npt-1].y)
+-    {
++    else if (x2 == pPts[npt - 1].x && y2 == pPts[npt - 1].y) {
+ 	selfJoin = TRUE;
+     }
+     projectLeft = pGC->capStyle == CapProjecting && !selfJoin;
+@@ -2081,20 +1883,17 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+     dashOffset = 0;
+     miStepDash ((int)pGC->dashOffset, &dashIndex,
+ 	        pGC->dash, (int)pGC->numInDashList, &dashOffset);
+-    while (--npt)
+-    {
++    while (--npt) {
+ 	x1 = x2;
+ 	y1 = y2;
+ 	++pPts;
+ 	x2 = pPts->x;
+ 	y2 = pPts->y;
+-	if (mode == CoordModePrevious)
+-	{
++        if (mode == CoordModePrevious) {
+ 	    x2 += x1;
+ 	    y2 += y1;
+ 	}
+-	if (x1 != x2 || y1 != y2)
+-	{
++        if (x1 != x2 || y1 != y2) {
+ 	    somethingDrawn = TRUE;
+ 	    if (npt == 1 && pGC->capStyle == CapProjecting && 
+ 		(!selfJoin || !firstIsFg))
+@@ -2105,13 +1904,10 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 				projectLeft, projectRight, &leftFace, &rightFace);
+ 	    startIsFg = !(prevDashIndex & 1);
+ 	    endIsFg = (dashIndex & 1) ^ (dashOffset != 0);
+-	    if (pGC->lineStyle == LineDoubleDash || startIsFg)
+-	    {
++            if (pGC->lineStyle == LineDoubleDash || startIsFg) {
+ 	    	pixel = startIsFg ? pGC->fgPixel : pGC->bgPixel;
+-	    	if (first || (pGC->lineStyle == LineOnOffDash && !prevIsFg))
+-	    	{
+-	    	    if (first && selfJoin)
+-		    {
++                if (first || (pGC->lineStyle == LineOnOffDash && !prevIsFg)) {
++                    if (first && selfJoin) {
+ 		    	firstFace = leftFace;
+ 			firstIsFg = startIsFg;
+ 		    }
+@@ -2120,8 +1916,7 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 			       	   &leftFace, (LineFacePtr) NULL,
+ 			       	   (double)0.0, (double)0.0, TRUE);
+ 	    	}
+-	    	else
+-	    	{
++                else {
+ 	    	    miLineJoin (pDrawable, pGC, pixel, spanData, &leftFace,
+ 		            	&prevRightFace);
+ 	    	}
+@@ -2131,31 +1926,25 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 	    first = FALSE;
+ 	    projectLeft = FALSE;
+ 	}
+-	if (npt == 1 && somethingDrawn)
+-	{
+-	    if (pGC->lineStyle == LineDoubleDash || endIsFg)
+-	    {
++        if (npt == 1 && somethingDrawn) {
++            if (pGC->lineStyle == LineDoubleDash || endIsFg) {
+ 		pixel = endIsFg ? pGC->fgPixel : pGC->bgPixel;
+-		if (selfJoin && (pGC->lineStyle == LineDoubleDash || firstIsFg))
+-		{
++                if (selfJoin && (pGC->lineStyle == LineDoubleDash || firstIsFg)) {
+ 		    miLineJoin (pDrawable, pGC, pixel, spanData, &firstFace,
+ 				&rightFace);
+ 		}
+-		else 
+-		{
++                else {
+ 		    if (pGC->capStyle == CapRound)
+ 			miLineArc (pDrawable, pGC, pixel, spanData,
+ 				    (LineFacePtr) NULL, &rightFace,
+ 				    (double)0.0, (double)0.0, TRUE);
+ 		}
+ 	    }
+-	    else
+-	    {
++            else {
+ 		/* glue a cap to the start of the line if
+ 		 * we're OnOffDash and ended on odd dash
+ 		 */
+-		if (selfJoin && firstIsFg)
+-		{
++                if (selfJoin && firstIsFg) {
+ 		    pixel = pGC->fgPixel;
+ 		    if (pGC->capStyle == CapProjecting)
+ 			miLineProjectingCap (pDrawable, pGC, pixel, spanData,
+@@ -2170,16 +1959,15 @@ miWideDash (DrawablePtr pDrawable, GCPtr pGC,
+ 	}
+     }
+     /* handle crock where all points are coincident */
+-    if (!somethingDrawn && (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1)))
+-    {
++    if (!somethingDrawn &&
++        (pGC->lineStyle == LineDoubleDash || !(dashIndex & 1))) {
+ 	/* not the same as endIsFg computation above */
+ 	pixel = (dashIndex & 1) ? pGC->bgPixel : pGC->fgPixel;
+ 	switch (pGC->capStyle) {
+ 	case CapRound:
+ 	    miLineArc (pDrawable, pGC, pixel, spanData,
+ 		       (LineFacePtr) NULL, (LineFacePtr) NULL,
+-		       (double)x2, (double)y2,
+-		       FALSE);
++                      (double) x2, (double) y2, FALSE);
+ 	    break;
+ 	case CapProjecting:
+ 	    x1 = pGC->lineWidth;

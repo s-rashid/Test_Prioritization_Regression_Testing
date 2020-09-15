@@ -1,0 +1,13 @@
+diff --git a/fb/fbpixmap.c b/fb/fbpixmap.c
+index 15eedcd..41b12ce 100644
+--- a/fb/fbpixmap.c
++++ b/fb/fbpixmap.c
+@@ -318,7 +318,7 @@ fbPixmapToRegion(PixmapPtr pPix)
+     if (!RegionIsValid(pReg))
+ 	FatalError("Assertion failed file %s, line %d: expr\n", __FILE__, __LINE__);
+ #endif
+-    return(pReg);
++    return pReg;
+ }
+ 
+ #ifdef FB_DEBUG

@@ -1,0 +1,13 @@
+diff --git a/glx/glxdri2.c b/glx/glxdri2.c
+index 8187a3e..5e524db 100644
+--- a/glx/glxdri2.c
++++ b/glx/glxdri2.c
+@@ -423,7 +423,7 @@ __glXDRIscreenCreateContext(__GLXscreen *baseScreen,
+ }
+ 
+ static void
+-__glXDRIinvalidateBuffers(DrawablePtr pDraw, void *priv)
++__glXDRIinvalidateBuffers(DrawablePtr pDraw, void *priv, XID id)
+ {
+ #if __DRI2_FLUSH_VERSION >= 3
+     __GLXDRIdrawable *private = priv;

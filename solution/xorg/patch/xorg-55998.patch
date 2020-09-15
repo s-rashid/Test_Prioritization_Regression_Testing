@@ -1,0 +1,83 @@
+diff --git a/mi/mipolypnt.c b/mi/mipolypnt.c
+index 3e43a52..086502b 100644
+--- a/mi/mipolypnt.c
++++ b/mi/mipolypnt.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -56,13 +55,8 @@ SOFTWARE.
+ #include "mi.h"
+ 
+ void
+-miPolyPoint(
+-    DrawablePtr		pDrawable,
+-    GCPtr		pGC,
+-    int			mode,		/* Origin or Previous */
+-    int			npt,
+-    xPoint		*pptInit
+-    )
++miPolyPoint(DrawablePtr pDrawable, GCPtr pGC, int mode, /* Origin or Previous */
++            int npt, xPoint * pptInit)
+ {
+ 
+     int 		xorg;
+@@ -77,27 +71,23 @@ miPolyPoint(
+ 	return;
+ 
+     /* make pointlist origin relative */
+-    if (mode == CoordModePrevious)
+-    {
++    if (mode == CoordModePrevious) {
+         ppt = pptInit;
+         nptTmp = npt;
+ 	nptTmp--;
+-	while(nptTmp--)
+-	{
++        while (nptTmp--) {
+ 	    ppt++;
+ 	    ppt->x += (ppt-1)->x;
+ 	    ppt->y += (ppt-1)->y;
+ 	}
+     }
+ 
+-    if(pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	ppt = pptInit;
+ 	nptTmp = npt;
+ 	xorg = pDrawable->x;
+ 	yorg = pDrawable->y;
+-	while(nptTmp--)
+-	{
++        while (nptTmp--) {
+ 	    ppt->x += xorg;
+ 	    ppt++->y += yorg;
+ 	}
+@@ -105,8 +95,7 @@ miPolyPoint(
+ 
+     fsOld.val = pGC->fillStyle;
+     fsNew.val = FillSolid;
+-    if(pGC->fillStyle != FillSolid)
+-    {
++    if (pGC->fillStyle != FillSolid) {
+ 	ChangeGC(NullClient, pGC, GCFillStyle, &fsNew);
+ 	ValidateGC(pDrawable, pGC);
+     }
+@@ -115,11 +104,9 @@ miPolyPoint(
+ 	*pwidth++ = 1;
+     (*pGC->ops->FillSpans)(pDrawable, pGC, npt, pptInit, pwidthInit, FALSE); 
+ 
+-    if(fsOld.val != FillSolid)
+-    {
++    if (fsOld.val != FillSolid) {
+ 	ChangeGC(NullClient, pGC, GCFillStyle, &fsOld);
+ 	ValidateGC(pDrawable, pGC);
+     }
+     free(pwidthInit);
+ }
+-

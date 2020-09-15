@@ -1,0 +1,15 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 361c484..e36b15f 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -603,6 +603,10 @@ typedef struct _Screen {
+     DeviceCursorCleanupProcPtr    DeviceCursorCleanup;
+ } ScreenRec;
+ 
++static inline RegionPtr BitmapToRegion(ScreenPtr _pScreen, PixmapPtr pPix) {
++    return (*(_pScreen)->BitmapToRegion)(pPix); /* no mi version?! */
++}
++
+ typedef struct _ScreenInfo {
+     int		imageByteOrder;
+     int		bitmapScanlineUnit;

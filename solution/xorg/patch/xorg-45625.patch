@@ -1,0 +1,28 @@
+diff --git a/exa/exa_glyphs.c b/exa/exa_glyphs.c
+index b8d2e52..1855de1 100644
+--- a/exa/exa_glyphs.c
++++ b/exa/exa_glyphs.c
+@@ -372,7 +372,6 @@ exaGlyphCacheUploadGlyph(ScreenPtr         pScreen,
+     PixmapPtr pGlyphPixmap = (PixmapPtr)pGlyphPicture->pDrawable;
+     ExaPixmapPriv(pGlyphPixmap);
+     PixmapPtr pCachePixmap = (PixmapPtr)cache->picture->pDrawable;
+-    ExaMigrationRec pixmaps[1];
+ 
+     if (!pExaScr->info->UploadToScreen || pExaScr->swappedOut || pExaPixmap->accel_blocked)
+ 	goto composite;
+@@ -387,11 +386,15 @@ exaGlyphCacheUploadGlyph(ScreenPtr         pScreen,
+ 	goto composite;
+ 
+     /* cache pixmap must be offscreen. */
++    if (pExaPixmap->pDamage) {
++	ExaMigrationRec pixmaps[1];
++
+     pixmaps[0].as_dst = TRUE;
+     pixmaps[0].as_src = FALSE;
+     pixmaps[0].pPix = pCachePixmap;
+     pixmaps[0].pReg = NULL;
+     exaDoMigration (pixmaps, 1, TRUE);
++    }
+ 
+     if (!exaPixmapIsOffscreen(pCachePixmap))
+ 	goto composite;

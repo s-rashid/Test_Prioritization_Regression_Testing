@@ -1,0 +1,13 @@
+diff --git a/test/xi2/protocol-eventconvert.c b/test/xi2/protocol-eventconvert.c
+index faa9f40..bf1493c 100644
+--- a/test/xi2/protocol-eventconvert.c
++++ b/test/xi2/protocol-eventconvert.c
+@@ -1005,7 +1005,7 @@ test_convert_XITouchOwnershipEvent(void)
+     {
+         in.touchid = i;
+         test_XITouchOwnershipEvent(&in);
+-	if (i == (1 << 31))
++	if (i == ((long)1 << 31))
+ 	    break;
+     }
+ }

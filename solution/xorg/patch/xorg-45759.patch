@@ -1,0 +1,13 @@
+diff --git a/Xi/grabdev.c b/Xi/grabdev.c
+index a7e46fe..925c9a6 100644
+--- a/Xi/grabdev.c
++++ b/Xi/grabdev.c
+@@ -181,7 +181,7 @@ CreateMaskFromList(ClientPtr client, XEventClass * list, int count,
+ 
+     for (i = 0; i < count; i++, list++) {
+ 	device = *list >> 8;
+-	if (device > 255) /* FIXME: we only use 7 bit for devices? */
++	if (device > 255)
+ 	    return BadClass;
+ 
+ 	rc = dixLookupDevice(&tdev, device, client, DixUseAccess);

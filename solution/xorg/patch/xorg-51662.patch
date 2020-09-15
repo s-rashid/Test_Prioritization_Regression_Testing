@@ -1,0 +1,58 @@
+diff --git a/hw/xwin/winwndproc.c b/hw/xwin/winwndproc.c
+index 80f5e1a..dd8f27e 100644
+--- a/hw/xwin/winwndproc.c
++++ b/hw/xwin/winwndproc.c
+@@ -183,28 +183,6 @@ winWindowProc (HWND hwnd, UINT message,
+ 	      LOWORD (lParam), HIWORD (lParam), wParam);
+ 
+       /*
+-       * TrueColor --> TrueColor depth changes are disruptive for:
+-       *	Windowed:
+-       *		Shadow DirectDraw
+-       *		Shadow DirectDraw Non-Locking
+-       *		Primary DirectDraw
+-       *
+-       * TrueColor --> TrueColor depth changes are non-optimal for:
+-       *	Windowed:
+-       *		Shadow GDI
+-       *
+-       *	FullScreen:
+-       *		Shadow GDI
+-       *
+-       * TrueColor --> PseudoColor or vice versa are disruptive for:
+-       *	Windowed:
+-       *		Shadow DirectDraw
+-       *		Shadow DirectDraw Non-Locking
+-       *		Primary DirectDraw
+-       *		Shadow GDI
+-       */
+-
+-      /*
+        * Check for a disruptive change in depth.
+        * We can only display a message for a disruptive depth change,
+        * we cannot do anything to correct the situation.
+@@ -213,8 +191,9 @@ winWindowProc (HWND hwnd, UINT message,
+         XXX: maybe we need to check if GetSystemMetrics(SM_SAMEDISPLAYFORMAT)
+         has changed as well...
+       */
+-      if ((s_pScreenInfo->dwBPP != GetDeviceCaps (s_pScreenPriv->hdcScreen, BITSPIXEL))
+-	  && (s_pScreenInfo->dwEngine == WIN_SERVER_SHADOW_DD
++      if (s_pScreenInfo->dwBPP != GetDeviceCaps (s_pScreenPriv->hdcScreen, BITSPIXEL))
++        {
++          if ((s_pScreenInfo->dwEngine == WIN_SERVER_SHADOW_DD
+ 	      || s_pScreenInfo->dwEngine == WIN_SERVER_SHADOW_DDNL
+ #ifdef XWIN_PRIMARYFB
+ 	      || s_pScreenInfo->dwEngine == WIN_SERVER_PRIMARY_DD
+@@ -235,6 +214,12 @@ winWindowProc (HWND hwnd, UINT message,
+ 	}
+       else
+ 	{
++              /* For GDI, performance may suffer until original depth is restored */
++              ErrorF ("winWindowProc - Performance may be non-optimal after change in depth\n");
++            }
++        }
++      else
++        {
+ 	  /* Flag that we have a valid screen depth */
+ 	  s_pScreenPriv->fBadDepth = FALSE;
+ 	}

@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/winclip.c b/hw/xwin/winclip.c
+index aab7d63..941e948 100644
+--- a/hw/xwin/winclip.c
++++ b/hw/xwin/winclip.c
+@@ -35,8 +35,8 @@
+ 
+ /* Look at mfb/mfbclip.c for sample implementation */
+ RegionPtr
+-winPixmapToRegionNativeGDI (PixmapPtr pPix)
++winPixmapToRegionNativeGDI(PixmapPtr pPix)
+ {
+-  ErrorF ("winPixmapToRegion()\n");
+-  return NULL;
++    ErrorF("winPixmapToRegion()\n");
++    return NULL;
+ }

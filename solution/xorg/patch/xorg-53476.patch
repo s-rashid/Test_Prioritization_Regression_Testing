@@ -1,0 +1,16 @@
+diff --git a/render/render.c b/render/render.c
+index cc13dbc..ff75409 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -52,11 +52,7 @@
+ #include "panoramiXsrv.h"
+ #endif
+ 
+-#if HAVE_STDINT_H
+ #include <stdint.h>
+-#elif !defined(UINT32_MAX)
+-#define UINT32_MAX 0xffffffffU
+-#endif
+ 
+ static int ProcRenderQueryVersion (ClientPtr pClient);
+ static int ProcRenderQueryPictFormats (ClientPtr pClient);

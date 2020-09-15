@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Events.c b/hw/xfree86/common/xf86Events.c
+index 98175e9..72e1c75 100644
+--- a/hw/xfree86/common/xf86Events.c
++++ b/hw/xfree86/common/xf86Events.c
+@@ -80,8 +80,7 @@
+ #include "xkbstr.h"
+ 
+ #ifdef DPMSExtension
+-#define DPMS_SERVER
+-#include <X11/extensions/dpms.h>
++#include <X11/extensions/dpmsconst.h>
+ #include "dpmsproc.h"
+ #endif
+ 

@@ -1,0 +1,11 @@
+diff --git a/xkb/xkbfmisc.c b/xkb/xkbfmisc.c
+index 103e609..7aa9863 100644
+--- a/xkb/xkbfmisc.c
++++ b/xkb/xkbfmisc.c
+@@ -437,5 +437,5 @@ XkbNameMatchesPattern(char *name,char *ptrn)
+ 	ptrn++;
+     }
+     /* if we get here, the pattern is exhausted (-:just like me:-) */
+-    return (name[0]=='\0');
++    return name[0]=='\0';
+ }

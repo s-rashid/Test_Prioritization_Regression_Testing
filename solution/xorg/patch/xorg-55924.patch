@@ -1,0 +1,20 @@
+diff --git a/include/extinit.h b/include/extinit.h
+index 8e47beb..a048b72 100644
+--- a/include/extinit.h
++++ b/include/extinit.h
+@@ -33,13 +33,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include "extnsionst.h"
+ 
+ extern void
+-XInputExtensionInit(
+-	void
++ XInputExtensionInit(void
+ 	);
+ 
+ extern _X_EXPORT void
+-AssignTypeAndName (
+-	DeviceIntPtr           /* dev */,
++ AssignTypeAndName(DeviceIntPtr /* dev */ ,
+ 	Atom                   /* type */,
+ 	const char *           /* name */
+ 	);

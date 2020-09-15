@@ -1,0 +1,17 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index 403c859..577614d 100644
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -629,9 +629,11 @@ winWindowsWMExtensionInit (void)
+ 			       NULL,
+ 			       StandardMinorOpcode)))
+     {
++      size_t i;
+       WMReqCode = (unsigned char)extEntry->base;
+       WMErrorBase = extEntry->errorBase;
+       WMEventBase = extEntry->eventBase;
+-      EventSwapVector[WMEventBase] = (EventSwapPtr) SNotifyEvent;
++      for (i=0; i < WindowsWMNumberEvents; i++)
++        EventSwapVector[WMEventBase + i] = (EventSwapPtr) SNotifyEvent;
+     }
+ }

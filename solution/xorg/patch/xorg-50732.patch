@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winprocarg.c b/hw/xwin/winprocarg.c
+index fea5797..edbd4be 100644
+--- a/hw/xwin/winprocarg.c
++++ b/hw/xwin/winprocarg.c
+@@ -34,7 +34,6 @@ from The Open Group.
+ #include <../xfree86/common/xorgVersion.h>
+ #include "win.h"
+ #include "winconfig.h"
+-#include "winprefs.h"
+ #include "winmsg.h"
+ 
+ /*

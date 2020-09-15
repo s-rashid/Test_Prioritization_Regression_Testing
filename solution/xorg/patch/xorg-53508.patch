@@ -1,0 +1,13 @@
+diff --git a/config/config-backends.h b/config/config-backends.h
+index 35ab8a0..10743c3 100644
+--- a/config/config-backends.h
++++ b/config/config-backends.h
+@@ -68,3 +68,8 @@ int config_hal_init(void);
+ void config_hal_fini(void);
+ # endif
+ #endif
++
++#ifdef CONFIG_WSCONS
++int config_wscons_init(void);
++void config_wscons_fini(void);
++#endif

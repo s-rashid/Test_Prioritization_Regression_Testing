@@ -1,0 +1,34 @@
+diff --git a/hw/kdrive/fbdev/fbinit.c b/hw/kdrive/fbdev/fbinit.c
+index 1d66fce..d2a1401 100644
+--- a/hw/kdrive/fbdev/fbinit.c
++++ b/hw/kdrive/fbdev/fbinit.c
+@@ -55,17 +55,16 @@ ddxUseMsg (void)
+ {
+   KdUseMsg();
+   ErrorF("\nXfbdev Device Usage:\n");
+-  ErrorF("-fb path         Framebuffer device to use. Defaults to /dev/fb0\n");
++    ErrorF
++        ("-fb path         Framebuffer device to use. Defaults to /dev/fb0\n");
+   ErrorF("\n");
+ }
+ 
+ int
+ ddxProcessArgument (int argc, char **argv, int i)
+ {
+-  if (!strcmp (argv[i], "-fb"))
+-    {
+-      if (i+1 < argc)
+-	{
++    if (!strcmp(argv[i], "-fb")) {
++        if (i + 1 < argc) {
+ 	  fbdevDevicePath = argv[i+1];
+ 	  return 2;
+ 	}
+@@ -76,7 +75,6 @@ ddxProcessArgument (int argc, char **argv, int i)
+   return KdProcessArgument (argc, argv, i);
+ }
+ 
+-
+ KdCardFuncs	fbdevFuncs = {
+     fbdevCardInit,	    /* cardinit */
+     fbdevScreenInit,	    /* scrinit */

@@ -1,0 +1,10 @@
+diff --git a/hw/dmx/glxProxy/glxerror.h b/hw/dmx/glxProxy/glxerror.h
+index d84ec44..26492d2 100644
+--- a/hw/dmx/glxProxy/glxerror.h
++++ b/hw/dmx/glxProxy/glxerror.h
+@@ -48,5 +48,4 @@ extern int __glXUnsupportedPrivateRequest;
+ extern int __glXBadFBConfig;
+ extern int __glXBadPbuffer;
+ 
+-
+ #endif

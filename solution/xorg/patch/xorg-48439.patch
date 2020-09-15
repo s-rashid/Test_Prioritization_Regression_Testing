@@ -1,0 +1,25 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 2685815..7995ff2 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -383,7 +383,7 @@ ProcSecurityQueryVersion(
+     }
+     (void)WriteToClient(client, SIZEOF(xSecurityQueryVersionReply),
+ 			(char *)&rep);
+-    return (client->noClientException);
++    return Success;
+ } /* ProcSecurityQueryVersion */
+ 
+ 
+@@ -604,10 +604,7 @@ ProcSecurityGenerateAuthorization(
+ 		  pAuth->group, eventMask);
+ 
+     /* the request succeeded; don't call RemoveAuthorization or free pAuth */
+-
+-    removeAuth = FALSE;
+-    pAuth = NULL;
+-    err = client->noClientException;
++    return Success;
+ 
+ bailout:
+     if (removeAuth)

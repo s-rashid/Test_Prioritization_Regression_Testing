@@ -1,0 +1,35 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index 296c57f..33bb40b 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -40,15 +40,13 @@ in this Software without prior written authorization from The Open Group.
+ # include   "dixstruct.h"
+ # include   "inputstr.h"
+ 
+-static int miPointerScreenKeyIndex;
+-DevPrivateKey miPointerScreenKey = &miPointerScreenKeyIndex;
++DevPrivateKeyRec miPointerScreenKeyRec;
+ 
+ #define GetScreenPrivate(s) ((miPointerScreenPtr) \
+     dixLookupPrivate(&(s)->devPrivates, miPointerScreenKey))
+ #define SetupScreen(s)	miPointerScreenPtr  pScreenPriv = GetScreenPrivate(s)
+ 
+-static int miPointerPrivKeyIndex;
+-static DevPrivateKey miPointerPrivKey = &miPointerPrivKeyIndex;
++DevPrivateKeyRec miPointerPrivKeyRec;
+ 
+ #define MIPOINTER(dev) \
+     ((!IsMaster(dev) && !dev->u.master) ? \
+@@ -86,6 +84,12 @@ miPointerInitialize (ScreenPtr                  pScreen,
+ {
+     miPointerScreenPtr	pScreenPriv;
+ 
++    if (!dixRegisterPrivateKey(&miPointerScreenKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
++    if (!dixRegisterPrivateKey(&miPointerPrivKeyRec, PRIVATE_DEVICE, 0))
++	return FALSE;
++
+     pScreenPriv = malloc(sizeof (miPointerScreenRec));
+     if (!pScreenPriv)
+ 	return FALSE;

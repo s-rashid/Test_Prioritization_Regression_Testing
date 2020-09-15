@@ -1,0 +1,110 @@
+diff --git a/hw/xwin/winsetsp.c b/hw/xwin/winsetsp.c
+index e5d33be..8f75991 100644
+--- a/hw/xwin/winsetsp.c
++++ b/hw/xwin/winsetsp.c
+@@ -34,16 +34,13 @@
+ #endif
+ #include "win.h"
+ 
+-
+ /* See Porting Layer Definition - p. 55 */
+ void
+ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 		      GCPtr		pGC,
+ 		      char		*pSrcs,
+ 		      DDXPointPtr	pPoints,
+-		      int		*piWidths,
+-		      int		iSpans,
+-		      int		fSorted)
++                     int *piWidths, int iSpans, int fSorted)
+ {
+   winGCPriv(pGC);
+   PixmapPtr		pPixmap = NULL;
+@@ -57,12 +54,13 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+   nbox = RegionNumRects (pGC->pCompositeClip);
+   pbox = RegionRects (pGC->pCompositeClip);
+ 
+-  if (!nbox) return;
++    if (!nbox)
++        return;
+ 
+   combined = CreateRectRgn (pbox->x1, pbox->y1, pbox->x2, pbox->y2);
+-  nbox--; pbox++;
+-  while (nbox--)
+-    {
++    nbox--;
++    pbox++;
++    while (nbox--) {
+       hrgn = CreateRectRgn (pbox->x1, pbox->y1, pbox->x2, pbox->y2);
+       CombineRgn (combined, combined, hrgn, RGN_OR);
+       DeleteObject (hrgn);
+@@ -71,8 +69,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+     }
+ 
+   /* Branch on the drawable type */
+-  switch (pDrawable->type)
+-    {
++    switch (pDrawable->type) {
+     case DRAWABLE_PIXMAP:
+ 
+       SelectClipRgn (pGCPriv->hdcMem, combined);
+@@ -88,8 +85,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 	FatalError ("winSetSpans - DRAWABLE_PIXMAP - SelectObject () "
+ 		    "failed on pPixmapPriv->hBitmap\n");
+ 
+-      while (iSpans--)
+-        {
++        while (iSpans--) {
+ 	  ZeroMemory (&bmi, sizeof (BITMAPINFO));
+ 	  bmi.bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+ 	  bmi.bmiHeader.biWidth = *piWidths;
+@@ -99,8 +95,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 	  bmi.bmiHeader.biCompression = BI_RGB;
+ 
+   	  /* Setup color table for mono DIBs */
+-  	  if (pDrawable->depth == 1)
+-    	    {
++            if (pDrawable->depth == 1) {
+       	      bmi.bmiColors[1].rgbBlue = 255;
+       	      bmi.bmiColors[1].rgbGreen = 255;
+       	      bmi.bmiColors[1].rgbRed = 255;
+@@ -113,8 +108,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 			 *piWidths, 1,
+ 			 pSrcs,
+ 			 (BITMAPINFO *) &bmi,
+-			 DIB_RGB_COLORS,
+-			 g_copyROP[pGC->alu]);
++                          DIB_RGB_COLORS, g_copyROP[pGC->alu]);
+ 
+ 	  pSrcs += PixmapBytePad (*piWidths, pDrawable->depth);
+ 	  pPoints++;
+@@ -134,8 +128,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+       DeleteObject (combined);
+       combined = NULL;
+ 
+-      while (iSpans--)
+-        {
++        while (iSpans--) {
+ 	  ZeroMemory (&bmi, sizeof (BITMAPINFO));
+ 	  bmi.bmiHeader.biSize = sizeof (BITMAPINFOHEADER);
+ 	  bmi.bmiHeader.biWidth = *piWidths;
+@@ -145,8 +138,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 	  bmi.bmiHeader.biCompression = BI_RGB;
+ 
+   	  /* Setup color table for mono DIBs */
+-  	  if (pDrawable->depth == 1)
+-    	    {
++            if (pDrawable->depth == 1) {
+       	      bmi.bmiColors[1].rgbBlue = 255;
+       	      bmi.bmiColors[1].rgbGreen = 255;
+       	      bmi.bmiColors[1].rgbRed = 255;
+@@ -159,8 +151,7 @@ winSetSpansNativeGDI (DrawablePtr	pDrawable,
+ 			 *piWidths, 1,
+ 			 pSrcs,
+ 			 (BITMAPINFO *) &bmi,
+-			 DIB_RGB_COLORS,
+-			 g_copyROP[pGC->alu]);
++                          DIB_RGB_COLORS, g_copyROP[pGC->alu]);
+ 
+ 	  pSrcs += PixmapBytePad (*piWidths, pDrawable->depth);
+ 	  pPoints++;

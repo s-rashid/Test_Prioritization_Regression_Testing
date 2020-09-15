@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/xpr/dri.c b/hw/xquartz/xpr/dri.c
+index 8bae6b0..a58f2c7 100644
+--- a/hw/xquartz/xpr/dri.c
++++ b/hw/xquartz/xpr/dri.c
+@@ -813,8 +813,7 @@ Bool DRICreatePixmap(ScreenPtr pScreen, Drawable id,
+ 	return FALSE;
+     }
+     
+-    strncpy(path, shared->shmPath, pathmax);
+-    path[pathmax - 1] = '\0';
++    strlcpy(path, shared->shmPath, pathmax);
+     
+     dixSetPrivate(&pPix->devPrivates, DRIPixmapBufferPrivKey, shared);
+ 

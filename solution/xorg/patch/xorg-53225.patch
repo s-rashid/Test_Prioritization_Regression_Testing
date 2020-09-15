@@ -1,0 +1,14 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 0b85953..ac0b427 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -6190,6 +6190,9 @@ char *			str;
+ 	swaps(&rep.supported);
+ 	swaps(&rep.unsupported);
+ 	swaps(&rep.nDeviceLedFBs);
++	swaps(&rep.dfltKbdFB);
++	swaps(&rep.dfltLedFB);
++	swapl(&rep.devType);
+     }
+     WriteToClient(client,SIZEOF(xkbGetDeviceInfoReply), (char *)&rep);
+ 

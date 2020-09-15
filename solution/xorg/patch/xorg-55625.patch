@@ -1,0 +1,103 @@
+diff --git a/hw/xfree86/parser/write.c b/hw/xfree86/parser/write.c
+index eea3f06..c001c3d 100644
+--- a/hw/xfree86/parser/write.c
++++ b/hw/xfree86/parser/write.c
+@@ -51,7 +51,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -87,8 +86,7 @@ doWriteConfigFile (const char *filename, XF86ConfigPtr cptr)
+ {
+ 	FILE *cf;
+ 
+-	if ((cf = fopen (filename, "w")) == NULL)
+-	{
++    if ((cf = fopen(filename, "w")) == NULL) {
+ 		return 0;
+ 	}
+ 
+@@ -97,15 +95,13 @@ doWriteConfigFile (const char *filename, XF86ConfigPtr cptr)
+ 
+ 	xf86printLayoutSection (cf, cptr->conf_layout_lst);
+ 
+-	if (cptr->conf_files != NULL)
+-	{
++    if (cptr->conf_files != NULL) {
+ 		fprintf (cf, "Section \"Files\"\n");
+ 		xf86printFileSection (cf, cptr->conf_files);
+ 		fprintf (cf, "EndSection\n\n");
+ 	}
+ 
+-	if (cptr->conf_modules != NULL)
+-	{
++    if (cptr->conf_modules != NULL) {
+ 		fprintf (cf, "Section \"Module\"\n");
+ 		xf86printModuleSection (cf, cptr->conf_modules);
+ 		fprintf (cf, "EndSection\n\n");
+@@ -152,14 +148,12 @@ xf86writeConfigFile (const char *filename, XF86ConfigPtr cptr)
+ 	int ruid, euid;
+ #endif
+ 
+-	if (getuid() != geteuid())
+-	{
++    if (getuid() != geteuid()) {
+ 
+ #if !defined(HAS_SAVED_IDS_AND_SETEUID)
+ 		/* Need to fork to change ruid without loosing euid */
+ 		csig = signal(SIGCHLD, SIG_DFL);
+-		switch ((pid = fork()))
+-		{
++        switch ((pid = fork())) {
+ 		case -1:
+ 			ErrorF("xf86writeConfigFile(): fork failed (%s)\n",
+ 					strerror(errno));
+@@ -167,14 +161,12 @@ xf86writeConfigFile (const char *filename, XF86ConfigPtr cptr)
+ 		case 0: /* child */
+ 			if (setuid(getuid()) == -1) 
+ 			    FatalError("xf86writeConfigFile(): "
+-				"setuid failed(%s)\n", 
+-				strerror(errno));
++                           "setuid failed(%s)\n", strerror(errno));
+ 			ret = doWriteConfigFile(filename, cptr);
+ 			exit(ret);
+ 			break;
+ 		default: /* parent */
+-			do
+-			{
++            do {
+ 				p = waitpid(pid, &status, 0);
+ 			} while (p == -1 && errno == EINTR);
+ 		}
+@@ -189,16 +181,14 @@ xf86writeConfigFile (const char *filename, XF86ConfigPtr cptr)
+ 		ruid = getuid();
+ 		euid = geteuid();
+ 
+-		if (seteuid(ruid) == -1)
+-		{
++        if (seteuid(ruid) == -1) {
+ 			ErrorF("xf86writeConfigFile(): seteuid(%d) failed (%s)\n",
+ 					ruid, strerror(errno));
+ 			return 0;
+ 		}
+ 		ret = doWriteConfigFile(filename, cptr);
+ 
+-		if (seteuid(euid) == -1)
+-		{
++        if (seteuid(euid) == -1) {
+ 			ErrorF("xf86writeConfigFile(): seteuid(%d) failed (%s)\n",
+ 					euid, strerror(errno));
+ 		}
+@@ -207,8 +197,7 @@ xf86writeConfigFile (const char *filename, XF86ConfigPtr cptr)
+ #endif /* HAS_SAVED_IDS_AND_SETEUID */
+ 
+ 	}
+-	else
+-	{
++    else {
+ 		return doWriteConfigFile(filename, cptr);
+ 	}
+ }

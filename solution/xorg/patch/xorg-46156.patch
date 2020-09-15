@@ -1,0 +1,13 @@
+diff --git a/dix/property.c b/dix/property.c
+index 10b8482..9ec5dc6 100644
+--- a/dix/property.c
++++ b/dix/property.c
+@@ -474,7 +474,7 @@ ProcGetProperty(ClientPtr client)
+     }
+     rc = dixLookupWindow(&pWin, stuff->window, client, win_mode);
+     if (rc != Success)
+-	return rc;
++	return (rc == BadMatch) ? BadWindow : rc;
+ 
+     if (!ValidAtom(stuff->property))
+     {

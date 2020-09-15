@@ -1,0 +1,15 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index c6f9d46..3b0411d 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -890,8 +890,8 @@ ProcessRawEvent(RawDeviceEvent *ev, DeviceIntPtr device)
+         i = EventToXI2((InternalEvent*)ev, (xEvent**)&xi);
+         if (i != Success)
+         {
+-            ErrorF("[Xi] %s: XI2 conversion failed in ProcessRawEvent (%d)\n",
+-                    device->name, i);
++            ErrorF("[Xi] %s: XI2 conversion failed in %s (%d)\n",
++                    __func__, device->name, i);
+             return;
+         }
+ 

@@ -1,0 +1,10 @@
+diff --git a/dix/globals.c b/dix/globals.c
+index 28e7d07..82a85c2 100644
+--- a/dix/globals.c
++++ b/dix/globals.c
+@@ -135,5 +135,3 @@ char *display;
+ char *ConnectionInfo;
+ 
+ CARD32 TimeOutValue = DEFAULT_TIMEOUT * MILLI_PER_SECOND;
+-
+-DDXPointRec dixScreenOrigins[MAXSCREENS];

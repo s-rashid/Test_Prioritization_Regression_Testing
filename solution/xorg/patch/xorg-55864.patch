@@ -1,0 +1,230 @@
+diff --git a/hw/xwin/winmouse.c b/hw/xwin/winmouse.c
+index 99509f2..9d896c9 100644
+--- a/hw/xwin/winmouse.c
++++ b/hw/xwin/winmouse.c
+@@ -44,7 +44,6 @@
+ /* Peek the internal button mapping */
+ static CARD8 const *g_winMouseButtonMap = NULL;
+ 
+-
+ /*
+  * Local prototypes
+  */
+@@ -52,13 +51,11 @@ static CARD8 const *g_winMouseButtonMap = NULL;
+ static void
+ winMouseCtrl (DeviceIntPtr pDevice, PtrCtrl *pCtrl);
+ 
+-
+ static void
+ winMouseCtrl (DeviceIntPtr pDevice, PtrCtrl *pCtrl)
+ {
+ }
+ 
+-
+ /*
+  * See Porting Layer Definition - p. 18
+  * This is known as a DeviceProc
+@@ -74,8 +71,7 @@ winMouseProc (DeviceIntPtr pDeviceInt, int iState)
+   Atom *btn_labels;
+   Atom axes_labels[2];
+ 
+-  switch (iState)
+-    {
++    switch (iState) {
+     case DEVICE_INIT:
+       /* Get number of mouse buttons */
+       lngMouseButtons = GetSystemMetrics(SM_CMOUSEBUTTONS);
+@@ -116,9 +112,7 @@ winMouseProc (DeviceIntPtr pDeviceInt, int iState)
+ 			       lngMouseButtons + lngWheelEvents,
+ 			       btn_labels,
+ 			       winMouseCtrl,
+-			       GetMotionHistorySize(),
+-			       2,
+-			       axes_labels);
++                                GetMotionHistorySize(), 2, axes_labels);
+       free(map);
+       free(btn_labels);
+ 
+@@ -139,7 +133,6 @@ winMouseProc (DeviceIntPtr pDeviceInt, int iState)
+   return Success;
+ }
+ 
+-
+ /* Handle the mouse wheel */
+ int
+ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+@@ -151,17 +144,13 @@ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+   /* Button5 = WheelDown */
+ 
+   /* Do we have any previous delta stored? */
+-  if ((pScreenPriv->iDeltaZ > 0
+-       && iDeltaZ > 0)
+-      || (pScreenPriv->iDeltaZ < 0
+-	  && iDeltaZ < 0))
+-    {
++    if ((pScreenPriv->iDeltaZ > 0 && iDeltaZ > 0)
++        || (pScreenPriv->iDeltaZ < 0 && iDeltaZ < 0)) {
+       /* Previous delta and of same sign as current delta */
+       iDeltaZ += pScreenPriv->iDeltaZ;
+       pScreenPriv->iDeltaZ = 0;
+     }
+-  else
+-    {
++    else {
+       /*
+        * Previous delta of different sign, or zero.
+        * We will set it to zero for either case,
+@@ -175,15 +164,13 @@ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+    * Only process this message if the wheel has moved further than
+    * WHEEL_DELTA
+    */
+-  if (iDeltaZ >= WHEEL_DELTA || (-1 * iDeltaZ) >= WHEEL_DELTA)
+-    {
++    if (iDeltaZ >= WHEEL_DELTA || (-1 * iDeltaZ) >= WHEEL_DELTA) {
+       pScreenPriv->iDeltaZ = 0;
+ 	  
+       /* Figure out how many whole deltas of the wheel we have */
+       iDeltaZ /= WHEEL_DELTA;
+     }
+-  else
+-    {
++    else {
+       /*
+        * Wheel has not moved past WHEEL_DELTA threshold;
+        * we will store the wheel delta until the threshold
+@@ -194,12 +181,10 @@ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+     }
+ 
+   /* Set the button to indicate up or down wheel delta */
+-  if (iDeltaZ > 0)
+-    {
++    if (iDeltaZ > 0) {
+       button = Button4;
+     }
+-  else
+-    {
++    else {
+       button = Button5;
+     }
+ 
+@@ -208,14 +193,12 @@ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+    * because always need to generate a *positive* number of
+    * button clicks for the Z axis.
+    */
+-  if (iDeltaZ < 0)
+-    {
++    if (iDeltaZ < 0) {
+       iDeltaZ *= -1;
+     }
+ 
+   /* Generate X input messages for each wheel delta we have seen */
+-  while (iDeltaZ--)
+-    {
++    while (iDeltaZ--) {
+       /* Push the wheel button */
+       winMouseButtonsSendEvent (ButtonPress, button);
+ 
+@@ -226,7 +209,6 @@ winMouseWheel (ScreenPtr pScreen, int iDeltaZ)
+   return 0;
+ }
+ 
+-
+ /*
+  * Enqueue a mouse button event
+  */
+@@ -249,22 +231,19 @@ winMouseButtonsSendEvent (int iEventType, int iButton)
+ #endif
+ }
+ 
+-
+ /*
+  * Decide what to do with a Windows mouse message
+  */
+ 
+ int
+ winMouseButtonsHandle (ScreenPtr pScreen,
+-		       int iEventType, int iButton,
+-		       WPARAM wParam)
++                      int iEventType, int iButton, WPARAM wParam)
+ {
+   winScreenPriv(pScreen);
+   winScreenInfo		*pScreenInfo = pScreenPriv->pScreenInfo;
+ 
+   /* Send button events right away if emulate 3 buttons is off */
+-  if (pScreenInfo->iE3BTimeout == WIN_E3B_OFF)
+-    {
++    if (pScreenInfo->iE3BTimeout == WIN_E3B_OFF) {
+       /* Emulate 3 buttons is off, send the button event */
+       winMouseButtonsSendEvent (iEventType, iButton);
+       return 0;
+@@ -273,8 +252,7 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+   /* Emulate 3 buttons is on, let the fun begin */
+   if (iEventType == ButtonPress
+       && pScreenPriv->iE3BCachedPress == 0
+-      && !pScreenPriv->fE3BFakeButton2Sent)
+-    {
++        && !pScreenPriv->fE3BFakeButton2Sent) {
+       /*
+        * Button was pressed, no press is cached,
+        * and there is no fake button 2 release pending.
+@@ -288,15 +266,12 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+        * is not pressed within the timeout time.
+        */
+       SetTimer (pScreenPriv->hwndScreen,
+-		WIN_E3B_TIMER_ID,
+-		pScreenInfo->iE3BTimeout,
+-		NULL);
++                 WIN_E3B_TIMER_ID, pScreenInfo->iE3BTimeout, NULL);
+     }
+   else if (iEventType == ButtonPress
+ 	   && pScreenPriv->iE3BCachedPress != 0
+ 	   && pScreenPriv->iE3BCachedPress != iButton
+-	   && !pScreenPriv->fE3BFakeButton2Sent)
+-    {
++             && !pScreenPriv->fE3BFakeButton2Sent) {
+       /*
+        * Button press is cached, other button was pressed,
+        * and there is no fake button 2 release pending.
+@@ -313,8 +288,7 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+       pScreenPriv->fE3BFakeButton2Sent = TRUE;
+     }
+   else if (iEventType == ButtonRelease
+-	   && pScreenPriv->iE3BCachedPress == iButton)
+-    {
++             && pScreenPriv->iE3BCachedPress == iButton) {
+       /*
+        * Cached button was released before timer ran out,
+        * and before the other mouse button was pressed.
+@@ -327,10 +301,8 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+       winMouseButtonsSendEvent (ButtonRelease, iButton);
+     }
+   else if (iEventType == ButtonRelease
+-	   && pScreenPriv->fE3BFakeButton2Sent
+-	   && !(wParam & MK_LBUTTON)
+-	   && !(wParam & MK_RBUTTON))
+-    {
++             && pScreenPriv->fE3BFakeButton2Sent && !(wParam & MK_LBUTTON)
++             && !(wParam & MK_RBUTTON)) {
+       /*
+        * Fake button 2 was sent and both mouse buttons have now been released
+        */
+@@ -341,8 +313,7 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+     }
+   else if (iEventType == ButtonRelease
+ 	   && pScreenPriv->iE3BCachedPress == 0
+-	   && !pScreenPriv->fE3BFakeButton2Sent)
+-    {
++             && !pScreenPriv->fE3BFakeButton2Sent) {
+       /*
+        * Button was release, no button is cached,
+        * and there is no fake button 2 release is pending.
+@@ -357,7 +328,8 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+  * Enqueue a motion event.
+  *
+  */
+-void winEnqueueMotion(int x, int y)
++void
++winEnqueueMotion(int x, int y)
+ {
+   int valuators[2];
+   ValuatorMask mask;

@@ -1,0 +1,13 @@
+diff --git a/render/render.c b/render/render.c
+index 0e850e3..995ebd9 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -681,6 +681,8 @@ PictOpValid (CARD8 op)
+ 	return TRUE;
+     if (PictOpConjointMinimum <= op && op <= PictOpConjointMaximum)
+ 	return TRUE;
++    if (PictOpBlendMinimum <= op && op <= PictOpBlendMaximum)
++	return TRUE;
+     return FALSE;
+ }
+ 

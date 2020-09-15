@@ -1,0 +1,151 @@
+diff --git a/hw/kdrive/src/kmode.c b/hw/kdrive/src/kmode.c
+index 38b7bc8..ef1b6b4 100644
+--- a/hw/kdrive/src/kmode.c
++++ b/hw/kdrive/src/kmode.c
+@@ -53,7 +53,6 @@ const KdMonitorTiming  kdMonitorTimings[] = {
+ 		    1,	    42,	    46,	    KdSyncPositive, /* 85.039 */
+     },
+ 
+-
+     /* Modeline "720x576"     29.000 720  736  800  880   576  577  580  625 */
+     {
+         720,    576,    52,     32954,                      /* PAL Video */
+@@ -251,19 +250,16 @@ const int kdNumMonitorTimings = NUM_MONITOR_TIMINGS;
+ 
+ const KdMonitorTiming *
+ KdFindMode (KdScreenInfo    *screen,
+-	    Bool	    (*supported) (KdScreenInfo *,
+-					  const KdMonitorTiming *))
++           Bool (*supported) (KdScreenInfo *, const KdMonitorTiming *))
+ {
+     int			    i;
+     const KdMonitorTiming   *t;
+ 
+-    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++)
+-    {
++    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++) {
+ 	if ((*supported) (screen, t) &&
+ 	    t->horizontal == screen->width &&
+ 	    t->vertical == screen->height &&
+-	    (!screen->rate || t->rate <= screen->rate))
+-	{
++            (!screen->rate || t->rate <= screen->rate)) {
+ 	    return t;
+ 	}
+     }
+@@ -282,25 +278,20 @@ kdFindPrevSize (const KdMonitorTiming *old)
+     /*
+      * Search for the previous size
+      */
+-    while (new != kdMonitorTimings)
+-    {
++    while (new != kdMonitorTimings) {
+ 	new--;
+ 	if (new->horizontal != old->horizontal &&
+-	    new->vertical != old->vertical)
+-	{
++            new->vertical != old->vertical) {
+ 	    break;
+ 	}
+     }
+     /*
+      * Match the refresh rate (<=)
+      */
+-    while (new != kdMonitorTimings)
+-    {
++    while (new != kdMonitorTimings) {
+ 	prev = new - 1;
+ 	if (prev->horizontal == new->horizontal &&
+-	    prev->vertical == new->vertical &&
+-	    prev->rate > old->rate)
+-	{
++            prev->vertical == new->vertical && prev->rate > old->rate) {
+ 	    break;
+ 	}
+ 	new--;
+@@ -311,13 +302,11 @@ kdFindPrevSize (const KdMonitorTiming *old)
+ Bool
+ KdTuneMode (KdScreenInfo    *screen,
+ 	    Bool	    (*usable) (KdScreenInfo *),
+-	    Bool	    (*supported) (KdScreenInfo *,
+-					  const KdMonitorTiming *))
++           Bool (*supported) (KdScreenInfo *, const KdMonitorTiming *))
+ {
+     const KdMonitorTiming   *t;
+ 
+-    while (!(*usable) (screen))
+-    {
++    while (!(*usable) (screen)) {
+ 	/*
+ 	 * Fix requested depth and geometry until it works
+ 	 */
+@@ -325,8 +314,7 @@ KdTuneMode (KdScreenInfo    *screen,
+ 	    screen->fb.depth = 16;
+ 	else if (screen->fb.depth > 8)
+ 	    screen->fb.depth = 8;
+-	else
+-	{
++        else {
+ 	    t = kdFindPrevSize (KdFindMode (screen, supported));
+ 	    if (!t)
+ 		return FALSE;
+@@ -342,32 +330,27 @@ KdTuneMode (KdScreenInfo    *screen,
+ Bool
+ KdRandRGetInfo (ScreenPtr pScreen,
+ 		int randr,
+-		Bool (*supported) (ScreenPtr pScreen,
+-				   const KdMonitorTiming *))
++               Bool (*supported) (ScreenPtr pScreen, const KdMonitorTiming *))
+ {
+     KdScreenPriv(pScreen);
+     KdScreenInfo	    *screen = pScreenPriv->screen;
+     int			    i;
+     const KdMonitorTiming   *t;
+ 
+-    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++)
+-    {
+-	if ((*supported) (pScreen, t))
+-	{
++    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++) {
++        if ((*supported) (pScreen, t)) {
+ 	    RRScreenSizePtr pSize;
+ 
+ 	    pSize = RRRegisterSize (pScreen,
+ 				    t->horizontal,
+ 				    t->vertical,
+-				    screen->width_mm,
+-				    screen->height_mm);
++                                   screen->width_mm, screen->height_mm);
+ 	    if (!pSize)
+ 		return FALSE;
+ 	    if (!RRRegisterRate (pScreen, pSize, t->rate))
+ 		return FALSE;
+ 	    if (t->horizontal == screen->width &&
+-		t->vertical == screen->height &&
+-		t->rate == screen->rate)
++                t->vertical == screen->height && t->rate == screen->rate)
+ 		RRSetCurrentConfig (pScreen, randr, t->rate, pSize);
+ 	}
+     }
+@@ -379,18 +362,15 @@ const KdMonitorTiming *
+ KdRandRGetTiming (ScreenPtr	    pScreen,
+ 		  Bool		    (*supported) (ScreenPtr pScreen,
+ 						  const KdMonitorTiming *),
+-		  int		    rate,
+-		  RRScreenSizePtr   pSize)
++                 int rate, RRScreenSizePtr pSize)
+ {
+     int			    i;
+     const KdMonitorTiming   *t;
+ 
+-    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++)
+-    {
++    for (i = 0, t = kdMonitorTimings; i < NUM_MONITOR_TIMINGS; i++, t++) {
+ 	if (t->horizontal == pSize->width &&
+ 	    t->vertical == pSize->height &&
+-	    t->rate == rate &&
+-	    (*supported) (pScreen, t))
++            t->rate == rate && (*supported) (pScreen, t))
+ 	    return t;
+     }
+     return 0;

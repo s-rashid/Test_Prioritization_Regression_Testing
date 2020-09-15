@@ -1,0 +1,297 @@
+diff --git a/fb/fbglyph.c b/fb/fbglyph.c
+index 643cf90..3080a77 100644
+--- a/fb/fbglyph.c
++++ b/fb/fbglyph.c
+@@ -30,11 +30,7 @@
+ #include	"dixfontstr.h"
+ 
+ Bool
+-fbGlyphIn (RegionPtr	pRegion,
+-	   int		x,
+-	   int		y,
+-	   int		width,
+-	   int		height)
++fbGlyphIn(RegionPtr pRegion, int x, int y, int width, int height)
+ {
+     BoxRec  box;
+     BoxPtr  pExtents = RegionExtents(pRegion);
+@@ -57,7 +53,6 @@ fbGlyphIn (RegionPtr	pRegion,
+     return RegionContainsRect(pRegion, &box) == rgnIN;
+ }
+ 
+-
+ #define WRITE1(d,n,fg)	WRITE((d) + (n), (CARD8) fg)
+ #define WRITE2(d,n,fg)	WRITE((CARD16 *) &(d[n]), (CARD16) fg)
+ #define WRITE4(d,n,fg)	WRITE((CARD32 *) &(d[n]), (CARD32) fg)
+@@ -128,11 +123,7 @@ fbGlyphIn (RegionPtr	pRegion,
+ void
+ fbGlyph24 (FbBits   *dstBits,
+ 	   FbStride dstStride,
+-	   int	    dstBpp,
+-	   FbStip   *stipple,
+-	   FbBits   fg,
+-	   int	    x,
+-	   int	    height)
++          int dstBpp, FbStip * stipple, FbBits fg, int x, int height)
+ {
+     int	    lshift;
+     FbStip  bits;
+@@ -151,13 +142,11 @@ fbGlyph24 (FbBits   *dstBits,
+     dstStride *= (sizeof (FbBits) / sizeof (CARD8));
+     shift = x & 3;
+     lshift = 4 - shift;
+-    while (height--)
+-    {
++    while (height--) {
+ 	bits = READ(stipple++);
+ 	n = lshift;
+ 	dst = dstLine;
+-	while (bits)
+-	{
++        while (bits) {
+ 	    switch (FbStipMoveLsb (FbLeftStipBits (bits, n), 4, n)) {
+ 	    case CASE(0,0,0,0):
+ 		break;
+@@ -252,9 +241,7 @@ fbPolyGlyphBlt (DrawablePtr	pDrawable,
+ 		GCPtr		pGC,
+ 		int		x, 
+ 		int		y,
+-		unsigned int	nglyph,
+-		CharInfoPtr	*ppci,
+-		pointer		pglyphBase)
++               unsigned int nglyph, CharInfoPtr * ppci, pointer pglyphBase)
+ {
+     FbGCPrivPtr	    pPriv = fbGetGCPrivate (pGC);
+     CharInfoPtr	    pci;
+@@ -262,83 +249,67 @@ fbPolyGlyphBlt (DrawablePtr	pDrawable,
+     int		    gx, gy;
+     int		    gWidth, gHeight;	/* width and height of glyph */
+     FbStride	    gStride;		/* stride of glyph */
+-    void	    (*glyph) (FbBits *,
+-			      FbStride,
+-			      int,
+-			      FbStip *,
+-			      FbBits,
+-			      int,
+-			      int);
++    void (*glyph) (FbBits *, FbStride, int, FbStip *, FbBits, int, int);
+     FbBits	    *dst = 0;
+     FbStride	    dstStride = 0;
+     int		    dstBpp = 0;
+     int		    dstXoff = 0, dstYoff = 0;
+     
+     glyph = 0;
+-    if (pGC->fillStyle == FillSolid && pPriv->and == 0)
+-    {
++    if (pGC->fillStyle == FillSolid && pPriv->and == 0) {
+ 	dstBpp = pDrawable->bitsPerPixel;
+ 	switch (dstBpp) {
+-	case 8:	    glyph = fbGlyph8; break;
+-	case 16:    glyph = fbGlyph16; break;
+-	case 24:    glyph = fbGlyph24; break;
+-	case 32:    glyph = fbGlyph32; break;
++        case 8:
++            glyph = fbGlyph8;
++            break;
++        case 16:
++            glyph = fbGlyph16;
++            break;
++        case 24:
++            glyph = fbGlyph24;
++            break;
++        case 32:
++            glyph = fbGlyph32;
++            break;
+ 	}
+     }
+     x += pDrawable->x;
+     y += pDrawable->y;
+ 
+-    while (nglyph--)
+-    {
++    while (nglyph--) {
+ 	pci = *ppci++;
+ 	pglyph = FONTGLYPHBITS(pglyphBase, pci);
+ 	gWidth = GLYPHWIDTHPIXELS(pci);
+ 	gHeight = GLYPHHEIGHTPIXELS(pci);
+-	if (gWidth && gHeight)
+-	{
++        if (gWidth && gHeight) {
+ 	    gx = x + pci->metrics.leftSideBearing;
+ 	    gy = y - pci->metrics.ascent; 
+ 	    if (glyph && gWidth <= sizeof (FbStip) * 8 &&
+-		fbGlyphIn (fbGetCompositeClip(pGC), gx, gy, gWidth, gHeight))
+-	    {
+-		fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+-		(*glyph) (dst + (gy + dstYoff) * dstStride,
+-			  dstStride,
+-			  dstBpp,
+-			  (FbStip *) pglyph,
+-			  pPriv->xor,
+-			  gx + dstXoff,
+-			  gHeight);
++                fbGlyphIn(fbGetCompositeClip(pGC), gx, gy, gWidth, gHeight)) {
++                fbGetDrawable(pDrawable, dst, dstStride, dstBpp, dstXoff,
++                              dstYoff);
++                (*glyph) (dst + (gy + dstYoff) * dstStride, dstStride, dstBpp,
++                          (FbStip *) pglyph, pPriv->xor, gx + dstXoff, gHeight);
+ 		fbFinishAccess (pDrawable);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		gStride = GLYPHWIDTHBYTESPADDED(pci) / sizeof (FbStip);
+ 		fbPushImage (pDrawable,
+ 			     pGC,
+-    
+ 			     (FbStip *) pglyph,
+-			     gStride,
+-			     0,
+-    
+-			     gx,
+-			     gy,
+-			     gWidth, gHeight);
++                            gStride, 0, gx, gy, gWidth, gHeight);
+ 	    }
+ 	}
+ 	x += pci->metrics.characterWidth;
+     }
+ }
+ 
+-
+ void
+ fbImageGlyphBlt (DrawablePtr	pDrawable,
+ 		 GCPtr		pGC,
+ 		 int		x, 
+ 		 int		y,
+-		 unsigned int	nglyph,
+-		 CharInfoPtr	*ppciInit,
+-		 pointer	pglyphBase)
++                unsigned int nglyph, CharInfoPtr * ppciInit, pointer pglyphBase)
+ {
+     FbGCPrivPtr	    pPriv = fbGetGCPrivate(pGC);
+     CharInfoPtr	    *ppci;
+@@ -349,27 +320,28 @@ fbImageGlyphBlt (DrawablePtr	pDrawable,
+     Bool	    opaque;
+     int		    n;
+     int		    gx, gy;
+-    void	    (*glyph) (FbBits *,
+-			      FbStride,
+-			      int,
+-			      FbStip *,
+-			      FbBits,
+-			      int,
+-			      int);
++    void (*glyph) (FbBits *, FbStride, int, FbStip *, FbBits, int, int);
+     FbBits	    *dst = 0;
+     FbStride	    dstStride = 0;
+     int		    dstBpp = 0;
+     int		    dstXoff = 0, dstYoff = 0;
+     
+     glyph = 0;
+-    if (pPriv->and == 0)
+-    {
++    if (pPriv->and == 0) {
+ 	dstBpp = pDrawable->bitsPerPixel;
+ 	switch (dstBpp) {
+-	case 8:	    glyph = fbGlyph8; break;
+-	case 16:    glyph = fbGlyph16; break;
+-	case 24:    glyph = fbGlyph24; break;
+-	case 32:    glyph = fbGlyph32; break;
++        case 8:
++            glyph = fbGlyph8;
++            break;
++        case 16:
++            glyph = fbGlyph16;
++            break;
++        case 24:
++            glyph = fbGlyph24;
++            break;
++        case 32:
++            glyph = fbGlyph32;
++            break;
+ 	}
+     }
+     
+@@ -377,13 +349,10 @@ fbImageGlyphBlt (DrawablePtr	pDrawable,
+     y += pDrawable->y;
+ 
+     if (TERMINALFONT (pGC->font)
+-	&& !glyph
+-	)
+-    {
++        && !glyph) {
+ 	opaque = TRUE;
+     }
+-    else
+-    {
++    else {
+ 	int		xBack, widthBack;
+ 	int		yBack, heightBack;
+ 	
+@@ -394,8 +363,7 @@ fbImageGlyphBlt (DrawablePtr	pDrawable,
+ 	    widthBack += (*ppci++)->metrics.characterWidth;
+ 	
+         xBack = x;
+-	if (widthBack < 0)
+-	{
++        if (widthBack < 0) {
+ 	    xBack += widthBack;
+ 	    widthBack = -widthBack;
+ 	}
+@@ -413,31 +381,23 @@ fbImageGlyphBlt (DrawablePtr	pDrawable,
+     }
+ 
+     ppci = ppciInit;
+-    while (nglyph--)
+-    {
++    while (nglyph--) {
+ 	pci = *ppci++;
+ 	pglyph = FONTGLYPHBITS(pglyphBase, pci);
+ 	gWidth = GLYPHWIDTHPIXELS(pci);
+ 	gHeight = GLYPHHEIGHTPIXELS(pci);
+-	if (gWidth && gHeight)
+-	{
++        if (gWidth && gHeight) {
+ 	    gx = x + pci->metrics.leftSideBearing;
+ 	    gy = y - pci->metrics.ascent; 
+ 	    if (glyph && gWidth <= sizeof (FbStip) * 8 &&
+-		fbGlyphIn (fbGetCompositeClip(pGC), gx, gy, gWidth, gHeight))
+-	    {
+-		fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+-		(*glyph) (dst + (gy + dstYoff) * dstStride,
+-			  dstStride,
+-			  dstBpp,
+-			  (FbStip *) pglyph,
+-			  pPriv->fg,
+-			  gx + dstXoff,
+-			  gHeight);
++                fbGlyphIn(fbGetCompositeClip(pGC), gx, gy, gWidth, gHeight)) {
++                fbGetDrawable(pDrawable, dst, dstStride, dstBpp, dstXoff,
++                              dstYoff);
++                (*glyph) (dst + (gy + dstYoff) * dstStride, dstStride, dstBpp,
++                          (FbStip *) pglyph, pPriv->fg, gx + dstXoff, gHeight);
+ 		fbFinishAccess (pDrawable);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		gStride = GLYPHWIDTHBYTESPADDED(pci) / sizeof (FbStip);
+ 		fbPutXYImage (pDrawable,
+ 			      fbGetCompositeClip(pGC),
+@@ -446,14 +406,9 @@ fbImageGlyphBlt (DrawablePtr	pDrawable,
+ 			      pPriv->pm,
+ 			      GXcopy,
+ 			      opaque,
+-    
+ 			      gx,
+ 			      gy,
+-			      gWidth, gHeight,
+-    
+-			      (FbStip *) pglyph,
+-			      gStride,
+-			      0);
++                             gWidth, gHeight, (FbStip *) pglyph, gStride, 0);
+ 	    }
+ 	}
+ 	x += pci->metrics.characterWidth;

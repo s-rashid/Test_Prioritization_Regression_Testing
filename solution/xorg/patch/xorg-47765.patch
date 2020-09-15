@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/examples/xinput.c b/hw/dmx/examples/xinput.c
+index 7421be3..b12daf2 100644
+--- a/hw/dmx/examples/xinput.c
++++ b/hw/dmx/examples/xinput.c
+@@ -233,7 +233,7 @@ int main(int argc, char **argv)
+         int         total = 0;
+ 
+ #define ADD(type)                                     \
+-        if (cnt >= MAX_EVENTS) OsAbort();             \
++        if (cnt >= MAX_EVENTS) abort();             \
+         names[cnt] = #type;                           \
+         type(dev, event_type[cnt], event_list[cnt]);  \
+         if (event_type[cnt]) ++cnt

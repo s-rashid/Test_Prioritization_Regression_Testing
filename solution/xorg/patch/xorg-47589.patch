@@ -1,0 +1,19 @@
+diff --git a/hw/xfree86/os-support/shared/VTsw_usl.c b/hw/xfree86/os-support/shared/VTsw_usl.c
+index 9308640..393f1c0 100644
+--- a/hw/xfree86/os-support/shared/VTsw_usl.c
++++ b/hw/xfree86/os-support/shared/VTsw_usl.c
+@@ -88,3 +88,14 @@ xf86VTSwitchTo(void)
+ 		return(TRUE);
+ 	}
+ }
++
++Bool
++xf86VTActivate(int vtno)
++{
++#ifdef VT_ACTIVATE
++	if (ioctl(xf86Info.consoleFd, VT_ACTIVATE, vtno) < 0) {
++		return(FALSE);
++	}
++#endif
++	return(TRUE);
++}

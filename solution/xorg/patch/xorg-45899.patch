@@ -1,0 +1,37 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 0d2552d..abfa957 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -87,7 +87,6 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+ 
+     pExaPixmap->area = NULL;
+     pExaPixmap->offscreen = FALSE;
+-    pExaPixmap->score = EXA_PIXMAP_SCORE_INIT;
+     pExaPixmap->fb_ptr = NULL;
+     pExaPixmap->pDamage = NULL;
+ 
+@@ -95,19 +94,19 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+     exaSetAccelBlock(pExaScr, pExaPixmap,
+ 	w, h, bpp);
+ 
+-    /* A scratch pixmap will become a driver pixmap right away. */
+-    if (!w || !h) {
+-	exaCreateDriverPixmap_mixed(pPixmap);
+-    } else {
+ 	/* Avoid freeing sys_ptr. */
+ 	pExaPixmap->score = EXA_PIXMAP_SCORE_PINNED;
+ 
+ 	(*pScreen->ModifyPixmapHeader)(pPixmap, w, h, 0, 0,
+ 					paddedWidth, NULL);
+ 
+-	/* We want to be able to copy the pixmap to driver memory later on. */
++    /* We want to be able to transfer the pixmap to driver memory later on. */
+ 	pExaPixmap->score = EXA_PIXMAP_SCORE_INIT;
+ 
++    /* A scratch pixmap will become a driver pixmap right away. */
++    if (!w || !h) {
++	exaCreateDriverPixmap_mixed(pPixmap);
++    } else {
+ 	/* Set up damage tracking */
+ 	pExaPixmap->pDamage = DamageCreate (NULL, NULL,
+ 					    DamageReportNone, TRUE,

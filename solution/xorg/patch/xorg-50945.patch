@@ -1,0 +1,18 @@
+diff --git a/xkb/XKBAlloc.c b/xkb/XKBAlloc.c
+index c52e091..bffd60f 100644
+--- a/xkb/XKBAlloc.c
++++ b/xkb/XKBAlloc.c
+@@ -212,13 +212,11 @@ XkbNamesPtr	names;
+ 	    register XkbKeyTypePtr	type;
+ 	    type= map->types;
+ 	    for (i=0;i<map->num_types;i++,type++) {
+-		if (type->level_names!=NULL) {
+ 		    free(type->level_names);
+ 		    type->level_names= NULL;
+ 		}
+ 	    }
+ 	}
+-    }
+     if ((which&XkbKeyNamesMask)&&(names->keys!=NULL)) {
+ 	free(names->keys);
+ 	names->keys= NULL;

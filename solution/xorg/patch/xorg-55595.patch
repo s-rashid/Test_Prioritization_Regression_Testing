@@ -1,0 +1,29 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_VTsw.c b/hw/xfree86/os-support/solaris/sun_VTsw.c
+index e6f3187..573358b 100644
+--- a/hw/xfree86/os-support/solaris/sun_VTsw.c
++++ b/hw/xfree86/os-support/solaris/sun_VTsw.c
+@@ -43,8 +43,7 @@ static int xf86VTPruneDoor = 0;
+ void
+ xf86VTRelease(int sig)
+ {
+-	if (xf86Info.vtPendingNum == -1)
+-	{
++    if (xf86Info.vtPendingNum == -1) {
+ 		xf86VTPruneDoor = 1;
+ 		xf86Info.vtRequestsPending = TRUE;
+ 		return;
+@@ -109,12 +108,10 @@ Bool
+ xf86VTSwitchTo(void)
+ {
+ 	xf86Info.vtRequestsPending = FALSE;
+-	if (ioctl(xf86Info.consoleFd, VT_RELDISP, VT_ACKACQ) < 0)
+-	{
++    if (ioctl(xf86Info.consoleFd, VT_RELDISP, VT_ACKACQ) < 0) {
+ 		return FALSE;
+ 	}
+-	else
+-	{
++    else {
+ 		return TRUE;
+ 	}
+ }

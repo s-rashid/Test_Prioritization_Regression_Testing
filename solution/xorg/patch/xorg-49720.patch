@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/src/kxv.c b/hw/kdrive/src/kxv.c
+index 3af6acf..c07829a 100644
+--- a/hw/kdrive/src/kxv.c
++++ b/hw/kdrive/src/kxv.c
+@@ -1173,7 +1173,7 @@ KdXVQueryAdaptors(
+   *p_nAdaptors = pxvs->nAdaptors;
+   *p_pAdaptors = pxvs->pAdaptors;
+ 
+-  return (Success);
++  return Success;
+ }
+ 
+ static Bool

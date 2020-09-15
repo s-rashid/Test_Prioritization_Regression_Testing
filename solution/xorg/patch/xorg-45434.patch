@@ -1,0 +1,27 @@
+diff --git a/randr/rroutput.c b/randr/rroutput.c
+index 127497e..2eff8c1 100644
+--- a/randr/rroutput.c
++++ b/randr/rroutput.c
+@@ -455,7 +455,7 @@ ProcRRGetOutputInfo (ClientPtr client)
+ 
+     rep.type = X_Reply;
+     rep.sequenceNumber = client->sequence;
+-    rep.length = OutputInfoExtra >> 2;
++    rep.length = bytes_to_int32(OutputInfoExtra);
+     rep.timestamp = pScrPriv->lastSetTime.milliseconds;
+     rep.crtc = output->crtc ? output->crtc->id : None;
+     rep.mmWidth = output->mmWidth;
+@@ -471,11 +471,11 @@ ProcRRGetOutputInfo (ClientPtr client)
+     extraLen = ((output->numCrtcs + 
+ 		 output->numModes + output->numUserModes +
+ 		 output->numClones +
+-		 ((rep.nameLength + 3) >> 2)) << 2);
++		 bytes_to_int32(rep.nameLength)) << 2);
+ 
+     if (extraLen)
+     {
+-	rep.length += extraLen >> 2;
++	rep.length += bytes_to_int32(extraLen);
+ 	extra = xalloc (extraLen);
+ 	if (!extra)
+ 	    return BadAlloc;

@@ -1,0 +1,51 @@
+diff --git a/mi/miwindow.c b/mi/miwindow.c
+index 2550ca2..ce35974 100644
+--- a/mi/miwindow.c
++++ b/mi/miwindow.c
+@@ -50,6 +50,7 @@ SOFTWARE.
+ #endif
+ 
+ #include <X11/X.h>
++#include <X11/extensions/shape.h>
+ #include "regionstr.h"
+ #include "region.h"
+ #include "mi.h"
+@@ -696,13 +697,14 @@ miGetLayerWindow(WindowPtr pWin)
+  */
+ 
+ void
+-miSetShape(WindowPtr pWin)
++miSetShape(WindowPtr pWin, int kind)
+ {
+     Bool	WasViewable = (Bool)(pWin->viewable);
+     ScreenPtr 	pScreen = pWin->drawable.pScreen;
+     Bool	anyMarked = FALSE;
+     WindowPtr   pLayerWin;
+ 
++    if (kind != ShapeInput) {
+     if (WasViewable)
+     {
+ 	anyMarked = (*pScreen->MarkOverlappedWindows)(pWin, pWin,
+@@ -732,9 +734,9 @@ miSetShape(WindowPtr pWin)
+ 	anyMarked |= (*pScreen->MarkOverlappedWindows)(pWin, pWin,
+ 						NULL);
+ 
+-
+ 	if (anyMarked)
+-	    (*pScreen->ValidateTree)(pLayerWin->parent, NullWindow, VTOther);
++                (*pScreen->ValidateTree)(pLayerWin->parent, NullWindow,
++                                         VTOther);
+     }
+ 
+     if (WasViewable)
+@@ -742,7 +744,9 @@ miSetShape(WindowPtr pWin)
+ 	if (anyMarked)
+ 	    (*pScreen->HandleExposures)(pLayerWin->parent);
+ 	if (anyMarked && pScreen->PostValidateTree)
+-	    (*pScreen->PostValidateTree)(pLayerWin->parent, NullWindow, VTOther);
++                (*pScreen->PostValidateTree)(pLayerWin->parent, NullWindow,
++                                             VTOther);
++        }
+     }
+     if (pWin->realized)
+ 	WindowsRestructured ();

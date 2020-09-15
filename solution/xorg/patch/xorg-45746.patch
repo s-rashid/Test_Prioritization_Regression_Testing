@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86sbusBus.c b/hw/xfree86/common/xf86sbusBus.c
+index 7044284..7b23233 100644
+--- a/hw/xfree86/common/xf86sbusBus.c
++++ b/hw/xfree86/common/xf86sbusBus.c
+@@ -401,11 +401,6 @@ xf86MatchSbusInstances(const char *driverName, int sbusDevId,
+ 	return 0;
+     }
+ 
+-    if (xf86DoProbe) {
+-	xfree(instances);
+-	return numFound;
+-    }
+-
+     if (sparcPromInit() >= 0)
+ 	useProm = 1;
+ 

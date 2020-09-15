@@ -1,0 +1,12 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 6cc9614..0a85f40 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -122,6 +122,7 @@ typedef struct _Client {
+     
+     DeviceIntPtr clientPtr;
+     ClientIdPtr  clientIds;
++    unsigned short majorOp, minorOp;
+ }           ClientRec;
+ 
+ /*

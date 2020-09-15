@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/x86emu/x86emu/regs.h b/hw/xfree86/x86emu/x86emu/regs.h
+index 52cf8e4..6bd0611 100644
+--- a/hw/xfree86/x86emu/x86emu/regs.h
++++ b/hw/xfree86/x86emu/x86emu/regs.h
+@@ -333,5 +333,4 @@ void	printk(const char *fmt, ...);
+ #ifdef  __cplusplus
+ }                       			/* End of "C" linkage for C++   	*/
+ #endif
+-
+ #endif /* __X86EMU_REGS_H */

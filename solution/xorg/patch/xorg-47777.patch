@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index a63b65b..e680f6f 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1051,7 +1051,7 @@ ProcessOtherEvent(InternalEvent *ev, DeviceIntPtr device)
+             break;
+     }
+ 
+-    if (DeviceEventCallback) {
++    if (DeviceEventCallback && !syncEvents.playingEvents) {
+ 	DeviceEventInfoRec eventinfo;
+ 	SpritePtr pSprite = device->spriteInfo->sprite;
+ 

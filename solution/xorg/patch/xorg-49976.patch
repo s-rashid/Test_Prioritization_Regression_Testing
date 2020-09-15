@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/ramdac/IBM.c b/hw/xfree86/ramdac/IBM.c
+index 2d9fe4d..89fb25c 100644
+--- a/hw/xfree86/ramdac/IBM.c
++++ b/hw/xfree86/ramdac/IBM.c
+@@ -96,13 +96,13 @@ IBMramdac640CalculateMNPCForClock(
+ 		  lowestFreqErr = freqErr;
+ 		  /* Return if we found an exact match */
+ 		  if (freqErr == 0)
+-		    return (ActualClock);
++		    return ActualClock;
+ 		}
+ 	    }
+ 	}
+     }
+ 
+-  return (ActualClock);
++  return ActualClock;
+ }
+ 
+ unsigned long
+@@ -162,13 +162,13 @@ IBMramdac526CalculateMNPCForClock(
+ 		  lowestFreqErr = freqErr;
+ 		  /* Return if we found an exact match */
+ 		  if (freqErr == 0)
+-		    return (ActualClock);
++		    return ActualClock;
+ 		}
+ 	    }
+ 	}
+     }
+ 
+-  return (ActualClock);
++  return ActualClock;
+ }
+ 
+ void

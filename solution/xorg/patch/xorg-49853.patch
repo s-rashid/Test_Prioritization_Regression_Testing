@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index a62a63f..7f6fad3 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -753,6 +753,8 @@ xf86CrtcCloseScreen (int index, ScreenPtr screen)
+ 
+ 	crtc->randr_crtc = NULL;
+     }
++    xf86RandR12CloseScreen (screen);
++
+     return screen->CloseScreen (index, screen);
+ }
+ 

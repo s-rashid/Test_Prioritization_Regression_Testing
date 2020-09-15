@@ -1,0 +1,22 @@
+diff --git a/fb/fbbits.h b/fb/fbbits.h
+index 44991f1..8bf1a02 100644
+--- a/fb/fbbits.h
++++ b/fb/fbbits.h
+@@ -670,7 +670,7 @@ POLYLINE (DrawablePtr	pDrawable,
+     int		    xoff = pDrawable->x;
+     int		    yoff = pDrawable->y;
+     unsigned int    bias = miGetZeroLineBias(pDrawable->pScreen);
+-    BoxPtr	    pBox = REGION_EXTENTS (pDrawable->pScreen, fbGetCompositeClip (pGC));
++    BoxPtr	    pBox = RegionExtents(fbGetCompositeClip (pGC));
+     
+     FbBits	    *dst;
+     int		    dstStride;
+@@ -807,7 +807,7 @@ POLYSEGMENT (DrawablePtr    pDrawable,
+     int		    xoff = pDrawable->x;
+     int		    yoff = pDrawable->y;
+     unsigned int    bias = miGetZeroLineBias(pDrawable->pScreen);
+-    BoxPtr	    pBox = REGION_EXTENTS (pDrawable->pScreen, fbGetCompositeClip (pGC));
++    BoxPtr	    pBox = RegionExtents(fbGetCompositeClip (pGC));
+     
+     FbBits	    *dst;
+     int		    dstStride;

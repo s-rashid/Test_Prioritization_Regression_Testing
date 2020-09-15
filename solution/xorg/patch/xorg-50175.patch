@@ -1,0 +1,12 @@
+diff --git a/Xi/stubs.c b/Xi/stubs.c
+index 296a8c4..de80042 100644
+--- a/Xi/stubs.c
++++ b/Xi/stubs.c
+@@ -122,7 +122,6 @@ AddOtherInputDevices(void)
+ 
+     dev = (DeviceIntPtr) AddInputDevice(deviceProc, TRUE);
+     dev->public.devicePrivate = private;
+-    RegisterOtherDevice(dev);
+     dev->inited = ((*dev->deviceProc)(dev, DEVICE_INIT) == Success);
+     ************************************************************************/
+ 

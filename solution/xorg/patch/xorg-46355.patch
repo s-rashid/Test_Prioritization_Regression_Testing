@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxscrinit.c b/hw/dmx/dmxscrinit.c
+index b5afb58..cab212d 100644
+--- a/hw/dmx/dmxscrinit.c
++++ b/hw/dmx/dmxscrinit.c
+@@ -282,6 +282,10 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+     (void)dmxPictureInit(pScreen, 0, 0);
+ #endif
+ 
++    /* Not yet... */
++    pScreen->GetWindowPixmap = NULL;
++    pScreen->SetWindowPixmap = NULL;
++
+     if (dmxShadowFB && !shadowInit(pScreen, dmxShadowUpdateProc, NULL))
+ 	return FALSE;
+ 

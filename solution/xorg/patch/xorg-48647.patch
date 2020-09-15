@@ -1,0 +1,31 @@
+diff --git a/randr/randrstr.h b/randr/randrstr.h
+index b163a73..a18c834 100644
+--- a/randr/randrstr.h
++++ b/randr/randrstr.h
+@@ -344,7 +344,7 @@ extern _X_EXPORT RESTYPE RRCrtcType, RRModeType, RROutputType;
+ 	                                 RROutputType, client, a);\
+ 	if (rc != Success) {\
+ 	    client->errorValue = id;\
+-	    return (rc == BadValue) ? RRErrorBase + BadRROutput : rc;\
++	    return rc;\
+ 	}\
+     }
+ 
+@@ -354,7 +354,7 @@ extern _X_EXPORT RESTYPE RRCrtcType, RRModeType, RROutputType;
+ 	                                 RRCrtcType, client, a);\
+ 	if (rc != Success) {\
+ 	    client->errorValue = id;\
+-	    return (rc == BadValue) ? RRErrorBase + BadRRCrtc : rc;\
++	    return rc;\
+ 	}\
+     }
+ 
+@@ -364,7 +364,7 @@ extern _X_EXPORT RESTYPE RRCrtcType, RRModeType, RROutputType;
+ 	                                 RRModeType, client, a);\
+ 	if (rc != Success) {\
+ 	    client->errorValue = id;\
+-	    return (rc == BadValue) ? RRErrorBase + BadRRMode : rc;\
++	    return rc;\
+ 	}\
+     }
+ 

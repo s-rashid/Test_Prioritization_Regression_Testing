@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winfont.c b/hw/xwin/winfont.c
+index af3e90d..7bcbce1 100644
+--- a/hw/xwin/winfont.c
++++ b/hw/xwin/winfont.c
+@@ -40,6 +40,7 @@ Bool
+ winRealizeFontNativeGDI (ScreenPtr pScreen, FontPtr pFont)
+ {
+   BOOL			fResult = TRUE;
++
+   winScreenPriv(pScreen);
+   
+ #if CYGDEBUG
+@@ -60,6 +61,7 @@ Bool
+ winUnrealizeFontNativeGDI (ScreenPtr pScreen, FontPtr pFont)
+ {
+   BOOL			fResult = TRUE;
++
+   winScreenPriv(pScreen);
+   
+ #if CYGDEBUG

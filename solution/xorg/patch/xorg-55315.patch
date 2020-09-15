@@ -1,0 +1,24 @@
+diff --git a/hw/dmx/input/ChkNotMaskEv.c b/hw/dmx/input/ChkNotMaskEv.c
+index 635332e..bde04ae 100644
+--- a/hw/dmx/input/ChkNotMaskEv.c
++++ b/hw/dmx/input/ChkNotMaskEv.c
+@@ -67,7 +67,8 @@ extern long const _Xevent_to_mask[];
+  * If not, flush buffer and see if any more events are readable. If one
+  * matches, return.  If all else fails, tell the user no events found.
+  */
+-Bool XCheckNotMaskEvent (Display *dpy, long mask, XEvent *event)
++Bool
++XCheckNotMaskEvent(Display * dpy, long mask, XEvent * event)
+ {
+ 	register _XQEvent *prev, *qelt;
+ 	unsigned long qe_serial = 0;
+@@ -77,8 +78,7 @@ Bool XCheckNotMaskEvent (Display *dpy, long mask, XEvent *event)
+ 	prev = NULL;
+ 	for (n = 3; --n >= 0;) {
+ 	    for (qelt = prev ? prev->next : dpy->head;
+-		 qelt;
+-		 prev = qelt, qelt = qelt->next) {
++             qelt; prev = qelt, qelt = qelt->next) {
+ 		if (qelt->event.type >= LASTEvent
+                     || !(_Xevent_to_mask[qelt->event.type] & mask)) {
+ 		    *event = qelt->event;

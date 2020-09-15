@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/os-support/bsd/alpha_video.c b/hw/xfree86/os-support/bsd/alpha_video.c
+index 1a3736b..ed1adca 100644
+--- a/hw/xfree86/os-support/bsd/alpha_video.c
++++ b/hw/xfree86/os-support/bsd/alpha_video.c
+@@ -34,10 +34,8 @@
+ #include <sys/param.h>
+ #ifndef __NetBSD__
+ #  include <sys/sysctl.h>
+-#  if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+-#      include <machine/sysarch.h>
+ #   endif
+-# else
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__NetBSD__)
+ #  include <machine/sysarch.h>
+ #endif
+ 

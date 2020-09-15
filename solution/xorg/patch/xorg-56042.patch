@@ -1,0 +1,131 @@
+diff --git a/miext/shadow/shrotate.c b/miext/shadow/shrotate.c
+index 0901203..779a905 100644
+--- a/miext/shadow/shrotate.c
++++ b/miext/shadow/shrotate.c
+@@ -49,8 +49,7 @@
+ #define BOTTOM_TO_TOP	-2
+ 
+ void
+-shadowUpdateRotatePacked (ScreenPtr	pScreen,
+-			  shadowBufPtr	pBuf)
++shadowUpdateRotatePacked(ScreenPtr pScreen, shadowBufPtr pBuf)
+ {
+     RegionPtr	damage = shadowDamage (pBuf);
+     PixmapPtr	pShadow = pBuf->pPixmap;
+@@ -79,7 +78,8 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+     int		x_dir;
+     int		y_dir;
+ 
+-    fbGetDrawable (&pShadow->drawable, shaBits, shaStride, shaBpp, shaXoff, shaYoff);
++    fbGetDrawable(&pShadow->drawable, shaBits, shaStride, shaBpp, shaXoff,
++                  shaYoff);
+     pixelsPerBits = (sizeof (FbBits) * 8) / shaBpp;
+     pixelsMask = ~(pixelsPerBits - 1);
+     shaMask = FbBitsMask (FB_UNIT-shaBpp, shaBpp);
+@@ -148,8 +148,7 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 	break;
+     }
+     
+-    while (nbox--)
+-    {
++    while (nbox--) {
+         box_x1 = pbox->x1;
+         box_y1 = pbox->y1;
+         box_x2 = pbox->x2;
+@@ -220,15 +219,13 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 	
+ 	/* pointer to shadow data first placed on screen */
+ 	shaLine = (shaBits + 
+-		   sha_y1 * shaStride + 
+-		   ((sha_x1 * shaBpp) >> FB_SHIFT));
++                   sha_y1 * shaStride + ((sha_x1 * shaBpp) >> FB_SHIFT));
+ 
+ 	/*
+ 	 * Copy the bits, always write across the physical frame buffer
+ 	 * to take advantage of write combining.
+ 	 */
+-	while (scr_h--)
+-	{
++        while (scr_h--) {
+ 	    int	    p;
+ 	    FbBits  bits;
+ 	    FbBits  *win;
+@@ -240,8 +237,7 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 	    w = scr_w;
+ 	    scr_x = scr_x1 * shaBpp >> FB_SHIFT;
+ 
+-	    while (w)
+-	    {
++            while (w) {
+ 		/*
+ 		 * Map some of this line
+ 		 */
+@@ -249,8 +245,7 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 						  scr_y,
+ 						  scr_x << 2,
+ 						  SHADOW_WINDOW_WRITE,
+-						  &winSize,
+-						  pBuf->closure);
++                                                  &winSize, pBuf->closure);
+ 		i = (winSize >> 2);
+ 		if (i > w)
+ 		    i = w;
+@@ -259,8 +254,7 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 		/*
+ 		 * Copy the portion of the line mapped
+ 		 */
+-		while (i--)
+-		{
++                while (i--) {
+ 		    bits = 0;
+ 		    p = pixelsPerBits;
+ 		    /*
+@@ -270,19 +264,16 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 		     * down the shadow hitting each scanline once.
+ 		     * This is probably not very efficient.
+ 		     */
+-		    while (p--)
+-		    {
++                    while (p--) {
+ 			bits = FbScrLeft(bits, shaBpp);
+ 			bits |= FbScrRight (*sha, shaShift) & shaMask;
+ 
+ 			shaShift -= shaStepOverX;
+-			if (shaShift >= FB_UNIT)
+-			{
++                        if (shaShift >= FB_UNIT) {
+ 			    shaShift -= FB_UNIT;
+ 			    sha--;
+ 			}
+-			else if (shaShift < 0)
+-			{
++                        else if (shaShift < 0) {
+ 			    shaShift += FB_UNIT;
+ 			    sha++;
+ 			}
+@@ -293,13 +284,11 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+ 	    }
+ 	    scr_y++;
+ 	    shaFirstShift -= shaStepDownX;
+-	    if (shaFirstShift >= FB_UNIT)
+-	    {
++            if (shaFirstShift >= FB_UNIT) {
+ 		shaFirstShift -= FB_UNIT;
+ 		shaLine--;
+ 	    }
+-	    else if (shaFirstShift < 0)
+-	    {
++            else if (shaFirstShift < 0) {
+ 		shaFirstShift += FB_UNIT;
+ 		shaLine++;
+ 	    }
+@@ -308,6 +297,8 @@ shadowUpdateRotatePacked (ScreenPtr	pScreen,
+     }
+ }
+ 
+-shadowUpdateProc shadowUpdateRotatePackedWeak(void) {
++shadowUpdateProc
++shadowUpdateRotatePackedWeak(void)
++{
+     return shadowUpdateRotatePacked;
+ }

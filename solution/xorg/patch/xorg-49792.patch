@@ -1,0 +1,26 @@
+diff --git a/miext/rootless/rootlessCommon.h b/miext/rootless/rootlessCommon.h
+index 8a4b813..6faf1fe 100644
+--- a/miext/rootless/rootlessCommon.h
++++ b/miext/rootless/rootlessCommon.h
+@@ -54,10 +54,17 @@
+ 
+ 
+ // Global variables
+-extern DevPrivateKey rootlessGCPrivateKey;
+-extern DevPrivateKey rootlessScreenPrivateKey;
+-extern DevPrivateKey rootlessWindowPrivateKey;
+-extern DevPrivateKey rootlessWindowOldPixmapPrivateKey;
++extern DevPrivateKeyRec rootlessGCPrivateKeyRec;
++#define rootlessGCPrivateKey (&rootlessGCPrivateKeyRec)
++
++extern DevPrivateKeyRec rootlessScreenPrivateKeyRec;
++#define rootlessScreenPrivateKey (&rootlessScreenPrivateKeyRec)
++
++extern DevPrivateKeyRec rootlessWindowPrivateKeyRec;
++#define rootlessWindowPrivateKey (&rootlessWindowPrivateKeyRec)
++
++extern DevPrivateKeyRec rootlessWindowOldPixmapPrivateKeyRec;
++#define rootlessWindowOldPixmapPrivateKey (&rootlessWindowOldPixmapPrivateKeyRec)
+ 
+ 
+ // RootlessGCRec: private per-gc data

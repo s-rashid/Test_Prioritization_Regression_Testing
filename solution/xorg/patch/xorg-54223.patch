@@ -1,0 +1,16 @@
+diff --git a/Xi/xiselectev.c b/Xi/xiselectev.c
+index ee14edb..815a34f 100644
+--- a/Xi/xiselectev.c
++++ b/Xi/xiselectev.c
+@@ -145,7 +145,10 @@ ProcXISelectEvents(ClientPtr client)
+                 BitIsOn(bits, XI_RawKeyRelease) ||
+                 BitIsOn(bits, XI_RawButtonPress) ||
+                 BitIsOn(bits, XI_RawButtonRelease) ||
+-                BitIsOn(bits, XI_RawMotion))
++                BitIsOn(bits, XI_RawMotion) ||
++                BitIsOn(bits, XI_RawTouchBegin) ||
++                BitIsOn(bits, XI_RawTouchUpdate) ||
++                BitIsOn(bits, XI_RawTouchEnd))
+             {
+                 client->errorValue = XI_RawKeyPress;
+                 return BadValue;

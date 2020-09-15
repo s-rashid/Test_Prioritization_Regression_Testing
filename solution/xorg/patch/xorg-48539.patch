@@ -1,0 +1,32 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 3729f1b..f7ac405 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -372,7 +372,6 @@ SyncSendAlarmNotifyEvents(SyncAlarm *pAlarm)
+ 
+     ane.type = SyncEventBase + XSyncAlarmNotify;
+     ane.kind = XSyncAlarmNotify;
+-    ane.sequenceNumber = pAlarm->client->sequence;
+     ane.alarm = pAlarm->alarm_id;
+     if (pTrigger->pCounter)
+     {
+@@ -395,11 +394,8 @@ SyncSendAlarmNotifyEvents(SyncAlarm *pAlarm)
+ 
+     /* send to other interested clients */
+     for (pcl = pAlarm->pEventClients; pcl; pcl = pcl->next)
+-    {
+-	ane.sequenceNumber = pcl->client->sequence;
+ 	WriteEventsToClient(pcl->client, 1, (xEvent *) &ane);
+     }
+-}
+ 
+ 
+ /*  CounterNotify events only occur in response to an Await.  The events
+@@ -423,7 +419,6 @@ SyncSendCounterNotifyEvents(ClientPtr client, SyncAwait **ppAwait,
+ 	SyncTrigger *pTrigger = &(*ppAwait)->trigger;
+ 	pev->type = SyncEventBase + XSyncCounterNotify;
+ 	pev->kind = XSyncCounterNotify;
+-	pev->sequenceNumber = client->sequence;
+ 	pev->counter = pTrigger->pCounter->id;
+ 	pev->wait_value_lo = XSyncValueLow32(pTrigger->test_value);
+ 	pev->wait_value_hi = XSyncValueHigh32(pTrigger->test_value);

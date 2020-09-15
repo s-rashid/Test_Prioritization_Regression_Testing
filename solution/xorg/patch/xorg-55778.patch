@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/mach-startup/mach_startup_types.h b/hw/xquartz/mach-startup/mach_startup_types.h
+index 459c750..d408cee 100644
+--- a/hw/xquartz/mach-startup/mach_startup_types.h
++++ b/hw/xquartz/mach-startup/mach_startup_types.h
+@@ -4,6 +4,6 @@
+ #define STRING_T_SIZE 1024
+ 
+ typedef char string_t[STRING_T_SIZE];
+-typedef string_t * string_array_t;
++typedef string_t *string_array_t;
+ 
+ #endif

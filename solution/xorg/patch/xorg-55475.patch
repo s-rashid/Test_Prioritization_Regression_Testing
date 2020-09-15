@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/dixmods/fbmodule.c b/hw/xfree86/dixmods/fbmodule.c
+index 4df2646..5895ba2 100644
+--- a/hw/xfree86/dixmods/fbmodule.c
++++ b/hw/xfree86/dixmods/fbmodule.c
+@@ -31,8 +31,7 @@
+ #include "xf86Module.h"
+ #include "fb.h"
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+ #ifdef FB_ACCESS_WRAPPER
+ 	"wfb",
+ #else
+@@ -49,4 +48,5 @@ static XF86ModuleVersionInfo VersRec =
+ 	{0,0,0,0}       /* signature, to be patched into the file by a tool */
+ };
+ 
+-_X_EXPORT XF86ModuleData FBPREFIX(ModuleData) = { &VersRec, NULL, NULL };
++_X_EXPORT XF86ModuleData FBPREFIX(ModuleData) = {
++&VersRec, NULL, NULL};

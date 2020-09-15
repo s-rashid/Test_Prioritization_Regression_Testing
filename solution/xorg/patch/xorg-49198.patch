@@ -1,0 +1,117 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index a979dd3..3d5d9a6 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -641,14 +641,12 @@ xf86XVUpdateCompositeClip(XvPortRecPrivatePtr portPriv)
+ {
+    RegionPtr	pregWin, pCompositeClip;
+    WindowPtr	pWin;
+-   ScreenPtr	pScreen;
+    Bool		freeCompClip = FALSE;
+ 
+    if(portPriv->pCompositeClip)
+ 	return;
+ 
+    pWin = (WindowPtr)portPriv->pDraw;
+-   pScreen = pWin->drawable.pScreen;
+ 
+    /* get window clip list */
+    if(portPriv->subWindowMode == IncludeInferiors) {
+@@ -714,11 +712,9 @@ xf86XVRegetVideo(XvPortRecPrivatePtr portPriv)
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+-  ScreenPtr pScreen;
+   int ret = Success;
+   Bool clippedAway = FALSE;
+ 
+-  pScreen = portPriv->pDraw->pScreen;
+   xf86XVUpdateCompositeClip(portPriv);
+ 
+   /* translate the video region to the screen */
+@@ -778,12 +774,9 @@ xf86XVReputVideo(XvPortRecPrivatePtr portPriv)
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+-  ScreenPtr pScreen;
+   int ret = Success;
+   Bool clippedAway = FALSE;
+ 
+-  pScreen = portPriv->pDraw->pScreen;
+-
+   xf86XVUpdateCompositeClip(portPriv);
+ 
+   /* translate the video region to the screen */
+@@ -868,12 +861,9 @@ xf86XVReputImage(XvPortRecPrivatePtr portPriv)
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+-  ScreenPtr pScreen;
+   int ret = Success;
+   Bool clippedAway = FALSE;
+ 
+-  pScreen = portPriv->pDraw->pScreen;
+-
+   xf86XVUpdateCompositeClip(portPriv);
+ 
+   /* translate the video region to the screen */
+@@ -1418,7 +1408,6 @@ xf86XVPutStill(
+    CARD16 drw_w, CARD16 drw_h
+ ){
+   XvPortRecPrivatePtr portPriv = (XvPortRecPrivatePtr)(pPort->devPriv.ptr);
+-  ScreenPtr pScreen;
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+@@ -1430,8 +1419,6 @@ xf86XVPutStill(
+ 
+   if(!portPriv->pScrn->vtSema) return Success; /* Success ? */
+ 
+-  pScreen = pDraw->pScreen;
+-
+   WinBox.x1 = pDraw->x + drw_x;
+   WinBox.y1 = pDraw->y + drw_y;
+   WinBox.x2 = WinBox.x1 + drw_w;
+@@ -1570,7 +1557,6 @@ xf86XVGetStill(
+    CARD16 drw_w, CARD16 drw_h
+ ){
+   XvPortRecPrivatePtr portPriv = (XvPortRecPrivatePtr)(pPort->devPriv.ptr);
+-  ScreenPtr pScreen;
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+@@ -1582,8 +1568,6 @@ xf86XVGetStill(
+ 
+   if(!portPriv->pScrn->vtSema) return Success; /* Success ? */
+ 
+-  pScreen = pDraw->pScreen;
+-
+   WinBox.x1 = pDraw->x + drw_x;
+   WinBox.y1 = pDraw->y + drw_y;
+   WinBox.x2 = WinBox.x1 + drw_w;
+@@ -1718,7 +1702,6 @@ xf86XVPutImage(
+    CARD16 width, CARD16 height
+ ){
+   XvPortRecPrivatePtr portPriv = (XvPortRecPrivatePtr)(pPort->devPriv.ptr);
+-  ScreenPtr pScreen;
+   RegionRec WinRegion;
+   RegionRec ClipRegion;
+   BoxRec WinBox;
+@@ -1730,8 +1713,6 @@ xf86XVPutImage(
+ 
+   if(!portPriv->pScrn->vtSema) return Success; /* Success ? */
+ 
+-  pScreen = pDraw->pScreen;
+-
+   WinBox.x1 = pDraw->x + drw_x;
+   WinBox.y1 = pDraw->y + drw_y;
+   WinBox.x2 = WinBox.x1 + drw_w;
+@@ -1926,8 +1907,6 @@ xf86XVFillKeyHelper (ScreenPtr pScreen, CARD32 key, RegionPtr clipboxes)
+    boundaries in 16.16 fixed point.
+ */
+ 
+-#define DummyScreen screenInfo.screens[0]
+-
+ Bool
+ xf86XVClipVideoHelper(
+     BoxPtr dst,

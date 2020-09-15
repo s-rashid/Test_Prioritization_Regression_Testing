@@ -1,0 +1,31 @@
+diff --git a/hw/kdrive/linux/bus.c b/hw/kdrive/linux/bus.c
+index ba8a6cd..93c3ea5 100644
+--- a/hw/kdrive/linux/bus.c
++++ b/hw/kdrive/linux/bus.c
+@@ -72,7 +72,7 @@ BusInit (KdPointerInfo *pi)
+     {
+         for (i = 0; i < NUM_BUS_NAMES; i++)
+         {
+-            if ((fd = open (BusNames[i], 0)) > 0)
++            if ((fd = open (BusNames[i], 0)) >= 0)
+             {
+                 close(fd);
+                 if (pi->path)
+@@ -84,7 +84,7 @@ BusInit (KdPointerInfo *pi)
+     }
+     else
+     {
+-        if ((fd = open(pi->path, 0)) > 0)
++        if ((fd = open(pi->path, 0)) >= 0)
+         {
+             close(fd);
+             return Success;
+@@ -99,7 +99,7 @@ BusEnable (KdPointerInfo *pi)
+ {
+     int fd = open(pi->path, 0);
+ 
+-    if (fd > 0)
++    if (fd >= 0)
+     {
+         KdRegisterFd(fd, BusRead, pi);
+         pi->driverPrivate = (void *)fd;

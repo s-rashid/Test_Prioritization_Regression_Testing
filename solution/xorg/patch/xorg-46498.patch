@@ -1,0 +1,13 @@
+diff --git a/dix/dixfonts.c b/dix/dixfonts.c
+index d0a46c7..329318d 100644
+--- a/dix/dixfonts.c
++++ b/dix/dixfonts.c
+@@ -1046,7 +1046,7 @@ doListFontsWithInfo(ClientPtr client, LFWIclosurePtr c)
+ 		    err = AllocError;
+ 		    break;
+ 		}
+-		memset(reply + c->length, 0, length - c->length);
++		memset((char*)reply + c->length, 0, length - c->length);
+ 		c->reply = reply;
+ 		c->length = length;
+ 	    }

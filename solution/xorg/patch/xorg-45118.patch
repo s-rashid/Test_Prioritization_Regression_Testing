@@ -1,0 +1,14 @@
+diff --git a/Xi/setbmap.c b/Xi/setbmap.c
+index f29389d..e7b8d4a 100644
+--- a/Xi/setbmap.c
++++ b/Xi/setbmap.c
+@@ -50,9 +50,6 @@ SOFTWARE.
+  *
+  */
+ 
+-#define IsOn(ptr, bit) \
+-	(((BYTE *) (ptr))[(bit)>>3] & (1 << ((bit) & 7)))
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif

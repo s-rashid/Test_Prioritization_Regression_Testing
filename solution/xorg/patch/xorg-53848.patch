@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index a0fdf29..c1e48ee 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -827,6 +827,8 @@ InitInput(int argc, char **argv)
+ 
+     /* Initialize all configured input devices */
+     for (pInfo = xf86ConfigLayout.inputs; pInfo && *pInfo; pInfo++) {
++        (*pInfo)->options = xf86AddNewOption((*pInfo)->options, "driver", (*pInfo)->driver);
++        (*pInfo)->options = xf86AddNewOption((*pInfo)->options, "identifier", (*pInfo)->name);
+         /* If one fails, the others will too */
+         if (NewInputDeviceRequest((*pInfo)->options, NULL, &dev) == BadAlloc)
+             break;

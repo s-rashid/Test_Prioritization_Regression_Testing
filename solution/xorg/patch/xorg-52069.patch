@@ -1,0 +1,13 @@
+diff --git a/xkb/xkbAccessX.c b/xkb/xkbAccessX.c
+index 10c38ca..12fe2a1 100644
+--- a/xkb/xkbAccessX.c
++++ b/xkb/xkbAccessX.c
+@@ -694,7 +694,7 @@ ProcessInputProc backupproc;
+ xkbDeviceInfoPtr xkbPrivPtr = XKBDEVICEINFO(mouse);
+ DeviceEvent     *event = &ev->device_event;
+ 
+-    dev = (IsMaster(mouse) || mouse->u.master) ? GetMaster(mouse, MASTER_KEYBOARD) : mouse;
++    dev = IsFloating(mouse) ? mouse : GetMaster(mouse, MASTER_KEYBOARD);
+ 
+     if (dev && dev->key)
+     {

@@ -1,0 +1,13 @@
+diff --git a/damageext/damageextint.h b/damageext/damageextint.h
+index d40ba3e..a235cb9 100644
+--- a/damageext/damageextint.h
++++ b/damageext/damageextint.h
+@@ -62,7 +62,7 @@ typedef struct _DamageExt {
+     int rc = dixLookupResourceByType((pointer *)&(pDamageExt), rid, \
+                                      DamageExtType, client, mode); \
+     if (rc != Success) \
+-        return (rc == BadValue) ? DamageErrorBase + BadDamage : rc; \
++        return rc; \
+ }
+ 
+ void

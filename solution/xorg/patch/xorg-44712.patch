@@ -1,0 +1,28 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 9ded048..1d49d7c 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -206,7 +206,6 @@ do_get_buffers(DrawablePtr pDraw, int *width, int *height,
+ 	 * attachments.  The counting logic in the loop accounts for the case
+ 	 * where the client requests both the fake and real front-buffer.
+ 	 */
+-	if (pDraw->type == DRAWABLE_WINDOW) {
+ 	    if (attachment == DRI2BufferBackLeft) {
+ 		need_real_front++;
+ 		front_format = format;
+@@ -214,10 +213,14 @@ do_get_buffers(DrawablePtr pDraw, int *width, int *height,
+ 
+ 	    if (attachment == DRI2BufferFrontLeft) {
+ 		need_real_front--;
+-		need_fake_front++;
+ 		front_format = format;
++
++	    if (pDraw->type == DRAWABLE_WINDOW) {
++		need_fake_front++;
++	    }
+ 	    }
+ 
++	if (pDraw->type == DRAWABLE_WINDOW) {
+ 	    if (attachment == DRI2BufferFakeFrontLeft) {
+ 		need_fake_front--;
+ 		have_fake_front = 1;

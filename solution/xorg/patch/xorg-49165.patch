@@ -1,0 +1,13 @@
+diff --git a/miext/rootless/rootlessCommon.h b/miext/rootless/rootlessCommon.h
+index f44c4e8..8a4b813 100644
+--- a/miext/rootless/rootlessCommon.h
++++ b/miext/rootless/rootlessCommon.h
+@@ -213,7 +213,7 @@ extern RegionRec rootlessHugeRoot;
+ 
+ // Returns TRUE if this window is a root window
+ #define IsRoot(pWin) \
+-    ((pWin) == WindowTable[(pWin)->drawable.pScreen->myNum])
++    ((pWin) == (pWin)->drawable.pScreen->root)
+ 
+ 
+ /*

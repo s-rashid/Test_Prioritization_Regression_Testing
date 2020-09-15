@@ -1,0 +1,22 @@
+diff --git a/miext/rootless/rootlessCommon.c b/miext/rootless/rootlessCommon.c
+index 39a3eed..dd3f953 100644
+--- a/miext/rootless/rootlessCommon.c
++++ b/miext/rootless/rootlessCommon.c
+@@ -447,7 +447,7 @@ RootlessRedisplay(WindowPtr pWindow)
+ void
+ RootlessRepositionWindows(ScreenPtr pScreen)
+ {
+-    WindowPtr root = WindowTable[pScreen->myNum];
++    WindowPtr root = pScreen->root;
+     WindowPtr win;
+ 
+     if (root != NULL) {
+@@ -468,7 +468,7 @@ RootlessRepositionWindows(ScreenPtr pScreen)
+ void
+ RootlessRedisplayScreen(ScreenPtr pScreen)
+ {
+-    WindowPtr root = WindowTable[pScreen->myNum];
++    WindowPtr root = pScreen->root;
+ 
+     if (root != NULL) {
+         WindowPtr win;

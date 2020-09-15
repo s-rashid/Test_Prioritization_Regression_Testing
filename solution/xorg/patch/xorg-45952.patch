@@ -1,0 +1,13 @@
+diff --git a/include/extinit.h b/include/extinit.h
+index 0b36d3b..c3aa7b6 100644
+--- a/include/extinit.h
++++ b/include/extinit.h
+@@ -32,7 +32,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ 
+ #include "extnsionst.h"
+ 
+-extern _X_EXPORT void
++extern void
+ XInputExtensionInit(
+ 	void
+ 	);

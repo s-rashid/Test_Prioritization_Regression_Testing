@@ -1,0 +1,14 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index e58e940..f73b5ff 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -98,9 +98,6 @@ DevPrivateKey UnusedClassesPrivateKey = &UnusedClassesPrivateKeyIndex;
+ static int XTstDevicePrivateKeyIndex;
+ DevPrivateKey XTstDevicePrivateKey = &XTstDevicePrivateKeyIndex;
+ 
+-
+-int CorePointerProc(DeviceIntPtr, int);
+-int CoreKeyboardProc(DeviceIntPtr, int);
+ /**
+  * vxtstpointer
+  * is the virtual pointer for XTest. It is the first slave

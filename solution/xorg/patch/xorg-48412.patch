@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/vgahw/vgaCmap.c b/hw/xfree86/vgahw/vgaCmap.c
+index dad71b9..4720f4d 100644
+--- a/hw/xfree86/vgahw/vgaCmap.c
++++ b/hw/xfree86/vgahw/vgaCmap.c
+@@ -246,7 +246,7 @@ vgaInstallColormap(pmap)
+ 
+   for ( i=0; i<entries; i++) ppix[i] = i;
+ 
+-  QueryColors( pmap, entries, ppix, prgb);
++  QueryColors(pmap, entries, ppix, prgb, serverClient);
+ 
+   for ( i=0; i<entries; i++) /* convert xrgbs to xColorItems */
+     {

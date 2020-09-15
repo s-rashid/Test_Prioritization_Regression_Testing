@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 692e511..e16fe78 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -340,7 +340,8 @@ KdEnableInput(void)
+ 
+     /* reset screen saver */
+     ev.any.time = GetTimeInMillis();
+-    NoticeEventTime(&ev);
++    NoticeEventTime(&ev, pi->dixdev);
++    NoticeEventTime(&ev, ki->dixdev);
+ 
+     KdUnblockSigio();
+ }

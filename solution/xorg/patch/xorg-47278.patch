@@ -1,0 +1,13 @@
+diff --git a/include/resource.h b/include/resource.h
+index 8ed4e56..7948af5 100644
+--- a/include/resource.h
++++ b/include/resource.h
+@@ -155,7 +155,7 @@ typedef Bool (*FindComplexResType)(
+     pointer /*cdata*/);
+ 
+ extern _X_EXPORT RESTYPE CreateNewResourceType(
+-    DeleteType /*deleteFunc*/);
++    DeleteType /*deleteFunc*/, char * /*name*/);
+ 
+ extern _X_EXPORT RESTYPE CreateNewResourceClass(void);
+ 

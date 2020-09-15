@@ -1,0 +1,26 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 5634f3c..754a3f8 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -167,12 +167,6 @@ typedef struct _DetailRec {		/* Grab details may be bit masks */
+     Mask                *pMask;
+ } DetailRec;
+ 
+-typedef enum {
+-    GRABTYPE_CORE,
+-    GRABTYPE_XI,
+-    GRABTYPE_XI2
+-} GrabType;
+-
+ union _GrabMask {
+     Mask core;
+     Mask xi;
+@@ -200,7 +194,7 @@ typedef struct _GrabRec {
+     unsigned		ownerEvents:1;
+     unsigned		keyboardMode:1;
+     unsigned		pointerMode:1;
+-    GrabType		grabtype;
++    enum InputLevel	grabtype;
+     CARD8		type;		/* event type */
+     DetailRec		modifiersDetail;
+     DeviceIntPtr	modifierDevice;

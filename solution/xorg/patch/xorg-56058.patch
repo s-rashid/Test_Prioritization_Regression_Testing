@@ -1,0 +1,61 @@
+diff --git a/os/osdep.h b/os/osdep.h
+index 70e2a07..fff0887 100644
+--- a/os/osdep.h
++++ b/os/osdep.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -153,7 +152,8 @@ typedef XID (*AuthToIDFunc) (AuthToIDArgs);
+ 
+ typedef void (*OsCloseFunc)(ClientPtr);
+ 
+-typedef int (*OsFlushFunc)(ClientPtr who, struct _osComm * oc, char* extraBuf, int extraCount);
++typedef int (*OsFlushFunc) (ClientPtr who, struct _osComm * oc, char *extraBuf,
++                            int extraCount);
+ 
+ typedef struct _osComm {
+     int fd;
+@@ -165,15 +165,13 @@ typedef struct _osComm {
+     Bool local_client;
+ } OsCommRec, *OsCommPtr;
+ 
+-extern int FlushClient(
+-    ClientPtr /*who*/,
++extern int FlushClient(ClientPtr /*who */ ,
+     OsCommPtr /*oc*/,
+     const void * /*extraBuf*/,
+     int /*extraCount*/
+ );
+ 
+-extern void FreeOsBuffers(
+-    OsCommPtr /*oc*/
++extern void FreeOsBuffers(OsCommPtr     /*oc */
+ );
+ 
+ #include "dix.h"
+@@ -248,18 +246,14 @@ extern int  SecureRPCReset    (AuthRstCArgs);
+ /* in xdmcp.c */
+ extern void XdmcpUseMsg (void);
+ extern int XdmcpOptions(int argc, char **argv, int i);
+-extern void XdmcpRegisterConnection (
+-    int	    type,
+-    const char    *address,
+-    int	    addrlen);
++extern void XdmcpRegisterConnection(int type, const char *address, int addrlen);
+ extern void XdmcpRegisterAuthorizations (void);
+ extern void XdmcpRegisterAuthorization (const char *name, int namelen);
+ extern void XdmcpInit (void);
+ extern void XdmcpReset (void);
+ extern void XdmcpOpenDisplay(int sock);
+ extern void XdmcpCloseDisplay(int sock);
+-extern void XdmcpRegisterAuthentication (
+-    const char    *name,
++extern void XdmcpRegisterAuthentication(const char *name,
+     int	    namelen,
+     const char    *data,
+     int	    datalen,

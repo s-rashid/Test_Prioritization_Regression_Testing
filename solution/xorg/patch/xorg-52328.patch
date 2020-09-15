@@ -1,0 +1,12 @@
+diff --git a/dix/colormap.c b/dix/colormap.c
+index 2e9a806..188378b 100644
+--- a/dix/colormap.c
++++ b/dix/colormap.c
+@@ -1879,6 +1879,7 @@ AllocPseudo (int client, ColormapPtr pmap, int c, int r, Bool contig,
+ 	{
+ 	    for (p = ppixTemp; p < ppixTemp + npix; p++)
+ 		pmap->red[*p].refcnt = 0;
++	    free(ppixTemp);
+ 	    return BadAlloc;
+ 	}
+ 	pmap->clientPixelsRed[client] = ppix;

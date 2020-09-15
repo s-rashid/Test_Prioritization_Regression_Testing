@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprAppleWM.c b/hw/xquartz/xpr/xprAppleWM.c
+index 4b31e3a..1a3d427 100644
+--- a/hw/xquartz/xpr/xprAppleWM.c
++++ b/hw/xquartz/xpr/xprAppleWM.c
+@@ -67,7 +67,7 @@ static int xprSetWindowLevel(
+     if(!winRec)
+         return BadWindow;
+     
+-    if(quartzEnableRootless)
++    if(XQuartzIsRootless)
+         wc.window_level = normal_window_levels[level];
+     else
+         wc.window_level = rooted_window_levels[level];

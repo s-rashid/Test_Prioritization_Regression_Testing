@@ -1,0 +1,12 @@
+diff --git a/glx/glxserver.h b/glx/glxserver.h
+index 4aa8c2e..80f1b28 100644
+--- a/glx/glxserver.h
++++ b/glx/glxserver.h
+@@ -248,4 +248,7 @@ extern int __glXImageSize(GLenum format, GLenum type,
+     GLint imageHeight, GLint rowLength, GLint skipImages, GLint skipRows,
+     GLint alignment);
+ 
++extern unsigned glxMajorVersion;
++extern unsigned glxMinorVersion;
++
+ #endif /* !__GLX_server_h__ */

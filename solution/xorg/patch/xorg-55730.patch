@@ -1,0 +1,64 @@
+diff --git a/hw/xnest/GC.c b/hw/xnest/GC.c
+index 48fe4dc..cfaf714 100644
+--- a/hw/xnest/GC.c
++++ b/hw/xnest/GC.c
+@@ -196,8 +196,7 @@ xnestChangeClip(GCPtr pGC, int type, pointer pValue, int nRects)
+ 
+   xnestDestroyClipHelper(pGC);
+ 
+-  switch(type) 
+-    {
++    switch (type) {
+     case CT_NONE:
+       XSetClipMask(xnestDisplay, xnestGC(pGC), None);
+       break;
+@@ -225,7 +224,8 @@ xnestChangeClip(GCPtr pGC, int type, pointer pValue, int nRects)
+        * Need to change into region, so subsequent uses are with
+        * current pixmap contents.
+        */
+-      pGC->clientClip = (pointer) (*pGC->pScreen->BitmapToRegion)((PixmapPtr)pValue);
++        pGC->clientClip =
++            (pointer) (*pGC->pScreen->BitmapToRegion) ((PixmapPtr) pValue);
+       (*pGC->pScreen->DestroyPixmap)((PixmapPtr)pValue);
+       pValue = pGC->clientClip;
+       type = CT_REGION;
+@@ -256,8 +256,7 @@ xnestChangeClip(GCPtr pGC, int type, pointer pValue, int nRects)
+       break;
+     }
+ 
+-  switch(type) 
+-    {
++    switch (type) {
+     default:
+       break;
+ 
+@@ -271,7 +270,8 @@ xnestChangeClip(GCPtr pGC, int type, pointer pValue, int nRects)
+        * CT_PIXMAP and CT_REGION client clips.
+        */
+       pGC->clientClip = (pointer) RegionFromRects(nRects,
+-						  (xRectangle *)pValue, type);
++                                                    (xRectangle *) pValue,
++                                                    type);
+       free(pValue);
+       pValue = pGC->clientClip;
+       type = CT_REGION;
+@@ -297,8 +297,7 @@ xnestDestroyClip(GCPtr pGC)
+ void
+ xnestDestroyClipHelper(GCPtr pGC)
+ {
+-  switch (pGC->clientClipType)
+-    {
++    switch (pGC->clientClipType) {
+     default:
+     case CT_NONE:
+       break;
+@@ -314,8 +313,7 @@ xnestCopyClip(GCPtr pGCDst, GCPtr pGCSrc)
+ {
+   RegionPtr pRgn;
+ 
+-  switch (pGCSrc->clientClipType)
+-    {
++    switch (pGCSrc->clientClipType) {
+     default:
+     case CT_NONE:
+       xnestDestroyClip(pGCDst);

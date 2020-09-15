@@ -1,0 +1,40 @@
+diff --git a/xkb/xkbSwap.c b/xkb/xkbSwap.c
+index fcae918..076da34 100644
+--- a/xkb/xkbSwap.c
++++ b/xkb/xkbSwap.c
+@@ -123,7 +123,8 @@ SProcXkbSelectEvents(ClientPtr client)
+ 	    dataLeft-= (size*2);
+ 	}
+ 	if (dataLeft>2) {
+-	    ErrorF("[xkb] Extra data (%d bytes) after SelectEvents\n",dataLeft);
++            ErrorF("[xkb] Extra data (%d bytes) after SelectEvents\n",
++                   dataLeft);
+ 	    return BadLength;
+ 	}
+     }
+@@ -244,7 +245,6 @@ SProcXkbSetMap(ClientPtr client)
+     return ProcXkbSetMap(client);
+ }
+ 
+-
+ static int
+ SProcXkbGetCompatMap(ClientPtr client)
+ {
+@@ -336,7 +336,6 @@ SProcXkbSetNamedIndicator(ClientPtr client)
+     return ProcXkbSetNamedIndicator(client);
+ }
+ 
+-
+ static int
+ SProcXkbGetNames(ClientPtr client)
+ {
+@@ -481,8 +480,7 @@ int
+ SProcXkbDispatch (ClientPtr client)
+ {
+     REQUEST(xReq);
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+     case X_kbUseExtension:
+ 	return SProcXkbUseExtension(client);
+     case X_kbSelectEvents:

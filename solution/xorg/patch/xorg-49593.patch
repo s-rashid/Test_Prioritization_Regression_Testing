@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winerror.c b/hw/xwin/winerror.c
+index 2ff65bc..cb69c57 100644
+--- a/hw/xwin/winerror.c
++++ b/hw/xwin/winerror.c
+@@ -144,9 +144,7 @@ winMessageBoxF (const char *pszError, UINT uType, ...)
+ 	      MB_OK | uType);
+ 
+  winMessageBoxF_Cleanup:
+-  if (pszErrorF)
+     free(pszErrorF);
+-  if (pszMsgBox)
+     free(pszMsgBox);
+ #undef MESSAGEBOXF
+ }

@@ -1,0 +1,134 @@
+diff --git a/hw/xfree86/x86emu/fpu.c b/hw/xfree86/x86emu/fpu.c
+index fbc602d..0dab05c 100644
+--- a/hw/xfree86/x86emu/fpu.c
++++ b/hw/xfree86/x86emu/fpu.c
+@@ -42,7 +42,8 @@
+ /*----------------------------- Implementation ----------------------------*/
+ 
+ /* opcode=0xd8 */
+-void x86emuOp_esc_coprocess_d8(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_d8(u8 X86EMU_UNUSED(op1))
+ {
+     START_OF_INSTR();
+     DECODE_PRINTF("ESC D8\n");
+@@ -92,7 +93,8 @@ static const char *x86emu_fpu_op_d9_tab1[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xd9 */
+-void x86emuOp_esc_coprocess_d9(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_d9(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -103,7 +105,8 @@ void x86emuOp_esc_coprocess_d9(u8 X86EMU_UNUSED(op1))
+ #ifdef DEBUG
+     if (mod != 3) {
+         DECODE_PRINTINSTR32(x86emu_fpu_op_d9_tab, mod, rh, rl);
+-    } else {
++    }
++    else {
+         DECODE_PRINTF(x86emu_fpu_op_d9_tab1[(rh << 3) + rl]);
+     }
+ #endif
+@@ -124,7 +127,8 @@ void x86emuOp_esc_coprocess_d9(u8 X86EMU_UNUSED(op1))
+ 		stkelem = (u8)rl;
+ 		if (rh < 4) {
+ 				DECODE_PRINTF2("ST(%d)\n", stkelem);
+-		} else {
++        }
++        else {
+ 				DECODE_PRINTF("\n");
+ 		}
+         break;
+@@ -322,7 +326,8 @@ static const char *x86emu_fpu_op_da_tab[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xda */
+-void x86emuOp_esc_coprocess_da(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_da(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -406,7 +411,8 @@ static const char *x86emu_fpu_op_db_tab[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xdb */
+-void x86emuOp_esc_coprocess_db(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_db(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -416,7 +422,8 @@ void x86emuOp_esc_coprocess_db(u8 X86EMU_UNUSED(op1))
+ #ifdef DEBUG
+     if (mod != 3) {
+         DECODE_PRINTINSTR32(x86emu_fpu_op_db_tab, mod, rh, rl);
+-    } else if (rh == 4) {       /* === 11 10 0 nnn */
++    }
++    else if (rh == 4) {         /* === 11 10 0 nnn */
+         switch (rl) {
+           case 0:
+             DECODE_PRINTF("FENI\n");
+@@ -431,7 +438,8 @@ void x86emuOp_esc_coprocess_db(u8 X86EMU_UNUSED(op1))
+             DECODE_PRINTF("FINIT\n");
+             break;
+         }
+-    } else {
++    }
++    else {
+         DECODE_PRINTF2("ESC_DB %0x\n", (mod << 6) + (rh << 3) + (rl));
+     }
+ #endif /* DEBUG */
+@@ -535,7 +543,8 @@ static const char *x86emu_fpu_op_dc_tab[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xdc */
+-void x86emuOp_esc_coprocess_dc(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_dc(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -648,7 +657,8 @@ static const char *x86emu_fpu_op_dd_tab[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xdd */
+-void x86emuOp_esc_coprocess_dd(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_dd(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -734,8 +744,7 @@ void x86emuOp_esc_coprocess_dd(u8 X86EMU_UNUSED(op1))
+ 
+ #ifdef DEBUG
+ 
+-static const char *x86emu_fpu_op_de_tab[] =
+-{
++static const char *x86emu_fpu_op_de_tab[] = {
+     "FIADD\tWORD PTR ", "FIMUL\tWORD PTR ", "FICOM\tWORD PTR ",
+     "FICOMP\tWORD PTR ",
+     "FISUB\tWORD PTR ", "FISUBR\tWORD PTR ", "FIDIV\tWORD PTR ",
+@@ -758,7 +767,8 @@ static const char *x86emu_fpu_op_de_tab[] =
+ #endif /* DEBUG */
+ 
+ /* opcode=0xde */
+-void x86emuOp_esc_coprocess_de(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_de(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;
+@@ -880,7 +890,8 @@ static const char *x86emu_fpu_op_df_tab[] = {
+ #endif /* DEBUG */
+ 
+ /* opcode=0xdf */
+-void x86emuOp_esc_coprocess_df(u8 X86EMU_UNUSED(op1))
++void
++x86emuOp_esc_coprocess_df(u8 X86EMU_UNUSED(op1))
+ {
+     int mod, rl, rh;
+     uint destoffset = 0;

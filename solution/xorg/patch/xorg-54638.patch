@@ -1,0 +1,31 @@
+diff --git a/Xext/panoramiXprocs.c b/Xext/panoramiXprocs.c
+index 6a91e35..7fb578b 100644
+--- a/Xext/panoramiXprocs.c
++++ b/Xext/panoramiXprocs.c
+@@ -1928,19 +1928,17 @@ PanoramiXGetImage(ClientPtr client)
+     isRoot = IS_ROOT_DRAWABLE(draw);
+ 
+     if (isRoot) {
+-        if (                    /* check for being onscreen */
+-               x < 0 || x + w > PanoramiXPixWidth ||
++        /* check for being onscreen */
++        if (x < 0 || x + w > PanoramiXPixWidth ||
+                y < 0 || y + h > PanoramiXPixHeight)
+             return BadMatch;
+     }
+     else {
+-        if (                    /* check for being onscreen */
+-               screenInfo.screens[0]->x + pDraw->x + x < 0 ||
+-               screenInfo.screens[0]->x + pDraw->x + x + w > PanoramiXPixWidth
+-               || screenInfo.screens[0]->y + pDraw->y + y < 0 ||
+-               screenInfo.screens[0]->y + pDraw->y + y + h > PanoramiXPixHeight
+-               ||
+-               /* check for being inside of border */
++        /* check for being onscreen and inside of border */
++        if (screenInfo.screens[0]->x + pDraw->x + x < 0 ||
++            screenInfo.screens[0]->x + pDraw->x + x + w > PanoramiXPixWidth ||
++            screenInfo.screens[0]->y + pDraw->y + y < 0 ||
++            screenInfo.screens[0]->y + pDraw->y + y + h > PanoramiXPixHeight ||
+                x < -wBorderWidth((WindowPtr) pDraw) ||
+                x + w > wBorderWidth((WindowPtr) pDraw) + (int) pDraw->width ||
+                y < -wBorderWidth((WindowPtr) pDraw) ||

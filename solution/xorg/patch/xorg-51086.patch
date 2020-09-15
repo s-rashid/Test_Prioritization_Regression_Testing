@@ -1,0 +1,12 @@
+diff --git a/glx/xfont.c b/glx/xfont.c
+index b4081cf..9943784 100644
+--- a/glx/xfont.c
++++ b/glx/xfont.c
+@@ -35,7 +35,6 @@
+ #include "glxserver.h"
+ #include "glxutil.h"
+ #include "unpack.h"
+-#include "g_disptab.h"
+ #include "glapitable.h"
+ #include "glapi.h"
+ #include "glthread.h"

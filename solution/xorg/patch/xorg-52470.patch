@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/modes/xf86RandR12.c b/hw/xfree86/modes/xf86RandR12.c
+index 2ebe0ae..cb20d1c 100644
+--- a/hw/xfree86/modes/xf86RandR12.c
++++ b/hw/xfree86/modes/xf86RandR12.c
+@@ -31,7 +31,6 @@
+ #include "xf86.h"
+ #include "os.h"
+ #include "globals.h"
+-#include "xf86.h"
+ #include "xf86Priv.h"
+ #include "xf86DDC.h"
+ #include "mipointer.h"

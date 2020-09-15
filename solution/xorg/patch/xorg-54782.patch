@@ -1,0 +1,33 @@
+diff --git a/dix/resource.c b/dix/resource.c
+index 5691b16..9714061 100644
+--- a/dix/resource.c
++++ b/dix/resource.c
+@@ -636,11 +636,12 @@ InitClientResources(ClientPtr client)
+     return TRUE;
+ }
+ 
+-static int
+-Hash(int client, XID id)
++int
++HashResourceID(XID id, int numBits)
+ {
+     id &= RESOURCE_ID_MASK;
+-    switch (clientTable[client].hashsize) {
++    switch (numBits)
++    {
+     case 6:
+         return ((int) (0x03F & (id ^ (id >> 6) ^ (id >> 12))));
+     case 7:
+@@ -657,6 +658,12 @@ Hash(int client, XID id)
+     return -1;
+ }
+ 
++static int
++Hash(int client, XID id)
++{
++    return HashResourceID(id, clientTable[client].hashsize);
++}
++
+ static XID
+ AvailableID(int client, XID id, XID maxid, XID goodid)
+ {

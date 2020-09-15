@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxcursor.c b/hw/dmx/dmxcursor.c
+index e8a1845..cbadf62 100644
+--- a/hw/dmx/dmxcursor.c
++++ b/hw/dmx/dmxcursor.c
+@@ -195,8 +195,8 @@ miPointerScreenFuncRec dmxPointerCursorFuncs =
+     dmxCursorOffScreen,
+     dmxCrossScreen,
+     dmxWarpCursor,
+-    dmxeqEnqueue,        /*XXX incompatible type/function! */
+-    dmxeqSwitchScreen
++    NULL,
++    NULL,
+ };
+ 
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 3664d46..81bb707 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -1296,7 +1296,7 @@ xf86ScaleAxis(int	Cx,
+     }
+     else {
+ 	X = 0;
+-	ErrorF ("Divide by Zero in xf86ScaleAxis");
++	ErrorF ("Divide by Zero in xf86ScaleAxis\n");
+     }
+     
+     if (X > to_max)

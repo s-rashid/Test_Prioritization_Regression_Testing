@@ -1,0 +1,141 @@
+diff --git a/mi/mipolygen.c b/mi/mipolygen.c
+index 7c7c593..2031b42 100644
+--- a/mi/mipolygen.c
++++ b/mi/mipolygen.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -66,10 +65,7 @@ SOFTWARE.
+  */
+ 
+ Bool
+-miFillGeneralPoly(
+-    DrawablePtr dst,
+-    GCPtr	pgc,
+-    int		count,              /* number of points        */
++miFillGeneralPoly(DrawablePtr dst, GCPtr pgc, int count,        /* number of points        */
+     DDXPointPtr ptsIn               /* the points              */
+     )
+ {
+@@ -96,26 +92,22 @@ miFillGeneralPoly(
+ 	return FALSE;
+     ptsOut = FirstPoint;
+     width = FirstWidth;
+-    if (!miCreateETandAET(count, ptsIn, &ET, &AET, pETEs, &SLLBlock))
+-    {
++    if (!miCreateETandAET(count, ptsIn, &ET, &AET, pETEs, &SLLBlock)) {
+ 	free(pETEs);
+ 	return FALSE;
+     }
+     pSLL = ET.scanlines.next;
+ 
+-    if (pgc->fillRule == EvenOddRule) 
+-    {
++    if (pgc->fillRule == EvenOddRule) {
+         /*
+          *  for each scanline
+          */
+-        for (y = ET.ymin; y < ET.ymax; y++) 
+-        {
++        for (y = ET.ymin; y < ET.ymax; y++) {
+             /*
+              *  Add a new edge to the active edge table when we
+              *  get to the next edge.
+              */
+-            if (pSLL && y == pSLL->scanline) 
+-            {
++            if (pSLL && y == pSLL->scanline) {
+                 miloadAET(&AET, pSLL->edgelist);
+                 pSLL = pSLL->next;
+             }
+@@ -125,8 +117,7 @@ miFillGeneralPoly(
+             /*
+              *  for each active edge
+              */
+-            while (pAET) 
+-            {
++            while (pAET) {
+                 ptsOut->x = pAET->bres.minor;
+ 		ptsOut++->y = y;
+                 *width++ = pAET->next->bres.minor - pAET->bres.minor;
+@@ -135,11 +126,9 @@ miFillGeneralPoly(
+                 /*
+                  *  send out the buffer when its full
+                  */
+-                if (nPts == NUMPTSTOBUFFER) 
+-		{
++                if (nPts == NUMPTSTOBUFFER) {
+ 		    (*pgc->ops->FillSpans)(dst, pgc,
+-				      nPts, FirstPoint, FirstWidth,
+-				      1);
++                                            nPts, FirstPoint, FirstWidth, 1);
+                     ptsOut = FirstPoint;
+                     width = FirstWidth;
+                     nPts = 0;
+@@ -150,19 +139,17 @@ miFillGeneralPoly(
+             miInsertionSort(&AET);
+         }
+     }
+-    else      /* default to WindingNumber */
+-    {
++    else {                      /* default to WindingNumber */
++
+         /*
+          *  for each scanline
+          */
+-        for (y = ET.ymin; y < ET.ymax; y++) 
+-        {
++        for (y = ET.ymin; y < ET.ymax; y++) {
+             /*
+              *  Add a new edge to the active edge table when we
+              *  get to the next edge.
+              */
+-            if (pSLL && y == pSLL->scanline) 
+-            {
++            if (pSLL && y == pSLL->scanline) {
+                 miloadAET(&AET, pSLL->edgelist);
+                 micomputeWAET(&AET);
+                 pSLL = pSLL->next;
+@@ -174,15 +161,13 @@ miFillGeneralPoly(
+             /*
+              *  for each active edge
+              */
+-            while (pAET) 
+-            {
++            while (pAET) {
+                 /*
+                  *  if the next edge in the active edge table is
+                  *  also the next edge in the winding active edge
+                  *  table.
+                  */
+-                if (pWETE == pAET) 
+-                {
++                if (pWETE == pAET) {
+                     ptsOut->x = pAET->bres.minor;
+ 		    ptsOut++->y = y;
+                     *width++ = pAET->nextWETE->bres.minor - pAET->bres.minor;
+@@ -191,8 +176,7 @@ miFillGeneralPoly(
+                     /*
+                      *  send out the buffer
+                      */
+-                    if (nPts == NUMPTSTOBUFFER) 
+-                    {
++                    if (nPts == NUMPTSTOBUFFER) {
+ 			(*pgc->ops->FillSpans)(dst, pgc, nPts, FirstPoint,
+ 			                  FirstWidth, 1);
+                         ptsOut = FirstPoint;
+@@ -212,8 +196,7 @@ miFillGeneralPoly(
+              *  reevaluate the Winding active edge table if we
+              *  just had to resort it or if we just exited an edge.
+              */
+-            if (miInsertionSort(&AET) || fixWAET) 
+-            {
++            if (miInsertionSort(&AET) || fixWAET) {
+                 micomputeWAET(&AET);
+                 fixWAET = 0;
+             }

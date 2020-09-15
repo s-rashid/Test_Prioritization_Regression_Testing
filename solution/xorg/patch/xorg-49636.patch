@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 735b2ba..d574721 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -195,7 +195,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height)
+         return;
+     }
+ 
+-    displayList = xalloc(displayCount * sizeof(CGDirectDisplayID));
++    displayList = malloc(displayCount * sizeof(CGDirectDisplayID));
+     if(!displayList)
+         FatalError("Unable to allocate memory for list of displays.\n");
+     CGGetActiveDisplayList(displayCount, displayList, &displayCount);
+@@ -232,7 +232,7 @@ xprAddPseudoramiXScreens(int *x, int *y, int *width, int *height)
+                              frame.size.width, frame.size.height);
+     }
+ 
+-    xfree(displayList);
++    free(displayList);
+ }
+ 
+ /*

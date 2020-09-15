@@ -1,0 +1,29 @@
+diff --git a/mi/mioverlay.h b/mi/mioverlay.h
+index dca65ad..f7ed027 100644
+--- a/mi/mioverlay.h
++++ b/mi/mioverlay.h
+@@ -10,18 +10,14 @@ typedef void (*miOverlayTransFunc)(ScreenPtr, int, BoxPtr);
+ typedef Bool (*miOverlayInOverlayFunc)(WindowPtr);
+ 
+ extern _X_EXPORT Bool
+-miInitOverlay(
+-   ScreenPtr pScreen, 
+-   miOverlayInOverlayFunc inOverlay,
+-   miOverlayTransFunc trans
+-);
++
++miInitOverlay(ScreenPtr pScreen,
++              miOverlayInOverlayFunc inOverlay, miOverlayTransFunc trans);
+ 
+ extern _X_EXPORT Bool
+-miOverlayGetPrivateClips(
+-    WindowPtr pWin,
+-    RegionPtr *borderClip,
+-    RegionPtr *clipList
+-);
++
++miOverlayGetPrivateClips(WindowPtr pWin,
++                         RegionPtr *borderClip, RegionPtr *clipList);
+ 
+ extern _X_EXPORT Bool miOverlayCollectUnderlayRegions(WindowPtr, RegionPtr*);
+ extern _X_EXPORT void miOverlayComputeCompositeClip(GCPtr, WindowPtr);

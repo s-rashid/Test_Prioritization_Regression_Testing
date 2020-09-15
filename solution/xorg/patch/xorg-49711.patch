@@ -1,0 +1,52 @@
+diff --git a/xkb/xkbInit.c b/xkb/xkbInit.c
+index 0f3ffa4..bd58243 100644
+--- a/xkb/xkbInit.c
++++ b/xkb/xkbInit.c
+@@ -220,19 +220,14 @@ char *			pval;
+ static void
+ XkbSetRulesUsed(XkbRMLVOSet *rmlvo)
+ {
+-    if (XkbRulesUsed)
+         free(XkbRulesUsed);
+     XkbRulesUsed= (rmlvo->rules?_XkbDupString(rmlvo->rules):NULL);
+-    if (XkbModelUsed)
+ 	free(XkbModelUsed);
+     XkbModelUsed= (rmlvo->model?_XkbDupString(rmlvo->model):NULL);
+-    if (XkbLayoutUsed)
+ 	free(XkbLayoutUsed);
+     XkbLayoutUsed= (rmlvo->layout?_XkbDupString(rmlvo->layout):NULL);
+-    if (XkbVariantUsed)
+ 	free(XkbVariantUsed);
+     XkbVariantUsed= (rmlvo->variant?_XkbDupString(rmlvo->variant):NULL);
+-    if (XkbOptionsUsed)
+ 	free(XkbOptionsUsed);
+     XkbOptionsUsed= (rmlvo->options?_XkbDupString(rmlvo->options):NULL);
+     if (XkbWantRulesProp)
+@@ -244,27 +239,22 @@ void
+ XkbSetRulesDflts(XkbRMLVOSet *rmlvo)
+ {
+     if (rmlvo->rules) {
+-        if (XkbRulesDflt)
+ 	    free(XkbRulesDflt);
+         XkbRulesDflt= _XkbDupString(rmlvo->rules);
+     }
+     if (rmlvo->model) {
+-	if (XkbModelDflt)
+ 	    free(XkbModelDflt);
+ 	XkbModelDflt= _XkbDupString(rmlvo->model);
+     }
+     if (rmlvo->layout) {
+-	if (XkbLayoutDflt)
+ 	    free(XkbLayoutDflt);
+ 	XkbLayoutDflt= _XkbDupString(rmlvo->layout);
+     }
+     if (rmlvo->variant) {
+-	if (XkbVariantDflt)
+ 	    free(XkbVariantDflt);
+ 	XkbVariantDflt= _XkbDupString(rmlvo->variant);
+     }
+     if (rmlvo->options) {
+-	if (XkbOptionsDflt)
+ 	    free(XkbOptionsDflt);
+ 	XkbOptionsDflt= _XkbDupString(rmlvo->options);
+     }

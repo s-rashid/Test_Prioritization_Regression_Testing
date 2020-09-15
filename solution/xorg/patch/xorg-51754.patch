@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winclipboardxevents.c b/hw/xwin/winclipboardxevents.c
+index 2f042fd..8b502b1 100644
+--- a/hw/xwin/winclipboardxevents.c
++++ b/hw/xwin/winclipboardxevents.c
+@@ -789,6 +789,9 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	case PropertyNotify:
+ 	  break;
+ 
++	case MappingNotify:
++	  break;
++
+ 	default:
+           ErrorF ("winClipboardFlushXEvents - unexpected event type %d\n", event.type);
+ 	  break;

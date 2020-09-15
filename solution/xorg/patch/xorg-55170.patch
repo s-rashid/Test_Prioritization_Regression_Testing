@@ -1,0 +1,332 @@
+diff --git a/glx/glxdri.c b/glx/glxdri.c
+index 326f539..9b8b66f 100644
+--- a/glx/glxdri.c
++++ b/glx/glxdri.c
+@@ -154,7 +154,8 @@ __glXDRIleaveServer(GLboolean rendering)
+ 						    pGlxPix->texname,
+ 						    pGlxPix->offset,
+ 						    pGlxPix->base.pDraw->depth,
+-						    ((PixmapPtr)pGlxPix->base.pDraw)->devKind);
++                                                    ((PixmapPtr) pGlxPix->base.
++                                                     pDraw)->devKind);
+ 		}
+ 	    }
+ 	}
+@@ -179,7 +180,6 @@ __glXDRIenterServer(GLboolean rendering)
+     DRIWakeupHandler(NULL, 0, NULL);
+ }
+ 
+-
+ static void
+ __glXDRIdoReleaseTexImage(__GLXDRIscreen *screen, __GLXDRIdrawable *drawable)
+ {
+@@ -215,7 +215,6 @@ __glXDRIdoReleaseTexImage(__GLXDRIscreen *screen, __GLXDRIdrawable *drawable)
+     }
+ }
+ 
+-
+ static void
+ __glXDRIdrawableDestroy(__GLXdrawable *drawable)
+ {
+@@ -257,7 +256,6 @@ __glXDRIdrawableSwapBuffers(ClientPtr client, __GLXdrawable *basePrivate)
+     return TRUE;
+ }
+ 
+-
+ static int
+ __glXDRIdrawableSwapInterval(__GLXdrawable *baseDrawable, int interval)
+ {
+@@ -271,7 +269,6 @@ __glXDRIdrawableSwapInterval(__GLXdrawable *baseDrawable, int interval)
+     return 0;
+ }
+ 
+-
+ static void
+ __glXDRIdrawableCopySubBuffer(__GLXdrawable *basePrivate,
+ 			       int x, int y, int w, int h)
+@@ -311,8 +308,7 @@ __glXDRIcontextMakeCurrent(__GLXcontext *baseContext)
+     __GLXDRIdrawable *read = (__GLXDRIdrawable *) baseContext->readPriv;
+ 
+     return (*screen->core->bindContext)(context->driContext,
+-					draw->driDrawable,
+-					read->driDrawable);
++                                         draw->driDrawable, read->driDrawable);
+ }					      
+ 
+ static int
+@@ -344,8 +340,7 @@ glxFillAlphaChannel (CARD32 *pixels, CARD32 rowstride, int width, int height)
+ 
+     rowstride /= 4;
+     
+-    for (i = 0; i < height; i++)
+-    {
++    for (i = 0; i < height; i++) {
+ 	p = pixels;
+ 	end = p + width;
+ 	while (p < end)
+@@ -383,8 +378,7 @@ testTexOffset(__GLXDRIscreen * const screen, PixmapPtr pPixmap)
+ 
+ static int
+ __glXDRIbindTexImage(__GLXcontext *baseContext,
+-		     int buffer,
+-		     __GLXdrawable *glxPixmap)
++                     int buffer, __GLXdrawable * glxPixmap)
+ {
+     RegionPtr	pRegion = NULL;
+     PixmapPtr	pixmap;
+@@ -417,7 +411,8 @@ __glXDRIbindTexImage(__GLXcontext *baseContext,
+ 	}
+ 
+ 	if (firstEmpty == 16) {
+-	    ErrorF("%s: Failed to register texture offset override\n", __func__);
++            ErrorF("%s: Failed to register texture offset override\n",
++                   __func__);
+ 	    goto nooverride;
+ 	}
+ 
+@@ -453,7 +448,8 @@ nooverride:
+ 	}
+ 
+ 	pRegion = NULL;
+-    } else {
++    }
++    else {
+ 	pRegion = DamageRegion(driDraw->pDamage);
+ 	if (RegionNil(pRegion))
+ 	    return Success;
+@@ -468,14 +464,14 @@ nooverride:
+ 	    !override ? GL_UNSIGNED_INT_8_8_8_8_REV :
+ #endif
+ 	    GL_UNSIGNED_BYTE;
+-    } else {
++    }
++    else {
+ 	bpp = 2;
+ 	format = GL_RGB;
+ 	type = GL_UNSIGNED_SHORT_5_6_5;
+     }
+ 
+-    if (pRegion == NULL)
+-    {
++    if (pRegion == NULL) {
+ 	void *data = NULL;
+ 
+ 	if (!override) {
+@@ -486,7 +482,8 @@ nooverride:
+ 
+ 	    __glXenterServer(GL_FALSE);
+ 	    pScreen->GetImage(&pixmap->drawable, 0 /*pixmap->drawable.x*/,
+-			      0 /*pixmap->drawable.y*/, pixmap->drawable.width,
++                              0 /*pixmap->drawable.y */ ,
++                              pixmap->drawable.width,
+ 			      pixmap->drawable.height, ZPixmap, ~0, data);
+ 	    __glXleaveServer(GL_FALSE);
+ 
+@@ -507,14 +504,11 @@ nooverride:
+ 			  0,
+ 			  bpp == 4 ? 4 : 3,
+ 			  pixmap->drawable.width,
+-			  pixmap->drawable.height,
+-			  0,
+-			  format,
+-			  type,
+-			  data) );
++                         pixmap->drawable.height, 0, format, type, data));
+ 
+ 	free(data);
+-    } else if (!override) {
++    }
++    else if (!override) {
+         int i, numRects;
+ 	BoxPtr p;
+ 
+@@ -524,23 +518,23 @@ nooverride:
+ 	CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_SKIP_PIXELS, 0) );
+ 	CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_SKIP_ROWS, 0) );
+ 
+-	for (i = 0; i < numRects; i++)
+-	{
++        for (i = 0; i < numRects; i++) {
+ 	    unsigned pitch = PixmapBytePad(p[i].x2 - p[i].x1,
+ 					   pixmap->drawable.depth);
+ 	    void *data = malloc(pitch * (p[i].y2 - p[i].y1));
+ 
+ 	    __glXenterServer(GL_FALSE);
+-	    pScreen->GetImage(&pixmap->drawable, /*pixmap->drawable.x +*/ p[i].x1,
+-			      /*pixmap->drawable.y*/ + p[i].y1, p[i].x2 - p[i].x1,
++            pScreen->GetImage(&pixmap->drawable, /*pixmap->drawable.x + */
++                              p[i].x1,
++                              /*pixmap->drawable.y */ +p[i].y1,
++                              p[i].x2 - p[i].x1,
+ 			      p[i].y2 - p[i].y1, ZPixmap, ~0, data);
+ 	    __glXleaveServer(GL_FALSE);
+ 
+ 	    if (pixmap->drawable.depth == 24)
+ 		glxFillAlphaChannel(data,
+ 				    pitch,
+-				    p[i].x2 - p[i].x1,
+-				    p[i].y2 - p[i].y1);
++                                    p[i].x2 - p[i].x1, p[i].y2 - p[i].y1);
+ 
+ 	    CALL_PixelStorei( GET_DISPATCH(), (GL_UNPACK_ROW_LENGTH,
+ 					       pitch / bpp) );
+@@ -550,9 +544,7 @@ nooverride:
+ 				 0,
+ 				 p[i].x1, p[i].y1,
+ 				 p[i].x2 - p[i].x1, p[i].y2 - p[i].y1,
+-				 format,
+-				 type,
+-				 data) );
++                                format, type, data));
+ 
+ 	    free(data);
+ 	}
+@@ -566,8 +558,7 @@ nooverride:
+ 
+ static int
+ __glXDRIreleaseTexImage(__GLXcontext *baseContext,
+-			int buffer,
+-			__GLXdrawable *pixmap)
++                        int buffer, __GLXdrawable * pixmap)
+ {
+     __GLXDRIscreen *screen =
+ 	(__GLXDRIscreen *) glxGetScreen(pixmap->pDraw->pScreen);
+@@ -657,13 +648,9 @@ __glXDRIscreenCreateContext(__GLXscreen *baseScreen,
+     if (!retval)
+     	return NULL;
+ 
+-    context->driContext =
+-	screen->legacy->createNewContext(screen->driScreen,
+-					 config->driConfig,
+-					 0, /* render type */
++    context->driContext = screen->legacy->createNewContext(screen->driScreen, config->driConfig, 0,     /* render type */
+ 					 driShare,
+-					 hwContext,
+-					 context);
++                                                           hwContext, context);
+ 
+     if (context->driContext == NULL) {
+     	__glXenterServer(GL_FALSE);
+@@ -681,9 +668,7 @@ __glXDRIscreenCreateDrawable(ClientPtr client,
+ 			     __GLXscreen *screen,
+ 			     DrawablePtr pDraw,
+ 			     XID drawId,
+-			     int type,
+-			     XID glxDrawId,
+-			     __GLXconfig *glxConfig)
++                             int type, XID glxDrawId, __GLXconfig * glxConfig)
+ {
+     __GLXDRIscreen *driScreen = (__GLXDRIscreen *) screen;
+     __GLXDRIconfig *config = (__GLXDRIconfig *) glxConfig;
+@@ -787,10 +772,10 @@ getDrawableInfo(__DRIdrawable *driDrawable,
+ 	    if (*numClipRects != j) {
+ 		*numClipRects = j;
+ 		*ppClipRects = realloc(*ppClipRects,
+-					 sizeof (drm_clip_rect_t) *
+-					 *numClipRects);
++                                       sizeof(drm_clip_rect_t) * *numClipRects);
+ 	    }
+-	} else
++        }
++        else
+ 	    *numClipRects = 0;
+     }
+     else {
+@@ -814,11 +799,11 @@ getDrawableInfo(__DRIdrawable *driDrawable,
+     return retval;
+ }
+ 
+-static void __glXReportDamage(__DRIdrawable *driDraw,
++static void
++__glXReportDamage(__DRIdrawable * driDraw,
+ 			      int x, int y,
+ 			      drm_clip_rect_t *rects, int num_rects,
+-			      GLboolean front_buffer,
+-			      void *data)
++                  GLboolean front_buffer, void *data)
+ {
+     __GLXDRIdrawable *drawable = data;
+     DrawablePtr pDraw = drawable->base.pDraw;
+@@ -860,8 +845,6 @@ static const __DRIextension *loader_extensions[] = {
+     NULL
+ };
+ 
+-
+-
+ static Bool
+ glxDRIEnterVT (int index, int flags)
+ {
+@@ -924,7 +907,8 @@ initializeExtensions(__GLXDRIscreen *screen)
+ 
+ #ifdef __DRI_COPY_SUB_BUFFER
+ 	if (strcmp(extensions[i]->name, __DRI_COPY_SUB_BUFFER) == 0) {
+-	    screen->copySubBuffer = (__DRIcopySubBufferExtension *) extensions[i];
++            screen->copySubBuffer =
++                (__DRIcopySubBufferExtension *) extensions[i];
+ 	    __glXEnableExtension(screen->glx_enable_bits,
+ 				 "GLX_MESA_copy_sub_buffer");
+ 	    
+@@ -940,14 +924,16 @@ initializeExtensions(__GLXDRIscreen *screen)
+ 	    __glXEnableExtension(screen->glx_enable_bits,
+ 				 "GLX_MESA_swap_control");
+ 	    
+-	    LogMessage(X_INFO, "AIGLX: enabled GLX_SGI_swap_control and GLX_MESA_swap_control\n");
++            LogMessage(X_INFO,
++                       "AIGLX: enabled GLX_SGI_swap_control and GLX_MESA_swap_control\n");
+ 	}
+ #endif
+ 
+ #ifdef __DRI_TEX_OFFSET
+ 	if (strcmp(extensions[i]->name, __DRI_TEX_OFFSET) == 0) {
+ 	    screen->texOffset = (__DRItexOffsetExtension *) extensions[i];
+-	    LogMessage(X_INFO, "AIGLX: enabled GLX_texture_from_pixmap with driver support\n");
++            LogMessage(X_INFO,
++                       "AIGLX: enabled GLX_texture_from_pixmap with driver support\n");
+ 	}
+ #endif
+ 	/* Ignore unknown extensions */
+@@ -978,8 +964,7 @@ __glXDRIscreenProbe(ScreenPtr pScreen)
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+ 
+     if (!xf86LoaderCheckSymbol("DRIQueryDirectRenderingCapable") ||
+-	!DRIQueryDirectRenderingCapable(pScreen, &isCapable) ||
+-	!isCapable) {
++        !DRIQueryDirectRenderingCapable(pScreen, &isCapable) || !isCapable) {
+ 	LogMessage(X_INFO,
+ 		   "AIGLX: Screen %d is not DRI capable\n", pScreen->myNum);
+ 	return NULL;
+@@ -1044,8 +1029,7 @@ __glXDRIscreenProbe(ScreenPtr pScreen)
+     if (!DRIGetClientDriverName(pScreen,
+ 				&ddx_version.major,
+ 				&ddx_version.minor,
+-				&ddx_version.patch,
+-				&driverName)) {
++                                &ddx_version.patch, &driverName)) {
+ 	LogMessage(X_ERROR, "AIGLX error: DRIGetClientDriverName failed\n");
+ 	goto handle_error;
+     }
+@@ -1103,12 +1087,10 @@ __glXDRIscreenProbe(ScreenPtr pScreen)
+ 					   pSAREA,
+ 					   fd,
+ 					   loader_extensions,
+-					   &screen->driConfigs,
+-					   screen);
++                                            &screen->driConfigs, screen);
+ 
+     if (screen->driScreen == NULL) {
+-	LogMessage(X_ERROR,
+-		   "AIGLX error: Calling driver entry point failed\n");
++        LogMessage(X_ERROR, "AIGLX error: Calling driver entry point failed\n");
+ 	goto handle_error;
+     }
+ 
+@@ -1143,8 +1125,7 @@ __glXDRIscreenProbe(ScreenPtr pScreen)
+     screen->leaveVT = pScrn->LeaveVT;
+     pScrn->LeaveVT = glxDRILeaveVT;
+ 
+-    LogMessage(X_INFO,
+-	       "AIGLX: Loaded and initialized %s\n", driverName);
++    LogMessage(X_INFO, "AIGLX: Loaded and initialized %s\n", driverName);
+ 
+     return &screen->base;
+ 

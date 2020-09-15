@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.h b/hw/xfree86/common/xf86Xinput.h
+index aa9e9d5..20a3f1b 100644
+--- a/hw/xfree86/common/xf86Xinput.h
++++ b/hw/xfree86/common/xf86Xinput.h
+@@ -148,6 +148,7 @@ typedef struct _LocalDeviceRec {
+     pointer		    module;
+     pointer		    options;
+     unsigned int            history_size;
++    InputAttributes         *attrs;
+ } LocalDeviceRec, *LocalDevicePtr, InputInfoRec, *InputInfoPtr;
+ 
+ typedef struct _DeviceAssocRec 

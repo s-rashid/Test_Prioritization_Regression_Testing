@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Pixmap.c b/hw/xnest/Pixmap.c
+index 3a92ffd..eccf569 100644
+--- a/hw/xnest/Pixmap.c
++++ b/hw/xnest/Pixmap.c
+@@ -21,7 +21,6 @@ is" without express or implied warranty.
+ #include "regionstr.h"
+ #include "pixmapstr.h"
+ #include "scrnintstr.h"
+-#include "regionstr.h"
+ #include "gc.h"
+ #include "servermd.h"
+ #include "privates.h"

@@ -1,0 +1,16 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 2549e8a..aa2e614 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -620,10 +620,10 @@ CreateSaverWindow (ScreenPtr pScreen)
+     	    	FreeResource (pWin->drawable.id, RT_NONE);
+     	    	return FALSE;
+ 	    }
++	pAttr->pCursor->refcnt++;
+ 	if (pWin->optional->cursor)
+ 	    FreeCursor (pWin->optional->cursor, (Cursor)0);
+ 	pWin->optional->cursor = pAttr->pCursor;
+-	pAttr->pCursor->refcnt++;
+ 	pWin->cursorIsNone = FALSE;
+ 	CheckWindowOptionalNeed (pWin);
+ 	mask |= CWCursor;

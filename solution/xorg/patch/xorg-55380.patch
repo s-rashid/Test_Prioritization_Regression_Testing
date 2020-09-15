@@ -1,0 +1,33 @@
+diff --git a/hw/kdrive/fake/fake.h b/hw/kdrive/fake/fake.h
+index d505860..ae33fc6 100644
+--- a/hw/kdrive/fake/fake.h
++++ b/hw/kdrive/fake/fake.h
+@@ -93,13 +93,9 @@ fakePutColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ Bool
+ fakeMapFramebuffer (KdScreenInfo *screen);
+ 
+-void *
+-fakeWindowLinear (ScreenPtr	pScreen,
++void *fakeWindowLinear(ScreenPtr pScreen,
+ 		   CARD32	row,
+-		   CARD32	offset,
+-		   int		mode,
+-		   CARD32	*size,
+-		   void		*closure);
++                       CARD32 offset, int mode, CARD32 *size, void *closure);
+ 
+ void
+ fakeSetScreenSizes (ScreenPtr pScreen);
+@@ -118,10 +114,9 @@ Bool
+ fakeRandRGetInfo (ScreenPtr pScreen, Rotation *rotations);
+ 
+ Bool
++
+ fakeRandRSetConfig (ScreenPtr		pScreen,
+-		     Rotation		randr,
+-		     int		rate,
+-		     RRScreenSizePtr	pSize);
++                   Rotation randr, int rate, RRScreenSizePtr pSize);
+ Bool
+ fakeRandRInit (ScreenPtr pScreen);
+ 

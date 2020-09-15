@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_agp.c b/hw/xfree86/os-support/solaris/sun_agp.c
+index dd4b1e2..a4517d6 100644
+--- a/hw/xfree86/os-support/solaris/sun_agp.c
++++ b/hw/xfree86/os-support/solaris/sun_agp.c
+@@ -6,7 +6,7 @@
+  * Copyright © 2000 VA Linux Systems, Inc.
+  * Copyright © 2001 The XFree86 Project, Inc.
+  */
+-/* Copyright 2005 Sun Microsystems, Inc.  All rights reserved.
++/* Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),

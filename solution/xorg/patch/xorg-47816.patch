@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winshadddnl.c b/hw/xwin/winshadddnl.c
+index ef5c214..e78fbd9 100644
+--- a/hw/xwin/winshadddnl.c
++++ b/hw/xwin/winshadddnl.c
+@@ -554,7 +554,7 @@ winFinishCreateWindowsWindowDDNL (WindowPtr pWin)
+   int			iWidth, iHeight;
+   int			iX, iY;
+ 
+-  winDebug ("\nwinFinishCreateWindowsWindowDDNL!\n\n");
++  winDebug ("winFinishCreateWindowsWindowDDNL!\n\n");
+ 
+   iX = pWin->drawable.x + GetSystemMetrics (SM_XVIRTUALSCREEN);
+   iY = pWin->drawable.y + GetSystemMetrics (SM_YVIRTUALSCREEN);

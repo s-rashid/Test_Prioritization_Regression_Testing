@@ -1,0 +1,20 @@
+diff --git a/exa/exa_render.c b/exa/exa_render.c
+index 1b68e1c..b7f383f 100644
+--- a/exa/exa_render.c
++++ b/exa/exa_render.c
+@@ -30,7 +30,6 @@
+ 
+ #include "exa_priv.h"
+ 
+-#ifdef RENDER
+ #include "mipict.h"
+ 
+ #if DEBUG_TRACE_FALL
+@@ -1072,7 +1071,6 @@ done:
+     if (pMask)
+ 	pMask->repeat = saveMaskRepeat;
+ }
+-#endif
+ 
+ /**
+  * Same as miCreateAlphaPicture, except it uses ExaCheckPolyFillRect instead

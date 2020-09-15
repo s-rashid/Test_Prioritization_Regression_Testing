@@ -1,0 +1,9 @@
+diff --git a/hw/kdrive/ephyr/ephyrglxext.h b/hw/kdrive/ephyr/ephyrglxext.h
+index 22ea605..053f8d3 100644
+--- a/hw/kdrive/ephyr/ephyrglxext.h
++++ b/hw/kdrive/ephyr/ephyrglxext.h
+@@ -32,4 +32,3 @@
+ Bool ephyrHijackGLXExtension (void) ;
+ 
+ #endif /*__EPHYR_GLXEXT_H__*/
+-

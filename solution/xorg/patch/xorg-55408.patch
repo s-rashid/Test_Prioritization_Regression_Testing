@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/fourcc.h b/hw/xfree86/common/fourcc.h
+index 853657e..e6126b7 100644
+--- a/hw/xfree86/common/fourcc.h
++++ b/hw/xfree86/common/fourcc.h
+@@ -96,7 +96,6 @@
+ 	XvTopToBottom \
+    }
+ 
+-
+ #define FOURCC_UYVY 0x59565955
+ #define XVIMAGE_UYVY \
+    { \

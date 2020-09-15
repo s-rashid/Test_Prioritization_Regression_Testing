@@ -1,0 +1,78 @@
+diff --git a/miext/cw/cw_ops.c b/miext/cw/cw_ops.c
+index 9ae56cb..ccc5580 100644
+--- a/miext/cw/cw_ops.c
++++ b/miext/cw/cw_ops.c
+@@ -90,8 +90,7 @@ static void cwFillPolygon(DrawablePtr pDst, GCPtr pGC, int shape, int mode,
+ 			  int count, DDXPointPtr pPts);
+ static void cwPolyFillRect(DrawablePtr pDst, GCPtr pGC,
+ 			   int nrectFill, xRectangle *prectInit);
+-static void cwPolyFillArc(DrawablePtr pDst, GCPtr pGC,
+-			  int narcs, xArc *parcs);
++static void cwPolyFillArc(DrawablePtr pDst, GCPtr pGC, int narcs, xArc * parcs);
+ static int cwPolyText8(DrawablePtr pDrawable, GCPtr pGC, int x, int y,
+ 		       int count, char *chars);
+ static int cwPolyText16(DrawablePtr pDst, GCPtr pGC, int x, int y,
+@@ -186,6 +185,7 @@ cwCopyArea(DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC, int srcx, int srcy,
+ {
+     int		odstx, odsty;
+     int		osrcx, osrcy;
++
+     SETUP_BACKING_DST(pDst, pGC);
+     SETUP_BACKING_SRC(pSrc, pGC);
+ 
+@@ -199,14 +199,12 @@ cwCopyArea(DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC, int srcx, int srcy,
+     CW_OFFSET_XY_SRC(srcx, srcy);
+ 
+     (*pBackingGC->ops->CopyArea)(pBackingSrc, pBackingDst,
+-				 pBackingGC, srcx, srcy, w, h,
+-				 dstx, dsty);
++                                  pBackingGC, srcx, srcy, w, h, dstx, dsty);
+     
+     EPILOGUE(pGC);
+ 
+     return miHandleExposures(pSrc, pDst, pGC,
+-			     osrcx, osrcy, w, h,
+-			     odstx, odsty, 0);
++                             osrcx, osrcy, w, h, odstx, odsty, 0);
+ }
+ 
+ static RegionPtr
+@@ -215,6 +213,7 @@ cwCopyPlane(DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC, int srcx, int srcy,
+ {
+     int		odstx, odsty;
+     int		osrcx, osrcy;
++
+     SETUP_BACKING_DST(pDst, pGC);
+     SETUP_BACKING_SRC(pSrc, pGC);
+ 
+@@ -234,8 +233,7 @@ cwCopyPlane(DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC, int srcx, int srcy,
+     EPILOGUE(pGC);
+ 
+     return miHandleExposures(pSrc, pDst, pGC,
+-			     osrcx, osrcy, w, h,
+-			     odstx, odsty, plane);
++                             osrcx, osrcy, w, h, odstx, odsty, plane);
+ }
+ 
+ static void
+@@ -365,6 +363,7 @@ static int
+ cwPolyText8(DrawablePtr pDst, GCPtr pGC, int x, int y, int count, char *chars)
+ {
+     int result;
++
+     SETUP_BACKING_DST(pDst, pGC);
+ 
+     PROLOGUE(pGC);
+@@ -384,6 +383,7 @@ cwPolyText16(DrawablePtr pDst, GCPtr pGC, int x, int y, int count,
+ 	     unsigned short *chars)
+ {
+     int result;
++
+     SETUP_BACKING_DST(pDst, pGC);
+ 
+     PROLOGUE(pGC);
+@@ -475,4 +475,3 @@ cwPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDst, int w, int h,
+ 
+     EPILOGUE(pGC);
+ }
+-

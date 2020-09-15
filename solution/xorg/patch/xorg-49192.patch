@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxpixmap.c b/hw/dmx/dmxpixmap.c
+index a058ae2..587a27d 100644
+--- a/hw/dmx/dmxpixmap.c
++++ b/hw/dmx/dmxpixmap.c
+@@ -189,8 +189,7 @@ Bool dmxDestroyPixmap(PixmapPtr pPixmap)
+  *  pPixmap. */
+ RegionPtr dmxBitmapToRegion(PixmapPtr pPixmap)
+ {
+-    ScreenPtr      pScreen = pPixmap->drawable.pScreen;
+-    DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
++    DMXScreenInfo *dmxScreen = &dmxScreens[pPixmap->drawable.pScreen->myNum];
+     dmxPixPrivPtr  pPixPriv = DMX_GET_PIXMAP_PRIV(pPixmap);
+     XImage        *ximage;
+     RegionPtr      pReg, pTmpReg;

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/shared/agp_noop.c b/hw/xfree86/os-support/shared/agp_noop.c
+index eda466a..9c6ed4b 100644
+--- a/hw/xfree86/os-support/shared/agp_noop.c
++++ b/hw/xfree86/os-support/shared/agp_noop.c
+@@ -89,7 +89,6 @@ xf86BindGARTMemory(int screenNum, int key, unsigned long offset)
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86UnbindGARTMemory(int screenNum, int key)
+ {

@@ -1,0 +1,13 @@
+diff --git a/os/connection.c b/os/connection.c
+index 0f1f879..2c90d72 100644
+--- a/os/connection.c
++++ b/os/connection.c
+@@ -873,6 +873,8 @@ EstablishNewConnections(ClientPtr clientUnused, pointer closure)
+  *     Fail a connection due to lack of client or file descriptor space
+  ************/
+ 
++#define BOTIMEOUT 200 /* in milliseconds */
++
+ static void
+ ErrorConnMax(XtransConnInfo trans_conn)
+ {

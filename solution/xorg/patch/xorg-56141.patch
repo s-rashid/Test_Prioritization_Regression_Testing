@@ -1,0 +1,29 @@
+diff --git a/xkb/ddxLEDs.c b/xkb/ddxLEDs.c
+index 246d58c..81b7b00 100644
+--- a/xkb/ddxLEDs.c
++++ b/xkb/ddxLEDs.c
+@@ -47,14 +47,13 @@ XkbDDXUpdateIndicators(DeviceIntPtr dev,CARD32 new)
+ }
+ 
+ void
+-XkbDDXUpdateDeviceIndicators(	DeviceIntPtr		dev,
+-				XkbSrvLedInfoPtr 	sli,
+-				CARD32 			new)
++XkbDDXUpdateDeviceIndicators(DeviceIntPtr dev, XkbSrvLedInfoPtr sli, CARD32 new)
+ {
+     if (sli->fb.kf==dev->kbdfeed)
+ 	XkbDDXUpdateIndicators(dev,new);
+     else if (sli->class==KbdFeedbackClass) {
+ 	KbdFeedbackPtr	kf;
++
+ 	kf= sli->fb.kf;
+ 	if (kf && kf->CtrlProc) {
+ 	    (*kf->CtrlProc)(dev,&kf->ctrl);
+@@ -62,6 +61,7 @@ XkbDDXUpdateDeviceIndicators(	DeviceIntPtr		dev,
+     }
+     else if (sli->class==LedFeedbackClass) {
+ 	LedFeedbackPtr	lf;
++
+ 	lf= sli->fb.lf;
+ 	if (lf && lf->CtrlProc) {
+ 	    (*lf->CtrlProc)(dev,&lf->ctrl);

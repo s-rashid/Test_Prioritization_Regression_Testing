@@ -1,0 +1,13 @@
+diff --git a/glx/unpack.h b/glx/unpack.h
+index 90cb71b..a4e6d7e 100644
+--- a/glx/unpack.h
++++ b/glx/unpack.h
+@@ -86,7 +86,7 @@ extern xGLXSingleReply __glXReply;
+     if ((size) > sizeof(answerBuffer)) {				 \
+ 	int bump;							 \
+ 	if ((cl)->returnBufSize < (size)+(align)) {			 \
+-	    (cl)->returnBuf = (GLbyte*)Xrealloc((cl)->returnBuf,	 \
++	    (cl)->returnBuf = (GLbyte*)realloc((cl)->returnBuf,	 	 \
+ 						(size)+(align));         \
+ 	    if (!(cl)->returnBuf) {					 \
+ 		return BadAlloc;					 \

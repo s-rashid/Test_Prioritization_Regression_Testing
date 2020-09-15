@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/parser/Video.c b/hw/xfree86/parser/Video.c
+index beeb43e..3774387 100644
+--- a/hw/xfree86/parser/Video.c
++++ b/hw/xfree86/parser/Video.c
+@@ -288,9 +288,9 @@ xf86findVideoAdaptor (const char *ident, XF86ConfVideoAdaptorPtr p)
+ 	while (p)
+ 	{
+ 		if (xf86nameCompare (ident, p->va_identifier) == 0)
+-			return (p);
++			return p;
+ 
+ 		p = p->list.next;
+ 	}
+-	return (NULL);
++	return NULL;
+ }

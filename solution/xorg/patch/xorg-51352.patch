@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/quartzKeyboard.c b/hw/xquartz/quartzKeyboard.c
+index f54c686..54f709a 100644
+--- a/hw/xquartz/quartzKeyboard.c
++++ b/hw/xquartz/quartzKeyboard.c
+@@ -53,7 +53,6 @@
+ #include "darwinEvents.h"
+ 
+ #include "quartzKeyboard.h"
+-#include "quartzAudio.h"
+ 
+ #include "X11Application.h"
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Events.c b/hw/xnest/Events.c
+index 194ec63..62e17cb 100644
+--- a/hw/xnest/Events.c
++++ b/hw/xnest/Events.c
+@@ -67,7 +67,7 @@ SetTimeSinceLastInputEvent(void)
+ static Bool
+ xnestExposurePredicate(Display *display, XEvent *event, char *args)
+ {
+-  return (event->type == Expose || event->type == ProcessedExpose);
++  return event->type == Expose || event->type == ProcessedExpose;
+ }
+ 
+ static Bool

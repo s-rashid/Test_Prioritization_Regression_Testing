@@ -1,0 +1,22 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index b2e16fb..83a2abb 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -885,7 +885,7 @@ static void dmxInputScanForExtensions(DMXInputInfo *dmxInput, int doXI)
+                         && dmxL->deviceId < 0) {
+                         dmxL->deviceId   = devices[i].id;
+                         dmxL->deviceName = (devices[i].name
+-                                            ? xstrdup(devices[i].name)
++                                            ? strdup(devices[i].name)
+                                             : NULL);
+                     }
+                 }
+@@ -918,7 +918,7 @@ static void dmxInputScanForExtensions(DMXInputInfo *dmxInput, int doXI)
+                         dmxLocal->sendsCore  = FALSE;
+                         dmxLocal->deviceId   = devices[i].id;
+                         dmxLocal->deviceName = (devices[i].name
+-                                                ? xstrdup(devices[i].name)
++                                                ? strdup(devices[i].name)
+                                                 : NULL);
+                     }
+                 }

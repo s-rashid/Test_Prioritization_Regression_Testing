@@ -1,0 +1,14 @@
+diff --git a/mi/miarc.c b/mi/miarc.c
+index 5143d2a..db21165 100644
+--- a/mi/miarc.c
++++ b/mi/miarc.c
+@@ -3081,9 +3081,7 @@ fillSpans (
+ 	    (*pGC->ops->FillSpans) (pDrawable, pGC, i, xSpans, xWidths, TRUE);
+ 	}
+ 	disposeFinalSpans ();
+-	if (xSpans)
+ 	    free(xSpans);
+-	if (xWidths)
+ 	    free(xWidths);
+ 	finalMiny = 0;
+ 	finalMaxy = -1;

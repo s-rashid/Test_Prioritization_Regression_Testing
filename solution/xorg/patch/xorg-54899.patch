@@ -1,0 +1,74 @@
+diff --git a/hw/xquartz/xpr/xprCursor.c b/hw/xquartz/xpr/xprCursor.c
+index b0afa8c..0392a46 100644
+--- a/hw/xquartz/xpr/xprCursor.c
++++ b/hw/xquartz/xpr/xprCursor.c
+@@ -57,11 +57,11 @@ typedef struct {
+ } QuartzCursorScreenRec, *QuartzCursorScreenPtr;
+ 
+ static DevPrivateKeyRec darwinCursorScreenKeyRec;
+-
+ #define darwinCursorScreenKey (&darwinCursorScreenKeyRec)
+ 
+ #define CURSOR_PRIV(pScreen) ((QuartzCursorScreenPtr) \
+-    dixLookupPrivate(&pScreen->devPrivates, darwinCursorScreenKey))
++                              dixLookupPrivate(&pScreen->devPrivates, \
++                                               darwinCursorScreenKey))
+ 
+ static Bool
+ load_cursor(CursorPtr src, int screen)
+@@ -93,7 +93,6 @@ load_cursor(CursorPtr src, int screen)
+ #else
+         const uint32_t *be_data = (uint32_t *) src->bits->argb;
+         unsigned i;
+-
+         rowbytes = src->bits->width * sizeof(CARD32);
+         data = malloc(rowbytes * src->bits->height);
+         free_data = TRUE;
+@@ -134,13 +133,15 @@ load_cursor(CursorPtr src, int screen)
+             mrow = src->bits->mask;
+             drow = data;
+ 
+-            while (ycount-- > 0) {
++            while (ycount-- > 0)
++            {
+                 xcount = bits_to_bytes(src->bits->width);
+                 sptr = srow;
+                 mptr = mrow;
+                 dptr = drow;
+ 
+-                while (xcount-- > 0) {
++                while (xcount-- > 0)
++                {
+                     uint8_t s, m;
+                     int i;
+ 
+@@ -219,7 +220,8 @@ QuartzUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+  *  Set the cursor sprite and position.
+  */
+ static void
+-QuartzSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x,
++QuartzSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor,
++                int x,
+                 int y)
+ {
+     QuartzCursorScreenPtr ScreenPriv = CURSOR_PRIV(pScreen);
+@@ -249,8 +251,7 @@ QuartzSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x,
+  */
+ static void
+ QuartzMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+-{
+-}
++{}
+ 
+ /*
+ ===========================================================================
+@@ -383,8 +384,7 @@ QuartzInitCursor(ScreenPtr pScreen)
+  */
+ void
+ QuartzSuspendXCursor(ScreenPtr pScreen)
+-{
+-}
++{}
+ 
+ /*
+  * QuartzResumeXCursor

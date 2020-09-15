@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 114cdd9..526b92d 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -746,7 +746,7 @@ xf86DeleteInput(InputInfoPtr pInp, int flags)
+ }
+ 
+ /*
+- * Apply backend-specific initialization. Invoked after ActiveteDevice(),
++ * Apply backend-specific initialization. Invoked after ActivateDevice(),
+  * i.e. after the driver successfully completed DEVICE_INIT and the device
+  * is advertised.
+  * @param dev the device

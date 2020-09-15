@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index 4a288d7..1cfb5cc 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -1540,7 +1540,7 @@ ProcXF86VidModeGetGammaRamp(ClientPtr client)
+ {
+     CARD16 *ramp = NULL;
+     int n, length;
+-    size_t ramplen;
++    size_t ramplen = 0;
+     xXF86VidModeGetGammaRampReply rep;
+     REQUEST(xXF86VidModeGetGammaRampReq);
+ 

@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winmultiwindowshape.c b/hw/xwin/winmultiwindowshape.c
+index 4400702..3532357 100644
+--- a/hw/xwin/winmultiwindowshape.c
++++ b/hw/xwin/winmultiwindowshape.c
+@@ -71,6 +71,9 @@ winUpdateRgnMultiWindow (WindowPtr pWin)
+ {
+   SetWindowRgn (winGetWindowPriv(pWin)->hWnd,
+ 		winGetWindowPriv(pWin)->hRgn, TRUE);
++
++  /* The system now owns the region specified by the region handle and will delete it when it is no longer needed. */
++  winGetWindowPriv(pWin)->hRgn = NULL;
+ }
+ 
+ 

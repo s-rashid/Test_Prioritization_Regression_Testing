@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 3f40fdb..9bee9b6 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -172,7 +172,6 @@
+ #include "input.h"
+ #include "mipointer.h"
+ #include "X11/keysym.h"
+-#include "mibstore.h"
+ #include "micoord.h"
+ #include "dix.h"
+ #include "miline.h"

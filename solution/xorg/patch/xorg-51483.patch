@@ -1,0 +1,22 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index 4b058e7..c188bf1 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -159,6 +159,7 @@ typedef struct _CompScreen {
+     Window			overlayWid;
+     CompOverlayClientPtr        pOverlayClients;
+     
++    GetImageProcPtr		GetImage;
+ } CompScreenRec, *CompScreenPtr;
+ 
+ extern DevPrivateKeyRec CompScreenPrivateKeyRec;
+@@ -315,6 +316,9 @@ compCopyWindow (WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc);
+ void
+ compWindowUpdate (WindowPtr pWin);
+ 
++void
++compScreenUpdate (ScreenPtr pScreen);
++
+ WindowPtr
+ CompositeRealChildHead (WindowPtr pWin);
+ 

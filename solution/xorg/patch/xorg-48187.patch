@@ -1,0 +1,11 @@
+diff --git a/hw/xquartz/mach-startup/launchd_fd.h b/hw/xquartz/mach-startup/launchd_fd.h
+index 5083fae..12caf71 100644
+--- a/hw/xquartz/mach-startup/launchd_fd.h
++++ b/hw/xquartz/mach-startup/launchd_fd.h
+@@ -33,4 +33,4 @@
+ 
+ int launchd_display_fd(void);
+ 
+-#endif /* _XQUARTZ_LAUNCHD_FD_H_ */
+\ No newline at end of file
++#endif /* _XQUARTZ_LAUNCHD_FD_H_ */

@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winshadgdi.c b/hw/xwin/winshadgdi.c
+index 1e7cb00..6339010 100644
+--- a/hw/xwin/winshadgdi.c
++++ b/hw/xwin/winshadgdi.c
+@@ -270,7 +270,6 @@ winQueryRGBBitsAndMasks (ScreenPtr pScreen)
+   else
+     {
+       ErrorF ("winQueryRGBBitsAndMasks - winQueryScreenDIBFormat failed\n");
+-      free (pbmih);
+       fReturn = FALSE;
+     }
+ 

@@ -1,0 +1,34 @@
+diff --git a/include/selection.h b/include/selection.h
+index 3271f6a..37e4f5e 100644
+--- a/include/selection.h
++++ b/include/selection.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -65,7 +64,6 @@ typedef struct _Selection {
+     PrivateRec *devPrivates;
+ } Selection;
+ 
+-
+ /*
+  *  Selection API
+  */
+@@ -89,7 +87,6 @@ typedef struct {
+     SelectionCallbackKind   kind;
+ } SelectionInfoRec;
+ 
+-
+ /*
+  *  Selection server internals
+  */
+@@ -101,5 +98,3 @@ extern _X_EXPORT void DeleteWindowFromAnySelections(WindowPtr pWin);
+ extern _X_EXPORT void DeleteClientFromAnySelections(ClientPtr client);
+ 
+ #endif /* SELECTION_H */
+-
+-

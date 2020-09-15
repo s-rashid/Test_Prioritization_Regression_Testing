@@ -1,0 +1,13 @@
+diff --git a/include/privates.h b/include/privates.h
+index 4fed7d0..5ba9358 100644
+--- a/include/privates.h
++++ b/include/privates.h
+@@ -177,7 +177,7 @@ static inline pointer *
+ dixLookupPrivateAddr(PrivatePtr *privates, const DevPrivateKey key)
+ {
+     assert (key->size == 0);
+-    return dixGetPrivateAddr(privates, key);
++    return (pointer *)dixGetPrivateAddr(privates, key);
+ }
+ 
+ /*

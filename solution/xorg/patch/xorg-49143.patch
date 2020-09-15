@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ddc/interpret_edid.c b/hw/xfree86/ddc/interpret_edid.c
+index f3e593a..d63e25d 100644
+--- a/hw/xfree86/ddc/interpret_edid.c
++++ b/hw/xfree86/ddc/interpret_edid.c
+@@ -186,7 +186,7 @@ xf86InterpretEDID(int scrnIndex, Uchar *block)
+     return (m);
+ 
+  error:
+-    xfree(m);
++    free(m);
+     return NULL;
+ }
+ 

@@ -1,0 +1,22 @@
+diff --git a/Xext/shape.c b/Xext/shape.c
+index 93e4703..86b0bc0 100644
+--- a/Xext/shape.c
++++ b/Xext/shape.c
+@@ -220,7 +220,7 @@ RegionOperate (
+     }
+     if (srcRgn)
+ 	REGION_DESTROY(pScreen, srcRgn);
+-    (*pScreen->SetShape) (pWin);
++    (*pScreen->SetShape) (pWin, kind);
+     SendShapeNotify (pWin, kind);
+     return Success;
+ }
+@@ -642,7 +642,7 @@ ProcShapeOffset (ClientPtr client)
+     if (srcRgn)
+     {
+         REGION_TRANSLATE(pScreen, srcRgn, stuff->xOff, stuff->yOff);
+-        (*pScreen->SetShape) (pWin);
++        (*pScreen->SetShape) (pWin, stuff->destKind);
+     }
+     SendShapeNotify (pWin, (int)stuff->destKind);
+     return Success;

@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index c863950..7fa4a8f 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -2159,7 +2159,6 @@ void
+ ProcessInputEvents (void)
+ {
+     mieqProcessInputEvents();
+-    miPointerUpdateSprite(inputInfo.pointer);
+     if (kdSwitchPending)
+ 	KdProcessSwitch ();
+     KdCheckLock ();

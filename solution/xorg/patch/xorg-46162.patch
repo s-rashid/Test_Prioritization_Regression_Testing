@@ -1,0 +1,12 @@
+diff --git a/glx/glxscreens.h b/glx/glxscreens.h
+index 34e441e..3c1bdd4 100644
+--- a/glx/glxscreens.h
++++ b/glx/glxscreens.h
+@@ -162,6 +162,7 @@ struct __GLXscreen {
+     char *GLXextensions;
+ 
+     Bool (*CloseScreen)(int index, ScreenPtr pScreen);
++    Bool (*DestroyWindow)(WindowPtr pWindow);
+ };
+ 
+ 

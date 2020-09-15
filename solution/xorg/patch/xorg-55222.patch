@@ -1,0 +1,10 @@
+diff --git a/hw/dmx/dmx-config.h b/hw/dmx/dmx-config.h
+index 1fda69f..c435ece 100644
+--- a/hw/dmx/dmx-config.h
++++ b/hw/dmx/dmx-config.h
+@@ -72,4 +72,4 @@
+ /* Enable the DMX extension */
+ #define DMXEXT
+ 
+-#endif /* DMX_CONFIG_H */
++#endif                          /* DMX_CONFIG_H */

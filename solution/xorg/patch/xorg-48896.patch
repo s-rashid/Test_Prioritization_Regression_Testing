@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxcommon.c b/hw/dmx/input/dmxcommon.c
+index da5b778..2f23d1c 100644
+--- a/hw/dmx/input/dmxcommon.c
++++ b/hw/dmx/input/dmxcommon.c
+@@ -370,7 +370,7 @@ void dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+     Display              *display = priv->display;
+     int                  num;
+     int                  i, j, k;
+-    int                  (*handler)(Display *, char *, char *);
++    XextErrorHandler     handler;
+ 
+     if (!display && !(display = XOpenDisplay(dmxInput->name)))
+         return;

@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwin.h b/hw/xquartz/darwin.h
+index 3ba5d82..507c6f7 100644
+--- a/hw/xquartz/darwin.h
++++ b/hw/xquartz/darwin.h
+@@ -73,6 +73,9 @@ extern int              darwinDesiredDepth;
+ extern int              darwinMainScreenX;
+ extern int              darwinMainScreenY;
+ 
++// bundle-main.c
++extern char *bundle_id_prefix;
++
+ #define ENABLE_DEBUG_LOG 1
+ 
+ #ifdef ENABLE_DEBUG_LOG

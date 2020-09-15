@@ -1,0 +1,35 @@
+diff --git a/composite/compinit.c b/composite/compinit.c
+index b4deaf5..1b2cd8f 100644
+--- a/composite/compinit.c
++++ b/composite/compinit.c
+@@ -48,13 +48,9 @@
+ #include "compint.h"
+ #include "compositeext.h"
+ 
+-static int CompScreenPrivateKeyIndex;
+-DevPrivateKey CompScreenPrivateKey = &CompScreenPrivateKeyIndex;
+-static int CompWindowPrivateKeyIndex;
+-DevPrivateKey CompWindowPrivateKey = &CompWindowPrivateKeyIndex;
+-static int CompSubwindowsPrivateKeyIndex;
+-DevPrivateKey CompSubwindowsPrivateKey = &CompSubwindowsPrivateKeyIndex;
+-
++DevPrivateKeyRec CompScreenPrivateKeyRec;
++DevPrivateKeyRec CompWindowPrivateKeyRec;
++DevPrivateKeyRec CompSubwindowsPrivateKeyRec;
+ 
+ static Bool
+ compCloseScreen (int index, ScreenPtr pScreen)
+@@ -319,6 +315,13 @@ compScreenInit (ScreenPtr pScreen)
+ {
+     CompScreenPtr   cs;
+ 
++    if (!dixRegisterPrivateKey(&CompScreenPrivateKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++    if (!dixRegisterPrivateKey(&CompWindowPrivateKeyRec, PRIVATE_WINDOW, 0))
++	return FALSE;
++    if (!dixRegisterPrivateKey(&CompSubwindowsPrivateKeyRec, PRIVATE_WINDOW, 0))
++	return FALSE;
++
+     if (GetCompScreen (pScreen))
+ 	return TRUE;
+     cs = (CompScreenPtr) malloc(sizeof (CompScreenRec));

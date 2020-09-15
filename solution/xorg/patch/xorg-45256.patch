@@ -1,0 +1,19 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index a08d4b2..b71e980 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1050,11 +1050,12 @@ GetPointerEvents(EventList *events, DeviceIntPtr pDev, int type, int buttons,
+         if (flags & POINTER_SCREEN) /* valuators are in screen coords */
+         {
+ 
++            if (num_valuators >= 1 && first_valuator == 0)
+             valuators[0] = rescaleValuatorAxis(valuators[0], NULL,
+                     pDev->valuator->axes + 0,
+                     scr->width);
+-            if (num_valuators > 1)
+-                valuators[1] = rescaleValuatorAxis(valuators[1], NULL,
++            if (first_valuator <= 1 && num_valuators >= (2 - first_valuator))
++                valuators[1 - first_valuator] = rescaleValuatorAxis(valuators[1 - first_valuator], NULL,
+                         pDev->valuator->axes + 1,
+                         scr->height);
+         }

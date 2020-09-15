@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 5fa196e..3d19065 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -554,7 +554,7 @@ CoreKeyboardProc(DeviceIntPtr pDev, int what)
+ static int
+ CorePointerProc(DeviceIntPtr pDev, int what)
+ {
+-#define NBUTTONS 32
++#define NBUTTONS 7
+ #define NAXES 2
+     BYTE map[NBUTTONS + 1];
+     int i = 0;

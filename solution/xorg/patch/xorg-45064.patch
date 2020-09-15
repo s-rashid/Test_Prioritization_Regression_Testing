@@ -1,0 +1,12 @@
+diff --git a/include/windowstr.h b/include/windowstr.h
+index be909b5..96bee9b 100644
+--- a/include/windowstr.h
++++ b/include/windowstr.h
+@@ -59,7 +59,6 @@ SOFTWARE.
+ #include "miscstruct.h"
+ #include <X11/Xprotostr.h>
+ #include "opaque.h"
+-#include "inputstr.h"
+ 
+ #define GuaranteeNothing	0
+ #define GuaranteeVisBack	1

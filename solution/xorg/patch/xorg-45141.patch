@@ -1,0 +1,12 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 98973b7..8b69a3a 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -550,6 +550,7 @@ DeepCopyPointerClasses(DeviceIntPtr from, DeviceIntPtr to)
+ 
+         v->axisVal = (double*)(v->axes + from->valuator->numAxes);
+         v->sourceid = from->id;
++        v->mode = from->valuator->mode;
+     } else if (to->valuator && !from->valuator)
+     {
+         ClassesPtr classes;

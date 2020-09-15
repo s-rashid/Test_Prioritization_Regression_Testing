@@ -1,0 +1,17 @@
+diff --git a/hw/xwin/glx/winpriv.h b/hw/xwin/glx/winpriv.h
+new file mode 100644
+index 0000000..dce1edf
+--- /dev/null
++++ b/hw/xwin/glx/winpriv.h
+@@ -0,0 +1,11 @@
++/*
++ * Export window information for the Windows-OpenGL GLX implementation.
++ *
++ * Authors: Alexander Gottwald
++ */
++
++#include <X11/Xwindows.h>
++#include <windowstr.h>
++
++HWND winGetWindowInfo(WindowPtr pWin);
++Bool winCheckScreenAiglxIsSupported(ScreenPtr pScreen);

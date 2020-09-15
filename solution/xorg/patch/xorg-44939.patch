@@ -1,0 +1,12 @@
+diff --git a/Xi/xipassivegrab.c b/Xi/xipassivegrab.c
+index fa76a77..fab3335 100644
+--- a/Xi/xipassivegrab.c
++++ b/Xi/xipassivegrab.c
+@@ -130,6 +130,7 @@ ProcXIPassiveGrabDevice(ClientPtr client)
+     rep.num_modifiers = 0;
+ 
+     memset(&param, 0, sizeof(param));
++    param.grabtype = GRABTYPE_XI2;
+     param.ownerEvents = stuff->owner_events;
+     param.this_device_mode = stuff->grab_mode;
+     param.other_devices_mode = stuff->paired_device_mode;

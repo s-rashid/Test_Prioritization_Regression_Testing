@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index ee6d785..a34ecc1 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -668,7 +668,7 @@ xf86AllocateInput(InputDriverPtr drv, IDevPtr idev)
+     new->type_name = "UNKNOWN";
+     new->conf_idev = idev;
+ 
+-    xf86CollectInputOptions(new, (const char**)drv->default_options, NULL);
++    xf86CollectInputOptions(new, (const char**)drv->default_options);
+     xf86ProcessCommonOptions(new, new->options);
+ 
+     return new;

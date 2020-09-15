@@ -1,0 +1,19 @@
+diff --git a/dix/property.c b/dix/property.c
+index 20c18d7..10b8482 100644
+--- a/dix/property.c
++++ b/dix/property.c
+@@ -351,8 +351,13 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+ 	access_mode |= DixPostAccess;
+ 	rc = XaceHookPropertyAccess(pClient, pWin, &pProp, access_mode);
+ 	if (rc == Success)
++	{
++	    if (savedProp.data != pProp->data)
+ 	    xfree(savedProp.data);
+-	else {
++	}
++	else
++	{
++	    if (savedProp.data != pProp->data)
+ 	    xfree(pProp->data);
+ 	    *pProp = savedProp;
+ 	    return rc;

@@ -1,0 +1,27 @@
+diff --git a/hw/xfree86/os-support/shared/VTsw_noop.c b/hw/xfree86/os-support/shared/VTsw_noop.c
+index a3cfe40..78cbe0e 100644
+--- a/hw/xfree86/os-support/shared/VTsw_noop.c
++++ b/hw/xfree86/os-support/shared/VTsw_noop.c
+@@ -36,19 +36,19 @@
+  */
+ 
+ Bool
+-xf86VTSwitchPending()
++xf86VTSwitchPending(void)
+ {
+ 	return(FALSE);
+ }
+ 
+ Bool
+-xf86VTSwitchAway()
++xf86VTSwitchAway(void)
+ {
+ 	return(FALSE);
+ }
+ 
+ Bool
+-xf86VTSwitchTo()
++xf86VTSwitchTo(void)
+ {
+ 	return(TRUE);
+ }

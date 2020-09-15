@@ -1,0 +1,94 @@
+diff --git a/hw/xfree86/parser/Vendor.c b/hw/xfree86/parser/Vendor.c
+index d61f0a0..b4e2165 100644
+--- a/hw/xfree86/parser/Vendor.c
++++ b/hw/xfree86/parser/Vendor.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,8 +64,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec VendorSubTab[] =
+-{
++static xf86ConfigSymTabRec VendorSubTab[] = {
+ 	{ENDSUBSECTION, "endsubsection"},
+ 	{IDENTIFIER, "identifier"},
+ 	{OPTION, "option"},
+@@ -80,12 +78,11 @@ xf86parseVendorSubSection (void)
+ {
+ 	int has_ident = FALSE;
+ 	int token;
++
+ 	parsePrologue (XF86ConfVendSubPtr, XF86ConfVendSubRec)
+ 
+-	while ((token = xf86getToken (VendorSubTab)) != ENDSUBSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(VendorSubTab)) != ENDSUBSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->vs_comment = xf86addComment(ptr->vs_comment, val.str);
+ 			break;
+@@ -119,8 +116,7 @@ xf86parseVendorSubSection (void)
+ 
+ #undef CLEANUP
+ 
+-static xf86ConfigSymTabRec VendorTab[] =
+-{
++static xf86ConfigSymTabRec VendorTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{IDENTIFIER, "identifier"},
+ 	{OPTION, "option"},
+@@ -135,12 +131,11 @@ xf86parseVendorSection (void)
+ {
+ 	int has_ident = FALSE;
+ 	int token;
++
+ 	parsePrologue (XF86ConfVendorPtr, XF86ConfVendorRec)
+ 
+-	while ((token = xf86getToken (VendorTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(VendorTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->vnd_comment = xf86addComment(ptr->vnd_comment, val.str);
+ 			break;
+@@ -190,8 +185,7 @@ xf86printVendorSection (FILE * cf, XF86ConfVendorPtr ptr)
+ {
+ 	XF86ConfVendSubPtr pptr;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		fprintf (cf, "Section \"Vendor\"\n");
+ 		if (ptr->vnd_comment)
+ 			fprintf (cf, "%s", ptr->vnd_comment);
+@@ -199,8 +193,7 @@ xf86printVendorSection (FILE * cf, XF86ConfVendorPtr ptr)
+ 			fprintf (cf, "\tIdentifier     \"%s\"\n", ptr->vnd_identifier);
+ 
+ 		xf86printOptionList(cf, ptr->vnd_option_lst, 1);
+-		for (pptr = ptr->vnd_sub_lst; pptr; pptr = pptr->list.next)
+-		{
++        for (pptr = ptr->vnd_sub_lst; pptr; pptr = pptr->list.next) {
+ 			fprintf (cf, "\tSubSection \"Vendor\"\n");
+ 			if (pptr->vs_comment)
+ 				fprintf (cf, "%s", pptr->vs_comment);
+@@ -231,8 +224,7 @@ xf86freeVendorSubList (XF86ConfVendSubPtr ptr)
+ {
+ 	XF86ConfVendSubPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->vs_identifier);
+ 		TestFree (ptr->vs_name);
+ 		TestFree (ptr->vs_comment);

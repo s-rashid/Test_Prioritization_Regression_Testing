@@ -1,0 +1,345 @@
+diff --git a/hw/xfree86/xaa/xaaFallback.c b/hw/xfree86/xaa/xaaFallback.c
+index deeadbf..f7604ef 100644
+--- a/hw/xfree86/xaa/xaaFallback.c
++++ b/hw/xfree86/xaa/xaaFallback.c
+@@ -16,16 +16,11 @@
+ #include "pixmapstr.h"
+ #include "xaawrap.h"
+ 
+-
+-
+ static void
+-XAAFillSpansFallback(
+-    DrawablePtr pDraw,
++XAAFillSpansFallback(DrawablePtr pDraw,
+     GC		*pGC,
+     int		nInit,	
+-    DDXPointPtr pptInit,	
+-    int *pwidthInit,		
+-    int fSorted )
++                     DDXPointPtr pptInit, int *pwidthInit, int fSorted)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -34,14 +29,11 @@ XAAFillSpansFallback(
+ }
+ 
+ static void
+-XAASetSpansFallback(
+-    DrawablePtr		pDraw,
++XAASetSpansFallback(DrawablePtr pDraw,
+     GCPtr		pGC,
+     char		*pcharsrc,
+     register DDXPointPtr ppt,
+-    int			*pwidth,
+-    int			nspans,
+-    int			fSorted )
++                    int *pwidth, int nspans, int fSorted)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -50,14 +42,11 @@ XAASetSpansFallback(
+ }
+ 
+ static void
+-XAAPutImageFallback(
+-    DrawablePtr pDraw,
++XAAPutImageFallback(DrawablePtr pDraw,
+     GCPtr	pGC,
+     int		depth, 
+     int x, int y, int w, int h,
+-    int		leftPad,
+-    int		format,
+-    char 	*pImage )
++                    int leftPad, int format, char *pImage)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -67,13 +56,11 @@ XAAPutImageFallback(
+ }
+ 
+ static RegionPtr
+-XAACopyAreaFallback(
+-    DrawablePtr pSrc,
++XAACopyAreaFallback(DrawablePtr pSrc,
+     DrawablePtr pDst,
+     GC *pGC,
+     int srcx, int srcy,
+-    int width, int height,
+-    int dstx, int dsty )
++                    int width, int height, int dstx, int dsty)
+ {
+     RegionPtr ret;
+ 
+@@ -89,14 +76,12 @@ XAACopyAreaFallback(
+ }
+ 
+ static RegionPtr
+-XAACopyPlaneFallback(
+-    DrawablePtr	pSrc,
++XAACopyPlaneFallback(DrawablePtr pSrc,
+     DrawablePtr	pDst,
+     GCPtr pGC,
+     int	srcx, int srcy,
+     int	width, int height,
+-    int	dstx, int dsty,
+-    unsigned long bitPlane )
++                     int dstx, int dsty, unsigned long bitPlane)
+ {
+     RegionPtr ret;
+ 
+@@ -106,18 +91,15 @@ XAACopyPlaneFallback(
+ 	SYNC_CHECK(pGC);
+     }
+     ret = (*pGC->ops->CopyPlane)(pSrc, pDst,
+-	       pGC, srcx, srcy, width, height, dstx, dsty, bitPlane);
++                                  pGC, srcx, srcy, width, height, dstx, dsty,
++                                  bitPlane);
+     XAA_GC_OP_EPILOGUE(pGC);
+     return ret;
+ }
+ 
+ static void
+-XAAPolyPointFallback(
+-    DrawablePtr pDraw,
+-    GCPtr pGC,
+-    int mode,
+-    int npt,
+-    xPoint *pptInit )
++XAAPolyPointFallback(DrawablePtr pDraw,
++                     GCPtr pGC, int mode, int npt, xPoint * pptInit)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -125,14 +107,9 @@ XAAPolyPointFallback(
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void
+-XAAPolylinesFallback(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		mode,		
+-    int		npt,		
+-    DDXPointPtr pptInit )
++XAAPolylinesFallback(DrawablePtr pDraw,
++                     GCPtr pGC, int mode, int npt, DDXPointPtr pptInit)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -141,11 +118,7 @@ XAAPolylinesFallback(
+ }
+ 
+ static void 
+-XAAPolySegmentFallback(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		nseg,
+-    xSegment	*pSeg )
++XAAPolySegmentFallback(DrawablePtr pDraw, GCPtr pGC, int nseg, xSegment * pSeg)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -154,11 +127,8 @@ XAAPolySegmentFallback(
+ }
+ 
+ static void
+-XAAPolyRectangleFallback(
+-    DrawablePtr  pDraw,
+-    GCPtr        pGC,
+-    int	         nRectsInit,
+-    xRectangle  *pRectsInit )
++XAAPolyRectangleFallback(DrawablePtr pDraw,
++                         GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -167,11 +137,7 @@ XAAPolyRectangleFallback(
+ }
+ 
+ static void
+-XAAPolyArcFallback(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		narcs,
+-    xArc	*parcs )
++XAAPolyArcFallback(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc * parcs)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -180,13 +146,9 @@ XAAPolyArcFallback(
+ }
+ 
+ static void
+-XAAFillPolygonFallback(
+-    DrawablePtr	pDraw,
++XAAFillPolygonFallback(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		shape,
+-    int		mode,
+-    int		count,
+-    DDXPointPtr	ptsIn )
++                       int shape, int mode, int count, DDXPointPtr ptsIn)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -194,13 +156,9 @@ XAAFillPolygonFallback(
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void 
+-XAAPolyFillRectFallback(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		nrectFill, 
+-    xRectangle	*prectInit )  
++XAAPolyFillRectFallback(DrawablePtr pDraw,
++                        GCPtr pGC, int nrectFill, xRectangle *prectInit)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -208,13 +166,8 @@ XAAPolyFillRectFallback(
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void
+-XAAPolyFillArcFallback(
+-    DrawablePtr	pDraw,
+-    GCPtr	pGC,
+-    int		narcs,
+-    xArc	*parcs )
++XAAPolyFillArcFallback(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc * parcs)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -223,13 +176,8 @@ XAAPolyFillArcFallback(
+ }
+ 
+ static int
+-XAAPolyText8Fallback(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x, 
+-    int 	y,
+-    int 	count,
+-    char	*chars )
++XAAPolyText8Fallback(DrawablePtr pDraw,
++                     GCPtr pGC, int x, int y, int count, char *chars)
+ {
+     int ret;
+ 
+@@ -241,13 +189,8 @@ XAAPolyText8Fallback(
+ }
+ 
+ static int
+-XAAPolyText16Fallback(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x,
+-    int		y,
+-    int 	count,
+-    unsigned short *chars )
++XAAPolyText16Fallback(DrawablePtr pDraw,
++                      GCPtr pGC, int x, int y, int count, unsigned short *chars)
+ {
+     int ret;
+ 
+@@ -259,13 +202,8 @@ XAAPolyText16Fallback(
+ }
+ 
+ static void
+-XAAImageText8Fallback(
+-    DrawablePtr pDraw,
+-    GCPtr	pGC,
+-    int		x, 
+-    int		y,
+-    int 	count,
+-    char	*chars )
++XAAImageText8Fallback(DrawablePtr pDraw,
++                      GCPtr pGC, int x, int y, int count, char *chars)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -274,13 +212,9 @@ XAAImageText8Fallback(
+ }
+ 
+ static void
+-XAAImageText16Fallback(
+-    DrawablePtr pDraw,
++XAAImageText16Fallback(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		x,
+-    int		y,
+-    int 	count,
+-    unsigned short *chars )
++                       int x, int y, int count, unsigned short *chars)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -288,43 +222,38 @@ XAAImageText16Fallback(
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+-
+ static void
+-XAAImageGlyphBltFallback(
+-    DrawablePtr pDraw,
++XAAImageGlyphBltFallback(DrawablePtr pDraw,
+     GCPtr pGC,
+     int xInit, int yInit,
+     unsigned int nglyph,
+-    CharInfoPtr *ppci,
+-    pointer pglyphBase )
++                         CharInfoPtr * ppci, pointer pglyphBase)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+-    (*pGC->ops->ImageGlyphBlt)(pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pGC->ops->ImageGlyphBlt) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                                pglyphBase);
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+ static void
+-XAAPolyGlyphBltFallback(
+-    DrawablePtr pDraw,
++XAAPolyGlyphBltFallback(DrawablePtr pDraw,
+     GCPtr pGC,
+     int xInit, int yInit,
+     unsigned int nglyph,
+-    CharInfoPtr *ppci,
+-    pointer pglyphBase )
++                        CharInfoPtr * ppci, pointer pglyphBase)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+-    (*pGC->ops->PolyGlyphBlt)(pDraw, pGC, xInit, yInit, nglyph, ppci, pglyphBase);
++    (*pGC->ops->PolyGlyphBlt) (pDraw, pGC, xInit, yInit, nglyph, ppci,
++                               pglyphBase);
+     XAA_GC_OP_EPILOGUE(pGC);
+ }
+ 
+ static void
+-XAAPushPixelsFallback(
+-    GCPtr	pGC,
++XAAPushPixelsFallback(GCPtr pGC,
+     PixmapPtr	pBitMap,
+-    DrawablePtr pDraw,
+-    int	dx, int dy, int xOrg, int yOrg )
++                      DrawablePtr pDraw, int dx, int dy, int xOrg, int yOrg)
+ {
+     XAA_GC_OP_PROLOGUE_WITH_RETURN(pGC);
+     SYNC_CHECK(pGC);
+@@ -345,7 +274,8 @@ GCOps XAAFallbackOps = {
+     XAAPolyGlyphBltFallback, XAAPushPixelsFallback,
+ };
+ 
+-GCOps *XAAGetFallbackOps(void)
++GCOps *
++XAAGetFallbackOps(void)
+ {
+     return &XAAFallbackOps;
+ }

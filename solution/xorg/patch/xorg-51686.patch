@@ -1,0 +1,23 @@
+diff --git a/xkb/xkbUtils.c b/xkb/xkbUtils.c
+index 14dc784..3a56bea 100644
+--- a/xkb/xkbUtils.c
++++ b/xkb/xkbUtils.c
+@@ -342,14 +342,17 @@ CARD8 *			repeat;
+     xkb= xkbi->desc;
+     repeat= xkb->ctrls->per_key_repeat;
+ 
++    /* before letting XKB do any changes, copy the current core values */
+     if (pXDev->kbdfeed)
+ 	memcpy(repeat,pXDev->kbdfeed->ctrl.autoRepeats,XkbPerKeyBitArraySize);
+ 
+     XkbUpdateDescActions(xkb,first,num,changes);
+ 
+     if ((pXDev->kbdfeed)&&
+-	(changes->ctrls.enabled_ctrls_changes&XkbPerKeyRepeatMask)) {
++	(changes->ctrls.changed_ctrls&XkbPerKeyRepeatMask)) {
++	/* now copy the modified changes back to core */
+         memcpy(pXDev->kbdfeed->ctrl.autoRepeats,repeat, XkbPerKeyBitArraySize);
++	if (pXDev->kbdfeed->CtrlProc)
+ 	(*pXDev->kbdfeed->CtrlProc)(pXDev, &pXDev->kbdfeed->ctrl);
+     }
+     return;

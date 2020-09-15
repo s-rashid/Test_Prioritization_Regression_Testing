@@ -1,0 +1,825 @@
+diff --git a/hw/xfree86/common/xf86VGAarbiter.c b/hw/xfree86/common/xf86VGAarbiter.c
+index 819ad6e..7c9e6ba 100644
+--- a/hw/xfree86/common/xf86VGAarbiter.c
++++ b/hw/xfree86/common/xf86VGAarbiter.c
+@@ -36,7 +36,6 @@
+ #include "xf86Priv.h"
+ #include "pciaccess.h"
+ 
+-
+ static GCFuncs VGAarbiterGCFuncs = {
+     VGAarbiterValidateGC, VGAarbiterChangeGC, VGAarbiterCopyGC,
+     VGAarbiterDestroyGC, VGAarbiterChangeClip, VGAarbiterDestroyClip,
+@@ -60,8 +59,10 @@ static miPointerSpriteFuncRec VGAarbiterSpriteFuncs = {
+ };
+ 
+ static DevPrivateKeyRec VGAarbiterScreenKeyRec;
++
+ #define VGAarbiterScreenKey (&VGAarbiterScreenKeyRec)
+ static DevPrivateKeyRec VGAarbiterGCKeyRec;
++
+ #define VGAarbiterGCKey (&VGAarbiterGCKeyRec)
+ 
+ static int vga_no_arb = 0;
+@@ -70,7 +71,8 @@ xf86VGAarbiterInit(void)
+ {
+     if (pci_device_vgaarb_init() != 0) {
+ 	vga_no_arb = 1;
+-        xf86Msg(X_WARNING, "VGA arbiter: cannot open kernel arbiter, no multi-card support\n");
++        xf86Msg(X_WARNING,
++                "VGA arbiter: cannot open kernel arbiter, no multi-card support\n");
+     }
+ }
+ 
+@@ -99,7 +101,8 @@ xf86VGAarbiterUnlock(ScrnInfoPtr pScrn)
+     pci_device_vgaarb_unlock();
+ }
+ 
+-Bool xf86VGAarbiterAllowDRI(ScreenPtr pScreen)
++Bool
++xf86VGAarbiterAllowDRI(ScreenPtr pScreen)
+ {
+     int vga_count;
+     int rsrc_decodes;
+@@ -173,7 +176,8 @@ xf86VGAarbiterWrapFunctions(void)
+         pScrn = xf86Screens[pScreen->myNum];
+         PointPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey);
+ 
+-        if (!dixRegisterPrivateKey(&VGAarbiterGCKeyRec, PRIVATE_GC, sizeof(VGAarbiterGCRec)))
++        if (!dixRegisterPrivateKey
++            (&VGAarbiterGCKeyRec, PRIVATE_GC, sizeof(VGAarbiterGCRec)))
+             return FALSE;
+ 
+ 	if (!dixRegisterPrivateKey(&VGAarbiterScreenKeyRec, PRIVATE_SCREEN, 0))
+@@ -221,10 +225,12 @@ VGAarbiterCloseScreen (int i, ScreenPtr pScreen)
+ {
+     Bool val;
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
+-    miPointerScreenPtr PointPriv = (miPointerScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, miPointerScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
++    miPointerScreenPtr PointPriv =
++        (miPointerScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                              miPointerScreenKey);
+     PictureScreenPtr    ps = GetPictureScreenIfSet(pScreen);
+ 
+     UNWRAP_SCREEN(CreateGC);
+@@ -263,6 +269,7 @@ VGAarbiterBlockHandler(int i,
+                        pointer blockData, pointer pTimeout, pointer pReadmask)
+ {
+     ScreenPtr pScreen = screenInfo.screens[i];
++
+     SCREEN_PROLOG(BlockHandler);
+     VGAGet(pScreen);
+     pScreen->BlockHandler(i, blockData, pTimeout, pReadmask);
+@@ -271,9 +278,11 @@ VGAarbiterBlockHandler(int i,
+ }
+ 
+ static void
+-VGAarbiterWakeupHandler(int i, pointer blockData, unsigned long result, pointer pReadmask)
++VGAarbiterWakeupHandler(int i, pointer blockData, unsigned long result,
++                        pointer pReadmask)
+ {
+     ScreenPtr pScreen = screenInfo.screens[i];
++
+     SCREEN_PROLOG(WakeupHandler);
+     VGAGet(pScreen);
+     pScreen->WakeupHandler(i, blockData, result, pReadmask);
+@@ -282,34 +291,25 @@ VGAarbiterWakeupHandler(int i, pointer blockData, unsigned long result, pointer
+ }
+ 
+ static void
+-VGAarbiterGetImage (
+-    DrawablePtr pDrawable,
++VGAarbiterGetImage(DrawablePtr pDrawable,
+     int sx, int sy, int w, int h,
+-    unsigned int    format,
+-    unsigned long   planemask,
+-    char        *pdstLine
+-    )
++                   unsigned int format, unsigned long planemask, char *pdstLine)
+ {
+     ScreenPtr pScreen = pDrawable->pScreen;
++
+     SCREEN_PROLOG(GetImage);
+ //    if (xf86Screens[pScreen->myNum]->vtSema) {
+     VGAGet(pScreen);
+ //    }
+-    (*pScreen->GetImage) (pDrawable, sx, sy, w, h,
+-              format, planemask, pdstLine);
++    (*pScreen->GetImage) (pDrawable, sx, sy, w, h, format, planemask, pdstLine);
+     VGAPut();
+     SCREEN_EPILOG (GetImage, VGAarbiterGetImage);
+ }
+ 
+ static void
+-VGAarbiterGetSpans (
+-    DrawablePtr pDrawable,
++VGAarbiterGetSpans(DrawablePtr pDrawable,
+     int     wMax,
+-    DDXPointPtr ppt,
+-    int     *pwidth,
+-    int     nspans,
+-    char    *pdstStart
+-    )
++                   DDXPointPtr ppt, int *pwidth, int nspans, char *pdstStart)
+ {
+     ScreenPtr       pScreen = pDrawable->pScreen;
+ 
+@@ -321,25 +321,23 @@ VGAarbiterGetSpans (
+ }
+ 
+ static void
+-VGAarbiterSourceValidate (
+-    DrawablePtr pDrawable,
++VGAarbiterSourceValidate(DrawablePtr pDrawable,
+     int x, int y, int width, int height,
+     unsigned int subWindowMode )
+ {
+     ScreenPtr   pScreen = pDrawable->pScreen;
++
+     SCREEN_PROLOG (SourceValidate);
+     VGAGet(pScreen);
+     if (pScreen->SourceValidate)
+-    (*pScreen->SourceValidate) (pDrawable, x, y, width, height, subWindowMode);
++        (*pScreen->SourceValidate) (pDrawable, x, y, width, height,
++                                    subWindowMode);
+     VGAPut();
+     SCREEN_EPILOG (SourceValidate, VGAarbiterSourceValidate);
+ }
+ 
+ static void
+-VGAarbiterCopyWindow(
+-    WindowPtr pWin,
+-    DDXPointRec ptOldOrg,
+-    RegionPtr prgnSrc )
++VGAarbiterCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ {
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+ 
+@@ -351,11 +349,8 @@ VGAarbiterCopyWindow(
+ }
+ 
+ static void
+-VGAarbiterClearToBackground (
+-    WindowPtr pWin,
+-    int x, int y,
+-    int w, int h,
+-    Bool generateExposures )
++VGAarbiterClearToBackground(WindowPtr pWin,
++                            int x, int y, int w, int h, Bool generateExposures)
+ {
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+ 
+@@ -367,7 +362,8 @@ VGAarbiterClearToBackground (
+ }
+ 
+ static PixmapPtr
+-VGAarbiterCreatePixmap(ScreenPtr pScreen, int w, int h, int depth, unsigned usage_hint)
++VGAarbiterCreatePixmap(ScreenPtr pScreen, int w, int h, int depth,
++                       unsigned usage_hint)
+ {
+     PixmapPtr pPix;
+ 
+@@ -395,10 +391,7 @@ VGAarbiterSaveScreen(ScreenPtr pScreen, Bool unblank)
+ }
+ 
+ static void
+-VGAarbiterStoreColors (
+-    ColormapPtr        pmap,
+-    int                ndef,
+-    xColorItem         *pdefs)
++VGAarbiterStoreColors(ColormapPtr pmap, int ndef, xColorItem * pdefs)
+ {
+     ScreenPtr pScreen = pmap->pScreen;
+ 
+@@ -410,12 +403,8 @@ VGAarbiterStoreColors (
+ }
+ 
+ static void
+-VGAarbiterRecolorCursor (
+-    DeviceIntPtr pDev,
+-    ScreenPtr pScreen,
+-    CursorPtr pCurs,
+-    Bool displayed
+-    )
++VGAarbiterRecolorCursor(DeviceIntPtr pDev,
++                        ScreenPtr pScreen, CursorPtr pCurs, Bool displayed)
+ {
+     SCREEN_PROLOG (RecolorCursor);
+     VGAGet(pScreen);
+@@ -425,11 +414,7 @@ VGAarbiterRecolorCursor (
+ }
+ 
+ static Bool
+-VGAarbiterRealizeCursor (
+-    DeviceIntPtr pDev,
+-    ScreenPtr   pScreen,
+-    CursorPtr   pCursor
+-    )
++VGAarbiterRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     Bool val;
+ 
+@@ -442,11 +427,8 @@ VGAarbiterRealizeCursor (
+ }
+ 
+ static Bool
+-VGAarbiterUnrealizeCursor (
+-    DeviceIntPtr pDev,
+-    ScreenPtr   pScreen,
+-    CursorPtr   pCursor
+-    )
++VGAarbiterUnrealizeCursor(DeviceIntPtr pDev,
++                          ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     Bool val;
+ 
+@@ -459,11 +441,7 @@ VGAarbiterUnrealizeCursor (
+ }
+ 
+ static Bool
+-VGAarbiterDisplayCursor (
+-    DeviceIntPtr pDev,
+-    ScreenPtr   pScreen,
+-    CursorPtr   pCursor
+-    )
++VGAarbiterDisplayCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     Bool val;
+ 
+@@ -476,11 +454,8 @@ VGAarbiterDisplayCursor (
+ }
+ 
+ static Bool
+-VGAarbiterSetCursorPosition (
+-    DeviceIntPtr pDev,
+-    ScreenPtr   pScreen,
+-    int x, int y,
+-    Bool generateEvent)
++VGAarbiterSetCursorPosition(DeviceIntPtr pDev,
++                            ScreenPtr pScreen, int x, int y, Bool generateEvent)
+ {
+     Bool val;
+ 
+@@ -496,8 +471,9 @@ static void
+ VGAarbiterAdjustFrame(int index, int x, int y, int flags)
+ {
+     ScreenPtr pScreen = screenInfo.screens[index];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
+ 
+     VGAGet(pScreen);
+     (*pScreenPriv->AdjustFrame)(index, x, y, flags);
+@@ -509,8 +485,9 @@ VGAarbiterSwitchMode(int index, DisplayModePtr mode, int flags)
+ {
+     Bool val;
+     ScreenPtr pScreen = screenInfo.screens[index];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
+ 
+     VGAGet(pScreen);
+     val = (*pScreenPriv->SwitchMode)(index, mode, flags);
+@@ -524,8 +501,9 @@ VGAarbiterEnterVT(int index, int flags)
+     Bool val;
+     ScrnInfoPtr pScrn = xf86Screens[index];
+     ScreenPtr pScreen = screenInfo.screens[index];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
+ 
+     VGAGet(pScreen);
+     pScrn->EnterVT = pScreenPriv->EnterVT;
+@@ -541,8 +519,9 @@ VGAarbiterLeaveVT(int index, int flags)
+ {
+     ScrnInfoPtr pScrn = xf86Screens[index];
+     ScreenPtr pScreen = screenInfo.screens[index];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
+ 
+     VGAGet(pScreen);
+     pScrn->LeaveVT = pScreenPriv->LeaveVT;
+@@ -556,8 +535,9 @@ static void
+ VGAarbiterFreeScreen(int index, int flags)
+ {
+     ScreenPtr pScreen = screenInfo.screens[index];
+-    VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+-        &pScreen->devPrivates, VGAarbiterScreenKey);
++    VGAarbiterScreenPtr pScreenPriv =
++        (VGAarbiterScreenPtr) dixLookupPrivate(&pScreen->devPrivates,
++                                               VGAarbiterScreenKey);
+ 
+     VGAGet(pScreen);
+     (*pScreenPriv->FreeScreen)(index, flags);
+@@ -568,7 +548,8 @@ static Bool
+ VGAarbiterCreateGC(GCPtr pGC)
+ {
+     ScreenPtr    pScreen = pGC->pScreen;
+-    VGAarbiterGCPtr pGCPriv = (VGAarbiterGCPtr)dixLookupPrivate(&pGC->devPrivates, VGAarbiterGCKey);
++    VGAarbiterGCPtr pGCPriv =
++        (VGAarbiterGCPtr) dixLookupPrivate(&pGC->devPrivates, VGAarbiterGCKey);
+     Bool         ret;
+ 
+     SCREEN_PROLOG(CreateGC);
+@@ -581,17 +562,13 @@ VGAarbiterCreateGC(GCPtr pGC)
+ 
+ /* GC funcs */
+ static void
+-VGAarbiterValidateGC(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++VGAarbiterValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+     GC_UNWRAP(pGC);
+     (*pGC->funcs->ValidateGC)(pGC, changes, pDraw);
+     GC_WRAP(pGC);
+ }
+ 
+-
+ static void
+ VGAarbiterDestroyGC(GCPtr pGC)
+ {
+@@ -601,9 +578,7 @@ VGAarbiterDestroyGC(GCPtr pGC)
+ }
+ 
+ static void
+-VGAarbiterChangeGC (
+-    GCPtr       pGC,
+-    unsigned long   mask)
++VGAarbiterChangeGC(GCPtr pGC, unsigned long mask)
+ {
+     GC_UNWRAP (pGC);
+     (*pGC->funcs->ChangeGC) (pGC, mask);
+@@ -611,10 +586,7 @@ VGAarbiterChangeGC (
+ }
+ 
+ static void
+-VGAarbiterCopyGC (
+-    GCPtr       pGCSrc,
+-    unsigned long   mask,
+-    GCPtr       pGCDst)
++VGAarbiterCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
+ {
+     GC_UNWRAP (pGCDst);
+     (*pGCDst->funcs->CopyGC) (pGCSrc, mask, pGCDst);
+@@ -622,11 +594,7 @@ VGAarbiterCopyGC (
+ }
+ 
+ static void
+-VGAarbiterChangeClip (
+-    GCPtr   pGC,
+-    int     type,
+-    pointer pvalue,
+-    int     nrects )
++VGAarbiterChangeClip(GCPtr pGC, int type, pointer pvalue, int nrects)
+ {
+     GC_UNWRAP (pGC);
+     (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
+@@ -651,15 +619,13 @@ VGAarbiterDestroyClip(GCPtr pGC)
+ 
+ /* GC Ops */
+ static void
+-VGAarbiterFillSpans(
+-    DrawablePtr pDraw,
++VGAarbiterFillSpans(DrawablePtr pDraw,
+     GC      *pGC,
+     int     nInit,
+-    DDXPointPtr pptInit,
+-    int *pwidthInit,
+-    int fSorted )
++                    DDXPointPtr pptInit, int *pwidthInit, int fSorted)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->FillSpans)(pDraw, pGC, nInit, pptInit, pwidthInit, fSorted);
+@@ -668,16 +634,14 @@ VGAarbiterFillSpans(
+ }
+ 
+ static void
+-VGAarbiterSetSpans(
+-    DrawablePtr     pDraw,
++VGAarbiterSetSpans(DrawablePtr pDraw,
+     GCPtr       pGC,
+     char        *pcharsrc,
+     register DDXPointPtr ppt,
+-    int         *pwidth,
+-    int         nspans,
+-    int         fSorted )
++                   int *pwidth, int nspans, int fSorted)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->SetSpans)(pDraw, pGC, pcharsrc, ppt, pwidth, nspans, fSorted);
+@@ -686,16 +650,14 @@ VGAarbiterSetSpans(
+ }
+ 
+ static void
+-VGAarbiterPutImage(
+-    DrawablePtr pDraw,
++VGAarbiterPutImage(DrawablePtr pDraw,
+     GCPtr   pGC,
+     int     depth,
+     int x, int y, int w, int h,
+-    int     leftPad,
+-    int     format,
+-    char    *pImage )
++                   int leftPad, int format, char *pImage)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PutImage)(pDraw, pGC, depth, x, y, w, h,
+@@ -705,16 +667,15 @@ VGAarbiterPutImage(
+ }
+ 
+ static RegionPtr
+-VGAarbiterCopyArea(
+-    DrawablePtr pSrc,
++VGAarbiterCopyArea(DrawablePtr pSrc,
+     DrawablePtr pDst,
+     GC *pGC,
+     int srcx, int srcy,
+-    int width, int height,
+-    int dstx, int dsty )
++                   int width, int height, int dstx, int dsty)
+ {
+     RegionPtr ret;
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     ret = (*pGC->ops->CopyArea)(pSrc, pDst,
+@@ -725,17 +686,16 @@ VGAarbiterCopyArea(
+ }
+ 
+ static RegionPtr
+-VGAarbiterCopyPlane(
+-    DrawablePtr pSrc,
++VGAarbiterCopyPlane(DrawablePtr pSrc,
+     DrawablePtr pDst,
+     GCPtr pGC,
+     int srcx, int srcy,
+     int width, int height,
+-    int dstx, int dsty,
+-    unsigned long bitPlane )
++                    int dstx, int dsty, unsigned long bitPlane)
+ {
+     RegionPtr ret;
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     ret = (*pGC->ops->CopyPlane)(pSrc, pDst, pGC, srcx, srcy,
+@@ -746,14 +706,11 @@ VGAarbiterCopyPlane(
+ }
+ 
+ static void
+-VGAarbiterPolyPoint(
+-    DrawablePtr pDraw,
+-    GCPtr pGC,
+-    int mode,
+-    int npt,
+-    xPoint *pptInit )
++VGAarbiterPolyPoint(DrawablePtr pDraw,
++                    GCPtr pGC, int mode, int npt, xPoint * pptInit)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyPoint)(pDraw, pGC, mode, npt, pptInit);
+@@ -761,16 +718,12 @@ VGAarbiterPolyPoint(
+     GC_WRAP(pGC);
+ }
+ 
+-
+ static void
+-VGAarbiterPolylines(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     mode,
+-    int     npt,
+-    DDXPointPtr pptInit )
++VGAarbiterPolylines(DrawablePtr pDraw,
++                    GCPtr pGC, int mode, int npt, DDXPointPtr pptInit)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->Polylines)(pDraw, pGC, mode, npt, pptInit);
+@@ -779,13 +732,10 @@ VGAarbiterPolylines(
+ }
+ 
+ static void
+-VGAarbiterPolySegment(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     nseg,
+-    xSegment    *pSeg )
++VGAarbiterPolySegment(DrawablePtr pDraw, GCPtr pGC, int nseg, xSegment * pSeg)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolySegment)(pDraw, pGC, nseg, pSeg);
+@@ -794,13 +744,11 @@ VGAarbiterPolySegment(
+ }
+ 
+ static void
+-VGAarbiterPolyRectangle(
+-    DrawablePtr  pDraw,
+-    GCPtr        pGC,
+-    int          nRectsInit,
+-    xRectangle  *pRectsInit )
++VGAarbiterPolyRectangle(DrawablePtr pDraw,
++                        GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyRectangle)(pDraw, pGC, nRectsInit, pRectsInit);
+@@ -809,13 +757,10 @@ VGAarbiterPolyRectangle(
+ }
+ 
+ static void
+-VGAarbiterPolyArc(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     narcs,
+-    xArc    *parcs )
++VGAarbiterPolyArc(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc * parcs)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyArc)(pDraw, pGC, narcs, parcs);
+@@ -824,15 +769,12 @@ VGAarbiterPolyArc(
+ }
+ 
+ static void
+-VGAarbiterFillPolygon(
+-    DrawablePtr pDraw,
++VGAarbiterFillPolygon(DrawablePtr pDraw,
+     GCPtr   pGC,
+-    int     shape,
+-    int     mode,
+-    int     count,
+-    DDXPointPtr ptsIn )
++                      int shape, int mode, int count, DDXPointPtr ptsIn)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->FillPolygon)(pDraw, pGC, shape, mode, count, ptsIn);
+@@ -841,13 +783,11 @@ VGAarbiterFillPolygon(
+ }
+ 
+ static void
+-VGAarbiterPolyFillRect(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     nrectFill,
+-    xRectangle  *prectInit)
++VGAarbiterPolyFillRect(DrawablePtr pDraw,
++                       GCPtr pGC, int nrectFill, xRectangle *prectInit)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyFillRect)(pDraw, pGC, nrectFill, prectInit);
+@@ -856,13 +796,10 @@ VGAarbiterPolyFillRect(
+ }
+ 
+ static void
+-VGAarbiterPolyFillArc(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     narcs,
+-    xArc    *parcs )
++VGAarbiterPolyFillArc(DrawablePtr pDraw, GCPtr pGC, int narcs, xArc * parcs)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyFillArc)(pDraw, pGC, narcs, parcs);
+@@ -871,16 +808,12 @@ VGAarbiterPolyFillArc(
+ }
+ 
+ static int
+-VGAarbiterPolyText8(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     x,
+-    int     y,
+-    int     count,
+-    char    *chars )
++VGAarbiterPolyText8(DrawablePtr pDraw,
++                    GCPtr pGC, int x, int y, int count, char *chars)
+ {
+     int ret;
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     ret = (*pGC->ops->PolyText8)(pDraw, pGC, x, y, count, chars);
+@@ -890,16 +823,12 @@ VGAarbiterPolyText8(
+ }
+ 
+ static int
+-VGAarbiterPolyText16(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     x,
+-    int     y,
+-    int     count,
+-    unsigned short *chars )
++VGAarbiterPolyText16(DrawablePtr pDraw,
++                     GCPtr pGC, int x, int y, int count, unsigned short *chars)
+ {
+     int ret;
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     ret = (*pGC->ops->PolyText16)(pDraw, pGC, x, y, count, chars);
+@@ -909,15 +838,11 @@ VGAarbiterPolyText16(
+ }
+ 
+ static void
+-VGAarbiterImageText8(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     x,
+-    int     y,
+-    int     count,
+-    char    *chars )
++VGAarbiterImageText8(DrawablePtr pDraw,
++                     GCPtr pGC, int x, int y, int count, char *chars)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->ImageText8)(pDraw, pGC, x, y, count, chars);
+@@ -926,15 +851,11 @@ VGAarbiterImageText8(
+ }
+ 
+ static void
+-VGAarbiterImageText16(
+-    DrawablePtr pDraw,
+-    GCPtr   pGC,
+-    int     x,
+-    int     y,
+-    int     count,
+-    unsigned short *chars )
++VGAarbiterImageText16(DrawablePtr pDraw,
++                      GCPtr pGC, int x, int y, int count, unsigned short *chars)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->ImageText16)(pDraw, pGC, x, y, count, chars);
+@@ -942,17 +863,15 @@ VGAarbiterImageText16(
+     GC_WRAP(pGC);
+ }
+ 
+-
+ static void
+-VGAarbiterImageGlyphBlt(
+-    DrawablePtr pDraw,
++VGAarbiterImageGlyphBlt(DrawablePtr pDraw,
+     GCPtr pGC,
+     int xInit, int yInit,
+     unsigned int nglyph,
+-    CharInfoPtr *ppci,
+-    pointer pglyphBase )
++                        CharInfoPtr * ppci, pointer pglyphBase)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->ImageGlyphBlt)(pDraw, pGC, xInit, yInit,
+@@ -962,15 +881,14 @@ VGAarbiterImageGlyphBlt(
+ }
+ 
+ static void
+-VGAarbiterPolyGlyphBlt(
+-    DrawablePtr pDraw,
++VGAarbiterPolyGlyphBlt(DrawablePtr pDraw,
+     GCPtr pGC,
+     int xInit, int yInit,
+     unsigned int nglyph,
+-    CharInfoPtr *ppci,
+-    pointer pglyphBase )
++                       CharInfoPtr * ppci, pointer pglyphBase)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PolyGlyphBlt)(pDraw, pGC, xInit, yInit,
+@@ -980,13 +898,12 @@ VGAarbiterPolyGlyphBlt(
+ }
+ 
+ static void
+-VGAarbiterPushPixels(
+-    GCPtr   pGC,
++VGAarbiterPushPixels(GCPtr pGC,
+     PixmapPtr   pBitMap,
+-    DrawablePtr pDraw,
+-    int dx, int dy, int xOrg, int yOrg )
++                     DrawablePtr pDraw, int dx, int dy, int xOrg, int yOrg)
+ {
+     ScreenPtr pScreen = pGC->pScreen;
++
+     GC_UNWRAP(pGC);
+     VGAGet(pScreen);
+     (*pGC->ops->PushPixels)(pGC, pBitMap, pDraw, dx, dy, xOrg, yOrg);
+@@ -994,12 +911,13 @@ VGAarbiterPushPixels(
+     GC_WRAP(pGC);
+ }
+ 
+-
+ /* miSpriteFuncs */
+ static Bool
+-VGAarbiterSpriteRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCur)
++VGAarbiterSpriteRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen,
++                              CursorPtr pCur)
+ {
+     Bool val;
++
+     SPRITE_PROLOG;
+     VGAGet(pScreen);
+     val = PointPriv->spriteFuncs->RealizeCursor(pDev, pScreen, pCur);
+@@ -1009,9 +927,11 @@ VGAarbiterSpriteRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pC
+ }
+ 
+ static Bool
+-VGAarbiterSpriteUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCur)
++VGAarbiterSpriteUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen,
++                                CursorPtr pCur)
+ {
+     Bool val;
++
+     SPRITE_PROLOG;
+     VGAGet(pScreen);
+     val = PointPriv->spriteFuncs->UnrealizeCursor(pDev, pScreen, pCur);
+@@ -1021,7 +941,8 @@ VGAarbiterSpriteUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr
+ }
+ 
+ static void
+-VGAarbiterSpriteSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCur, int x, int y)
++VGAarbiterSpriteSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCur,
++                          int x, int y)
+ {
+     SPRITE_PROLOG;
+     VGAGet(pScreen);
+@@ -1044,6 +965,7 @@ static Bool
+ VGAarbiterDeviceCursorInitialize(DeviceIntPtr pDev, ScreenPtr pScreen)
+ {
+     Bool val;
++
+     SPRITE_PROLOG;
+     VGAGet(pScreen);
+     val = PointPriv->spriteFuncs->DeviceCursorInitialize(pDev, pScreen);
+@@ -1097,8 +1019,8 @@ VGAarbiterGlyphs(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ }
+ 
+ static void
+-VGAarbiterCompositeRects(CARD8 op, PicturePtr pDst, xRenderColor *color, int nRect,
+-          xRectangle *rects)
++VGAarbiterCompositeRects(CARD8 op, PicturePtr pDst, xRenderColor * color,
++                         int nRect, xRectangle *rects)
+ {
+     ScreenPtr       pScreen = pDst->pDrawable->pScreen;
+     PictureScreenPtr    ps = GetPictureScreen(pScreen);

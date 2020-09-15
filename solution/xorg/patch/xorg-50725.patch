@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winkeybd.c b/hw/xwin/winkeybd.c
+index 6d91ce0..83fea21 100644
+--- a/hw/xwin/winkeybd.c
++++ b/hw/xwin/winkeybd.c
+@@ -486,7 +486,7 @@ winSendKeyEvent (DWORD dwKey, Bool fDown)
+   nevents = GetKeyboardEvents(events, g_pwinKeyboard, fDown ? KeyPress : KeyRelease, dwKey + MIN_KEYCODE);
+ 
+   for (i = 0; i < nevents; i++)
+-    mieqEnqueue(g_pwinKeyboard, events[i].event);
++    mieqEnqueue(g_pwinKeyboard, (InternalEvent*)events[i].event);
+ 
+ #if CYGDEBUG
+   ErrorF("winSendKeyEvent: dwKey: %d, fDown: %d, nEvents %d\n",

@@ -1,0 +1,151 @@
+diff --git a/hw/dmx/config/dmxcompat.c b/hw/dmx/config/dmxcompat.c
+index 1c72084..bd9f127 100644
+--- a/hw/dmx/config/dmxcompat.c
++++ b/hw/dmx/config/dmxcompat.c
+@@ -52,20 +52,22 @@
+ #include <string.h>
+ #include <ctype.h>
+ 
+-static int dmxVDLReadLine(FILE *str, char *buf, int len)
++static int
++dmxVDLReadLine(FILE * str, char *buf, int len)
+ {
+-    if (fgets(buf, len, str)) return strlen(buf);
++    if (fgets(buf, len, str))
++        return strlen(buf);
+     return 0;
+ }
+ 
+-static int dmxVDLCount(const char *buf)
++static int
++dmxVDLCount(const char *buf)
+ {
+     return strtol(buf, NULL, 10);
+ }
+ 
+-static void dmxVDLVirtualEntry(const char *buf,
+-                               char *name, int *len,
+-                               int *x, int *y)
++static void
++dmxVDLVirtualEntry(const char *buf, char *name, int *len, int *x, int *y)
+ {
+     char       *end;
+     const char *s;
+@@ -76,20 +78,21 @@ static void dmxVDLVirtualEntry(const char *buf,
+     *y = strtol(end, &end, 10);
+ 
+     for (s = end, d = name, start = 1; *s && *s != '['; ++s) {
+-        if (start && isspace(*s)) continue;
++        if (start && isspace(*s))
++            continue;
+         *d++  = *s;
+         start = 0;
+     }
+     *d = '\0';
+-    while (d > name && isspace(d[-1])) *--d = '\0'; /* remove trailing space */
++    while (d > name && isspace(d[-1]))
++        *--d = '\0';            /* remove trailing space */
+     *len = strlen(name);
+ }
+ 
+-static void dmxVDLDisplayEntry(const char *buf,
++static void
++dmxVDLDisplayEntry(const char *buf,
+                                char *name, int *len,
+-                               int *x, int *y,
+-                               int *xoff, int *yoff,
+-                               int *xorig, int *yorig)
++                   int *x, int *y, int *xoff, int *yoff, int *xorig, int *yorig)
+ {
+     const char *pt;
+     char       *end;
+@@ -108,7 +111,8 @@ static void dmxVDLDisplayEntry(const char *buf,
+ 
+ /** Read from the VDL format \a filename and return a newly allocated \a
+  * DMXConfigEntryPtr */
+-DMXConfigEntryPtr dmxVDLRead(const char *filename)
++DMXConfigEntryPtr
++dmxVDLRead(const char *filename)
+ {
+     FILE                *str;
+     char                buf[2048]; /* RATS: Use ok */
+@@ -136,9 +140,12 @@ DMXConfigEntryPtr dmxVDLRead(const char *filename)
+         ignoreEntry
+     }                 state = simulateFlag;
+ 
+-    if (!filename) str = stdin;
+-    else           str = fopen(filename, "r");
+-    if (!str) return NULL;
++    if (!filename)
++        str = stdin;
++    else
++        str = fopen(filename, "r");
++    if (!str)
++        return NULL;
+ 
+     while (dmxVDLReadLine(str, buf, sizeof(buf))) {
+         DMXConfigCommentPtr comment = NULL;
+@@ -187,38 +194,26 @@ DMXConfigEntryPtr dmxVDLRead(const char *filename)
+             dmxVDLDisplayEntry(buf, name, &len, &x, &y, &xoff, &yoff,
+                                &xorig, &yorig);
+             tmp     = dmxConfigCopyString(name, len);
+-            fdim    = dmxConfigCreateFullDim(
+-                dmxConfigCreatePartDim(
+-                    dmxConfigCreatePair(T_DIMENSION,
+-                                        lineno,
+-                                        NULL,
+-                                        x, y, 0, 0),
+-                    dmxConfigCreatePair(T_OFFSET,
+-                                        lineno,
+-                                        NULL,
+-                                        xoff, yoff,
+-                                        xoff, yoff)),
+-                NULL);
+-            display = dmxConfigCreateDisplay(NULL,
+-                                             dmxConfigCreateString(T_STRING,
+-                                                                   lineno,
+-                                                                   NULL,
+-                                                                   tmp),
+-                                             fdim,
+-                                             dmxConfigCreatePair(T_ORIGIN,
+-                                                                 lineno,
+-                                                                 NULL,
+-                                                                 xorig, yorig,
+-                                                                 0, 0),
+-                                             NULL);
++            fdim =
++                dmxConfigCreateFullDim(dmxConfigCreatePartDim
++                                       (dmxConfigCreatePair
++                                        (T_DIMENSION, lineno, NULL, x, y, 0, 0),
++                                        dmxConfigCreatePair(T_OFFSET, lineno,
++                                                            NULL, xoff, yoff,
++                                                            xoff, yoff)), NULL);
++            display =
++                dmxConfigCreateDisplay(NULL,
++                                       dmxConfigCreateString(T_STRING, lineno,
++                                                             NULL, tmp), fdim,
++                                       dmxConfigCreatePair(T_ORIGIN, lineno,
++                                                           NULL, xorig, yorig,
++                                                           0, 0), NULL);
+             sub = dmxConfigAddSub(sub, dmxConfigSubDisplay(display));
+             if (!--dcount) {
+                 state             = ignoreCount;
+                 virtual->subentry = sub;
+                 entry             = dmxConfigAddEntry(entry,
+-                                                      dmxConfigVirtual,
+-                                                      NULL,
+-                                                      virtual);
++                                          dmxConfigVirtual, NULL, virtual);
+                 virtual           = NULL;
+                 sub               = NULL;
+             }
+@@ -228,7 +223,8 @@ DMXConfigEntryPtr dmxVDLRead(const char *filename)
+             state = ignoreEntry;
+             break;
+         case ignoreEntry:
+-            if (!--icount) state = virtualEntry;
++            if (!--icount)
++                state = virtualEntry;
+             break;
+         }
+     }

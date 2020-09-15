@@ -1,0 +1,12 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index 80083b0..ae41c44 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -326,4 +326,7 @@ int
+ compConfigNotify(WindowPtr pWin, int x, int y, int w, int h,
+ 		 int bw, WindowPtr pSib);
+ 
++void PanoramiXCompositeInit (void);
++void PanoramiXCompositeReset (void);
++
+ #endif /* _COMPINT_H_ */

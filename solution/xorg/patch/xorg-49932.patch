@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/parser/Device.c b/hw/xfree86/parser/Device.c
+index 47ece07..d71abc6 100644
+--- a/hw/xfree86/parser/Device.c
++++ b/hw/xfree86/parser/Device.c
+@@ -363,9 +363,9 @@ xf86findDevice (const char *ident, XF86ConfDevicePtr p)
+ 	while (p)
+ 	{
+ 		if (xf86nameCompare (ident, p->dev_identifier) == 0)
+-			return (p);
++			return p;
+ 
+ 		p = p->list.next;
+ 	}
+-	return (NULL);
++	return NULL;
+ }

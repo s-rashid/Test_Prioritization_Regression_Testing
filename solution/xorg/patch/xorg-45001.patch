@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index f19239f..31fd431 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -43,7 +43,6 @@
+ #undef Xrealloc
+ #undef Xfree
+ 
+-#define FONT_PCF
+ #include "glxserver.h"
+ #include <GL/glxtokens.h>
+ #include "g_disptab.h"

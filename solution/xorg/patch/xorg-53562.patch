@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Events.c b/hw/xnest/Events.c
+index 619427d..2399313 100644
+--- a/hw/xnest/Events.c
++++ b/hw/xnest/Events.c
+@@ -198,6 +198,8 @@ xnestCollectEvents(void)
+     case DestroyNotify:
+       if (xnestParentWindow != (Window) 0 &&
+ 	  X.xdestroywindow.window == xnestParentWindow)
++	CloseWellKnownConnections();
++	OsCleanup(1);
+ 	exit (0);
+       break;
+ 

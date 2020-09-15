@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.h b/hw/xfree86/common/xf86Xinput.h
+index 20a3f1b..7b60cdf 100644
+--- a/hw/xfree86/common/xf86Xinput.h
++++ b/hw/xfree86/common/xf86Xinput.h
+@@ -103,7 +103,6 @@ typedef struct _InputDriverRec {
+ 				      struct _LocalDeviceRec *pInfo,
+ 				      int flags);
+     pointer		    module;
+-    int			    refCount;
+ } InputDriverRec, *InputDriverPtr;
+ 
+ /* This is to input devices what the ScrnInfoRec is to screens. */

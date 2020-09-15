@@ -1,0 +1,13 @@
+diff --git a/glx/glxcmds.c b/glx/glxcmds.c
+index de9c3f0..419cc46 100644
+--- a/glx/glxcmds.c
++++ b/glx/glxcmds.c
+@@ -56,7 +56,7 @@ validGlxScreen(ClientPtr client, int screen, __GLXscreen **pGlxScreen, int *err)
+     /*
+     ** Check if screen exists.
+     */
+-    if (screen >= screenInfo.numScreens) {
++    if (screen < 0 || screen >= screenInfo.numScreens) {
+ 	client->errorValue = screen;
+ 	*err = BadValue;
+ 	return FALSE;

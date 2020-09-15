@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/wingc.c b/hw/xwin/wingc.c
+index 107d87a..1f37752 100644
+--- a/hw/xwin/wingc.c
++++ b/hw/xwin/wingc.c
+@@ -119,7 +119,7 @@ const GCOps winGCOps = {
+   miImageGlyphBlt,
+   miPolyGlyphBlt,
+ #endif
+-  winPushPixels
++  miPushPixels,
+ };
+ 
+ 

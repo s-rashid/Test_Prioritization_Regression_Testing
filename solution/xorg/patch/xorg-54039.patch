@@ -1,0 +1,13 @@
+diff --git a/Xext/shm.c b/Xext/shm.c
+index 9c8beb2..7ca027a 100644
+--- a/Xext/shm.c
++++ b/Xext/shm.c
+@@ -481,7 +481,7 @@ doShmPutImage(DrawablePtr dst, GCPtr pGC,
+ {
+     PixmapPtr pPixmap;
+ 
+-    if (format == ZPixmap || depth == 1) {
++    if (format == ZPixmap || (format == XYPixmap && depth == 1)) {
+ 	pPixmap = GetScratchPixmapHeader(dst->pScreen, w, h, depth,
+ 					 BitsPerPixel(depth),
+ 					 PixmapBytePad(w, depth),

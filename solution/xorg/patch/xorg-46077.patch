@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index eb68f7f..e0d9804 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -46,7 +46,6 @@
+ #include "xf86Bus.h"
+ 
+ #define XF86_OS_PRIVS
+-#define NEED_OS_RAC_PROTOS
+ #include "xf86_OSproc.h"
+ #include "xf86VGAarbiter.h"
+ 

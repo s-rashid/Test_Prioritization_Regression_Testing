@@ -1,0 +1,33 @@
+diff --git a/Xi/xichangehierarchy.c b/Xi/xichangehierarchy.c
+index 614d231..a8bc761 100644
+--- a/Xi/xichangehierarchy.c
++++ b/Xi/xichangehierarchy.c
+@@ -201,6 +201,19 @@ unwind:
+ }
+ 
+ static int
++disable_clientpointer(DeviceIntPtr dev)
++{
++    int i;
++
++    for (i = 0; i < currentMaxClients; i++)
++    {
++        ClientPtr client = clients[i];
++        if (client && client->clientPtr == dev)
++            client->clientPtr = NULL;
++    }
++}
++
++static int
+ remove_master(ClientPtr client, xXIRemoveMasterInfo *r,
+               int flags[MAXDEVICES])
+ {
+@@ -250,6 +263,8 @@ remove_master(ClientPtr client, xXIRemoveMasterInfo *r,
+     if (rc != Success)
+         goto unwind;
+ 
++    disable_clientpointer(ptr);
++
+     /* Disabling sends the devices floating, reattach them if
+      * desired. */
+     if (r->return_mode == XIAttachToMaster)

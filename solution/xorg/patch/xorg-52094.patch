@@ -1,0 +1,12 @@
+diff --git a/record/record.c b/record/record.c
+index 1168c43..c59f187 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -804,7 +804,6 @@ RecordADeviceEvent(CallbackListPtr *pcbl, pointer nulldata, pointer calldata)
+     RecordContextPtr pContext;
+     RecordClientsAndProtocolPtr pRCAP;
+     int eci; /* enabled context index */
+-    int count;
+ 
+     for (eci = 0; eci < numEnabledContexts; eci++)
+     {

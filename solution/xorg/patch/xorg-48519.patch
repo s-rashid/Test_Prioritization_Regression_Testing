@@ -1,0 +1,20 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 7995ff2..16aac05 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -199,15 +199,11 @@ SecurityDeleteAuthorization(
+     {
+ 	/* send revocation event event */
+ 	ClientPtr client = rClient(pEventClient);
+-
+-	if (!client->clientGone)
+-	{
+ 	    xSecurityAuthorizationRevokedEvent are;
+ 	    are.type = SecurityEventBase + XSecurityAuthorizationRevoked;
+ 	    are.sequenceNumber = client->sequence;
+ 	    are.authId = pAuth->id;
+ 	    WriteEventsToClient(client, 1, (xEvent *)&are);
+-	}
+ 	FreeResource(pEventClient->resource, RT_NONE);
+     }
+ 

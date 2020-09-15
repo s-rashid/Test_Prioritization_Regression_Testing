@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86pciBus.h b/hw/xfree86/common/xf86pciBus.h
+index 97d554b..492feef 100644
+--- a/hw/xfree86/common/xf86pciBus.h
++++ b/hw/xfree86/common/xf86pciBus.h
+@@ -56,7 +56,5 @@ typedef union {
+ } pciBridgesSave, *pciBridgesSavePtr;
+ 
+ void xf86PciProbe(void);
+-void initPciState(void);
+-void initPciBusState(void);
+ 
+ #endif /* _XF86_PCI_BUS_H */

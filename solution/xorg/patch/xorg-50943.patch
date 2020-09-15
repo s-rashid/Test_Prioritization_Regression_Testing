@@ -1,0 +1,14 @@
+diff --git a/include/site.h b/include/site.h
+index b134212..9c2836f 100644
+--- a/include/site.h
++++ b/include/site.h
+@@ -112,9 +112,6 @@ SOFTWARE.
+ #define DEFAULT_SCREEN_SAVER_INTERVAL (10 * (60 * 1000))
+ #define DEFAULT_SCREEN_SAVER_BLANKING PreferBlanking
+ #define DEFAULT_SCREEN_SAVER_EXPOSURES AllowExposures
+-#ifndef NOLOGOHACK
+-#define DEFAULT_LOGO_SCREEN_SAVER 1
+-#endif
+ #ifndef DEFAULT_ACCESS_CONTROL
+ #define DEFAULT_ACCESS_CONTROL TRUE
+ #endif

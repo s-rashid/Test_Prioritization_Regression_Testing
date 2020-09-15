@@ -1,0 +1,14 @@
+diff --git a/miext/shadow/shadow.h b/miext/shadow/shadow.h
+index ef85c0b..f447305 100644
+--- a/miext/shadow/shadow.h
++++ b/miext/shadow/shadow.h
+@@ -26,9 +26,7 @@
+ 
+ #include "scrnintstr.h"
+ 
+-#ifdef RENDER
+ #include "picturestr.h"
+-#endif
+ 
+ #include "damage.h"
+ #include "damagestr.h"

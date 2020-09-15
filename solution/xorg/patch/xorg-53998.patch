@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index 228021b..fef4bf1 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -2300,7 +2300,7 @@ checkInput(serverLayoutPtr layout, Bool implicit_layout) {
+ ConfigStatus
+ xf86HandleConfigFile(Bool autoconfig)
+ {
+-    const char *filename, *dirname, *sysdirname;
++    char *filename, *dirname, *sysdirname;
+     const char *filesearch, *dirsearch;
+     MessageType filefrom = X_DEFAULT;
+     MessageType dirfrom = X_DEFAULT;
+@@ -2352,6 +2352,10 @@ xf86HandleConfigFile(Bool autoconfig)
+ 	    return CONFIG_NOFILE;
+     }
+ 
++    free(filename);
++    free(dirname);
++    free(sysdirname);
++
+     if ((xf86configptr = xf86readConfigFile ()) == NULL) {
+ 	xf86Msg(X_ERROR, "Problem parsing the config file\n");
+ 	return CONFIG_PARSE_ERROR;

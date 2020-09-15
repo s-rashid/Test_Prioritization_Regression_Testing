@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 3b08968..8749a29 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -308,7 +308,6 @@ xf86AddEntityToScreen(ScrnInfoPtr pScrn, int entityIndex)
+     pScrn->entityInstanceList = xnfrealloc(pScrn->entityInstanceList,
+ 				    pScrn->numEntities * sizeof(int));
+     pScrn->entityInstanceList[pScrn->numEntities - 1] = 0;
+-    pScrn->domainIOBase = xf86Entities[entityIndex]->domainIO;
+ }
+ 
+ void

@@ -1,0 +1,11 @@
+diff --git a/mi/mifpolycon.c b/mi/mifpolycon.c
+index 1be0150..e48686a 100644
+--- a/mi/mifpolycon.c
++++ b/mi/mifpolycon.c
+@@ -276,5 +276,5 @@ GetFPolyYBounds(
+ 
+     *by = ICEIL(ymin + yFtrans);
+     *ty = ICEIL(ymax + yFtrans - 1);
+-    return(ptMin-ptsStart);
++    return ptMin-ptsStart;
+ }

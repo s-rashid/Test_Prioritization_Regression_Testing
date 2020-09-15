@@ -1,0 +1,22 @@
+diff --git a/mi/micopy.c b/mi/micopy.c
+index b1a7a08..027c461 100644
+--- a/mi/micopy.c
++++ b/mi/micopy.c
+@@ -108,7 +108,6 @@ miCopyRegion (DrawablePtr   pSrcDrawable,
+ 	    pboxNew2 = (BoxPtr)malloc(sizeof(BoxRec) * nbox);
+ 	    if(!pboxNew2)
+ 	    {
+-		if (pboxNew1)
+ 		    free(pboxNew1);
+ 		return;
+ 	    }
+@@ -143,9 +142,7 @@ miCopyRegion (DrawablePtr   pSrcDrawable,
+ 		 dx, dy,
+ 		 reverse, upsidedown, bitPlane, closure);
+     
+-    if (pboxNew1)
+ 	free(pboxNew1);
+-    if (pboxNew2)
+ 	free(pboxNew2);
+ }
+ 

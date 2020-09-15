@@ -1,0 +1,91 @@
+diff --git a/config/wscons.c b/config/wscons.c
+index 27c1f63..7a5e8cc 100644
+--- a/config/wscons.c
++++ b/config/wscons.c
+@@ -52,7 +52,9 @@
+ struct nameint {
+   int val;
+   char *name;
+-} kbdenc[] = { KB_OVRENC, KB_ENCTAB, { 0 } };
++} kbdenc[] = {
++    KB_OVRENC, KB_ENCTAB, {
++0}};
+ 
+ struct nameint kbdvar[] = {
+ 	{ KB_NODEAD | KB_SG,	"de_nodeadkeys" },
+@@ -108,15 +110,13 @@ wscons_add_keyboard(void)
+ 	}
+ 	close (fd);
+ 
+-	input_options = input_option_new(input_options, "_source",
+-	    "server/wscons");
++    input_options = input_option_new(input_options, "_source", "server/wscons");
+ 	if (input_options == NULL)
+ 		return;
+ 
+ 	LogMessage(X_INFO, "config/wscons: checking input device %s\n",
+ 	    WSCONS_KBD_DEVICE);
+-	input_options = input_option_new(input_options, "name",
+-	    WSCONS_KBD_DEVICE);
++    input_options = input_option_new(input_options, "name", WSCONS_KBD_DEVICE);
+ 	input_options = input_option_new(input_options, "driver", "kbd");
+ 
+ 	config_info = Xprintf("wscons:%s", WSCONS_KBD_DEVICE);
+@@ -136,8 +136,7 @@ wscons_add_keyboard(void)
+ 			break;
+ 		}
+ 	for (i = 0; kbdvar[i].val; i++)
+-		if (wsenc == kbdvar[i].val ||
+-		    KB_VARIANT(wsenc) == kbdvar[i].val) {
++        if (wsenc == kbdvar[i].val || KB_VARIANT(wsenc) == kbdvar[i].val) {
+ 			LogMessageVerb(X_INFO, 3, "wskbd: using variant %s\n",
+ 			    kbdvar[i].name);
+ 			input_options = input_option_new(input_options,
+@@ -188,17 +187,13 @@ wscons_add_pointer(const char *path, const char *driver, int flags)
+ 	if (!config_info)
+ 		return;
+ 
+-	input_options = input_option_new(input_options, "_source",
+-	    "server/wscons");
++    input_options = input_option_new(input_options, "_source", "server/wscons");
+ 	if (input_options == NULL)
+ 		return;
+ 
+-	input_options = input_option_new(input_options, "name",
+-	    strdup(path));
+-	input_options = input_option_new(input_options, "driver",
+-	    strdup(driver));
+-	input_options = input_option_new(input_options, "device",
+-	    strdup(path));
++    input_options = input_option_new(input_options, "name", strdup(path));
++    input_options = input_option_new(input_options, "driver", strdup(driver));
++    input_options = input_option_new(input_options, "device", strdup(path));
+ 	LogMessage(X_INFO, "config/wscons: checking input device %s\n", path);
+ 	attrs.flags |= flags;
+ 	rc = NewInputDeviceRequest(input_options, &attrs, &dev);
+@@ -221,13 +216,11 @@ wscons_add_pointers(void)
+ 
+ 	/* Check pointing devices */
+ 	for (i = 0; i < 4; i++) {
+-		snprintf(devname, sizeof(devname), "%s%d",
+-		    WSCONS_MOUSE_PREFIX, i);
++        snprintf(devname, sizeof(devname), "%s%d", WSCONS_MOUSE_PREFIX, i);
+ 		LogMessageVerb(X_INFO, 10, "wsmouse: checking %s\n", devname);
+ 		fd = open_device(devnamem O_RDWR | O_NONBLOCK | O_EXCL);
+ 		if (fd == -1) {
+-			LogMessageVerb(X_WARNING, 10, "%s: %s\n", devname,
+-			    strerror(errno));
++            LogMessageVerb(X_WARNING, 10, "%s: %s\n", devname, strerror(errno));
+ 			continue;
+ 		}
+ 		if (ioctl(fd, WSMOUSEIO_GTYPE, &wsmouse_type) != 0) {
+@@ -239,8 +232,7 @@ wscons_add_pointers(void)
+ 		close(fd);
+ 		switch (wsmouse_type) {
+ 		case WSMOUSE_TYPE_SYNAPTICS:
+-			wscons_add_pointer(devname, "synaptics",
+-			    ATTR_TOUCHPAD);
++            wscons_add_pointer(devname, "synaptics", ATTR_TOUCHPAD);
+ 			break;
+ 		case WSMOUSE_TYPE_TPANEL:
+ 			wscons_add_pointer(devname, "ws", ATTR_TOUCHSCREEN);

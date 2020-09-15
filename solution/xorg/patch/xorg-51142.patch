@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index c8eade8..93697a9 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -792,7 +792,7 @@ xf86SetRootClip (ScreenPtr pScreen, int enable)
+     WindowPtr	pChild;
+     Bool	WasViewable = (Bool)(pWin->viewable);
+     Bool	anyMarked = TRUE;
+-    RegionPtr	pOldClip = NULL, bsExposed;
++    RegionPtr	pOldClip = NULL;
+     WindowPtr   pLayerWin;
+     BoxRec	box;
+ 

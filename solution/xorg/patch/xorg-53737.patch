@@ -1,0 +1,25 @@
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index 4b5405a..000002a 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -344,15 +344,18 @@ _XkbFilterLockState(	XkbSrvInfoPtr	xkbi,
+ 	filter->keycode = keycode;
+ 	filter->active = 1;
+ 	filter->filterOthers = 0;
+-	filter->priv = 0;
++	filter->priv = xkbi->state.locked_mods&pAction->mods.mask;
+ 	filter->filter = _XkbFilterLockState;
+ 	filter->upAction = *pAction;
+-	xkbi->state.locked_mods^= pAction->mods.mask;
++	if (!(filter->upAction.mods.flags&XkbSA_LockNoLock))
++	    xkbi->state.locked_mods|= pAction->mods.mask;
+ 	xkbi->setMods = pAction->mods.mask;
+     }
+     else if (filter->keycode==keycode) {
+ 	filter->active = 0;
+ 	xkbi->clearMods = filter->upAction.mods.mask;
++	if (!(filter->upAction.mods.flags&XkbSA_LockNoUnlock))
++	    xkbi->state.locked_mods&= ~filter->priv;
+     }
+     return 1;
+ }

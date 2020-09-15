@@ -1,0 +1,13 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index 6780aa6..18e1ef7 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -423,7 +423,7 @@ ProcXTestFakeInput(ClientPtr client)
+             break;
+         case KeyPress:
+         case KeyRelease:
+-            nevents = GetKeyboardEvents(xtest_evlist, dev, type, ev->u.u.detail);
++            nevents = GetKeyboardEvents(xtest_evlist, dev, type, ev->u.u.detail, NULL);
+             break;
+     }
+ 

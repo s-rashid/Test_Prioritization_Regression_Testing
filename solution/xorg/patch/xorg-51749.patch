@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86xvpriv.h b/hw/xfree86/common/xf86xvpriv.h
+index 4572218..3f1106d 100644
+--- a/hw/xfree86/common/xf86xvpriv.h
++++ b/hw/xfree86/common/xf86xvpriv.h
+@@ -68,6 +68,7 @@ typedef struct {
+    unsigned char type;
+    unsigned int subWindowMode;
+    RegionPtr clientClip;
++   RegionPtr ckeyFilled;
+    RegionPtr pCompositeClip;
+    Bool FreeCompositeClip;
+    XvAdaptorRecPrivatePtr AdaptorRec;

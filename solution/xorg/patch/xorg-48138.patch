@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index da78155..d74011c 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -41,7 +41,7 @@
+  */
+ 
+ int		g_iNumScreens = 0;
+-winScreenInfo	g_ScreenInfo[MAXSCREENS];
++winScreenInfo * g_ScreenInfo = 0;
+ #ifdef HAS_DEVWINDOWS
+ int		g_fdMessageQueue = WIN_FD_INVALID;
+ #endif

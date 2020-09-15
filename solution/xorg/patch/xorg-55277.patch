@@ -1,0 +1,34 @@
+diff --git a/hw/dmx/examples/evi.c b/hw/dmx/examples/evi.c
+index 644ea8f..64dfb7e 100644
+--- a/hw/dmx/examples/evi.c
++++ b/hw/dmx/examples/evi.c
+@@ -36,7 +36,8 @@
+ #include <X11/Xlib.h>
+ #include <X11/extensions/XEVI.h>
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  major_version, minor_version;
+@@ -49,7 +50,8 @@ int main(int argc, char **argv)
+             printf("Cannot open display %s\n", argv[1]);
+             return -1;
+         }
+-    } else {
++    }
++    else {
+         printf("Usage: %s display\n", argv[0]);
+         return -1;
+     }
+@@ -77,8 +79,7 @@ int main(int argc, char **argv)
+                evi[i].transparency_type,
+                evi[i].transparency_value,
+                evi[i].min_hw_colormaps,
+-               evi[i].max_hw_colormaps,
+-               evi[i].num_colormap_conflicts);
++               evi[i].max_hw_colormaps, evi[i].num_colormap_conflicts);
+     }
+ 
+     XCloseDisplay(display);

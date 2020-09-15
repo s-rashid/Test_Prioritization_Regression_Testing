@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dixmods/dbemodule.c b/hw/xfree86/dixmods/dbemodule.c
+index 7363988..5541eac 100644
+--- a/hw/xfree86/dixmods/dbemodule.c
++++ b/hw/xfree86/dixmods/dbemodule.c
+@@ -17,8 +17,7 @@ static ExtensionModule dbeExt = {
+     NULL
+ };
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+ 	"dbe",
+ 	MODULEVENDORSTRING,
+ 	MODINFOSTRING1,

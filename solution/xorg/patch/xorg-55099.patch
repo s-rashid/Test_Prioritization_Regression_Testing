@@ -1,0 +1,446 @@
+diff --git a/dix/swaprep.c b/dix/swaprep.c
+index 28c354c..9440c4e 100644
+--- a/dix/swaprep.c
++++ b/dix/swaprep.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ********************************************************/
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -98,11 +96,9 @@ CopySwap32Write(ClientPtr pClient, int size, CARD32 *pbuf)
+     CARD32 tmpbuf[1];
+     
+     /* Allocate as big a buffer as we can... */
+-    while (!(pbufT = malloc(bufsize)))
+-    {
++    while (!(pbufT = malloc(bufsize))) {
+         bufsize >>= 1;
+-	if (bufsize == 4)
+-	{
++        if (bufsize == 4) {
+ 	    pbufT = tmpbuf;
+ 	    break;
+ 	}
+@@ -116,6 +112,7 @@ CopySwap32Write(ClientPtr pClient, int size, CARD32 *pbuf)
+     fromLast = from + size;
+     while (from < fromLast) {
+ 	int nbytes;
++
+         to = pbufT;
+         toLast = to + min (bufsize, fromLast - from);
+         nbytes = (toLast - to) << 2;
+@@ -146,11 +143,9 @@ CopySwap16Write(ClientPtr pClient, int size, short *pbuf)
+     short tmpbuf[2];
+     
+     /* Allocate as big a buffer as we can... */
+-    while (!(pbufT = malloc(bufsize)))
+-    {
++    while (!(pbufT = malloc(bufsize))) {
+         bufsize >>= 1;
+-	if (bufsize == 4)
+-	{
++        if (bufsize == 4) {
+ 	    pbufT = tmpbuf;
+ 	    break;
+ 	}
+@@ -164,6 +159,7 @@ CopySwap16Write(ClientPtr pClient, int size, short *pbuf)
+     fromLast = from + size;
+     while (from < fromLast) {
+ 	int nbytes;
++
+         to = pbufT;
+         toLast = to + min (bufsize, fromLast - from);
+         nbytes = (toLast - to) << 1;
+@@ -181,7 +177,6 @@ CopySwap16Write(ClientPtr pClient, int size, short *pbuf)
+ 	free(pbufT);
+ }
+ 
+-
+ /* Extra-small reply */
+ void
+ SGenericReply(ClientPtr pClient, int size, xGenericReply *pRep)
+@@ -249,7 +244,6 @@ SGetAtomNameReply(ClientPtr pClient, int size, xGetAtomNameReply *pRep)
+     (void)WriteToClient(pClient, size, (char *) pRep);
+ }
+ 
+-
+ void
+ SGetPropertyReply(ClientPtr pClient, int size, xGetPropertyReply *pRep)
+ {
+@@ -279,7 +273,6 @@ SGetSelectionOwnerReply(ClientPtr pClient, int size,
+     (void)WriteToClient(pClient, size, (char *) pRep);
+ }
+ 
+-
+ void
+ SQueryPointerReply(ClientPtr pClient, int size, xQueryPointerReply *pRep)
+ {
+@@ -310,14 +303,14 @@ SwapTimeCoordWrite(ClientPtr pClient, int size, xTimecoord *pRep)
+ 
+     n = size / sizeof(xTimecoord);
+     pRepT = pRep;
+-    for(i = 0; i < n; i++)
+-    {
++    for (i = 0; i < n; i++) {
+ 	SwapTimecoord(pRepT);
+ 	pRepT++;
+     }
+     (void)WriteToClient(pClient, size, (char *) pRep);
+ 
+ }
++
+ void
+ SGetMotionEventsReply(ClientPtr pClient, int size, xGetMotionEventsReply *pRep)
+ {
+@@ -395,15 +388,13 @@ SwapFont(xQueryFontReply *pr, Bool hasGlyphs)
+     pby = (char *) &pr[1];
+     /* Font properties are an atom and either an int32 or a CARD32, so
+      * they are always 2 4 byte values */
+-    for(i = 0; i < nprops; i++)
+-    {
++    for (i = 0; i < nprops; i++) {
+ 	swapl((int *)pby);
+ 	pby += 4;
+ 	swapl((int *)pby);
+ 	pby += 4;
+     }
+-    if (hasGlyphs)
+-    {
++    if (hasGlyphs) {
+ 	pxci = (xCharInfo *)pby;
+ 	for(i = 0; i< nchars; i++, pxci++)
+ 	    SwapCharInfo(pxci);
+@@ -418,7 +409,8 @@ SQueryFontReply(ClientPtr pClient, int size, xQueryFontReply *pRep)
+ }
+ 
+ void
+-SQueryTextExtentsReply(ClientPtr pClient, int size, xQueryTextExtentsReply *pRep)
++SQueryTextExtentsReply(ClientPtr pClient, int size,
++                       xQueryTextExtentsReply * pRep)
+ {
+     swaps(&pRep->sequenceNumber);
+     swaps(&pRep->fontAscent);
+@@ -512,9 +504,9 @@ SAllocColorCellsReply(ClientPtr pClient, int size, xAllocColorCellsReply *pRep)
+     (void)WriteToClient(pClient, size, (char *) pRep);
+ }
+ 
+-
+ void
+-SAllocColorPlanesReply(ClientPtr pClient, int size, xAllocColorPlanesReply *pRep)
++SAllocColorPlanesReply(ClientPtr pClient, int size,
++                       xAllocColorPlanesReply * pRep)
+ {
+     swaps(&pRep->sequenceNumber);
+     swapl(&pRep->length);
+@@ -541,8 +533,7 @@ SQColorsExtend(ClientPtr pClient, int size, xrgb *prgb)
+ 
+     n = size / sizeof(xrgb);
+     prgbT = prgb;
+-    for(i = 0; i < n; i++)
+-    {
++    for (i = 0; i < n; i++) {
+ 	SwapRGB(prgbT);
+ 	prgbT++;
+     }
+@@ -616,7 +607,8 @@ SGetModifierMappingReply(ClientPtr pClient, int size,
+ }
+ 
+ void
+-SGetKeyboardControlReply(ClientPtr pClient, int size, xGetKeyboardControlReply *pRep)
++SGetKeyboardControlReply(ClientPtr pClient, int size,
++                         xGetKeyboardControlReply * pRep)
+ {
+     swaps(&pRep->sequenceNumber);
+     swapl(&pRep->length);
+@@ -627,7 +619,8 @@ SGetKeyboardControlReply(ClientPtr pClient, int size, xGetKeyboardControlReply *
+ }
+ 
+ void
+-SGetPointerControlReply(ClientPtr pClient, int size, xGetPointerControlReply *pRep)
++SGetPointerControlReply(ClientPtr pClient, int size,
++                        xGetPointerControlReply * pRep)
+ {
+     swaps(&pRep->sequenceNumber);
+     swaps(&pRep->accelNumerator);
+@@ -650,9 +643,11 @@ SLHostsExtend(ClientPtr pClient, int size, char *buf)
+ {
+     char *bufT = buf;
+     char *endbuf = buf + size;
++
+     while (bufT < endbuf) {
+ 	xHostEntry *host = (xHostEntry *) bufT;
+ 	int len = host->length;
++
+ 	swaps(&host->length);
+ 	bufT += sizeof (xHostEntry) + pad_to_int32(len);
+ 	}
+@@ -668,8 +663,6 @@ SListHostsReply(ClientPtr pClient, int size, xListHostsReply *pRep)
+     (void)WriteToClient(pClient, size, (char *) pRep);
+ }
+ 
+-
+-
+ void
+ SErrorEvent(xError *from, xError *to)
+ {
+@@ -687,26 +680,16 @@ SKeyButtonPtrEvent(xEvent *from, xEvent *to)
+     to->u.u.type = from->u.u.type;
+     to->u.u.detail = from->u.u.detail;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+-    cpswapl(from->u.keyButtonPointer.time,
+-        to->u.keyButtonPointer.time);
+-    cpswapl(from->u.keyButtonPointer.root,
+-        to->u.keyButtonPointer.root);
+-    cpswapl(from->u.keyButtonPointer.event,
+-        to->u.keyButtonPointer.event);
+-    cpswapl(from->u.keyButtonPointer.child,
+-        to->u.keyButtonPointer.child);
+-    cpswaps(from->u.keyButtonPointer.rootX,
+-        to->u.keyButtonPointer.rootX);
+-    cpswaps(from->u.keyButtonPointer.rootY,
+-	to->u.keyButtonPointer.rootY);
+-    cpswaps(from->u.keyButtonPointer.eventX,
+-        to->u.keyButtonPointer.eventX);
+-    cpswaps(from->u.keyButtonPointer.eventY,
+-        to->u.keyButtonPointer.eventY);
+-    cpswaps(from->u.keyButtonPointer.state,
+-        to->u.keyButtonPointer.state);
+-    to->u.keyButtonPointer.sameScreen = 
+-	from->u.keyButtonPointer.sameScreen;
++    cpswapl(from->u.keyButtonPointer.time, to->u.keyButtonPointer.time);
++    cpswapl(from->u.keyButtonPointer.root, to->u.keyButtonPointer.root);
++    cpswapl(from->u.keyButtonPointer.event, to->u.keyButtonPointer.event);
++    cpswapl(from->u.keyButtonPointer.child, to->u.keyButtonPointer.child);
++    cpswaps(from->u.keyButtonPointer.rootX, to->u.keyButtonPointer.rootX);
++    cpswaps(from->u.keyButtonPointer.rootY, to->u.keyButtonPointer.rootY);
++    cpswaps(from->u.keyButtonPointer.eventX, to->u.keyButtonPointer.eventX);
++    cpswaps(from->u.keyButtonPointer.eventY, to->u.keyButtonPointer.eventY);
++    cpswaps(from->u.keyButtonPointer.state, to->u.keyButtonPointer.state);
++    to->u.keyButtonPointer.sameScreen = from->u.keyButtonPointer.sameScreen;
+ }
+ 
+ void
+@@ -756,22 +739,15 @@ SGraphicsExposureEvent(xEvent *from, xEvent *to)
+ {
+     to->u.u.type = from->u.u.type;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+-    cpswapl(from->u.graphicsExposure.drawable,
+-        to->u.graphicsExposure.drawable);
+-    cpswaps(from->u.graphicsExposure.x, 
+-	to->u.graphicsExposure.x);
+-    cpswaps(from->u.graphicsExposure.y, 
+-	to->u.graphicsExposure.y);
+-    cpswaps(from->u.graphicsExposure.width, 
+-	to->u.graphicsExposure.width);
+-    cpswaps(from->u.graphicsExposure.height, 
+-	to->u.graphicsExposure.height);
++    cpswapl(from->u.graphicsExposure.drawable, to->u.graphicsExposure.drawable);
++    cpswaps(from->u.graphicsExposure.x, to->u.graphicsExposure.x);
++    cpswaps(from->u.graphicsExposure.y, to->u.graphicsExposure.y);
++    cpswaps(from->u.graphicsExposure.width, to->u.graphicsExposure.width);
++    cpswaps(from->u.graphicsExposure.height, to->u.graphicsExposure.height);
+     cpswaps(from->u.graphicsExposure.minorEvent,
+         to->u.graphicsExposure.minorEvent);
+-    cpswaps(from->u.graphicsExposure.count,
+-	to->u.graphicsExposure.count);
+-    to->u.graphicsExposure.majorEvent = 
+-    	from->u.graphicsExposure.majorEvent;
++    cpswaps(from->u.graphicsExposure.count, to->u.graphicsExposure.count);
++    to->u.graphicsExposure.majorEvent = from->u.graphicsExposure.majorEvent;
+ }
+ 
+ void
+@@ -804,8 +780,7 @@ SCreateNotifyEvent(xEvent *from, xEvent *to)
+     cpswaps(from->u.createNotify.y, to->u.createNotify.y);
+     cpswaps(from->u.createNotify.width, to->u.createNotify.width);
+     cpswaps(from->u.createNotify.height, to->u.createNotify.height);
+-    cpswaps(from->u.createNotify.borderWidth,
+-        to->u.createNotify.borderWidth);
++    cpswaps(from->u.createNotify.borderWidth, to->u.createNotify.borderWidth);
+     to->u.createNotify.override = from->u.createNotify.override;
+ }
+ 
+@@ -865,17 +840,14 @@ SConfigureNotifyEvent(xEvent *from, xEvent *to)
+ {
+     to->u.u.type = from->u.u.type;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+-    cpswapl(from->u.configureNotify.event,
+-        to->u.configureNotify.event);
+-    cpswapl(from->u.configureNotify.window,
+-        to->u.configureNotify.window);
++    cpswapl(from->u.configureNotify.event, to->u.configureNotify.event);
++    cpswapl(from->u.configureNotify.window, to->u.configureNotify.window);
+     cpswapl(from->u.configureNotify.aboveSibling,
+         to->u.configureNotify.aboveSibling);
+     cpswaps(from->u.configureNotify.x, to->u.configureNotify.x);
+     cpswaps(from->u.configureNotify.y, to->u.configureNotify.y);
+     cpswaps(from->u.configureNotify.width, to->u.configureNotify.width);
+-    cpswaps(from->u.configureNotify.height,
+-        to->u.configureNotify.height);
++    cpswaps(from->u.configureNotify.height, to->u.configureNotify.height);
+     cpswaps(from->u.configureNotify.borderWidth,
+         to->u.configureNotify.borderWidth);
+     to->u.configureNotify.override = from->u.configureNotify.override;
+@@ -887,25 +859,19 @@ SConfigureRequestEvent(xEvent *from, xEvent *to)
+     to->u.u.type = from->u.u.type;
+     to->u.u.detail = from->u.u.detail;  /* actually stack-mode */
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+-    cpswapl(from->u.configureRequest.parent,
+-        to->u.configureRequest.parent);
+-    cpswapl(from->u.configureRequest.window,
+-        to->u.configureRequest.window);
+-    cpswapl(from->u.configureRequest.sibling,
+-        to->u.configureRequest.sibling);
++    cpswapl(from->u.configureRequest.parent, to->u.configureRequest.parent);
++    cpswapl(from->u.configureRequest.window, to->u.configureRequest.window);
++    cpswapl(from->u.configureRequest.sibling, to->u.configureRequest.sibling);
+     cpswaps(from->u.configureRequest.x, to->u.configureRequest.x);
+     cpswaps(from->u.configureRequest.y, to->u.configureRequest.y);
+-    cpswaps(from->u.configureRequest.width,
+-        to->u.configureRequest.width);
+-    cpswaps(from->u.configureRequest.height,
+-        to->u.configureRequest.height);
++    cpswaps(from->u.configureRequest.width, to->u.configureRequest.width);
++    cpswaps(from->u.configureRequest.height, to->u.configureRequest.height);
+     cpswaps(from->u.configureRequest.borderWidth,
+         to->u.configureRequest.borderWidth);
+     cpswaps(from->u.configureRequest.valueMask,
+         to->u.configureRequest.valueMask);
+ }
+ 
+-
+ void
+ SGravityEvent(xEvent *from, xEvent *to)
+ {
+@@ -966,16 +932,13 @@ SSelectionRequestEvent(xEvent *from, xEvent *to)
+     to->u.u.type = from->u.u.type;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+     cpswapl(from->u.selectionRequest.time, to->u.selectionRequest.time);
+-    cpswapl(from->u.selectionRequest.owner,
+-        to->u.selectionRequest.owner);
++    cpswapl(from->u.selectionRequest.owner, to->u.selectionRequest.owner);
+     cpswapl(from->u.selectionRequest.requestor,
+ 	to->u.selectionRequest.requestor);
+     cpswapl(from->u.selectionRequest.selection,
+ 	to->u.selectionRequest.selection);
+-    cpswapl(from->u.selectionRequest.target,
+-        to->u.selectionRequest.target);
+-    cpswapl(from->u.selectionRequest.property,
+-	to->u.selectionRequest.property);
++    cpswapl(from->u.selectionRequest.target, to->u.selectionRequest.target);
++    cpswapl(from->u.selectionRequest.property, to->u.selectionRequest.property);
+ }
+ 
+ void
+@@ -984,14 +947,10 @@ SSelectionNotifyEvent(xEvent *from, xEvent *to)
+     to->u.u.type = from->u.u.type;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+     cpswapl(from->u.selectionNotify.time, to->u.selectionNotify.time);
+-    cpswapl(from->u.selectionNotify.requestor,
+-	to->u.selectionNotify.requestor);
+-    cpswapl(from->u.selectionNotify.selection,
+-	to->u.selectionNotify.selection);
+-    cpswapl(from->u.selectionNotify.target,
+-	to->u.selectionNotify.target);
+-    cpswapl(from->u.selectionNotify.property,
+-        to->u.selectionNotify.property);
++    cpswapl(from->u.selectionNotify.requestor, to->u.selectionNotify.requestor);
++    cpswapl(from->u.selectionNotify.selection, to->u.selectionNotify.selection);
++    cpswapl(from->u.selectionNotify.target, to->u.selectionNotify.target);
++    cpswapl(from->u.selectionNotify.property, to->u.selectionNotify.property);
+ }
+ 
+ void
+@@ -1011,8 +970,7 @@ SMappingEvent(xEvent *from, xEvent *to)
+     to->u.u.type = from->u.u.type;
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+     to->u.mappingNotify.request = from->u.mappingNotify.request;
+-    to->u.mappingNotify.firstKeyCode =
+-	from->u.mappingNotify.firstKeyCode;
++    to->u.mappingNotify.firstKeyCode = from->u.mappingNotify.firstKeyCode;
+     to->u.mappingNotify.count = from->u.mappingNotify.count;
+ }
+ 
+@@ -1023,8 +981,7 @@ SClientMessageEvent(xEvent *from, xEvent *to)
+     to->u.u.detail = from->u.u.detail;  /* actually format */
+     cpswaps(from->u.u.sequenceNumber, to->u.u.sequenceNumber);
+     cpswapl(from->u.clientMessage.window, to->u.clientMessage.window);
+-    cpswapl(from->u.clientMessage.u.l.type, 
+-	    to->u.clientMessage.u.l.type);
++    cpswapl(from->u.clientMessage.u.l.type, to->u.clientMessage.u.l.type);
+     switch (from->u.u.detail) {
+        case 8:
+           memmove(to->u.clientMessage.u.b.bytes, 
+@@ -1128,10 +1085,7 @@ SwapVisual(xVisualType *pVis, xVisualType *pVisT)
+ }
+ 
+ void
+-SwapConnSetupInfo(
+-    char 	*pInfo,
+-    char 	*pInfoT
+-)
++SwapConnSetupInfo(char *pInfo, char *pInfoT)
+ {
+     int		i, j, k;
+     xConnSetup	*pConnSetup = (xConnSetup *)pInfo;
+@@ -1154,22 +1108,19 @@ SwapConnSetupInfo(
+     pInfo += i;
+     pInfoT += i;
+ 
+-    for(i = 0; i < pConnSetup->numRoots; i++)
+-    {
++    for (i = 0; i < pConnSetup->numRoots; i++) {
+ 	root = (xWindowRoot*)pInfo;
+ 	SwapWinRoot(root, (xWindowRoot *)pInfoT);
+ 	pInfo += sizeof(xWindowRoot);
+ 	pInfoT += sizeof(xWindowRoot);
+ 
+-	for(j = 0; j < root->nDepths; j++)
+-	{
++        for (j = 0; j < root->nDepths; j++) {
+ 	    depth = (xDepth*)pInfo;
+             ((xDepth *)pInfoT)->depth = depth->depth;
+ 	    cpswaps(depth->nVisuals, ((xDepth *)pInfoT)->nVisuals);
+ 	    pInfo += sizeof(xDepth);
+ 	    pInfoT += sizeof(xDepth);
+-	    for(k = 0; k < depth->nVisuals; k++)
+-	    {
++            for (k = 0; k < depth->nVisuals; k++) {
+ 		SwapVisual((xVisualType *)pInfo, (xVisualType *)pInfoT);
+ 		pInfo += sizeof(xVisualType);
+ 		pInfoT += sizeof(xVisualType);
+@@ -1184,8 +1135,7 @@ WriteSConnectionInfo(ClientPtr pClient, unsigned long size, char *pInfo)
+     char	*pInfoTBase;
+ 
+     pInfoTBase = malloc(size);
+-    if (!pInfoTBase)
+-    {
++    if (!pInfoTBase) {
+ 	pClient->noClientException = -1;
+ 	return;
+     }
+@@ -1218,12 +1168,7 @@ WriteSConnSetupPrefix(ClientPtr pClient, xConnSetupPrefix *pcsp)
+  */
+ 
+ void
+-ReplyNotSwappd(
+-	ClientPtr pClient ,
+-	int size ,
+-	void * pbuf
+-	)
++ReplyNotSwappd(ClientPtr pClient, int size, void *pbuf)
+ {
+     FatalError("Not implemented");
+ }
+-

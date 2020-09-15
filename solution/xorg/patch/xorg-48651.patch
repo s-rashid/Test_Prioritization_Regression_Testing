@@ -1,0 +1,22 @@
+diff --git a/record/record.c b/record/record.c
+index 9303740..1b55d6b 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -1903,7 +1903,7 @@ ProcRecordQueryVersion(ClientPtr client)
+     }
+     (void)WriteToClient(client, sizeof(xRecordQueryVersionReply),
+ 			(char *)&rep);
+-    return (client->noClientException);
++    return Success;
+ } /* ProcRecordQueryVersion */
+ 
+ 
+@@ -2347,7 +2347,7 @@ ProcRecordGetContext(ClientPtr client)
+ 			  (char *)pri->pRanges);
+ 	}
+     }
+-    err = client->noClientException;
++    err = Success;
+ 
+ bailout:
+     for (i = 0; i < nRCAPs; i++)

@@ -1,0 +1,14 @@
+diff --git a/include/windowstr.h b/include/windowstr.h
+index 0b66ebb..4a7a0f4 100644
+--- a/include/windowstr.h
++++ b/include/windowstr.h
+@@ -167,6 +167,9 @@ typedef struct _Window {
+ #ifdef ROOTLESS
+     unsigned		rootlessUnhittable:1;	/* doesn't hit-test */
+ #endif
++#ifdef COMPOSITE
++    unsigned		damagedDescendants:1;	/* some descendants are damaged */
++#endif
+ } WindowRec;
+ 
+ /*

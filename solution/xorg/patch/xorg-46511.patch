@@ -1,0 +1,24 @@
+diff --git a/render/render.c b/render/render.c
+index a306766..a32d797 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -1043,7 +1043,7 @@ ProcRenderAddGlyphs (ClientPtr client)
+     CARD32	    *gids;
+     xGlyphInfo	    *gi;
+     CARD8	    *bits;
+-    int		    size;
++    unsigned int    size;
+     int		    err;
+     int		    i, screen;
+     PicturePtr	    pSrc = NULL, pDst = NULL;
+@@ -1131,6 +1131,10 @@ ProcRenderAddGlyphs (ClientPtr client)
+ 		ScreenPtr   pScreen;
+ 		int	    error;
+ 
++		/* Skip work if it's invisibly small anyway */
++		if (!width || !height)
++		    break;
++
+ 		pScreen = screenInfo.screens[screen];
+ 		pSrcPix = GetScratchPixmapHeader (pScreen,
+ 						  width, height,

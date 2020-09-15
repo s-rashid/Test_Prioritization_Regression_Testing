@@ -1,0 +1,447 @@
+diff --git a/render/mipict.c b/render/mipict.c
+index 0b86bee..2e64b20 100644
+--- a/render/mipict.c
++++ b/render/mipict.c
+@@ -53,7 +53,8 @@ miDestroyPictureClip (PicturePtr pPicture)
+     case CT_NONE:
+ 	return;
+     case CT_PIXMAP:
+-	(*pPicture->pDrawable->pScreen->DestroyPixmap) ((PixmapPtr) (pPicture->clientClip));
++        (*pPicture->pDrawable->pScreen->
++         DestroyPixmap) ((PixmapPtr) (pPicture->clientClip));
+ 	break;
+     default:
+ 	/*
+@@ -68,10 +69,7 @@ miDestroyPictureClip (PicturePtr pPicture)
+ }    
+ 
+ int
+-miChangePictureClip (PicturePtr    pPicture,
+-		     int	   type,
+-		     pointer	   value,
+-		     int	   n)
++miChangePictureClip(PicturePtr pPicture, int type, pointer value, int n)
+ {
+     ScreenPtr		pScreen = pPicture->pDrawable->pScreen;
+     PictureScreenPtr    ps = GetPictureScreen(pScreen);
+@@ -96,9 +94,7 @@ miChangePictureClip (PicturePtr    pPicture,
+ 	clientClipType = CT_NONE;
+ 	break;
+     default:
+-	clientClip = (pointer) RegionFromRects(n,
+-					       (xRectangle *) value,
+-					       type);
++        clientClip = (pointer) RegionFromRects(n, (xRectangle *) value, type);
+ 	if (!clientClip)
+ 	    return BadAlloc;
+ 	clientClipType = CT_REGION;
+@@ -113,34 +109,29 @@ miChangePictureClip (PicturePtr    pPicture,
+ }
+ 
+ void
+-miChangePicture (PicturePtr pPicture,
+-		 Mask       mask)
++miChangePicture(PicturePtr pPicture, Mask mask)
+ {
+     return;
+ }
+ 
+ void
+-miValidatePicture (PicturePtr pPicture,
+-		   Mask       mask)
++miValidatePicture(PicturePtr pPicture, Mask mask)
+ {
+     DrawablePtr	    pDrawable = pPicture->pDrawable;
+ 
+-    if ((mask & (CPClipXOrigin|CPClipYOrigin|CPClipMask|CPSubwindowMode)) ||
+-	(pDrawable->serialNumber != (pPicture->serialNumber & DRAWABLE_SERIAL_BITS)))
+-    {
+-	if (pDrawable->type == DRAWABLE_WINDOW)
+-	{
++    if ((mask & (CPClipXOrigin | CPClipYOrigin | CPClipMask | CPSubwindowMode))
++        || (pDrawable->serialNumber !=
++            (pPicture->serialNumber & DRAWABLE_SERIAL_BITS))) {
++        if (pDrawable->type == DRAWABLE_WINDOW) {
+ 	    WindowPtr       pWin = (WindowPtr) pDrawable;
+ 	    RegionPtr       pregWin;
+ 	    Bool            freeTmpClip, freeCompClip;
+ 
+-	    if (pPicture->subWindowMode == IncludeInferiors)
+-	    {
++            if (pPicture->subWindowMode == IncludeInferiors) {
+ 		pregWin = NotClippedByChildren(pWin);
+ 		freeTmpClip = TRUE;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		pregWin = &pWin->clipList;
+ 		freeTmpClip = FALSE;
+ 	    }
+@@ -153,15 +144,13 @@ miValidatePicture (PicturePtr pPicture,
+ 	     * copying of regions.  (this wins especially if many clients clip
+ 	     * by children and have no client clip.)
+ 	     */
+-	    if (pPicture->clientClipType == CT_NONE)
+-	    {
++            if (pPicture->clientClipType == CT_NONE) {
+ 		if (freeCompClip)
+ 		    RegionDestroy(pPicture->pCompositeClip);
+ 		pPicture->pCompositeClip = pregWin;
+ 		pPicture->freeCompClip = freeTmpClip;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		/*
+ 		 * we need one 'real' region to put into the composite clip. if
+ 		 * pregWin the current composite clip are real, we can get rid of
+@@ -175,20 +164,17 @@ miValidatePicture (PicturePtr pPicture,
+ 				 pDrawable->x + pPicture->clipOrigin.x,
+ 				 pDrawable->y + pPicture->clipOrigin.y);
+ 
+-		if (freeCompClip)
+-		{
++                if (freeCompClip) {
+ 		    RegionIntersect(pPicture->pCompositeClip,
+ 				     pregWin, pPicture->clientClip);
+ 		    if (freeTmpClip)
+ 			RegionDestroy(pregWin);
+ 		}
+-		else if (freeTmpClip)
+-		{
++                else if (freeTmpClip) {
+ 		    RegionIntersect(pregWin, pregWin, pPicture->clientClip);
+ 		    pPicture->pCompositeClip = pregWin;
+ 		}
+-		else
+-		{
++                else {
+ 		    pPicture->pCompositeClip = RegionCreate(NullBox, 0);
+ 		    RegionIntersect(pPicture->pCompositeClip,
+ 				     pregWin, pPicture->clientClip);
+@@ -199,8 +185,7 @@ miValidatePicture (PicturePtr pPicture,
+ 				 -(pDrawable->y + pPicture->clipOrigin.y));
+ 	    }
+ 	}	/* end of composite clip for a window */
+-	else
+-	{
++        else {
+ 	    BoxRec          pixbounds;
+ 
+ 	    /* XXX should we translate by drawable.x/y here ? */
+@@ -210,34 +195,36 @@ miValidatePicture (PicturePtr pPicture,
+ 	    pixbounds.x2 = pDrawable->x + pDrawable->width;
+ 	    pixbounds.y2 = pDrawable->y + pDrawable->height;
+ 
+-	    if (pPicture->freeCompClip)
+-	    {
++            if (pPicture->freeCompClip) {
+ 		RegionReset(pPicture->pCompositeClip, &pixbounds);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		pPicture->freeCompClip = TRUE;
+ 		pPicture->pCompositeClip = RegionCreate(&pixbounds, 1);
+ 	    }
+ 
+-	    if (pPicture->clientClipType == CT_REGION)
+-	    {
++            if (pPicture->clientClipType == CT_REGION) {
+ 		if(pDrawable->x || pDrawable->y) {
+ 		    RegionTranslate(pPicture->clientClip,
+ 				     pDrawable->x + pPicture->clipOrigin.x, 
+ 				     pDrawable->y + pPicture->clipOrigin.y);
+ 		    RegionIntersect(pPicture->pCompositeClip,
+-				     pPicture->pCompositeClip, pPicture->clientClip);
++                                    pPicture->pCompositeClip,
++                                    pPicture->clientClip);
+ 		    RegionTranslate(pPicture->clientClip,
+ 				     -(pDrawable->x + pPicture->clipOrigin.x), 
+ 				     -(pDrawable->y + pPicture->clipOrigin.y));
+-		} else {
++                }
++                else {
+ 		    RegionTranslate(pPicture->pCompositeClip,
+-				     -pPicture->clipOrigin.x, -pPicture->clipOrigin.y);
++                                    -pPicture->clipOrigin.x,
++                                    -pPicture->clipOrigin.y);
+ 		    RegionIntersect(pPicture->pCompositeClip,
+-				     pPicture->pCompositeClip, pPicture->clientClip);
++                                    pPicture->pCompositeClip,
++                                    pPicture->clientClip);
+ 		    RegionTranslate(pPicture->pCompositeClip,
+-				     pPicture->clipOrigin.x, pPicture->clipOrigin.y);
++                                    pPicture->clipOrigin.x,
++                                    pPicture->clipOrigin.y);
+ 		}
+ 	    }
+ 	}	/* end of composite clip for pixmap */
+@@ -245,17 +232,14 @@ miValidatePicture (PicturePtr pPicture,
+ }
+ 
+ int
+-miChangePictureTransform (PicturePtr	pPicture,
+-			  PictTransform *transform)
++miChangePictureTransform(PicturePtr pPicture, PictTransform * transform)
+ {
+     return Success;
+ }
+ 
+ int
+ miChangePictureFilter (PicturePtr pPicture,
+-		       int	  filter,
+-		       xFixed     *params,
+-		       int	  nparams)
++                      int filter, xFixed * params, int nparams)
+ {
+     return Success;
+ }
+@@ -264,13 +248,10 @@ miChangePictureFilter (PicturePtr pPicture,
+ 
+ static inline pixman_bool_t
+ miClipPictureReg (pixman_region16_t *	pRegion,
+-		  pixman_region16_t *	pClip,
+-		  int		dx,
+-		  int		dy)
++                 pixman_region16_t * pClip, int dx, int dy)
+ {
+     if (pixman_region_n_rects(pRegion) == 1 &&
+-	pixman_region_n_rects(pClip) == 1)
+-    {
++        pixman_region_n_rects(pClip) == 1) {
+ 	pixman_box16_t *  pRbox = pixman_region_rectangles(pRegion, NULL);
+ 	pixman_box16_t *  pCbox = pixman_region_rectangles(pClip, NULL);
+ 	int	v;
+@@ -283,16 +264,13 @@ miClipPictureReg (pixman_region16_t *	pRegion,
+ 	    pRbox->y1 = BOUND(v);
+ 	if (pRbox->y2 > (v = pCbox->y2 + dy))
+ 	    pRbox->y2 = BOUND(v);
+-	if (pRbox->x1 >= pRbox->x2 ||
+-	    pRbox->y1 >= pRbox->y2)
+-	{
++        if (pRbox->x1 >= pRbox->x2 || pRbox->y1 >= pRbox->y2) {
+ 	    pixman_region_init (pRegion);
+ 	}
+     }
+     else if (!pixman_region_not_empty (pClip))
+ 	return FALSE;
+-    else
+-    {
++    else {
+ 	if (dx || dy)
+ 	    pixman_region_translate (pRegion, -dx, -dy);
+ 	if (!pixman_region_intersect (pRegion, pRegion, pClip))
+@@ -304,13 +282,9 @@ miClipPictureReg (pixman_region16_t *	pRegion,
+ }
+ 
+ static inline Bool
+-miClipPictureSrc (RegionPtr	pRegion,
+-		  PicturePtr	pPicture,
+-		  int		dx,
+-		  int		dy)
+-{
+-    if (pPicture->clientClipType != CT_NONE)
++miClipPictureSrc(RegionPtr pRegion, PicturePtr pPicture, int dx, int dy)
+     {
++    if (pPicture->clientClipType != CT_NONE) {
+ 	Bool result;
+ 	
+ 	pixman_region_translate ( pPicture->clientClip,
+@@ -340,10 +314,9 @@ SourceValidateOnePicture (PicturePtr pPicture)
+ 
+     pScreen = pDrawable->pScreen;
+ 
+-    if (pScreen->SourceValidate)
+-    {
+-	pScreen->SourceValidate (
+-	    pDrawable, 0, 0, pDrawable->width, pDrawable->height, pPicture->subWindowMode);
++    if (pScreen->SourceValidate) {
++        pScreen->SourceValidate(pDrawable, 0, 0, pDrawable->width,
++                                pDrawable->height, pPicture->subWindowMode);
+     }
+ }
+ 
+@@ -369,10 +342,7 @@ miComputeCompositeRegion (RegionPtr	pRegion,
+ 			  INT16		ySrc,
+ 			  INT16		xMask,
+ 			  INT16		yMask,
+-			  INT16		xDst,
+-			  INT16		yDst,
+-			  CARD16	width,
+-			  CARD16	height)
++                         INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
+ {
+     
+     int		v;
+@@ -386,64 +356,51 @@ miComputeCompositeRegion (RegionPtr	pRegion,
+     pRegion->data = 0;
+     /* Check for empty operation */
+     if (pRegion->extents.x1 >= pRegion->extents.x2 ||
+-	pRegion->extents.y1 >= pRegion->extents.y2)
+-    {
++        pRegion->extents.y1 >= pRegion->extents.y2) {
+ 	pixman_region_init (pRegion);
+ 	return FALSE;
+     }
+     /* clip against dst */
+-    if (!miClipPictureReg (pRegion, pDst->pCompositeClip, 0, 0))
+-    {
++    if (!miClipPictureReg(pRegion, pDst->pCompositeClip, 0, 0)) {
+ 	pixman_region_fini (pRegion);
+ 	return FALSE;
+     }
+-    if (pDst->alphaMap)
+-    {
++    if (pDst->alphaMap) {
+ 	if (!miClipPictureReg (pRegion, pDst->alphaMap->pCompositeClip,
+-			       -pDst->alphaOrigin.x,
+-			       -pDst->alphaOrigin.y))
+-	{
++                              -pDst->alphaOrigin.x, -pDst->alphaOrigin.y)) {
+ 	    pixman_region_fini (pRegion);
+ 	    return FALSE;
+ 	}
+     }
+     /* clip against src */
+-    if (!miClipPictureSrc (pRegion, pSrc, xDst - xSrc, yDst - ySrc))
+-    {
++    if (!miClipPictureSrc(pRegion, pSrc, xDst - xSrc, yDst - ySrc)) {
+ 	pixman_region_fini (pRegion);
+ 	return FALSE;
+     }
+-    if (pSrc->alphaMap)
+-    {
++    if (pSrc->alphaMap) {
+ 	if (!miClipPictureSrc (pRegion, pSrc->alphaMap,
+ 			       xDst - (xSrc - pSrc->alphaOrigin.x),
+-			       yDst - (ySrc - pSrc->alphaOrigin.y)))
+-	{
++                              yDst - (ySrc - pSrc->alphaOrigin.y))) {
+ 	    pixman_region_fini (pRegion);
+ 	    return FALSE;
+ 	}
+     }
+     /* clip against mask */
+-    if (pMask)
+-    {
+-	if (!miClipPictureSrc (pRegion, pMask, xDst - xMask, yDst - yMask))
+-	{
++    if (pMask) {
++        if (!miClipPictureSrc(pRegion, pMask, xDst - xMask, yDst - yMask)) {
+ 	    pixman_region_fini (pRegion);
+ 	    return FALSE;
+ 	}	
+-	if (pMask->alphaMap)
+-	{
++        if (pMask->alphaMap) {
+ 	    if (!miClipPictureSrc (pRegion, pMask->alphaMap,
+ 				   xDst - (xMask - pMask->alphaOrigin.x),
+-				   yDst - (yMask - pMask->alphaOrigin.y)))
+-	    {
++                                  yDst - (yMask - pMask->alphaOrigin.y))) {
+ 		pixman_region_fini (pRegion);
+ 		return FALSE;
+ 	    }
+ 	}
+     }
+ 
+-    
+     miCompositeSourceValidate (pSrc);
+     if (pMask)
+ 	miCompositeSourceValidate (pMask);
+@@ -452,9 +409,7 @@ miComputeCompositeRegion (RegionPtr	pRegion,
+ }
+ 
+ void
+-miRenderColorToPixel (PictFormatPtr format,
+-		      xRenderColor  *color,
+-		      CARD32	    *pixel)
++miRenderColorToPixel(PictFormatPtr format, xRenderColor * color, CARD32 *pixel)
+ {
+     CARD32	    r, g, b, a;
+     miIndexedPtr    pIndexed;
+@@ -473,15 +428,13 @@ miRenderColorToPixel (PictFormatPtr format,
+ 	break;
+     case PictTypeIndexed:
+ 	pIndexed = (miIndexedPtr) (format->index.devPrivate);
+-	if (pIndexed->color)
+-	{
++        if (pIndexed->color) {
+ 	    r = color->red >> 11;
+ 	    g = color->green >> 11;
+ 	    b = color->blue >> 11;
+ 	    *pixel = miIndexToEnt15 (pIndexed, (r << 10) | (g << 5) | b);
+ 	}
+-	else
+-	{
++        else {
+ 	    r = color->red >> 8;
+ 	    g = color->green >> 8;
+ 	    b = color->blue >> 8;
+@@ -494,8 +447,7 @@ miRenderColorToPixel (PictFormatPtr format,
+ static CARD16
+ miFillColor (CARD32 pixel, int bits)
+ {
+-    while (bits < 16)
+-    {
++    while (bits < 16) {
+ 	pixel |= pixel << bits;
+ 	bits <<= 1;
+     }
+@@ -537,9 +489,7 @@ miIsSolidAlpha (PicturePtr pSrc)
+ }
+ 
+ void
+-miRenderPixelToColor (PictFormatPtr format,
+-		      CARD32	    pixel,
+-		      xRenderColor  *color)
++miRenderPixelToColor(PictFormatPtr format, CARD32 pixel, xRenderColor * color)
+ {
+     CARD32	    r, g, b, a;
+     miIndexedPtr    pIndexed;
+@@ -574,10 +524,7 @@ miTriStrip (CARD8	    op,
+ 	    PicturePtr	    pSrc,
+ 	    PicturePtr	    pDst,
+ 	    PictFormatPtr  maskFormat,
+-	    INT16	    xSrc,
+-	    INT16	    ySrc,
+-	    int		    npoints,
+-	    xPointFixed    *points)
++           INT16 xSrc, INT16 ySrc, int npoints, xPointFixed * points)
+ {
+     xTriangle           *tris, *tri;
+     int                 ntri;
+@@ -587,8 +534,7 @@ miTriStrip (CARD8	    op,
+     if (!tris)
+         return;
+ 
+-    for (tri = tris; npoints >= 3; npoints--, points++, tri++)
+-    {
++    for (tri = tris; npoints >= 3; npoints--, points++, tri++) {
+         tri->p1 = points[0];
+         tri->p2 = points[1];
+         tri->p3 = points[2];
+@@ -602,10 +548,7 @@ miTriFan (CARD8		op,
+ 	  PicturePtr	pSrc,
+ 	  PicturePtr	pDst,
+ 	  PictFormatPtr	maskFormat,
+-	  INT16		xSrc,
+-	  INT16		ySrc,
+-	  int		npoints,
+-	  xPointFixed	*points)
++         INT16 xSrc, INT16 ySrc, int npoints, xPointFixed * points)
+ {
+     xTriangle		*tris, *tri;
+     xPointFixed		*first;
+@@ -617,8 +560,7 @@ miTriFan (CARD8		op,
+ 	return;
+ 
+     first = points++;
+-    for (tri = tris; npoints >= 3; npoints--, points++, tri++)
+-    {
++    for (tri = tris; npoints >= 3; npoints--, points++, tri++) {
+ 	tri->p1 = *first;
+ 	tri->p2 = points[0];
+ 	tri->p3 = points[1];

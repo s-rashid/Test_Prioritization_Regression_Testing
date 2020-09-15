@@ -1,0 +1,12 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 0fb644b..155ed47 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -155,7 +155,6 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+ 
+     if (width != pPixmap->drawable.width ||
+ 	height != pPixmap->drawable.height ||
+-	devKind != pPixmap->devKind ||
+ 	depth != pPixmap->drawable.depth ||
+ 	bitsPerPixel != pPixmap->drawable.bitsPerPixel) {
+ 	if (pExaPixmap->driverPriv) {

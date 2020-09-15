@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 69f687b..8d636af 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -368,12 +368,13 @@ xf86CrtcSetModeTransform (xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotati
+     }
+ 
+     ret = TRUE;
++
++done:
++    if (ret) {
+     crtc->active = TRUE;
+     if (scrn->pScreen)
+ 	xf86CrtcSetScreenSubpixelOrder (scrn->pScreen);
+-
+-done:
+-    if (!ret) {
++    } else {
+ 	crtc->x = saved_x;
+ 	crtc->y = saved_y;
+ 	crtc->rotation = saved_rotation;

@@ -1,0 +1,14 @@
+diff --git a/include/dix.h b/include/dix.h
+index d604e06..5dc2ac5 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -313,7 +313,8 @@ extern _X_EXPORT WindowPtr
+ GetSpriteWindow(DeviceIntPtr pDev);
+ 
+ extern _X_EXPORT void
+-NoticeEventTime(InternalEvent *ev);
++NoticeEventTime(InternalEvent *ev,
++                DeviceIntPtr dev);
+ 
+ extern void
+ EnqueueEvent(InternalEvent * /* ev */ ,

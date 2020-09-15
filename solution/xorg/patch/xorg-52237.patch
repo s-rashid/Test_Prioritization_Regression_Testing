@@ -1,0 +1,16 @@
+diff --git a/include/input.h b/include/input.h
+index bdef038..2bb85ff 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -311,7 +311,10 @@ extern _X_EXPORT Bool InitPointerAccelerationScheme(
+     DeviceIntPtr /*dev*/,
+     int /*scheme*/);
+ 
+-extern _X_EXPORT Bool InitAbsoluteClassDeviceStruct(
++/**
++ * This is not implemented and just returns FALSE.
++ */
++extern _X_EXPORT _X_DEPRECATED Bool InitAbsoluteClassDeviceStruct(
+     DeviceIntPtr /*device*/);
+ 
+ extern _X_EXPORT Bool InitFocusClassDeviceStruct(

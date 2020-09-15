@@ -1,0 +1,16 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 2c7d86a..ebc7cdb 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -945,6 +945,11 @@ extern void XkbFilterEvents(
+         int                     /* nEvents */,
+         xEvent*                 /* xE */);
+ 
++extern int XkbGetEffectiveGroup(
++        XkbSrvInfoPtr           /* xkbi */,
++        XkbStatePtr             /* xkbstate */,
++        CARD8                   /* keycode */);
++
+ #include "xkbfile.h"
+ #include "xkbrules.h"
+ 

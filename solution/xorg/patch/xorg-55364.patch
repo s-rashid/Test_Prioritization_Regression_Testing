@@ -1,0 +1,129 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostglx.c b/hw/kdrive/ephyr/ephyrhostglx.c
+index 728687b..6b9da6f 100644
+--- a/hw/kdrive/ephyr/ephyrhostglx.c
++++ b/hw/kdrive/ephyr/ephyrhostglx.c
+@@ -56,16 +56,13 @@ enum VisualConfRequestType {
+     EPHYR_GET_FB_CONFIG,
+     EPHYR_VENDOR_PRIV_GET_FB_CONFIG_SGIX,
+     EPHYR_GET_VISUAL_CONFIGS
+-
+ };
+ 
+ static Bool ephyrHostGLXGetVisualConfigsInternal
+                                         (enum VisualConfRequestType a_type,
+                                          int32_t a_screen,
+                                          int32_t *a_num_visuals,
+-                                         int32_t *a_num_props,
+-                                         int32_t *a_props_buf_size,
+-                                         int32_t **a_props_buf);
++     int32_t * a_num_props, int32_t * a_props_buf_size, int32_t ** a_props_buf);
+ Bool
+ ephyrHostGLXGetMajorOpcode (int *a_opcode)
+ {
+@@ -207,7 +204,8 @@ ephyrHostGLXGetStringFromServer (int a_screen_number,
+     length = reply.length * 4;
+     if (!length) {
+         numbytes = 0;
+-    } else {
++    }
++    else {
+         numbytes = reply.size;
+     }
+     EPHYR_LOG ("going to get a string of size:%d\n", numbytes) ;
+@@ -253,15 +251,12 @@ ephyrHostGLXGetVisualConfigsInternal (enum VisualConfRequestType a_type,
+     xGLXVendorPrivateWithReplyReq *vpreq;
+     xGLXGetFBConfigsSGIXReq *sgi_req;
+     xGLXGetVisualConfigsReply reply;
+-    char *server_glx_version=NULL,
+-         *server_glx_extensions=NULL ;
++    char *server_glx_version = NULL, *server_glx_extensions = NULL;
+     int j=0,
+         screens=0,
+         major_opcode=0,
+         num_props=0,
+-        num_visuals=0,
+-        props_buf_size=0,
+-        props_per_visual_size=0;
++        num_visuals = 0, props_buf_size = 0, props_per_visual_size = 0;
+     int32_t *props_buf=NULL;
+ 
+     EPHYR_RETURN_VAL_IF_FAIL (dpy, FALSE) ;
+@@ -284,9 +279,7 @@ ephyrHostGLXGetVisualConfigsInternal (enum VisualConfRequestType a_type,
+         case EPHYR_VENDOR_PRIV_GET_FB_CONFIG_SGIX:
+         GetReqExtra(GLXVendorPrivateWithReply,
+                     sz_xGLXGetFBConfigsSGIXReq
+-                         -
+-                    sz_xGLXVendorPrivateWithReplyReq,
+-                    vpreq);
++                    - sz_xGLXVendorPrivateWithReplyReq, vpreq);
+         sgi_req = (xGLXGetFBConfigsSGIXReq *) vpreq;
+         sgi_req->reqType = major_opcode;
+         sgi_req->glxCode = X_GLXVendorPrivateWithReply;
+@@ -365,8 +358,7 @@ Bool
+ ephyrHostGLXGetVisualConfigs (int32_t a_screen,
+                               int32_t *a_num_visuals,
+                               int32_t *a_num_props,
+-                              int32_t *a_props_buf_size,
+-                              int32_t **a_props_buf)
++                             int32_t * a_props_buf_size, int32_t ** a_props_buf)
+ {
+     Bool is_ok = FALSE;
+ 
+@@ -375,8 +367,7 @@ ephyrHostGLXGetVisualConfigs (int32_t a_screen,
+                                                   a_screen,
+                                                   a_num_visuals,
+                                                   a_num_props,
+-                                                  a_props_buf_size,
+-                                                  a_props_buf) ;
++                                                 a_props_buf_size, a_props_buf);
+ 
+     EPHYR_LOG ("leave:%d\n", is_ok) ;
+     return is_ok;
+@@ -390,14 +381,11 @@ ephyrHostGLXVendorPrivGetFBConfigsSGIX (int a_screen,
+                                         int32_t **a_props_buf)
+ {
+     Bool is_ok=FALSE ;
++
+     EPHYR_LOG ("enter\n") ;
+     is_ok = ephyrHostGLXGetVisualConfigsInternal
+                                         (EPHYR_VENDOR_PRIV_GET_FB_CONFIG_SGIX,
+-                                         a_screen,
+-                                         a_num_visuals,
+-                                         a_num_props,
+-                                         a_props_buf_size,
+-                                         a_props_buf) ;
++         a_screen, a_num_visuals, a_num_props, a_props_buf_size, a_props_buf);
+     EPHYR_LOG ("leave\n") ;
+     return is_ok ;
+ }
+@@ -445,8 +433,7 @@ Bool
+ ephyrHostGLXCreateContext (int a_screen,
+                            int a_visual_id,
+                            int a_context_id,
+-                           int a_share_list_ctxt_id,
+-                           Bool a_direct)
++                          int a_share_list_ctxt_id, Bool a_direct)
+ {
+     Bool is_ok = FALSE;
+     Display *dpy = hostx_get_display ();
+@@ -526,9 +513,7 @@ out:
+ 
+ Bool
+ ephyrHostGLXMakeCurrent (int a_drawable,
+-                         int a_glx_ctxt_id,
+-                         int a_old_ctxt_tag,
+-                         int *a_ctxt_tag)
++                        int a_glx_ctxt_id, int a_old_ctxt_tag, int *a_ctxt_tag)
+ {
+     Bool is_ok=FALSE ;
+     Display *dpy = hostx_get_display () ;
+@@ -656,8 +641,7 @@ out:
+ }
+ 
+ Bool
+-ephyrHostIsContextDirect (int a_ctxt_id,
+-                          int *a_is_direct)
++ephyrHostIsContextDirect(int a_ctxt_id, int *a_is_direct)
+ {
+     Bool is_ok=FALSE;
+     Display *dpy = hostx_get_display () ;

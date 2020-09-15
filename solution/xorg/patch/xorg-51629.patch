@@ -1,0 +1,23 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 0df1d27..bbc0f2f 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -1472,6 +1472,18 @@ void
+ winInitializeScreens(int maxscreens);
+ 
+ /*
++ * winrandr.c
++ */
++Bool
++winRandRInit (ScreenPtr pScreen);
++void
++winDoRandRScreenSetSize (ScreenPtr  pScreen,
++                         CARD16	    width,
++                         CARD16	    height,
++                         CARD32	    mmWidth,
++                         CARD32	    mmHeight);
++
++/*
+  * END DDX and DIX Function Prototypes
+  */
+ 

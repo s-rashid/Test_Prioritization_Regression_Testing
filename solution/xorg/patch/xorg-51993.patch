@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 8be1903..f7018d0 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -1664,7 +1664,7 @@ ProcChangeKeyboardMapping(ClientPtr client)
+                           stuff->keyCodes, NULL, client);
+ 
+     for (tmp = inputInfo.devices; tmp; tmp = tmp->next) {
+-        if (IsMaster(tmp) || tmp->u.master != pDev)
++        if (IsMaster(tmp) || GetMaster(tmp, MASTER_KEYBOARD) != pDev)
+             continue;
+         if (!tmp->key)
+             continue;

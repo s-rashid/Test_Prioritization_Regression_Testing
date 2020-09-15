@@ -1,0 +1,442 @@
+diff --git a/hw/xfree86/parser/xf86Parser.h b/hw/xfree86/parser/xf86Parser.h
+index beac354..e7210e8 100644
+--- a/hw/xfree86/parser/xf86Parser.h
++++ b/hw/xfree86/parser/xf86Parser.h
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* 
+  * This file contains the external interfaces for the XFree86 configuration
+  * file parser.
+@@ -70,39 +69,33 @@
+ 
+ #define HAVE_PARSER_DECLS
+ 
+-typedef struct
+-{
++typedef struct {
+ 	char *file_logfile;
+ 	char *file_modulepath;
+ 	char *file_fontpath;
+ 	char *file_comment;
+ 	char *file_xkbdir;
+-}
+-XF86ConfFilesRec, *XF86ConfFilesPtr;
++} XF86ConfFilesRec, *XF86ConfFilesPtr;
+ 
+ /* Values for load_type */
+ #define XF86_LOAD_MODULE	0
+ #define XF86_LOAD_DRIVER	1
+ #define XF86_DISABLE_MODULE	2
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	int load_type;
+ 	char *load_name;
+ 	XF86OptionPtr load_opt;
+ 	char *load_comment;
+         int ignore;
+-}
+-XF86LoadRec, *XF86LoadPtr;
++} XF86LoadRec, *XF86LoadPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	XF86LoadPtr mod_load_lst;
+     XF86LoadPtr mod_disable_lst;
+ 	char *mod_comment;
+-}
+-XF86ConfModuleRec, *XF86ConfModulePtr;
++} XF86ConfModuleRec, *XF86ConfModulePtr;
+ 
+ #define CONF_IMPLICIT_KEYBOARD	"Implicit Core Keyboard"
+ 
+@@ -121,8 +114,7 @@ XF86ConfModuleRec, *XF86ConfModulePtr;
+ #define XF86CONF_BCAST     0x0400
+ #define XF86CONF_VSCAN     0x1000
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *ml_identifier;
+ 	int ml_clock;
+@@ -138,20 +130,16 @@ typedef struct
+ 	int ml_flags;
+ 	int ml_hskew;
+ 	char *ml_comment;
+-}
+-XF86ConfModeLineRec, *XF86ConfModeLinePtr;
++} XF86ConfModeLineRec, *XF86ConfModeLinePtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *vp_identifier;
+ 	XF86OptionPtr vp_option_lst;
+ 	char *vp_comment;
+-}
+-XF86ConfVideoPortRec, *XF86ConfVideoPortPtr;
++} XF86ConfVideoPortRec, *XF86ConfVideoPortPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *va_identifier;
+ 	char *va_vendor;
+@@ -162,43 +150,33 @@ typedef struct
+ 	XF86ConfVideoPortPtr va_port_lst;
+ 	char *va_fwdref;
+ 	char *va_comment;
+-}
+-XF86ConfVideoAdaptorRec, *XF86ConfVideoAdaptorPtr;
++} XF86ConfVideoAdaptorRec, *XF86ConfVideoAdaptorPtr;
+ 
+ #define CONF_MAX_HSYNC 8
+ #define CONF_MAX_VREFRESH 8
+ 
+-typedef struct
+-{
++typedef struct {
+ 	float hi, lo;
+-}
+-parser_range;
++} parser_range;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	int red, green, blue;
+-}
+-parser_rgb;
++} parser_rgb;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *modes_identifier;
+ 	XF86ConfModeLinePtr mon_modeline_lst;
+ 	char *modes_comment;
+-}
+-XF86ConfModesRec, *XF86ConfModesPtr;
++} XF86ConfModesRec, *XF86ConfModesPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *ml_modes_str;
+ 	XF86ConfModesPtr ml_modes;
+-}
+-XF86ConfModesLinkRec, *XF86ConfModesLinkPtr;
++} XF86ConfModesLinkRec, *XF86ConfModesLinkPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *mon_identifier;
+ 	char *mon_vendor;
+@@ -216,14 +194,12 @@ typedef struct
+ 	XF86OptionPtr mon_option_lst;
+ 	XF86ConfModesLinkPtr mon_modes_sect_lst;
+ 	char *mon_comment;
+-}
+-XF86ConfMonitorRec, *XF86ConfMonitorPtr;
++} XF86ConfMonitorRec, *XF86ConfMonitorPtr;
+ 
+ #define CONF_MAXDACSPEEDS 4
+ #define CONF_MAXCLOCKS    128
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *dev_identifier;
+ 	char *dev_vendor;
+@@ -248,18 +224,14 @@ typedef struct
+ 	int dev_screen;
+ 	XF86OptionPtr dev_option_lst;
+ 	char *dev_comment;
+-}
+-XF86ConfDeviceRec, *XF86ConfDevicePtr;
++} XF86ConfDeviceRec, *XF86ConfDevicePtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *mode_name;
+-}
+-XF86ModeRec, *XF86ModePtr;
++} XF86ModeRec, *XF86ModePtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	int disp_frameX0;
+ 	int disp_frameY0;
+@@ -274,26 +246,20 @@ typedef struct
+ 	XF86ModePtr disp_mode_lst;
+ 	XF86OptionPtr disp_option_lst;
+ 	char *disp_comment;
+-}
+-XF86ConfDisplayRec, *XF86ConfDisplayPtr;
++} XF86ConfDisplayRec, *XF86ConfDisplayPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	XF86OptionPtr flg_option_lst;
+ 	char *flg_comment;
+-}
+-XF86ConfFlagsRec, *XF86ConfFlagsPtr;
++} XF86ConfFlagsRec, *XF86ConfFlagsPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *al_adaptor_str;
+ 	XF86ConfVideoAdaptorPtr al_adaptor;
+-}
+-XF86ConfAdaptorLinkRec, *XF86ConfAdaptorLinkPtr;
++} XF86ConfAdaptorLinkRec, *XF86ConfAdaptorLinkPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *scrn_identifier;
+ 	char *scrn_obso_driver;
+@@ -309,44 +275,34 @@ typedef struct
+ 	XF86OptionPtr scrn_option_lst;
+ 	char *scrn_comment;
+ 	int scrn_virtualX, scrn_virtualY;
+-}
+-XF86ConfScreenRec, *XF86ConfScreenPtr;
++} XF86ConfScreenRec, *XF86ConfScreenPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *inp_identifier;
+ 	char *inp_driver;
+ 	XF86OptionPtr inp_option_lst;
+ 	char *inp_comment;
+-}
+-XF86ConfInputRec, *XF86ConfInputPtr;
++} XF86ConfInputRec, *XF86ConfInputPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	XF86ConfInputPtr iref_inputdev;
+ 	char *iref_inputdev_str;
+ 	XF86OptionPtr iref_option_lst;
+-}
+-XF86ConfInputrefRec, *XF86ConfInputrefPtr;
++} XF86ConfInputrefRec, *XF86ConfInputrefPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	Bool set;
+ 	Bool val;
+-}
+-xf86TriState;
++} xf86TriState;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	struct xorg_list entry;
+ 	char **values;
+-}
+-xf86MatchGroup;
++} xf86MatchGroup;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *identifier;
+ 	char *driver;
+@@ -367,8 +323,7 @@ typedef struct
+ 	xf86TriState is_touchscreen;
+ 	XF86OptionPtr option_lst;
+ 	char *comment;
+-}
+-XF86ConfInputClassRec, *XF86ConfInputClassPtr;
++} XF86ConfInputClassRec, *XF86ConfInputClassPtr;
+ 
+ /* Values for adj_where */
+ #define CONF_ADJ_OBSOLETE	-1
+@@ -379,8 +334,7 @@ XF86ConfInputClassRec, *XF86ConfInputClassPtr;
+ #define CONF_ADJ_BELOW		4
+ #define CONF_ADJ_RELATIVE	5
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	int adj_scrnum;
+ 	XF86ConfScreenPtr adj_screen;
+@@ -397,19 +351,15 @@ typedef struct
+ 	int adj_x;
+ 	int adj_y;
+ 	char *adj_refscreen;
+-}
+-XF86ConfAdjacencyRec, *XF86ConfAdjacencyPtr;
++} XF86ConfAdjacencyRec, *XF86ConfAdjacencyPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *inactive_device_str;
+ 	XF86ConfDevicePtr inactive_device;
+-}
+-XF86ConfInactiveRec, *XF86ConfInactivePtr;
++} XF86ConfInactiveRec, *XF86ConfInactivePtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *lay_identifier;
+ 	XF86ConfAdjacencyPtr lay_adjacency_lst;
+@@ -417,47 +367,37 @@ typedef struct
+ 	XF86ConfInputrefPtr lay_input_lst;
+ 	XF86OptionPtr lay_option_lst;
+ 	char *lay_comment;
+-}
+-XF86ConfLayoutRec, *XF86ConfLayoutPtr;
++} XF86ConfLayoutRec, *XF86ConfLayoutPtr;
+ 
+-typedef struct 
+-{ 
++typedef struct {
+ 	GenericListRec list; 
+ 	char *vs_name;
+ 	char *vs_identifier;
+ 	XF86OptionPtr vs_option_lst;
+ 	char *vs_comment;
+-}
+-XF86ConfVendSubRec, *XF86ConfVendSubPtr;
++} XF86ConfVendSubRec, *XF86ConfVendSubPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	GenericListRec list;
+ 	char *vnd_identifier;
+ 	XF86OptionPtr vnd_option_lst;
+ 	XF86ConfVendSubPtr vnd_sub_lst;
+ 	char *vnd_comment;
+-}
+-XF86ConfVendorRec, *XF86ConfVendorPtr;
++} XF86ConfVendorRec, *XF86ConfVendorPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	char *dri_group_name;
+ 	int dri_group;
+ 	int dri_mode;
+ 	char *dri_comment;
+-}
+-XF86ConfDRIRec, *XF86ConfDRIPtr;
++} XF86ConfDRIRec, *XF86ConfDRIPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	XF86OptionPtr ext_option_lst;
+ 	char *extensions_comment;
+-}
+-XF86ConfExtensionsRec, *XF86ConfExtensionsPtr;
++} XF86ConfExtensionsRec, *XF86ConfExtensionsPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	XF86ConfFilesPtr conf_files;
+ 	XF86ConfModulePtr conf_modules;
+ 	XF86ConfFlagsPtr conf_flags;
+@@ -473,15 +413,12 @@ typedef struct
+ 	XF86ConfDRIPtr conf_dri;
+ 	XF86ConfExtensionsPtr conf_extensions;
+ 	char *conf_comment;
+-}
+-XF86ConfigRec, *XF86ConfigPtr;
++} XF86ConfigRec, *XF86ConfigPtr;
+ 
+-typedef struct
+-{
++typedef struct {
+ 	int token;			/* id of the token */
+ 	const char *name;		/* pointer to the LOWERCASED name */
+-}
+-xf86ConfigSymTabRec, *xf86ConfigSymTabPtr;
++} xf86ConfigSymTabRec, *xf86ConfigSymTabPtr;
+ 
+ /*
+  * prototypes for public functions
+@@ -496,20 +433,32 @@ extern XF86ConfigPtr xf86readConfigFile(void);
+ extern void xf86closeConfigFile(void);
+ extern void xf86freeConfig(XF86ConfigPtr p);
+ extern int xf86writeConfigFile(const char *, XF86ConfigPtr);
+-extern _X_EXPORT XF86ConfDevicePtr xf86findDevice(const char *ident, XF86ConfDevicePtr p);
+-extern _X_EXPORT XF86ConfLayoutPtr xf86findLayout(const char *name, XF86ConfLayoutPtr list);
+-extern _X_EXPORT XF86ConfMonitorPtr xf86findMonitor(const char *ident, XF86ConfMonitorPtr p);
+-extern _X_EXPORT XF86ConfModesPtr xf86findModes(const char *ident, XF86ConfModesPtr p);
+-extern _X_EXPORT XF86ConfModeLinePtr xf86findModeLine(const char *ident, XF86ConfModeLinePtr p);
+-extern _X_EXPORT XF86ConfScreenPtr xf86findScreen(const char *ident, XF86ConfScreenPtr p);
+-extern _X_EXPORT XF86ConfInputPtr xf86findInput(const char *ident, XF86ConfInputPtr p);
+-extern _X_EXPORT XF86ConfInputPtr xf86findInputByDriver(const char *driver, XF86ConfInputPtr p);
++extern _X_EXPORT XF86ConfDevicePtr xf86findDevice(const char *ident,
++                                                  XF86ConfDevicePtr p);
++extern _X_EXPORT XF86ConfLayoutPtr xf86findLayout(const char *name,
++                                                  XF86ConfLayoutPtr list);
++extern _X_EXPORT XF86ConfMonitorPtr xf86findMonitor(const char *ident,
++                                                    XF86ConfMonitorPtr p);
++extern _X_EXPORT XF86ConfModesPtr xf86findModes(const char *ident,
++                                                XF86ConfModesPtr p);
++extern _X_EXPORT XF86ConfModeLinePtr xf86findModeLine(const char *ident,
++                                                      XF86ConfModeLinePtr p);
++extern _X_EXPORT XF86ConfScreenPtr xf86findScreen(const char *ident,
++                                                  XF86ConfScreenPtr p);
++extern _X_EXPORT XF86ConfInputPtr xf86findInput(const char *ident,
++                                                XF86ConfInputPtr p);
++extern _X_EXPORT XF86ConfInputPtr xf86findInputByDriver(const char *driver,
++                                                        XF86ConfInputPtr p);
+ extern _X_EXPORT XF86ConfVideoAdaptorPtr xf86findVideoAdaptor(const char *ident,
+-						XF86ConfVideoAdaptorPtr p);
+-extern int xf86layoutAddInputDevices(XF86ConfigPtr config, XF86ConfLayoutPtr layout);
+-
+-extern _X_EXPORT GenericListPtr xf86addListItem(GenericListPtr head, GenericListPtr c_new);
+-extern _X_EXPORT int xf86itemNotSublist(GenericListPtr list_1, GenericListPtr list_2);
++                                                              XF86ConfVideoAdaptorPtr
++                                                              p);
++extern int xf86layoutAddInputDevices(XF86ConfigPtr config,
++                                     XF86ConfLayoutPtr layout);
++
++extern _X_EXPORT GenericListPtr xf86addListItem(GenericListPtr head,
++                                                GenericListPtr c_new);
++extern _X_EXPORT int xf86itemNotSublist(GenericListPtr list_1,
++                                        GenericListPtr list_2);
+ 
+ extern _X_EXPORT int xf86pathIsAbsolute(const char *path);
+ extern _X_EXPORT int xf86pathIsSafe(const char *path);

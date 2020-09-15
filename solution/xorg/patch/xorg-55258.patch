@@ -1,0 +1,25 @@
+diff --git a/hw/dmx/dmxshadow.c b/hw/dmx/dmxshadow.c
+index a62eb5c..9b4bafc 100644
+--- a/hw/dmx/dmxshadow.c
++++ b/hw/dmx/dmxshadow.c
+@@ -44,7 +44,8 @@
+  * This file provides support for the shadow frame buffer. */
+ 
+ /** Update the screen from the shadow frame buffer. */
+-void dmxShadowUpdateProc(ScreenPtr pScreen, shadowBufPtr pBuf)
++void
++dmxShadowUpdateProc(ScreenPtr pScreen, shadowBufPtr pBuf)
+ {
+     RegionPtr      damage = &pBuf->damage;
+     int            nbox = RegionNumRects(damage);
+@@ -60,9 +61,7 @@ void dmxShadowUpdateProc(ScreenPtr pScreen, shadowBufPtr pBuf)
+ 		  dmxScreen->shadowGC,
+ 		  dmxScreen->shadowFBImage,
+ 		  pbox->x1, pbox->y1,
+-		  pbox->x1, pbox->y1,
+-		  pbox->x2 - pbox->x1,
+-		  pbox->y2 - pbox->y1);
++                  pbox->x1, pbox->y1, pbox->x2 - pbox->x1, pbox->y2 - pbox->y1);
+ 
+ 	pbox++;
+     }

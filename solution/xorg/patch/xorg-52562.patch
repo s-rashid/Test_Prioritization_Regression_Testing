@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winpfbdd.c b/hw/xwin/winpfbdd.c
+index c0bca71..a399020 100644
+--- a/hw/xwin/winpfbdd.c
++++ b/hw/xwin/winpfbdd.c
+@@ -294,6 +294,7 @@ winCloseScreenPrimaryDD (int nIndex, ScreenPtr pScreen)
+ 
+   /* Call the wrapped CloseScreen procedure */
+   WIN_UNWRAP(CloseScreen);
++  if (pScreen->CloseScreen)
+   fReturn = (*pScreen->CloseScreen) (nIndex, pScreen);
+ 
+   /* Delete the window property */

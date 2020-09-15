@@ -1,0 +1,13 @@
+diff --git a/Xi/queryst.c b/Xi/queryst.c
+index 60ec32e..2ba1edb 100644
+--- a/Xi/queryst.c
++++ b/Xi/queryst.c
+@@ -147,7 +147,7 @@ ProcXQueryDeviceState(ClientPtr client)
+     if (v != NULL) {
+ 	tv = (xValuatorState *) buf;
+ 	tv->class = ValuatorClass;
+-	tv->length = sizeof(xValuatorState);
++	tv->length = sizeof(xValuatorState) + v->numAxes * 4;
+ 	tv->num_valuators = v->numAxes;
+ 	tv->mode = v->mode;
+ 	buf += sizeof(xValuatorState);

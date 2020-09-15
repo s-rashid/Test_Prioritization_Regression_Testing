@@ -1,0 +1,23 @@
+diff --git a/os/utils.c b/os/utils.c
+index 51455cc..f30674b 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -527,6 +527,7 @@ void UseMsg(void)
+ #endif
+     ErrorF("-dumbSched             Disable smart scheduling, enable old behavior\n");
+     ErrorF("-schedInterval int     Set scheduler interval in msec\n");
++    ErrorF("-sigstop               Enable SIGSTOP based startup\n");
+     ErrorF("+extension name        Enable extension\n");
+     ErrorF("-extension name        Disable extension\n");
+ #ifdef XDMCP
+@@ -922,6 +923,10 @@ ProcessCommandLine(int argc, char *argv[])
+ 	    else
+ 		UseMsg ();
+ 	}
++	else if ( strcmp( argv[i], "-sigstop") == 0)
++	{
++	    RunFromSigStopParent = TRUE;
++	}
+ 	else if ( strcmp( argv[i], "+extension") == 0)
+ 	{
+ 	    if (++i < argc)

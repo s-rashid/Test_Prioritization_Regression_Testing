@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/i2c/tda9850_module.c b/hw/xfree86/i2c/tda9850_module.c
+index 8256e78..197d65a 100644
+--- a/hw/xfree86/i2c/tda9850_module.c
++++ b/hw/xfree86/i2c/tda9850_module.c
+@@ -4,8 +4,7 @@
+ 
+ #include "xf86Module.h"
+ 
+-static XF86ModuleVersionInfo tda9850VersRec =
+-{
++static XF86ModuleVersionInfo tda9850VersRec = {
+         "tda9850",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,

@@ -1,0 +1,13 @@
+diff --git a/Xi/getbmap.c b/Xi/getbmap.c
+index 4a788c6..e2d5897 100644
+--- a/Xi/getbmap.c
++++ b/Xi/getbmap.c
+@@ -109,7 +109,7 @@ ProcXGetDeviceButtonMapping(ClientPtr client)
+ 	return BadMatch;
+ 
+     rep.nElts = b->numButtons;
+-    rep.length = (rep.nElts + (4 - 1)) / 4;
++    rep.length = bytes_to_int32(rep.nElts);
+     WriteReplyToClient(client, sizeof(xGetDeviceButtonMappingReply), &rep);
+     (void)WriteToClient(client, rep.nElts, (char *)&b->map[1]);
+     return Success;

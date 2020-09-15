@@ -1,0 +1,12 @@
+diff --git a/include/closestr.h b/include/closestr.h
+index ab18ef9..c6aa129 100644
+--- a/include/closestr.h
++++ b/include/closestr.h
+@@ -26,7 +26,6 @@ from The Open Group.
+ 
+ */
+ 
+-
+ #ifndef CLOSESTR_H
+ #define CLOSESTR_H
+ 

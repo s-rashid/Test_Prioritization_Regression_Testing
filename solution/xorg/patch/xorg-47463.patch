@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/ephyr/ephyr.h b/hw/kdrive/ephyr/ephyr.h
+index f5ea144..cb5e4b5 100644
+--- a/hw/kdrive/ephyr/ephyr.h
++++ b/hw/kdrive/ephyr/ephyr.h
+@@ -180,6 +180,8 @@ extern Bool ephyrCursorInit(ScreenPtr pScreen);
+ 
+ extern void ephyrCursorEnable(ScreenPtr pScreen);
+ 
++extern int ephyrBufferHeight(KdScreenInfo *screen);
++
+ /* ephyr_draw.c */
+ 
+ Bool

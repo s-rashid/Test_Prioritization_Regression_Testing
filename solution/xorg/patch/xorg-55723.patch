@@ -1,0 +1,73 @@
+diff --git a/hw/xnest/Cursor.c b/hw/xnest/Cursor.c
+index 5491ee9..285e10e 100644
+--- a/hw/xnest/Cursor.c
++++ b/hw/xnest/Cursor.c
+@@ -48,10 +48,7 @@ xnestRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+   XGCValues values;
+ 
+   valuemask = GCFunction | 
+-              GCPlaneMask | 
+-	      GCForeground |
+-	      GCBackground |
+-	      GCClipMask;
++        GCPlaneMask | GCForeground | GCBackground | GCClipMask;
+ 
+   values.function = GXcopy;
+   values.plane_mask = AllPlanes;
+@@ -63,23 +60,18 @@ xnestRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ 
+   source = XCreatePixmap(xnestDisplay, 
+ 			 xnestDefaultWindows[pScreen->myNum],
+-			 pCursor->bits->width,
+-			 pCursor->bits->height,
+-			 1);
++                           pCursor->bits->width, pCursor->bits->height, 1);
+   
+   mask   = XCreatePixmap(xnestDisplay, 
+ 			 xnestDefaultWindows[pScreen->myNum],
+-			 pCursor->bits->width,
+-			 pCursor->bits->height,
+-			 1);
++                         pCursor->bits->width, pCursor->bits->height, 1);
+   
+   ximage = XCreateImage(xnestDisplay, 
+ 			xnestDefaultVisual(pScreen),
+ 			1, XYBitmap, 0, 
+ 			(char *)pCursor->bits->source,
+ 			pCursor->bits->width,
+-			pCursor->bits->height,
+-			BitmapPad(xnestDisplay), 0);
++                          pCursor->bits->height, BitmapPad(xnestDisplay), 0);
+   
+   XPutImage(xnestDisplay, source, xnestBitmapGC, ximage,
+ 	    0, 0, 0, 0, pCursor->bits->width, pCursor->bits->height);
+@@ -91,8 +83,7 @@ xnestRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ 			1, XYBitmap, 0, 
+ 			(char *)pCursor->bits->mask,
+ 			pCursor->bits->width,
+-			pCursor->bits->height,
+-			BitmapPad(xnestDisplay), 0);
++                          pCursor->bits->height, BitmapPad(xnestDisplay), 0);
+   
+   XPutImage(xnestDisplay, mask, xnestBitmapGC, ximage,
+ 	    0, 0, 0, 0, pCursor->bits->width, pCursor->bits->height);
+@@ -140,14 +131,14 @@ xnestRecolorCursor(ScreenPtr pScreen, CursorPtr pCursor, Bool displayed)
+   bg_color.blue = pCursor->backBlue;
+   
+   XRecolorCursor(xnestDisplay, 
+-		 xnestCursor(pCursor, pScreen),
+-		 &fg_color, &bg_color);
++                   xnestCursor(pCursor, pScreen), &fg_color, &bg_color);
+ }
+ 
+-void xnestSetCursor (DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+-{
+-    if (pCursor)
++void
++xnestSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x,
++               int y)
+     {
++    if (pCursor) {
+ 	XDefineCursor(xnestDisplay, 
+ 		      xnestDefaultWindows[pScreen->myNum], 
+ 		      xnestCursor(pCursor, pScreen));

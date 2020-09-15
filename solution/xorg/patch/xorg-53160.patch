@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 608f9bd..b001f9d 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -91,9 +91,6 @@ typedef struct {
+ 						   input device events */
+     Pix24Flags		pixmap24;
+     MessageType		pix24From;
+-#ifdef SUPPORT_PC98
+-    Bool		pc98;
+-#endif
+     Bool		pmFlag;
+     Log			log;
+     Bool		disableRandR;

@@ -1,0 +1,16 @@
+diff --git a/Xext/panoramiX.h b/Xext/panoramiX.h
+index cca4c52..463a994 100644
+--- a/Xext/panoramiX.h
++++ b/Xext/panoramiX.h
+@@ -69,11 +69,9 @@ typedef struct {
+ 	struct {
+ 	    Bool shared;
+ 	} pix;
+-#ifdef RENDER
+ 	struct {
+ 	    Bool root;
+ 	} pict;
+-#endif
+ 	char raw_data[4];
+     } u;
+ } PanoramiXRes;

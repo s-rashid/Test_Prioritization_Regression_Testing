@@ -1,0 +1,12 @@
+diff --git a/fb/fbpict.c b/fb/fbpict.c
+index 7636040..6e66db8 100644
+--- a/fb/fbpict.c
++++ b/fb/fbpict.c
+@@ -364,6 +364,7 @@ fbPictureInit (ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+     ps->Glyphs = miGlyphs;
+     ps->CompositeRects = miCompositeRects;
+     ps->RasterizeTrapezoid = fbRasterizeTrapezoid;
++    ps->Trapezoids = fbTrapezoids;
+     ps->AddTraps = fbAddTraps;
+     ps->AddTriangles = fbAddTriangles;
+ 

@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxinput.c b/hw/dmx/dmxinput.c
+index 568bb88..f006af4 100644
+--- a/hw/dmx/dmxinput.c
++++ b/hw/dmx/dmxinput.c
+@@ -77,6 +77,7 @@ void InitInput(int argc, char **argv)
+ 
+ void CloseInput(void)
+ {
++    mieqFini();
+ }
+ 
+ /** Called from dix/dispatch.c in Dispatch() whenever input events

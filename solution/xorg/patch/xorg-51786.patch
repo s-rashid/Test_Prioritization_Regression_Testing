@@ -1,0 +1,13 @@
+diff --git a/glx/glxcmds.c b/glx/glxcmds.c
+index 3ef567d..0b375c3 100644
+--- a/glx/glxcmds.c
++++ b/glx/glxcmds.c
+@@ -1436,7 +1436,7 @@ int __glXDisp_CreateGLXPbufferSGIX(__GLXclientState *cl, GLbyte *pc)
+     ClientPtr client = cl->client;
+     xGLXCreateGLXPbufferSGIXReq *req = (xGLXCreateGLXPbufferSGIXReq *) pc;
+ 
+-    REQUEST_SIZE_MATCH(xGLXCreateGLXPbufferSGIXReq);
++    REQUEST_AT_LEAST_SIZE(xGLXCreateGLXPbufferSGIXReq);
+ 
+     return DoCreatePbuffer(cl->client, req->screen, req->fbconfig,
+ 			   req->width, req->height, req->pbuffer);

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 8f2cdf6..1242de9 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -439,7 +439,7 @@ probe_devices_from_device_sections(DriverPtr drvp)
+ 	    }
+ 	}
+     }
+-
++    xfree(devList);
+ 
+     return foundScreen;
+ }

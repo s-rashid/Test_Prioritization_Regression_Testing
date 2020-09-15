@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index 1242be1..814fc1a 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -570,7 +570,7 @@ static void dmxUpdateWindowInformation(DMXInputInfo *dmxInput,
+     int i;
+ 
+ #ifdef PANORAMIX
+-    if (!noPanoramiXExtension && pWindow && pWindow->parent != WindowTable[0])
++    if (!noPanoramiXExtension && pWindow && pWindow->parent != screenInfo.screens[0]->root)
+         return;
+ #endif
+ #if DMX_WINDOW_DEBUG

@@ -1,0 +1,13 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index 926504e..f5265dd 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -35,8 +35,6 @@ static RESTYPE		DamageExtWinType;
+ static DevPrivateKeyRec DamageClientPrivateKeyRec;
+ #define DamageClientPrivateKey (&DamageClientPrivateKeyRec)
+ 
+-#define prScreen	screenInfo.screens[0]
+-
+ static void
+ DamageExtNotify (DamageExtPtr pDamageExt, BoxPtr pBoxes, int nBoxes)
+ {

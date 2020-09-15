@@ -1,0 +1,42 @@
+diff --git a/hw/xwin/winengine.c b/hw/xwin/winengine.c
+index fb9aed8..e866e1e 100644
+--- a/hw/xwin/winengine.c
++++ b/hw/xwin/winengine.c
+@@ -34,13 +34,17 @@
+ #include "win.h"
+ #include "winmsg.h"
+ 
+-
+ /*
+- * External global variables
++ * Global variables for function pointers into
++ * dynamically loaded libraries
+  */
++FARPROC		g_fpDirectDrawCreate = NULL;
++FARPROC		g_fpDirectDrawCreateClipper = NULL;
+ 
+-extern const GUID _IID_IDirectDraw4;
+-
++/*
++  module handle for dynamically loaded directdraw library
++*/
++static HMODULE g_hmodDirectDraw = NULL;
+ 
+ /*
+  * Detect engines supported by current Windows version
+@@ -334,3 +338,15 @@ winGetDDProcAddresses (void)
+   
+   return fReturn;
+ }
++
++void
++winReleaseDDProcAddresses(void)
++{
++  if (g_hmodDirectDraw != NULL)
++    {
++      FreeLibrary (g_hmodDirectDraw);
++      g_hmodDirectDraw = NULL;
++      g_fpDirectDrawCreate = NULL;
++      g_fpDirectDrawCreateClipper = NULL;
++    }
++}

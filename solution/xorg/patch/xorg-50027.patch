@@ -1,0 +1,11 @@
+diff --git a/hw/xnest/Pixmap.c b/hw/xnest/Pixmap.c
+index a0968b9..3a92ffd 100644
+--- a/hw/xnest/Pixmap.c
++++ b/hw/xnest/Pixmap.c
+@@ -133,5 +133,5 @@ xnestPixmapToRegion(PixmapPtr pPixmap)
+ 
+   RegionValidate(pReg, &overlap);
+ 
+-  return(pReg);
++  return pReg;
+ }

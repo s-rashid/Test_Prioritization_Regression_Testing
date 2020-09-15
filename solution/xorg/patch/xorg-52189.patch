@@ -1,0 +1,13 @@
+diff --git a/Xext/xvdisp.c b/Xext/xvdisp.c
+index deddebd..beb26a9 100644
+--- a/Xext/xvdisp.c
++++ b/Xext/xvdisp.c
+@@ -1927,7 +1927,7 @@ void XineramifyXv(void)
+ 	 if(!port)
+ 	    break;
+ 
+-	 for(k = 0; k < PanoramiXNumScreens; k++) {
++	 FOR_NSCREENS(k) {
+ 	    if(MatchingAdaptors[k] && (MatchingAdaptors[k]->nPorts > j)) 
+ 		port->info[k].id = MatchingAdaptors[k]->base_id + j;
+ 	    else

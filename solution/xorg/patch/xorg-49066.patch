@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 5562853..9ec4caa 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -607,7 +607,7 @@ DRI2CanFlip(DrawablePtr pDraw)
+     if (pDraw->type == DRAWABLE_PIXMAP)
+ 	return TRUE;
+ 
+-    pRoot = WindowTable[pScreen->myNum];
++    pRoot = pScreen->root;
+     pRootPixmap = pScreen->GetWindowPixmap(pRoot);
+ 
+     pWin = (WindowPtr) pDraw;

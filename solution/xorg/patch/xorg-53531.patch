@@ -1,0 +1,26 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 0a3d3d8..eeae2a7 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -37,6 +37,7 @@
+ #include "xkbstr.h"
+ #include "inpututils.h"
+ #include "eventstr.h"
++#include "scrnintstr.h"
+ 
+ /* Check if a button map change is okay with the device.
+  * Returns -1 for BadValue, as it collides with MappingBusy. */
+@@ -619,6 +620,13 @@ void init_device_event(DeviceEvent *event, DeviceIntPtr dev, Time ms)
+     event->sourceid = dev->id;
+ }
+ 
++Bool
++point_on_screen(ScreenPtr pScreen, int x, int y)
++{
++    return x >= pScreen->x && x < pScreen->x + pScreen->width &&
++           y >= pScreen->y && y < pScreen->y + pScreen->height;
++}
++
+ /**
+  * Delete the element with the key from the list, freeing all memory
+  * associated with the element..

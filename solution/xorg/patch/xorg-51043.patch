@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/src/kdrive.c b/hw/kdrive/src/kdrive.c
+index 06c3661..c688eb0 100644
+--- a/hw/kdrive/src/kdrive.c
++++ b/hw/kdrive/src/kdrive.c
+@@ -1022,12 +1022,6 @@ KdScreenInit(int index, ScreenPtr pScreen, int argc, char **argv)
+     fbInitValidateTree (pScreen);
+ #endif
+ 
+-#if 0
+-    pScreen->backingStoreSupport = Always;
+-    miInitializeBackingStore (pScreen);
+-#endif
+-
+-
+     /*
+      * Wrap CloseScreen, the order now is:
+      *	KdCloseScreen

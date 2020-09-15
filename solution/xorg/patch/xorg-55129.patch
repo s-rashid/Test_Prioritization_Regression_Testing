@@ -1,0 +1,62 @@
+diff --git a/fb/fbfillrect.c b/fb/fbfillrect.c
+index 7fc03f9..64ba2b4 100644
+--- a/fb/fbfillrect.c
++++ b/fb/fbfillrect.c
+@@ -27,10 +27,7 @@
+ #include "fb.h"
+ 
+ void
+-fbPolyFillRect(DrawablePtr  pDrawable, 
+-	       GCPtr	    pGC, 
+-	       int	    nrect,
+-	       xRectangle   *prect)
++fbPolyFillRect(DrawablePtr pDrawable, GCPtr pGC, int nrect, xRectangle *prect)
+ {
+     RegionPtr	    pClip = fbGetCompositeClip(pGC);
+     register BoxPtr pbox;
+@@ -49,8 +46,7 @@ fbPolyFillRect(DrawablePtr  pDrawable,
+     extentY1 = pextent->y1;
+     extentX2 = pextent->x2;
+     extentY2 = pextent->y2;
+-    while (nrect--)
+-    {
++    while (nrect--) {
+ 	fullX1 = prect->x + xorg;
+ 	fullY1 = prect->y + yorg;
+ 	fullX2 = fullX1 + (int) prect->width;
+@@ -72,21 +68,17 @@ fbPolyFillRect(DrawablePtr  pDrawable,
+ 	if ((fullX1 >= fullX2) || (fullY1 >= fullY2))
+ 	    continue;
+ 	n = RegionNumRects (pClip);
+-	if (n == 1)
+-	{
++        if (n == 1) {
+ 	    fbFill (pDrawable,
+-		    pGC,
+-		    fullX1, fullY1, fullX2-fullX1, fullY2-fullY1);
++                   pGC, fullX1, fullY1, fullX2 - fullX1, fullY2 - fullY1);
+ 	}
+-	else
+-	{
++        else {
+ 	    pbox = RegionRects(pClip);
+ 	    /* 
+ 	     * clip the rectangle to each box in the clip region
+ 	     * this is logically equivalent to calling Intersect()
+ 	     */
+-	    while(n--)
+-	    {
++            while (n--) {
+ 		partX1 = pbox->x1;
+ 		if (partX1 < fullX1)
+ 		    partX1 = fullX1;
+@@ -104,8 +96,7 @@ fbPolyFillRect(DrawablePtr  pDrawable,
+ 		
+ 		if (partX1 < partX2 && partY1 < partY2)
+ 		    fbFill (pDrawable, pGC,
+-			    partX1, partY1,
+-			    partX2 - partX1, partY2 - partY1);
++                           partX1, partY1, partX2 - partX1, partY2 - partY1);
+ 	    }
+ 	}
+     }

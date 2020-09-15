@@ -1,0 +1,16 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 422bae0..c6f86f5 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -447,6 +447,11 @@ extern _X_EXPORT void	XkbFreeKeyboard(
+ 	Bool			/* freeDesc */
+ );
+ 
++extern _X_EXPORT void	XkbFreeComponentNames(
++	XkbComponentNamesPtr	/* names */,
++	Bool			/* freeNames */
++);
++
+ extern _X_EXPORT  void XkbSetActionKeyMods(
+ 	XkbDescPtr		/* xkb */,
+ 	XkbAction *		/* act */,

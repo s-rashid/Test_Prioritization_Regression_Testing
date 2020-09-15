@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/quartzStartup.c b/hw/xquartz/quartzStartup.c
+index ba92ece..36c8182 100644
+--- a/hw/xquartz/quartzStartup.c
++++ b/hw/xquartz/quartzStartup.c
+@@ -40,7 +40,6 @@
+ #include "X11Controller.h"
+ #include "darwin.h"
+ #include "darwinEvents.h"
+-#include "quartzAudio.h"
+ #include "quartz.h"
+ #include "opaque.h"
+ #include "micmap.h"
+@@ -117,9 +116,6 @@ int server_main(int argc, char **argv, char **envp) {
+         }
+     }
+ 
+-    /* Create the audio mutex */
+-    QuartzAudioInit();
+-
+     X11ControllerMain(argc, argv, envp);
+     exit(0);
+ }

@@ -1,0 +1,12 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index f5265dd..b4bb478 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -217,6 +217,7 @@ ProcDamageCreate (ClientPtr client)
+     if (!AddResource (stuff->damage, DamageExtType, (pointer) pDamageExt))
+ 	return BadAlloc;
+ 
++    DamageSetReportAfterOp (pDamageExt->pDamage, TRUE);
+     DamageRegister (pDamageExt->pDrawable, pDamageExt->pDamage);
+ 
+     if (pDrawable->type == DRAWABLE_WINDOW)

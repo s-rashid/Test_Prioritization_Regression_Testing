@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/os-support/bus/xf86Sbus.h b/hw/xfree86/os-support/bus/xf86Sbus.h
+index cff5e80..8a10d64 100644
+--- a/hw/xfree86/os-support/bus/xf86Sbus.h
++++ b/hw/xfree86/os-support/bus/xf86Sbus.h
+@@ -66,4 +66,4 @@
+ #define FBTYPE_CREATOR -1
+ #endif
+ 
+-#endif /* _XF86_SBUS_H */
++#endif                          /* _XF86_SBUS_H */

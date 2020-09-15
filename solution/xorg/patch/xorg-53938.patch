@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/glxProxy/glxscreens.c b/hw/dmx/glxProxy/glxscreens.c
+index 01e041c..baa4a65 100644
+--- a/hw/dmx/glxProxy/glxscreens.c
++++ b/hw/dmx/glxProxy/glxscreens.c
+@@ -120,7 +120,8 @@ static void CalcServerVersionAndExtensions( void )
+       __glXVersionMinor = GLX_SERVER_MINOR_VERSION;
+    }
+ 
+-   sprintf(GLXServerVersion, "%d.%d DMX %d back-end server(s)",
++   snprintf(GLXServerVersion, sizeof(GLXServerVersion),
++             "%d.%d DMX %d back-end server(s)",
+               __glXVersionMajor, __glXVersionMinor, __glXNumActiveScreens );	 
+    /*
+     * set the ExtensionsString to the minimum extensions string

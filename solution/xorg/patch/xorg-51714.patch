@@ -1,0 +1,20 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index bbb1d9d..6fd66c5 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -915,9 +915,14 @@ ProcXkbSetControls(ClientPtr client)
+                                        stuff->axtOptsMask);
+             }
+ 
+-            if (stuff->changeCtrls & XkbPerKeyRepeatMask)
++            if (stuff->changeCtrls & XkbPerKeyRepeatMask) {
+                 memcpy(new.per_key_repeat, stuff->perKeyRepeat,
+                        XkbPerKeyBitArraySize);
++                if (xkbi->repeatKey &&
++                    !BitIsOn(new.per_key_repeat, xkbi->repeatKey)) {
++                    AccessXCancelRepeatKey(xkbi, xkbi->repeatKey);
++                }
++            }
+ 
+             old= *ctrl;
+             *ctrl= new;

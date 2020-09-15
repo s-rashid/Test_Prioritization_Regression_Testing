@@ -1,0 +1,14 @@
+diff --git a/dix/window.c b/dix/window.c
+index 2676a54..c7201df 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -2303,6 +2303,9 @@ ConfigureWindow(WindowPtr pWin, Mask mask, XID *vlist, ClientPtr client)
+     return(Success);
+ 
+ ActuallyDoSomething:
++    if (pWin->drawable.pScreen->ConfigNotify)
++	(*pWin->drawable.pScreen->ConfigNotify)(pWin, x, y, w, h, bw, pSib);
++
+     if (SubStrSend(pWin, pParent))
+     {
+ 	memset(&event, 0, sizeof(xEvent));

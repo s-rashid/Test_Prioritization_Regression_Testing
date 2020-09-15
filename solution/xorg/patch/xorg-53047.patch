@@ -1,0 +1,13 @@
+diff --git a/dix/main.c b/dix/main.c
+index 955b7ea..16575ce 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -347,7 +347,7 @@ int main(int argc, char *argv[], char *envp[])
+ 
+ 	if (dispatchException & DE_TERMINATE)
+ 	{
+-	    ddxGiveUp();
++	    ddxGiveUp(EXIT_NO_ERROR);
+ 	    break;
+ 	}
+ 

@@ -1,0 +1,40 @@
+diff --git a/hw/xfree86/i2c/fi1236.h b/hw/xfree86/i2c/fi1236.h
+index 8dd7e4f..0530892 100644
+--- a/hw/xfree86/i2c/fi1236.h
++++ b/hw/xfree86/i2c/fi1236.h
+@@ -20,7 +20,6 @@ typedef struct {
+ 	CARD8  control;
+ 	} FI1236_parameters;
+ 
+-
+ typedef struct {
+ 	/* what we want */
+ 	/* all frequencies are in Mhz */
+@@ -86,7 +85,6 @@ typedef struct {
+ #define TUNER_OFF      4
+ #define TUNER_STILL_TUNING      5
+ 
+-
+ void FI1236_tune(FI1236Ptr f, CARD32 frequency);
+ 
+ #define FI1236SymbolsList  \
+@@ -96,15 +94,19 @@ void FI1236_tune(FI1236Ptr f, CARD32 frequency);
+ 
+ #define xf86_Detect_FI1236		Detect_FI1236
+ extern _X_EXPORT FI1236Ptr Detect_FI1236(I2CBusPtr b, I2CSlaveAddr addr);
++
+ #define xf86_FI1236_set_tuner_type	FI1236_set_tuner_type
+ extern _X_EXPORT void FI1236_set_tuner_type(FI1236Ptr f, int type);
++
+ #define xf86_TUNER_set_frequency	TUNER_set_frequency
+ extern _X_EXPORT void TUNER_set_frequency(FI1236Ptr f, CARD32 frequency);
+ 
+ #define xf86_FI1236_AFC			FI1236_AFC
+ extern _X_EXPORT int FI1236_AFC(FI1236Ptr f);
++
+ #define xf86_TUNER_get_afc_hint		TUNER_get_afc_hint
+ extern _X_EXPORT int TUNER_get_afc_hint(FI1236Ptr f);
++
+ #define xf86_fi1236_dump_status		fi1236_dump_status
+ extern _X_EXPORT void fi1236_dump_status(FI1236Ptr f);
+ 

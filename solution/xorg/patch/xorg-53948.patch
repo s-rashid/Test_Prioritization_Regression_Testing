@@ -1,0 +1,13 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index e599f91..db34c8d 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -60,7 +60,7 @@ extern int Win32System(const char *cmdline);
+ 
+ /***====================================================================***/
+ 
+-static char *componentDirs[_XkbListNumComponents] = {
++static const char *componentDirs[_XkbListNumComponents] = {
+ 	"keycodes", "types", "compat", "symbols", "geometry"
+ };
+ 

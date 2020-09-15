@@ -1,0 +1,255 @@
+diff --git a/hw/dmx/glxProxy/glxvendor.c b/hw/dmx/glxProxy/glxvendor.c
+index 0b6ba41..963c92e 100644
+--- a/hw/dmx/glxProxy/glxvendor.c
++++ b/hw/dmx/glxProxy/glxvendor.c
+@@ -79,14 +79,14 @@
+ #endif
+ 
+ extern Display *GetBackEndDisplay( __GLXclientState *cl, int s );
+-extern int GetCurrentBackEndTag(__GLXclientState *cl, GLXContextTag tag, int s);
++extern int GetCurrentBackEndTag(__GLXclientState * cl, GLXContextTag tag,
++                                int s);
+ 
+ static int swap_vec_element_size = 0;
+ 
+-static void SendSwappedReply( ClientPtr client,
+-                              xGLXVendorPrivReply *reply, 
+-			      char *buf,
+-			      int   buf_size )
++static void
++SendSwappedReply(ClientPtr client,
++                 xGLXVendorPrivReply * reply, char *buf, int buf_size)
+ {
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -144,7 +144,8 @@ static void SendSwappedReply( ClientPtr client,
+ 
+ }
+ 
+-int __glXVForwardSingleReq( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardSingleReq(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
+    xGLXVendorPrivateReq *be_req;
+@@ -193,7 +194,8 @@ int __glXVForwardSingleReq( __GLXclientState *cl, GLbyte *pc )
+     return Success;
+ }
+ 
+-int __glXVForwardPipe0WithReply( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardPipe0WithReply(__GLXclientState * cl, GLbyte * pc)
+ {
+    ClientPtr client = cl->client;
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
+@@ -227,7 +229,8 @@ int __glXVForwardPipe0WithReply( __GLXclientState *cl, GLbyte *pc )
+     be_req->glxCode = req->glxCode;
+     be_req->length = req->length;
+     be_req->vendorCode = req->vendorCode;
+-    be_req->contextTag = GetCurrentBackEndTag(cl,req->contextTag, glxc->pScreen->myNum);
++    be_req->contextTag =
++        GetCurrentBackEndTag(cl, req->contextTag, glxc->pScreen->myNum);
+     if (buf_size > 0) 
+        _XSend(dpy, (const char *)pc, buf_size);
+ 
+@@ -267,12 +270,14 @@ int __glXVForwardPipe0WithReply( __GLXclientState *cl, GLbyte *pc )
+ 	  WriteToClient(client, be_buf_size, (char *)be_buf);
+     }
+ 
+-    if (be_buf_size > 0) free(be_buf);
++    if (be_buf_size > 0)
++        free(be_buf);
+ 
+     return Success;
+ }
+ 
+-int __glXVForwardAllWithReply( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardAllWithReply(__GLXclientState * cl, GLbyte * pc)
+ {
+    ClientPtr client = cl->client;
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
+@@ -364,14 +369,17 @@ int __glXVForwardAllWithReply( __GLXclientState *cl, GLbyte *pc )
+ 	  WriteToClient(client, be_buf_size, (char *)be_buf);
+     }
+ 
+-    if (be_buf_size > 0) free(be_buf);
++    if (be_buf_size > 0)
++        free(be_buf);
+ 
+     return Success;
+ }
+ 
+-int __glXVForwardSingleReqSwap( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardSingleReqSwap(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+ 
+    __GLX_SWAP_SHORT(&req->length);
+@@ -383,9 +391,11 @@ int __glXVForwardSingleReqSwap( __GLXclientState *cl, GLbyte *pc )
+    return( __glXVForwardSingleReq( cl, pc ) );
+ }
+ 
+-int __glXVForwardPipe0WithReplySwap( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardPipe0WithReplySwap(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -402,15 +412,18 @@ int __glXVForwardPipe0WithReplySwap( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardPipe0WithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardPipe0WithReplySwapsv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardPipe0WithReplySwapsv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -427,15 +440,18 @@ int __glXVForwardPipe0WithReplySwapsv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardPipe0WithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardPipe0WithReplySwapiv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardPipe0WithReplySwapiv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -452,15 +468,18 @@ int __glXVForwardPipe0WithReplySwapiv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardPipe0WithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardPipe0WithReplySwapdv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardPipe0WithReplySwapdv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -477,15 +496,18 @@ int __glXVForwardPipe0WithReplySwapdv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardPipe0WithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardAllWithReplySwap( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardAllWithReplySwap(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -502,15 +524,18 @@ int __glXVForwardAllWithReplySwap( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardAllWithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardAllWithReplySwapsv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardAllWithReplySwapsv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -527,15 +552,18 @@ int __glXVForwardAllWithReplySwapsv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardAllWithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardAllWithReplySwapiv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardAllWithReplySwapiv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -552,15 +580,18 @@ int __glXVForwardAllWithReplySwapiv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardAllWithReply( cl, pc ) );
+ }
+ 
+-int __glXVForwardAllWithReplySwapdv( __GLXclientState *cl, GLbyte *pc )
++int
++__glXVForwardAllWithReplySwapdv(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXVendorPrivateReq *req = (xGLXVendorPrivateReq *)pc;
++
+    __GLX_DECLARE_SWAP_VARIABLES;
+    __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -577,9 +608,9 @@ int __glXVForwardAllWithReplySwapdv( __GLXclientState *cl, GLbyte *pc )
+    if (req->length > sz_xGLXVendorPrivateReq/4) {
+       int *data = (int *)(req+1);
+       int count = req->length - sz_xGLXVendorPrivateReq/4;
++
+       __GLX_SWAP_INT_ARRAY(data, count );
+    }
+ 
+    return( __glXVForwardAllWithReply( cl, pc ) );
+ }
+-

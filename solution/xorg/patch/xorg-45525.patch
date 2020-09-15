@@ -1,0 +1,12 @@
+diff --git a/xkb/xkmread.c b/xkb/xkmread.c
+index 3e05679..6623d1b 100644
+--- a/xkb/xkmread.c
++++ b/xkb/xkmread.c
+@@ -36,6 +36,7 @@
+ #include <X11/X.h>
+ #include <X11/Xproto.h>
+ #include <X11/keysym.h>
++#include <X11/extensions/XKMformat.h>
+ #include "misc.h"
+ #include "inputstr.h"
+ #include "xkbstr.h"

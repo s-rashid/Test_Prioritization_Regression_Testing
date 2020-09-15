@@ -1,0 +1,44 @@
+diff --git a/hw/xquartz/quartzKeyboard.h b/hw/xquartz/quartzKeyboard.h
+index fe7ae70..60290e6 100644
+--- a/hw/xquartz/quartzKeyboard.h
++++ b/hw/xquartz/quartzKeyboard.h
+@@ -1,4 +1,5 @@
+ /*
++ * Copyright (c) 2002-2012 Apple Inc. All rights reserved.
+  * Copyright (c) 2003-2004 Torrey T. Lyons. All Rights Reserved.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+@@ -40,17 +41,25 @@
+ #define MAX_KEYCODE     NUM_KEYCODES + MIN_KEYCODE - 1
+ 
+ /* These functions need to be implemented by Xquartz, XDarwin, etc. */
+-Bool QuartsResyncKeymap(Bool sendDDXEvent);
++Bool
++QuartsResyncKeymap(Bool sendDDXEvent);
+ 
+ /* Provided for darwinEvents.c */
+-void DarwinKeyboardReloadHandler(void);
+-int DarwinModifierNXKeycodeToNXKey(unsigned char keycode, int *outSide);
+-int DarwinModifierNXKeyToNXKeycode(int key, int side);
+-int DarwinModifierNXKeyToNXMask(int key);
+-int DarwinModifierNXMaskToNXKey(int mask);
+-int DarwinModifierStringToNXMask(const char *string, int separatelr);
++void
++DarwinKeyboardReloadHandler(void);
++int
++DarwinModifierNXKeycodeToNXKey(unsigned char keycode, int *outSide);
++int
++DarwinModifierNXKeyToNXKeycode(int key, int side);
++int
++DarwinModifierNXKeyToNXMask(int key);
++int
++DarwinModifierNXMaskToNXKey(int mask);
++int
++DarwinModifierStringToNXMask(const char *string, int separatelr);
+ 
+ /* Provided for darwin.c */
+-void DarwinKeyboardInit(DeviceIntPtr pDev);
++void
++DarwinKeyboardInit(DeviceIntPtr pDev);
+ 
+ #endif                          /* QUARTZ_KEYBOARD_H */

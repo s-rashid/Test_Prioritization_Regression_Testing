@@ -1,0 +1,21 @@
+diff --git a/dix/touch.c b/dix/touch.c
+index f55bb8c..d04801c 100644
+--- a/dix/touch.c
++++ b/dix/touch.c
+@@ -1022,13 +1022,12 @@ TouchAcceptReject(ClientPtr client, DeviceIntPtr dev, int mode,
+     if (i > 0)
+     {
+         if (mode == XIRejectTouch)
+-        {
+             TouchRejected(dev, ti, ti->listeners[i].listener, NULL);
++        else
++            ti->listeners[i].state = LISTENER_EARLY_ACCEPT;
++
+             return Success;
+         }
+-        /* FIXME: Implement early accept */
+-        return BadAccess;
+-    }
+ 
+     nev = GetTouchOwnershipEvents(events, dev, ti, mode,
+                                   ti->listeners[0].listener, 0);

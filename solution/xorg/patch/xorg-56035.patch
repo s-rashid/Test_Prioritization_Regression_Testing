@@ -1,0 +1,24 @@
+diff --git a/miext/rootless/rootlessWindow.h b/miext/rootless/rootlessWindow.h
+index 2b018e0..d3955fc 100644
+--- a/miext/rootless/rootlessWindow.h
++++ b/miext/rootless/rootlessWindow.h
+@@ -46,12 +46,15 @@ Bool RootlessPositionWindow(WindowPtr pWin, int x, int y);
+ Bool RootlessRealizeWindow(WindowPtr pWin);
+ Bool RootlessUnrealizeWindow(WindowPtr pWin);
+ void RootlessRestackWindow(WindowPtr pWin, WindowPtr pOldNextSib);
+-void RootlessCopyWindow(WindowPtr pWin,DDXPointRec ptOldOrg,RegionPtr prgnSrc);
+-void RootlessMoveWindow(WindowPtr pWin,int x,int y,WindowPtr pSib,VTKind kind);
+-void RootlessResizeWindow(WindowPtr pWin, int x, int y,
+-			  unsigned int w, unsigned int h, WindowPtr pSib);
++void RootlessCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg,
++                        RegionPtr prgnSrc);
++void RootlessMoveWindow(WindowPtr pWin, int x, int y, WindowPtr pSib,
++                        VTKind kind);
++void RootlessResizeWindow(WindowPtr pWin, int x, int y, unsigned int w,
++                          unsigned int h, WindowPtr pSib);
+ void RootlessReparentWindow(WindowPtr pWin, WindowPtr pPriorParent);
+ void RootlessChangeBorderWidth(WindowPtr pWin, unsigned int width);
++
+ #ifdef __APPLE__
+ void RootlessNativeWindowMoved (WindowPtr pWin);
+ void RootlessNativeWindowStateChanged (WindowPtr pWin, unsigned int state); 

@@ -1,0 +1,172 @@
+diff --git a/fb/fbfill.c b/fb/fbfill.c
+index e62a48a..de9d6b3 100644
+--- a/fb/fbfill.c
++++ b/fb/fbfill.c
+@@ -27,12 +27,7 @@
+ #include "fb.h"
+ 
+ void
+-fbFill (DrawablePtr pDrawable,
+-	GCPtr	    pGC,
+-	int	    x,
+-	int	    y,
+-	int	    width,
+-	int	    height)
++fbFill(DrawablePtr pDrawable, GCPtr pGC, int x, int y, int width, int height)
+ {
+     FbBits	    *dst;
+     FbStride	    dstStride;
+@@ -47,15 +42,12 @@ fbFill (DrawablePtr pDrawable,
+ #ifndef FB_ACCESS_WRAPPER
+ 	if (pPriv->and || !pixman_fill ((uint32_t *)dst, dstStride, dstBpp,
+ 					x + dstXoff, y + dstYoff,
+-					width, height,
+-					pPriv->xor))
++                                       width, height, pPriv->xor))
+ #endif	    
+ 	    fbSolid (dst + (y + dstYoff) * dstStride, 
+ 		     dstStride, 
+ 		     (x + dstXoff) * dstBpp,
+-		     dstBpp,
+-		     width * dstBpp, height,
+-		     pPriv->and, pPriv->xor);
++                    dstBpp, width * dstBpp, height, pPriv->and, pPriv->xor);
+ 	break;
+     case FillStippled:
+     case FillOpaqueStippled: {
+@@ -63,8 +55,7 @@ fbFill (DrawablePtr pDrawable,
+ 	int	    stipWidth = pStip->drawable.width;
+ 	int	    stipHeight = pStip->drawable.height;
+ 	
+-	if (dstBpp == 1)
+-	{
++        if (dstBpp == 1) {
+ 	    int		alu;
+ 	    FbBits	*stip;
+ 	    FbStride    stipStride;
+@@ -75,25 +66,15 @@ fbFill (DrawablePtr pDrawable,
+ 		alu = FbStipple1Rop(pGC->alu,pGC->fgPixel);
+ 	    else
+ 		alu = FbOpaqueStipple1Rop(pGC->alu,pGC->fgPixel,pGC->bgPixel);
+-	    fbGetDrawable (&pStip->drawable, stip, stipStride, stipBpp, stipXoff, stipYoff);
+-	    fbTile (dst + (y + dstYoff) * dstStride,
+-		    dstStride,
+-		    x + dstXoff,
+-		    width, height,
+-		    stip,
+-		    stipStride,
+-		    stipWidth,
+-		    stipHeight,
+-		    alu,
+-		    pPriv->pm,
+-		    dstBpp,
+-		    
+-		    (pGC->patOrg.x + pDrawable->x + dstXoff),
++            fbGetDrawable(&pStip->drawable, stip, stipStride, stipBpp, stipXoff,
++                          stipYoff);
++            fbTile(dst + (y + dstYoff) * dstStride, dstStride, x + dstXoff,
++                   width, height, stip, stipStride, stipWidth, stipHeight, alu,
++                   pPriv->pm, dstBpp, (pGC->patOrg.x + pDrawable->x + dstXoff),
+ 		    pGC->patOrg.y + pDrawable->y - y);
+ 	    fbFinishAccess (&pStip->drawable);
+ 	}
+-	else
+-	{
++        else {
+ 	    FbStip	*stip;
+ 	    FbStride    stipStride;
+ 	    int		stipBpp;
+@@ -102,30 +83,21 @@ fbFill (DrawablePtr pDrawable,
+ 
+ 	    fgand = pPriv->and;
+ 	    fgxor = pPriv->xor;
+-	    if (pGC->fillStyle == FillStippled)
+-	    {
++            if (pGC->fillStyle == FillStippled) {
+ 		bgand = fbAnd(GXnoop,(FbBits) 0,FB_ALLONES);
+ 		bgxor = fbXor(GXnoop,(FbBits) 0,FB_ALLONES);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		bgand = pPriv->bgand;
+ 		bgxor = pPriv->bgxor;
+ 	    }
+ 
+-	    fbGetStipDrawable (&pStip->drawable, stip, stipStride, stipBpp, stipXoff, stipYoff);
+-	    fbStipple (dst + (y + dstYoff) * dstStride, 
+-		       dstStride, 
+-		       (x + dstXoff) * dstBpp,
+-		       dstBpp,
+-		       width * dstBpp, height,
+-		       stip,
+-		       stipStride,
+-		       stipWidth,
+-		       stipHeight,
+-		       pPriv->evenStipple,
+-		       fgand, fgxor,
+-		       bgand, bgxor,
++            fbGetStipDrawable(&pStip->drawable, stip, stipStride, stipBpp,
++                              stipXoff, stipYoff);
++            fbStipple(dst + (y + dstYoff) * dstStride, dstStride,
++                      (x + dstXoff) * dstBpp, dstBpp, width * dstBpp, height,
++                      stip, stipStride, stipWidth, stipHeight,
++                      pPriv->evenStipple, fgand, fgxor, bgand, bgxor,
+ 		       pGC->patOrg.x + pDrawable->x + dstXoff,
+ 		       pGC->patOrg.y + pDrawable->y - y);
+ 	    fbFinishAccess (&pStip->drawable);
+@@ -141,7 +113,8 @@ fbFill (DrawablePtr pDrawable,
+ 	int	    tileHeight;
+ 	_X_UNUSED int	tileXoff, tileYoff;
+ 	
+-	fbGetDrawable (&pTile->drawable, tile, tileStride, tileBpp, tileXoff, tileYoff);
++        fbGetDrawable(&pTile->drawable, tile, tileStride, tileBpp, tileXoff,
++                      tileYoff);
+ 	tileWidth = pTile->drawable.width;
+ 	tileHeight = pTile->drawable.height;
+ 	fbTile (dst + (y + dstYoff) * dstStride, 
+@@ -168,12 +141,7 @@ fbFill (DrawablePtr pDrawable,
+ void
+ fbSolidBoxClipped (DrawablePtr	pDrawable,
+ 		   RegionPtr	pClip,
+-		   int		x1,
+-		   int		y1,
+-		   int		x2,
+-		   int		y2,
+-		   FbBits	and,
+-		   FbBits	xor)
++                  int x1, int y1, int x2, int y2, FbBits and, FbBits xor)
+ {
+     FbBits	*dst;
+     FbStride	dstStride;
+@@ -186,9 +154,7 @@ fbSolidBoxClipped (DrawablePtr	pDrawable,
+     fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+     
+     for (nbox = RegionNumRects(pClip), pbox = RegionRects(pClip);
+-	 nbox--; 
+-	 pbox++)
+-    {
++         nbox--; pbox++) {
+ 	partX1 = pbox->x1;
+ 	if (partX1 < x1)
+ 	    partX1 = x1;
+@@ -214,17 +180,13 @@ fbSolidBoxClipped (DrawablePtr	pDrawable,
+ #ifndef FB_ACCESS_WRAPPER
+ 	if (and || !pixman_fill ((uint32_t *)dst, dstStride, dstBpp,
+ 				 partX1 + dstXoff, partY1 + dstYoff,
+-				 (partX2 - partX1), (partY2 - partY1),
+-				 xor))
++                                (partX2 - partX1), (partY2 - partY1), xor))
+ #endif
+ 	    fbSolid (dst + (partY1 + dstYoff) * dstStride,
+ 		     dstStride,
+ 		     (partX1 + dstXoff) * dstBpp,
+ 		     dstBpp,
+-		     
+-		     (partX2 - partX1) * dstBpp,
+-		     (partY2 - partY1),
+-		     and, xor);
++                    (partX2 - partX1) * dstBpp, (partY2 - partY1), and, xor);
+     }
+     fbFinishAccess (pDrawable);
+ }

@@ -1,0 +1,17 @@
+diff --git a/Xi/xiallowev.c b/Xi/xiallowev.c
+index 3077e1a..dd52c53 100644
+--- a/Xi/xiallowev.c
++++ b/Xi/xiallowev.c
+@@ -65,6 +65,12 @@ ProcXIAllowEvents(ClientPtr client)
+     REQUEST(xXIAllowEventsReq);
+     REQUEST_SIZE_MATCH(xXIAllowEventsReq);
+ 
++    if (stuff->deviceid > 0xFF) /* FIXME */
++    {
++        client->errorValue = stuff->deviceid;
++        return BadImplementation;
++    }
++
+     ret = dixLookupDevice(&dev, stuff->deviceid, client, DixGetAttrAccess);
+     if (ret != Success)
+ 	return ret;

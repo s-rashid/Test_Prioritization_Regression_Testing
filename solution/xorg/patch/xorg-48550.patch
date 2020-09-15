@@ -1,0 +1,13 @@
+diff --git a/Xext/panoramiXprocs.c b/Xext/panoramiXprocs.c
+index a181695..dbaae26 100644
+--- a/Xext/panoramiXprocs.c
++++ b/Xext/panoramiXprocs.c
+@@ -457,7 +457,7 @@ int PanoramiXConfigureWindow(ClientPtr client)
+     result = dixLookupResourceByType((pointer *)&pWin, stuff->window,
+ 				     RT_WINDOW, client, DixWriteAccess);
+     if (result != Success)
+-	return (result == BadValue) ? BadWindow : result;
++	return result;
+ 
+     result = dixLookupResourceByType((pointer *)&win, stuff->window,
+ 				     XRT_WINDOW, client, DixWriteAccess);

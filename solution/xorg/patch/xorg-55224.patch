@@ -1,0 +1,110 @@
+diff --git a/hw/dmx/dmx.h b/hw/dmx/dmx.h
+index c6b6199..d7c6204 100644
+--- a/hw/dmx/dmx.h
++++ b/hw/dmx/dmx.h
+@@ -255,45 +255,58 @@ typedef struct _DMXScreenInfo {
+ extern int              dmxNumScreens;          /**< Number of dmxScreens */
+ extern DMXScreenInfo   *dmxScreens;             /**< List of outputs */
+ extern int              dmxShadowFB;            /**< Non-zero if using
++
+                                                  * shadow frame-buffer
+                                                  * (deprecated) */
+ extern XErrorEvent      dmxLastErrorEvent;      /**< Last error that
++
+                                                  * occurred */
+ extern Bool             dmxErrorOccurred;       /**< True if an error
++
+                                                  * occurred */
+ extern Bool             dmxOffScreenOpt;        /**< True if using off
++
+                                                  * screen
+                                                  * optimizations */
+ extern Bool             dmxSubdividePrimitives; /**< True if using the
++
+                                                  * primitive subdivision
+                                                  * optimization */
+ extern Bool             dmxLazyWindowCreation;  /**< True if using the
++
+                                                  * lazy window creation
+                                                  * optimization */
+ extern Bool             dmxUseXKB;              /**< True if the XKB
++
+                                                  * extension should be
+                                                  * used with the backend
+                                                  * servers */
+ extern int              dmxDepth;               /**< Requested depth if
++
+                                                  * non-zero */
+ #ifdef GLXEXT
+ extern Bool             dmxGLXProxy;            /**< True if glxProxy
++
+ 						 * support is enabled */
+ extern Bool             dmxGLXSwapGroupSupport; /**< True if glxProxy
++
+ 						 * support for swap
+ 						 * groups and barriers
+ 						 * is enabled */
+ extern Bool             dmxGLXSyncSwap;         /**< True if glxProxy
++
+ 						 * should force an XSync
+ 						 * request after each
+ 						 * swap buffers call */
+ extern Bool             dmxGLXFinishSwap;       /**< True if glxProxy
++
+ 						 * should force a
+ 						 * glFinish request
+ 						 * after each swap
+ 						 * buffers call */
+ #endif
+ extern char            *dmxFontPath;            /**< NULL if no font
++
+ 						 * path is set on the
+ 						 * command line;
+ 						 * otherwise, a string
+@@ -303,10 +316,12 @@ extern char            *dmxFontPath;            /**< NULL if no font
+ 						 * specified font
+ 						 * paths */
+ extern Bool             dmxIgnoreBadFontPaths;  /**< True if bad font
++
+ 						 * paths should be
+ 						 * ignored during server
+ 						 * init */
+ extern Bool             dmxAddRemoveScreens;    /**< True if add and
++
+ 						 * remove screens support
+ 						 * is enabled */
+ 
+@@ -363,26 +378,33 @@ do {									\
+ #endif
+ 
+ extern DevPrivateKeyRec dmxGCPrivateKeyRec;
++
+ #define dmxGCPrivateKey (&dmxGCPrivateKeyRec) /**< Private index for GCs       */
+ 
+ extern DevPrivateKeyRec dmxWinPrivateKeyRec;
++
+ #define dmxWinPrivateKey (&dmxWinPrivateKeyRec) /**< Private index for Windows   */
+ 
+ extern DevPrivateKeyRec dmxPixPrivateKeyRec;
++
+ #define dmxPixPrivateKey (&dmxPixPrivateKeyRec) /**< Private index for Pixmaps   */
+ 
+ extern int dmxFontPrivateIndex;        /**< Private index for Fonts     */
+ 
+ extern DevPrivateKeyRec dmxScreenPrivateKeyRec;
++
+ #define dmxScreenPrivateKey (&dmxScreenPrivateKeyRec) /**< Private index for Screens   */
+ 
+ extern DevPrivateKeyRec dmxColormapPrivateKeyRec;
++
+ #define dmxColormapPrivateKey (&dmxColormapPrivateKeyRec) /**< Private index for Colormaps */
+ 
+ extern DevPrivateKeyRec dmxPictPrivateKeyRec;
++
+ #define dmxPictPrivateKey (&dmxPictPrivateKeyRec) /**< Private index for Picts     */
+ 
+ extern DevPrivateKeyRec dmxGlyphSetPrivateKeyRec;
++
+ #define dmxGlyphSetPrivateKey (&dmxGlyphSetPrivateKeyRec) /**< Private index for GlyphSets */
+ 
+ #endif /* DMX_H */

@@ -1,0 +1,15 @@
+diff --git a/Xi/xiwarppointer.h b/Xi/xiwarppointer.h
+index aafc739..7637f42 100644
+--- a/Xi/xiwarppointer.h
++++ b/Xi/xiwarppointer.h
+@@ -30,7 +30,7 @@
+ #ifndef WARPDEVP_H
+ #define WARPDEVP_H 1
+ 
+-int SProcXIWarpPointer(ClientPtr /* client */);
+-int ProcXIWarpPointer(ClientPtr	/* client */);
++int SProcXIWarpPointer(ClientPtr /* client */ );
++int ProcXIWarpPointer(ClientPtr /* client */ );
+ 
+-#endif /* WARPDEVP_H */
++#endif                          /* WARPDEVP_H */

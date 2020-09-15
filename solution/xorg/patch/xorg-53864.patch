@@ -1,0 +1,31 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index dd56f9c..0d613be 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -1235,14 +1235,24 @@ DRI2CloseScreen(ScreenPtr pScreen)
+ }
+ 
+ extern ExtensionModule dri2ExtensionModule;
++extern Bool DRI2ModuleSetup(void);
++
++/* Called by InitExtensions() */
++Bool
++DRI2ModuleSetup(void)
++{
++    dri2DrawableRes = CreateNewResourceType(DRI2DrawableGone, "DRI2Drawable");
++    if (!dri2DrawableRes)
++	return FALSE;
++
++    return TRUE;
++}
+ 
+ static pointer
+ DRI2Setup(pointer module, pointer opts, int *errmaj, int *errmin)
+ {
+     static Bool setupDone = FALSE;
+ 
+-    dri2DrawableRes = CreateNewResourceType(DRI2DrawableGone, "DRI2Drawable");
+-
+     if (!setupDone)
+     {
+ 	setupDone = TRUE;

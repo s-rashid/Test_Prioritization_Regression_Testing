@@ -1,0 +1,12 @@
+diff --git a/test/xi2/protocol-eventconvert.c b/test/xi2/protocol-eventconvert.c
+index 6ec94be..80c47b0 100644
+--- a/test/xi2/protocol-eventconvert.c
++++ b/test/xi2/protocol-eventconvert.c
+@@ -51,6 +51,7 @@ static void test_values_XIRawEvent(RawDeviceEvent *in, xXIRawEvent *out,
+         swapl(&out->time);
+         swapl(&out->detail);
+         swaps(&out->valuators_len);
++        swapl(&out->flags);
+     }
+ 
+ 

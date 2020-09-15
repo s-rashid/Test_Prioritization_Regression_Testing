@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxsigio.h b/hw/dmx/input/dmxsigio.h
+index 83f8060..4e48749 100644
+--- a/hw/dmx/input/dmxsigio.h
++++ b/hw/dmx/input/dmxsigio.h
+@@ -40,6 +40,6 @@ extern void dmxSigioBlock(void);
+ extern void dmxSigioUnblock(void);
+ extern void dmxSigioEnableInput(void);
+ extern void dmxSigioDisableInput(void);
+-extern void dmxSigioRegister(DMXInputInfo *dmxInput, int fd);
+-extern void dmxSigioUnregister(DMXInputInfo *dmxInput);
++extern void dmxSigioRegister(DMXInputInfo * dmxInput, int fd);
++extern void dmxSigioUnregister(DMXInputInfo * dmxInput);
+ #endif

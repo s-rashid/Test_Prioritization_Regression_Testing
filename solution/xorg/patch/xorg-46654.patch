@@ -1,0 +1,16 @@
+diff --git a/hw/dmx/dmxwindow.c b/hw/dmx/dmxwindow.c
+index f453ad3..f9e46db 100644
+--- a/hw/dmx/dmxwindow.c
++++ b/hw/dmx/dmxwindow.c
+@@ -419,10 +419,9 @@ Bool dmxDestroyWindow(WindowPtr pWindow)
+ 	pWinPriv->windowDestroyed(pWindow);
+ #endif
+ 
+-#if 0
+     if (pScreen->DestroyWindow)
+ 	ret = pScreen->DestroyWindow(pWindow);
+-#endif
++
+     DMX_WRAP(DestroyWindow, dmxDestroyWindow, dmxScreen, pScreen);
+ 
+     return ret;

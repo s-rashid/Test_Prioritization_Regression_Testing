@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/loader/os.c b/hw/xfree86/loader/os.c
+index 6b5ac7e..e3a9ac4 100644
+--- a/hw/xfree86/loader/os.c
++++ b/hw/xfree86/loader/os.c
+@@ -66,7 +66,7 @@ void
+ LoaderGetOS(const char **name, int *major, int *minor, int *teeny)
+ {
+     if (name)
+-	*name = OSNAME;
++        *name = OSNAME;
+ 
+     /* reporting runtime versions isn't supported yet */
+ }

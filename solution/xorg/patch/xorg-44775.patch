@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86RandR12.c b/hw/xfree86/modes/xf86RandR12.c
+index c71cfe5..1e3b70c 100644
+--- a/hw/xfree86/modes/xf86RandR12.c
++++ b/hw/xfree86/modes/xf86RandR12.c
+@@ -1740,6 +1740,8 @@ xf86RandR12ChangeGamma(int scrnIndex, Gamma gamma)
+ 
+     xfree(points);
+ 
++    pScrn->gamma = gamma;
++
+     return Success;
+ }
+ 

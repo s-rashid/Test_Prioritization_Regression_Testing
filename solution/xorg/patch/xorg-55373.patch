@@ -1,0 +1,9 @@
+diff --git a/hw/kdrive/ephyr/ephyrproxyext.h b/hw/kdrive/ephyr/ephyrproxyext.h
+index e52f8d8..018b69b 100644
+--- a/hw/kdrive/ephyr/ephyrproxyext.h
++++ b/hw/kdrive/ephyr/ephyrproxyext.h
+@@ -31,4 +31,3 @@
+ Bool ephyrProxyExtensionInit (const char *a_extension_name) ;
+ 
+ #endif /*__EPHYRPROXYEXT_H__*/
+-

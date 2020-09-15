@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxgcops.c b/hw/dmx/dmxgcops.c
+index 425aa7c..bc8cd9e 100644
+--- a/hw/dmx/dmxgcops.c
++++ b/hw/dmx/dmxgcops.c
+@@ -524,7 +524,9 @@ static DMXScreenInfo *dmxFindAlternatePixmap(DrawablePtr pDrawable, XID *draw)
+     if (noPanoramiXExtension)               return NULL;
+     if (pDrawable->type != DRAWABLE_PIXMAP) return NULL;
+     
+-    if (!(pXinPix = (PanoramiXRes *)LookupIDByType(pDrawable->id, XRT_PIXMAP)))
++    if (Success != dixLookupResourceByType((pointer*) &pXinPix,
++					   pDrawable->id, XRT_PIXMAP,
++					   NullClient, DixUnknownAccess))
+         return NULL;
+ 
+     for (i = 1; i < PanoramiXNumScreens; i++) {

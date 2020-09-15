@@ -1,0 +1,12 @@
+diff --git a/miext/sync/misync.c b/miext/sync/misync.c
+index bcc68a2..50226d9 100644
+--- a/miext/sync/misync.c
++++ b/miext/sync/misync.c
+@@ -167,7 +167,6 @@ SyncCloseScreen (int i, ScreenPtr pScreen)
+     SyncScreenPrivPtr pScreenPriv = SYNC_SCREEN_PRIV(pScreen);
+ 
+     pScreen->CloseScreen = pScreenPriv->CloseScreen;
+-    free(pScreenPriv);
+ 
+     return (*pScreen->CloseScreen) (i, pScreen);
+ }

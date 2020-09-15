@@ -1,0 +1,25 @@
+diff --git a/hw/xfree86/xaa/xaaOverlayDF.c b/hw/xfree86/xaa/xaaOverlayDF.c
+index 61adec6..ca22368 100644
+--- a/hw/xfree86/xaa/xaaOverlayDF.c
++++ b/hw/xfree86/xaa/xaaOverlayDF.c
+@@ -151,8 +151,8 @@ typedef struct {
+    int (*TiledFillChooser)(GCPtr);
+ } XAAOverlayRec, *XAAOverlayPtr;
+ 
+-static int XAAOverlayKeyIndex;
+-static DevPrivateKey XAAOverlayKey = &XAAOverlayKeyIndex;
++static DevPrivateKeyRec XAAOverlayKeyRec;
++#define XAAOverlayKey (&XAAOverlayKeyRec)
+ 
+ #define GET_OVERLAY_PRIV(pScreen) \
+     (XAAOverlayPtr)dixLookupPrivate(&(pScreen)->devPrivates, XAAOverlayKey)
+@@ -173,6 +173,9 @@ XAAInitDualFramebufferOverlay(
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     XAAOverlayPtr pOverPriv;
+ 
++    if (!dixRegisterPrivateKey(&XAAOverlayKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
+     if(!(pOverPriv = malloc(sizeof(XAAOverlayRec))))
+ 	return FALSE;
+ 

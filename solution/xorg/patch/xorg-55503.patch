@@ -1,0 +1,29 @@
+diff --git a/hw/xfree86/i2c/msp3430.h b/hw/xfree86/i2c/msp3430.h
+index 8423d14..ef66e1e 100644
+--- a/hw/xfree86/i2c/msp3430.h
++++ b/hw/xfree86/i2c/msp3430.h
+@@ -27,7 +27,6 @@ typedef struct {
+ 	CARD8	volume;
+ 	} MSP3430Rec, * MSP3430Ptr;
+ 
+-
+ #define MSP3430_ADDR_1      0x80
+ #define MSP3430_ADDR_2		0x84
+ #define MSP3430_ADDR_3		0x88
+@@ -94,12 +93,16 @@ typedef struct {
+ 
+ #define xf86_InitMSP3430	InitMSP3430
+ extern _X_EXPORT void InitMSP3430(MSP3430Ptr m);
++
+ #define xf86_DetectMSP3430	DetectMSP3430
+ extern _X_EXPORT MSP3430Ptr DetectMSP3430(I2CBusPtr b, I2CSlaveAddr addr);
++
+ #define xf86_ResetMSP3430	ResetMSP3430
+ extern _X_EXPORT void ResetMSP3430(MSP3430Ptr m);
++
+ #define xf86_MSP3430SetVolume	MSP3430SetVolume
+ extern _X_EXPORT void MSP3430SetVolume (MSP3430Ptr m, CARD8 value);
++
+ #define xf86_MSP3430SetSAP	MSP3430SetSAP
+ extern _X_EXPORT void MSP3430SetSAP (MSP3430Ptr m, int mode);
+ 

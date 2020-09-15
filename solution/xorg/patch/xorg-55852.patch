@@ -1,0 +1,92 @@
+diff --git a/hw/xwin/wingetsp.c b/hw/xwin/wingetsp.c
+index 8220812..049e2c9 100644
+--- a/hw/xwin/wingetsp.c
++++ b/hw/xwin/wingetsp.c
+@@ -39,9 +39,7 @@ void
+ winGetSpansNativeGDI (DrawablePtr	pDrawable, 
+ 		      int		nMax, 
+ 		      DDXPointPtr	pPoints, 
+-		      int		*piWidths, 
+-		      int		iSpans, 
+-		      char		*pDsts)
++                     int *piWidths, int iSpans, char *pDsts)
+ {
+   PixmapPtr		pPixmap = NULL;
+   winPrivPixmapPtr	pPixmapPriv = NULL;
+@@ -53,15 +51,14 @@ winGetSpansNativeGDI (DrawablePtr	pDrawable,
+   BYTE			*pbWindow = NULL;
+   HDC			hdcMem, hdcMem1;
+   ScreenPtr		pScreen = pDrawable->pScreen;
++
+   winScreenPriv(pScreen);
+ 
+   /* Branch on the drawable type */
+-  switch (pDrawable->type)
+-    {
++    switch (pDrawable->type) {
+     case DRAWABLE_PIXMAP:
+ #if 0
+-      ErrorF ("winGetSpans - DRAWABLE_PIXMAP %08x\n",
+-	      pDrawable);
++        ErrorF("winGetSpans - DRAWABLE_PIXMAP %08x\n", pDrawable);
+ #endif
+ 
+       pPixmap = (PixmapPtr) pDrawable;
+@@ -79,25 +76,19 @@ winGetSpansNativeGDI (DrawablePtr	pDrawable,
+ 		    "failed on pPixmapPriv->hBitmap\n");
+ 
+       /* Loop through spans */
+-      for (iSpan = 0; iSpan < iSpans; ++iSpan)
+-	{
++        for (iSpan = 0; iSpan < iSpans; ++iSpan) {
+ 	  pPoint = pPoints + iSpan;
+ 	  piWidth = piWidths + iSpan;
+ 
+       	  hbmpWindow = winCreateDIBNativeGDI (*piWidth, 1,
+ 					      pDrawable->depth,
+-					      &pbWindow,
+-					      NULL);
++                                               &pbWindow, NULL);
+ 
+       	  hbmpOrig = SelectObject (hdcMem, hbmpWindow);
+ 			       
+           /* Transfer the window bits to the window bitmap */
+           BitBlt (hdcMem,
+-		  0, 0,
+-		  *piWidth, 1, 
+-		  hdcMem1,
+-		  pPoint->x, pPoint->y,
+-		  SRCCOPY);
++                   0, 0, *piWidth, 1, hdcMem1, pPoint->x, pPoint->y, SRCCOPY);
+ 
+ 	  memcpy (pDst,
+ 		  (char*) pbWindow,
+@@ -134,15 +125,13 @@ winGetSpansNativeGDI (DrawablePtr	pDrawable,
+       hdcMem = CreateCompatibleDC (NULL);
+ 
+       /* Loop through spans */
+-      for (iSpan = 0; iSpan < iSpans; ++iSpan)
+-	{
++        for (iSpan = 0; iSpan < iSpans; ++iSpan) {
+ 	  pPoint = pPoints + iSpan;
+ 	  piWidth = piWidths + iSpan;
+ 
+       	  hbmpWindow = winCreateDIBNativeGDI (*piWidth, 1,
+ 					      pDrawable->depth,
+-					      &pbWindow,
+-					      NULL);
++                                               &pbWindow, NULL);
+ 
+       	  hbmpOrig = SelectObject (hdcMem, hbmpWindow);
+ 
+@@ -150,9 +139,7 @@ winGetSpansNativeGDI (DrawablePtr	pDrawable,
+           BitBlt (hdcMem,
+ 		  0, 0,
+ 		  *piWidth, 1, 
+-		  pScreenPriv->hdcScreen,
+-		  pPoint->x, pPoint->y,
+-		  SRCCOPY);
++                   pScreenPriv->hdcScreen, pPoint->x, pPoint->y, SRCCOPY);
+ 
+ 	  memcpy (pDst,
+ 		  (char*) pbWindow,

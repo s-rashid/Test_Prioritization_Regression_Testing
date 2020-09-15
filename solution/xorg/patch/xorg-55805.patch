@@ -1,0 +1,10 @@
+diff --git a/hw/xquartz/xpr/driWrap.h b/hw/xquartz/xpr/driWrap.h
+index d31d5dd..d15265d 100644
+--- a/hw/xquartz/xpr/driWrap.h
++++ b/hw/xquartz/xpr/driWrap.h
+@@ -28,4 +28,4 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+ Bool DRIWrapInit(ScreenPtr pScreen);
+ 
+-#endif /*DRIWRAP_H*/
++#endif                          /*DRIWRAP_H */

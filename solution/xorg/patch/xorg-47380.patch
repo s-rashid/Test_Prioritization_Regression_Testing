@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/ephyr/ephyr.h b/hw/kdrive/ephyr/ephyr.h
+index 5d58a21..f5ea144 100644
+--- a/hw/kdrive/ephyr/ephyr.h
++++ b/hw/kdrive/ephyr/ephyr.h
+@@ -63,7 +63,6 @@ typedef struct _ephyrFakexaPriv {
+ typedef struct _ephyrScrPriv {
+     Rotation	randr;
+     Bool	shadow;
+-    PixmapPtr	pShadow;
+     DamagePtr   pDamage;
+     EphyrFakexaPriv *fakexa;
+ } EphyrScrPriv;

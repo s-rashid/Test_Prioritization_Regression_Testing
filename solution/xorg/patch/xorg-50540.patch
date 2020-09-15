@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/quartzCommon.h b/hw/xquartz/quartzCommon.h
+index eb761ed..d0d358b 100644
+--- a/hw/xquartz/quartzCommon.h
++++ b/hw/xquartz/quartzCommon.h
+@@ -51,6 +51,9 @@ typedef struct {
+ #define QUARTZ_PRIV(pScreen) \
+     ((QuartzScreenPtr)dixLookupPrivate(&pScreen->devPrivates, quartzScreenKey))
+ 
++void QuartzCopyDisplayIDs(ScreenPtr pScreen,
++                          int displayCount, CGDirectDisplayID *displayIDs);
++
+ // User preferences used by Quartz modes
+ extern int              quartzUseSysBeep;
+ extern int              quartzFullscreenDisableHotkeys;

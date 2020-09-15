@@ -1,0 +1,16 @@
+diff --git a/dix/events.c b/dix/events.c
+index c085a75..4eb8afa 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -1414,11 +1414,6 @@ CheckGrabForSyncs(DeviceIntPtr thisDev, Bool thisMode, Bool otherMode)
+ 	    thisDev->deviceGrab.sync.other = NullGrab;
+     }
+ 
+-    /*
+-        XXX: Direct slave grab won't freeze the paired master device.
+-        The correct thing to do would be to freeze all SDs attached to the
+-        paired master device.
+-     */
+     if (IsMaster(thisDev))
+     {
+         dev = GetPairedDevice(thisDev);

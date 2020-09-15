@@ -1,0 +1,13 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 9a68bf0..c510122 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1016,7 +1016,7 @@ GetPointerEvents(EventList *events, DeviceIntPtr pDev, int type, int buttons,
+     CARD32 ms;
+     DeviceEvent *event;
+     RawDeviceEvent    *raw;
+-    int x = 0, y = 0, /* switches between device and screen coords */
++    int x = 0, y = 0, /* device coords */
+         cx, cy; /* only screen coordinates */
+     ScreenPtr scr = miPointerGetScreen(pDev);
+ 

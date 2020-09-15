@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index e0b1809..255407b 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -145,6 +145,7 @@ extern _X_EXPORT Bool xf86LoadModules(char **list, pointer *optlist);
+ extern _X_EXPORT int xf86SetVerbosity(int verb);
+ extern _X_EXPORT int xf86SetLogVerbosity(int verb);
+ extern _X_EXPORT Bool xf86CallDriverProbe( struct _DriverRec * drv, Bool detect_only );
++extern _X_EXPORT Bool xf86PrivsElevated(void);
+ 
+ #endif /* _NO_XF86_PROTOTYPES */
+ 

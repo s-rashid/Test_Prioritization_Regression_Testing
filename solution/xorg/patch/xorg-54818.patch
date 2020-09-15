@@ -1,0 +1,12 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 3dd3688..823da2a 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1856,6 +1856,7 @@ DeliverTouchEndEvent(DeviceIntPtr dev, TouchPointInfoPtr ti, InternalEvent *ev,
+         if (ti->num_listeners > 1) {
+             ev->any.type = ET_TouchUpdate;
+             ev->device_event.flags |= TOUCH_PENDING_END;
++            if (!(ev->device_event.flags & TOUCH_CLIENT_ID))
+             ti->pending_finish = TRUE;
+         }
+ 

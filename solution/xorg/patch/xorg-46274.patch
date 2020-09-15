@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/xorgconf.cpp b/hw/xfree86/xorgconf.cpp
+index d880180..8ba9ae6 100644
+--- a/hw/xfree86/xorgconf.cpp
++++ b/hw/xfree86/xorgconf.cpp
+@@ -43,14 +43,10 @@ Section "Files"
+ 
+ XCOMM Multiple FontPath entries are allowed (which are concatenated together),
+ XCOMM as well as specifying multiple comma-separated entries in one FontPath
+-XCOMM command (or a combination of both methods)
+-
+-    FontPath	LOCALFONTPATH
+-    FontPath	MISCFONTPATH
+-    FontPath	T1FONTPATH
+-    FontPath	TRUETYPEFONTPATH
+-    FontPath	DPI75FONTPATH
+-    FontPath	DPI100FONTPATH
++XCOMM command (or a combination of both methods).
++XCOMM The default path is shown here.
++
++XCOMM    FontPath	DEFAULTFONTPATH
+ 
+ XCOMM ModulePath can be used to set a search path for the X server modules.
+ XCOMM The default path is shown here.

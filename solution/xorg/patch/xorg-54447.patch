@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/dri/xf86dri.c b/hw/xfree86/dri/xf86dri.c
+index c35ba2f..723e526 100644
+--- a/hw/xfree86/dri/xf86dri.c
++++ b/hw/xfree86/dri/xf86dri.c
+@@ -130,7 +130,7 @@ ProcXF86DRIQueryDirectRenderingCapable(
+     }
+     rep.isCapable = isCapable;
+ 
+-    if (!LocalClient(client) || client->swapped)
++    if (!client->local || client->swapped)
+ 	rep.isCapable = 0;
+ 
+     if (client->swapped) {
+@@ -557,7 +557,7 @@ ProcXF86DRIDispatch (
+ 	return ProcXF86DRIQueryDirectRenderingCapable(client);
+     }
+ 
+-    if (!LocalClient(client))
++    if (!client->local)
+ 	return DRIErrorBase + XF86DRIClientNotLocal;
+ 
+     switch (stuff->data)

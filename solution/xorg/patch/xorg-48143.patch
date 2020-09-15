@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Cursors.c b/hw/xfree86/modes/xf86Cursors.c
+index e2e174e..f90ecc2 100644
+--- a/hw/xfree86/modes/xf86Cursors.c
++++ b/hw/xfree86/modes/xf86Cursors.c
+@@ -41,9 +41,7 @@
+ #include "X11/extensions/render.h"
+ #include "X11/extensions/dpmsconst.h"
+ #include "X11/Xatom.h"
+-#ifdef RENDER
+ #include "picturestr.h"
+-#endif
+ #include "cursorstr.h"
+ #include "inputstr.h"
+ 

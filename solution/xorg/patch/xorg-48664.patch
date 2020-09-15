@@ -1,0 +1,12 @@
+diff --git a/randr/rroutput.c b/randr/rroutput.c
+index 445c318..7822c0d 100644
+--- a/randr/rroutput.c
++++ b/randr/rroutput.c
+@@ -423,6 +423,7 @@ RROutputInit (void)
+     RROutputType = CreateNewResourceType (RROutputDestroyResource, "OUTPUT");
+     if (!RROutputType)
+ 	return FALSE;
++    SetResourceTypeErrorValue(RROutputType, RRErrorBase + BadRROutput);
+     return TRUE;
+ }
+ 

@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/common/xf86sbusBus.c b/hw/xfree86/common/xf86sbusBus.c
+index d7c928b..8cfac84 100644
+--- a/hw/xfree86/common/xf86sbusBus.c
++++ b/hw/xfree86/common/xf86sbusBus.c
+@@ -706,11 +706,9 @@ xf86SbusConfigureNewDev(void *busData, sbusDevicePtr sBus, GDevRec *GDev)
+         sparcPromClose();
+     }
+     if (promPath) {
+-        GDev->busID = xnfalloc(strlen(promPath) + 6);
+-        sprintf(GDev->busID, "SBUS:%s", promPath);
++        XNFasprintf(&GDev->busID, "SBUS:%s", promPath);
+         free(promPath);
+     } else {
+-        GDev->busID = xnfalloc(12);
+-        sprintf(GDev->busID, "SBUS:fb%d", sBus->fbNum);
++        XNFsprintf(&GDev->busID, "SBUS:fb%d", sBus->fbNum);
+     }
+ }

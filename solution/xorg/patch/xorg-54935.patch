@@ -1,0 +1,36 @@
+diff --git a/Xext/xselinux_ext.c b/Xext/xselinux_ext.c
+index a18a367..342abb1 100644
+--- a/Xext/xselinux_ext.c
++++ b/Xext/xselinux_ext.c
+@@ -44,7 +44,6 @@ typedef struct {
+     CARD32 id;
+ } SELinuxListItemRec;
+ 
+-
+ /*
+  * Extension Dispatch
+  */
+@@ -53,6 +52,7 @@ static security_context_t
+ SELinuxCopyContext(char *ptr, unsigned len)
+ {
+     security_context_t copy = malloc(len + 1);
++
+     if (!copy)
+ 	return NULL;
+     strncpy(copy, ptr, len);
+@@ -326,6 +326,7 @@ static void
+ SELinuxFreeItems(SELinuxListItemRec *items, int count)
+ {
+     int k;
++
+     for (k = 0; k < count; k++) {
+ 	freecon(items[k].octx);
+ 	freecon(items[k].dctx);
+@@ -670,7 +671,6 @@ SProcSELinuxDispatch(ClientPtr client)
+     }
+ }
+ 
+-
+ /*
+  * Extension Setup / Teardown
+  */

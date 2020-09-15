@@ -1,0 +1,32 @@
+diff --git a/fb/fb24_32.h b/fb/fb24_32.h
+index 7c9819e..1bec00b 100644
+--- a/fb/fb24_32.h
++++ b/fb/fb24_32.h
+@@ -29,23 +29,16 @@
+ #define _FB24_32_H_
+ 
+ Bool
++
+ fb24_32FinishScreenInit(ScreenPtr    pScreen,
+ 			pointer      pbits,
+ 			int          xsize,
+-			int          ysize,
+-			int          dpix,
+-			int          dpiy,
+-			int          width,
+-			int          bpp);
++                        int ysize, int dpix, int dpiy, int width, int bpp);
+ 
+ Bool
++
+ fb24_32ScreenInit(ScreenPtr  pScreen,
+ 		  pointer    pbits,
+-		  int        xsize,
+-		  int        ysize,
+-		  int        dpix,
+-		  int        dpiy,
+-		  int        width,
+-		  int        bpp);
++                  int xsize, int ysize, int dpix, int dpiy, int width, int bpp);
+ 
+ #endif

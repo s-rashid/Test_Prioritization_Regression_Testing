@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86Modes.c b/hw/xfree86/modes/xf86Modes.c
+index 51eb4c9..75584cf 100644
+--- a/hw/xfree86/modes/xf86Modes.c
++++ b/hw/xfree86/modes/xf86Modes.c
+@@ -132,7 +132,7 @@ xf86SetModeDefaultName(DisplayModePtr mode)
+ 
+     free(mode->name);
+ 
+-    mode->name = XNFprintf("%dx%d%s", mode->HDisplay, mode->VDisplay,
++    XNFasprintf(&mode->name, "%dx%d%s", mode->HDisplay, mode->VDisplay,
+ 			   interlaced ? "i" : "");
+ }
+ 

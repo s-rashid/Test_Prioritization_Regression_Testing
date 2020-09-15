@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 0d0c419..39cf295 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2313,7 +2313,7 @@ EventIsDeliverable(DeviceIntPtr dev, InternalEvent* event, WindowPtr win)
+     int rc = 0;
+     int filter = 0;
+     int type;
+-    OtherInputMasks *inputMasks;
++    OtherInputMasks *inputMasks = NULL;
+     xEvent ev;
+ 
+     /* XXX: this makes me gag */

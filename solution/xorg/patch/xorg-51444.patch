@@ -1,0 +1,17 @@
+diff --git a/os/access.c b/os/access.c
+index d43fdf8..494986e 100644
+--- a/os/access.c
++++ b/os/access.c
+@@ -1057,9 +1057,11 @@ Bool LocalClient(ClientPtr client)
+ 	}
+ 	for (host = selfhosts; host; host = host->next)
+ 	{
+-	    if (addrEqual (family, addr, alen, host))
++	    if (addrEqual (family, addr, alen, host)) {
++		free(from);
+ 		return TRUE;
+ 	}
++	}
+ 	free(from);
+     }
+     return FALSE;

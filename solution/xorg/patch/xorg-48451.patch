@@ -1,0 +1,53 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 602eb66..44a47cc 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -207,7 +207,7 @@ ProcDRI2DestroyDrawable(ClientPtr client)
+ }
+ 
+ 
+-static void
++static int
+ send_buffers_reply(ClientPtr client, DrawablePtr pDrawable,
+ 		   DRI2BufferPtr *buffers, int count, int width, int height)
+ {
+@@ -215,6 +215,9 @@ send_buffers_reply(ClientPtr client, DrawablePtr pDrawable,
+     int skip = 0;
+     int i;
+ 
++    if (buffers == NULL)
++	    return BadAlloc;
++
+     if (pDrawable->type == DRAWABLE_WINDOW) {
+ 	for (i = 0; i < count; i++) {
+ 	    /* Do not send the real front buffer of a window to the client.
+@@ -251,6 +254,7 @@ send_buffers_reply(ClientPtr client, DrawablePtr pDrawable,
+ 	buffer.flags = buffers[i]->flags;
+ 	WriteToClient(client, sizeof(xDRI2Buffer), &buffer);
+     }
++    return Success;
+ }
+ 
+ 
+@@ -276,9 +280,8 @@ ProcDRI2GetBuffers(ClientPtr client)
+ 			     attachments, stuff->count, &count);
+ 
+ 
+-    send_buffers_reply(client, pDrawable, buffers, count, width, height);
++    return send_buffers_reply(client, pDrawable, buffers, count, width, height);
+ 
+-    return Success;
+ }
+ 
+ static int
+@@ -302,9 +305,7 @@ ProcDRI2GetBuffersWithFormat(ClientPtr client)
+     buffers = DRI2GetBuffersWithFormat(pDrawable, &width, &height,
+ 				       attachments, stuff->count, &count);
+ 
+-    send_buffers_reply(client, pDrawable, buffers, count, width, height);
+-
+-    return Success;
++    return send_buffers_reply(client, pDrawable, buffers, count, width, height);
+ }
+ 
+ static int

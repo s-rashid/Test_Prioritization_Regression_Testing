@@ -1,0 +1,72 @@
+diff --git a/mi/mipoly.c b/mi/mipoly.c
+index b3e2c2f..07d9818 100644
+--- a/mi/mipoly.c
++++ b/mi/mipoly.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -65,11 +64,9 @@ SOFTWARE.
+ #include "mi.h"
+ #include "regionstr.h"
+ 
+-
+ void
+ miFillPolygon( DrawablePtr dst, GCPtr pgc,
+-		int shape, int mode,
+-		int count, DDXPointPtr pPts)
++              int shape, int mode, int count, DDXPointPtr pPts)
+ {
+     int			i;
+     int			xorg, yorg;
+@@ -79,38 +76,30 @@ miFillPolygon( DrawablePtr dst, GCPtr pgc,
+ 	return;
+ 
+     ppt = pPts;
+-    if (pgc->miTranslate)
+-    {
++    if (pgc->miTranslate) {
+ 	xorg = dst->x;
+ 	yorg = dst->y;
+ 
+-        if (mode == CoordModeOrigin) 
+-        {
+-	        for (i = 0; i<count; i++) 
+-                {    
++        if (mode == CoordModeOrigin) {
++            for (i = 0; i < count; i++) {
+ 	            ppt->x += xorg;
+ 	            ppt++->y += yorg;
+ 	        }
+         }
+-        else 
+-        {
++        else {
+ 	    ppt->x += xorg;
+ 	    ppt++->y += yorg;
+-	    for (i = 1; i<count; i++) 
+-            {
++            for (i = 1; i < count; i++) {
+ 	        ppt->x += (ppt-1)->x;
+ 	        ppt->y += (ppt-1)->y;
+ 	        ppt++;
+ 	    }
+         }
+     }
+-    else
+-    {
+-	if (mode == CoordModePrevious)
+-        {
++    else {
++        if (mode == CoordModePrevious) {
+ 	    ppt++;
+-	    for (i = 1; i<count; i++) 
+-            {
++            for (i = 1; i < count; i++) {
+ 	        ppt->x += (ppt-1)->x;
+ 	        ppt->y += (ppt-1)->y;
+ 	        ppt++;

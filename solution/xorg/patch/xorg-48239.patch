@@ -1,0 +1,12 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index b7910cd..37f9856 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -1122,6 +1122,7 @@ RestoreExtensionEvents(void)
+ static void
+ IResetProc(ExtensionEntry * unused)
+ {
++    XIResetProperties();
+ 
+     ReplySwapVector[IReqCode] = ReplyNotSwappd;
+     EventSwapVector[DeviceValuator] = NotImplemented;

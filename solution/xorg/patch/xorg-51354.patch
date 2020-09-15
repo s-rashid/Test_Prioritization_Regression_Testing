@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86.h b/hw/xfree86/common/xf86.h
+index b29ec51..f7470f2 100644
+--- a/hw/xfree86/common/xf86.h
++++ b/hw/xfree86/common/xf86.h
+@@ -69,7 +69,6 @@ extern _X_EXPORT Bool fbSlotClaimed;
+ extern _X_EXPORT Bool sbusSlotClaimed;
+ #endif
+ extern _X_EXPORT confDRIRec xf86ConfigDRI;
+-extern _X_EXPORT Bool xf86inSuspend;
+ extern _X_EXPORT Bool xf86DRI2Enabled(void);
+ 
+ extern _X_EXPORT Bool VTSwitchEnabled;	/* kbd driver */

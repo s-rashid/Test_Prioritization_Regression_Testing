@@ -1,0 +1,526 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index dc0a018..7cc7440 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -46,8 +46,8 @@
+ #include "xf86Parser.h"
+ #include "optionstr.h"
+ 
+-static Bool ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+-			     Bool markUsed);
++static Bool ParseOptionValue(int scrnIndex, XF86OptionPtr options,
++                             OptionInfoPtr p, Bool markUsed);
+ 
+ /*
+  * xf86CollectOptions collects the options from each of the config file
+@@ -131,6 +131,7 @@ xf86CollectInputOptions(InputInfoPtr pInfo, const char **defaultOpts)
+ {
+     if (defaultOpts) {
+ 	XF86OptionPtr tmp =xf86optionListCreate(defaultOpts, -1, 0);
++
+ 	if (pInfo->options)
+ 	    pInfo->options = xf86optionListMerge(tmp, pInfo->options);
+ 	else
+@@ -147,20 +148,20 @@ xf86OptionListDuplicate(XF86OptionPtr options)
+ {
+     XF86OptionPtr o = NULL;
+ 
+-    while (options)
+-    {
+-        o = xf86AddNewOption(o, xf86OptionName(options), xf86OptionValue(options));
++    while (options) {
++        o = xf86AddNewOption(o, xf86OptionName(options),
++                             xf86OptionValue(options));
+         options = xf86nextOption(options);
+     }
+ 
+     return o;
+ }
+ 
+-
+ /* Created for new XInput stuff -- essentially extensions to the parser	*/
+ 
+ static int
+-LookupIntOption(XF86OptionPtr optlist, const char *name, int deflt, Bool markUsed)
++LookupIntOption(XF86OptionPtr optlist, const char *name, int deflt,
++                Bool markUsed)
+ {
+     OptionInfoRec o;
+ 
+@@ -171,7 +172,6 @@ LookupIntOption(XF86OptionPtr optlist, const char *name, int deflt, Bool markUse
+     return deflt;
+ }
+ 
+-
+ static double
+ LookupRealOption(XF86OptionPtr optlist, const char *name, double deflt,
+ 		 Bool markUsed)
+@@ -185,9 +185,9 @@ LookupRealOption(XF86OptionPtr optlist, const char *name, double deflt,
+     return deflt;
+ }
+ 
+-
+ static char *
+-LookupStrOption(XF86OptionPtr optlist, const char *name, const char *deflt, Bool markUsed)
++LookupStrOption(XF86OptionPtr optlist, const char *name, const char *deflt,
++                Bool markUsed)
+ {
+     OptionInfoRec o;
+ 
+@@ -201,9 +201,9 @@ LookupStrOption(XF86OptionPtr optlist, const char *name, const char *deflt, Bool
+ 	return NULL;
+ }
+ 
+-
+ static int
+-LookupBoolOption(XF86OptionPtr optlist, const char *name, int deflt, Bool markUsed)
++LookupBoolOption(XF86OptionPtr optlist, const char *name, int deflt,
++                 Bool markUsed)
+ {
+     OptionInfoRec o;
+ 
+@@ -215,7 +215,8 @@ LookupBoolOption(XF86OptionPtr optlist, const char *name, int deflt, Bool markUs
+ }
+ 
+ static double
+-LookupPercentOption(XF86OptionPtr optlist, const char *name, double deflt, Bool markUsed)
++LookupPercentOption(XF86OptionPtr optlist, const char *name, double deflt,
++                    Bool markUsed)
+ {
+     OptionInfoRec o;
+ 
+@@ -234,21 +235,18 @@ xf86SetIntOption(XF86OptionPtr optlist, const char *name, int deflt)
+     return LookupIntOption(optlist, name, deflt, TRUE);
+ }
+ 
+-
+ double
+ xf86SetRealOption(XF86OptionPtr optlist, const char *name, double deflt)
+ {
+     return LookupRealOption(optlist, name, deflt, TRUE);
+ }
+ 
+-
+ char *
+ xf86SetStrOption(XF86OptionPtr optlist, const char *name, const char *deflt)
+ {
+     return LookupStrOption(optlist, name, deflt, TRUE);
+ }
+ 
+-
+ int
+ xf86SetBoolOption(XF86OptionPtr optlist, const char *name, int deflt)
+ {
+@@ -271,33 +269,30 @@ xf86CheckIntOption(XF86OptionPtr optlist, const char *name, int deflt)
+     return LookupIntOption(optlist, name, deflt, FALSE);
+ }
+ 
+-
+ double
+ xf86CheckRealOption(XF86OptionPtr optlist, const char *name, double deflt)
+ {
+     return LookupRealOption(optlist, name, deflt, FALSE);
+ }
+ 
+-
+ char *
+ xf86CheckStrOption(XF86OptionPtr optlist, const char *name, char *deflt)
+ {
+     return LookupStrOption(optlist, name, deflt, FALSE);
+ }
+ 
+-
+ int
+ xf86CheckBoolOption(XF86OptionPtr optlist, const char *name, int deflt)
+ {
+     return LookupBoolOption(optlist, name, deflt, FALSE);
+ }
+ 
+-
+ double
+ xf86CheckPercentOption(XF86OptionPtr optlist, const char *name, double deflt)
+ {
+     return LookupPercentOption(optlist, name, deflt, FALSE);
+ }
++
+ /*
+  * xf86AddNewOption() has the required property of replacing the option value
+  * if the option is already present.
+@@ -306,6 +301,7 @@ XF86OptionPtr
+ xf86ReplaceIntOption(XF86OptionPtr optlist, const char *name, const int val)
+ {
+     char tmp[16];
++
+     snprintf(tmp,sizeof(tmp),"%i",val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+@@ -314,6 +310,7 @@ XF86OptionPtr
+ xf86ReplaceRealOption(XF86OptionPtr optlist, const char *name, const double val)
+ {
+     char tmp[32];
++
+     snprintf(tmp,sizeof(tmp),"%f",val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+@@ -325,9 +322,11 @@ xf86ReplaceBoolOption(XF86OptionPtr optlist, const char *name, const Bool val)
+ }
+ 
+ XF86OptionPtr
+-xf86ReplacePercentOption(XF86OptionPtr optlist, const char *name, const double val)
++xf86ReplacePercentOption(XF86OptionPtr optlist, const char *name,
++                         const double val)
+ {
+     char tmp[16];
++
+     snprintf(tmp, sizeof(tmp), "%lf%%", val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+@@ -348,14 +347,12 @@ xf86AddNewOption(XF86OptionPtr head, const char *name, const char *val)
+     return xf86addNewOption(head, tmp_name, tmp);
+ }
+ 
+-
+ XF86OptionPtr
+ xf86NewOption(char *name, char *value)
+ {
+     return xf86newOption(name, value);
+ }
+ 
+-
+ XF86OptionPtr
+ xf86NextOption(XF86OptionPtr list)
+ {
+@@ -415,14 +412,12 @@ xf86FindOption(XF86OptionPtr options, const char *name)
+     return xf86findOption(options, name);
+ }
+ 
+-
+ const char *
+ xf86FindOptionValue(XF86OptionPtr options, const char *name)
+ {
+     return xf86findOptionValue(options, name);
+ }
+ 
+-
+ void
+ xf86MarkOptionUsed(XF86OptionPtr option)
+ {
+@@ -430,7 +425,6 @@ xf86MarkOptionUsed(XF86OptionPtr option)
+ 	option->opt_used = TRUE;
+ }
+ 
+-
+ void
+ xf86MarkOptionUsedByName(XF86OptionPtr options, const char *name)
+ {
+@@ -474,7 +468,6 @@ xf86ShowUnusedOptions(int scrnIndex, XF86OptionPtr opt)
+     }
+ }
+ 
+-
+ static Bool
+ GetBoolValue(OptionInfoPtr p, const char *s)
+ {
+@@ -502,11 +495,13 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 			       p->name);
+ 		}
+ 		p->found = FALSE;
+-	    } else {
++            }
++            else {
+ 		p->value.num = strtoul(s, &end, 0);
+ 		if (*end == '\0') {
+ 		    p->found = TRUE;
+-		} else {
++                }
++                else {
+ 		    if (markUsed) {
+ 			xf86DrvMsg(scrnIndex, X_WARNING,
+ 				   "Option \"%s\" requires an integer value\n",
+@@ -524,7 +519,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 			       p->name);
+ 		}
+ 		p->found = FALSE;
+-	    } else {
++            }
++            else {
+ 		p->value.str = s;
+ 		p->found = TRUE;
+ 	    }
+@@ -541,11 +537,13 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 			       "value\n", p->name);
+ 		}
+ 		p->found = FALSE;
+-	    } else {
++            }
++            else {
+ 		p->value.realnum = strtod(s, &end);
+ 		if (*end == '\0') {
+ 		    p->found = TRUE;
+-		} else {
++                }
++                else {
+ 		    if (markUsed) {
+ 			xf86DrvMsg(scrnIndex, X_WARNING,
+ 				"Option \"%s\" requires a floating point "
+@@ -558,7 +556,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	case OPTV_BOOLEAN:
+ 	    if (GetBoolValue(p, s)) {
+ 		p->found = TRUE;
+-	    } else {
++            }
++            else {
+ 		if (markUsed) {
+ 		    xf86DrvMsg(scrnIndex, X_WARNING,
+ 			       "Option \"%s\" requires a boolean value\n",
+@@ -570,16 +569,19 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	case OPTV_PERCENT:
+ 	    {
+ 		char tmp = 0;
++
+ 		/* awkward match, but %% doesn't increase the match counter,
+ 		 * hence 100 looks the same as 100% to the caller of sccanf
+ 		 */
+ 		if (sscanf(s, "%lf%c", &p->value.realnum, &tmp) != 2 || tmp != '%') {
+ 		    if (markUsed) {
+ 			xf86DrvMsg(scrnIndex, X_WARNING,
+-			       "Option \"%s\" requires a percent value\n", p->name);
++                               "Option \"%s\" requires a percent value\n",
++                               p->name);
+ 		    }
+ 		    p->found = FALSE;
+-		} else {
++            }
++            else {
+ 		    p->found = TRUE;
+ 		}
+ 	    }
+@@ -592,7 +594,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 			       p->name);
+ 		}
+ 		p->found = FALSE;
+-	    } else {
++            }
++            else {
+ 		double freq = strtod(s, &end);
+ 		int    units = 0;
+ 
+@@ -600,11 +603,9 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 		    p->found = TRUE;
+ 		    if (!xf86NameCmp(end, "Hz"))
+ 			units = 1;
+-		    else if (!xf86NameCmp(end, "kHz") ||
+-			     !xf86NameCmp(end, "k"))
++                    else if (!xf86NameCmp(end, "kHz") || !xf86NameCmp(end, "k"))
+ 			units = 1000;
+-		    else if (!xf86NameCmp(end, "MHz") ||
+-			     !xf86NameCmp(end, "M"))
++                    else if (!xf86NameCmp(end, "MHz") || !xf86NameCmp(end, "M"))
+ 			units = 1000000;
+ 		    else {
+ 			if (markUsed) {
+@@ -616,7 +617,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 		    }
+ 		    if (p->found)
+ 			freq *= (double)units;
+-		} else {
++                }
++                else {
+ 		    if (markUsed) {
+ 			xf86DrvMsg(scrnIndex, X_WARNING,
+ 				"Option \"%s\" requires a frequency value\n",
+@@ -637,6 +639,7 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	}
+ 	if (p->found && markUsed) {
+ 	    int verb = 2;
++
+ 	    if (wasUsed)
+ 		verb = 4;
+ 	    xf86DrvMsgVerb(scrnIndex, X_CONFIG, verb, "Option \"%s\"", p->name);
+@@ -645,7 +648,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	    }
+ 	    xf86ErrorFVerb(verb, "\n");
+ 	}
+-    } else if (p->type == OPTV_BOOLEAN) {
++    }
++    else if (p->type == OPTV_BOOLEAN) {
+ 	/* Look for matches with options with or without a "No" prefix. */
+ 	char *n, *newn;
+ 	OptionInfoRec opt;
+@@ -657,7 +661,8 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	}
+ 	if (strncmp(n, "no", 2) == 0) {
+ 	    newn = n + 2;
+-	} else {
++        }
++        else {
+ 	    free(n);
+ 	    if (asprintf(&n, "No%s", p->name) == -1) {
+ 		p->found = FALSE;
+@@ -671,12 +676,14 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	    if (GetBoolValue(&opt, s)) {
+ 		p->value.bool = !opt.value.bool;
+ 		p->found = TRUE;
+-	    } else {
++            }
++            else {
+ 		xf86DrvMsg(scrnIndex, X_WARNING,
+ 			   "Option \"%s\" requires a boolean value\n", newn);
+ 		p->found = FALSE;
+ 	    }
+-	} else {
++        }
++        else {
+ 	    p->found = FALSE;
+ 	}
+ 	if (p->found && markUsed) {
+@@ -687,13 +694,13 @@ ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 	    xf86ErrorFVerb(2, "\n");
+ 	}
+ 	free(n);
+-    } else {
++    }
++    else {
+ 	p->found = FALSE;
+     }
+     return p->found;
+ }
+ 
+-
+ void
+ xf86ProcessOptions(int scrnIndex, XF86OptionPtr options, OptionInfoPtr optinfo)
+ {
+@@ -704,7 +711,6 @@ xf86ProcessOptions(int scrnIndex, XF86OptionPtr options, OptionInfoPtr optinfo)
+     }
+ }
+ 
+-
+ OptionInfoPtr
+ xf86TokenToOptinfo(const OptionInfoRec *table, int token)
+ {
+@@ -731,7 +737,6 @@ xf86TokenToOptinfo(const OptionInfoRec *table, int token)
+ 	return NULL;
+ }
+ 
+-
+ const char *
+ xf86TokenToOptName(const OptionInfoRec *table, int token)
+ {
+@@ -741,7 +746,6 @@ xf86TokenToOptName(const OptionInfoRec *table, int token)
+     return p->name;
+ }
+ 
+-
+ Bool
+ xf86IsOptionSet(const OptionInfoRec *table, int token)
+ {
+@@ -751,7 +755,6 @@ xf86IsOptionSet(const OptionInfoRec *table, int token)
+     return p && p->found;
+ }
+ 
+-
+ char *
+ xf86GetOptValString(const OptionInfoRec *table, int token)
+ {
+@@ -764,7 +767,6 @@ xf86GetOptValString(const OptionInfoRec *table, int token)
+ 	return NULL;
+ }
+ 
+-
+ Bool
+ xf86GetOptValInteger(const OptionInfoRec *table, int token, int *value)
+ {
+@@ -774,11 +776,11 @@ xf86GetOptValInteger(const OptionInfoRec *table, int token, int *value)
+     if (p && p->found) {
+ 	*value = p->value.num;
+ 	return TRUE;
+-    } else
++    }
++    else
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86GetOptValULong(const OptionInfoRec *table, int token, unsigned long *value)
+ {
+@@ -788,11 +790,11 @@ xf86GetOptValULong(const OptionInfoRec *table, int token, unsigned long *value)
+     if (p && p->found) {
+ 	*value = p->value.num;
+ 	return TRUE;
+-    } else
++    }
++    else
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86GetOptValReal(const OptionInfoRec *table, int token, double *value)
+ {
+@@ -802,11 +804,11 @@ xf86GetOptValReal(const OptionInfoRec *table, int token, double *value)
+     if (p && p->found) {
+ 	*value = p->value.realnum;
+ 	return TRUE;
+-    } else
++    }
++    else
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86GetOptValFreq(const OptionInfoRec *table, int token,
+ 		  OptFreqUnits expectedUnits, double *value)
+@@ -828,7 +830,8 @@ xf86GetOptValFreq(const OptionInfoRec *table, int token,
+ 		*value = p->value.freq.freq / 1000000.0;
+ 		break;
+ 	    }
+-	} else {
++        }
++        else {
+ 	    /* No units given, so try to guess the scaling. */
+ 	    switch (expectedUnits) {
+ 	    case OPTUNITS_HZ:
+@@ -850,11 +853,11 @@ xf86GetOptValFreq(const OptionInfoRec *table, int token,
+ 	    }
+ 	}
+ 	return TRUE;
+-    } else
++    }
++    else
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86GetOptValBool(const OptionInfoRec *table, int token, Bool *value)
+ {
+@@ -864,11 +867,11 @@ xf86GetOptValBool(const OptionInfoRec *table, int token, Bool *value)
+     if (p && p->found) {
+ 	*value = p->value.bool;
+ 	return TRUE;
+-    } else
++    }
++    else
+ 	return FALSE;
+ }
+ 
+-
+ Bool
+ xf86ReturnOptValBool(const OptionInfoRec *table, int token, Bool def)
+ {
+@@ -877,11 +880,11 @@ xf86ReturnOptValBool(const OptionInfoRec *table, int token, Bool def)
+     p = xf86TokenToOptinfo(table, token);
+     if (p && p->found) {
+ 	return p->value.bool;
+-    } else
++    }
++    else
+ 	return def;
+ }
+ 
+-
+ int
+ xf86NameCmp(const char *s1, const char *s2)
+ {

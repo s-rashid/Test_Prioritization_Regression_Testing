@@ -1,0 +1,12 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index c86011a..27cb220 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -3916,7 +3916,6 @@ AddScreen(
+        any of the strings pointed to by argv.  They may be passed to
+        multiple screens.
+     */
+-    pScreen->rgf = ~0L;  /* there are no scratch GCs yet*/
+     WindowTable[i] = NullWindow;
+     screenInfo.screens[i] = pScreen;
+     screenInfo.numScreens++;

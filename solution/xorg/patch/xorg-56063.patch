@@ -1,0 +1,12 @@
+diff --git a/os/strlcat.c b/os/strlcat.c
+index 7d53b0a..316dfa9 100644
+--- a/os/strlcat.c
++++ b/os/strlcat.c
+@@ -14,7 +14,6 @@
+  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif

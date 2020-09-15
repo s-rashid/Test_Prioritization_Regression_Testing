@@ -1,0 +1,46 @@
+diff --git a/hw/xfree86/dri/drimodule.c b/hw/xfree86/dri/drimodule.c
+index 28f6ad8..83eca4e 100644
+--- a/hw/xfree86/dri/drimodule.c
++++ b/hw/xfree86/dri/drimodule.c
+@@ -44,8 +44,7 @@ static MODULESETUPPROTO(driSetup);
+ 
+ drmServerInfo DRIDRMServerInfo;
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+         "dri",
+         MODULEVENDORSTRING,
+         MODINFOSTRING1,
+@@ -59,11 +58,11 @@ static XF86ModuleVersionInfo VersRec =
+ };
+ 
+ extern void XFree86DRIExtensionInit(INITARGS);
++
+ #define _XF86DRI_SERVER_
+ #include <X11/dri/xf86driproto.h>
+ 
+-static ExtensionModule XF86DRIExt =
+-{
++static ExtensionModule XF86DRIExt = {
+     XFree86DRIExtensionInit,
+     XF86DRINAME,
+     &noXFree86DRIExtension,
+@@ -81,8 +80,10 @@ driSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     if (!setupDone) {
+ 	setupDone = TRUE;
+ 	LoadExtension(&XF86DRIExt, FALSE);
+-    } else {
+-	if (errmaj) *errmaj = LDR_ONCEONLY;
++    }
++    else {
++        if (errmaj)
++            *errmaj = LDR_ONCEONLY;
+     }
+ 
+     drmSetServerInfo(&DRIDRMServerInfo);
+@@ -90,4 +91,3 @@ driSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     /* Need a non-NULL return value to indicate success */
+     return (pointer)1;
+ }
+-

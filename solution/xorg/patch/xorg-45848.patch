@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/input/dmxevents.c b/hw/dmx/input/dmxevents.c
+index 0367e49..37f8cb3 100644
+--- a/hw/dmx/input/dmxevents.c
++++ b/hw/dmx/input/dmxevents.c
+@@ -56,6 +56,7 @@
+ #include "inputstr.h"
+ #include "mipointer.h"
+ #include "mi.h"
++#include "exglobals.h"
+ 
+ #include "XIstubs.h"
+ 

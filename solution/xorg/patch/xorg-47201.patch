@@ -1,0 +1,32 @@
+diff --git a/dbe/dbe.c b/dbe/dbe.c
+index 7af8736..825d2e0 100644
+--- a/dbe/dbe.c
++++ b/dbe/dbe.c
+@@ -54,7 +54,6 @@
+ #include "dbestruct.h"
+ #include "midbe.h"
+ #include "xace.h"
+-#include "registry.h"
+ 
+ /* GLOBALS */
+ 
+@@ -1574,17 +1573,15 @@ DbeExtensionInit(void)
+ 
+     /* Create the resource types. */
+     dbeDrawableResType =
+-        CreateNewResourceType(DbeDrawableDelete);
++        CreateNewResourceType(DbeDrawableDelete, "dbeDrawable");
+     if (!dbeDrawableResType)
+ 	return;
+     dbeDrawableResType |= RC_DRAWABLE;
+-    RegisterResourceName(dbeDrawableResType, "dbeDrawable");
+ 
+     dbeWindowPrivResType =
+-        CreateNewResourceType(DbeWindowPrivDelete);
++        CreateNewResourceType(DbeWindowPrivDelete, "dbeWindow");
+     if (!dbeWindowPrivResType)
+ 	return;
+-    RegisterResourceName(dbeWindowPrivResType, "dbeWindow");
+ 
+     if (!dixRegisterPrivateOffset(dbeDrawableResType,
+ 				  offsetof(PixmapRec, devPrivates)))

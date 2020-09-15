@@ -1,0 +1,12 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index ce33fda..a4eb3f6 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -74,6 +74,7 @@
+ #include "protocol-versions.h"
+ 
+ #include <X11/extensions/xf86bigfproto.h>
++#include "xf86bigfontsrv.h"
+ 
+ static void XF86BigfontResetProc(
+     ExtensionEntry *	/* extEntry */

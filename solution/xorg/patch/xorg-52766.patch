@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index e90c33e..fa8d4ce 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -772,8 +772,8 @@ void ddxGiveUp( void )
+  *      made to restore all original setting of the displays. Also all devices
+  *      are closed.
+  */
+-void AbortDDX( void )
+-{
++_X_NORETURN
++void AbortDDX( void ) {
+     ErrorF( "   AbortDDX\n" );
+     OsAbort();
+ }

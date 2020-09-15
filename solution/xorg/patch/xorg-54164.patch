@@ -1,0 +1,20 @@
+diff --git a/dix/events.c b/dix/events.c
+index 9fcd447..9703ca9 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2693,13 +2693,14 @@ DeliverDeviceEvents(WindowPtr pWin, InternalEvent *event, GrabPtr grab,
+                     break;
+             }
+ 
++        }
++
+             if ((deliveries < 0) || (pWin == stopAt) ||
+                 (mask & EVENT_DONT_PROPAGATE_MASK))
+             {
+                 deliveries = 0;
+                 break;
+             }
+-        }
+ 
+         child = pWin->drawable.id;
+         pWin = pWin->parent;

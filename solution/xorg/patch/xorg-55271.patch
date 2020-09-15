@@ -1,0 +1,68 @@
+diff --git a/hw/dmx/examples/dmxreconfig.c b/hw/dmx/examples/dmxreconfig.c
+index 042f8a1..9587682 100644
+--- a/hw/dmx/examples/dmxreconfig.c
++++ b/hw/dmx/examples/dmxreconfig.c
+@@ -36,7 +36,8 @@
+ #include <X11/Xlib.h>
+ #include <X11/extensions/dmxext.h>
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  event_base;
+@@ -49,7 +50,9 @@ int main(int argc, char **argv)
+     int                  errorScreen;
+ 
+     if (argc != 13) {
+-	fprintf(stderr, "Usage: %s display screen scrnx scrny scrnw scrnh rootx rooty rootw rooth originx originy\n", argv[0]);
++        fprintf(stderr,
++                "Usage: %s display screen scrnx scrny scrnw scrnh rootx rooty rootw rooth originx originy\n",
++                argv[0]);
+ 	return -1;
+     }
+ 
+@@ -62,17 +65,14 @@ int main(int argc, char **argv)
+ 
+     mask |= (DMXScreenWindowXoffset |
+ 	     DMXScreenWindowYoffset |
+-	     DMXScreenWindowWidth   |
+-	     DMXScreenWindowHeight);
++             DMXScreenWindowWidth | DMXScreenWindowHeight);
+     attr.screenWindowXoffset = strtol(argv[3],  NULL, 0);
+     attr.screenWindowYoffset = strtol(argv[4],  NULL, 0);
+     attr.screenWindowWidth   = strtol(argv[5],  NULL, 0);
+     attr.screenWindowHeight  = strtol(argv[6],  NULL, 0);
+ 
+     mask |= (DMXRootWindowXoffset |
+-	     DMXRootWindowYoffset |
+-	     DMXRootWindowWidth   |
+-	     DMXRootWindowHeight);
++             DMXRootWindowYoffset | DMXRootWindowWidth | DMXRootWindowHeight);
+     attr.rootWindowXoffset = strtol(argv[7],  NULL, 0);
+     attr.rootWindowYoffset = strtol(argv[8],  NULL, 0);
+     attr.rootWindowWidth   = strtol(argv[9],  NULL, 0);
+@@ -129,9 +129,9 @@ int main(int argc, char **argv)
+ 	       attr.rootWindowYoffset,
+ 	       (attr.rootWindowXorigin < 0 ? "" : "+"),
+ 	       attr.rootWindowXorigin,
+-	       (attr.rootWindowYorigin < 0 ? "" : "+"),
+-	       attr.rootWindowYorigin);
+-    } else {
++               (attr.rootWindowYorigin < 0 ? "" : "+"), attr.rootWindowYorigin);
++    }
++    else {
+         fprintf(stderr,
+                 "Could not set screen #%d to "
+ 		"%dx%d%s%d%s%d %dx%d%s%d%s%d %s%d%s%d\n"
+@@ -152,8 +152,7 @@ int main(int argc, char **argv)
+ 		(attr.rootWindowXorigin < 0 ? "" : "+"),
+ 		attr.rootWindowXorigin,
+ 		(attr.rootWindowYorigin < 0 ? "" : "+"),
+-		attr.rootWindowYorigin,
+-		status, errorScreen);
++                attr.rootWindowYorigin, status, errorScreen);
+ 	return -1;
+     }
+ 

@@ -1,0 +1,16 @@
+diff --git a/include/input.h b/include/input.h
+index 0d31edf..e79a3ee 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -587,6 +587,11 @@ enum TouchListenerType {
+ };
+ 
+ extern void TouchInitDDXTouchPoint(DeviceIntPtr dev, DDXTouchPointInfoPtr ddxtouch);
++extern DDXTouchPointInfoPtr TouchBeginDDXTouch(DeviceIntPtr dev, uint32_t ddx_id);
++extern void TouchEndDDXTouch(DeviceIntPtr dev, DDXTouchPointInfoPtr ti);
++extern DDXTouchPointInfoPtr TouchFindByDDXID(DeviceIntPtr dev,
++                                             uint32_t ddx_id,
++                                             Bool create);
+ extern Bool TouchInitTouchPoint(TouchClassPtr touch, ValuatorClassPtr v, int index);
+ extern void TouchFreeTouchPoint(DeviceIntPtr dev, int index);
+ 

@@ -1,0 +1,552 @@
+diff --git a/mi/mi.h b/mi/mi.h
+index 24d1af9..638fc6b 100644
+--- a/mi/mi.h
++++ b/mi/mi.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -62,13 +61,13 @@ SOFTWARE.
+ #define MiBits	CARD32
+ 
+ typedef struct _miDash *miDashPtr;
++
+ #define EVEN_DASH	0
+ #define ODD_DASH	~0
+ 
+ /* miarc.c */
+ 
+-extern _X_EXPORT void miPolyArc(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miPolyArc(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*narcs*/,
+     xArc * /*parcs*/
+@@ -76,8 +75,7 @@ extern _X_EXPORT void miPolyArc(
+ 
+ /* mibitblt.c */
+ 
+-extern _X_EXPORT RegionPtr miCopyArea(
+-    DrawablePtr /*pSrcDrawable*/,
++extern _X_EXPORT RegionPtr miCopyArea(DrawablePtr /*pSrcDrawable */ ,
+     DrawablePtr /*pDstDrawable*/,
+     GCPtr /*pGC*/,
+     int /*xIn*/,
+@@ -88,8 +86,7 @@ extern _X_EXPORT RegionPtr miCopyArea(
+     int /*yOut*/
+ );
+ 
+-extern _X_EXPORT RegionPtr miCopyPlane(
+-    DrawablePtr /*pSrcDrawable*/,
++extern _X_EXPORT RegionPtr miCopyPlane(DrawablePtr /*pSrcDrawable */ ,
+     DrawablePtr /*pDstDrawable*/,
+     GCPtr /*pGC*/,
+     int /*srcx*/,
+@@ -101,8 +98,7 @@ extern _X_EXPORT RegionPtr miCopyPlane(
+     unsigned long /*bitPlane*/
+ );
+ 
+-extern _X_EXPORT void miGetImage(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miGetImage(DrawablePtr /*pDraw */ ,
+     int /*sx*/,
+     int /*sy*/,
+     int /*w*/,
+@@ -112,8 +108,7 @@ extern _X_EXPORT void miGetImage(
+     char * /*pdstLine*/
+ );
+ 
+-extern _X_EXPORT void miPutImage(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miPutImage(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*depth*/,
+     int /*x*/,
+@@ -137,22 +132,19 @@ typedef void	(*miCopyProc) (DrawablePtr  pSrcDrawable,
+ 			       int	    dx,
+ 			       int	    dy,
+ 			       Bool	    reverse,
+-			       Bool	    upsidedown,
+-			       Pixel	    bitplane,
+-			       void	    *closure);
++                            Bool upsidedown, Pixel bitplane, void *closure);
+ 
+ extern _X_EXPORT void
++
+ miCopyRegion (DrawablePtr   pSrcDrawable,
+ 	      DrawablePtr   pDstDrawable,
+ 	      GCPtr	    pGC,
+ 	      RegionPtr	    pDstRegion,
+ 	      int	    dx,
+-	      int	    dy,
+-	      miCopyProc    copyProc,
+-	      Pixel	    bitPlane,
+-	      void	    *closure);
++             int dy, miCopyProc copyProc, Pixel bitPlane, void *closure);
+ 
+ extern _X_EXPORT RegionPtr
++
+ miDoCopy (DrawablePtr	pSrcDrawable,
+ 	  DrawablePtr	pDstDrawable,
+ 	  GCPtr		pGC,
+@@ -161,15 +153,11 @@ miDoCopy (DrawablePtr	pSrcDrawable,
+ 	  int		widthSrc, 
+ 	  int		heightSrc,
+ 	  int		xOut, 
+-	  int		yOut,
+-	  miCopyProc	copyProc,
+-	  Pixel		bitplane,
+-	  void		*closure);
++         int yOut, miCopyProc copyProc, Pixel bitplane, void *closure);
+ 
+ /* micursor.c */
+ 
+-extern _X_EXPORT void miRecolorCursor(
+-    DeviceIntPtr /* pDev */,
++extern _X_EXPORT void miRecolorCursor(DeviceIntPtr /* pDev */ ,
+     ScreenPtr /*pScr*/,
+     CursorPtr /*pCurs*/,
+     Bool /*displayed*/
+@@ -177,8 +165,7 @@ extern _X_EXPORT void miRecolorCursor(
+ 
+ /* midash.c */
+ 
+-extern _X_EXPORT void miStepDash(
+-    int /*dist*/,
++extern _X_EXPORT void miStepDash(int /*dist */ ,
+     int * /*pDashIndex*/,
+     unsigned char * /*pDash*/,
+     int /*numInDashList*/,
+@@ -187,40 +174,33 @@ extern _X_EXPORT void miStepDash(
+ 
+ /* mieq.c */
+ 
+-
+ #ifndef INPUT_H
+ typedef struct _DeviceRec *DevicePtr;
+ #endif
+ 
+-extern _X_EXPORT Bool mieqInit(
+-    void
++extern _X_EXPORT Bool mieqInit(void
+ );
+ 
+ extern _X_EXPORT void mieqFini(void);
+ 
+-extern _X_EXPORT void mieqEnqueue(
+-    DeviceIntPtr /*pDev*/,
++extern _X_EXPORT void mieqEnqueue(DeviceIntPtr /*pDev */ ,
+     InternalEvent* /*e*/
+ );
+ 
+-extern _X_EXPORT void mieqSwitchScreen(
+-    DeviceIntPtr /* pDev */,
++extern _X_EXPORT void mieqSwitchScreen(DeviceIntPtr /* pDev */ ,
+     ScreenPtr /*pScreen*/,
+     Bool /*set_dequeue_screen*/
+ );
+ 
+-extern _X_EXPORT void mieqProcessDeviceEvent(
+-    DeviceIntPtr /* dev*/,
++extern _X_EXPORT void mieqProcessDeviceEvent(DeviceIntPtr /* dev */ ,
+     InternalEvent* /* event */,
+     ScreenPtr /* screen*/
+ );
+ 
+-extern _X_EXPORT void mieqProcessInputEvents(
+-    void
++extern _X_EXPORT void mieqProcessInputEvents(void
+ );
+ 
+-extern DeviceIntPtr CopyGetMasterEvent(
+-    DeviceIntPtr /* sdev */,
++extern DeviceIntPtr CopyGetMasterEvent(DeviceIntPtr /* sdev */ ,
+     InternalEvent* /* original */,
+     InternalEvent* /* copy */
+ );
+@@ -230,13 +210,13 @@ extern DeviceIntPtr CopyGetMasterEvent(
+  * other way than the default path, register an input event handler for the
+  * given internal event type.
+  */
+-typedef void (*mieqHandler)(int screen, InternalEvent* event, DeviceIntPtr dev);
++typedef void (*mieqHandler) (int screen, InternalEvent *event,
++                             DeviceIntPtr dev);
+ void _X_EXPORT mieqSetHandler(int event, mieqHandler handler);
+ 
+ /* miexpose.c */
+ 
+-extern _X_EXPORT RegionPtr miHandleExposures(
+-    DrawablePtr /*pSrcDrawable*/,
++extern _X_EXPORT RegionPtr miHandleExposures(DrawablePtr /*pSrcDrawable */ ,
+     DrawablePtr /*pDstDrawable*/,
+     GCPtr /*pGC*/,
+     int /*srcx*/,
+@@ -248,42 +228,36 @@ extern _X_EXPORT RegionPtr miHandleExposures(
+     unsigned long /*plane*/
+ );
+ 
+-extern _X_EXPORT void miSendGraphicsExpose(
+-    ClientPtr /*client*/,
++extern _X_EXPORT void miSendGraphicsExpose(ClientPtr /*client */ ,
+     RegionPtr /*pRgn*/,
+     XID /*drawable*/,
+     int /*major*/,
+     int /*minor*/
+ );
+ 
+-extern _X_EXPORT void miSendExposures(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miSendExposures(WindowPtr /*pWin */ ,
+     RegionPtr /*pRgn*/,
+     int /*dx*/,
+     int /*dy*/
+ );
+ 
+-extern _X_EXPORT void miWindowExposures(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miWindowExposures(WindowPtr /*pWin */ ,
+     RegionPtr /*prgn*/,
+     RegionPtr /*other_exposed*/
+ );
+ 
+-extern _X_EXPORT void miPaintWindow(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miPaintWindow(WindowPtr /*pWin */ ,
+     RegionPtr /*prgn*/,
+     int /*what*/
+ );
+ 
+-extern _X_EXPORT void miClearDrawable(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miClearDrawable(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/
+ );
+ 
+ /* mifillrct.c */
+ 
+-extern _X_EXPORT void miPolyFillRect(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miPolyFillRect(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*nrectFill*/,
+     xRectangle * /*prectInit*/
+@@ -291,8 +265,7 @@ extern _X_EXPORT void miPolyFillRect(
+ 
+ /* miglblt.c */
+ 
+-extern _X_EXPORT void miPolyGlyphBlt(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miPolyGlyphBlt(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -301,8 +274,7 @@ extern _X_EXPORT void miPolyGlyphBlt(
+     pointer /*pglyphBase*/
+ );
+ 
+-extern _X_EXPORT void miImageGlyphBlt(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miImageGlyphBlt(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -313,8 +285,7 @@ extern _X_EXPORT void miImageGlyphBlt(
+ 
+ /* mipoly.c */
+ 
+-extern _X_EXPORT void miFillPolygon(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT void miFillPolygon(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*shape*/,
+     int /*mode*/,
+@@ -324,8 +295,7 @@ extern _X_EXPORT void miFillPolygon(
+ 
+ /* mipolycon.c */
+ 
+-extern _X_EXPORT Bool miFillConvexPoly(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT Bool miFillConvexPoly(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*count*/,
+     DDXPointPtr /*ptsIn*/
+@@ -333,8 +303,7 @@ extern _X_EXPORT Bool miFillConvexPoly(
+ 
+ /* mipolygen.c */
+ 
+-extern _X_EXPORT Bool miFillGeneralPoly(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT Bool miFillGeneralPoly(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*count*/,
+     DDXPointPtr /*ptsIn*/
+@@ -342,8 +311,7 @@ extern _X_EXPORT Bool miFillGeneralPoly(
+ 
+ /* mipolypnt.c */
+ 
+-extern _X_EXPORT void miPolyPoint(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miPolyPoint(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*mode*/,
+     int /*npt*/,
+@@ -352,8 +320,7 @@ extern _X_EXPORT void miPolyPoint(
+ 
+ /* mipolyrect.c */
+ 
+-extern _X_EXPORT void miPolyRectangle(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miPolyRectangle(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*nrects*/,
+     xRectangle * /*pRects*/
+@@ -361,8 +328,7 @@ extern _X_EXPORT void miPolyRectangle(
+ 
+ /* mipolyseg.c */
+ 
+-extern _X_EXPORT void miPolySegment(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miPolySegment(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*nseg*/,
+     xSegment * /*pSegs*/
+@@ -370,8 +336,7 @@ extern _X_EXPORT void miPolySegment(
+ 
+ /* mipolytext.c */
+ 
+-extern _X_EXPORT int miPolyText8(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT int miPolyText8(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -379,8 +344,7 @@ extern _X_EXPORT int miPolyText8(
+     char * /*chars*/
+ );
+ 
+-extern _X_EXPORT int miPolyText16(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT int miPolyText16(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -388,8 +352,7 @@ extern _X_EXPORT int miPolyText16(
+     unsigned short * /*chars*/
+ );
+ 
+-extern _X_EXPORT void miImageText8(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miImageText8(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -397,8 +360,7 @@ extern _X_EXPORT void miImageText8(
+     char * /*chars*/
+ );
+ 
+-extern _X_EXPORT void miImageText16(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miImageText16(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*x*/,
+     int /*y*/,
+@@ -408,8 +370,7 @@ extern _X_EXPORT void miImageText16(
+ 
+ /* mipushpxl.c */
+ 
+-extern _X_EXPORT void miPushPixels(
+-    GCPtr /*pGC*/,
++extern _X_EXPORT void miPushPixels(GCPtr /*pGC */ ,
+     PixmapPtr /*pBitMap*/,
+     DrawablePtr /*pDrawable*/,
+     int /*dx*/,
+@@ -420,8 +381,7 @@ extern _X_EXPORT void miPushPixels(
+ 
+ /* miscrinit.c */
+ 
+-extern _X_EXPORT Bool miModifyPixmapHeader(
+-    PixmapPtr /*pPixmap*/,
++extern _X_EXPORT Bool miModifyPixmapHeader(PixmapPtr /*pPixmap */ ,
+     int /*width*/,
+     int /*height*/,
+     int /*depth*/,
+@@ -430,18 +390,15 @@ extern _X_EXPORT Bool miModifyPixmapHeader(
+     pointer /*pPixData*/
+ );
+ 
+-extern _X_EXPORT Bool miCreateScreenResources(
+-    ScreenPtr /*pScreen*/
++extern _X_EXPORT Bool miCreateScreenResources(ScreenPtr /*pScreen */
+ );
+ 
+-extern _X_EXPORT Bool miScreenDevPrivateInit(
+-    ScreenPtr /*pScreen*/,
++extern _X_EXPORT Bool miScreenDevPrivateInit(ScreenPtr /*pScreen */ ,
+     int /*width*/,
+     pointer /*pbits*/
+ );
+ 
+-extern _X_EXPORT Bool miScreenInit(
+-    ScreenPtr /*pScreen*/,
++extern _X_EXPORT Bool miScreenInit(ScreenPtr /*pScreen */ ,
+     pointer /*pbits*/,
+     int /*xsize*/,
+     int /*ysize*/,
+@@ -458,8 +415,7 @@ extern _X_EXPORT Bool miScreenInit(
+ 
+ /* mivaltree.c */
+ 
+-extern _X_EXPORT int miShapedWindowIn(
+-    RegionPtr /*universe*/,
++extern _X_EXPORT int miShapedWindowIn(RegionPtr /*universe */ ,
+     RegionPtr /*bounding*/,
+     BoxPtr /*rect*/,
+     int /*x*/,
+@@ -473,25 +429,23 @@ typedef RegionPtr
+ (*GetRedirectBorderClipProcPtr) (WindowPtr pWindow);
+ 
+ extern _X_EXPORT void
++
+ miRegisterRedirectBorderClipProc (SetRedirectBorderClipProcPtr setBorderClip,
+ 				  GetRedirectBorderClipProcPtr getBorderClip);
+ 
+-extern _X_EXPORT int miValidateTree(
+-    WindowPtr /*pParent*/,
++extern _X_EXPORT int miValidateTree(WindowPtr /*pParent */ ,
+     WindowPtr /*pChild*/,
+     VTKind /*kind*/
+ );
+ 
+-extern _X_EXPORT void miWideLine(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miWideLine(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*mode*/,
+     int /*npt*/,
+     DDXPointPtr /*pPts*/
+ );
+ 
+-extern _X_EXPORT void miWideDash(
+-    DrawablePtr /*pDrawable*/,
++extern _X_EXPORT void miWideDash(DrawablePtr /*pDrawable */ ,
+     GCPtr /*pGC*/,
+     int /*mode*/,
+     int /*npt*/,
+@@ -500,8 +454,7 @@ extern _X_EXPORT void miWideDash(
+ 
+ /* miwindow.c */
+ 
+-extern _X_EXPORT void miClearToBackground(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miClearToBackground(WindowPtr /*pWin */ ,
+     int /*x*/,
+     int /*y*/,
+     int /*w*/,
+@@ -509,30 +462,25 @@ extern _X_EXPORT void miClearToBackground(
+     Bool /*generateExposures*/
+ );
+ 
+-extern _X_EXPORT void miMarkWindow(
+-    WindowPtr /*pWin*/
++extern _X_EXPORT void miMarkWindow(WindowPtr    /*pWin */
+ );
+ 
+-extern _X_EXPORT Bool miMarkOverlappedWindows(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT Bool miMarkOverlappedWindows(WindowPtr /*pWin */ ,
+     WindowPtr /*pFirst*/,
+     WindowPtr * /*ppLayerWin*/
+ );
+ 
+-extern _X_EXPORT void miHandleValidateExposures(
+-    WindowPtr /*pWin*/
++extern _X_EXPORT void miHandleValidateExposures(WindowPtr       /*pWin */
+ );
+ 
+-extern _X_EXPORT void miMoveWindow(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miMoveWindow(WindowPtr /*pWin */ ,
+     int /*x*/,
+     int /*y*/,
+     WindowPtr /*pNextSib*/,
+     VTKind /*kind*/
+ );
+ 
+-extern _X_EXPORT void miSlideAndSizeWindow(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miSlideAndSizeWindow(WindowPtr /*pWin */ ,
+     int /*x*/,
+     int /*y*/,
+     unsigned int /*w*/,
+@@ -540,32 +488,28 @@ extern _X_EXPORT void miSlideAndSizeWindow(
+     WindowPtr /*pSib*/
+ );
+ 
+-extern _X_EXPORT WindowPtr miGetLayerWindow(
+-    WindowPtr /*pWin*/
++extern _X_EXPORT WindowPtr miGetLayerWindow(WindowPtr   /*pWin */
+ );
+ 
+-extern _X_EXPORT void miSetShape(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miSetShape(WindowPtr /*pWin */ ,
+     int /*kind*/
+ );
+ 
+-extern _X_EXPORT void miChangeBorderWidth(
+-    WindowPtr /*pWin*/,
++extern _X_EXPORT void miChangeBorderWidth(WindowPtr /*pWin */ ,
+     unsigned int /*width*/
+ );
+ 
+-extern _X_EXPORT void miMarkUnrealizedWindow(
+-    WindowPtr /*pChild*/,
++extern _X_EXPORT void miMarkUnrealizedWindow(WindowPtr /*pChild */ ,
+     WindowPtr /*pWin*/,
+     Bool /*fromConfigure*/
+ );
+ 
+-extern _X_EXPORT void miSegregateChildren(WindowPtr pWin, RegionPtr pReg, int depth);
++extern _X_EXPORT void miSegregateChildren(WindowPtr pWin, RegionPtr pReg,
++                                          int depth);
+ 
+ /* mizerarc.c */
+ 
+-extern _X_EXPORT void miZeroPolyArc(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miZeroPolyArc(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*narcs*/,
+     xArc * /*parcs*/
+@@ -573,24 +517,21 @@ extern _X_EXPORT void miZeroPolyArc(
+ 
+ /* mizerline.c */
+ 
+-extern _X_EXPORT void miZeroLine(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT void miZeroLine(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*mode*/,
+     int /*nptInit*/,
+     DDXPointRec * /*pptInit*/
+ );
+ 
+-extern _X_EXPORT void miZeroDashLine(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT void miZeroDashLine(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*mode*/,
+     int /*nptInit*/,
+     DDXPointRec * /*pptInit*/
+ );
+ 
+-extern _X_EXPORT void miPolyFillArc(
+-    DrawablePtr /*pDraw*/,
++extern _X_EXPORT void miPolyFillArc(DrawablePtr /*pDraw */ ,
+     GCPtr /*pGC*/,
+     int /*narcs*/,
+     xArc * /*parcs*/

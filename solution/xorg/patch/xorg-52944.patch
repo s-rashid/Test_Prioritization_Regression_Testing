@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winwindow.h b/hw/xwin/winwindow.h
+index cf2f93f..ebe4309 100644
+--- a/hw/xwin/winwindow.h
++++ b/hw/xwin/winwindow.h
+@@ -79,6 +79,7 @@ typedef struct
+   HWND			hWnd;
+   winPrivScreenPtr	pScreenPriv;
+   Bool			fXKilled;
++  HDWP                  hDwp;
+ 
+   /* Privates used by primary fb DirectDraw server */
+   LPDDSURFACEDESC	pddsdPrimary;

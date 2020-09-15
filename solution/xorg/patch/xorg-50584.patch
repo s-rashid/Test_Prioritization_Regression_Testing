@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/quartzAudio.c b/hw/xquartz/quartzAudio.c
+index 708202b..d0f7c53 100644
+--- a/hw/xquartz/quartzAudio.c
++++ b/hw/xquartz/quartzAudio.c
+@@ -42,7 +42,7 @@
+ #include <dix-config.h>
+ #endif
+ 
+-#include "quartzCommon.h"
++#include "quartz.h"
+ #include "quartzAudio.h"
+ 
+ #include <CoreAudio/CoreAudio.h>
+@@ -220,7 +220,7 @@ void DDXRingBell(
+     int pitch,          // pitch is Hz
+     int duration )      // duration is milliseconds
+ {
+-    if (quartzUseSysBeep) {
++    if (XQuartzUseSysBeep) {
+         if (volume)
+             NSBeep();
+         return;

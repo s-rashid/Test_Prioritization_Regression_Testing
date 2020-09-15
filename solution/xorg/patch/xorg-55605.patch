@@ -1,0 +1,28 @@
+diff --git a/hw/xfree86/os-support/xf86_OSlib.h b/hw/xfree86/os-support/xf86_OSlib.h
+index 45500db..9161e18 100644
+--- a/hw/xfree86/os-support/xf86_OSlib.h
++++ b/hw/xfree86/os-support/xf86_OSlib.h
+@@ -91,7 +91,6 @@
+ # include <sys/stat.h>
+ # include <sys/types.h>
+ 
+-
+ # include <errno.h>
+ 
+ # if defined(_NEED_SYSI86)
+@@ -158,7 +157,6 @@
+ #  define VT_ACKACQ 2
+ # endif /* !VT_ACKACQ */
+ 
+-
+ # if defined(SVR4) 
+ #  include <sys/mman.h>
+ #  if !(defined(sun) && defined (SVR4))
+@@ -358,7 +356,6 @@
+ # undef _POSIX_SOURCE
+ #endif /* _POSIX_SOURCE */
+ 
+-
+ #ifndef DEV_MEM
+ #define DEV_MEM "/dev/mem"
+ #endif

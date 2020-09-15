@@ -1,0 +1,257 @@
+diff --git a/miext/cw/cw_render.c b/miext/cw/cw_render.c
+index 1f990ae..059d686 100644
+--- a/miext/cw/cw_render.c
++++ b/miext/cw/cw_render.c
+@@ -81,8 +81,7 @@ cwCreatePicturePrivate (PicturePtr pPicture)
+ 						      pPicture->pFormat,
+ 						      0, 0, serverClient,
+ 						      &error);
+-    if (!pPicturePrivate->pBackingPicture)
+-    {
++    if (!pPicturePrivate->pBackingPicture) {
+ 	free(pPicturePrivate);
+ 	return NULL;
+     }
+@@ -103,8 +102,7 @@ cwDestroyPicturePrivate (PicturePtr pPicture)
+ {
+     cwPicturePrivate;
+ 
+-    if (pPicturePrivate)
+-    {
++    if (pPicturePrivate) {
+ 	if (pPicturePrivate->pBackingPicture)
+ 	    FreePicture (pPicturePrivate->pBackingPicture, 0);
+ 	free(pPicturePrivate);
+@@ -117,8 +115,7 @@ cwGetBackingPicture (PicturePtr pPicture, int *x_off, int *y_off)
+ {
+     cwPicturePrivate;
+ 
+-    if (pPicturePrivate)
+-    {
++    if (pPicturePrivate) {
+ 	DrawablePtr pDrawable = pPicture->pDrawable;
+ 	WindowPtr   pWindow = (WindowPtr) pDrawable;
+ 	PixmapPtr   pPixmap = getCwPixmap (pWindow);
+@@ -128,8 +125,7 @@ cwGetBackingPicture (PicturePtr pPicture, int *x_off, int *y_off)
+ 
+ 	return pPicturePrivate->pBackingPicture;
+     }
+-    else
+-    {
++    else {
+ 	*x_off = *y_off = 0;
+ 	return pPicture;
+     }
+@@ -139,6 +135,7 @@ static void
+ cwDestroyPicture (PicturePtr pPicture)
+ {
+     ScreenPtr		pScreen = pPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     
+     cwPsUnwrap(DestroyPicture);
+@@ -151,6 +148,7 @@ static void
+ cwChangePicture (PicturePtr pPicture, Mask mask)
+ {
+     ScreenPtr		pScreen = pPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwPicturePtr	pPicturePrivate = getCwPicture(pPicture);
+     
+@@ -161,13 +159,12 @@ cwChangePicture (PicturePtr pPicture, Mask mask)
+     cwPsWrap(ChangePicture, cwChangePicture);
+ }
+ 
+-
+ static void
+-cwValidatePicture (PicturePtr pPicture,
+-		   Mask       mask)
++cwValidatePicture(PicturePtr pPicture, Mask mask)
+ {
+     DrawablePtr		pDrawable = pPicture->pDrawable;
+     ScreenPtr		pScreen = pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwPicturePrivate;
+     
+@@ -178,13 +175,11 @@ cwValidatePicture (PicturePtr pPicture,
+      */
+     (*ps->ValidatePicture) (pPicture, mask);
+     
+-    if (!cwDrawableIsRedirWindow (pDrawable))
+-    {
++    if (!cwDrawableIsRedirWindow(pDrawable)) {
+ 	if (pPicturePrivate)
+ 	    cwDestroyPicturePrivate (pPicture);
+     }
+-    else
+-    {
++    else {
+ 	PicturePtr  pBackingPicture;
+ 	DrawablePtr pBackingDrawable;
+ 	int	    x_off, y_off;
+@@ -192,17 +187,14 @@ cwValidatePicture (PicturePtr pPicture,
+ 	pBackingDrawable = cwGetBackingDrawable(pDrawable, &x_off, &y_off);
+ 
+ 	if (pPicturePrivate && 
+-	    pPicturePrivate->pBackingPicture->pDrawable != pBackingDrawable)
+-	{
++            pPicturePrivate->pBackingPicture->pDrawable != pBackingDrawable) {
+ 	    cwDestroyPicturePrivate (pPicture);
+ 	    pPicturePrivate = 0;
+ 	}
+ 
+-	if (!pPicturePrivate)
+-	{
++        if (!pPicturePrivate) {
+ 	    pPicturePrivate = cwCreatePicturePrivate (pPicture);
+-	    if (!pPicturePrivate)
+-	    {
++            if (!pPicturePrivate) {
+ 		cwPsWrap(ValidatePicture, cwValidatePicture);
+ 		return;
+ 	    }
+@@ -217,28 +209,26 @@ cwValidatePicture (PicturePtr pPicture,
+ 	SetPictureTransform(pBackingPicture, pPicture->transform);
+ 	
+ 	if (pBackingPicture->filter != pPicture->filter ||
+-	    pPicture->filter_nparams > 0)
+-	{
++            pPicture->filter_nparams > 0) {
+ 	    char    *filter = PictureGetFilterName (pPicture->filter);
+ 	    
+ 	    SetPictureFilter(pBackingPicture,
+ 			     filter, strlen (filter),
+-			     pPicture->filter_params,
+-			     pPicture->filter_nparams);
++                             pPicture->filter_params, pPicture->filter_nparams);
+ 	}
+ 
+ 	pPicturePrivate->stateChanges |= mask;
+ 
+ 	if (pPicturePrivate->serialNumber != pDrawable->serialNumber ||
+-	    (pPicturePrivate->stateChanges & (CPClipXOrigin|CPClipYOrigin|CPClipMask)))
+-	{
+-	    SetPictureClipRegion (pBackingPicture, 
+-				  x_off - pDrawable->x,
++            (pPicturePrivate->
++             stateChanges & (CPClipXOrigin | CPClipYOrigin | CPClipMask))) {
++            SetPictureClipRegion(pBackingPicture, x_off - pDrawable->x,
+ 				  y_off - pDrawable->y,
+ 				  pPicture->pCompositeClip);
+     
+ 	    pPicturePrivate->serialNumber = pDrawable->serialNumber;
+-	    pPicturePrivate->stateChanges &= ~(CPClipXOrigin | CPClipYOrigin | CPClipMask);
++            pPicturePrivate->stateChanges &=
++                ~(CPClipXOrigin | CPClipYOrigin | CPClipMask);
+ 	}
+ 
+ 	CopyPicture(pPicture, pPicturePrivate->stateChanges, pBackingPicture);
+@@ -256,42 +246,37 @@ cwComposite (CARD8	op,
+ 	     INT16	xSrc,
+ 	     INT16	ySrc,
+ 	     INT16	xMsk,
+-	     INT16	yMsk,
+-	     INT16	xDst,
+-	     INT16	yDst,
+-	     CARD16	width,
+-	     CARD16	height)
++            INT16 yMsk, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
+ {
+     ScreenPtr	pScreen = pDstPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwSrcPictureDecl;
+     cwMskPictureDecl;
+     cwDstPictureDecl;
+     
+     cwPsUnwrap(Composite);
+-    (*ps->Composite) (op, pBackingSrcPicture, pBackingMskPicture, pBackingDstPicture,
+-		      xSrc + src_picture_x_off, ySrc + src_picture_y_off,
+-		      xMsk + msk_picture_x_off, yMsk + msk_picture_y_off,
+-		      xDst + dst_picture_x_off, yDst + dst_picture_y_off,
+-		      width, height);
++    (*ps->Composite) (op, pBackingSrcPicture, pBackingMskPicture,
++                      pBackingDstPicture, xSrc + src_picture_x_off,
++                      ySrc + src_picture_y_off, xMsk + msk_picture_x_off,
++                      yMsk + msk_picture_y_off, xDst + dst_picture_x_off,
++                      yDst + dst_picture_y_off, width, height);
+     cwPsWrap(Composite, cwComposite);
+ }
+ 
+ static void
+ cwCompositeRects (CARD8		op,
+ 		  PicturePtr	pDstPicture,
+-		  xRenderColor  *color,
+-		  int		nRect,
+-		  xRectangle	*rects)
++                 xRenderColor * color, int nRect, xRectangle *rects)
+ {
+     ScreenPtr	pScreen = pDstPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwDstPictureDecl;
+     int i;
+     
+     cwPsUnwrap(CompositeRects);
+-    for (i = 0; i < nRect; i++)
+-    {
++    for (i = 0; i < nRect; i++) {
+ 	rects[i].x += dst_picture_x_off;
+ 	rects[i].y += dst_picture_y_off;
+     }
+@@ -304,12 +289,10 @@ cwTrapezoids (CARD8	    op,
+ 	      PicturePtr    pSrcPicture,
+ 	      PicturePtr    pDstPicture,
+ 	      PictFormatPtr maskFormat,
+-	      INT16	    xSrc,
+-	      INT16	    ySrc,
+-	      int	    ntrap,
+-	      xTrapezoid    *traps)
++             INT16 xSrc, INT16 ySrc, int ntrap, xTrapezoid * traps)
+ {
+     ScreenPtr	pScreen = pDstPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwSrcPictureDecl;
+     cwDstPictureDecl;
+@@ -317,8 +300,7 @@ cwTrapezoids (CARD8	    op,
+     
+     cwPsUnwrap(Trapezoids);
+     if (dst_picture_x_off || dst_picture_y_off) {
+-	for (i = 0; i < ntrap; i++)
+-	{
++        for (i = 0; i < ntrap; i++) {
+ 	    traps[i].top += dst_picture_y_off << 16;
+ 	    traps[i].bottom += dst_picture_y_off << 16;
+ 	    traps[i].left.p1.x += dst_picture_x_off << 16;
+@@ -342,12 +324,10 @@ cwTriangles (CARD8	    op,
+ 	     PicturePtr	    pSrcPicture,
+ 	     PicturePtr	    pDstPicture,
+ 	     PictFormatPtr  maskFormat,
+-	     INT16	    xSrc,
+-	     INT16	    ySrc,
+-	     int	    ntri,
+-	     xTriangle	   *tris)
++            INT16 xSrc, INT16 ySrc, int ntri, xTriangle * tris)
+ {
+     ScreenPtr	pScreen = pDstPicture->pDrawable->pScreen;
++
+     cwPsDecl(pScreen);
+     cwSrcPictureDecl;
+     cwDstPictureDecl;
+@@ -355,8 +335,7 @@ cwTriangles (CARD8	    op,
+     
+     cwPsUnwrap(Triangles);
+     if (dst_picture_x_off || dst_picture_y_off) {
+-	for (i = 0; i < ntri; i++)
+-	{
++        for (i = 0; i < ntri; i++) {
+ 	    tris[i].p1.x += dst_picture_x_off << 16;
+ 	    tris[i].p1.y += dst_picture_y_off << 16;
+ 	    tris[i].p2.x += dst_picture_x_off << 16;
+@@ -402,4 +381,3 @@ cwFiniRender (ScreenPtr pScreen)
+     cwPsUnwrap(Trapezoids);
+     cwPsUnwrap(Triangles);
+ }
+-

@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/modes/xf86Rotate.c b/hw/xfree86/modes/xf86Rotate.c
+index 2714fee..e3683a8 100644
+--- a/hw/xfree86/modes/xf86Rotate.c
++++ b/hw/xfree86/modes/xf86Rotate.c
+@@ -76,9 +76,9 @@ xf86RotateCrtcRedisplay (xf86CrtcPtr crtc, RegionPtr region)
+ {
+     ScrnInfoPtr		scrn = crtc->scrn;
+     ScreenPtr		screen = scrn->pScreen;
+-    WindowPtr		root = WindowTable[screen->myNum];
++    WindowPtr		root = screen->root;
+     PixmapPtr		dst_pixmap = crtc->rotatedPixmap;
+-    PictFormatPtr	format = compWindowFormat (WindowTable[screen->myNum]);
++    PictFormatPtr	format = compWindowFormat (screen->root);
+     int			error;
+     PicturePtr		src, dst;
+     int			n = REGION_NUM_RECTS(region);

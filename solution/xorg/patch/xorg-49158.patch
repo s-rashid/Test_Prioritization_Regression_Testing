@@ -1,0 +1,29 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index ffb3764..d32950d 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -1179,12 +1179,10 @@ ProcTranslateCoords(ClientPtr client)
+ 		 * borderSize
+ 		 */
+ 		&& (!wBoundingShape(pWin) ||
+-		    RegionContainsPoint(
+-					&pWin->borderSize, x, y, &box))
++		    RegionContainsPoint(&pWin->borderSize, x, y, &box))
+ 		
+ 		&& (!wInputShape(pWin) ||
+-		    RegionContainsPoint(
+-				    wInputShape(pWin),
++		    RegionContainsPoint(wInputShape(pWin),
+ 				    x - pWin->drawable.x,
+ 				    y - pWin->drawable.y, &box))
+ 		)
+@@ -2151,8 +2149,7 @@ DoGetImage(ClientPtr client, int format, Drawable drawable,
+ 	pVisibleRegion = NotClippedByChildren((WindowPtr)pDraw);
+ 	if (pVisibleRegion)
+ 	{
+-	    RegionTranslate(pVisibleRegion,
+-			     -pDraw->x, -pDraw->y);
++	    RegionTranslate(pVisibleRegion, -pDraw->x, -pDraw->y);
+ 	}
+     }
+ 

@@ -1,0 +1,13 @@
+diff --git a/fb/wfbrename.h b/fb/wfbrename.h
+index 433f286..c8e98c8 100644
+--- a/fb/wfbrename.h
++++ b/fb/wfbrename.h
+@@ -155,8 +155,6 @@
+ #define fbReduceRasterOp wfbReduceRasterOp
+ #define fbReplicatePixel wfbReplicatePixel
+ #define fbResolveColor wfbResolveColor
+-#define fbRestoreAreas wfbRestoreAreas
+-#define fbSaveAreas wfbSaveAreas
+ #define fbScreenPrivateKeyRec wfbScreenPrivateKeyRec
+ #define fbSegment wfbSegment
+ #define fbSelectBres wfbSelectBres

@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 3fae52d..3c7bd50 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -1421,7 +1421,7 @@ CheckGrabForSyncs(DeviceIntPtr thisDev, Bool thisMode, Bool otherMode)
+ static void
+ DetachFromMaster(DeviceIntPtr dev)
+ {
+-    if (!IsFloating(dev))
++    if (IsFloating(dev))
+         return;
+ 
+     dev->saved_master_id = GetMaster(dev, MASTER_ATTACHED)->id;

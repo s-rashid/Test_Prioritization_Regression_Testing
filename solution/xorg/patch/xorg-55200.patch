@@ -1,0 +1,164 @@
+diff --git a/glx/single2.c b/glx/single2.c
+index 9f8254b..42cccc1 100644
+--- a/glx/single2.c
++++ b/glx/single2.c
+@@ -46,7 +46,8 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-int __glXDisp_FeedbackBuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_FeedbackBuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     GLsizei size;
+     GLenum type;
+@@ -76,7 +77,8 @@ int __glXDisp_FeedbackBuffer(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDisp_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_SelectBuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     __GLXcontext *cx;
+     GLsizei size;
+@@ -91,8 +93,7 @@ int __glXDisp_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
+     size = *(GLsizei *)(pc+0);
+     if (cx->selectBufSize < size) {
+ 	cx->selectBuf = (GLuint *) realloc(cx->selectBuf,
+-						(size_t) size 
+-						* __GLX_SIZE_CARD32);
++                                           (size_t) size * __GLX_SIZE_CARD32);
+ 	if (!cx->selectBuf) {
+ 	    cl->client->errorValue = size;
+ 	    return BadAlloc;
+@@ -104,7 +105,8 @@ int __glXDisp_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDisp_RenderMode(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_RenderMode(__GLXclientState * cl, GLbyte * pc)
+ {
+     ClientPtr client;
+     xGLXRenderModeReply reply;
+@@ -145,7 +147,8 @@ int __glXDisp_RenderMode(__GLXclientState *cl, GLbyte *pc)
+ 	if (retval < 0) {
+ 	    /* Overflow happened. Copy the entire buffer */
+ 	    nitems = cx->feedbackBufSize;
+-	} else {
++        }
++        else {
+ 	    nitems = retval;
+ 	}
+ 	retBytes = nitems * __GLX_SIZE_FLOAT32;
+@@ -156,7 +159,8 @@ int __glXDisp_RenderMode(__GLXclientState *cl, GLbyte *pc)
+ 	if (retval < 0) {
+ 	    /* Overflow happened.  Copy the entire buffer */
+ 	    nitems = cx->selectBufSize;
+-	} else {
++        }
++        else {
+ 	    GLuint *bp = cx->selectBuf;
+ 	    GLint i;
+ 
+@@ -202,7 +206,8 @@ int __glXDisp_RenderMode(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDisp_Flush(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_Flush(__GLXclientState * cl, GLbyte * pc)
+ {
+ 	__GLXcontext *cx;
+ 	int error;
+@@ -217,7 +222,8 @@ int __glXDisp_Flush(__GLXclientState *cl, GLbyte *pc)
+ 	return Success;
+ }
+ 
+-int __glXDisp_Finish(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_Finish(__GLXclientState * cl, GLbyte * pc)
+ {
+     __GLXcontext *cx;
+     ClientPtr client;
+@@ -241,7 +247,8 @@ int __glXDisp_Finish(__GLXclientState *cl, GLbyte *pc)
+ 
+ #define SEPARATOR " "
+ 
+-char *__glXcombine_strings(const char *cext_string, const char *sext_string)
++char *
++__glXcombine_strings(const char *cext_string, const char *sext_string)
+ {
+    size_t clen, slen;
+    char *combo_string, *token, *s1;
+@@ -263,12 +270,15 @@ char *__glXcombine_strings(const char *cext_string, const char *sext_string)
+    if (clen > slen) {
+ 	combo_string = (char *) malloc(slen + 2);
+ 	s1 = (char *) malloc(slen + 2);
+-	if (s1) strcpy(s1, sext_string);
++        if (s1)
++            strcpy(s1, sext_string);
+ 	s2 = cext_string;
+-   } else {
++    }
++    else {
+ 	combo_string = (char *) malloc(clen + 2);
+ 	s1 = (char *) malloc(clen + 2);
+-	if (s1) strcpy(s1, cext_string);
++        if (s1)
++            strcpy(s1, cext_string);
+ 	s2 = sext_string;
+    }
+    if (!combo_string || !s1) {
+@@ -287,9 +297,11 @@ char *__glXcombine_strings(const char *cext_string, const char *sext_string)
+ 	** beware of extension names which are prefixes of other extension names
+ 	*/
+ 	const char *p = s2;
++
+ 	end = p + strlen(p);
+ 	while (p < end) {
+ 	    size_t n = strcspn(p, SEPARATOR);
++
+ 	    if ((strlen(token) == n) && (strncmp(token, p, n) == 0)) {
+ 		combo_string = strcat(combo_string, token);
+ 		combo_string = strcat(combo_string, SEPARATOR);
+@@ -304,12 +316,14 @@ char *__glXcombine_strings(const char *cext_string, const char *sext_string)
+    return combo_string;
+ }
+ 
+-int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap)
++int
++DoGetString(__GLXclientState * cl, GLbyte * pc, GLboolean need_swap)
+ {
+     ClientPtr client;
+     __GLXcontext *cx;
+     GLenum name;
+     const char *string;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     int error;
+     char *buf = NULL, *buf1 = NULL;
+@@ -342,10 +356,8 @@ int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap)
+     ** intersection of client, server, and core extension strings.
+     */
+     if (name == GL_EXTENSIONS) {
+-	buf1 = __glXcombine_strings(string,
+-				      cl->GLClientextensions);
+-	buf = __glXcombine_strings(buf1,
+-				      cx->pGlxScreen->GLextensions);
++        buf1 = __glXcombine_strings(string, cl->GLClientextensions);
++        buf = __glXcombine_strings(buf1, cx->pGlxScreen->GLextensions);
+ 	free(buf1);
+ 	string = buf;
+     }
+@@ -378,7 +390,8 @@ int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap)
+     return Success;
+ }
+ 
+-int __glXDisp_GetString(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDisp_GetString(__GLXclientState * cl, GLbyte * pc)
+ {
+     return DoGetString(cl, pc, GL_FALSE);
+ }

@@ -1,0 +1,14 @@
+diff --git a/xkb/xkbEvents.c b/xkb/xkbEvents.c
+index 33741e9..9755f98 100644
+--- a/xkb/xkbEvents.c
++++ b/xkb/xkbEvents.c
+@@ -1041,8 +1041,7 @@ XkbInterestPtr	interest;
+ 	    return ((interest->resource==id)?interest:NULL);
+ 	interest = interest->next;
+     }
+-    interest = xalloc(sizeof(XkbInterestRec));
+-    bzero(interest,sizeof(XkbInterestRec));
++    interest = xcalloc(1, sizeof(XkbInterestRec));
+     if (interest) {
+ 	interest->dev = dev;
+ 	interest->client = client;

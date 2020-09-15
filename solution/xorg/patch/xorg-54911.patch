@@ -1,0 +1,373 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index fae7c81..98d327f 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -64,8 +64,7 @@ Equipment Corporation.
+ 
+ #ifdef GLXPROXY
+ extern VisualPtr glxMatchVisual(ScreenPtr pScreen,
+-				VisualPtr pVisual,
+-				ScreenPtr pMatchScreen);
++                                VisualPtr pVisual, ScreenPtr pMatchScreen);
+ #endif
+ 
+ /*
+@@ -107,11 +106,14 @@ static void PanoramiXResetProc(ExtensionEntry*);
+ 
+ #include "panoramiXh.h"
+ 
+-int (* SavedProcVector[256]) (ClientPtr client) = { NULL, };
++int (*SavedProcVector[256]) (ClientPtr client) = {
++NULL,};
+ 
+ static DevPrivateKeyRec PanoramiXGCKeyRec;
++
+ #define PanoramiXGCKey (&PanoramiXGCKeyRec)
+ static DevPrivateKeyRec PanoramiXScreenKeyRec;
++
+ #define PanoramiXScreenKey (&PanoramiXScreenKeyRec)
+ 
+ typedef struct {
+@@ -147,7 +149,6 @@ static GCFuncs XineramaGCFuncs = {
+     pGCPriv->wrapFuncs = (pGC)->funcs;\
+     (pGC)->funcs = &XineramaGCFuncs;
+ 
+-
+ static Bool
+ XineramaCloseScreen (int i, ScreenPtr pScreen)
+ {
+@@ -192,11 +193,8 @@ XineramaCreateGC(GCPtr pGC)
+ }
+ 
+ static void
+-XineramaValidateGC(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw 
+-){
++XineramaValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
++{
+     Xinerama_GC_FUNC_PROLOGUE (pGC);
+ 
+     if((pDraw->type == DRAWABLE_WINDOW) && !(((WindowPtr)pDraw)->parent)) {
+@@ -225,7 +223,8 @@ XineramaValidateGC(
+ 	    pGC->patOrg.y = new_val;
+ 	    changes |= GCTileStipYOrigin;
+ 	}
+-    } else {
++    }
++    else {
+ 	if(pGC->clipOrg.x != pGCPriv->clipOrg.x) {
+ 	    pGC->clipOrg.x = pGCPriv->clipOrg.x;
+ 	    changes |= GCClipXOrigin;
+@@ -257,10 +256,8 @@ XineramaDestroyGC(GCPtr pGC)
+ }
+ 
+ static void
+-XineramaChangeGC (
+-    GCPtr	    pGC,
+-    unsigned long   mask
+-){
++XineramaChangeGC(GCPtr pGC, unsigned long mask)
++{
+     Xinerama_GC_FUNC_PROLOGUE (pGC);
+ 
+     if(mask & GCTileStipXOrigin)
+@@ -277,13 +274,11 @@ XineramaChangeGC (
+ }
+ 
+ static void
+-XineramaCopyGC (
+-    GCPtr	    pGCSrc, 
+-    unsigned long   mask,
+-    GCPtr	    pGCDst
+-){
++XineramaCopyGC(GCPtr pGCSrc, unsigned long mask, GCPtr pGCDst)
++{
+     PanoramiXGCPtr pSrcPriv = (PanoramiXGCPtr)
+ 	dixLookupPrivate(&pGCSrc->devPrivates, PanoramiXGCKey);
++
+     Xinerama_GC_FUNC_PROLOGUE (pGCDst);
+ 
+     if(mask & GCTileStipXOrigin)
+@@ -300,12 +295,8 @@ XineramaCopyGC (
+ }
+ 
+ static void
+-XineramaChangeClip (
+-    GCPtr   pGC,
+-    int		type,
+-    pointer	pvalue,
+-    int		nrects 
+-){
++XineramaChangeClip(GCPtr pGC, int type, pointer pvalue, int nrects)
++{
+     Xinerama_GC_FUNC_PROLOGUE (pGC);
+     (*pGC->funcs->ChangeClip) (pGC, type, pvalue, nrects);
+     Xinerama_GC_FUNC_EPILOGUE (pGC);
+@@ -388,7 +379,8 @@ XineramaRegisterConnectionBlockCallback(void (*func)(void))
+     return TRUE;
+ }
+ 
+-static void XineramaInitData(void)
++static void
++XineramaInitData(void)
+ {
+     int i, w, h;
+ 
+@@ -411,10 +403,12 @@ static void XineramaInitData(void)
+     }
+ 
+     PanoramiXPixWidth = screenInfo.screens[0]->x + screenInfo.screens[0]->width;
+-    PanoramiXPixHeight = screenInfo.screens[0]->y + screenInfo.screens[0]->height;
++    PanoramiXPixHeight =
++        screenInfo.screens[0]->y + screenInfo.screens[0]->height;
+ 
+     FOR_NSCREENS_FORWARD_SKIP(i) {
+ 	ScreenPtr pScreen = screenInfo.screens[i];
++
+ 	w = pScreen->x + pScreen->width;
+ 	h = pScreen->y + pScreen->height;
+ 
+@@ -425,7 +419,8 @@ static void XineramaInitData(void)
+     }
+ }
+ 
+-void XineramaReinitData(void)
++void
++XineramaReinitData(void)
+ {
+     RegionUninit(&PanoramiXScreenRegion);
+     XineramaInitData();
+@@ -438,7 +433,8 @@ void XineramaReinitData(void)
+  *		Initialize global variables.
+  */ 
+ 
+-void PanoramiXExtensionInit(int argc, char *argv[])
++void
++PanoramiXExtensionInit(int argc, char *argv[])
+ {
+     int 	     	i;
+     Bool	     	success = FALSE;
+@@ -454,7 +450,8 @@ void PanoramiXExtensionInit(int argc, char *argv[])
+ 	return;
+     }
+ 
+-    if (!dixRegisterPrivateKey(&PanoramiXGCKeyRec, PRIVATE_GC, sizeof(PanoramiXGCRec))) {
++    if (!dixRegisterPrivateKey
++        (&PanoramiXGCKeyRec, PRIVATE_GC, sizeof(PanoramiXGCRec))) {
+ 	noPanoramiXExtension = TRUE;
+ 	return;
+     }
+@@ -504,8 +501,7 @@ void PanoramiXExtensionInit(int argc, char *argv[])
+ 					   "XineramaPixmap");
+ 	if (XRT_PIXMAP)
+ 	    XRT_PIXMAP |= XRC_DRAWABLE;
+-	XRT_GC = CreateNewResourceType(XineramaDeleteResource,
+-				       "XineramaGC");
++        XRT_GC = CreateNewResourceType(XineramaDeleteResource, "XineramaGC");
+ 	XRT_COLORMAP = CreateNewResourceType(XineramaDeleteResource,
+ 					     "XineramaColormap");
+ 
+@@ -598,7 +594,8 @@ void PanoramiXExtensionInit(int argc, char *argv[])
+ 
+ extern Bool CreateConnectionBlock(void);
+ 
+-Bool PanoramiXCreateConnectionBlock(void)
++Bool
++PanoramiXCreateConnectionBlock(void)
+ {
+     int i, j, length;
+     Bool disableBackingStore = FALSE;
+@@ -625,7 +622,8 @@ Bool PanoramiXCreateConnectionBlock(void)
+ 	    ErrorF("Xinerama error: Root window depths differ\n");
+ 	    return FALSE;
+ 	}
+-	if(pScreen->backingStoreSupport != screenInfo.screens[0]->backingStoreSupport)
++        if (pScreen->backingStoreSupport !=
++            screenInfo.screens[0]->backingStoreSupport)
+ 	     disableBackingStore = TRUE;
+     }
+ 
+@@ -662,9 +660,7 @@ Bool PanoramiXCreateConnectionBlock(void)
+ 	    visual->visualID = PanoramiXDepths[i].vids[j];
+ 
+ 	    for (pVisual = PanoramiXVisuals;
+-		 pVisual->vid != visual->visualID;
+-		 pVisual++)
+-	         ;
++                 pVisual->vid != visual->visualID; pVisual++);
+ 
+ 	    visual->class = pVisual->class;
+ 	    visual->bitsPerRGB = pVisual->bitsPerRGBValue;
+@@ -838,6 +834,7 @@ PanoramiXConsolidate(void)
+ 
+     FOR_NSCREENS(i) {
+ 	ScreenPtr pScreen = screenInfo.screens[i];
++
+ 	root->info[i].id = pScreen->root->drawable.id;
+ 	root->u.win.class = InputOutput;
+         root->u.win.root = TRUE;
+@@ -884,13 +881,13 @@ PanoramiXTranslateVisualID(int screen, VisualID orig)
+     return 0;
+ }
+ 
+-
+ /*
+  *	PanoramiXResetProc()
+  *		Exit, deallocating as needed.
+  */
+ 
+-static void PanoramiXResetProc(ExtensionEntry* extEntry)
++static void
++PanoramiXResetProc(ExtensionEntry * extEntry)
+ {
+     int		i;
+ 
+@@ -903,7 +900,6 @@ static void PanoramiXResetProc(ExtensionEntry* extEntry)
+ 	ProcVector[i] = SavedProcVector[i];
+ }
+ 
+-
+ int
+ ProcPanoramiXQueryVersion (ClientPtr client)
+ {
+@@ -1017,7 +1013,6 @@ ProcPanoramiXGetScreenSize(ClientPtr client)
+ 	return Success;
+ }
+ 
+-
+ int
+ ProcXineramaIsActive(ClientPtr client)
+ {
+@@ -1047,7 +1042,6 @@ ProcXineramaIsActive(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ int
+ ProcXineramaQueryScreens(ClientPtr client)
+ {
+@@ -1090,12 +1084,11 @@ ProcXineramaQueryScreens(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int
+ ProcPanoramiXDispatch (ClientPtr client)
+-{   REQUEST(xReq);
+-    switch (stuff->data)
+     {
++    REQUEST(xReq);
++    switch (stuff->data) {
+ 	case X_PanoramiXQueryVersion:
+ 	     return ProcPanoramiXQueryVersion(client);
+ 	case X_PanoramiXGetState:
+@@ -1112,7 +1105,6 @@ ProcPanoramiXDispatch (ClientPtr client)
+     return BadRequest;
+ }
+ 
+-
+ #if X_BYTE_ORDER == X_LITTLE_ENDIAN
+ #define SHIFT_L(v,s) (v) << (s)
+ #define SHIFT_R(v,s) (v) >> (s)
+@@ -1130,28 +1122,25 @@ CopyBits(char *dst, int shiftL, char *src, int bytes)
+     while(bytes--) {
+ 	*dst |= SHIFT_L(*src, shiftL);
+ 	*(dst + 1) |= SHIFT_R(*src, shiftR);
+-	dst++; src++;
++        dst++;
++        src++;
+     }     
+ }
+ 
+-
+ /* Caution.  This doesn't support 2 and 4 bpp formats.  We expect
+    1 bpp and planar data to be already cleared when presented
+    to this function */
+ 
+ void
+-XineramaGetImageData(
+-    DrawablePtr *pDrawables,
++XineramaGetImageData(DrawablePtr *pDrawables,
+     int left,
+     int top,
+     int width, 
+     int height,
+     unsigned int format,
+     unsigned long planemask,
+-    char *data,
+-    int pitch,
+-    Bool isRoot
+-){
++                     char *data, int pitch, Bool isRoot)
++{
+     RegionRec SrcRegion, ScreenRegion, GrabRegion;
+     BoxRec SrcBox, *pbox;
+     int x, y, w, h, i, j, nbox, size, sizeNeeded, ScratchPitch, inOut, depth;
+@@ -1178,6 +1167,7 @@ XineramaGetImageData(
+     FOR_NSCREENS(i) {
+ 	BoxRec TheBox;
+ 	ScreenPtr pScreen;
++
+ 	pDraw = pDrawables[i];
+ 	pScreen = pDraw->pScreen;
+ 
+@@ -1194,11 +1184,14 @@ XineramaGetImageData(
+ 
+ 	if(inOut == rgnIN) {	   
+ 	    (*pScreen->GetImage)(pDraw,
+-			SrcBox.x1 - pDraw->x - screenInfo.screens[i]->x,
+-			SrcBox.y1 - pDraw->y - screenInfo.screens[i]->y,
+-			width, height, format, planemask, data);
++                                  SrcBox.x1 - pDraw->x -
++                                  screenInfo.screens[i]->x,
++                                  SrcBox.y1 - pDraw->y -
++                                  screenInfo.screens[i]->y, width, height,
++                                  format, planemask, data);
+ 	    break;
+-	} else if (inOut == rgnOUT)
++        }
++        else if (inOut == rgnOUT)
+ 	    continue;
+ 
+ 	nbox = RegionNumRects(&GrabRegion);
+@@ -1214,6 +1207,7 @@ XineramaGetImageData(
+ 
+ 		if(sizeNeeded > size) {
+ 		    char *tmpdata = ScratchMem;
++
+ 		    ScratchMem = realloc(ScratchMem, sizeNeeded);
+ 		    if(ScratchMem)
+ 			size = sizeNeeded;
+@@ -1244,13 +1238,13 @@ XineramaGetImageData(
+ 		   /* clean up the edge */
+ 		   if(leftover) {
+ 			int mask = (1 << leftover) - 1;
++
+ 			for(j = h, k = w; j--; k += ScratchPitch)
+ 			    ScratchMem[k] &= mask;
+ 		   }
+ 
+ 		   for(j = 0, index = (pitch * y) + x, index2 = 0; j < h;
+-		       j++, index += pitch, index2 += ScratchPitch) 
+-		   {
++                         j++, index += pitch, index2 += ScratchPitch) {
+ 			if(w) {
+ 			    if(!shift)
+ 				memcpy(data + index, ScratchMem + index2, w);
+@@ -1264,10 +1258,12 @@ XineramaGetImageData(
+ 				SHIFT_L(ScratchMem[index2 + w], shift);
+ 			    if((shift + leftover) > 8)
+ 				data[index + w + 1] |= 
+-				  SHIFT_R(ScratchMem[index2 + w],(8 - shift));
++                                    SHIFT_R(ScratchMem[index2 + w],
++                                            (8 - shift));
+ 			}
+ 		    }
+-		} else {
++                }
++                else {
+ 		    j = BitsPerPixel(depth) >> 3;
+ 		    x = (pbox->x1 - SrcBox.x1) * j;
+ 		    y = pbox->y1 - SrcBox.y1;

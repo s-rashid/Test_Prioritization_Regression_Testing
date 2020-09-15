@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index f637cfe..11b7315 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -568,7 +568,8 @@ unwind:
+ }
+ 
+ int
+-NewInputDeviceRequest (InputOption *options, DeviceIntPtr *pdev)
++NewInputDeviceRequest (InputOption *options, InputAttributes *attrs,
++                       DeviceIntPtr *pdev)
+ {
+     IDevRec *idev = NULL;
+     InputOption *option = NULL;

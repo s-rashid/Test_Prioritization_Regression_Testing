@@ -1,0 +1,506 @@
+diff --git a/mi/mivaltree.c b/mi/mivaltree.c
+index e1d47c0..c1cc431 100644
+--- a/mi/mivaltree.c
++++ b/mi/mivaltree.c
+@@ -79,7 +79,6 @@ Equipment Corporation.
+ 
+ ******************************************************************/
+ 
+-
+  /* 
+   * Aug '86: Susan Angebranndt -- original code
+   * July '87: Adam de Boor -- substantially modified and commented
+@@ -123,8 +122,7 @@ miShapedWindowIn (RegionPtr universe, RegionPtr bounding,
+     y1 = rect->y1;
+     x2 = rect->x2;
+     y2 = rect->y2;
+-    while (nbox--)
+-    {
++    while (nbox--) {
+ 	if ((t = boundBox->x1 + x) < x1)
+ 	    t = x1;
+ 	box.x1 = t;
+@@ -141,8 +139,7 @@ miShapedWindowIn (RegionPtr universe, RegionPtr bounding,
+ 	    box.x2 = box.x1;
+ 	if (box.y1 > box.y2)
+ 	    box.y2 = box.y1;
+-	switch (RegionContainsRect(universe, &box))
+-	{
++        switch (RegionContainsRect(universe, &box)) {
+ 	case rgnIN:
+ 	    if (someOut)
+ 		return rgnPART;
+@@ -189,7 +186,6 @@ miRegisterRedirectBorderClipProc (SetRedirectBorderClipProcPtr setBorderClip,
+ 				    HasBorder(w) && \
+ 				    (w)->backgroundState == ParentRelative)
+ 
+-
+ /*
+  *-----------------------------------------------------------------------
+  * miComputeClips --
+@@ -207,15 +203,11 @@ miRegisterRedirectBorderClipProc (SetRedirectBorderClipProcPtr setBorderClip,
+  *-----------------------------------------------------------------------
+  */
+ static void
+-miComputeClips (
+-    WindowPtr	pParent,
++miComputeClips(WindowPtr pParent,
+     ScreenPtr	pScreen,
+-    RegionPtr	universe,
+-    VTKind		kind,
+-    RegionPtr		exposed ) /* for intermediate calculations */
+-{
+-    int			dx,
+-			dy;
++               RegionPtr universe, VTKind kind, RegionPtr exposed)
++{                               /* for intermediate calculations */
++    int dx, dy;
+     RegionRec		childUniverse;
+     WindowPtr		pChild;
+     int     	  	oldVis, newVis;
+@@ -223,6 +215,7 @@ miComputeClips (
+     RegionRec		childUnion;
+     Bool		overlap;
+     RegionPtr		borderVisible;
++
+     /*
+      * Figure out the new visibility of this window.
+      * The extent of the universe should be the same as the extent of
+@@ -233,11 +226,13 @@ miComputeClips (
+      */
+     borderSize.x1 = pParent->drawable.x - wBorderWidth(pParent);
+     borderSize.y1 = pParent->drawable.y - wBorderWidth(pParent);
+-    dx = (int) pParent->drawable.x + (int) pParent->drawable.width + wBorderWidth(pParent);
++    dx = (int) pParent->drawable.x + (int) pParent->drawable.width +
++        wBorderWidth(pParent);
+     if (dx > 32767)
+ 	dx = 32767;
+     borderSize.x2 = dx;
+-    dy = (int) pParent->drawable.y + (int) pParent->drawable.height + wBorderWidth(pParent);
++    dy = (int) pParent->drawable.y + (int) pParent->drawable.height +
++        wBorderWidth(pParent);
+     if (dy > 32767)
+ 	dy = 32767;
+     borderSize.y2 = dy;
+@@ -246,10 +241,8 @@ miComputeClips (
+     /*
+      * In redirected drawing case, reset universe to borderSize
+      */
+-    if (pParent->redirectDraw != RedirectDrawNone)
+-    {
+-	if (miSetRedirectBorderClipProc)
+-	{
++    if (pParent->redirectDraw != RedirectDrawNone) {
++        if (miSetRedirectBorderClipProc) {
+ 	    if (TreatAsTransparent (pParent))
+ 		RegionEmpty(universe);
+ 	    (*miSetRedirectBorderClipProc) (pParent, universe);
+@@ -259,8 +252,7 @@ miComputeClips (
+ #endif
+ 
+     oldVis = pParent->visibility;
+-    switch (RegionContainsRect(universe, &borderSize))
+-    {
++    switch (RegionContainsRect(universe, &borderSize)) {
+ 	case rgnIN:
+ 	    newVis = VisibilityUnobscured;
+ 	    break;
+@@ -269,13 +261,11 @@ miComputeClips (
+ 	    {
+ 		RegionPtr   pBounding;
+ 
+-		if ((pBounding = wBoundingShape (pParent)))
+-		{
++            if ((pBounding = wBoundingShape(pParent))) {
+ 		    switch (miShapedWindowIn (universe, pBounding,
+ 					      &borderSize,
+ 					      pParent->drawable.x,
+- 					      pParent->drawable.y))
+-		    {
++                                         pParent->drawable.y)) {
+ 		    case rgnIN:
+ 			newVis = VisibilityUnobscured;
+ 			break;
+@@ -292,7 +282,8 @@ miComputeClips (
+     }
+     pParent->visibility = newVis;
+     if (oldVis != newVis &&
+-	((pParent->eventMask | wOtherEventMasks(pParent)) & VisibilityChangeMask))
++        ((pParent->
++          eventMask | wOtherEventMasks(pParent)) & VisibilityChangeMask))
+ 	SendVisibilityNotify(pParent);
+ 
+     dx = pParent->drawable.x - pParent->valdata->before.oldAbsCorner.x;
+@@ -310,37 +301,28 @@ miComputeClips (
+     case VTMove:
+ 	if ((oldVis == newVis) &&
+ 	    ((oldVis == VisibilityFullyObscured) ||
+-	     (oldVis == VisibilityUnobscured)))
+-	{
++             (oldVis == VisibilityUnobscured))) {
+ 	    pChild = pParent;
+-	    while (1)
+-	    {
+-		if (pChild->viewable)
+-		{
+-		    if (pChild->visibility != VisibilityFullyObscured)
+-		    {
+-			RegionTranslate(&pChild->borderClip,
+-						      dx, dy);
+-			RegionTranslate(&pChild->clipList,
+-						      dx, dy);
++            while (1) {
++                if (pChild->viewable) {
++                    if (pChild->visibility != VisibilityFullyObscured) {
++                        RegionTranslate(&pChild->borderClip, dx, dy);
++                        RegionTranslate(&pChild->clipList, dx, dy);
+ 			pChild->drawable.serialNumber = NEXT_SERIAL_NUMBER;
+ 			if (pScreen->ClipNotify)
+ 			    (* pScreen->ClipNotify) (pChild, dx, dy);
+ 
+ 		    }
+-		    if (pChild->valdata)
+-		    {
++                    if (pChild->valdata) {
+ 			RegionNull(&pChild->valdata->after.borderExposed);
+-			if (HasParentRelativeBorder(pChild))
+-			{
+-			    RegionSubtract(&pChild->valdata->after.borderExposed,
+-					   &pChild->borderClip,
++                        if (HasParentRelativeBorder(pChild)) {
++                            RegionSubtract(&pChild->valdata->after.
++                                           borderExposed, &pChild->borderClip,
+ 					   &pChild->winSize);
+ 			}
+ 			RegionNull(&pChild->valdata->after.exposed);
+ 		    }
+-		    if (pChild->firstChild)
+-		    {
++                    if (pChild->firstChild) {
+ 			pChild = pChild->firstChild;
+ 			continue;
+ 		    }
+@@ -360,8 +342,7 @@ miComputeClips (
+      	 * borderClip and clipList regions to the window's new location so there
+      	 * is a correspondence between pieces of the new and old clipping regions.
+      	 */
+-    	if (dx || dy) 
+-    	{
++        if (dx || dy) {
+ 	    /*
+ 	     * We translate the old clipList because that will be exposed or copied
+ 	     * if gravity is right.
+@@ -389,10 +370,8 @@ miComputeClips (
+      * This leaves a region of pieces that weren't exposed before.
+      */
+ 
+-    if (HasBorder (pParent))
+-    {
+-    	if (borderVisible)
+-    	{
++    if (HasBorder(pParent)) {
++        if (borderVisible) {
+ 	    /*
+ 	     * when the border changes shape, the old visible portions
+ 	     * of the border will be saved by DIX in borderVisible --
+@@ -401,14 +380,12 @@ miComputeClips (
+ 	    RegionSubtract(exposed, universe, borderVisible);
+ 	    RegionDestroy(borderVisible);
+     	}
+-    	else
+-    	{
++        else {
+ 	    RegionSubtract(exposed, universe, &pParent->borderClip);
+     	}
+ 	if (HasParentRelativeBorder(pParent) && (dx || dy))
+ 	    RegionSubtract(&pParent->valdata->after.borderExposed,
+-				  universe,
+-				  &pParent->winSize);
++                           universe, &pParent->winSize);
+ 	else
+ 	    RegionSubtract(&pParent->valdata->after.borderExposed,
+ 			       exposed, &pParent->winSize);
+@@ -426,34 +403,26 @@ miComputeClips (
+     else
+ 	RegionCopy(&pParent->borderClip, universe);
+     
+-    if ((pChild = pParent->firstChild) && pParent->mapped)
+-    {
++    if ((pChild = pParent->firstChild) && pParent->mapped) {
+ 	RegionNull(&childUniverse);
+ 	RegionNull(&childUnion);
+ 	if ((pChild->drawable.y < pParent->lastChild->drawable.y) ||
+ 	    ((pChild->drawable.y == pParent->lastChild->drawable.y) &&
+-	     (pChild->drawable.x < pParent->lastChild->drawable.x)))
+-	{
+-	    for (; pChild; pChild = pChild->nextSib)
+-	    {
++             (pChild->drawable.x < pParent->lastChild->drawable.x))) {
++            for (; pChild; pChild = pChild->nextSib) {
+ 		if (pChild->viewable && !TreatAsTransparent(pChild))
+ 		    RegionAppend(&childUnion, &pChild->borderSize);
+ 	    }
+ 	}
+-	else
+-	{
+-	    for (pChild = pParent->lastChild; pChild; pChild = pChild->prevSib)
+-	    {
++        else {
++            for (pChild = pParent->lastChild; pChild; pChild = pChild->prevSib) {
+ 		if (pChild->viewable && !TreatAsTransparent(pChild))
+ 		    RegionAppend(&childUnion, &pChild->borderSize);
+ 	    }
+ 	}
+ 	RegionValidate(&childUnion, &overlap);
+ 
+-	for (pChild = pParent->firstChild;
+-	     pChild;
+-	     pChild = pChild->nextSib)
+- 	{
++        for (pChild = pParent->firstChild; pChild; pChild = pChild->nextSib) {
+ 	    if (pChild->viewable) {
+ 		/*
+ 		 * If the child is viewable, we want to remove its extents
+@@ -466,8 +435,7 @@ miComputeClips (
+ 		     * perspective and recurse.
+ 		     */
+ 		    RegionIntersect(&childUniverse,
+-					    universe,
+-					    &pChild->borderSize);
++                                    universe, &pChild->borderSize);
+ 		    miComputeClips (pChild, pScreen, &childUniverse, kind,
+ 				    exposed);
+ 		}
+@@ -477,8 +445,7 @@ miComputeClips (
+ 		 * other sibling.
+ 		 */
+ 		if (overlap && !TreatAsTransparent (pChild))
+-		    RegionSubtract(universe, universe,
+-					  &pChild->borderSize);
++                    RegionSubtract(universe, universe, &pChild->borderSize);
+ 	    }
+ 	}
+ 	if (!overlap)
+@@ -494,14 +461,11 @@ miComputeClips (
+      * new, just as for the border.
+      */
+ 
+-    if (oldVis == VisibilityFullyObscured ||
+-	oldVis == VisibilityNotViewable)
+-    {
++    if (oldVis == VisibilityFullyObscured || oldVis == VisibilityNotViewable) {
+ 	RegionCopy(&pParent->valdata->after.exposed, universe);
+     }
+     else if (newVis != VisibilityFullyObscured &&
+-	     newVis != VisibilityNotViewable)
+-    {
++             newVis != VisibilityNotViewable) {
+ 	RegionSubtract(&pParent->valdata->after.exposed,
+ 			       universe, &pParent->clipList);
+     }
+@@ -526,23 +490,20 @@ miComputeClips (
+ }
+ 
+ static void
+-miTreeObscured(
+-    WindowPtr pParent )
++miTreeObscured(WindowPtr pParent)
+ {
+     WindowPtr 	pChild;
+     int    	oldVis;
+ 
+     pChild = pParent;
+-    while (1)
+-    {
+-	if (pChild->viewable)
+-	{
++    while (1) {
++        if (pChild->viewable) {
+ 	    oldVis = pChild->visibility;
+ 	    if (oldVis != (pChild->visibility = VisibilityFullyObscured) &&
+-		((pChild->eventMask | wOtherEventMasks(pChild)) & VisibilityChangeMask))
++                ((pChild->
++                  eventMask | wOtherEventMasks(pChild)) & VisibilityChangeMask))
+ 		SendVisibilityNotify(pChild);
+-	    if (pChild->firstChild)
+-	    {
++            if (pChild->firstChild) {
+ 		pChild = pChild->firstChild;
+ 		continue;
+ 	    }
+@@ -584,10 +545,8 @@ miTreeObscured(
+  *
+  *-----------------------------------------------------------------------
+  */
+-/*ARGSUSED*/
+-int
+-miValidateTree (
+-    WindowPtr		pParent,    /* Parent to validate */
++ /*ARGSUSED*/ int
++miValidateTree(WindowPtr pParent,       /* Parent to validate */
+     WindowPtr		pChild,     /* First child of pParent that was
+ 				     * affected */
+     VTKind		kind        /* What kind of configuration caused call */
+@@ -623,9 +582,7 @@ miValidateTree (
+      */
+     RegionNull(&totalClip);
+     viewvals = 0;
+-    if (RegionBroken(&pParent->clipList) &&
+-	!RegionBroken(&pParent->borderClip))
+-    {
++    if (RegionBroken(&pParent->clipList) && !RegionBroken(&pParent->borderClip)) {
+ 	kind = VTBroken;
+ 	/*
+ 	 * When rebuilding clip lists after out of memory,
+@@ -635,8 +592,7 @@ miValidateTree (
+ 	RegionCopy(&totalClip, &pParent->borderClip);
+ 	RegionIntersect(&totalClip, &totalClip, &pParent->winSize);
+ 	
+-	for (pWin = pParent->firstChild; pWin != pChild; pWin = pWin->nextSib)
+-	{
++        for (pWin = pParent->firstChild; pWin != pChild; pWin = pWin->nextSib) {
+ 	    if (pWin->viewable && !TreatAsTransparent (pWin))
+ 		RegionSubtract(&totalClip, &totalClip, &pWin->borderSize);
+ 	}
+@@ -646,20 +602,18 @@ miValidateTree (
+ 	
+ 	RegionEmpty(&pParent->clipList);
+     }
+-    else 
+-    {
++    else {
+ 	if ((pChild->drawable.y < pParent->lastChild->drawable.y) ||
+ 	    ((pChild->drawable.y == pParent->lastChild->drawable.y) &&
+-	     (pChild->drawable.x < pParent->lastChild->drawable.x)))
+-	{
++             (pChild->drawable.x < pParent->lastChild->drawable.x))) {
+ 	    forward = TRUE;
+-	    for (pWin = pChild; pWin; pWin = pWin->nextSib)
+-	    {
+-		if (pWin->valdata)
+-		{
++            for (pWin = pChild; pWin; pWin = pWin->nextSib) {
++                if (pWin->valdata) {
+ 		    RegionPtr	pBorderClip = &pWin->borderClip;
++
+ #ifdef COMPOSITE
+-		    if (pWin->redirectDraw != RedirectDrawNone && miGetRedirectBorderClipProc)
++                    if (pWin->redirectDraw != RedirectDrawNone &&
++                        miGetRedirectBorderClipProc)
+ 			pBorderClip = (*miGetRedirectBorderClipProc)(pWin);
+ #endif
+ 		    RegionAppend(&totalClip, pBorderClip );
+@@ -668,17 +622,16 @@ miValidateTree (
+ 		}
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    forward = FALSE;
+ 	    pWin = pParent->lastChild;
+-	    while (1)
+-	    {
+-		if (pWin->valdata)
+-		{
++            while (1) {
++                if (pWin->valdata) {
+ 		    RegionPtr	pBorderClip = &pWin->borderClip;
++
+ #ifdef COMPOSITE
+-		    if (pWin->redirectDraw != RedirectDrawNone && miGetRedirectBorderClipProc)
++                    if (pWin->redirectDraw != RedirectDrawNone &&
++                        miGetRedirectBorderClipProc)
+ 			pBorderClip = (*miGetRedirectBorderClipProc)(pWin);
+ #endif
+ 		    RegionAppend(&totalClip, pBorderClip );
+@@ -701,11 +654,9 @@ miValidateTree (
+      */
+ 
+     overlap = TRUE;
+-    if (kind != VTStack)
+-    {
++    if (kind != VTStack) {
+ 	RegionUnion(&totalClip, &totalClip, &pParent->clipList);
+-	if (viewvals > 1)
+-	{
++        if (viewvals > 1) {
+ 	    /*
+ 	     * precompute childUnion to discover whether any of them
+ 	     * overlap.  This seems redundant, but performance studies
+@@ -714,21 +665,18 @@ miValidateTree (
+ 	     * loop below.
+ 	     */
+ 	    RegionNull(&childUnion);
+-	    if (forward)
+-	    {
++            if (forward) {
+ 		for (pWin = pChild; pWin; pWin = pWin->nextSib)
+-		    if (pWin->valdata && pWin->viewable && !TreatAsTransparent (pWin))
+-			RegionAppend(&childUnion,
+-						   &pWin->borderSize);
++                    if (pWin->valdata && pWin->viewable &&
++                        !TreatAsTransparent(pWin))
++                        RegionAppend(&childUnion, &pWin->borderSize);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		pWin = pParent->lastChild;
+-		while (1)
+-		{
+-		    if (pWin->valdata && pWin->viewable && !TreatAsTransparent (pWin))
+-			RegionAppend(&childUnion,
+-						   &pWin->borderSize);
++                while (1) {
++                    if (pWin->valdata && pWin->viewable &&
++                        !TreatAsTransparent(pWin))
++                        RegionAppend(&childUnion, &pWin->borderSize);
+ 		    if (pWin == pChild)
+ 			break;
+ 		    pWin = pWin->prevSib;
+@@ -740,26 +688,20 @@ miValidateTree (
+ 	}
+     }
+ 
+-    for (pWin = pChild;
+-	 pWin != NullWindow;
+-	 pWin = pWin->nextSib)
+-    {
++    for (pWin = pChild; pWin != NullWindow; pWin = pWin->nextSib) {
+ 	if (pWin->viewable) {
+ 	    if (pWin->valdata) {
+-		RegionIntersect(&childClip,
+-					&totalClip,
+- 					&pWin->borderSize);
++                RegionIntersect(&childClip, &totalClip, &pWin->borderSize);
+ 		miComputeClips (pWin, pScreen, &childClip, kind, &exposed);
+-		if (overlap && !TreatAsTransparent (pWin))
+-		{
+-		    RegionSubtract(&totalClip,
+-				       	   &totalClip,
+-				       	   &pWin->borderSize);
++                if (overlap && !TreatAsTransparent(pWin)) {
++                    RegionSubtract(&totalClip, &totalClip, &pWin->borderSize);
+ 		}
+-	    } else if (pWin->visibility == VisibilityNotViewable) {
++            }
++            else if (pWin->visibility == VisibilityNotViewable) {
+ 		miTreeObscured(pWin);
+ 	    }
+-	} else {
++        }
++        else {
+ 	    if (pWin->valdata) {
+ 		RegionEmpty(&pWin->clipList);
+ 		if (pScreen->ClipNotify)
+@@ -771,8 +713,7 @@ miValidateTree (
+     }
+ 
+     RegionUninit(&childClip);
+-    if (!overlap)
+-    {
++    if (!overlap) {
+ 	RegionSubtract(&totalClip, &totalClip, &childUnion);
+ 	RegionUninit(&childUnion);
+     }

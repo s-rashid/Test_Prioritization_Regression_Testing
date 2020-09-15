@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/ephyr/ephyrinit.c b/hw/kdrive/ephyr/ephyrinit.c
+index 7d4cadb..b674bb8 100644
+--- a/hw/kdrive/ephyr/ephyrinit.c
++++ b/hw/kdrive/ephyr/ephyrinit.c
+@@ -97,6 +97,7 @@ InitInput (int argc, char **argv)
+ void
+ CloseInput (void)
+ {
++  KdCloseInput();
+ }
+ 
+ #ifdef DDXBEFORERESET

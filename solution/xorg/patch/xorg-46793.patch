@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/wincmap.c b/hw/xwin/wincmap.c
+index 7ebe002..9da0388 100644
+--- a/hw/xwin/wincmap.c
++++ b/hw/xwin/wincmap.c
+@@ -185,8 +185,8 @@ winUninstallColormap (ColormapPtr pmap)
+   /* Install the default cmap in place of the cmap to be uninstalled */
+   if (pmap->mid != pmap->pScreen->defColormap)
+     {
+-      curpmap = (ColormapPtr) LookupIDByType(pmap->pScreen->defColormap,
+-					     RT_COLORMAP);
++      dixLookupResourceByType((pointer) &curpmap, pmap->pScreen->defColormap,
++				RT_COLORMAP, NullClient, DixUnknownAccess);
+       (*pmap->pScreen->InstallColormap) (curpmap);
+     }
+ }

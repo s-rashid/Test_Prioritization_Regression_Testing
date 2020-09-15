@@ -1,0 +1,15 @@
+diff --git a/os/osinit.c b/os/osinit.c
+index de815c6..c83c32c 100644
+--- a/os/osinit.c
++++ b/os/osinit.c
+@@ -305,9 +305,7 @@ OsInit(void)
+      * log file name if logging to a file is desired.
+      */
+     LogInit(NULL, NULL);
+-    if (!SmartScheduleDisable)
+-	if (!SmartScheduleInit ())
+-	    SmartScheduleDisable = TRUE;
++    SmartScheduleInit ();
+ }
+ 
+ void

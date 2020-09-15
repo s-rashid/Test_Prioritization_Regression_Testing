@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmouse.c b/hw/xwin/winmouse.c
+index da1d5a9..ee93d8f 100644
+--- a/hw/xwin/winmouse.c
++++ b/hw/xwin/winmouse.c
+@@ -39,6 +39,7 @@
+ #include "inputstr.h"
+ #include "exevents.h" /* for button/axes labels */
+ #include "xserver-properties.h"
++#include "inpututils.h"
+ 
+ /* Peek the internal button mapping */
+ static CARD8 const *g_winMouseButtonMap = NULL;

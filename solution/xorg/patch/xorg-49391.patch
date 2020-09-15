@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxstat.c b/hw/dmx/dmxstat.c
+index 41b0eb2..c3f1d3b 100644
+--- a/hw/dmx/dmxstat.c
++++ b/hw/dmx/dmxstat.c
+@@ -122,7 +122,7 @@ DMXStatInfo *dmxStatAlloc(void)
+ /** Free the memory used by a \a DMXStatInfo structure. */
+ void dmxStatFree(DMXStatInfo *pt)
+ {
+-    if (pt) free(pt);
++    free(pt);
+ }
+ 
+ static void dmxStatValue(DMXStatAvg *data, unsigned long value)

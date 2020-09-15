@@ -1,0 +1,21 @@
+diff --git a/Xi/xipassivegrab.c b/Xi/xipassivegrab.c
+index fab3335..0c74544 100644
+--- a/Xi/xipassivegrab.c
++++ b/Xi/xipassivegrab.c
+@@ -90,9 +90,16 @@ ProcXIPassiveGrabDevice(ClientPtr client)
+     REQUEST(xXIPassiveGrabDeviceReq);
+     REQUEST_AT_LEAST_SIZE(xXIPassiveGrabDeviceReq);
+ 
++    if (stuff->deviceid == XIAllDevices)
++        dev = inputInfo.all_devices;
++    else if (stuff->deviceid == XIAllMasterDevices)
++        dev = inputInfo.all_master_devices;
++    else
++    {
+     ret = dixLookupDevice(&dev, stuff->deviceid, client, DixGrabAccess);
+     if (ret != Success)
+ 	return ret;
++    }
+ 
+     if (stuff->grab_type != XIGrabtypeButton &&
+         stuff->grab_type != XIGrabtypeKeysym &&

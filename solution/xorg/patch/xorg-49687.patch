@@ -1,0 +1,12 @@
+diff --git a/render/picture.c b/render/picture.c
+index f55711d..7fda6b9 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1524,7 +1524,6 @@ FreePicture (pointer	value,
+ 
+     if (--pPicture->refcnt == 0)
+     {
+-	if (pPicture->transform)
+ 	    free(pPicture->transform);
+ 
+ 	if (pPicture->pSourcePict)

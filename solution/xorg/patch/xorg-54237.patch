@@ -1,0 +1,14 @@
+diff --git a/dix/events.c b/dix/events.c
+index 2b54969..f80b8fd 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2463,6 +2463,9 @@ FixUpEventFromWindow(
+             case XI_RawButtonPress:
+             case XI_RawButtonRelease:
+             case XI_RawMotion:
++            case XI_RawTouchBegin:
++            case XI_RawTouchUpdate:
++            case XI_RawTouchEnd:
+             case XI_DeviceChanged:
+             case XI_HierarchyChanged:
+             case XI_PropertyEvent:

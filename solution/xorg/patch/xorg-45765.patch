@@ -1,0 +1,11 @@
+diff --git a/xkb/xkb.h b/xkb/xkb.h
+index 45d9b3d..a526356 100644
+--- a/xkb/xkb.h
++++ b/xkb/xkb.h
+@@ -29,6 +29,4 @@ extern int ProcXkbSetDeviceInfo(ClientPtr client);
+ extern int ProcXkbSetDebuggingFlags(ClientPtr client);
+ 
+ extern void XkbExtensionInit(void);
+-
+-extern Bool XkbFilterEvents(ClientPtr pClient, int nEvents, xEvent *xE);
+ #endif

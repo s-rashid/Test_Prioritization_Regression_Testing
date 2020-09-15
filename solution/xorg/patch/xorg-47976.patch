@@ -1,0 +1,14 @@
+diff --git a/glx/glxdricommon.h b/glx/glxdricommon.h
+index f88964b..41e2d27 100644
+--- a/glx/glxdricommon.h
++++ b/glx/glxdricommon.h
+@@ -33,7 +33,8 @@ struct __GLXDRIconfig {
+ };
+ 
+ __GLXconfig *
+-glxConvertConfigs(const __DRIcoreExtension *core, const __DRIconfig **configs);
++glxConvertConfigs(const __DRIcoreExtension *core,
++		  const __DRIconfig **configs, unsigned int drawableType);
+ 
+ extern const __DRIsystemTimeExtension systemTimeExtension;
+ 

@@ -1,0 +1,34 @@
+diff --git a/hw/xfree86/modes/xf86cvt.c b/hw/xfree86/modes/xf86cvt.c
+index d5feccc..de07844 100644
+--- a/hw/xfree86/modes/xf86cvt.c
++++ b/hw/xfree86/modes/xf86cvt.c
+@@ -108,7 +108,8 @@ xf86CVTMode(int HDisplay, int VDisplay, float VRefresh, Bool Reduced,
+         /* right margin is actually exactly the same as left */
+         HMargin = (((float) HDisplayRnd) * CVT_MARGIN_PERCENTAGE / 100.0);
+         HMargin -= HMargin % CVT_H_GRANULARITY;
+-    } else
++    }
++    else
+         HMargin = 0;
+ 
+     /* 4. Find total active pixels */
+@@ -168,7 +169,8 @@ xf86CVTMode(int HDisplay, int VDisplay, float VRefresh, Bool Reduced,
+             (VDisplayRnd + 2 * VMargin + CVT_MIN_V_PORCH + Interlace);
+ 
+         /* 9. Find number of lines in sync + backporch */
+-        if (((int)(CVT_MIN_VSYNC_BP / HPeriod) + 1) < (VSync + CVT_MIN_V_PORCH))
++        if (((int) (CVT_MIN_VSYNC_BP / HPeriod) + 1) <
++            (VSync + CVT_MIN_V_PORCH))
+             VSyncAndBackPorch = VSync + CVT_MIN_V_PORCH;
+         else
+             VSyncAndBackPorch = (int)(CVT_MIN_VSYNC_BP / HPeriod) + 1;
+@@ -222,7 +224,8 @@ xf86CVTMode(int HDisplay, int VDisplay, float VRefresh, Bool Reduced,
+         Mode->VSyncStart = Mode->VDisplay + CVT_MIN_V_PORCH;
+         Mode->VSyncEnd = Mode->VSyncStart + VSync;
+ 
+-    } else { /* Reduced blanking */
++    }
++    else {                      /* Reduced blanking */
+         /* Minimum vertical blanking interval time (µs) - default 460 */
+ #define CVT_RB_MIN_VBLANK 460.0
+ 

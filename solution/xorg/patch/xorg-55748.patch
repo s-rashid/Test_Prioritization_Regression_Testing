@@ -1,0 +1,19 @@
+diff --git a/hw/xnest/XNFont.h b/hw/xnest/XNFont.h
+index 92c112f..a210b17 100644
+--- a/hw/xnest/XNFont.h
++++ b/hw/xnest/XNFont.h
+@@ -16,7 +16,7 @@ is" without express or implied warranty.
+ #define XNESTFONT_H
+ 
+ typedef struct {
+-  XFontStruct *font_struct;
++    XFontStruct *font_struct;
+ } xnestPrivFont;
+ 
+ extern int xnestFontPrivateIndex;
+@@ -31,4 +31,4 @@ extern int xnestFontPrivateIndex;
+ Bool xnestRealizeFont(ScreenPtr pScreen, FontPtr pFont);
+ Bool xnestUnrealizeFont(ScreenPtr pScreen, FontPtr pFont);
+ 
+-#endif /* XNESTFONT_H */
++#endif                          /* XNESTFONT_H */

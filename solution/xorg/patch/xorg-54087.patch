@@ -1,0 +1,13 @@
+diff --git a/mi/mibitblt.c b/mi/mibitblt.c
+index 49e17bd..2dfff14 100644
+--- a/mi/mibitblt.c
++++ b/mi/mibitblt.c
+@@ -63,7 +63,7 @@ SOFTWARE.
+ #include <X11/Xmd.h>
+ #include "servermd.h"
+ 
+-#ifndef HAS_FFS
++#ifndef HAVE_FFS
+ extern int ffs(int);
+ #endif
+ 

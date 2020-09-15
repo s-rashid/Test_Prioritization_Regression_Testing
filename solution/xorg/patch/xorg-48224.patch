@@ -1,0 +1,14 @@
+diff --git a/mi/miexpose.c b/mi/miexpose.c
+index 1c9c3a4..f52b492 100644
+--- a/mi/miexpose.c
++++ b/mi/miexpose.c
+@@ -552,6 +552,9 @@ miPaintWindow(WindowPtr pWin, RegionPtr prgn, int what)
+     DrawablePtr	drawable = &pWin->drawable;
+ 
+ #ifdef ROOTLESS
++    if(!drawable || drawable->type == UNDRAWABLE_WINDOW)
++	return;
++
+     if(IsFramedWindow(pWin)) {
+         RootlessStartDrawing(pWin);
+         RootlessDamageRegion(pWin, prgn);

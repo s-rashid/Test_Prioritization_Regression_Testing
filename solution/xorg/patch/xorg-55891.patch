@@ -1,0 +1,105 @@
+diff --git a/hw/xwin/wintrayicon.c b/hw/xwin/wintrayicon.c
+index 895b47c..dbc4725 100644
+--- a/hw/xwin/wintrayicon.c
++++ b/hw/xwin/wintrayicon.c
+@@ -60,15 +60,13 @@ winInitNotifyIcon (winPrivScreenPtr pScreenPriv)
+   snprintf (nid.szTip,
+ 	    sizeof (nid.szTip),
+ 	    PROJECT_NAME " Server:%s.%d",
+-	    display, 
+-	    (int) pScreenInfo->dwScreen);
++             display, (int) pScreenInfo->dwScreen);
+ 
+   /* Add the tray icon */
+   if (!Shell_NotifyIcon (NIM_ADD, &nid))
+     ErrorF ("winInitNotifyIcon - Shell_NotifyIcon Failed\n");
+ }
+ 
+-
+ /*
+  * Delete the tray icon
+  */
+@@ -88,37 +86,32 @@ winDeleteNotifyIcon (winPrivScreenPtr pScreenPriv)
+   nid.uID = pScreenInfo->dwScreen;
+   
+   /* Delete the tray icon */
+-  if (!Shell_NotifyIcon (NIM_DELETE, &nid))
+-    {
++    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) {
+       ErrorF ("winDeleteNotifyIcon - Shell_NotifyIcon failed\n");
+       return;
+     }
+ 
+   /* Free the icon that was loaded */
+   if (pScreenPriv->hiconNotifyIcon != NULL
+-      && DestroyIcon (pScreenPriv->hiconNotifyIcon) == 0)
+-    {
++        && DestroyIcon(pScreenPriv->hiconNotifyIcon) == 0) {
+       ErrorF ("winDeleteNotifyIcon - DestroyIcon failed\n");
+     }
+   pScreenPriv->hiconNotifyIcon = NULL;
+ }
+ 
+-
+ /*
+  * Process messages intended for the tray icon
+  */
+ 
+ LRESULT
+ winHandleIconMessage (HWND hwnd, UINT message,
+-		      WPARAM wParam, LPARAM lParam,
+-		      winPrivScreenPtr pScreenPriv)
++                     WPARAM wParam, LPARAM lParam, winPrivScreenPtr pScreenPriv)
+ {
+ #if defined(XWIN_MULTIWINDOWEXTWM) || defined(XWIN_MULTIWINDOW)
+   winScreenInfo		*pScreenInfo = pScreenPriv->pScreenInfo;
+ #endif
+ 
+-  switch (lParam)
+-    {
++    switch (lParam) {
+     case WM_LBUTTONUP:
+       /* Restack and bring all windows to top */
+       SetForegroundWindow (hwnd);
+@@ -144,8 +137,7 @@ winHandleIconMessage (HWND hwnd, UINT message,
+ 	GetCursorPos (&ptCursor);
+ 
+ 	/* Load tray icon menu resource */
+-	hmenuPopup = LoadMenu (g_hInstance,
+-			       MAKEINTRESOURCE(IDM_TRAYICON_MENU));
++        hmenuPopup = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDM_TRAYICON_MENU));
+ 	if (!hmenuPopup)
+ 	  ErrorF ("winHandleIconMessage - LoadMenu failed\n");
+ 
+@@ -154,8 +146,7 @@ winHandleIconMessage (HWND hwnd, UINT message,
+ 
+ #ifdef XWIN_MULTIWINDOW
+ 	/* Check for MultiWindow mode */
+-	if (pScreenInfo->fMultiWindow)
+-	  {
++        if (pScreenInfo->fMultiWindow) {
+ 	    MENUITEMINFO		mii = {0};
+ 	    
+ 	    /* Root is shown, remove the check box */
+@@ -176,9 +167,7 @@ winHandleIconMessage (HWND hwnd, UINT message,
+ #endif
+ 	  {
+ 	    /* Remove Hide Root Window button */
+-	    RemoveMenu (hmenuTray,
+-			ID_APP_HIDE_ROOT,
+-			MF_BYCOMMAND);
++            RemoveMenu(hmenuTray, ID_APP_HIDE_ROOT, MF_BYCOMMAND);
+ 	  }
+ 
+ 	SetupRootMenu ((unsigned long)hmenuTray);
+@@ -195,9 +184,7 @@ winHandleIconMessage (HWND hwnd, UINT message,
+ 	SetForegroundWindow (hwnd);
+ 	TrackPopupMenuEx (hmenuTray,
+ 			  TPM_LEFTALIGN | TPM_BOTTOMALIGN | TPM_RIGHTBUTTON,
+-			  ptCursor.x, ptCursor.y,
+-			  hwnd,
+-			  NULL);
++                         ptCursor.x, ptCursor.y, hwnd, NULL);
+ 	PostMessage (hwnd, WM_NULL, 0, 0);
+ 
+ 	/* Free menu */

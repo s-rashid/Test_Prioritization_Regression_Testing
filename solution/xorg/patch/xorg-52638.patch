@@ -1,0 +1,11 @@
+diff --git a/include/inpututils.h b/include/inpututils.h
+index b8ca6ab..92a7543 100644
+--- a/include/inpututils.h
++++ b/include/inpututils.h
+@@ -37,4 +37,6 @@ struct _ValuatorMask {
+     int         valuators[MAX_VALUATORS]; /* valuator data */
+ };
+ 
++extern void verify_internal_event(const InternalEvent *ev);
++
+ #endif

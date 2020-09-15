@@ -1,0 +1,20 @@
+diff --git a/hw/xnest/Handlers.c b/hw/xnest/Handlers.c
+index a113f48..4605b90 100644
+--- a/hw/xnest/Handlers.c
++++ b/hw/xnest/Handlers.c
+@@ -34,12 +34,12 @@ is" without express or implied warranty.
+ void
+ xnestBlockHandler(pointer blockData, OSTimePtr pTimeout, pointer pReadMask)
+ {
+-  xnestCollectExposures();
+-  XFlush(xnestDisplay);
++    xnestCollectExposures();
++    XFlush(xnestDisplay);
+ }
+ 
+ void
+ xnestWakeupHandler(pointer blockData, int result, pointer pReadMask)
+ {
+-  xnestCollectEvents();
++    xnestCollectEvents();
+ }

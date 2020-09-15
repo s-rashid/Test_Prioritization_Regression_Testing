@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index e54af09..34fdf50 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -2000,7 +2000,7 @@ CheckDeviceGrabAndHintWindow(WindowPtr pWin, int type,
+     DeviceIntPtr dev;
+ 
+     dixLookupDevice(&dev, xE->deviceid & DEVICE_BITS, serverClient,
+-		    DixReadAccess);
++		    DixGrabAccess);
+     if (!dev)
+         return;
+ 

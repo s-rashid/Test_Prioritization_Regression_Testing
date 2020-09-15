@@ -1,0 +1,942 @@
+diff --git a/hw/dmx/dmxextension.c b/hw/dmx/dmxextension.c
+index 80d11ee..faa28a5 100644
+--- a/hw/dmx/dmxextension.c
++++ b/hw/dmx/dmxextension.c
+@@ -70,11 +70,13 @@ extern FontPtr  defaultFont;
+     
+ /** This routine provides information to the DMX protocol extension
+  * about a particular screen. */
+-Bool dmxGetScreenAttributes(int physical, DMXScreenAttributesPtr attr)
++Bool
++dmxGetScreenAttributes(int physical, DMXScreenAttributesPtr attr)
+ {
+     DMXScreenInfo *dmxScreen;
+ 
+-    if (physical < 0 || physical >= dmxNumScreens) return FALSE;
++    if (physical < 0 || physical >= dmxNumScreens)
++        return FALSE;
+ 
+     dmxScreen = &dmxScreens[physical];
+     attr->displayName         = dmxScreen->name;
+@@ -102,7 +104,8 @@ Bool dmxGetScreenAttributes(int physical, DMXScreenAttributesPtr attr)
+ 
+ /** This routine provides information to the DMX protocol extension
+  * about a particular window. */
+-Bool dmxGetWindowAttributes(WindowPtr pWindow, DMXWindowAttributesPtr attr)
++Bool
++dmxGetWindowAttributes(WindowPtr pWindow, DMXWindowAttributesPtr attr)
+ {
+     dmxWinPrivPtr pWinPriv = DMX_GET_WINDOW_PRIV(pWindow);
+ 
+@@ -156,7 +159,8 @@ Bool dmxGetWindowAttributes(WindowPtr pWindow, DMXWindowAttributesPtr attr)
+     return TRUE;
+ }
+ 
+-void dmxGetDesktopAttributes(DMXDesktopAttributesPtr attr)
++void
++dmxGetDesktopAttributes(DMXDesktopAttributesPtr attr)
+ {
+     attr->width  = dmxGlobalWidth;
+     attr->height = dmxGlobalHeight;
+@@ -167,11 +171,13 @@ void dmxGetDesktopAttributes(DMXDesktopAttributesPtr attr)
+ /** Return the total number of devices, not just #dmxNumInputs.  The
+  * number returned should be the same as that returned by
+  * XListInputDevices. */
+-int dmxGetInputCount(void)
++int
++dmxGetInputCount(void)
+ {
+     int i, total;
+     
+-    for (total = i = 0; i < dmxNumInputs; i++) total += dmxInputs[i].numDevs;
++    for (total = i = 0; i < dmxNumInputs; i++)
++        total += dmxInputs[i].numDevs;
+     return total;
+ }
+ 
+@@ -179,17 +185,21 @@ int dmxGetInputCount(void)
+  * information is primarily for the #ProcDMXGetInputAttributes()
+  * function, which does not have access to the appropriate data
+  * structure. */
+-int dmxGetInputAttributes(int deviceId, DMXInputAttributesPtr attr)
++int
++dmxGetInputAttributes(int deviceId, DMXInputAttributesPtr attr)
+ {
+     int          i, j;
+     DMXInputInfo *dmxInput;
+ 
+-    if (deviceId < 0) return -1;
++    if (deviceId < 0)
++        return -1;
+     for (i = 0; i < dmxNumInputs; i++) {
+         dmxInput = &dmxInputs[i];
+         for (j = 0; j < dmxInput->numDevs; j++) {
+             DMXLocalInputInfoPtr dmxLocal = dmxInput->devs[j];
+-            if (deviceId != dmxLocal->pDevice->id) continue;
++
++            if (deviceId != dmxLocal->pDevice->id)
++                continue;
+             attr->isCore             = !!dmxLocal->isCore;
+             attr->sendsCore          = !!dmxLocal->sendsCore;
+             attr->detached           = !!dmxInput->detached;
+@@ -220,7 +230,8 @@ int dmxGetInputAttributes(int deviceId, DMXInputAttributesPtr attr)
+ }
+ 
+ /** Reinitialized the cursor boundaries. */
+-static void dmxAdjustCursorBoundaries(void)
++static void
++dmxAdjustCursorBoundaries(void)
+ {
+     int           i;
+ 
+@@ -230,20 +241,25 @@ static void dmxAdjustCursorBoundaries(void)
+     dmxConnectionBlockCallback();
+     for (i = 0; i < dmxNumInputs; i++) {
+         DMXInputInfo *dmxInput = &dmxInputs[i];
+-	if (!dmxInput->detached) dmxInputReInit(dmxInput);
++
++        if (!dmxInput->detached)
++            dmxInputReInit(dmxInput);
+     }
+ 
+     dmxCheckCursor();
+ 
+     for (i = 0; i < dmxNumInputs; i++) {
+         DMXInputInfo *dmxInput = &dmxInputs[i];
+-	if (!dmxInput->detached) dmxInputLateReInit(dmxInput);
++
++        if (!dmxInput->detached)
++            dmxInputLateReInit(dmxInput);
+     }
+ }
+ 
+ /** Add an input with the specified attributes.  If the input is added,
+  * the physical id is returned in \a deviceId. */
+-int dmxAddInput(DMXInputAttributesPtr attr, int *id)
++int
++dmxAddInput(DMXInputAttributesPtr attr, int *id)
+ {
+     int retcode = BadValue;
+ 
+@@ -265,7 +281,8 @@ int dmxAddInput(DMXInputAttributesPtr attr, int *id)
+ }
+ 
+ /** Remove the input with physical id \a id. */
+-int dmxRemoveInput(int id)
++int
++dmxRemoveInput(int id)
+ {
+     return dmxInputDetachId(id);
+ }
+@@ -273,28 +290,34 @@ int dmxRemoveInput(int id)
+ /** Return the value of #dmxNumScreens -- the total number of backend
+  * screens in use (these are logical screens and may be larger than the
+  * number of backend displays). */
+-unsigned long dmxGetNumScreens(void)
++unsigned long
++dmxGetNumScreens(void)
+ {
+     return dmxNumScreens;
+ }
+ 
+ /** Make sure that #dmxCreateAndRealizeWindow has been called for \a
+  * pWindow. */
+-void dmxForceWindowCreation(WindowPtr pWindow)
++void
++dmxForceWindowCreation(WindowPtr pWindow)
+ {
+     dmxWinPrivPtr pWinPriv = DMX_GET_WINDOW_PRIV(pWindow);
+-    if (!pWinPriv->window) dmxCreateAndRealizeWindow(pWindow, TRUE);
++
++    if (!pWinPriv->window)
++        dmxCreateAndRealizeWindow(pWindow, TRUE);
+ }
+ 
+ /** Flush pending syncs for all screens. */
+-void dmxFlushPendingSyncs(void)
++void
++dmxFlushPendingSyncs(void)
+ {
+     dmxSync(NULL, TRUE);
+ }
+ 
+ /** Update DMX's screen resources to match those of the newly moved
+  *  and/or resized "root" window. */
+-void dmxUpdateScreenResources(ScreenPtr pScreen, int x, int y, int w, int h)
++void
++dmxUpdateScreenResources(ScreenPtr pScreen, int x, int y, int w, int h)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     WindowPtr      pRoot     = pScreen->root;
+@@ -351,7 +374,8 @@ void dmxUpdateScreenResources(ScreenPtr pScreen, int x, int y, int w, int h)
+ 	 * ValidateTree()
+ 	 */
+ 	RegionBreak(&pRoot->clipList);
+-    } else {
++    }
++    else {
+ 	/* Otherwise, we just set it directly since there are no
+ 	 * windows visible on this screen
+ 	 */
+@@ -375,8 +399,8 @@ void dmxUpdateScreenResources(ScreenPtr pScreen, int x, int y, int w, int h)
+ 
+ /** Change the "screen" window attributes by resizing the actual window
+  *  on the back-end display (if necessary). */
+-static void dmxConfigureScreenWindow(int idx,
+-				     int x, int y, int w, int h)
++static void
++dmxConfigureScreenWindow(int idx, int x, int y, int w, int h)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+     ScreenPtr      pScreen   = screenInfo.screens[idx];
+@@ -384,8 +408,7 @@ static void dmxConfigureScreenWindow(int idx,
+     /* Resize "screen" window */
+     if (dmxScreen->scrnX      != x ||
+ 	dmxScreen->scrnY      != y ||
+-	dmxScreen->scrnWidth  != w ||
+-	dmxScreen->scrnHeight != h) {
++        dmxScreen->scrnWidth != w || dmxScreen->scrnHeight != h) {
+ 	dmxResizeScreenWindow(pScreen, x, y, w, h);
+     }
+ 
+@@ -399,7 +422,8 @@ static void dmxConfigureScreenWindow(int idx,
+ /** Change the "root" window position and size by resizing the actual
+  *  window on the back-end display (if necessary) and updating all of
+  *  DMX's resources by calling #dmxUpdateScreenResources. */
+-static void dmxConfigureRootWindow(int idx, int x, int y, int w, int h)
++static void
++dmxConfigureRootWindow(int idx, int x, int y, int w, int h)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+     WindowPtr      pRoot     = screenInfo.screens[idx]->root;
+@@ -411,15 +435,13 @@ static void dmxConfigureRootWindow(int idx, int x, int y, int w, int h)
+     /* 1. Resize "root" window */
+     if (dmxScreen->rootX      != x ||
+ 	dmxScreen->rootY      != y ||
+-	dmxScreen->rootWidth  != w ||
+-	dmxScreen->rootHeight != h) {
++        dmxScreen->rootWidth != w || dmxScreen->rootHeight != h) {
+ 	dmxResizeRootWindow(pRoot, x, y, w, h);
+     }
+ 
+     /* 2. Update all of the screen's resources associated with this root
+      *    window */
+-    if (dmxScreen->rootWidth  != w ||
+-	dmxScreen->rootHeight != h) {
++    if (dmxScreen->rootWidth != w || dmxScreen->rootHeight != h) {
+ 	dmxUpdateScreenResources(screenInfo.screens[idx], x, y, w, h);
+     }
+ 
+@@ -433,7 +455,8 @@ static void dmxConfigureRootWindow(int idx, int x, int y, int w, int h)
+ /** Change the "root" window's origin by updating DMX's internal data
+  *  structures (dix and Xinerama) to use the new origin and adjust the
+  *  positions of windows that overlap this "root" window. */
+-static void dmxSetRootWindowOrigin(int idx, int x, int y)
++static void
++dmxSetRootWindowOrigin(int idx, int x, int y)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+     ScreenPtr      pScreen   = screenInfo.screens[idx];
+@@ -458,15 +481,15 @@ static void dmxSetRootWindowOrigin(int idx, int x, int y)
+     XineramaReinitData();
+ 
+     /* Adjust each of the root window's children */
+-    if (!idx) ReinitializeRootWindow(screenInfo.screens[0]->root, xoff, yoff);
++    if (!idx)
++        ReinitializeRootWindow(screenInfo.screens[0]->root, xoff, yoff);
+     pChild = pRoot->firstChild;
+     while (pChild) {
+ 	/* Adjust child window's position */
+ 	pScreen->MoveWindow(pChild,
+ 			    pChild->origin.x - wBorderWidth(pChild) - xoff,
+ 			    pChild->origin.y - wBorderWidth(pChild) - yoff,
+-			    pChild->nextSib,
+-			    VTMove);
++                            pChild->nextSib, VTMove);
+ 
+ 	/* Note that the call to MoveWindow will eventually call
+ 	 * dmxPositionWindow which will automatically create a
+@@ -480,10 +503,10 @@ static void dmxSetRootWindowOrigin(int idx, int x, int y)
+ }
+ 
+ /** Configure the attributes of each "screen" and "root" window. */
+-int dmxConfigureScreenWindows(int nscreens,
++int
++dmxConfigureScreenWindows(int nscreens,
+ 			      CARD32 *screens,
+-			      DMXScreenAttributesPtr attribs,
+-			      int *errorScreen)
++                          DMXScreenAttributesPtr attribs, int *errorScreen)
+ {
+     int           i;
+ 
+@@ -492,12 +515,15 @@ int dmxConfigureScreenWindows(int nscreens,
+ 	int                     idx       = screens[i];
+ 	DMXScreenInfo          *dmxScreen = &dmxScreens[idx];
+ 
+-	if (errorScreen) *errorScreen = i;
++        if (errorScreen)
++            *errorScreen = i;
+ 
+-	if (!dmxScreen->beDisplay) return DMX_BAD_VALUE;
++        if (!dmxScreen->beDisplay)
++            return DMX_BAD_VALUE;
+ 
+ 	/* Check for illegal values */
+-	if (idx < 0 || idx >= dmxNumScreens) return BadValue;
++        if (idx < 0 || idx >= dmxNumScreens)
++            return BadValue;
+ 
+ 	/* The "screen" and "root" windows must have valid sizes */
+ 	if (attr->screenWindowWidth <= 0 || attr->screenWindowHeight <= 0 ||
+@@ -540,7 +566,8 @@ int dmxConfigureScreenWindows(int nscreens,
+     }
+ 
+     /* No illegal values found */
+-    if (errorScreen) *errorScreen = 0;
++    if (errorScreen)
++        *errorScreen = 0;
+ 
+     for (i = 0; i < nscreens; i++) {
+ 	DMXScreenAttributesPtr  attr      = &attribs[i];
+@@ -573,9 +600,7 @@ int dmxConfigureScreenWindows(int nscreens,
+ 	dmxConfigureRootWindow(idx,
+ 			       attr->rootWindowXoffset,
+ 			       attr->rootWindowYoffset,
+-			       attr->rootWindowWidth,
+-			       attr->rootWindowHeight);
+-
++                               attr->rootWindowWidth, attr->rootWindowHeight);
+ 
+ 	/* Set "root" window's origin */
+ 	dmxSetRootWindowOrigin(idx,
+@@ -593,7 +618,8 @@ int dmxConfigureScreenWindows(int nscreens,
+ }
+ 
+ /** Configure the attributes of the global desktop. */
+-int dmxConfigureDesktop(DMXDesktopAttributesPtr attribs)
++int
++dmxConfigureDesktop(DMXDesktopAttributesPtr attribs)
+ {
+     if (attribs->width  <= 0 || attribs->width  >= 32767 ||
+ 	attribs->height <= 0 || attribs->height >= 32767)
+@@ -605,23 +631,31 @@ int dmxConfigureDesktop(DMXDesktopAttributesPtr attribs)
+      * longer overlaps an portion of a "screen" window. */
+     if (attribs->width < dmxGlobalWidth || attribs->height < dmxGlobalHeight) {
+ 	int   i;
++
+ 	for (i = 0; i < dmxNumScreens; i++) {
+ 	    DMXScreenInfo *dmxScreen = &dmxScreens[i];
++
+ 	    if (dmxScreen->rootXOrigin
+ 		+ dmxScreen->rootWidth  > attribs->width ||
+ 		dmxScreen->rootYOrigin
+ 		+ dmxScreen->rootHeight > attribs->height) {
+ 		int  w, h;
+-		if ((w = attribs->width  - dmxScreen->rootXOrigin) < 0) w = 0;
+-		if ((h = attribs->height - dmxScreen->rootYOrigin) < 0) h = 0;
+-		if (w > dmxScreen->scrnWidth)  w = dmxScreen->scrnWidth;
+-		if (h > dmxScreen->scrnHeight) h = dmxScreen->scrnHeight;
+-		if (w > dmxScreen->rootWidth)  w = dmxScreen->rootWidth;
+-		if (h > dmxScreen->rootHeight) h = dmxScreen->rootHeight;
++
++                if ((w = attribs->width - dmxScreen->rootXOrigin) < 0)
++                    w = 0;
++                if ((h = attribs->height - dmxScreen->rootYOrigin) < 0)
++                    h = 0;
++                if (w > dmxScreen->scrnWidth)
++                    w = dmxScreen->scrnWidth;
++                if (h > dmxScreen->scrnHeight)
++                    h = dmxScreen->scrnHeight;
++                if (w > dmxScreen->rootWidth)
++                    w = dmxScreen->rootWidth;
++                if (h > dmxScreen->rootHeight)
++                    h = dmxScreen->rootHeight;
+ 		dmxConfigureRootWindow(i,
+ 				       dmxScreen->rootX,
+-				       dmxScreen->rootY,
+-				       w, h);
++                                       dmxScreen->rootY, w, h);
+ 	    }
+ 	}
+     }
+@@ -632,18 +666,18 @@ int dmxConfigureDesktop(DMXDesktopAttributesPtr attribs)
+     /* Handle shift[XY] changes */
+     if (attribs->shiftX || attribs->shiftY) {
+ 	int   i;
++
+ 	for (i = 0; i < dmxNumScreens; i++) {
+ 	    ScreenPtr  pScreen = screenInfo.screens[i];
+ 	    WindowPtr  pChild  = pScreen->root->firstChild;
++
+ 	    while (pChild) {
+ 		/* Adjust child window's position */
+ 		pScreen->MoveWindow(pChild,
+ 				    pChild->origin.x - wBorderWidth(pChild)
+ 				    - attribs->shiftX,
+ 				    pChild->origin.y - wBorderWidth(pChild)
+-				    - attribs->shiftY,
+-				    pChild->nextSib,
+-				    VTMove);
++                                    - attribs->shiftY, pChild->nextSib, VTMove);
+ 
+ 		/* Note that the call to MoveWindow will eventually call
+ 		 * dmxPositionWindow which will automatically create a
+@@ -672,7 +706,8 @@ int dmxConfigureDesktop(DMXDesktopAttributesPtr attribs)
+ #endif
+ 
+ /** Create the scratch GCs per depth. */
+-static void dmxBECreateScratchGCs(int scrnNum)
++static void
++dmxBECreateScratchGCs(int scrnNum)
+ {
+     ScreenPtr  pScreen = screenInfo.screens[scrnNum];
+     GCPtr     *ppGC    = pScreen->GCperDepth;
+@@ -689,8 +724,8 @@ static Bool FoundPixImage;
+  *  to have its image restored.  When it is found, see if there is
+  *  another screen with the same image.  If so, copy the pixmap image
+  *  from the existing screen to the newly created pixmap. */
+-static void dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type,
+-				    pointer p)
++static void
++dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type, pointer p)
+ {
+     if ((type & TypeMask) == (XRT_PIXMAP & TypeMask)) {
+ 	PixmapPtr      pDst     = (PixmapPtr)p;
+@@ -701,13 +736,15 @@ static void dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type,
+ 
+ 	dixLookupResourceByType((pointer*) &pPix, pXinPix->info[idx].id,
+ 				RT_PIXMAP, NullClient, DixUnknownAccess);
+-	if (pPix != pDst) return; /* Not a match.... Next! */
++        if (pPix != pDst)
++            return;             /* Not a match.... Next! */
+ 
+ 	FOR_NSCREENS(i) {
+ 	    PixmapPtr      pSrc;
+ 	    dmxPixPrivPtr  pSrcPriv = NULL;
+ 
+-	    if (i == idx) continue; /* Self replication is bad */
++            if (i == idx)
++                continue;       /* Self replication is bad */
+ 
+ 	    dixLookupResourceByType((pointer*) &pSrc, pXinPix->info[i].id,
+ 				    RT_PIXMAP, NullClient, DixUnknownAccess);
+@@ -730,8 +767,7 @@ static void dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type,
+ 				pSrcPriv->pixmap,
+ 				0, 0,
+ 				pSrc->drawable.width, pSrc->drawable.height,
+-				-1,
+-				ZPixmap);
++                                -1, ZPixmap);
+ 
+ 		for (j = 0; j < dmxDstScreen->beNumPixmapFormats; j++) {
+ 		    if (dmxDstScreen->bePixmapFormats[j].depth == img->depth) {
+@@ -757,7 +793,8 @@ static void dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type,
+ 			      pDst->drawable.width, pDst->drawable.height);
+ 		    XFreeGC(dmxDstScreen->beDisplay, gc);
+ 		    FoundPixImage = True;
+-		} else {
++                }
++                else {
+ 		    dmxLog(dmxWarning, "Could not create GC\n");
+ 		}
+ 
+@@ -771,7 +808,8 @@ static void dmxBERestorePixmapImage(pointer value, XID id, RESTYPE type,
+ 
+ /** Restore the pixmap image either from another screen or from an image
+  *  that was saved when the screen was previously detached. */
+-static void dmxBERestorePixmap(PixmapPtr pPixmap)
++static void
++dmxBERestorePixmap(PixmapPtr pPixmap)
+ {
+ #ifdef PANORAMIX
+     int i;
+@@ -812,8 +850,7 @@ static void dmxBERestorePixmap(PixmapPtr pPixmap)
+ 		    v.clip_mask = None;
+ 
+ 		    gc = XCreateGC(dmxScreen->beDisplay,
+-				   dmxScreen->scrnDefDrawables[i],
+-				   m, &v);
++                                   dmxScreen->scrnDefDrawables[i], m, &v);
+ 		    break;
+ 		}
+ 	    }
+@@ -826,13 +863,15 @@ static void dmxBERestorePixmap(PixmapPtr pPixmap)
+ 			  0, 0, 0, 0,
+ 		      pPixmap->drawable.width, pPixmap->drawable.height);
+ 		XFreeGC(dmxScreen->beDisplay, gc);
+-	    } else {
++            }
++            else {
+ 		dmxLog(dmxWarning, "Cannot restore pixmap image\n");
+ 	    }
+ 
+ 	    XDestroyImage(pPixPriv->detachedImage);
+ 	    pPixPriv->detachedImage = NULL;
+-	} else {
++        }
++        else {
+ 	    dmxLog(dmxWarning, "Cannot restore pixmap image\n");
+ 	}
+     }
+@@ -852,22 +891,26 @@ static void dmxBERestorePixmap(PixmapPtr pPixmap)
+  *  function.  It walks all resources, compares them to the screen
+  *  number passed in as \a n and calls the appropriate DMX function to
+  *  create the associated resource on the back-end server. */
+-static void dmxBECreateResources(pointer value, XID id, RESTYPE type,
+-				 pointer n)
++static void
++dmxBECreateResources(pointer value, XID id, RESTYPE type, pointer n)
+ {
+     int        scrnNum = (uintptr_t)n;
+     ScreenPtr  pScreen = screenInfo.screens[scrnNum];
+ 
+     if ((type & TypeMask) == (RT_WINDOW & TypeMask)) {
+ 	/* Window resources are created below in dmxBECreateWindowTree */
+-    } else if ((type & TypeMask) == (RT_PIXMAP & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_PIXMAP & TypeMask)) {
+ 	PixmapPtr  pPix = value;
++
+ 	if (pPix->drawable.pScreen->myNum == scrnNum) {
+ 	    dmxBECreatePixmap(pPix);
+ 	    dmxBERestorePixmap(pPix);
+ 	}
+-    } else if ((type & TypeMask) == (RT_GC & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_GC & TypeMask)) {
+ 	GCPtr  pGC = value;
++
+ 	if (pGC->pScreen->myNum == scrnNum) {
+ 	    /* Create the GC on the back-end server */
+ 	    dmxBECreateGC(pScreen, pGC);
+@@ -886,22 +929,29 @@ static void dmxBECreateResources(pointer value, XID id, RESTYPE type,
+ 	    /* Update the GC on the back-end server */
+ 	    dmxChangeGC(pGC, -1L);
+ 	}
+-    } else if ((type & TypeMask) == (RT_FONT & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_FONT & TypeMask)) {
+ 	(void)dmxBELoadFont(pScreen, (FontPtr)value);
+-    } else if ((type & TypeMask) == (RT_CURSOR & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_CURSOR & TypeMask)) {
+ 	dmxBECreateCursor(pScreen, (CursorPtr)value);
+-    } else if ((type & TypeMask) == (RT_COLORMAP & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_COLORMAP & TypeMask)) {
+ 	ColormapPtr  pCmap = value;
++
+ 	if (pCmap->pScreen->myNum == scrnNum)
+ 	    (void)dmxBECreateColormap((ColormapPtr)value);
+ #if 0
+     /* TODO: Recreate Picture and GlyphSet resources */
+-    } else if ((type & TypeMask) == (PictureType & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (PictureType & TypeMask)) {
+ 	/* Picture resources are created when windows are created */
+-    } else if ((type & TypeMask) == (GlyphSetType & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (GlyphSetType & TypeMask)) {
+ 	dmxBEFreeGlyphSet(pScreen, (GlyphSetPtr)value);
+ #endif
+-    } else {
++    }
++    else {
+ 	/* Other resource types??? */
+     }
+ }
+@@ -912,7 +962,8 @@ static void dmxBECreateResources(pointer value, XID id, RESTYPE type,
+  *  itself to create each window's parents.  This is required so that we
+  *  have the opportunity to create each window's border and background
+  *  pixmaps (where appropriate) before the window is created. */
+-static void dmxBECreateWindowTree(int idx)
++static void
++dmxBECreateWindowTree(int idx)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+     WindowPtr      pRoot     = screenInfo.screens[idx]->root;
+@@ -950,9 +1001,7 @@ static void dmxBECreateWindowTree(int idx)
+ 	}
+ 
+ 	/* Reset the window attributes */
+-	dmxGetDefaultWindowAttributes(pWin,
+-				      &pWinPriv->cmap,
+-				      &pWinPriv->visual);
++        dmxGetDefaultWindowAttributes(pWin, &pWinPriv->cmap, &pWinPriv->visual);
+ 
+ 	/* Create the window */
+ 	if (pWinPriv->mapped && !pWinPriv->offscreen)
+@@ -980,7 +1029,8 @@ static void dmxBECreateWindowTree(int idx)
+ }
+ 
+ /* Refresh screen by generating exposure events for all windows */
+-static void dmxForceExposures(int idx)
++static void
++dmxForceExposures(int idx)
+ {
+     ScreenPtr      pScreen   = screenInfo.screens[idx];
+     WindowPtr  pRoot     = pScreen->root;
+@@ -1004,58 +1054,71 @@ static void dmxForceExposures(int idx)
+ }
+ 
+ /** Compare the new and old screens to see if they are compatible. */
+-static Bool dmxCompareScreens(DMXScreenInfo *new, DMXScreenInfo *old)
++static Bool
++dmxCompareScreens(DMXScreenInfo * new, DMXScreenInfo * old)
+ {
+     int i;
+ 
+-    if (new->beWidth != old->beWidth) return FALSE;
+-    if (new->beHeight != old->beHeight) return FALSE;
+-    if (new->beDepth != old->beDepth) return FALSE;
+-    if (new->beBPP != old->beBPP) return FALSE;
+-
+-    if (new->beNumDepths != old->beNumDepths) return FALSE;
++    if (new->beWidth != old->beWidth)
++        return FALSE;
++    if (new->beHeight != old->beHeight)
++        return FALSE;
++    if (new->beDepth != old->beDepth)
++        return FALSE;
++    if (new->beBPP != old->beBPP)
++        return FALSE;
++
++    if (new->beNumDepths != old->beNumDepths)
++        return FALSE;
+     for (i = 0; i < old->beNumDepths; i++)
+-	if (new->beDepths[i] != old->beDepths[i]) return FALSE;
++        if (new->beDepths[i] != old->beDepths[i])
++            return FALSE;
+ 
+-    if (new->beNumPixmapFormats != old->beNumPixmapFormats) return FALSE;
++    if (new->beNumPixmapFormats != old->beNumPixmapFormats)
++        return FALSE;
+     for (i = 0; i < old->beNumPixmapFormats; i++) {
+-	if (new->bePixmapFormats[i].depth !=
+-	    old->bePixmapFormats[i].depth) return FALSE;
++        if (new->bePixmapFormats[i].depth != old->bePixmapFormats[i].depth)
++            return FALSE;
+ 	if (new->bePixmapFormats[i].bits_per_pixel !=
+-	    old->bePixmapFormats[i].bits_per_pixel) return FALSE;
++            old->bePixmapFormats[i].bits_per_pixel)
++            return FALSE;
+ 	if (new->bePixmapFormats[i].scanline_pad !=
+-	    old->bePixmapFormats[i].scanline_pad) return FALSE;
++            old->bePixmapFormats[i].scanline_pad)
++            return FALSE;
+     }
+ 
+-    if (new->beNumVisuals != old->beNumVisuals) return FALSE;
++    if (new->beNumVisuals != old->beNumVisuals)
++        return FALSE;
+     for (i = 0; i < old->beNumVisuals; i++) {
+-	if (new->beVisuals[i].visualid !=
+-	    old->beVisuals[i].visualid) return FALSE;
+-	if (new->beVisuals[i].screen !=
+-	    old->beVisuals[i].screen) return FALSE;
+-	if (new->beVisuals[i].depth !=
+-	    old->beVisuals[i].depth) return FALSE;
+-	if (new->beVisuals[i].class !=
+-	    old->beVisuals[i].class) return FALSE;
+-	if (new->beVisuals[i].red_mask !=
+-	    old->beVisuals[i].red_mask) return FALSE;
+-	if (new->beVisuals[i].green_mask !=
+-	    old->beVisuals[i].green_mask) return FALSE;
+-	if (new->beVisuals[i].blue_mask !=
+-	    old->beVisuals[i].blue_mask) return FALSE;
+-	if (new->beVisuals[i].colormap_size !=
+-	    old->beVisuals[i].colormap_size) return FALSE;
+-	if (new->beVisuals[i].bits_per_rgb !=
+-	    old->beVisuals[i].bits_per_rgb) return FALSE;
+-    }
+-
+-    if (new->beDefVisualIndex != old->beDefVisualIndex) return FALSE;
++        if (new->beVisuals[i].visualid != old->beVisuals[i].visualid)
++            return FALSE;
++        if (new->beVisuals[i].screen != old->beVisuals[i].screen)
++            return FALSE;
++        if (new->beVisuals[i].depth != old->beVisuals[i].depth)
++            return FALSE;
++        if (new->beVisuals[i].class != old->beVisuals[i].class)
++            return FALSE;
++        if (new->beVisuals[i].red_mask != old->beVisuals[i].red_mask)
++            return FALSE;
++        if (new->beVisuals[i].green_mask != old->beVisuals[i].green_mask)
++            return FALSE;
++        if (new->beVisuals[i].blue_mask != old->beVisuals[i].blue_mask)
++            return FALSE;
++        if (new->beVisuals[i].colormap_size != old->beVisuals[i].colormap_size)
++            return FALSE;
++        if (new->beVisuals[i].bits_per_rgb != old->beVisuals[i].bits_per_rgb)
++            return FALSE;
++    }
++
++    if (new->beDefVisualIndex != old->beDefVisualIndex)
++        return FALSE;
+ 
+     return TRUE;
+ }
+ 
+ /** Restore Render's picture */
+-static void dmxBERestoreRenderPict(pointer value, XID id, pointer n)
++static void
++dmxBERestoreRenderPict(pointer value, XID id, pointer n)
+ {
+     PicturePtr   pPicture = value;               /* The picture */
+     DrawablePtr  pDraw    = pPicture->pDrawable; /* The picture's drawable */
+@@ -1078,7 +1141,8 @@ static void dmxBERestoreRenderPict(pointer value, XID id, pointer n)
+ }
+ 
+ /** Restore Render's glyphs */
+-static void dmxBERestoreRenderGlyph(pointer value, XID id, pointer n)
++static void
++dmxBERestoreRenderGlyph(pointer value, XID id, pointer n)
+ {
+     GlyphSetPtr      glyphSet   = value;
+     int              scrnNum    = (uintptr_t)n;
+@@ -1114,7 +1178,8 @@ static void dmxBERestoreRenderGlyph(pointer value, XID id, pointer n)
+ 	GlyphRefPtr  gr = &table[i];
+ 	GlyphPtr     gl = gr->glyph;
+ 
+-	if (!gl || gl == DeletedGlyph) continue;
++        if (!gl || gl == DeletedGlyph)
++            continue;
+ 	len_images += gl->size - sizeof(gl->info);
+     }
+ 
+@@ -1131,7 +1196,8 @@ static void dmxBERestoreRenderGlyph(pointer value, XID id, pointer n)
+ 	GlyphRefPtr  gr = &table[i];
+ 	GlyphPtr     gl = gr->glyph;
+ 
+-	if (!gl || gl == DeletedGlyph) continue;
++        if (!gl || gl == DeletedGlyph)
++            continue;
+ 
+ 	/* First lets put the data into gids */
+ 	gids[ctr] = gr->signature;
+@@ -1162,7 +1228,8 @@ static void dmxBERestoreRenderGlyph(pointer value, XID id, pointer n)
+ }
+ 
+ /** Reattach previously detached back-end screen. */
+-int dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
++int
++dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
+ {
+     ScreenPtr      pScreen;
+     DMXScreenInfo *dmxScreen;
+@@ -1178,13 +1245,13 @@ int dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
+ 	       "extension has not been enabled.  To enable this extension\n");
+ 	dmxLog(dmxWarning,
+ 	       "add the \"-addremovescreens\" option either to the command\n");
+-	dmxLog(dmxWarning,
+-	       "line or in the configuration file.\n");
++        dmxLog(dmxWarning, "line or in the configuration file.\n");
+ 	return 1;
+     }
+ 
+     /* Cannot add a screen that does not exist */
+-    if (idx < 0 || idx >= dmxNumScreens) return 1;
++    if (idx < 0 || idx >= dmxNumScreens)
++        return 1;
+     pScreen = screenInfo.screens[idx];
+     dmxScreen = &dmxScreens[idx];
+ 
+@@ -1207,8 +1274,7 @@ int dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
+     /* Open display and get all of the screen info */
+     if (!dmxOpenDisplay(dmxScreen)) {
+ 	dmxLog(dmxWarning,
+-               "dmxOpenDisplay: Unable to open display %s\n",
+-               dmxScreen->name);
++               "dmxOpenDisplay: Unable to open display %s\n", dmxScreen->name);
+ 
+ 	/* Restore the old screen */
+ 	*dmxScreen = oldDMXScreen;
+@@ -1238,12 +1304,9 @@ int dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
+ 	dmxLog(dmxWarning,
+ 	       "New screen data (%s) does not match previously\n",
+ 	       dmxScreen->name);
++        dmxLog(dmxWarning, "attached screen data (%s)\n", oldDMXScreen.name);
+ 	dmxLog(dmxWarning,
+-	       "attached screen data (%s)\n",
+-	       oldDMXScreen.name);
+-	dmxLog(dmxWarning,
+-	       "All data must match in order to attach to screen #%d\n",
+-	       idx);
++               "All data must match in order to attach to screen #%d\n", idx);
+ 	XFree(dmxScreen->beVisuals);
+ 	XFree(dmxScreen->beDepths);
+ 	XFree(dmxScreen->bePixmapFormats);
+@@ -1358,8 +1421,8 @@ int dmxAttachScreen(int idx, DMXScreenAttributesPtr attr)
+ #ifdef PANORAMIX
+ /** Search the Xinerama XRT_PIXMAP resources for the pixmap that needs
+  *  to have its image saved. */
+-static void dmxBEFindPixmapImage(pointer value, XID id, RESTYPE type,
+-				 pointer p)
++static void
++dmxBEFindPixmapImage(pointer value, XID id, RESTYPE type, pointer p)
+ {
+     if ((type & TypeMask) == (XRT_PIXMAP & TypeMask)) {
+ 	PixmapPtr      pDst     = (PixmapPtr)p;
+@@ -1370,13 +1433,15 @@ static void dmxBEFindPixmapImage(pointer value, XID id, RESTYPE type,
+ 
+ 	dixLookupResourceByType((pointer*) &pPix, pXinPix->info[idx].id,
+ 				RT_PIXMAP, NullClient, DixUnknownAccess);
+-	if (pPix != pDst) return; /* Not a match.... Next! */
++        if (pPix != pDst)
++            return;             /* Not a match.... Next! */
+ 
+ 	FOR_NSCREENS(i) {
+ 	    PixmapPtr      pSrc;
+ 	    dmxPixPrivPtr  pSrcPriv = NULL;
+ 
+-	    if (i == idx) continue; /* Self replication is bad */
++            if (i == idx)
++                continue;       /* Self replication is bad */
+ 
+ 	    dixLookupResourceByType((pointer*) &pSrc, pXinPix->info[i].id,
+ 				    RT_PIXMAP, NullClient, DixUnknownAccess);
+@@ -1399,14 +1464,16 @@ static void dmxBEFindPixmapImage(pointer value, XID id, RESTYPE type,
+  *  However, if we do not find one, then we need to save the image data.
+  *  The common case for these are for the default stipple and root
+  *  tile. */
+-static void dmxBESavePixmap(PixmapPtr pPixmap)
++static void
++dmxBESavePixmap(PixmapPtr pPixmap)
+ {
+ #ifdef PANORAMIX
+     int i;
+ 
+     /* If Xinerama is not active, there's nothing we can do (see comment
+      * in #else below for more info). */
+-    if (noPanoramiXExtension) return;
++    if (noPanoramiXExtension)
++        return;
+ 
+     FoundPixImage = False;
+     for (i = currentMaxClients; --i >= 0; )
+@@ -1428,8 +1495,7 @@ static void dmxBESavePixmap(PixmapPtr pPixmap)
+ 						0, 0,
+ 						pPixmap->drawable.width,
+ 						pPixmap->drawable.height,
+-						-1,
+-						ZPixmap);
++                                                -1, ZPixmap);
+ 	    if (!pPixPriv->detachedImage)
+ 		dmxLog(dmxWarning, "Cannot save pixmap image\n");
+ 	}
+@@ -1452,52 +1518,66 @@ static void dmxBESavePixmap(PixmapPtr pPixmap)
+  *  function.  It walks all resources, compares them to the screen
+  *  number passed in as \a n and calls the appropriate DMX function to
+  *  free the associated resource on the back-end server. */
+-static void dmxBEDestroyResources(pointer value, XID id, RESTYPE type,
+-				  pointer n)
++static void
++dmxBEDestroyResources(pointer value, XID id, RESTYPE type, pointer n)
+ {
+     int        scrnNum = (uintptr_t)n;
+     ScreenPtr  pScreen = screenInfo.screens[scrnNum];
+ 
+     if ((type & TypeMask) == (RT_WINDOW & TypeMask)) {
+ 	/* Window resources are destroyed below in dmxBEDestroyWindowTree */
+-    } else if ((type & TypeMask) == (RT_PIXMAP & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_PIXMAP & TypeMask)) {
+ 	PixmapPtr  pPix = value;
++
+ 	if (pPix->drawable.pScreen->myNum == scrnNum) {
+ 	    dmxBESavePixmap(pPix);
+ 	    dmxBEFreePixmap(pPix);
+ 	}
+-    } else if ((type & TypeMask) == (RT_GC & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_GC & TypeMask)) {
+ 	GCPtr  pGC = value;
++
+ 	if (pGC->pScreen->myNum == scrnNum)
+ 	    dmxBEFreeGC(pGC);
+-    } else if ((type & TypeMask) == (RT_FONT & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_FONT & TypeMask)) {
+ 	dmxBEFreeFont(pScreen, (FontPtr)value);
+-    } else if ((type & TypeMask) == (RT_CURSOR & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_CURSOR & TypeMask)) {
+ 	dmxBEFreeCursor(pScreen, (CursorPtr)value);
+-    } else if ((type & TypeMask) == (RT_COLORMAP & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (RT_COLORMAP & TypeMask)) {
+ 	ColormapPtr  pCmap = value;
++
+ 	if (pCmap->pScreen->myNum == scrnNum)
+ 	    dmxBEFreeColormap((ColormapPtr)value);
+-    } else if ((type & TypeMask) == (PictureType & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (PictureType & TypeMask)) {
+ 	PicturePtr  pPict = value;
++
+ 	if (pPict->pDrawable->pScreen->myNum == scrnNum) {
+ 	    /* Free the pixmaps on the backend if needed */
+ 	    if (pPict->pDrawable->type == DRAWABLE_PIXMAP) {
+ 		PixmapPtr pPixmap = (PixmapPtr)(pPict->pDrawable);
++
+ 		dmxBESavePixmap(pPixmap);
+ 		dmxBEFreePixmap(pPixmap);
+ 	    }
+ 	    dmxBEFreePicture((PicturePtr)value);
+ 	}
+-    } else if ((type & TypeMask) == (GlyphSetType & TypeMask)) {
++    }
++    else if ((type & TypeMask) == (GlyphSetType & TypeMask)) {
+ 	dmxBEFreeGlyphSet(pScreen, (GlyphSetPtr)value);
+-    } else {
++    }
++    else {
+ 	/* Other resource types??? */
+     }
+ }
+ 
+ /** Destroy the scratch GCs that are created per depth. */
+-static void dmxBEDestroyScratchGCs(int scrnNum)
++static void
++dmxBEDestroyScratchGCs(int scrnNum)
+ {
+     ScreenPtr  pScreen = screenInfo.screens[scrnNum];
+     GCPtr     *ppGC    = pScreen->GCperDepth;
+@@ -1512,7 +1592,8 @@ static void dmxBEDestroyScratchGCs(int scrnNum)
+  *  up order so that windows are not destroyed before their children.
+  *  XDestroyWindow(), which is called from #dmxBEDestroyWindow(), will
+  *  destroy a window as well as all of it's children. */
+-static void dmxBEDestroyWindowTree(int idx)
++static void
++dmxBEDestroyWindowTree(int idx)
+ {
+     WindowPtr  pWin   = screenInfo.screens[idx]->root;
+     WindowPtr  pChild = pWin;
+@@ -1558,7 +1639,8 @@ static void dmxBEDestroyWindowTree(int idx)
+ }
+ 
+ /** Detach back-end screen. */
+-int dmxDetachScreen(int idx)
++int
++dmxDetachScreen(int idx)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+     int            i;
+@@ -1571,13 +1653,13 @@ int dmxDetachScreen(int idx)
+ 	       "extension has not been enabled.  To enable this extension\n");
+ 	dmxLog(dmxWarning,
+ 	       "add the \"-addremovescreens\" option either to the command\n");
+-	dmxLog(dmxWarning,
+-	       "line or in the configuration file.\n");
++        dmxLog(dmxWarning, "line or in the configuration file.\n");
+ 	return 1;
+     }
+ 
+     /* Cannot remove a screen that does not exist */
+-    if (idx < 0 || idx >= dmxNumScreens) return 1;
++    if (idx < 0 || idx >= dmxNumScreens)
++        return 1;
+ 
+     /* Cannot detach from a screen that is not opened */
+     if (!dmxScreen->beDisplay) {

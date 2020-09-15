@@ -1,0 +1,20 @@
+diff --git a/Xi/xisetclientpointer.c b/Xi/xisetclientpointer.c
+index 09db8ff..934747d 100644
+--- a/Xi/xisetclientpointer.c
++++ b/Xi/xisetclientpointer.c
+@@ -51,12 +51,10 @@
+ int
+ SProcXISetClientPointer(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xXISetClientPointerReq);
+-    swaps(&stuff->length, n);
+-    swapl(&stuff->win, n);
+-    swaps(&stuff->deviceid, n);
++    swaps(&stuff->length);
++    swapl(&stuff->win);
++    swaps(&stuff->deviceid);
+     REQUEST_SIZE_MATCH(xXISetClientPointerReq);
+     return (ProcXISetClientPointer(client));
+ }

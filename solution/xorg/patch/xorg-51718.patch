@@ -1,0 +1,13 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index 377cceb..673207c 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -177,7 +177,7 @@ struct _DGAEvent
+     Time time;            /**<  Time in ms */
+     int subtype;          /**<  KeyPress, KeyRelease, ButtonPress,
+                                 ButtonRelease, MotionNotify */
+-    int detail;           /**<  Relative x coordinate */
++    int detail;           /**<  Button number or key code */
+     int dx;               /**<  Relative x coordinate */
+     int dy;               /**<  Relative y coordinate */
+     int screen;           /**<  Screen number this event applies to */

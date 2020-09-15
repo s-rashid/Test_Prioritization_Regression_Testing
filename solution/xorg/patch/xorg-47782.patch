@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/indirect.c b/hw/xquartz/GL/indirect.c
+index 44380ff..c092c1d 100644
+--- a/hw/xquartz/GL/indirect.c
++++ b/hw/xquartz/GL/indirect.c
+@@ -471,7 +471,7 @@ static int __glXAquaContextForceCurrent(__GLXcontext *baseContext)
+ }
+ 
+ /* Drawing surface notification callbacks */
+-static GLboolean __glXAquaDrawableSwapBuffers(__GLXdrawable *base) {
++static GLboolean __glXAquaDrawableSwapBuffers(ClientPtr client, __GLXdrawable *base) {
+     CGLError err;
+     __GLXAquaDrawable *drawable;
+  

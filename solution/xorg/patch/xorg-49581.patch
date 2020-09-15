@@ -1,0 +1,27 @@
+diff --git a/hw/xnest/Color.c b/hw/xnest/Color.c
+index 3b60cc9..883b77c 100644
+--- a/hw/xnest/Color.c
++++ b/hw/xnest/Color.c
+@@ -214,7 +214,6 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+   free(icws.cmapIDs);
+   
+   if (!xnestSameInstalledColormapWindows(icws.windows, icws.numWindows)) {
+-    if (xnestOldInstalledColormapWindows)
+       free(xnestOldInstalledColormapWindows);
+ 
+ #ifdef _XSERVER64
+@@ -264,13 +263,12 @@ xnestSetInstalledColormapWindows(ScreenPtr pScreen)
+ #endif /* DUMB_WINDOW_MANAGERS */
+   }
+   else
+-    if (icws.windows) free(icws.windows);
++    free(icws.windows);
+ }
+ 
+ void
+ xnestSetScreenSaverColormapWindow(ScreenPtr pScreen)
+ {
+-  if (xnestOldInstalledColormapWindows)
+     free(xnestOldInstalledColormapWindows);
+   
+ #ifdef _XSERVER64

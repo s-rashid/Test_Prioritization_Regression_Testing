@@ -1,0 +1,13 @@
+diff --git a/Xext/xace.c b/Xext/xace.c
+index 94b5b37..abd4690 100644
+--- a/Xext/xace.c
++++ b/Xext/xace.c
+@@ -321,7 +321,7 @@ XaceCensorImage(
+ 	    /* Censoring was not completed above.  To be safe, wipe out
+ 	     * all the image data so that nothing trusted gets out.
+ 	     */
+-	    bzero(pBuf, (int)(widthBytesLine * h));
++	    memset(pBuf, 0, (int)(widthBytesLine * h));
+ 	}
+ 	if (pRects)     free(pRects);
+ 	if (pScratchGC) FreeScratchGC(pScratchGC);

@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index e94001a..349d9b4 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3816,7 +3816,7 @@ CheckPassiveGrab(DeviceIntPtr device, GrabPtr grab, InternalEvent *event,
+            Since XGrabDeviceButton requires to specify the
+            modifierDevice explicitly, we don't override this choice.
+          */
+-        if (tempGrab->type < GenericEvent)
++        if (grab->type < GenericEvent)
+         {
+             grab->device = device;
+             grab->modifierDevice = GetMaster(device, MASTER_KEYBOARD);

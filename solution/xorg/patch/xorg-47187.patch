@@ -1,0 +1,25 @@
+diff --git a/hw/dmx/glxProxy/glxext.c b/hw/dmx/glxProxy/glxext.c
+index 0c39068..c00ae6e 100644
+--- a/hw/dmx/glxProxy/glxext.c
++++ b/hw/dmx/glxProxy/glxext.c
+@@ -44,6 +44,7 @@
+ #include "glxvisuals.h"
+ #include "micmap.h"
+ #include "glxswap.h"
++#include "registry.h"
+ 
+ /*
+ ** Stubs to satisfy miinitext.c references.
+@@ -303,6 +304,12 @@ void GlxExtensionInit(void)
+ 	!__glXWindowRes || !__glXPbufferRes)
+ 	return;
+ 
++    RegisterResourceName(__glXContextRes, "GLXContext");
++    RegisterResourceName(__glXClientRes, "GLXClient");
++    RegisterResourceName(__glXPixmapRes, "GLXPixmap");
++    RegisterResourceName(__glXWindowRes, "GLXWindow");
++    RegisterResourceName(__glXPbufferRes, "GLXPbuffer");
++
+     /*
+     ** Add extension to server extensions.
+     */

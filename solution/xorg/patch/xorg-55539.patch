@@ -1,0 +1,205 @@
+diff --git a/hw/xfree86/modes/xf86Modes.c b/hw/xfree86/modes/xf86Modes.c
+index 49cc149..2a6d267 100644
+--- a/hw/xfree86/modes/xf86Modes.c
++++ b/hw/xfree86/modes/xf86Modes.c
+@@ -232,7 +232,8 @@ xf86DuplicateModes(ScrnInfoPtr pScrn, DisplayModePtr modeList)
+ 	if (last) {
+ 	    last->next = new;
+ 	    new->prev = last;
+-	} else {
++        }
++        else {
+ 	    first = new;
+ 	    new->prev = NULL;
+ 	}
+@@ -262,11 +263,10 @@ xf86ModesEqual(const DisplayModeRec *pMode1, const DisplayModeRec *pMode2)
+ 	 pMode1->VSyncStart == pMode2->VSyncStart &&
+ 	 pMode1->VSyncEnd == pMode2->VSyncEnd &&
+ 	 pMode1->VTotal == pMode2->VTotal &&
+-	 pMode1->VScan == pMode2->VScan &&
+-	 pMode1->Flags == pMode2->Flags)
+-     {
++        pMode1->VScan == pMode2->VScan && pMode1->Flags == pMode2->Flags) {
+ 	return TRUE;
+-     } else {
++    }
++    else {
+ 	return FALSE;
+      }
+ }
+@@ -309,13 +309,16 @@ xf86PrintModeline(int scrnIndex, DisplayModePtr mode)
+ {
+     char tmp[256];
+     char *flags = xnfcalloc(1, 1);
++
+ #define TBITS 6
+     const char tchar[TBITS+1] = "UezdPb";
++
+     int tbit[TBITS] = {
+ 	M_T_USERPREF, M_T_DRIVER, M_T_USERDEF,
+ 	M_T_DEFAULT, M_T_PREFERRED, M_T_BUILTIN
+     };
+     char type[TBITS+2];   /* +1 for leading space */
++
+ #undef TBITS
+     int tlen = 0;
+ 
+@@ -337,18 +340,29 @@ xf86PrintModeline(int scrnIndex, DisplayModePtr mode)
+ 	snprintf(tmp, 256, "vscan %i", mode->VScan); 
+ 	add(&flags, tmp);
+     }
+-    if (mode->Flags & V_INTERLACE) add(&flags, "interlace");
+-    if (mode->Flags & V_CSYNC) add(&flags, "composite");
+-    if (mode->Flags & V_DBLSCAN) add(&flags, "doublescan");
+-    if (mode->Flags & V_BCAST) add(&flags, "bcast");
+-    if (mode->Flags & V_PHSYNC) add(&flags, "+hsync");
+-    if (mode->Flags & V_NHSYNC) add(&flags, "-hsync");
+-    if (mode->Flags & V_PVSYNC) add(&flags, "+vsync");
+-    if (mode->Flags & V_NVSYNC) add(&flags, "-vsync");
+-    if (mode->Flags & V_PCSYNC) add(&flags, "+csync");
+-    if (mode->Flags & V_NCSYNC) add(&flags, "-csync");
++    if (mode->Flags & V_INTERLACE)
++        add(&flags, "interlace");
++    if (mode->Flags & V_CSYNC)
++        add(&flags, "composite");
++    if (mode->Flags & V_DBLSCAN)
++        add(&flags, "doublescan");
++    if (mode->Flags & V_BCAST)
++        add(&flags, "bcast");
++    if (mode->Flags & V_PHSYNC)
++        add(&flags, "+hsync");
++    if (mode->Flags & V_NHSYNC)
++        add(&flags, "-hsync");
++    if (mode->Flags & V_PVSYNC)
++        add(&flags, "+vsync");
++    if (mode->Flags & V_NVSYNC)
++        add(&flags, "-vsync");
++    if (mode->Flags & V_PCSYNC)
++        add(&flags, "+csync");
++    if (mode->Flags & V_NCSYNC)
++        add(&flags, "-csync");
+ #if 0
+-    if (mode->Flags & V_CLKDIV2) add(&flags, "vclk/2");
++    if (mode->Flags & V_CLKDIV2)
++        add(&flags, "vclk/2");
+ #endif
+     xf86DrvMsg(scrnIndex, X_INFO,
+ 	       "Modeline \"%s\"x%.01f  %6.2f  %i %i %i %i  %i %i %i %i%s"
+@@ -369,8 +383,7 @@ xf86PrintModeline(int scrnIndex, DisplayModePtr mode)
+  * \bug only V_INTERLACE and V_DBLSCAN are supported.  Is that enough?
+  */
+ void
+-xf86ValidateModesFlags(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+-			    int flags)
++xf86ValidateModesFlags(ScrnInfoPtr pScrn, DisplayModePtr modeList, int flags)
+ {
+     DisplayModePtr mode;
+ 
+@@ -435,8 +448,7 @@ xf86ValidateModesSize(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+  * \param modeList doubly-linked list of modes.
+  */
+ void
+-xf86ValidateModesSync(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+-			  MonPtr mon)
++xf86ValidateModesSync(ScrnInfoPtr pScrn, DisplayModePtr modeList, MonPtr mon)
+ {
+     DisplayModePtr mode;
+ 
+@@ -446,9 +458,9 @@ xf86ValidateModesSync(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+ 
+ 	bad = TRUE;
+ 	for (i = 0; i < mon->nHsync; i++) {
+-	    if (xf86ModeHSync(mode) >= mon->hsync[i].lo * (1-SYNC_TOLERANCE) &&
+-		xf86ModeHSync(mode) <= mon->hsync[i].hi * (1+SYNC_TOLERANCE))
+-	    {
++            if (xf86ModeHSync(mode) >= mon->hsync[i].lo * (1 - SYNC_TOLERANCE)
++                && xf86ModeHSync(mode) <=
++                mon->hsync[i].hi * (1 + SYNC_TOLERANCE)) {
+ 		bad = FALSE;
+ 	    }
+ 	}
+@@ -457,9 +469,10 @@ xf86ValidateModesSync(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+ 
+ 	bad = TRUE;
+ 	for (i = 0; i < mon->nVrefresh; i++) {
+-	    if (xf86ModeVRefresh(mode) >= mon->vrefresh[i].lo * (1-SYNC_TOLERANCE) &&
+-		xf86ModeVRefresh(mode) <= mon->vrefresh[i].hi * (1+SYNC_TOLERANCE))
+-	    {
++            if (xf86ModeVRefresh(mode) >=
++                mon->vrefresh[i].lo * (1 - SYNC_TOLERANCE) &&
++                xf86ModeVRefresh(mode) <=
++                mon->vrefresh[i].hi * (1 + SYNC_TOLERANCE)) {
+ 		bad = FALSE;
+ 	    }
+ 	}
+@@ -488,6 +501,7 @@ xf86ValidateModesClocks(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+ 
+     for (mode = modeList; mode != NULL; mode = mode->next) {
+ 	Bool good = FALSE;
++
+ 	for (i = 0; i < n_ranges; i++) {
+ 	    if (mode->Clock >= min[i] * (1-SYNC_TOLERANCE) &&
+ 		mode->Clock <= max[i] * (1+SYNC_TOLERANCE)) {
+@@ -536,7 +550,6 @@ xf86ValidateModesUserConfig(ScrnInfoPtr pScrn, DisplayModePtr modeList)
+     }
+ }
+ 
+-
+ /**
+  * Marks as bad any modes exceeding the given bandwidth.
+  *
+@@ -600,6 +613,7 @@ xf86PruneInvalidModes(ScrnInfoPtr pScrn, DisplayModePtr *modeList,
+ 	if (mode->status != MODE_OK) {
+ 	    if (verbose) {
+ 		const char *type = "";
++
+ 		if (mode->type & M_T_BUILTIN)
+ 		    type = "built-in ";
+ 		else if (mode->type & M_T_DEFAULT)
+@@ -649,14 +663,12 @@ xf86GetConfigModes (XF86ConfModeLinePtr conf_mode)
+ {
+     DisplayModePtr  head = NULL, prev = NULL, mode;
+     
+-    for (; conf_mode; conf_mode = (XF86ConfModeLinePtr) conf_mode->list.next)
+-    {
++    for (; conf_mode; conf_mode = (XF86ConfModeLinePtr) conf_mode->list.next) {
+         mode = calloc(1, sizeof(DisplayModeRec));
+ 	if (!mode)
+ 	    continue;
+         mode->name       = xstrdup(conf_mode->ml_identifier);
+-	if (!mode->name)
+-	{
++        if (!mode->name) {
+ 	    free(mode);
+ 	    continue;
+ 	}
+@@ -701,16 +713,15 @@ xf86GetMonitorModes (ScrnInfoPtr pScrn, XF86ConfMonitorPtr conf_monitor)
+      * first we collect the mode lines from the UseModes directive
+      */
+     for (modes_link = conf_monitor->mon_modes_sect_lst; 
+-	 modes_link; 
+-	 modes_link = modes_link->list.next)
+-    {
++         modes_link; modes_link = modes_link->list.next) {
+ 	/* If this modes link hasn't been resolved, go look it up now */
+ 	if (!modes_link->ml_modes)
+ 	    modes_link->ml_modes = xf86findModes (modes_link->ml_modes_str, 
+ 						  xf86configptr->conf_modes_lst);
+ 	if (modes_link->ml_modes)
+ 	    modes = xf86ModesAdd (modes,
+-				  xf86GetConfigModes (modes_link->ml_modes->mon_modeline_lst));
++                                 xf86GetConfigModes(modes_link->ml_modes->
++                                                    mon_modeline_lst));
+     }
+ 
+     return xf86ModesAdd (modes,
+@@ -726,8 +737,7 @@ xf86GetDefaultModes (void)
+     DisplayModePtr  head = NULL, mode;
+     int		    i;
+ 
+-    for (i = 0; i < xf86NumDefaultModes; i++)
+-    {
++    for (i = 0; i < xf86NumDefaultModes; i++) {
+ 	const DisplayModeRec	*defMode = &xf86DefaultModes[i];
+ 	
+ 	mode = xf86DuplicateMode(defMode);

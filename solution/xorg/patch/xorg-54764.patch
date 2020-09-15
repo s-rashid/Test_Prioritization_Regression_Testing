@@ -1,0 +1,18 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 3117123..a843e03 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1757,6 +1757,13 @@ DeliverTouchEndEvent(DeviceIntPtr dev, TouchPointInfoPtr ti, InternalEvent *ev,
+         listener->type == LISTENER_POINTER_GRAB) {
+         rc = DeliverTouchEmulatedEvent(dev, ti, ev, listener, client, win,
+                                        grab, xi2mask);
++
++        if (ti->num_listeners > 1) {
++            ev->any.type = ET_TouchUpdate;
++            ev->device_event.flags |= TOUCH_PENDING_END;
++            ti->pending_finish = TRUE;
++        }
++
+         goto out;
+     }
+ 

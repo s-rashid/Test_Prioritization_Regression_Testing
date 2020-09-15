@@ -1,0 +1,58 @@
+diff --git a/hw/dmx/dmxvisual.c b/hw/dmx/dmxvisual.c
+index 7b8771f..23b9bdd 100644
+--- a/hw/dmx/dmxvisual.c
++++ b/hw/dmx/dmxvisual.c
+@@ -52,7 +52,8 @@ extern VisualID glxMatchVisualInConfigList(ScreenPtr pScreen,
+ 					   __GLXvisualConfig *configs,
+ 					   int nconfigs);
+ 
+-static Visual *dmxLookupGLXVisual(ScreenPtr pScreen, VisualPtr pVisual)
++static Visual *
++dmxLookupGLXVisual(ScreenPtr pScreen, VisualPtr pVisual)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     int            j;
+@@ -74,10 +75,12 @@ static Visual *dmxLookupGLXVisual(ScreenPtr pScreen, VisualPtr pVisual)
+ #endif
+ 
+ /** Return the visual that matched \a pVisual. */
+-Visual *dmxLookupVisual(ScreenPtr pScreen, VisualPtr pVisual)
++Visual *
++dmxLookupVisual(ScreenPtr pScreen, VisualPtr pVisual)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     int            i;
++
+ #ifdef GLXEXT
+     Visual        *retval;
+ #endif
+@@ -106,7 +109,8 @@ Visual *dmxLookupVisual(ScreenPtr pScreen, VisualPtr pVisual)
+ }
+ 
+ /** Return the visual that matched the \a vid. */
+-Visual *dmxLookupVisualFromID(ScreenPtr pScreen, VisualID vid)
++Visual *
++dmxLookupVisualFromID(ScreenPtr pScreen, VisualID vid)
+ {
+     Visual *visual;
+     int     i;
+@@ -117,7 +121,8 @@ Visual *dmxLookupVisualFromID(ScreenPtr pScreen, VisualID vid)
+     for (i = 0; i < pScreen->numVisuals; i++) {
+ 	if (pScreen->visuals[i].vid == vid) {
+ 	    visual = dmxLookupVisual(pScreen, &pScreen->visuals[i]);
+-	    if (visual) return visual;
++            if (visual)
++                return visual;
+ 	}
+     }
+ 
+@@ -125,7 +130,8 @@ Visual *dmxLookupVisualFromID(ScreenPtr pScreen, VisualID vid)
+ }
+ 
+ /** Return the colormap for the \a visual. */
+-Colormap dmxColormapFromDefaultVisual(ScreenPtr pScreen, Visual *visual)
++Colormap
++dmxColormapFromDefaultVisual(ScreenPtr pScreen, Visual * visual)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     int            i;

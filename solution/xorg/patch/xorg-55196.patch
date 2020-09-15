@@ -1,0 +1,220 @@
+diff --git a/glx/render2swap.c b/glx/render2swap.c
+index 17354c4..8b5d9da 100644
+--- a/glx/render2swap.c
++++ b/glx/render2swap.c
+@@ -41,13 +41,14 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-
+-void __glXDispSwap_Map1f(GLbyte *pc)
++void
++__glXDispSwap_Map1f(GLbyte * pc)
+ {
+     GLint order, k;
+     GLfloat u1, u2, *points;
+     GLenum target;
+     GLint compsize;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -66,7 +67,8 @@ void __glXDispSwap_Map1f(GLbyte *pc)
+     if (order <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = order * k;
+     }
+     __GLX_SWAP_FLOAT_ARRAY(points, compsize);
+@@ -74,12 +76,14 @@ void __glXDispSwap_Map1f(GLbyte *pc)
+     CALL_Map1f( GET_DISPATCH(), (target, u1, u2, k, order, points) );
+ }
+ 
+-void __glXDispSwap_Map2f(GLbyte *pc)
++void
++__glXDispSwap_Map2f(GLbyte * pc)
+ {
+     GLint uorder, vorder, ustride, vstride, k;
+     GLfloat u1, u2, v1, v2, *points;
+     GLenum target;
+     GLint compsize;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -107,19 +111,24 @@ void __glXDispSwap_Map2f(GLbyte *pc)
+     if (vorder <= 0 || uorder <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = uorder * vorder * k;
+     }
+     __GLX_SWAP_FLOAT_ARRAY(points, compsize);
+ 
+-    CALL_Map2f( GET_DISPATCH(), (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) );
++    CALL_Map2f(GET_DISPATCH(),
++               (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder,
++                points));
+ }
+ 
+-void __glXDispSwap_Map1d(GLbyte *pc)
++void
++__glXDispSwap_Map1d(GLbyte * pc)
+ {
+     GLint order, k, compsize;
+     GLenum target;
+     GLdouble u1, u2, *points;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -134,7 +143,8 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+     if (order <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = order * k;
+     }
+     __GLX_GET_DOUBLE(u1,pc);
+@@ -150,7 +160,8 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+@@ -159,11 +170,13 @@ void __glXDispSwap_Map1d(GLbyte *pc)
+     CALL_Map1d( GET_DISPATCH(), (target, u1, u2, k, order, points) );
+ }
+ 
+-void __glXDispSwap_Map2d(GLbyte *pc)
++void
++__glXDispSwap_Map2d(GLbyte * pc)
+ {
+     GLdouble u1, u2, v1, v2, *points;
+     GLint uorder, vorder, ustride, vstride, k, compsize;
+     GLenum target;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -182,7 +195,8 @@ void __glXDispSwap_Map2d(GLbyte *pc)
+     if (vorder <= 0 || uorder <= 0 || k < 0) {
+ 	/* Erroneous command. */
+ 	compsize = 0;
+-    } else {
++    }
++    else {
+ 	compsize = uorder * vorder * k;
+     }
+     __GLX_GET_DOUBLE(u1,pc);
+@@ -202,19 +216,24 @@ void __glXDispSwap_Map2d(GLbyte *pc)
+ 	*/
+ 	__GLX_MEM_COPY(pc-4, pc, compsize*8);
+ 	points = (GLdouble*) (pc - 4);
+-    } else {
++    }
++    else {
+ 	points = (GLdouble*) pc;
+     }
+ #else
+     points = (GLdouble*) pc;
+ #endif
+-    CALL_Map2d( GET_DISPATCH(), (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points) );
++    CALL_Map2d(GET_DISPATCH(),
++               (target, u1, u2, ustride, uorder, v1, v2, vstride, vorder,
++                points));
+ }
+ 
+-static void swapArray(GLint numVals, GLenum datatype,
++static void
++swapArray(GLint numVals, GLenum datatype,
+                       GLint stride, GLint numVertexes, GLbyte *pc)
+ {
+     int i,j;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     switch (datatype) {
+@@ -226,6 +245,7 @@ static void swapArray(GLint numVals, GLenum datatype,
+       case GL_UNSIGNED_SHORT:
+ 	for (i=0; i<numVertexes; i++) {
+ 	    GLshort *pVal = (GLshort *) pc;
++
+ 	    for (j=0; j<numVals; j++) {
+ 		__GLX_SWAP_SHORT(&pVal[j]);
+ 	    }
+@@ -236,6 +256,7 @@ static void swapArray(GLint numVals, GLenum datatype,
+       case GL_UNSIGNED_INT:
+ 	for (i=0; i<numVertexes; i++) {
+ 	    GLint *pVal = (GLint *) pc;
++
+ 	    for (j=0; j<numVals; j++) {
+ 		__GLX_SWAP_INT(&pVal[j]);
+ 	    }
+@@ -245,6 +266,7 @@ static void swapArray(GLint numVals, GLenum datatype,
+       case GL_FLOAT:
+ 	for (i=0; i<numVertexes; i++) {
+ 	    GLfloat *pVal = (GLfloat *) pc;
++
+ 	    for (j=0; j<numVals; j++) {
+ 		__GLX_SWAP_FLOAT(&pVal[j]);
+ 	    }
+@@ -254,6 +276,7 @@ static void swapArray(GLint numVals, GLenum datatype,
+       case GL_DOUBLE:
+ 	for (i=0; i<numVertexes; i++) {
+ 	    GLdouble *pVal = (GLdouble *) pc;
++
+ 	    for (j=0; j<numVals; j++) {
+ 		__GLX_SWAP_DOUBLE(&pVal[j]);
+ 	    }
+@@ -265,7 +288,8 @@ static void swapArray(GLint numVals, GLenum datatype,
+     }
+ }
+ 
+-void __glXDispSwap_DrawArrays(GLbyte *pc)
++void
++__glXDispSwap_DrawArrays(GLbyte * pc)
+ {
+     __GLXdispatchDrawArraysHeader *hdr = (__GLXdispatchDrawArraysHeader *)pc;
+     __GLXdispatchDrawArraysComponentHeader *compHeader;
+@@ -274,6 +298,7 @@ void __glXDispSwap_DrawArrays(GLbyte *pc)
+     GLenum primType = hdr->primType;
+     GLint stride = 0;
+     int i;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_INT(&numVertexes);
+@@ -329,15 +354,18 @@ void __glXDispSwap_DrawArrays(GLbyte *pc)
+             break;
+           case GL_TEXTURE_COORD_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_TEXTURE_COORD_ARRAY) );
+-	    CALL_TexCoordPointer( GET_DISPATCH(), (numVals, datatype, stride, pc) );
++            CALL_TexCoordPointer(GET_DISPATCH(),
++                                 (numVals, datatype, stride, pc));
+             break;
+           case GL_EDGE_FLAG_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_EDGE_FLAG_ARRAY) );
+-	    CALL_EdgeFlagPointer( GET_DISPATCH(), (stride, (const GLboolean *)pc) );
++            CALL_EdgeFlagPointer(GET_DISPATCH(),
++                                 (stride, (const GLboolean *) pc));
+             break;
+           case GL_SECONDARY_COLOR_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_SECONDARY_COLOR_ARRAY) );
+-	    CALL_SecondaryColorPointerEXT( GET_DISPATCH(), (numVals, datatype, stride, pc) );
++            CALL_SecondaryColorPointerEXT(GET_DISPATCH(),
++                                          (numVals, datatype, stride, pc));
+             break;
+           case GL_FOG_COORD_ARRAY:
+ 	    CALL_EnableClientState( GET_DISPATCH(), (GL_FOG_COORD_ARRAY) );

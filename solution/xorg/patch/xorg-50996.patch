@@ -1,0 +1,94 @@
+diff --git a/test/input.c b/test/input.c
+index 13a441e..4ccfaff 100644
+--- a/test/input.c
++++ b/test/input.c
+@@ -683,13 +683,7 @@ static void dix_grab_matching(void)
+     g_assert(rc == TRUE);
+ }
+ 
+-static void include_byte_padding_macros(void)
+-{
+-    int i;
+-    g_test_message("Testing bits_to_bytes()");
+-
+-    /* the macros don't provide overflow protection */
+-    for (i = 0; i < INT_MAX - 7; i++)
++static void test_bits_to_byte(int i)
+     {
+         int expected_bytes;
+         expected_bytes = (i + 7)/8;
+@@ -699,8 +693,7 @@ static void include_byte_padding_macros(void)
+         g_assert(expected_bytes == bits_to_bytes(i));
+     }
+ 
+-    g_test_message("Testing bytes_to_int32()");
+-    for (i = 0; i < INT_MAX - 3; i++)
++static void test_bytes_to_int32(int i)
+     {
+         int expected_4byte;
+         expected_4byte = (i + 3)/4;
+@@ -710,9 +703,7 @@ static void include_byte_padding_macros(void)
+         g_assert(expected_4byte == bytes_to_int32(i));
+     }
+ 
+-    g_test_message("Testing pad_to_int32");
+-
+-    for (i = 0; i < INT_MAX - 3; i++)
++static void test_pad_to_int32(int i)
+     {
+         int expected_bytes;
+         expected_bytes = ((i + 3)/4) * 4;
+@@ -721,7 +712,53 @@ static void include_byte_padding_macros(void)
+         g_assert(pad_to_int32(i) - i <= 3);
+         g_assert(expected_bytes == pad_to_int32(i));
+     }
++static void include_byte_padding_macros(void)
++{
++    g_test_message("Testing bits_to_bytes()");
++
++    /* the macros don't provide overflow protection */
++    test_bits_to_byte(0);
++    test_bits_to_byte(1);
++    test_bits_to_byte(2);
++    test_bits_to_byte(7);
++    test_bits_to_byte(8);
++    test_bits_to_byte(0xFF);
++    test_bits_to_byte(0x100);
++    test_bits_to_byte(INT_MAX - 9);
++    test_bits_to_byte(INT_MAX - 8);
++
++    g_test_message("Testing bytes_to_int32()");
++
++    test_bytes_to_int32(0);
++    test_bytes_to_int32(1);
++    test_bytes_to_int32(2);
++    test_bytes_to_int32(7);
++    test_bytes_to_int32(8);
++    test_bytes_to_int32(0xFF);
++    test_bytes_to_int32(0x100);
++    test_bytes_to_int32(0xFFFF);
++    test_bytes_to_int32(0x10000);
++    test_bytes_to_int32(0xFFFFFF);
++    test_bytes_to_int32(0x1000000);
++    test_bytes_to_int32(INT_MAX - 4);
++    test_bytes_to_int32(INT_MAX - 3);
++
++    g_test_message("Testing pad_to_int32");
+ 
++    test_pad_to_int32(0);
++    test_pad_to_int32(0);
++    test_pad_to_int32(1);
++    test_pad_to_int32(2);
++    test_pad_to_int32(7);
++    test_pad_to_int32(8);
++    test_pad_to_int32(0xFF);
++    test_pad_to_int32(0x100);
++    test_pad_to_int32(0xFFFF);
++    test_pad_to_int32(0x10000);
++    test_pad_to_int32(0xFFFFFF);
++    test_pad_to_int32(0x1000000);
++    test_pad_to_int32(INT_MAX - 4);
++    test_pad_to_int32(INT_MAX - 3);
+ }
+ 
+ static void xi_unregister_handlers(void)

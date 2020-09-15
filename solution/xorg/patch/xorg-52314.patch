@@ -1,0 +1,14 @@
+diff --git a/Xi/getselev.c b/Xi/getselev.c
+index 09a53f4..7304738 100644
+--- a/Xi/getselev.c
++++ b/Xi/getselev.c
+@@ -152,8 +152,8 @@ ProcXGetSelectedExtensionEvents(ClientPtr client)
+     if (total_length) {
+ 	client->pSwapReplyFunc = (ReplySwapPtr) Swap32Write;
+ 	WriteSwappedDataToClient(client, total_length, buf);
+-	free(buf);
+     }
++    free(buf);
+     return Success;
+ }
+ 

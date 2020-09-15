@@ -1,0 +1,12 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index cb37051..5fd595d 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -91,7 +91,6 @@ typedef struct _Client {
+     pointer     requestBuffer;
+     pointer     osPrivate;	/* for OS layer, including scheduler */
+     char        swapped;
+-    char        local;
+     char        big_requests;
+     char        closeDownMode;
+     char        clientGone;

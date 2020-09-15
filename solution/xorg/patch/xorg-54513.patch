@@ -1,0 +1,12 @@
+diff --git a/dix/grabs.c b/dix/grabs.c
+index 701470c..cc2c946 100644
+--- a/dix/grabs.c
++++ b/dix/grabs.c
+@@ -195,6 +195,7 @@ UngrabAllDevices(Bool kill_client)
+         client = clients[CLIENT_ID(dev->deviceGrab.grab->resource)];
+         if (!client || client->clientGone)
+             dev->deviceGrab.DeactivateGrab(dev);
++        if (kill_client)
+         CloseDownClient(client);
+     }
+ 

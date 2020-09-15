@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86xvpriv.h b/hw/xfree86/common/xf86xvpriv.h
+index c667926..4572218 100644
+--- a/hw/xfree86/common/xf86xvpriv.h
++++ b/hw/xfree86/common/xf86xvpriv.h
+@@ -72,7 +72,6 @@ typedef struct {
+    Bool FreeCompositeClip;
+    XvAdaptorRecPrivatePtr AdaptorRec;
+    XvStatus isOn;
+-   Bool moved;
+    int vid_x, vid_y, vid_w, vid_h;
+    int drw_x, drw_y, drw_w, drw_h;
+    DevUnion DevPriv;

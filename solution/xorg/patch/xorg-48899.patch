@@ -1,0 +1,17 @@
+diff --git a/hw/xnest/Window.c b/hw/xnest/Window.c
+index 48c870f..11d5369 100644
+--- a/hw/xnest/Window.c
++++ b/hw/xnest/Window.c
+@@ -423,10 +423,10 @@ xnestWindowExposures(WindowPtr pWin, RegionPtr pRgn, RegionPtr other_exposed)
+ }
+ 
+ void
+-xnestSetShape(WindowPtr pWin)
++xnestSetShape(WindowPtr pWin, int kind)
+ {
+   xnestShapeWindow(pWin);
+-  miSetShape(pWin);
++  miSetShape(pWin, kind);
+ }
+ 
+ static Bool

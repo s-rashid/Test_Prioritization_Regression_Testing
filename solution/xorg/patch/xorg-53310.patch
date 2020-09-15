@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index d22fdc8..83d5cae 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -1348,7 +1348,7 @@ xf86InitValuatorAxisStruct(DeviceIntPtr dev, int axnum, Atom label, int minval,
+ }
+ 
+ /*
+- * Set the valuator values to be in synch with dix/event.c
++ * Set the valuator values to be in sync with dix/event.c
+  * DefineInitialRootWindow().
+  */
+ void

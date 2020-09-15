@@ -1,0 +1,17 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 549c5ca..635afea 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -786,10 +786,10 @@ static void SDeviceHierarchyEvent(xXIHierarchyEvent *from,
+     swaps(&to->deviceid, n);
+     swapl(&to->time, n);
+     swapl(&to->flags, n);
+-    swaps(&to->num_devices, n);
++    swaps(&to->num_info, n);
+ 
+     info = (xXIHierarchyInfo*)&to[1];
+-    for (i = 0; i< from->num_devices; i++)
++    for (i = 0; i< from->num_info; i++)
+     {
+         swaps(&info->deviceid, n);
+         swaps(&info->attachment, n);

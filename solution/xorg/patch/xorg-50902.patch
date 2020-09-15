@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index a9744e1..7602128 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -2565,7 +2565,7 @@ int __glXClientInfo(__GLXclientState *cl, GLbyte *pc)
+    
+     cl->GLClientmajorVersion = req->major;
+     cl->GLClientminorVersion = req->minor;
+-    if (cl->GLClientextensions) free(cl->GLClientextensions);
++    free(cl->GLClientextensions);
+     buf = (const char *)(req+1);
+     cl->GLClientextensions = strdup(buf);
+ 

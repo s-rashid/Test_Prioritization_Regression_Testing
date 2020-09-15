@@ -1,0 +1,26 @@
+diff --git a/hw/xquartz/darwinXinput.c b/hw/xquartz/darwinXinput.c
+index 94c31bb..4d6604e 100644
+--- a/hw/xquartz/darwinXinput.c
++++ b/hw/xquartz/darwinXinput.c
+@@ -112,15 +112,13 @@ SetDeviceValuators(ClientPtr client, DeviceIntPtr dev,
+  */
+ 
+ int
+-ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
+-		    xDeviceCtl * control)
++ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev, xDeviceCtl * control)
+ {
+ 
+   DEBUG_LOG("ChangeDeviceControl(%p, %p, %p)\n", client, dev, control);
+   return BadMatch;
+ }
+ 
+-
+ /****************************************************************************
+  *
+  * Caller: configAddDevice (and others)
+@@ -148,4 +146,3 @@ DeleteInputDeviceRequest(DeviceIntPtr dev)
+ {
+   DEBUG_LOG("DeleteInputDeviceRequest(%p)\n", dev);
+ }
+-

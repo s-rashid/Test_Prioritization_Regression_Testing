@@ -1,0 +1,25 @@
+diff --git a/randr/rrcrtc.c b/randr/rrcrtc.c
+index 14f6e45..98206a2 100644
+--- a/randr/rrcrtc.c
++++ b/randr/rrcrtc.c
+@@ -631,10 +631,19 @@ RRCrtcInit (void)
+     RRCrtcType = CreateNewResourceType (RRCrtcDestroyResource, "CRTC");
+     if (!RRCrtcType)
+ 	return FALSE;
+-    SetResourceTypeErrorValue(RRCrtcType, RRErrorBase + BadRRCrtc);
++    
+     return TRUE;
+ }
+ 
++/*
++ * Initialize crtc type error value
++ */
++void
++RRCrtcInitErrorValue(void)
++{
++    SetResourceTypeErrorValue(RRCrtcType, RRErrorBase + BadRRCrtc);
++}
++
+ int
+ ProcRRGetCrtcInfo (ClientPtr client)
+ {

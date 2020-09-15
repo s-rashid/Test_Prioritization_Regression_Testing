@@ -1,0 +1,13 @@
+diff --git a/Xi/getdctl.c b/Xi/getdctl.c
+index abb4f99..68181fa 100644
+--- a/Xi/getdctl.c
++++ b/Xi/getdctl.c
+@@ -306,7 +306,7 @@ ProcXGetDeviceControl(ClientPtr client)
+ 	break;
+     }
+ 
+-    rep.length = (total_length + 3) >> 2;
++    rep.length = bytes_to_int32(total_length);
+     WriteReplyToClient(client, sizeof(xGetDeviceControlReply), &rep);
+     WriteToClient(client, total_length, savbuf);
+     xfree(savbuf);

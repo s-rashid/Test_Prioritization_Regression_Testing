@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/parser/xf86tokens.h b/hw/xfree86/parser/xf86tokens.h
+index a985606..f751b7b 100644
+--- a/hw/xfree86/parser/xf86tokens.h
++++ b/hw/xfree86/parser/xf86tokens.h
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif

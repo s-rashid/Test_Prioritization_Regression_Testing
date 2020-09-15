@@ -1,0 +1,208 @@
+diff --git a/fb/fbpixmap.c b/fb/fbpixmap.c
+index a356c67..fbcdca9 100644
+--- a/fb/fbpixmap.c
++++ b/fb/fbpixmap.c
+@@ -69,7 +69,8 @@ fbCreatePixmapBpp (ScreenPtr pScreen, int width, int height, int depth, int bpp,
+     pPixmap->devPrivate.ptr = (pointer) ((char *)pPixmap + base + adjust);
+ 
+ #ifdef FB_DEBUG
+-    pPixmap->devPrivate.ptr = (void *) ((char *) pPixmap->devPrivate.ptr + paddedWidth);
++    pPixmap->devPrivate.ptr =
++        (void *) ((char *) pPixmap->devPrivate.ptr + paddedWidth);
+     fbInitializeDrawable (&pPixmap->drawable);
+ #endif
+ 
+@@ -88,6 +89,7 @@ fbCreatePixmap (ScreenPtr pScreen, int width, int height, int depth,
+ 		unsigned usage_hint)
+ {
+     int	bpp;
++
+     bpp = BitsPerPixel (depth);
+     if (bpp == 32 && depth <= 24)
+ 	bpp = fbGetScreenPrivate(pScreen)->pix32bpp;
+@@ -166,15 +168,13 @@ fbPixmapToRegion(PixmapPtr pPix)
+     pReg->extents.x1 = width - 1;
+     pReg->extents.x2 = 0;
+     irectPrevStart = -1;
+-    for(h = 0; h < pPix->drawable.height; h++)
+-    {
++    for (h = 0; h < pPix->drawable.height; h++) {
+ 	pw = pwLine;
+ 	pwLine += nWidth;
+ 	irectLineStart = rects - FirstRect;
+ 	/* If the Screen left most bit of the word is set, we're starting in
+ 	 * a box */
+-	if(READ(pw) & mask0)
+-	{
++        if (READ(pw) & mask0) {
+ 	    fInBox = TRUE;
+ 	    rx1 = 0;
+ 	}
+@@ -182,36 +182,28 @@ fbPixmapToRegion(PixmapPtr pPix)
+ 	    fInBox = FALSE;
+ 	/* Process all words which are fully in the pixmap */
+ 	pwLineEnd = pw + (width >> FB_SHIFT);
+-	for (base = 0; pw < pwLineEnd; base += FB_UNIT)
+-	{
++        for (base = 0; pw < pwLineEnd; base += FB_UNIT) {
+ 	    w = READ(pw++);
+-	    if (fInBox)
+-	    {
++            if (fInBox) {
+ 		if (!~w)
+ 		    continue;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		if (!w)
+ 		    continue;
+ 	    }
+-	    for(ib = 0; ib < FB_UNIT; ib++)
+-	    {
++            for (ib = 0; ib < FB_UNIT; ib++) {
+ 	        /* If the Screen left most bit of the word is set, we're
+ 		 * starting a box */
+-		if(w & mask0)
+-		{
+-		    if(!fInBox)
+-		    {
++                if (w & mask0) {
++                    if (!fInBox) {
+ 			rx1 = base + ib;
+ 			/* start new box */
+ 			fInBox = TRUE;
+ 		    }
+ 		}
+-		else
+-		{
+-		    if(fInBox)
+-		    {
++                else {
++                    if (fInBox) {
+ 			/* end box */
+ 			ADDRECT(pReg, rects, FirstRect,
+ 				rx1, h, base + ib, h + 1);
+@@ -222,27 +214,21 @@ fbPixmapToRegion(PixmapPtr pPix)
+ 		w = FbScrLeft(w, 1);
+ 	    }
+ 	}
+-	if(width & FB_MASK)
+-	{
++        if (width & FB_MASK) {
+ 	    /* Process final partial word on line */
+ 	    w = READ(pw++);
+-	    for(ib = 0; ib < (width & FB_MASK); ib++)
+-	    {
++            for (ib = 0; ib < (width & FB_MASK); ib++) {
+ 	        /* If the Screen left most bit of the word is set, we're
+ 		 * starting a box */
+-		if(w & mask0)
+-		{
+-		    if(!fInBox)
+-		    {
++                if (w & mask0) {
++                    if (!fInBox) {
+ 			rx1 = base + ib;
+ 			/* start new box */
+ 			fInBox = TRUE;
+ 		    }
+ 		}
+-		else
+-		{
+-		    if(fInBox)
+-		    {
++                else {
++                    if (fInBox) {
+ 			/* end box */
+ 			ADDRECT(pReg, rects, FirstRect,
+ 				rx1, h, base + ib, h + 1);
+@@ -254,8 +240,7 @@ fbPixmapToRegion(PixmapPtr pPix)
+ 	    }
+ 	}
+ 	/* If scanline ended with last bit set, end the box */
+-	if(fInBox)
+-	{
++        if (fInBox) {
+ 	    ADDRECT(pReg, rects, FirstRect,
+ 		    rx1, h, base + (width & FB_MASK), h + 1);
+ 	}
+@@ -264,29 +249,24 @@ fbPixmapToRegion(PixmapPtr pPix)
+ 	 * throw away all the rectangles from this line 
+ 	 */
+ 	fSame = FALSE;
+-	if(irectPrevStart != -1)
+-	{
++        if (irectPrevStart != -1) {
+ 	    crects = irectLineStart - irectPrevStart;
+-	    if(crects == ((rects - FirstRect) - irectLineStart))
+-	    {
++            if (crects == ((rects - FirstRect) - irectLineStart)) {
+ 	        prectO = FirstRect + irectPrevStart;
+ 	        prectN = prectLineStart = FirstRect + irectLineStart;
+ 		fSame = TRUE;
+-	        while(prectO < prectLineStart)
+-		{
+-		    if((prectO->x1 != prectN->x1) || (prectO->x2 != prectN->x2))
+-		    {
++                while (prectO < prectLineStart) {
++                    if ((prectO->x1 != prectN->x1) ||
++                        (prectO->x2 != prectN->x2)) {
+ 			  fSame = FALSE;
+ 			  break;
+ 		    }
+ 		    prectO++;
+ 		    prectN++;
+ 		}
+-		if (fSame)
+-		{
++                if (fSame) {
+ 		    prectO = FirstRect + irectPrevStart;
+-		    while(prectO < prectLineStart)
+-		    {
++                    while (prectO < prectLineStart) {
+ 			prectO->y2 += 1;
+ 			prectO++;
+ 		    }
+@@ -300,12 +280,10 @@ fbPixmapToRegion(PixmapPtr pPix)
+     }
+     if (!pReg->data->numRects)
+ 	pReg->extents.x1 = pReg->extents.x2 = 0;
+-    else
+-    {
++    else {
+ 	pReg->extents.y1 = RegionBoxptr(pReg)->y1;
+ 	pReg->extents.y2 = RegionEnd(pReg)->y2;
+-	if (pReg->data->numRects == 1)
+-	{
++        if (pReg->data->numRects == 1) {
+ 	    free(pReg->data);
+ 	    pReg->data = (RegDataPtr)NULL;
+ 	}
+@@ -314,7 +292,8 @@ fbPixmapToRegion(PixmapPtr pPix)
+     fbFinishAccess(&pPix->drawable);
+ #ifdef DEBUG
+     if (!RegionIsValid(pReg))
+-	FatalError("Assertion failed file %s, line %d: expr\n", __FILE__, __LINE__);
++        FatalError("Assertion failed file %s, line %d: expr\n", __FILE__,
++                   __LINE__);
+ #endif
+     return pReg;
+ }
+@@ -330,12 +309,11 @@ fbPixmapToRegion(PixmapPtr pPix)
+ static Bool
+ fbValidateBits (FbStip *bits, int stride, FbStip data)
+ {
+-    while (stride--)
+-    {
+-	if (*bits != data)
+-	{
++    while (stride--) {
++        if (*bits != data) {
+ #ifdef WIN32
+-	    NCD_DEBUG ((DEBUG_FAILURE, "fdValidateBits failed at 0x%x (is 0x%x want 0x%x)",
++            NCD_DEBUG((DEBUG_FAILURE,
++                       "fdValidateBits failed at 0x%x (is 0x%x want 0x%x)",
+ 			bits, *bits, data));
+ #else
+ 	    fprintf (stderr, "fbValidateBits failed\n");

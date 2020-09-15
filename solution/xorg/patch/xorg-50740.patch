@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winshaddd.c b/hw/xwin/winshaddd.c
+index 5752730..2de496c 100644
+--- a/hw/xwin/winshaddd.c
++++ b/hw/xwin/winshaddd.c
+@@ -55,7 +55,7 @@ extern const char *g_pszLogFile;
+ 
+ 
+ /*
+- * FIXME: Headers are broken, IID_IDirectDraw4 has to be defined
++ * FIXME: Headers are broken, IID_IDirectDraw2 has to be defined
+  * here manually.  Should be handled by ddraw.h
+  */
+ #ifndef IID_IDirectDraw2

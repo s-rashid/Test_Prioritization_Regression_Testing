@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winwin32rootless.c b/hw/xwin/winwin32rootless.c
+index fbe4191..75142f1 100644
+--- a/hw/xwin/winwin32rootless.c
++++ b/hw/xwin/winwin32rootless.c
+@@ -41,7 +41,6 @@
+ #include <X11/extensions/windowswmstr.h>
+ #include "dixevents.h"
+ #include "winmultiwindowclass.h"
+-#include "winprefs.h"
+ #include <X11/Xatom.h>
+ 
+ 

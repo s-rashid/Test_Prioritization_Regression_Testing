@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxpixmap.h b/hw/dmx/dmxpixmap.h
+index 59da788..30bb666 100644
+--- a/hw/dmx/dmxpixmap.h
++++ b/hw/dmx/dmxpixmap.h
+@@ -45,7 +45,6 @@ typedef struct _dmxPixPriv {
+     XImage  *detachedImage;
+ } dmxPixPrivRec, *dmxPixPrivPtr;
+ 
+-
+ extern Bool      dmxInitPixmap(ScreenPtr pScreen);
+ 
+ extern PixmapPtr dmxCreatePixmap(ScreenPtr pScreen,

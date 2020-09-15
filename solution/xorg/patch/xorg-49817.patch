@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/GL/indirect.c b/hw/xquartz/GL/indirect.c
+index f769ff2..3e8d730 100644
+--- a/hw/xquartz/GL/indirect.c
++++ b/hw/xquartz/GL/indirect.c
+@@ -595,8 +595,8 @@ static __GLXscreen * __glXAquaScreenProbe(ScreenPtr pScreen) {
+ 
+     __glXScreenInit(&screen->base, pScreen);
+ 
+-    screen->base.GLXversion = xstrdup("1.4");
+-    screen->base.GLXextensions = xstrdup("GLX_SGIX_fbconfig "
++    screen->base.GLXversion = strdup("1.4");
++    screen->base.GLXextensions = strdup("GLX_SGIX_fbconfig "
+ 					 "GLX_SGIS_multisample "
+ 					 "GLX_ARB_multisample "
+ 					 "GLX_EXT_visual_info "

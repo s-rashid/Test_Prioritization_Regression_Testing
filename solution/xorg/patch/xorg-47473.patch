@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/fake/fake.c b/hw/kdrive/fake/fake.c
+index ea88f0e..a4044b6 100644
+--- a/hw/kdrive/fake/fake.c
++++ b/hw/kdrive/fake/fake.c
+@@ -171,9 +171,6 @@ fakeMapFramebuffer (KdScreenInfo *screen)
+     if (priv->base)
+ 	free (priv->base);
+     priv->base = malloc (priv->bytes_per_line * screen->height);
+-    screen->memory_base = (CARD8 *) (priv->base);
+-    screen->memory_size = 0;
+-    screen->off_screen_base = 0;
+     
+     if (scrpriv->shadow)
+     {

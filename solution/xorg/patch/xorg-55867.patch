@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winmsg.h b/hw/xwin/winmsg.h
+index 611dd69..ec285ba 100644
+--- a/hw/xwin/winmsg.h
++++ b/hw/xwin/winmsg.h
+@@ -45,6 +45,7 @@ void winTrace (const char *format, ...);
+ void winErrorFVerb (int verb, const char *format, ...);
+ void winW32Error(int verb, const char *message);
+ void winW32ErrorEx(int verb, const char *message, DWORD errorcode);
+-void winDebugWin32Message(const char* function, HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
++void winDebugWin32Message(const char *function, HWND hwnd, UINT message,
++                          WPARAM wParam, LPARAM lParam);
+ 
+ #endif

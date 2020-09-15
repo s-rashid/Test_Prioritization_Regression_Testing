@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/linux/evdev.c b/hw/kdrive/linux/evdev.c
+index 485a2b5..0e4c9f7 100644
+--- a/hw/kdrive/linux/evdev.c
++++ b/hw/kdrive/linux/evdev.c
+@@ -362,7 +362,7 @@ readMapping (KdKeyboardInfo *ki)
+         return;
+ 
+     ki->minScanCode = 0;
+-    ki->maxScanCode = 193;
++    ki->maxScanCode = 247;
+ }
+ 
+ static void

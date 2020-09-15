@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index 185995d..9865e6f 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -111,9 +111,6 @@ typedef struct _KdScreenInfo {
+     int		mynum;
+     DDXPointRec	origin;
+     KdFrameBuffer   fb[KD_MAX_FB];
+-    CARD8	*memory_base;
+-    unsigned long   memory_size;
+-    unsigned long   off_screen_base;
+ } KdScreenInfo;
+ 
+ typedef struct _KdCardFuncs {

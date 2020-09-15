@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86EdidModes.c b/hw/xfree86/modes/xf86EdidModes.c
+index ec65408..8f4d04f 100644
+--- a/hw/xfree86/modes/xf86EdidModes.c
++++ b/hw/xfree86/modes/xf86EdidModes.c
+@@ -608,7 +608,7 @@ DDCModeFromDetailedTiming(int scrnIndex, struct detailed_timings *timing,
+ 
+     /* perform basic check on the detail timing */
+     if (Mode->HSyncEnd > Mode->HTotal || Mode->VSyncEnd > Mode->VTotal) {
+-	xfree(Mode);
++	free(Mode);
+ 	return NULL;
+     }
+ 

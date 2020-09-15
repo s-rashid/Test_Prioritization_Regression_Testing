@@ -1,0 +1,19 @@
+diff --git a/hw/xfree86/modes/xf86Modes.c b/hw/xfree86/modes/xf86Modes.c
+index d105b48..ae6d956 100644
+--- a/hw/xfree86/modes/xf86Modes.c
++++ b/hw/xfree86/modes/xf86Modes.c
+@@ -136,10 +136,12 @@ xf86ModeBandwidth(DisplayModePtr mode, int depth)
+ void
+ xf86SetModeDefaultName(DisplayModePtr mode)
+ {
+-    if (mode->name != NULL)
++    Bool interlaced = !!(mode->Flags & V_INTERLACE);
++
+ 	xfree(mode->name);
+ 
+-    mode->name = XNFprintf("%dx%d", mode->HDisplay, mode->VDisplay);
++    mode->name = XNFprintf("%dx%d%s", mode->HDisplay, mode->VDisplay,
++			   interlaced ? "i" : "");
+ }
+ 
+ /*

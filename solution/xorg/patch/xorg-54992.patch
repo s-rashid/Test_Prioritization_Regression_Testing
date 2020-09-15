@@ -1,0 +1,61 @@
+diff --git a/Xi/listdev.c b/Xi/listdev.c
+index 1b3081d..a02112f 100644
+--- a/Xi/listdev.c
++++ b/Xi/listdev.c
+@@ -68,7 +68,6 @@ SOFTWARE.
+ 
+ #include "listdev.h"
+ 
+-
+ /***********************************************************************
+  *
+  * This procedure lists the input devices available to the server.
+@@ -128,7 +127,8 @@ CopyDeviceName(char **namebuf, char *name)
+ 	*nameptr++ = strlen(name);
+ 	strcpy(nameptr, name);
+ 	*namebuf += (strlen(name) + 1);
+-    } else {
++    }
++    else {
+ 	*nameptr++ = 0;
+ 	*namebuf += 1;
+     }
+@@ -162,8 +162,7 @@ CopySwapButtonClass(ClientPtr client, ButtonClassPtr b, char **buf)
+  */
+ 
+ static void
+-CopySwapDevice(ClientPtr client, DeviceIntPtr d, int num_classes,
+-	       char **buf)
++CopySwapDevice(ClientPtr client, DeviceIntPtr d, int num_classes, char **buf)
+ {
+     xDeviceInfoPtr dev;
+ 
+@@ -280,8 +279,7 @@ CopySwapClasses(ClientPtr client, DeviceIntPtr dev, CARD8 *num_classes,
+ 	(*num_classes)++;
+     }
+     if (dev->valuator != NULL) {
+-	(*num_classes) +=
+-	    CopySwapValuatorClass(client, dev, classbuf);
++        (*num_classes) += CopySwapValuatorClass(client, dev, classbuf);
+     }
+ }
+ 
+@@ -310,16 +308,15 @@ static Bool
+ ShouldSkipDevice(ClientPtr client, DeviceIntPtr d)
+ {
+     /* don't send master devices other than VCP/VCK */
+-    if (!IsMaster(d) || d == inputInfo.pointer || d == inputInfo.keyboard)
+-    {
++    if (!IsMaster(d) || d == inputInfo.pointer ||d == inputInfo.keyboard) {
+         int rc = XaceHook(XACE_DEVICE_ACCESS, client, d, DixGetAttrAccess);
++
+         if (rc == Success)
+             return FALSE;
+     }
+     return TRUE;
+ }
+ 
+-
+ /***********************************************************************
+  *
+  * This procedure lists the input devices available to the server.

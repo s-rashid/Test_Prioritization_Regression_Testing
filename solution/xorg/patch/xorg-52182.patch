@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index e3264e6..2bac33a 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -775,6 +775,8 @@ xf86NewInputDevice(InputInfoPtr pInfo, DeviceIntPtr *pdev, BOOL enable)
+         goto unwind;
+     }
+ 
++    xf86Msg(X_INFO, "Using input driver '%s' for '%s'\n", drv->driverName, pInfo->name);
++
+     if (!drv->PreInit) {
+         xf86Msg(X_ERROR,
+                 "Input driver `%s' has no PreInit function (ignoring)\n",

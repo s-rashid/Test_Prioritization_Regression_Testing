@@ -1,0 +1,14 @@
+diff --git a/dix/property.c b/dix/property.c
+index 1d4332a..a1ae530 100644
+--- a/dix/property.c
++++ b/dix/property.c
+@@ -424,6 +424,9 @@ DeleteAllWindowProperties(WindowPtr pWin)
+ 	dixFreeObjectWithPrivates(pProp, PRIVATE_PROPERTY);
+ 	pProp = pNextProp;
+     }
++
++    if (pWin->optional)
++        pWin->optional->userProps = NULL;
+ }
+ 
+ static int

@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxscrinit.h b/hw/dmx/dmxscrinit.h
+index a464235..9c9fbc5 100644
+--- a/hw/dmx/dmxscrinit.h
++++ b/hw/dmx/dmxscrinit.h
+@@ -40,9 +40,6 @@
+ 
+ #include "scrnintstr.h"
+ 
+-/** Private index.  \see dmxscrrinit.c \see input/dmxconcole.c */
+-extern DevPrivateKey dmxScreenPrivateKey;
+-
+ extern Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[]);
+ 
+ extern void dmxBEScreenInit(int idx, ScreenPtr pScreen);

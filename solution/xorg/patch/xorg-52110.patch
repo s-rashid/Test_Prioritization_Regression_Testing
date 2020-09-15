@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 3f40fdb..606645f 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -1069,7 +1069,7 @@ winSetEngineFunctionsPrimaryDD (ScreenPtr pScreen);
+ 
+ PixmapPtr
+ winCreatePixmapNativeGDI (ScreenPtr pScreen, int width, int height, int depth,
+-			  unsigned usage_hint);
++			  unsigned class);
+ 
+ Bool
+ winDestroyPixmapNativeGDI (PixmapPtr pPixmap);

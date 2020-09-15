@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Globals.c b/hw/xfree86/common/xf86Globals.c
+index 16d5557..f2e88c2 100644
+--- a/hw/xfree86/common/xf86Globals.c
++++ b/hw/xfree86/common/xf86Globals.c
+@@ -103,6 +103,8 @@ xf86InfoRec xf86Info = {
+     .vtPendingNum               = -1,
+ #endif
+     .dontVTSwitch               = FALSE,
++    .autoVTSwitch               = TRUE,
++    .ShareVTs                   = FALSE,
+     .dontZap                    = FALSE,
+     .dontZoom                   = FALSE,
+     .notrapSignals              = FALSE,

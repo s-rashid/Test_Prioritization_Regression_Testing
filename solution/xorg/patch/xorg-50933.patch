@@ -1,0 +1,20 @@
+diff --git a/os/log.c b/os/log.c
+index ee4b45f..7d10783 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -489,7 +489,6 @@ AuditFlush(OsTimerPtr timer, CARD32 now, pointer arg)
+ 	ErrorF("%slast message repeated %d times\n",
+ 	       prefix != NULL ? prefix : "", nrepeat);
+ 	nrepeat = 0;
+-	if (prefix != NULL)
+ 	    free(prefix);
+ 	return AUDIT_TIMEOUT;
+     } else {
+@@ -523,7 +522,6 @@ VAuditF(const char *f, va_list args)
+ 	nrepeat = 0;
+ 	auditTimer = TimerSet(auditTimer, 0, AUDIT_TIMEOUT, AuditFlush, NULL);
+     }
+-    if (prefix != NULL)
+ 	free(prefix);
+ }
+ 

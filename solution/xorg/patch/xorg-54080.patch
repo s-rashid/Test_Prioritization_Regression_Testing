@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 9c0b34f..968ebb1 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -2146,12 +2146,6 @@ KdCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
+ static void
+ KdCrossScreen(ScreenPtr pScreen, Bool entering)
+ {
+-#ifndef XIPAQ
+-    if (entering)
+-	KdEnableScreen (pScreen);
+-    else
+-	KdDisableScreen (pScreen);
+-#endif
+ }
+ 
+ int KdCurScreen;	/* current event screen */

@@ -1,0 +1,446 @@
+diff --git a/Xext/shape.c b/Xext/shape.c
+index cb2a0e0..cc5214a 100644
+--- a/Xext/shape.c
++++ b/Xext/shape.c
+@@ -47,20 +47,16 @@ in this Software without prior written authorization from The Open Group.
+ #include "modinit.h"
+ #include "protocol-versions.h"
+ 
+-typedef	RegionPtr (*CreateDftPtr)(
+-	WindowPtr /* pWin */
++typedef RegionPtr (*CreateDftPtr) (WindowPtr    /* pWin */
+ 	);
+ 
+-static int ShapeFreeClient(
+-	pointer /* data */,
++static int ShapeFreeClient(pointer /* data */ ,
+ 	XID /* id */
+ 	);
+-static int ShapeFreeEvents(
+-	pointer /* data */,
++static int ShapeFreeEvents(pointer /* data */ ,
+ 	XID /* id */
+ 	);
+-static void SShapeNotifyEvent(
+-	xShapeNotifyEvent * /* from */,
++static void SShapeNotifyEvent(xShapeNotifyEvent * /* from */ ,
+ 	xShapeNotifyEvent * /* to */
+ 	);
+ 
+@@ -68,7 +64,6 @@ static void SShapeNotifyEvent(
+  * externally by the Xfixes extension and are now defined in window.h
+  */
+ 
+-
+ #ifdef PANORAMIX
+ #include "panoramiX.h"
+ #include "panoramiXsrv.h"
+@@ -103,20 +98,15 @@ typedef struct _ShapeEvent {
+  ****************/
+ 
+ static int
+-RegionOperate (
+-	ClientPtr client,
++RegionOperate(ClientPtr client,
+ 	WindowPtr pWin,
+ 	int kind,
+ 	RegionPtr *destRgnp,
+-	RegionPtr srcRgn,
+-	int op,
+-	int xoff, int yoff,
+-	CreateDftPtr create)
++              RegionPtr srcRgn, int op, int xoff, int yoff, CreateDftPtr create)
+ {
+     if (srcRgn && (xoff || yoff))
+ 	RegionTranslate(srcRgn, xoff, yoff);
+-    if (!pWin->parent)
+-    {
++    if (!pWin->parent) {
+ 	if (srcRgn)
+ 	    RegionDestroy(srcRgn);
+ 	return Success;
+@@ -145,7 +135,8 @@ RegionOperate (
+ 	return Success;
+       }
+     }
+-    else switch (op) {
++    else
++        switch (op) {
+     case ShapeSet:
+ 	if (*destRgnp)
+ 	    RegionDestroy(*destRgnp);
+@@ -214,6 +205,7 @@ static int
+ ProcShapeQueryVersion (ClientPtr client)
+ {
+     xShapeQueryVersionReply	rep;
++
+     REQUEST_SIZE_MATCH (xShapeQueryVersionReq);
+     memset(&rep, 0, sizeof(xShapeQueryVersionReply));
+     rep.type = X_Reply;
+@@ -240,6 +232,7 @@ static int
+ ProcShapeRectangles (ClientPtr client)
+ {
+     WindowPtr		pWin;
++
+     REQUEST(xShapeRectanglesReq);
+     xRectangle		*prects;
+     int		        nrects, ctype, rc;
+@@ -267,8 +260,7 @@ ProcShapeRectangles (ClientPtr client)
+ 	return BadValue;
+     }
+     if ((stuff->ordering != Unsorted) && (stuff->ordering != YSorted) &&
+-	(stuff->ordering != YXSorted) && (stuff->ordering != YXBanded))
+-    {
++        (stuff->ordering != YXSorted) && (stuff->ordering != YXBanded)) {
+ 	client->errorValue = stuff->ordering;
+         return BadValue;
+     }
+@@ -305,8 +297,7 @@ ProcShapeRectangles (ClientPtr client)
+ 
+ #ifdef PANORAMIX
+ static int
+-ProcPanoramiXShapeRectangles(
+-    ClientPtr client)
++ProcPanoramiXShapeRectangles(ClientPtr client)
+ {
+     REQUEST(xShapeRectanglesReq);
+     PanoramiXRes	*win;
+@@ -322,23 +313,23 @@ ProcPanoramiXShapeRectangles(
+     FOR_NSCREENS(j) {
+ 	stuff->dest = win->info[j].id;
+ 	result = ProcShapeRectangles (client);
+-	if (result != Success) break;
++        if (result != Success)
++            break;
+     }
+     return result;
+ }
+ #endif
+ 
+-
+ /**************
+  * ProcShapeMask
+  **************/
+ 
+-
+ static int
+ ProcShapeMask (ClientPtr client)
+ {
+     WindowPtr		pWin;
+     ScreenPtr		pScreen;
++
+     REQUEST(xShapeMaskReq);
+     RegionPtr		srcRgn;
+     RegionPtr		*destRgn;
+@@ -369,8 +360,8 @@ ProcShapeMask (ClientPtr client)
+     if (stuff->src == None)
+ 	srcRgn = 0;
+     else {
+-	rc = dixLookupResourceByType((pointer *)&pPixmap, stuff->src, RT_PIXMAP,
+-			       client, DixReadAccess);
++        rc = dixLookupResourceByType((pointer *) &pPixmap, stuff->src,
++                                     RT_PIXMAP, client, DixReadAccess);
+         if (rc != Success)
+ 	    return rc;
+ 	if (pPixmap->drawable.pScreen != pScreen ||
+@@ -404,8 +395,7 @@ ProcShapeMask (ClientPtr client)
+ 
+ #ifdef PANORAMIX
+ static int
+-ProcPanoramiXShapeMask(
+-    ClientPtr client)
++ProcPanoramiXShapeMask(ClientPtr client)
+ {
+     REQUEST(xShapeMaskReq);
+     PanoramiXRes	*win, *pmap;
+@@ -423,7 +413,8 @@ ProcPanoramiXShapeMask(
+ 					 XRT_PIXMAP, client, DixReadAccess);
+ 	if (result != Success)
+ 	    return result;
+-    } else
++    }
++    else
+ 	pmap = NULL;
+ 
+     FOR_NSCREENS(j) {
+@@ -431,13 +422,13 @@ ProcPanoramiXShapeMask(
+ 	if(pmap)
+ 	    stuff->src  = pmap->info[j].id;
+ 	result = ProcShapeMask (client);
+-	if (result != Success) break;
++        if (result != Success)
++            break;
+     }
+     return result;
+ }
+ #endif
+ 
+-
+ /************
+  * ProcShapeCombine
+  ************/
+@@ -446,6 +437,7 @@ static int
+ ProcShapeCombine (ClientPtr client)
+ {
+     WindowPtr		pSrcWin, pDestWin;
++
+     REQUEST(xShapeCombineReq);
+     RegionPtr		srcRgn;
+     RegionPtr		*destRgn;
+@@ -496,8 +488,7 @@ ProcShapeCombine (ClientPtr client)
+ 	client->errorValue = stuff->srcKind;
+ 	return BadValue;
+     }
+-    if (pSrcWin->drawable.pScreen != pDestWin->drawable.pScreen)
+-    {
++    if (pSrcWin->drawable.pScreen != pDestWin->drawable.pScreen) {
+ 	return BadMatch;
+     }
+ 
+@@ -505,7 +496,8 @@ ProcShapeCombine (ClientPtr client)
+         tmp = RegionCreate((BoxPtr) 0, 0);
+         RegionCopy(tmp, srcRgn);
+         srcRgn = tmp;
+-    } else
++    }
++    else
+ 	srcRgn = (*createSrc) (pSrcWin);
+ 
+     if (!pDestWin->optional)
+@@ -529,11 +521,9 @@ ProcShapeCombine (ClientPtr client)
+ 			  stuff->xOff, stuff->yOff, createDefault);
+ }
+ 
+-
+ #ifdef PANORAMIX
+ static int
+-ProcPanoramiXShapeCombine(
+-    ClientPtr client)
++ProcPanoramiXShapeCombine(ClientPtr client)
+ {
+     REQUEST(xShapeCombineReq);
+     PanoramiXRes	*win, *win2;
+@@ -555,7 +545,8 @@ ProcPanoramiXShapeCombine(
+ 	stuff->dest = win->info[j].id;
+ 	stuff->src =  win2->info[j].id;
+ 	result = ProcShapeCombine (client);
+-	if (result != Success) break;
++        if (result != Success)
++            break;
+     }
+     return result;
+ }
+@@ -569,6 +560,7 @@ static int
+ ProcShapeOffset (ClientPtr client)
+ {
+     WindowPtr		pWin;
++
+     REQUEST(xShapeOffsetReq);
+     RegionPtr		srcRgn;
+     int			rc;
+@@ -592,8 +584,7 @@ ProcShapeOffset (ClientPtr client)
+ 	client->errorValue = stuff->destKind;
+ 	return BadValue;
+     }
+-    if (srcRgn)
+-    {
++    if (srcRgn) {
+         RegionTranslate(srcRgn, stuff->xOff, stuff->yOff);
+         (*pWin->drawable.pScreen->SetShape) (pWin, stuff->destKind);
+     }
+@@ -601,11 +592,9 @@ ProcShapeOffset (ClientPtr client)
+     return Success;
+ }
+ 
+-
+ #ifdef PANORAMIX
+ static int
+-ProcPanoramiXShapeOffset(
+-    ClientPtr client)
++ProcPanoramiXShapeOffset(ClientPtr client)
+ {
+     REQUEST(xShapeOffsetReq);
+     PanoramiXRes *win;
+@@ -621,13 +610,13 @@ ProcPanoramiXShapeOffset(
+     FOR_NSCREENS(j) {
+ 	stuff->dest = win->info[j].id;
+ 	result = ProcShapeOffset (client);
+-	if(result != Success) break;
++        if (result != Success)
++            break;
+     }
+     return result;
+ }
+ #endif
+ 
+-
+ static int
+ ProcShapeQueryExtents (ClientPtr client)
+ {
+@@ -652,7 +641,8 @@ ProcShapeQueryExtents (ClientPtr client)
+      /* this is done in two steps because of a compiler bug on SunOS 4.1.3 */
+ 	pExtents = RegionExtents(region);
+ 	extents = *pExtents;
+-    } else {
++    }
++    else {
+ 	extents.x1 = -wBorderWidth (pWin);
+ 	extents.y1 = -wBorderWidth (pWin);
+ 	extents.x2 = pWin->drawable.width + wBorderWidth (pWin);
+@@ -666,7 +656,8 @@ ProcShapeQueryExtents (ClientPtr client)
+      /* this is done in two steps because of a compiler bug on SunOS 4.1.3 */
+ 	pExtents = RegionExtents(region);
+ 	extents = *pExtents;
+-    } else {
++    }
++    else {
+ 	extents.x1 = 0;
+ 	extents.y1 = 0;
+ 	extents.x2 = pWin->drawable.width;
+@@ -692,8 +683,7 @@ ProcShapeQueryExtents (ClientPtr client)
+     return Success;
+ }
+ 
+-/*ARGSUSED*/
+-static int
++ /*ARGSUSED*/ static int
+ ShapeFreeClient (pointer data, XID id)
+ {
+     ShapeEventPtr   pShapeEvent;
+@@ -709,8 +699,7 @@ ShapeFreeClient (pointer data, XID id)
+ 	pPrev = 0;
+ 	for (pCur = *pHead; pCur && pCur != pShapeEvent; pCur=pCur->next)
+ 	    pPrev = pCur;
+-	if (pCur)
+-	{
++        if (pCur) {
+ 	    if (pPrev)
+ 	    	pPrev->next = pShapeEvent->next;
+ 	    else
+@@ -721,8 +710,7 @@ ShapeFreeClient (pointer data, XID id)
+     return 1;
+ }
+ 
+-/*ARGSUSED*/
+-static int
++ /*ARGSUSED*/ static int
+ ShapeFreeEvents (pointer data, XID id)
+ {
+     ShapeEventPtr   *pHead, pCur, pNext;
+@@ -761,9 +749,7 @@ ProcShapeSelectInput (ClientPtr client)
+ 
+ 	    /* check for existing entry. */
+ 	    for (pShapeEvent = *pHead;
+-		 pShapeEvent;
+- 		 pShapeEvent = pShapeEvent->next)
+-	    {
++                 pShapeEvent; pShapeEvent = pShapeEvent->next) {
+ 		if (pShapeEvent->client == client)
+ 		    return Success;
+ 	    }
+@@ -790,12 +776,11 @@ ProcShapeSelectInput (ClientPtr client)
+      	 * the list may be arbitrarily rearranged which cannot be
+      	 * done through the resource database.
+      	 */
+-    	if (!pHead)
+-    	{
++        if (!pHead) {
+ 	    pHead = malloc(sizeof (ShapeEventPtr));
+ 	    if (!pHead ||
+-		!AddResource (pWin->drawable.id, ShapeEventType, (pointer)pHead))
+-	    {
++                !AddResource(pWin->drawable.id, ShapeEventType,
++                             (pointer) pHead)) {
+ 	    	FreeResource (clientResource, RT_NONE);
+ 	    	return BadAlloc;
+ 	    }
+@@ -808,7 +793,8 @@ ProcShapeSelectInput (ClientPtr client)
+ 	/* delete the interest */
+ 	if (pHead) {
+ 	    pNewShapeEvent = 0;
+-	    for (pShapeEvent = *pHead; pShapeEvent; pShapeEvent = pShapeEvent->next) {
++            for (pShapeEvent = *pHead; pShapeEvent;
++                 pShapeEvent = pShapeEvent->next) {
+ 		if (pShapeEvent->client == client)
+ 		    break;
+ 		pNewShapeEvent = pShapeEvent;
+@@ -854,7 +840,8 @@ SendShapeNotify (WindowPtr pWin, int which)
+ 	if (region) {
+ 	    extents = *RegionExtents(region);
+ 	    shaped = xTrue;
+-	} else {
++        }
++        else {
+ 	    extents.x1 = -wBorderWidth (pWin);
+ 	    extents.y1 = -wBorderWidth (pWin);
+ 	    extents.x2 = pWin->drawable.width + wBorderWidth (pWin);
+@@ -867,7 +854,8 @@ SendShapeNotify (WindowPtr pWin, int which)
+ 	if (region) {
+ 	    extents = *RegionExtents(region);
+ 	    shaped = xTrue;
+-	} else {
++        }
++        else {
+ 	    extents.x1 = 0;
+ 	    extents.y1 = 0;
+ 	    extents.x2 = pWin->drawable.width;
+@@ -880,7 +868,8 @@ SendShapeNotify (WindowPtr pWin, int which)
+ 	if (region) {
+ 	    extents = *RegionExtents(region);
+ 	    shaped = xTrue;
+-	} else {
++        }
++        else {
+ 	    extents.x1 = -wBorderWidth (pWin);
+ 	    extents.y1 = -wBorderWidth (pWin);
+ 	    extents.x2 = pWin->drawable.width + wBorderWidth (pWin);
+@@ -913,6 +902,7 @@ ProcShapeInputSelected (ClientPtr client)
+     ShapeEventPtr	pShapeEvent, *pHead;
+     int			enabled, rc;
+     xShapeInputSelectedReply	rep;
++
+     REQUEST_SIZE_MATCH (xShapeInputSelectedReq);
+     rc = dixLookupWindow(&pWin, stuff->window, client, DixGetAttrAccess);
+     if (rc != Success)
+@@ -923,10 +913,7 @@ ProcShapeInputSelected (ClientPtr client)
+ 	return rc;
+     enabled = xFalse;
+     if (pHead) {
+-    	for (pShapeEvent = *pHead;
+-	     pShapeEvent;
+-	     pShapeEvent = pShapeEvent->next)
+-    	{
++        for (pShapeEvent = *pHead; pShapeEvent; pShapeEvent = pShapeEvent->next) {
+ 	    if (pShapeEvent->client == client) {
+ 	    	enabled = xTrue;
+ 		break;
+@@ -954,6 +941,7 @@ ProcShapeGetRectangles (ClientPtr client)
+     xRectangle			*rects;
+     int				nrects, i, rc;
+     RegionPtr			region;
++
+     REQUEST_SIZE_MATCH(xShapeGetRectanglesReq);
+     rc = dixLookupWindow(&pWin, stuff->window, client, DixGetAttrAccess);
+     if (rc != Success)
+@@ -997,8 +985,10 @@ ProcShapeGetRectangles (ClientPtr client)
+ 	    rects->height = pWin->drawable.height + wBorderWidth (pWin);
+ 	    break;
+ 	}
+-    } else {
++    }
++    else {
+ 	BoxPtr box;
++
+ 	nrects = RegionNumRects(region);
+ 	box = RegionRects(region);
+ 	rects = malloc(nrects * sizeof (xRectangle));
+@@ -1236,8 +1226,7 @@ ShapeExtensionInit(void)
+     if (ClientType && ShapeEventType &&
+ 	(extEntry = AddExtension(SHAPENAME, ShapeNumberEvents, 0,
+ 				 ProcShapeDispatch, SProcShapeDispatch,
+-				 NULL, StandardMinorOpcode)))
+-    {
++                                 NULL, StandardMinorOpcode))) {
+ 	ShapeEventBase = extEntry->eventBase;
+ 	EventSwapVector[ShapeEventBase] = (EventSwapPtr) SShapeNotifyEvent;
+     }

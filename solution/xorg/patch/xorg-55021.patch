@@ -1,0 +1,45 @@
+diff --git a/Xi/xichangecursor.c b/Xi/xichangecursor.c
+index 48f51f3..0be6bc0 100644
+--- a/Xi/xichangecursor.c
++++ b/Xi/xichangecursor.c
+@@ -65,7 +65,8 @@ SProcXIChangeCursor(ClientPtr client)
+     return (ProcXIChangeCursor(client));
+ }
+ 
+-int ProcXIChangeCursor(ClientPtr client)
++int
++ProcXIChangeCursor(ClientPtr client)
+ {
+     int rc;
+     WindowPtr pWin    = NULL;
+@@ -82,22 +83,19 @@ int ProcXIChangeCursor(ClientPtr client)
+     if (!IsMaster(pDev) || !IsPointerDevice(pDev))
+         return BadDevice;
+ 
+-    if (stuff->win != None)
+-    {
++    if (stuff->win != None) {
+         rc = dixLookupWindow(&pWin, stuff->win, client, DixSetAttrAccess);
+         if (rc != Success)
+             return rc;
+     }
+ 
+-    if (stuff->cursor == None)
+-    {
++    if (stuff->cursor == None) {
+         if (pWin == pWin->drawable.pScreen->root)
+             pCursor = rootCursor;
+         else
+             pCursor = (CursorPtr)None;
+     }
+-    else
+-    {
++    else {
+ 	rc = dixLookupResourceByType((pointer *)&pCursor, stuff->cursor,
+ 				     RT_CURSOR, client, DixUseAccess);
+ 	if (rc != Success)
+@@ -108,4 +106,3 @@ int ProcXIChangeCursor(ClientPtr client)
+ 
+     return Success;
+ }
+-

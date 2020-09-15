@@ -1,0 +1,17 @@
+diff --git a/Xi/warpdevp.c b/Xi/warpdevp.c
+index 025a4ce..bb45bda 100644
+--- a/Xi/warpdevp.c
++++ b/Xi/warpdevp.c
+@@ -76,6 +76,12 @@ ProcXIWarpPointer(ClientPtr client)
+     REQUEST(xXIWarpPointerReq);
+     REQUEST_SIZE_MATCH(xXIWarpPointerReq);
+ 
++    if (stuff->deviceid > 0xFF) /* FIXME */
++    {
++        client->errorValue = stuff->deviceid;
++        return BadImplementation;
++    }
++
+     /* FIXME: panoramix stuff is missing, look at ProcWarpPointer */
+ 
+     rc = dixLookupDevice(&pDev, stuff->deviceid, client, DixWriteAccess);

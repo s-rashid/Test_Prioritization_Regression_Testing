@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index 3ca9814..2ab535a 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -387,9 +387,6 @@ KdStoreColors (ColormapPtr pCmap, int ndef, xColorItem *pdefs);
+ extern miPointerScreenFuncRec kdPointerScreenFuncs;
+ 
+ void
+-KdSetRootClip (ScreenPtr pScreen, BOOL enable);
+-
+-void
+ KdDisableScreen (ScreenPtr pScreen);
+ 
+ void

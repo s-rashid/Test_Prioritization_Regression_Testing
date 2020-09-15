@@ -1,0 +1,21 @@
+diff --git a/hw/xwin/glx/wgl_ext_api.c b/hw/xwin/glx/wgl_ext_api.c
+index 1020916..78b6e2a 100644
+--- a/hw/xwin/glx/wgl_ext_api.c
++++ b/hw/xwin/glx/wgl_ext_api.c
+@@ -43,14 +43,11 @@
+     static type type##proc = NULL;
+ 
+ #define PRERESOLVE(type, symbol) \
+-    type##proc = (type)wglGetProcAddress(symbol); \
+-    if (type##proc == NULL) \
+-        ErrorF("wglwrap: Can't resolve \"%s\"\n", symbol); \
+-    else \
+-        ErrorF("wglwrap: Resolved \"%s\"\n", symbol);
++    type##proc = (type)wglGetProcAddress(symbol);
+ 
+ #define RESOLVE_RET(type, symbol, retval) \
+   if (type##proc == NULL) { \
++    ErrorF("wglwrap: Can't resolve \"%s\"\n", symbol); \
+   __glXErrorCallBack(0); \
+   return retval; \
+       }

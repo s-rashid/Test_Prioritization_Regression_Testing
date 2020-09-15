@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Globals.c b/hw/xfree86/common/xf86Globals.c
+index 317b78a..8b483f3 100644
+--- a/hw/xfree86/common/xf86Globals.c
++++ b/hw/xfree86/common/xf86Globals.c
+@@ -132,7 +132,7 @@ xf86InfoRec xf86Info = {
+     .kbdCustomKeycodes          = FALSE,
+     .disableRandR               = FALSE,
+     .randRFrom                  = X_DEFAULT,
+-#ifdef CONFIG_HAL
++#if defined(CONFIG_HAL) || defined(CONFIG_UDEV)
+     .allowEmptyInput            = TRUE,
+     .autoAddDevices             = TRUE,
+     .autoEnableDevices          = TRUE

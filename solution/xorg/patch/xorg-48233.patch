@@ -1,0 +1,36 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index 1471a58..2aba0ce 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -1054,11 +1054,15 @@ createInvisibleCursor (void)
+     cm.xhot = 0;
+     cm.yhot = 0;
+ 
+-    AllocARGBCursor(psrcbits, pmaskbits,
++    if (AllocARGBCursor(psrcbits, pmaskbits,
+ 		NULL, &cm,
+ 		0, 0, 0,
+ 		0, 0, 0,
+-		&pCursor, serverClient, (XID)0);
++			&pCursor, serverClient, (XID)0) != Success)
++	return NullCursor;
++
++    if (!AddResource(FakeClientID(0), RT_CURSOR, (pointer) pCursor))
++	return NullCursor;
+ 
+     return pCursor;
+ }
+@@ -1091,12 +1095,9 @@ XFixesCursorInit (void)
+     CursorWindowType = CreateNewResourceType(CursorFreeWindow,
+ 					     "XFixesCursorWindow");
+ 
+-    if (pInvisibleCursor == NULL) {
+ 	pInvisibleCursor = createInvisibleCursor();
+-	if (pInvisibleCursor == NULL) {
++    if (pInvisibleCursor == NULL)
+ 	    return BadAlloc;
+-	}
+-    }
+ 
+     return CursorClientType && CursorHideCountType && CursorWindowType;
+ }

@@ -1,0 +1,24 @@
+diff --git a/hw/xnest/Args.c b/hw/xnest/Args.c
+index cdc8311..21faf2e 100644
+--- a/hw/xnest/Args.c
++++ b/hw/xnest/Args.c
+@@ -129,7 +129,8 @@ ddxProcessArgument (int argc, char *argv[], int i)
+       xnestUserGeometry = XParseGeometry(argv[i],
+ 					 &xnestX, &xnestY,
+ 					 &xnestWidth, &xnestHeight);
+-      if (xnestUserGeometry) return 2;
++            if (xnestUserGeometry)
++                return 2;
+     }
+     return 0;
+   }
+@@ -174,7 +175,8 @@ ddxProcessArgument (int argc, char *argv[], int i)
+   return 0;
+ }
+ 
+-void ddxUseMsg(void)
++void
++ddxUseMsg(void)
+ {
+   ErrorF("-display string        display name of the real server\n");
+   ErrorF("-sync                  sinchronize with the real server\n");

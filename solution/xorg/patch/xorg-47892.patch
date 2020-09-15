@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/os-support/shared/posix_tty.c b/hw/xfree86/os-support/shared/posix_tty.c
+index bf1bb03..4ba8599 100644
+--- a/hw/xfree86/os-support/shared/posix_tty.c
++++ b/hw/xfree86/os-support/shared/posix_tty.c
+@@ -137,19 +137,9 @@ xf86OpenSerial (pointer options)
+ 
+ 	if (!isatty (fd))
+ 	{
+-#if 1
+ 		/* Allow non-tty devices to be opened. */
+ 		xfree(dev);
+ 		return (fd);
+-#else
+-		xf86Msg (X_WARNING,
+-			 "xf86OpenSerial: Specified device %s is not a tty\n",
+-			 dev);
+-		SYSCALL (close (fd));
+-		errno = EINVAL;
+-		xfree(dev);
+-		return (-1);
+-#endif
+ 	}
+ 
+ 	/* set up default port parameters */

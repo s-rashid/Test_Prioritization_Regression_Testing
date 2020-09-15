@@ -1,0 +1,92 @@
+diff --git a/include/xkbstr.h b/include/xkbstr.h
+index 4afe010..935330c 100644
+--- a/include/xkbstr.h
++++ b/include/xkbstr.h
+@@ -70,6 +70,7 @@ typedef struct _XkbStateRec {
+ 
+ 	unsigned short  ptr_buttons; /* core pointer buttons */
+ } XkbStateRec,*XkbStatePtr;
++
+ #define	XkbStateFieldFromRec(s)	XkbBuildCoreState((s)->lookup_mods,(s)->group)
+ #define	XkbGrabStateFromRec(s)	XkbBuildCoreState((s)->grab_mods,(s)->group)
+ 
+@@ -127,6 +128,7 @@ typedef struct _XkbModAction {
+ 	unsigned char	vmods1;
+ 	unsigned char	vmods2;
+ } XkbModAction;
++
+ #define	XkbModActionVMods(a) ((short) (((a)->vmods1 << 8) | (a)->vmods2))
+ #define	XkbSetModActionVMods(a,v) \
+ 	((a)->vmods1 = (((v) >> 8) & 0xff), \
+@@ -138,6 +140,7 @@ typedef struct _XkbGroupAction {
+         /* FIXME: Make this an int. */
+ 	char		group_XXX;
+ } XkbGroupAction;
++
+ #define	XkbSAGroup(a)		(XkbCharToInt((a)->group_XXX))
+ #define	XkbSASetGroup(a,g)	((a)->group_XXX=(g))
+ 
+@@ -162,6 +165,7 @@ typedef struct _XkbPtrAction {
+ 	unsigned char	high_YYY;
+ 	unsigned char	low_YYY;
+ } XkbPtrAction;
++
+ #define	XkbPtrActionX(a)      (Xkb2CharsToInt((a)->high_XXX,(a)->low_XXX))
+ #define	XkbPtrActionY(a)      (Xkb2CharsToInt((a)->high_YYY,(a)->low_YYY))
+ #define	XkbSetPtrActionX(a,x) (XkbIntTo2Chars(x,(a)->high_XXX,(a)->low_XXX))
+@@ -180,6 +184,7 @@ typedef struct _XkbPtrDfltAction {
+ 	unsigned char	affect;
+ 	char		valueXXX;
+ } XkbPtrDfltAction;
++
+ #define	XkbSAPtrDfltValue(a)		(XkbCharToInt((a)->valueXXX))
+ #define	XkbSASetPtrDfltValue(a, c) ((a)->valueXXX = (c) & 0xff)
+ 
+@@ -188,6 +193,7 @@ typedef struct _XkbSwitchScreenAction {
+ 	unsigned char	flags;
+ 	char		screenXXX;
+ } XkbSwitchScreenAction;
++
+ #define	XkbSAScreen(a)			(XkbCharToInt((a)->screenXXX))
+ #define	XkbSASetScreen(a, s) ((a)->screenXXX = (s) & 0xff)
+ 
+@@ -200,6 +206,7 @@ typedef struct _XkbCtrlsAction {
+ 	unsigned char	ctrls1;
+ 	unsigned char	ctrls0;
+ } XkbCtrlsAction;
++
+ #define	XkbActionSetCtrls(a, c) ((a)->ctrls3 = ((c) >> 24) & 0xff, \
+                                  (a)->ctrls2 = ((c) >> 16) & 0xff, \
+                                  (a)->ctrls1 = ((c) >> 8) & 0xff, \
+@@ -395,7 +402,6 @@ typedef struct _XkbIndicatorMapRec {
+ #define	XkbIM_InUse(i)	((i)->flags || (i)->which_groups || (i)->which_mods || \
+                          (i)->ctrls)
+ 	
+-
+ typedef struct _XkbIndicatorRec {
+ 	unsigned long	  	phys_indicators;
+ 	XkbIndicatorMapRec	maps[XkbNumIndicators];
+@@ -433,6 +439,7 @@ typedef struct _XkbNamesRec {
+ } XkbNamesRec,*XkbNamesPtr;
+ 
+ typedef	struct _XkbGeometry	*XkbGeometryPtr;
++
+ 	/*
+ 	 * Tie it all together into one big keyboard description
+ 	 */
+@@ -451,6 +458,7 @@ typedef	struct _XkbDesc {
+ 	XkbCompatMapPtr		compat;
+ 	XkbGeometryPtr		geom;
+ } XkbDescRec, *XkbDescPtr;
++
+ #define	XkbKeyKeyTypeIndex(d, k, g)	(XkbCMKeyTypeIndex((d)->map, (k), (g)))
+ #define	XkbKeyKeyType(d, k, g)		(XkbCMKeyType((d)->map, (k), (g)))
+ #define	XkbKeyGroupWidth(d, k, g)	(XkbCMKeyGroupWidth((d)->map, (k), (g)))
+@@ -477,7 +485,6 @@ typedef	struct _XkbDesc {
+ 				 (k) <= (d)->max_key_code)
+ #define	XkbNumKeys(d)		((d)->max_key_code-(d)->min_key_code+1)
+ 
+-
+ 	/*
+ 	 * The following structures can be used to track changes
+ 	 * to a keyboard device

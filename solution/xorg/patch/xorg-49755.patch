@@ -1,0 +1,12 @@
+diff --git a/config/dbus.c b/config/dbus.c
+index 4888f62..b67fddb 100644
+--- a/config/dbus.c
++++ b/config/dbus.c
+@@ -27,7 +27,6 @@
+ #include <dix-config.h>
+ #endif
+ 
+-#define DBUS_API_SUBJECT_TO_CHANGE
+ #include <dbus/dbus.h>
+ #include <string.h>
+ 

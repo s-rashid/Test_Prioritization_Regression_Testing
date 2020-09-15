@@ -1,0 +1,15 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 9f1507e..422bae0 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -846,10 +846,6 @@ extern _X_EXPORT XkbGeometryPtr XkbLookupNamedGeometry(
+ 	Bool *			/* shouldFree */
+ );
+ 
+-extern _X_EXPORT char *	_XkbDupString(
+-	const char *		/* str */
+-);
+-
+ extern _X_EXPORT void	XkbConvertCase(
+ 	KeySym 			/* sym */,
+ 	KeySym *		/* lower */,

@@ -1,0 +1,13 @@
+diff --git a/mi/micmap.c b/mi/micmap.c
+index 3effe6c..8d76f4d 100644
+--- a/mi/micmap.c
++++ b/mi/micmap.c
+@@ -47,7 +47,7 @@ miListInstalledColormaps(ScreenPtr pScreen, Colormap *pmaps)
+ {
+     if (GetInstalledmiColormap(pScreen)) {
+ 	*pmaps = GetInstalledmiColormap(pScreen)->mid;
+-	return (1);
++	return 1;
+     }
+     return 0;
+ }

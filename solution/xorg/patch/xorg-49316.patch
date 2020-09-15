@@ -1,0 +1,13 @@
+diff --git a/dix/dixutils.c b/dix/dixutils.c
+index 51dbd14..cb1c97c 100644
+--- a/dix/dixutils.c
++++ b/dix/dixutils.c
+@@ -893,7 +893,7 @@ InitCallbackManager(void)
+     {
+ 	DeleteCallbackList(listsToCleanup[i]);
+     }
+-    if (listsToCleanup) free(listsToCleanup);
++    free(listsToCleanup);
+ 
+     numCallbackListsToCleanup = 0;
+     listsToCleanup = NULL;

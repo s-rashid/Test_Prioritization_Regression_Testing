@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 111f16f..9827661 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -99,7 +99,7 @@
+ 		return;								\
+ 	}
+ 
+-EventListPtr xf86Events = NULL;
++InternalEvent* xf86Events = NULL;
+ 
+ static int
+ xf86InputDevicePostInit(DeviceIntPtr dev);

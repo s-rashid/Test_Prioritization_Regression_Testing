@@ -1,0 +1,30 @@
+diff --git a/composite/compinit.c b/composite/compinit.c
+index 1b2cd8f..5db9f02 100644
+--- a/composite/compinit.c
++++ b/composite/compinit.c
+@@ -66,6 +66,9 @@ compCloseScreen (int index, ScreenPtr pScreen)
+     pScreen->ChangeWindowAttributes = cs->ChangeWindowAttributes;
+     pScreen->ReparentWindow = cs->ReparentWindow;
+     pScreen->ConfigNotify = cs->ConfigNotify;
++    pScreen->MoveWindow = cs->MoveWindow;
++    pScreen->ResizeWindow = cs->ResizeWindow;
++    pScreen->ChangeBorderWidth = cs->ChangeBorderWidth;
+     
+     pScreen->ClipNotify = cs->ClipNotify;
+     pScreen->UnrealizeWindow = cs->UnrealizeWindow;
+@@ -366,6 +369,15 @@ compScreenInit (ScreenPtr pScreen)
+     cs->ConfigNotify = pScreen->ConfigNotify;
+     pScreen->ConfigNotify = compConfigNotify;
+ 
++    cs->MoveWindow = pScreen->MoveWindow;
++    pScreen->MoveWindow = compMoveWindow;
++
++    cs->ResizeWindow = pScreen->ResizeWindow;
++    pScreen->ResizeWindow = compResizeWindow;
++
++    cs->ChangeBorderWidth = pScreen->ChangeBorderWidth;
++    pScreen->ChangeBorderWidth = compChangeBorderWidth;
++
+     cs->ReparentWindow = pScreen->ReparentWindow;
+     pScreen->ReparentWindow = compReparentWindow;
+ 

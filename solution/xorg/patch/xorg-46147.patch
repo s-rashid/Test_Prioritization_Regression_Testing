@@ -1,0 +1,21 @@
+diff --git a/Xi/xiallowev.h b/Xi/xiallowev.h
+index 97a0f25..3a417b9 100644
+--- a/Xi/xiallowev.h
++++ b/Xi/xiallowev.h
+@@ -23,10 +23,14 @@
+  * Author: Peter Hutterer
+  */
+ 
++#ifdef HAVE_DIX_CONFIG_H
++#include <dix-config.h>
++#endif
++
+ #ifndef XIALLOWEV_H
+-#define XIALLOWEV_H
++#define XIALLOWEV_H 1
+ 
+ int ProcXIAllowEvents(ClientPtr client);
+ int SProcXIAllowEvents(ClientPtr client);
+ 
+-#endif
++#endif /* XIALLOWEV_H */

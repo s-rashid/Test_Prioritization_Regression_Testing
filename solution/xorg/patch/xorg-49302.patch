@@ -1,0 +1,24 @@
+diff --git a/render/picture.c b/render/picture.c
+index f6e3a9e..f55711d 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1300,8 +1300,7 @@ SetPictureClipRects (PicturePtr	pPicture,
+     RegionPtr		clientClip;
+     int			result;
+ 
+-    clientClip = RegionFromRects(
+-				 nRect, rects, CT_UNSORTED);
++    clientClip = RegionFromRects(nRect, rects, CT_UNSORTED);
+     if (!clientClip)
+ 	return BadAlloc;
+     result =(*ps->ChangePictureClip) (pPicture, CT_REGION, 
+@@ -1331,8 +1330,7 @@ SetPictureClipRegion (PicturePtr    pPicture,
+     if (pRegion)
+     {
+         type = CT_REGION;
+-        clientClip = RegionCreate(
+-                                    RegionExtents(pRegion),
++        clientClip = RegionCreate(RegionExtents(pRegion),
+                                     RegionNumRects(pRegion));
+         if (!clientClip)
+             return BadAlloc;

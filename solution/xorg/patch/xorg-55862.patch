@@ -1,0 +1,40 @@
+diff --git a/hw/xwin/winmonitors.c b/hw/xwin/winmonitors.c
+index 967ae6d..26e20b7 100644
+--- a/hw/xwin/winmonitors.c
++++ b/hw/xwin/winmonitors.c
+@@ -27,7 +27,6 @@ from The Open Group.
+ 
+ */
+ 
+-
+ #include "win.h"
+ #include "winmonitors.h"
+ 
+@@ -36,13 +35,14 @@ from The Open Group.
+  */
+ 
+ static
+-wBOOL CALLBACK getMonitorInfo(HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM _data)
++    wBOOL CALLBACK
++getMonitorInfo(HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM _data)
+ {
+   struct GetMonitorInfoData* data = (struct GetMonitorInfoData*)_data;
++
+   // only get data for monitor number specified in <data>
+   data->monitorNum++;
+-  if (data->monitorNum == data->requestedMonitor)
+-  {
++    if (data->monitorNum == data->requestedMonitor) {
+ 	data->bMonitorSpecifiedExists = TRUE;
+ 	data->monitorOffsetX = rect->left;
+ 	data->monitorOffsetY = rect->top;
+@@ -53,7 +53,8 @@ wBOOL CALLBACK getMonitorInfo(HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM _d
+   return TRUE;
+ }
+ 
+-Bool QueryMonitor(int index, struct GetMonitorInfoData *data)
++Bool
++QueryMonitor(int index, struct GetMonitorInfoData *data)
+ {
+     /* prepare data */
+     if (data == NULL)

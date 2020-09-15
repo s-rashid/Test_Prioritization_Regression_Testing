@@ -1,0 +1,11 @@
+diff --git a/include/inpututils.h b/include/inpututils.h
+index 92a7543..63e1a26 100644
+--- a/include/inpututils.h
++++ b/include/inpututils.h
+@@ -38,5 +38,6 @@ struct _ValuatorMask {
+ };
+ 
+ extern void verify_internal_event(const InternalEvent *ev);
++extern void init_device_event(DeviceEvent *event, DeviceIntPtr dev, Time ms);
+ 
+ #endif

@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/common/xf86fbBus.c b/hw/xfree86/common/xf86fbBus.c
+index a189639..90e6eb0 100644
+--- a/hw/xfree86/common/xf86fbBus.c
++++ b/hw/xfree86/common/xf86fbBus.c
+@@ -58,6 +58,13 @@ xf86ClaimFbSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+     EntityPtr p;
+     int num;
+     
++    if (pciSlotClaimed)
++	return -1;
++#if defined(__sparc__) || defined (__sparc64__)
++    if (sbusSlotClaimed)
++	return -1;
++#endif
++    
+     num = xf86AllocateEntity();
+     p = xf86Entities[num];
+     p->driver = drvp;

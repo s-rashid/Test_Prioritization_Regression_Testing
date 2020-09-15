@@ -1,0 +1,13 @@
+diff --git a/dix/tables.c b/dix/tables.c
+index 5bd9ea0..45ae2a9 100644
+--- a/dix/tables.c
++++ b/dix/tables.c
+@@ -592,7 +592,7 @@ int (* SwappedProcVector[256]) (
+     ProcBadRequest
+ };
+ 
+-EventSwapPtr EventSwapVector[128] =
++EventSwapPtr EventSwapVector[MAXEVENTS] =
+ {
+     (EventSwapPtr)SErrorEvent,
+     NotImplemented,

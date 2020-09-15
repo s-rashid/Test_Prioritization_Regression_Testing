@@ -1,0 +1,24 @@
+diff --git a/hw/kdrive/src/kxv.c b/hw/kdrive/src/kxv.c
+index 24ae89e..3af6acf 100644
+--- a/hw/kdrive/src/kxv.c
++++ b/hw/kdrive/src/kxv.c
+@@ -105,8 +105,7 @@ static Bool KdXVInitAdaptors(ScreenPtr, KdVideoAdaptorPtr*, int);
+ 
+ static DevPrivateKeyRec KdXVWindowKeyRec;
+ #define KdXVWindowKey (&KdXVWindowKeyRec)
+-static DevPrivateKeyRec KdXvScreenKeyRec;
+-#define KdXvScreenKey (&KdXvScreenKeyRec)
++static DevPrivateKey KdXvScreenKey;
+ static unsigned long KdXVGeneration = 0;
+ static unsigned long PortResource = 0;
+ 
+@@ -202,9 +201,6 @@ KdXVScreenInit(
+   if (!dixRegisterPrivateKey(&KdXVWindowKeyRec, PRIVATE_WINDOW, 0))
+       return FALSE;
+ 
+-  if (!dixRegisterPrivateKey(&KdXVScreenKeyRec, PRIVATE_SCREEN, 0))
+-      return FALSE;
+-
+   if(Success != (*XvScreenInitProc)(pScreen)) return FALSE;
+ 
+   KdXvScreenKey = (*XvGetScreenKeyProc)();

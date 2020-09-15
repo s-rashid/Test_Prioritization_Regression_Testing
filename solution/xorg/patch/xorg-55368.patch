@@ -1,0 +1,379 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostvideo.c b/hw/kdrive/ephyr/ephyrhostvideo.c
+index 69ad8a5..05a821b 100644
+--- a/hw/kdrive/ephyr/ephyrhostvideo.c
++++ b/hw/kdrive/ephyr/ephyrhostvideo.c
+@@ -53,11 +53,9 @@
+ #ifndef TRUE
+ #define TRUE 1
+ #endif /*TRUE*/
+-
+ #ifndef FALSE
+ #define FALSE 0
+ #endif /*FALSE*/
+-
+ static XExtensionInfo _xv_info_data;
+ static XExtensionInfo *xv_info = &_xv_info_data;
+ static char *xv_extension_name = XvName;
+@@ -80,15 +78,12 @@ static XExtensionHooks xv_extension_hooks = {
+     xv_error_string                     /* error_string */
+ };
+ 
+-
+-static char *xv_error_list[] =
+-{
++static char *xv_error_list[] = {
+    "BadPort",       /* XvBadPort     */
+    "BadEncoding",   /* XvBadEncoding */
+    "BadControl"     /* XvBadControl  */
+ };
+ 
+-
+ #define XvCheckExtension(dpy, i, val) \
+   XextCheckExtension(dpy, i, xv_extension_name, val)
+ #define XvGetReq(name, req) \
+@@ -102,15 +97,16 @@ static char *xv_error_list[] =
+         dpy->bufptr += SIZEOF(xv##name##Req);\
+         dpy->request++
+ 
+-static XEXT_GENERATE_CLOSE_DISPLAY (xv_close_display, xv_info)
+-
++static
++XEXT_GENERATE_CLOSE_DISPLAY(xv_close_display, xv_info)
+ 
+-static XEXT_GENERATE_FIND_DISPLAY (xv_find_display, xv_info,
++static
++XEXT_GENERATE_FIND_DISPLAY(xv_find_display, xv_info,
+                                    xv_extension_name,
+-                                   &xv_extension_hooks,
+-                                   XvNumEvents, NULL)
++                           &xv_extension_hooks, XvNumEvents, NULL)
+ 
+-static XEXT_GENERATE_ERROR_STRING (xv_error_string, xv_extension_name,
++static
++XEXT_GENERATE_ERROR_STRING(xv_error_string, xv_extension_name,
+                                    XvNumErrors, xv_error_list)
+ 
+ struct _EphyrHostXVAdaptorArray {
+@@ -122,8 +118,7 @@ struct _EphyrHostXVAdaptorArray {
+ #define BUFSIZE 2048
+ static void
+ ephyrHostXVLogXErrorEvent (Display *a_display,
+-                           XErrorEvent *a_err_event,
+-                           FILE *a_fp)
++                          XErrorEvent * a_err_event, FILE * a_fp)
+ {
+     char buffer[BUFSIZ];
+     char mesg[BUFSIZ];
+@@ -142,11 +137,11 @@ ephyrHostXVLogXErrorEvent (Display *a_display,
+     if (a_err_event->request_code < 128) {
+         snprintf(number, sizeof(number), "%d", a_err_event->request_code);
+         XGetErrorDatabaseText(dpy, "XRequest", number, "", buffer, BUFSIZ);
+-    } else {
++    }
++    else {
+         for (ext = dpy->ext_procs;
+                 ext && (ext->codes.major_opcode != a_err_event->request_code);
+-                ext = ext->next)
+-            ; 
++             ext = ext->next);
+         if (ext)
+             strcpy(buffer, ext->name);
+         else
+@@ -198,7 +193,8 @@ ephyrHostXVLogXErrorEvent (Display *a_display,
+             if (ext->error_values)
+                 (*ext->error_values)(dpy, a_err_event, a_fp);
+         }
+-    } else if ((a_err_event->error_code == BadWindow) ||
++    }
++    else if ((a_err_event->error_code == BadWindow) ||
+             (a_err_event->error_code == BadPixmap) ||
+             (a_err_event->error_code == BadCursor) ||
+             (a_err_event->error_code == BadFont) ||
+@@ -233,8 +229,7 @@ ephyrHostXVLogXErrorEvent (Display *a_display,
+ }
+ 
+ static int
+-ephyrHostXVErrorHandler (Display *a_display,
+-                         XErrorEvent *a_error_event)
++ephyrHostXVErrorHandler(Display * a_display, XErrorEvent * a_error_event)
+ {
+     EPHYR_LOG_ERROR ("got an error from the host xserver:\n") ;
+     ephyrHostXVLogXErrorEvent (a_display, a_error_event, stderr) ;
+@@ -269,8 +264,7 @@ ephyrHostXVQueryAdaptors (EphyrHostXVAdaptorArray **a_adaptors)
+ 
+     ret = XvQueryAdaptors (hostx_get_display (),
+                            DefaultRootWindow (hostx_get_display ()),
+-                           &result->nb_adaptors,
+-                           &result->adaptors) ;
++                          &result->nb_adaptors, &result->adaptors);
+     if (ret != Success) {
+         EPHYR_LOG_ERROR ("failed to query host adaptors: %d\n", ret) ;
+         goto out ;
+@@ -304,8 +298,7 @@ ephyrHostXVAdaptorArrayGetSize (const EphyrHostXVAdaptorArray *a_this)
+ }
+ 
+ EphyrHostXVAdaptor*
+-ephyrHostXVAdaptorArrayAt (const EphyrHostXVAdaptorArray *a_this,
+-                           int a_index)
++ephyrHostXVAdaptorArrayAt(const EphyrHostXVAdaptorArray * a_this, int a_index)
+ {
+     EPHYR_RETURN_VAL_IF_FAIL (a_this, NULL) ;
+ 
+@@ -348,8 +341,7 @@ ephyrHostXVAdaptorGetVideoFormats (const EphyrHostXVAdaptor *a_this,
+                             ((XvAdaptorInfo*)a_this)->formats[i].visual_id;
+         visual_info = XGetVisualInfo (hostx_get_display (),
+                                       VisualIDMask,
+-                                      &visual_info_template,
+-                                      &nb_visual_info) ;
++                                     &visual_info_template, &nb_visual_info);
+         formats[i].depth = ((XvAdaptorInfo*)a_this)->formats[i].depth ;
+         formats[i].visual_class = visual_info->class ;
+         XFree (visual_info) ;
+@@ -376,8 +368,7 @@ ephyrHostXVAdaptorGetFirstPortID (const EphyrHostXVAdaptor *a_this)
+ }
+ 
+ Bool
+-ephyrHostXVAdaptorHasPutVideo (const EphyrHostXVAdaptor *a_this,
+-                               Bool *a_result)
++ephyrHostXVAdaptorHasPutVideo(const EphyrHostXVAdaptor * a_this, Bool *a_result)
+ {
+     EPHYR_RETURN_VAL_IF_FAIL (a_this && a_result, FALSE) ;
+ 
+@@ -390,8 +381,7 @@ ephyrHostXVAdaptorHasPutVideo (const EphyrHostXVAdaptor *a_this,
+ }
+ 
+ Bool
+-ephyrHostXVAdaptorHasGetVideo (const EphyrHostXVAdaptor *a_this,
+-                               Bool *a_result)
++ephyrHostXVAdaptorHasGetVideo(const EphyrHostXVAdaptor * a_this, Bool *a_result)
+ {
+     if ((((XvAdaptorInfo*)a_this)->type & (XvVideoMask | XvOutputMask)) ==
+ 		    (XvVideoMask | XvOutputMask))
+@@ -402,8 +392,7 @@ ephyrHostXVAdaptorHasGetVideo (const EphyrHostXVAdaptor *a_this,
+ }
+ 
+ Bool
+-ephyrHostXVAdaptorHasPutStill (const EphyrHostXVAdaptor *a_this,
+-                               Bool *a_result)
++ephyrHostXVAdaptorHasPutStill(const EphyrHostXVAdaptor * a_this, Bool *a_result)
+ {
+     EPHYR_RETURN_VAL_IF_FAIL (a_this && a_result, FALSE) ;
+ 
+@@ -416,8 +405,7 @@ ephyrHostXVAdaptorHasPutStill (const EphyrHostXVAdaptor *a_this,
+ }
+ 
+ Bool
+-ephyrHostXVAdaptorHasGetStill (const EphyrHostXVAdaptor *a_this,
+-                               Bool *a_result)
++ephyrHostXVAdaptorHasGetStill(const EphyrHostXVAdaptor * a_this, Bool *a_result)
+ {
+     EPHYR_RETURN_VAL_IF_FAIL (a_this && a_result, FALSE) ;
+ 
+@@ -430,8 +418,7 @@ ephyrHostXVAdaptorHasGetStill (const EphyrHostXVAdaptor *a_this,
+ }
+ 
+ Bool
+-ephyrHostXVAdaptorHasPutImage (const EphyrHostXVAdaptor *a_this,
+-                               Bool *a_result)
++ephyrHostXVAdaptorHasPutImage(const EphyrHostXVAdaptor * a_this, Bool *a_result)
+ {
+     EPHYR_RETURN_VAL_IF_FAIL (a_this && a_result, FALSE) ;
+ 
+@@ -456,9 +443,7 @@ ephyrHostXVQueryEncodings (int a_port_id,
+     EPHYR_RETURN_VAL_IF_FAIL (a_encodings && a_num_encodings, FALSE) ;
+ 
+     ret = XvQueryEncodings (hostx_get_display (),
+-                            a_port_id,
+-                            &num_encodings,
+-                            &encoding_info) ;
++                           a_port_id, &num_encodings, &encoding_info);
+     if (num_encodings && encoding_info) {
+         encodings = calloc (num_encodings, sizeof (EphyrHostEncoding)) ;
+         for (i=0; i<num_encodings; i++) {
+@@ -483,8 +468,7 @@ ephyrHostXVQueryEncodings (int a_port_id,
+ }
+ 
+ void
+-ephyrHostEncodingsDelete (EphyrHostEncoding *a_encodings,
+-                          int a_num_encodings)
++ephyrHostEncodingsDelete(EphyrHostEncoding * a_encodings, int a_num_encodings)
+ {
+     int i=0 ;
+ 
+@@ -529,30 +513,22 @@ ephyrHostXVQueryImageFormats (int a_port_id,
+ 
+     EPHYR_RETURN_VAL_IF_FAIL (a_formats && a_num_format, FALSE) ;
+ 
+-    result = XvListImageFormats (hostx_get_display (),
+-                                 a_port_id,
+-                                 a_num_format) ;
++    result = XvListImageFormats(hostx_get_display(), a_port_id, a_num_format);
+     *a_formats = (EphyrHostImageFormat*) result ;
+     return TRUE ;
+ 
+ }
+ 
+ Bool
+-ephyrHostXVSetPortAttribute (int a_port_id,
+-                             int a_atom,
+-                             int a_attr_value)
++ephyrHostXVSetPortAttribute(int a_port_id, int a_atom, int a_attr_value)
+ {
+     int res=Success ;
+ 
+     EPHYR_LOG ("atom,name,value: (%d,%s,%d)\n",
+-               a_atom,
+-               XGetAtomName (hostx_get_display (), a_atom),
+-               a_attr_value) ;
++              a_atom, XGetAtomName(hostx_get_display(), a_atom), a_attr_value);
+ 
+     res = XvSetPortAttribute (hostx_get_display (),
+-                              a_port_id,
+-                              a_atom,
+-                              a_attr_value) ;
++                             a_port_id, a_atom, a_attr_value);
+     if (res != Success) {
+         EPHYR_LOG_ERROR ("XvSetPortAttribute() failed: %d\n", res) ;
+         return FALSE ;
+@@ -564,9 +540,7 @@ ephyrHostXVSetPortAttribute (int a_port_id,
+ }
+ 
+ Bool
+-ephyrHostXVGetPortAttribute (int a_port_id,
+-                             int a_atom,
+-                             int *a_attr_value)
++ephyrHostXVGetPortAttribute(int a_port_id, int a_atom, int *a_attr_value)
+ {
+     int res=Success ;
+     Bool ret=FALSE ;
+@@ -577,9 +551,7 @@ ephyrHostXVGetPortAttribute (int a_port_id,
+                a_port_id, a_atom, XGetAtomName (hostx_get_display (), a_atom)) ;
+ 
+     res = XvGetPortAttribute (hostx_get_display (),
+-                              a_port_id,
+-                              a_atom,
+-                              a_attr_value) ;
++                             a_port_id, a_atom, a_attr_value);
+     if (res != Success) {
+         EPHYR_LOG_ERROR ("XvGetPortAttribute() failed: %d \n", res) ;
+         goto out ;
+@@ -600,8 +572,7 @@ ephyrHostXVQueryBestSize (int a_port_id,
+                           unsigned int a_frame_h,
+                           unsigned int a_drw_w,
+                           unsigned int a_drw_h,
+-                          unsigned int *a_actual_w,
+-                          unsigned int *a_actual_h)
++                         unsigned int *a_actual_w, unsigned int *a_actual_h)
+ {
+     int res=0 ;
+     Bool is_ok=FALSE ;
+@@ -609,15 +580,13 @@ ephyrHostXVQueryBestSize (int a_port_id,
+     EPHYR_RETURN_VAL_IF_FAIL (a_actual_w && a_actual_h, FALSE) ;
+ 
+     EPHYR_LOG ("enter: frame (%dx%d), drw (%dx%d)\n",
+-               a_frame_w, a_frame_h,
+-               a_drw_w, a_drw_h) ;
++              a_frame_w, a_frame_h, a_drw_w, a_drw_h);
+ 
+     res = XvQueryBestSize (hostx_get_display (),
+                            a_port_id,
+                            a_motion,
+                            a_frame_w, a_frame_h,
+-                           a_drw_w, a_drw_h,
+-                           a_actual_w, a_actual_h) ;
++                          a_drw_w, a_drw_h, a_actual_w, a_actual_h);
+     if (res != Success) {
+         EPHYR_LOG_ERROR ("XvQueryBestSize() failed: %d\n", res) ;
+         goto out ;
+@@ -644,8 +613,7 @@ xv_wire_to_event(Display *dpy, XEvent *host, xEvent *wire)
+     switch ((event->u.u.type & 0x7F) - info->codes->first_event) {
+         case XvVideoNotify:
+             re->xvvideo.type = event->u.u.type & 0x7f;
+-            re->xvvideo.serial =
+-            _XSetLastRequestRead(dpy, (xGenericReply *)event);
++        re->xvvideo.serial = _XSetLastRequestRead(dpy, (xGenericReply *) event);
+             re->xvvideo.send_event = ((event->u.u.type & 0x80) != 0);
+             re->xvvideo.display = dpy;
+             re->xvvideo.time = event->u.videoNotify.time;
+@@ -655,8 +623,7 @@ xv_wire_to_event(Display *dpy, XEvent *host, xEvent *wire)
+             break;
+         case XvPortNotify:
+             re->xvport.type = event->u.u.type & 0x7f;
+-            re->xvport.serial =
+-            _XSetLastRequestRead(dpy, (xGenericReply *)event);
++        re->xvport.serial = _XSetLastRequestRead(dpy, (xGenericReply *) event);
+             re->xvport.send_event = ((event->u.u.type & 0x80) != 0);
+             re->xvport.display = dpy;
+             re->xvport.time = event->u.portNotify.time;
+@@ -677,8 +644,7 @@ ephyrHostXVQueryImageAttributes (int a_port_id,
+                                  unsigned short *a_width,
+                                  unsigned short *a_height,
+                                  int *a_image_size,
+-                                 int *a_pitches,
+-                                 int *a_offsets)
++                                int *a_pitches, int *a_offsets)
+ {
+     Display *dpy = hostx_get_display () ;
+     Bool ret=FALSE ;
+@@ -707,13 +673,10 @@ ephyrHostXVQueryImageAttributes (int a_port_id,
+         goto out ;
+     }
+     if (a_pitches && a_offsets) {
+-        _XRead (dpy,
+-                (char*)a_pitches,
+-                rep.num_planes << 2);
+-        _XRead (dpy,
+-                (char*)a_offsets,
+-                rep.num_planes << 2);
+-    } else {
++        _XRead(dpy, (char *) a_pitches, rep.num_planes << 2);
++        _XRead(dpy, (char *) a_offsets, rep.num_planes << 2);
++    }
++    else {
+         _XEatData(dpy, rep.length << 2);
+     }
+     *a_width = rep.width ;
+@@ -729,9 +692,7 @@ out:
+ }
+ 
+ Bool
+-ephyrHostGetAtom (const char* a_name,
+-                  Bool a_create_if_not_exists,
+-                  int *a_atom)
++ephyrHostGetAtom(const char *a_name, Bool a_create_if_not_exists, int *a_atom)
+ {
+     int atom=None ;
+ 
+@@ -773,8 +734,7 @@ ephyrHostXVPutImage (int a_screen_num,
+                      int a_image_width,
+                      int a_image_height,
+                      unsigned char *a_buf,
+-                     EphyrHostBox *a_clip_rects,
+-                     int a_clip_rect_nums )
++                    EphyrHostBox * a_clip_rects, int a_clip_rect_nums)
+ {
+     Bool is_ok=TRUE ;
+     XvImage *xv_image=NULL ;
+@@ -804,6 +764,7 @@ ephyrHostXVPutImage (int a_screen_num,
+     xv_image->data = (char*)a_buf ;
+     if (a_clip_rect_nums) {
+         int i=0 ;
++
+         rects = calloc (a_clip_rect_nums, sizeof (XRectangle)) ;
+         for (i=0; i < a_clip_rect_nums; i++) {
+             rects[i].x = a_clip_rects[i].x1 ;
+@@ -811,8 +772,7 @@ ephyrHostXVPutImage (int a_screen_num,
+             rects[i].width = a_clip_rects[i].x2 - a_clip_rects[i].x1;
+             rects[i].height = a_clip_rects[i].y2 - a_clip_rects[i].y1;
+             EPHYR_LOG ("(x,y,w,h): (%d,%d,%d,%d)\n",
+-                       rects[i].x, rects[i].y,
+-                       rects[i].width, rects[i].height) ;
++                      rects[i].x, rects[i].y, rects[i].width, rects[i].height);
+         }
+         XSetClipRectangles (dpy, gc, 0, 0, rects, a_clip_rect_nums, YXBanded) ;
+         /*this always returns 1*/
+@@ -1013,4 +973,3 @@ out:
+     EPHYR_LOG ("leave\n") ;
+     return is_ok ;
+ }
+-

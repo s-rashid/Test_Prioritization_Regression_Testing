@@ -1,0 +1,20 @@
+diff --git a/randr/rrtransform.c b/randr/rrtransform.c
+index 7fd4fa0..a470e1e 100644
+--- a/randr/rrtransform.c
++++ b/randr/rrtransform.c
+@@ -37,7 +37,6 @@ RRTransformInit (RRTransformPtr transform)
+ void
+ RRTransformFini (RRTransformPtr transform)
+ {
+-    if (transform->params)
+ 	free(transform->params);
+ }
+ 
+@@ -82,7 +81,6 @@ RRTransformSetFilter (RRTransformPtr	dst,
+     }
+     else
+ 	new_params = NULL;
+-    if (dst->params)
+ 	free(dst->params);
+     dst->filter = filter;
+     dst->params = new_params;

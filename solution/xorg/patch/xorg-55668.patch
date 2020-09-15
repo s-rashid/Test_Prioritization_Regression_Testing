@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/x86emu/x86emu.h b/hw/xfree86/x86emu/x86emu.h
+index 795e2d6..501dd91 100644
+--- a/hw/xfree86/x86emu/x86emu.h
++++ b/hw/xfree86/x86emu/x86emu.h
+@@ -194,5 +194,4 @@ int 	X86EMU_trace_off(void);
+ #ifdef  __cplusplus
+ }                       			/* End of "C" linkage for C++   	*/
+ #endif
+-
+ #endif /* __X86EMU_X86EMU_H */

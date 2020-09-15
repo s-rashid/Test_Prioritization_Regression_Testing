@@ -1,0 +1,92 @@
+diff --git a/fb/fbarc.c b/fb/fbarc.c
+index e54c804..c1b7f77 100644
+--- a/fb/fbarc.c
++++ b/fb/fbarc.c
+@@ -31,35 +31,32 @@
+ typedef void	(*FbArc) (FbBits    *dst, 
+ 			  FbStride  dstStride, 
+ 			  int	    dstBpp, 
+-			  xArc	    *arc, 
+-			  int	    dx,
+-			  int	    dy,
+-			  FbBits    and, 
+-			  FbBits    xor);
++                       xArc * arc, int dx, int dy, FbBits and, FbBits xor);
+ 
+ void
+-fbPolyArc (DrawablePtr	pDrawable,
+-	   GCPtr	pGC,
+-	   int		narcs,
+-	   xArc		*parcs)
++fbPolyArc(DrawablePtr pDrawable, GCPtr pGC, int narcs, xArc * parcs)
+ {
+     FbArc	arc;
+     
+-    if (pGC->lineWidth == 0)
+-    {
++    if (pGC->lineWidth == 0) {
+ 	arc = 0;
+-	if (pGC->lineStyle == LineSolid && pGC->fillStyle == FillSolid)
+-	{
+-	    switch (pDrawable->bitsPerPixel)
+-	    {
+-	    case 8:	arc = fbArc8; break;
+-	    case 16:    arc = fbArc16; break;
+-	    case 24:	arc = fbArc24; break;
+-	    case 32:    arc = fbArc32; break;
++        if (pGC->lineStyle == LineSolid && pGC->fillStyle == FillSolid) {
++            switch (pDrawable->bitsPerPixel) {
++            case 8:
++                arc = fbArc8;
++                break;
++            case 16:
++                arc = fbArc16;
++                break;
++            case 24:
++                arc = fbArc24;
++                break;
++            case 32:
++                arc = fbArc32;
++                break;
+ 	    }
+ 	}
+-	if (arc)
+-	{
++        if (arc) {
+ 	    FbGCPrivPtr	pPriv = fbGetGCPrivate (pGC);
+ 	    FbBits	*dst;
+ 	    FbStride	dstStride;
+@@ -68,16 +65,15 @@ fbPolyArc (DrawablePtr	pDrawable,
+ 	    BoxRec	box;
+ 	    int		x2, y2;
+ 	    RegionPtr	cclip;
++
+ #ifdef FB_ACCESS_WRAPPER
+ 	    int		wrapped = 1;
+ #endif
+ 	    
+ 	    cclip = fbGetCompositeClip (pGC);
+ 	    fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+-	    while (narcs--)
+-	    {
+-		if (miCanZeroArc (parcs))
+-		{
++            while (narcs--) {
++                if (miCanZeroArc(parcs)) {
+ 		    box.x1 = parcs->x + pDrawable->x;
+ 		    box.y1 = parcs->y + pDrawable->y;
+ 		    /*
+@@ -104,9 +100,10 @@ fbPolyArc (DrawablePtr	pDrawable,
+ 			}
+ #endif
+ 			(*arc) (dst, dstStride, dstBpp, 
+-				parcs, pDrawable->x + dstXoff, pDrawable->y + dstYoff, 
+-				pPriv->and, pPriv->xor);
+-		    } else {
++                                parcs, pDrawable->x + dstXoff,
++                                pDrawable->y + dstYoff, pPriv->and, pPriv->xor);
++                    }
++                    else {
+ #ifdef FB_ACCESS_WRAPPER
+ 		    	if (wrapped) {
+ 	    			fbFinishAccess (pDrawable);

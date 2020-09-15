@@ -1,0 +1,24 @@
+diff --git a/hw/xnest/GCOps.h b/hw/xnest/GCOps.h
+index ca4cf33..b1cad11 100644
+--- a/hw/xnest/GCOps.h
++++ b/hw/xnest/GCOps.h
+@@ -26,8 +26,7 @@ void xnestQueryBestSize(int class, unsigned short *pWidth,
+ void xnestPutImage(DrawablePtr pDrawable, GCPtr pGC, int depth, int x, int y,
+ 		   int w, int h, int leftPad, int format, char *pImage);
+ void xnestGetImage(DrawablePtr pDrawable, int x, int y, int w, int h,
+-		   unsigned int format, unsigned long planeMask,
+-		   char *pImage);
++                   unsigned int format, unsigned long planeMask, char *pImage);
+ RegionPtr xnestCopyArea(DrawablePtr pSrcDrawable, DrawablePtr pDstDrawable,
+ 			GCPtr pGC, int srcx, int srcy, int width, int height,
+ 			int dstx, int dsty);
+@@ -47,7 +46,8 @@ void xnestFillPolygon(DrawablePtr pDrawable, GCPtr pGC, int shape, int mode,
+ 		      int nPoints, DDXPointPtr pPoints);
+ void xnestPolyFillRect(DrawablePtr pDrawable, GCPtr pGC, int nRectangles,
+ 		       xRectangle *pRectangles);
+-void xnestPolyFillArc(DrawablePtr pDrawable, GCPtr pGC, int nArcs, xArc *pArcs);
++void xnestPolyFillArc(DrawablePtr pDrawable, GCPtr pGC, int nArcs,
++                      xArc * pArcs);
+ int xnestPolyText8(DrawablePtr pDrawable, GCPtr pGC, int x, int y, int count,
+ 		   char *string);
+ int xnestPolyText16(DrawablePtr pDrawable, GCPtr pGC, int x, int y, int count,

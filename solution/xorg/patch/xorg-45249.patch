@@ -1,0 +1,13 @@
+diff --git a/dix/eventconvert.c b/dix/eventconvert.c
+index 85ddd61..ac2b0c3 100644
+--- a/dix/eventconvert.c
++++ b/dix/eventconvert.c
+@@ -45,7 +45,7 @@
+ #include "events.h"
+ #include "exglobals.h"
+ #include "eventconvert.h"
+-#include "querydev.h"
++#include "xiquerydevice.h"
+ #include "xkbsrv.h"
+ 
+ 

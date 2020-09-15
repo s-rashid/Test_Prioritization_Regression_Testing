@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/darwinEvents.c b/hw/xquartz/darwinEvents.c
+index 1f22099..c367e3c 100644
+--- a/hw/xquartz/darwinEvents.c
++++ b/hw/xquartz/darwinEvents.c
+@@ -371,7 +371,7 @@ Bool DarwinEQInit(void) {
+     return TRUE;
+ }
+ 
+-Bool DarwinEQFini(void) {
++void DarwinEQFini(void) {
+     mieqFini();
+ }
+ 

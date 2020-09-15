@@ -1,0 +1,20 @@
+diff --git a/hw/kdrive/ephyr/ephyr.c b/hw/kdrive/ephyr/ephyr.c
+index 254fcbc..b6a2ada 100644
+--- a/hw/kdrive/ephyr/ephyr.c
++++ b/hw/kdrive/ephyr/ephyr.c
+@@ -1074,7 +1074,6 @@ MouseInit (KdPointerInfo *pi)
+     ((EphyrPointerPrivate *)pi->driverPrivate)->enabled = FALSE;
+     pi->nAxes = 3;
+     pi->nButtons = 32;
+-    if (pi->name)
+         xfree(pi->name);
+     pi->name = strdup("Xephyr virtual mouse");
+     ephyrMouse = pi;
+@@ -1125,7 +1124,6 @@ EphyrKeyboardInit (KdKeyboardInfo *ki)
+   }
+   ki->minScanCode = ephyrKeySyms.minKeyCode;
+   ki->maxScanCode = ephyrKeySyms.maxKeyCode;
+-  if (ki->name)
+       xfree(ki->name);
+   ki->name = strdup("Xephyr virtual keyboard");
+   ephyrKbd = ki;

@@ -1,0 +1,31 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index 9c52878..d1d74f5 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -306,7 +306,7 @@ XF86OptionPtr
+ xf86ReplaceIntOption(XF86OptionPtr optlist, const char *name, const int val)
+ {
+     char tmp[16];
+-    sprintf(tmp,"%i",val);
++    snprintf(tmp,sizeof(tmp),"%i",val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+ 
+@@ -314,7 +314,7 @@ XF86OptionPtr
+ xf86ReplaceRealOption(XF86OptionPtr optlist, const char *name, const double val)
+ {
+     char tmp[32];
+-    snprintf(tmp,32,"%f",val);
++    snprintf(tmp,sizeof(tmp),"%f",val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+ 
+@@ -328,7 +328,7 @@ XF86OptionPtr
+ xf86ReplacePercentOption(XF86OptionPtr optlist, const char *name, const double val)
+ {
+     char tmp[16];
+-    sprintf(tmp, "%lf%%", val);
++    snprintf(tmp, sizeof(tmp), "%lf%%", val);
+     return xf86AddNewOption(optlist,name,tmp);
+ }
+ 

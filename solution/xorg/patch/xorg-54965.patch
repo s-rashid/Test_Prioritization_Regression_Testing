@@ -1,0 +1,322 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index a81c8f1..4483076 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -125,7 +125,6 @@ SOFTWARE.
+ #include "xisetclientpointer.h"
+ #include "xiwarppointer.h"
+ 
+-
+ /* Masks for XI events have to be aligned with core event (partially anyway).
+  * If DeviceButtonMotionMask is != ButtonMotionMask, event delivery
+  * breaks down. The device needs the dev->button->motionMask. If DBMM is
+@@ -159,8 +158,7 @@ const Mask XIAllMasks                     = (1L << 21) - 1;
+ int ExtEventIndex;
+ Mask ExtExclusiveMasks[EMASKSIZE];
+ 
+-static struct dev_type
+-{
++static struct dev_type {
+     Atom type;
+     const char *name;
+ } dev_type[] = {
+@@ -367,7 +365,6 @@ RESTYPE RT_INPUTCLIENT;
+ 
+ extern XExtensionVersion XIVersion;
+ 
+-
+ Mask PropagateMask[MAXDEVICES];
+ 
+ /*****************************************************************
+@@ -385,9 +382,7 @@ DevPrivateKeyRec XIClientPrivateKeyRec;
+  */
+ 
+ static void
+-XIClientCallback(CallbackListPtr        *list,
+-                 pointer                closure,
+-                 pointer                data)
++XIClientCallback(CallbackListPtr *list, pointer closure, pointer data)
+ {
+     NewClientInfoRec *clientinfo = (NewClientInfoRec*)data;
+     ClientPtr pClient = clientinfo->client;
+@@ -496,7 +491,8 @@ SReplyIDispatch(ClientPtr client, int len, xGrabDeviceReply * rep)
+ 	SRepXChangeDeviceControl(client, len,
+ 				 (xChangeDeviceControlReply *) rep);
+     else if (rep->RepType == X_ListDeviceProperties)
+-        SRepXListDeviceProperties(client, len, (xListDevicePropertiesReply*)rep);
++        SRepXListDeviceProperties(client, len,
++                                  (xListDevicePropertiesReply *) rep);
+     else if (rep->RepType == X_GetDeviceProperty)
+ 	SRepXGetDeviceProperty(client, len, (xGetDevicePropertyReply *) rep);
+     else if (rep->RepType == X_XIQueryPointer)
+@@ -602,7 +598,8 @@ SDeviceMappingNotifyEvent(deviceMappingNotify * from, deviceMappingNotify * to)
+ }
+ 
+ static void
+-SDevicePresenceNotifyEvent (devicePresenceNotify *from, devicePresenceNotify *to)
++SDevicePresenceNotifyEvent(devicePresenceNotify * from,
++                           devicePresenceNotify * to)
+ {
+     *to = *from;
+     swaps(&to->sequenceNumber);
+@@ -611,7 +608,8 @@ SDevicePresenceNotifyEvent (devicePresenceNotify *from, devicePresenceNotify *to
+ }
+ 
+ static void
+-SDevicePropertyNotifyEvent (devicePropertyNotify *from, devicePropertyNotify *to)
++SDevicePropertyNotifyEvent(devicePropertyNotify * from,
++                           devicePropertyNotify * to)
+ {
+     *to = *from;
+     swaps(&to->sequenceNumber);
+@@ -652,16 +650,15 @@ SDeviceChangedEvent(xXIDeviceChangedEvent* from, xXIDeviceChangedEvent* to)
+     memcpy(&to[1], &from[1], from->length * 4);
+ 
+     any = (xXIAnyInfo*)&to[1];
+-    for (i = 0; i < to->num_classes; i++)
+-    {
++    for (i = 0; i < to->num_classes; i++) {
+         int length = any->length;
+ 
+-        switch(any->type)
+-        {
++        switch (any->type) {
+             case KeyClass:
+                 {
+                     xXIKeyInfo *ki = (xXIKeyInfo*)any;
+                     uint32_t *key = (uint32_t*)&ki[1];
++
+                     for (j = 0; j < ki->num_keycodes; j++, key++)
+                         swapl(key);
+                     swaps(&ki->num_keycodes);
+@@ -671,7 +668,8 @@ SDeviceChangedEvent(xXIDeviceChangedEvent* from, xXIDeviceChangedEvent* to)
+                 {
+                     xXIButtonInfo *bi = (xXIButtonInfo*)any;
+                     Atom *labels = (Atom*)((char*)bi + sizeof(xXIButtonInfo) +
+-                                           pad_to_int32(bits_to_bytes(bi->num_buttons)));
++                                     pad_to_int32(bits_to_bytes
++                                                  (bi->num_buttons)));
+                     for (j = 0; j < bi->num_buttons; j++)
+                         swapl(&labels[j]);
+                     swaps(&bi->num_buttons);
+@@ -680,6 +678,7 @@ SDeviceChangedEvent(xXIDeviceChangedEvent* from, xXIDeviceChangedEvent* to)
+             case ValuatorClass:
+                 {
+                     xXIValuatorInfo* ai = (xXIValuatorInfo*)any;
++
+                     swapl(&ai->label);
+                     swapl(&ai->min.integral);
+                     swapl(&ai->min.frac);
+@@ -708,7 +707,8 @@ SDeviceChangedEvent(xXIDeviceChangedEvent* from, xXIDeviceChangedEvent* to)
+ 
+ }
+ 
+-static void SDeviceEvent(xXIDeviceEvent *from, xXIDeviceEvent *to)
++static void
++SDeviceEvent(xXIDeviceEvent * from, xXIDeviceEvent * to)
+ {
+     int i;
+     char *ptr;
+@@ -742,10 +742,8 @@ static void SDeviceEvent(xXIDeviceEvent *from, xXIDeviceEvent *to)
+     ptr += from->buttons_len * 4;
+     vmask = ptr; /* valuator mask */
+     ptr += from->valuators_len * 4;
+-    for (i = 0; i < from->valuators_len * 32; i++)
+-    {
+-        if (BitIsOn(vmask, i))
+-        {
++    for (i = 0; i < from->valuators_len * 32; i++) {
++        if (BitIsOn(vmask, i)) {
+             swapl(((uint32_t *)ptr));
+             ptr += 4;
+             swapl(((uint32_t *)ptr));
+@@ -754,8 +752,8 @@ static void SDeviceEvent(xXIDeviceEvent *from, xXIDeviceEvent *to)
+     }
+ }
+ 
+-static void SDeviceHierarchyEvent(xXIHierarchyEvent *from,
+-                                  xXIHierarchyEvent *to)
++static void
++SDeviceHierarchyEvent(xXIHierarchyEvent * from, xXIHierarchyEvent * to)
+ {
+     int i;
+     xXIHierarchyInfo *info;
+@@ -771,15 +769,15 @@ static void SDeviceHierarchyEvent(xXIHierarchyEvent *from,
+     swaps(&to->num_info);
+ 
+     info = (xXIHierarchyInfo*)&to[1];
+-    for (i = 0; i< from->num_info; i++)
+-    {
++    for (i = 0; i < from->num_info; i++) {
+         swaps(&info->deviceid);
+         swaps(&info->attachment);
+         info++;
+     }
+ }
+ 
+-static void SXIPropertyEvent(xXIPropertyEvent *from, xXIPropertyEvent *to)
++static void
++SXIPropertyEvent(xXIPropertyEvent * from, xXIPropertyEvent * to)
+ {
+     *to = *from;
+     swaps(&to->sequenceNumber);
+@@ -789,7 +787,8 @@ static void SXIPropertyEvent(xXIPropertyEvent *from, xXIPropertyEvent *to)
+     swapl(&to->property);
+ }
+ 
+-static void SRawEvent(xXIRawEvent *from, xXIRawEvent *to)
++static void
++SRawEvent(xXIRawEvent * from, xXIRawEvent * to)
+ {
+     int i;
+     FP3232 *values;
+@@ -804,14 +803,11 @@ static void SRawEvent(xXIRawEvent *from, xXIRawEvent *to)
+     swapl(&to->time);
+     swapl(&to->detail);
+ 
+-
+     mask = (unsigned char*)&to[1];
+     values = (FP3232*)(mask + from->valuators_len * 4);
+ 
+-    for (i = 0; i < from->valuators_len * 4 * 8; i++)
+-    {
+-        if (BitIsOn(mask, i))
+-        {
++    for (i = 0; i < from->valuators_len * 4 * 8; i++) {
++        if (BitIsOn(mask, i)) {
+             /* for each bit set there are two FP3232 values on the wire, in
+              * the order abcABC for data and data_raw. Here we swap as if
+              * they were in aAbBcC order because it's easier and really
+@@ -829,8 +825,8 @@ static void SRawEvent(xXIRawEvent *from, xXIRawEvent *to)
+     swaps(&to->valuators_len);
+ }
+ 
+-static void STouchOwnershipEvent(xXITouchOwnershipEvent *from,
+-                                 xXITouchOwnershipEvent *to)
++static void
++STouchOwnershipEvent(xXITouchOwnershipEvent * from, xXITouchOwnershipEvent * to)
+ {
+     *to = *from;
+     swaps(&to->sequenceNumber);
+@@ -850,8 +846,7 @@ static void STouchOwnershipEvent(xXITouchOwnershipEvent *from,
+ void
+ XI2EventSwap(xGenericEvent *from, xGenericEvent *to)
+ {
+-    switch(from->evtype)
+-    {
++    switch (from->evtype) {
+         case XI_Enter:
+         case XI_Leave:
+         case XI_FocusIn:
+@@ -863,11 +858,11 @@ XI2EventSwap(xGenericEvent *from, xGenericEvent *to)
+                                 (xXIDeviceChangedEvent*)to);
+             break;
+         case XI_HierarchyChanged:
+-            SDeviceHierarchyEvent((xXIHierarchyEvent*)from, (xXIHierarchyEvent*)to);
++        SDeviceHierarchyEvent((xXIHierarchyEvent *) from,
++                              (xXIHierarchyEvent *) to);
+             break;
+         case XI_PropertyEvent:
+-            SXIPropertyEvent((xXIPropertyEvent*)from,
+-                           (xXIPropertyEvent*)to);
++        SXIPropertyEvent((xXIPropertyEvent *) from, (xXIPropertyEvent *) to);
+             break;
+         case XI_Motion:
+         case XI_KeyPress:
+@@ -1078,8 +1073,7 @@ RestoreExtensionEvents(void)
+     IEventBase = 0;
+ 
+     for (i = 0; i < ExtEventIndex - 1; i++) {
+-	if ((EventInfo[i].type >= LASTEvent) && (EventInfo[i].type < 128))
+-        {
++        if ((EventInfo[i].type >= LASTEvent) && (EventInfo[i].type < 128)) {
+             for (j = 0; j < MAXDEVICES; j++)
+                 SetMaskForEvent(j, 0, EventInfo[i].type);
+         }
+@@ -1145,7 +1139,6 @@ IResetProc(ExtensionEntry * unused)
+     RestoreExtensionEvents();
+ }
+ 
+-
+ /***********************************************************************
+  *
+  * Assign an id and type to an input device.
+@@ -1193,29 +1186,36 @@ SEventIDispatch(xEvent * from, xEvent * to)
+     else if (type == DeviceKeyPress) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceKeyRelease) {
++    }
++    else if (type == DeviceKeyRelease) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceButtonPress) {
++    }
++    else if (type == DeviceButtonPress) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceButtonRelease) {
++    }
++    else if (type == DeviceButtonRelease) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceMotionNotify) {
++    }
++    else if (type == DeviceMotionNotify) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceFocusIn)
++    }
++    else if (type == DeviceFocusIn)
+ 	DO_SWAP(SEventFocus, deviceFocus);
+     else if (type == DeviceFocusOut)
+ 	DO_SWAP(SEventFocus, deviceFocus);
+     else if (type == ProximityIn) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == ProximityOut) {
++    }
++    else if (type == ProximityOut) {
+ 	SKeyButtonPtrEvent(from, to);
+ 	to->u.keyButtonPointer.pad1 = from->u.keyButtonPointer.pad1;
+-    } else if (type == DeviceStateNotify)
++    }
++    else if (type == DeviceStateNotify)
+ 	DO_SWAP(SDeviceStateNotifyEvent, deviceStateNotify);
+     else if (type == DeviceKeyStateNotify)
+ 	DO_SWAP(SDeviceKeyStateNotifyEvent, deviceKeyStateNotify);
+@@ -1250,12 +1250,14 @@ void
+ XInputExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
++
+     XExtensionVersion thisversion = { XI_Present,
+         SERVER_XI_MAJOR_VERSION,
+         SERVER_XI_MINOR_VERSION,
+     };
+ 
+-    if (!dixRegisterPrivateKey(&XIClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(XIClientRec)))
++    if (!dixRegisterPrivateKey
++        (&XIClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(XIClientRec)))
+         FatalError("Cannot request private for XI.\n");
+ 
+     if (!AddCallback(&ClientStateCallback, XIClientCallback, 0))
+@@ -1293,7 +1295,6 @@ XInputExtensionInit(void)
+ 
+ 	GERegisterExtension(IReqCode, XI2EventSwap);
+ 
+-
+ 	memset(&xi_all_devices, 0, sizeof(xi_all_devices));
+ 	memset(&xi_all_master_devices, 0, sizeof(xi_all_master_devices));
+ 	xi_all_devices.id = XIAllDevices;
+@@ -1305,8 +1306,8 @@ XInputExtensionInit(void)
+ 	inputInfo.all_master_devices = &xi_all_master_devices;
+ 
+ 	XIResetProperties();
+-    } else {
++    }
++    else {
+ 	FatalError("IExtensionInit: AddExtensions failed\n");
+     }
+ }
+-

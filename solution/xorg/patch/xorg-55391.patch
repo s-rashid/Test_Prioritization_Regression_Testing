@@ -1,0 +1,484 @@
+diff --git a/hw/kdrive/linux/mouse.c b/hw/kdrive/linux/mouse.c
+index 93c2078..c875077 100644
+--- a/hw/kdrive/linux/mouse.c
++++ b/hw/kdrive/linux/mouse.c
+@@ -53,14 +53,12 @@ MouseWaitForReadable (int fd, int timeout)
+     CARD32	    done;
+ 
+     done = GetTimeInMillis () + timeout;
+-    for (;;)
+-    {
++    for (;;) {
+ 	FD_ZERO (&set);
+ 	FD_SET (fd, &set);
+ 	if (timeout == -1)
+ 	    tp = 0;
+-	else
+-	{
++        else {
+ 	    tv.tv_sec = timeout / 1000;
+ 	    tv.tv_usec = (timeout % 1000) * 1000;
+ 	    tp = &tv;
+@@ -68,8 +66,7 @@ MouseWaitForReadable (int fd, int timeout)
+ 	n = select (fd + 1, &set, 0, 0, tp);
+ 	if (n > 0)
+ 	    return TRUE;
+-	if (n < 0 && (errno == EAGAIN || errno == EINTR))
+-	{
++        if (n < 0 && (errno == EAGAIN || errno == EINTR)) {
+ 	    timeout = (int) (done - GetTimeInMillis ());
+ 	    if (timeout > 0)
+ 		continue;
+@@ -83,10 +80,9 @@ static int
+ MouseReadByte (Kbufio *b, int timeout)
+ {
+     int	n;
+-    if (b->avail <= b->used)
+-    {
+-	if (timeout && !MouseWaitForReadable (b->fd, timeout))
+-	{
++
++    if (b->avail <= b->used) {
++        if (timeout && !MouseWaitForReadable(b->fd, timeout)) {
+ #ifdef DEBUG_BYTES
+ 	    ErrorF ("\tTimeout %d\n", timeout);
+ #endif
+@@ -113,12 +109,9 @@ MouseFlush (Kbufio *b, char *buf, int size)
+     int	    c;
+     int	    n = 0;
+ 
+-    while ((c = MouseReadByte (b, done - now)) != -1)
+-    {
+-	if (buf)
+-	{
+-	    if (n == size)
+-	    {
++    while ((c = MouseReadByte(b, done - now)) != -1) {
++        if (buf) {
++            if (n == size) {
+ 		memmove (buf, buf + 1, size - 1);
+ 		n--;
+ 	    }
+@@ -154,8 +147,7 @@ MouseWaitForWritable (int fd, int timeout)
+     FD_SET (fd, &set);
+     if (timeout == -1)
+ 	tp = 0;
+-    else
+-    {
++    else {
+ 	tv.tv_sec = timeout / 1000;
+ 	tv.tv_usec = (timeout % 1000) * 1000;
+ 	tp = &tv;
+@@ -174,8 +166,7 @@ MouseWriteByte (int fd, unsigned char c, int timeout)
+ #ifdef DEBUG_BYTES
+     ErrorF ("\tput %02x\n", c);
+ #endif
+-    for (;;)
+-    {
++    for (;;) {
+ 	ret = write (fd, &c, 1);
+ 	if (ret == 1)
+ 	    return TRUE;
+@@ -235,7 +226,8 @@ typedef struct _kmouse {
+     unsigned long	state;	/* private per protocol, init to prot->state */
+ } Kmouse;
+ 
+-static int mouseValid (KdPointerInfo *pi, unsigned char *ev, int ne)
++static int
++mouseValid(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse		*km = pi->driverPrivate;
+     const KmouseProt	*prot = km->prot;
+@@ -252,36 +244,38 @@ static int mouseValid (KdPointerInfo *pi, unsigned char *ev, int ne)
+     return 0;
+ }
+ 
+-static Bool threeComplete (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++threeComplete(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     return ne == 3;
+ }
+ 
+-static Bool fourComplete (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++fourComplete(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     return ne == 4;
+ }
+ 
+-static Bool fiveComplete (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++fiveComplete(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     return ne == 5;
+ }
+ 
+-static Bool MouseReasonable (KdPointerInfo *pi, unsigned long flags, int dx, int dy)
++static Bool
++MouseReasonable(KdPointerInfo * pi, unsigned long flags, int dx, int dy)
+ {
+     Kmouse		*km = pi->driverPrivate;
+ 
+     if (km->stage == MouseWorking)
+ 	return TRUE;
+-    if (dx < -50 || dx > 50)
+-    {
++    if (dx < -50 || dx > 50) {
+ #ifdef DEBUG
+ 	ErrorF ("Large X %d\n", dx);
+ #endif
+ 	return FALSE;
+     }
+-    if (dy < -50 || dy > 50)
+-    {
++    if (dy < -50 || dy > 50) {
+ #ifdef DEBUG
+ 	ErrorF ("Large Y %d\n", dy);
+ #endif
+@@ -293,7 +287,8 @@ static Bool MouseReasonable (KdPointerInfo *pi, unsigned long flags, int dx, int
+ /*
+  * Standard PS/2 mouse protocol
+  */
+-static Bool ps2Parse (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++ps2Parse(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse	    *km = pi->driverPrivate;
+     int		    dx, dy, dz;
+@@ -308,16 +303,13 @@ static Bool ps2Parse (KdPointerInfo *pi, unsigned char *ev, int ne)
+     if (ev[0] & 1)
+ 	flags |= KD_BUTTON_1;
+ 
+-    if (ne > 3)
+-    {
++    if (ne > 3) {
+ 	dz = (int) (signed char) ev[3];
+-	if (dz < 0)
+-	{
++        if (dz < 0) {
+ 	    flags |= KD_BUTTON_4;
+ 	    flagsrelease = KD_BUTTON_4;
+ 	}
+-	else if (dz > 0)
+-	{
++        else if (dz > 0) {
+ 	    flags |= KD_BUTTON_5;
+ 	    flagsrelease = KD_BUTTON_5;
+ 	}
+@@ -332,11 +324,9 @@ static Bool ps2Parse (KdPointerInfo *pi, unsigned char *ev, int ne)
+     dy = -dy;
+     if (!MouseReasonable (pi, flags, dx, dy))
+ 	return FALSE;
+-    if (km->stage == MouseWorking)
+-    {
++    if (km->stage == MouseWorking) {
+ 	KdEnqueuePointerEvent (pi, flags, dx, dy, 0);
+-	if (flagsrelease)
+-	{
++        if (flagsrelease) {
+ 	    flags &= ~flagsrelease;
+ 	    KdEnqueuePointerEvent (pi, flags, dx, dy, 0);
+ 	}
+@@ -456,14 +446,12 @@ ps2SkipInit (KdPointerInfo *pi, int ninit, Bool ret_next)
+ 
+     skipping = 0;
+     waiting = FALSE;
+-    while (ninit || ret_next)
+-    {
++    while (ninit || ret_next) {
+ 	c = MouseReadByte (&km->iob, MOUSE_TIMEOUT);
+ 	if (c == -1)
+ 	    break;
+ 	/* look for ACK */
+-	if (c == 0xfa)
+-	{
++        if (c == 0xfa) {
+ 	    ninit--;
+ 	    if (ret_next)
+ 		waiting = TRUE;
+@@ -488,7 +476,8 @@ ps2Init (KdPointerInfo *pi)
+     int		    ninit;
+ 
+     /* Send Intellimouse initialization sequence */
+-    MouseWriteBytes (km->iob.fd, intelli_init, strlen ((char *) intelli_init), 100);
++    MouseWriteBytes(km->iob.fd, intelli_init, strlen((char *) intelli_init),
++                    100);
+     /*
+      * Send ID command
+      */
+@@ -525,7 +514,8 @@ ps2Init (KdPointerInfo *pi)
+     return TRUE;
+ }
+ 
+-static Bool busParse (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++busParse(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse	    *km = pi->driverPrivate;
+     int		    dx, dy;
+@@ -558,7 +548,8 @@ static const KmouseProt busProt = {
+  * Standard MS serial protocol, three bytes
+  */
+ 
+-static Bool msParse (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++msParse(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse	    *km = pi->driverPrivate;
+     int		    dx, dy;
+@@ -597,7 +588,8 @@ static const KmouseProt msProt = {
+  * first byte of a synchronized protocol stream and see if it's got
+  * any bits turned on that can't occur in that fourth byte
+  */
+-static Bool logiComplete (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++logiComplete(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse		*km = pi->driverPrivate;
+ 
+@@ -608,14 +600,14 @@ static Bool logiComplete (KdPointerInfo *pi, unsigned char *ev, int ne)
+     return FALSE;
+ }
+ 
+-static int logiValid (KdPointerInfo *pi, unsigned char *ev, int ne)
++static int
++logiValid(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse		*km = pi->driverPrivate;
+     const KmouseProt	*prot = km->prot;
+     int	    i;
+ 
+-    for (i = 0; i < ne; i++)
+-    {
++    for (i = 0; i < ne; i++) {
+ 	if ((ev[i] & 0x40) == 0x40)
+ 	    break;
+ 	if (km->stage != MouseBroken && (ev[i] & ~0x23) == 0)
+@@ -629,7 +621,8 @@ static int logiValid (KdPointerInfo *pi, unsigned char *ev, int ne)
+     return 0;
+ }
+ 
+-static Bool logiParse (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++logiParse(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse	    *km = pi->driverPrivate;
+     int		    dx, dy;
+@@ -637,8 +630,7 @@ static Bool logiParse (KdPointerInfo *pi, unsigned char *ev, int ne)
+ 
+     flags = KD_MOUSE_DELTA;
+ 
+-    if (ne == 3)
+-    {
++    if (ne == 3) {
+ 	if (ev[0] & 0x20)
+ 	    flags |= KD_BUTTON_1;
+ 	if (ev[0] & 0x10)
+@@ -648,8 +640,7 @@ static Bool logiParse (KdPointerInfo *pi, unsigned char *ev, int ne)
+ 	dy = (signed char)(((ev[0] & 0x0C) << 4) | (ev[2] & 0x3F));
+ 	flags |= km->state & KD_BUTTON_2;
+     }
+-    else
+-    {
++    else {
+ 	if (ev[0] & 0x20)
+ 	    flags |= KD_BUTTON_2;
+ 	dx = 0;
+@@ -679,7 +670,8 @@ static const KmouseProt logiProt = {
+ /*
+  * Mouse systems protocol, 5 bytes
+  */
+-static Bool mscParse (KdPointerInfo *pi, unsigned char *ev, int ne)
++static Bool
++mscParse(KdPointerInfo * pi, unsigned char *ev, int ne)
+ {
+     Kmouse	    *km = pi->driverPrivate;
+     int		    dx, dy;
+@@ -731,12 +723,10 @@ MouseInitProtocol (Kmouse *km)
+     int		    ret;
+     struct termios  t;
+ 
+-    if (km->prot->tty)
+-    {
++    if (km->prot->tty) {
+ 	ret = tcgetattr (km->iob.fd, &t);
+ 
+-	if (ret >= 0)
+-	{
++        if (ret >= 0) {
+ 	    t.c_iflag = km->prot->c_iflag;
+ 	    t.c_oflag = km->prot->c_oflag;
+ 	    t.c_lflag = km->prot->c_lflag;
+@@ -756,34 +746,33 @@ MouseInitProtocol (Kmouse *km)
+ static void
+ MouseFirstProtocol (Kmouse *km, char *prot)
+ {
+-    if (prot)
+-    {
++    if (prot) {
+ 	for (km->i_prot = 0; km->i_prot < NUM_PROT; km->i_prot++)
+ 	    if (!strcmp (prot, kmouseProts[km->i_prot]->name))
+ 		break;
+-	if (km->i_prot == NUM_PROT)
+-	{
++        if (km->i_prot == NUM_PROT) {
+ 	    int	i;
++
+ 	    ErrorF ("Unknown mouse protocol \"%s\". Pick one of:", prot);
+ 	    for (i = 0; i < NUM_PROT; i++)
+ 		ErrorF (" %s", kmouseProts[i]->name);
+ 	    ErrorF ("\n");
+ 	}
+-	else
+-	{
++        else {
+ 	    km->prot = kmouseProts[km->i_prot];
+ 	    if (km->tty && !km->prot->tty)
+-		ErrorF ("Mouse device is serial port, protocol %s is not serial protocol\n",
++                ErrorF
++                    ("Mouse device is serial port, protocol %s is not serial protocol\n",
+ 			prot);
+ 	    else if (!km->tty && km->prot->tty)
+-		ErrorF ("Mouse device is not serial port, protocol %s is serial protocol\n",
++                ErrorF
++                    ("Mouse device is not serial port, protocol %s is serial protocol\n",
+ 			prot);
+ 	}
+     }
+-    if (!km->prot)
+-    {
+-	for (km->i_prot = 0; kmouseProts[km->i_prot]->tty != km->tty; km->i_prot++)
+-	    ;
++    if (!km->prot) {
++        for (km->i_prot = 0; kmouseProts[km->i_prot]->tty != km->tty;
++             km->i_prot++);
+ 	km->prot = kmouseProts[km->i_prot];
+     }
+     MouseInitProtocol (km);
+@@ -792,12 +781,11 @@ MouseFirstProtocol (Kmouse *km, char *prot)
+ static void
+ MouseNextProtocol (Kmouse *km)
+ {
+-    do
+-    {
++    do {
+ 	if (!km->prot)
+ 	    km->i_prot = 0;
+-	else
+-	    if (++km->i_prot == NUM_PROT) km->i_prot = 0;
++        else if (++km->i_prot == NUM_PROT)
++            km->i_prot = 0;
+ 	km->prot = kmouseProts[km->i_prot];
+     } while (km->prot->tty != km->tty);
+     MouseInitProtocol (km);
+@@ -817,13 +805,10 @@ MouseRead (int mousePort, void *closure)
+ 
+     timeout = 0;
+     ne = 0;
+-    for(;;)
+-    {
++    for (;;) {
+ 	c = MouseReadByte (&km->iob, timeout);
+-	if (c == -1)
+-	{
+-	    if (ne)
+-	    {
++        if (c == -1) {
++            if (ne) {
+ 		km->invalid += ne + km->tested;
+ 		km->valid = 0;
+ 		km->tested = 0;
+@@ -833,19 +818,16 @@ MouseRead (int mousePort, void *closure)
+ 	}
+ 	event[ne++] = c;
+ 	i = (*km->prot->Valid) (pi, event, ne);
+-	if (i != 0)
+-	{
++        if (i != 0) {
+ #ifdef DEBUG
+ 	    ErrorF ("Mouse protocol %s broken %d of %d bytes bad\n",
+ 		    km->prot->name, i > 0 ? i : ne, ne);
+ #endif
+-	    if (i > 0 && i < ne)
+-	    {
++            if (i > 0 && i < ne) {
+ 		ne -= i;
+ 		memmove (event, event + i, ne);
+ 	    }
+-	    else
+-	    {
++            else {
+ 		i = ne;
+ 		ne = 0;
+ 	    }
+@@ -855,25 +837,19 @@ MouseRead (int mousePort, void *closure)
+ 	    if (km->stage == MouseWorking)
+ 		km->i_prot--;
+ 	    km->stage = MouseBroken;
+-	    if (km->invalid > MAX_SKIP)
+-	    {
++            if (km->invalid > MAX_SKIP) {
+ 		MouseNextProtocol (km);
+ 		ne = 0;
+ 	    }
+ 	    timeout = 0;
+ 	}
+-	else
+-	{
+-	    if ((*km->prot->Complete) (pi, event, ne))
+-	    {
+-		if ((*km->prot->Parse) (pi, event, ne))
+-		{
+-		    switch (km->stage)
+-		    {
++        else {
++            if ((*km->prot->Complete) (pi, event, ne)) {
++                if ((*km->prot->Parse) (pi, event, ne)) {
++                    switch (km->stage) {
+ 		    case MouseBroken:
+ #ifdef DEBUG
+-			ErrorF ("Mouse protocol %s seems OK\n",
+-				km->prot->name);
++                        ErrorF("Mouse protocol %s seems OK\n", km->prot->name);
+ #endif
+ 			/* do not zero invalid to accumulate invalid bytes */
+ 			km->valid = 0;
+@@ -883,8 +859,7 @@ MouseRead (int mousePort, void *closure)
+ 		    case MouseTesting:
+ 			km->valid++;
+ 			km->tested += ne;
+-			if (km->valid > MAX_VALID)
+-			{
++                        if (km->valid > MAX_VALID) {
+ #ifdef DEBUG
+ 			    ErrorF ("Mouse protocol %s working\n",
+ 				    km->prot->name);
+@@ -901,8 +876,7 @@ MouseRead (int mousePort, void *closure)
+ 			break;
+ 		    }
+ 		}
+-		else
+-		{
++                else {
+ 		    km->invalid += ne + km->tested;
+ 		    km->valid = 0;
+ 		    km->tested = 0;
+@@ -993,8 +967,7 @@ MouseEnable (KdPointerInfo *pi)
+     if (km->iob.fd < 0)
+         return BadMatch;
+ 
+-    if (!KdRegisterFd (km->iob.fd, MouseRead, pi))
+-    {
++    if (!KdRegisterFd(km->iob.fd, MouseRead, pi)) {
+         close(km->iob.fd);
+         return BadAlloc;
+     }
+@@ -1006,6 +979,7 @@ static void
+ MouseDisable (KdPointerInfo *pi)
+ {
+     Kmouse *km;
++
+     if (!pi || !pi->driverPrivate)
+         return;
+ 

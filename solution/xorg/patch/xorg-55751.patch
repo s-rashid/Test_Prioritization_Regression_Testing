@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/XNWindow.h b/hw/xnest/XNWindow.h
+index f4d8fc7..02b0f3f 100644
+--- a/hw/xnest/XNWindow.h
++++ b/hw/xnest/XNWindow.h
+@@ -34,6 +34,7 @@ typedef struct {
+ } xnestWindowMatch;
+ 
+ extern DevPrivateKeyRec xnestWindowPrivateKeyRec;
++
+ #define xnestWindowPrivateKey (&xnestWindowPrivateKeyRec)
+ 
+ #define xnestWindowPriv(pWin) ((xnestPrivWin *) \

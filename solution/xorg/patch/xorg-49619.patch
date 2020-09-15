@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/XNCursor.h b/hw/xnest/XNCursor.h
+index ab2c3b1..d3b18bd 100644
+--- a/hw/xnest/XNCursor.h
++++ b/hw/xnest/XNCursor.h
+@@ -21,7 +21,8 @@ typedef struct {
+     miPointerSpriteFuncPtr spriteFuncs;
+ } xnestCursorFuncRec, *xnestCursorFuncPtr;
+ 
+-extern DevPrivateKey xnestCursorScreenKey;
++extern DevPrivateKeyRec xnestCursorScreenKeyRec;
++#define xnestCursorScreenKey (&xnestCursorScreenKeyRec)
+ extern xnestCursorFuncRec xnestCursorFuncs;
+ 
+ typedef struct {

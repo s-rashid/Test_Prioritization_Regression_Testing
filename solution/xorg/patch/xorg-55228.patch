@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxcb.h b/hw/dmx/dmxcb.h
+index fa334db..ca8a256 100644
+--- a/hw/dmx/dmxcb.h
++++ b/hw/dmx/dmxcb.h
+@@ -38,7 +38,7 @@
+ #ifndef _DMXCB_H_
+ #define _DMXCB_H_
+ /** The cursor position, in global coordinates. */
+-extern int  dmxGlobalWidth, dmxGlobalHeight;
++extern int dmxGlobalWidth, dmxGlobalHeight;
+ 
+ /** #dmxComputeWidthHeight can either recompute the global bounding box
+  * or not. */

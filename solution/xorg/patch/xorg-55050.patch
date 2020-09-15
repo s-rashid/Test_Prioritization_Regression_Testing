@@ -1,0 +1,54 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index bb5335d..6c4272e 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -164,12 +164,15 @@ typedef struct _CompScreen {
+ } CompScreenRec, *CompScreenPtr;
+ 
+ extern DevPrivateKeyRec CompScreenPrivateKeyRec;
++
+ #define CompScreenPrivateKey (&CompScreenPrivateKeyRec)
+ 
+ extern DevPrivateKeyRec CompWindowPrivateKeyRec;
++
+ #define CompWindowPrivateKey (&CompWindowPrivateKeyRec)
+ 
+ extern DevPrivateKeyRec CompSubwindowsPrivateKeyRec;
++
+ #define CompSubwindowsPrivateKey (&CompSubwindowsPrivateKeyRec)
+ 
+ #define GetCompScreen(s) ((CompScreenPtr) \
+@@ -221,6 +224,7 @@ void
+ compRestoreWindow (WindowPtr pWin, PixmapPtr pPixmap);
+ 
+ Bool
++
+ compReallocPixmap (WindowPtr pWin, int x, int y,
+ 		   unsigned int w, unsigned int h, int bw);
+ 
+@@ -268,8 +272,7 @@ compCheckTree (ScreenPtr pScreen);
+ #define compCheckTree(s)
+ #endif
+ 
+-PictFormatPtr
+-compWindowFormat (WindowPtr pWin);
++PictFormatPtr compWindowFormat(WindowPtr pWin);
+ 
+ void
+ compSetPixmap (WindowPtr pWin, PixmapPtr pPixmap);
+@@ -293,6 +296,7 @@ void
+ compMoveWindow (WindowPtr pWin, int x, int y, WindowPtr pSib, VTKind kind);
+ 
+ void
++
+ compResizeWindow (WindowPtr pWin, int x, int y,
+ 		  unsigned int w, unsigned int h, WindowPtr pSib);
+ 
+@@ -327,6 +331,7 @@ int
+ DeleteWindowNoInputDevices(pointer value, XID wid);
+ 
+ int
++
+ compConfigNotify(WindowPtr pWin, int x, int y, int w, int h,
+ 		 int bw, WindowPtr pSib);
+ 

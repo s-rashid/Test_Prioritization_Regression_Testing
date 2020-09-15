@@ -1,0 +1,16 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index a38ec7b..0bcf805 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -65,10 +65,7 @@ PERFORMANCE OF THIS SOFTWARE.
+ #include "dixstruct.h"
+ #include "resource.h"
+ #include "opaque.h"
+-#define _SYNC_SERVER
+-#include <X11/extensions/sync.h>
+-#undef _SYNC_SERVER
+-#include <X11/extensions/syncstr.h>
++#include <X11/extensions/syncproto.h>
+ #include "syncsrv.h"
+ 
+ #include <stdio.h>

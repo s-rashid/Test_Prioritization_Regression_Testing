@@ -1,0 +1,222 @@
+diff --git a/hw/dmx/glxProxy/glxext.c b/hw/dmx/glxProxy/glxext.c
+index 7f63b6b..b0710cc 100644
+--- a/hw/dmx/glxProxy/glxext.c
++++ b/hw/dmx/glxProxy/glxext.c
+@@ -50,7 +50,10 @@
+ */
+ typedef int __GLXprovider;
+ __GLXprovider __glXDRISWRastProvider;
+-void GlxPushProvider(__GLXprovider *provider) { }
++void
++GlxPushProvider(__GLXprovider * provider)
++{
++}
+ 
+ /*
+ ** Forward declarations.
+@@ -61,7 +64,8 @@ static int __glXDispatch(ClientPtr);
+ /*
+ ** Called when the extension is reset.
+ */
+-static void ResetExtension(ExtensionEntry* extEntry)
++static void
++ResetExtension(ExtensionEntry * extEntry)
+ {
+     __glXFlushContextCache();
+     __glXScreenReset();
+@@ -71,7 +75,8 @@ static void ResetExtension(ExtensionEntry* extEntry)
+ /*
+ ** Initialize the per-client context storage.
+ */
+-static void ResetClientState(int clientIndex)
++static void
++ResetClientState(int clientIndex)
+ {
+     __GLXclientState *cl = __glXClients[clientIndex];
+     Display **keep_be_displays;
+@@ -102,14 +107,14 @@ static void ResetClientState(int clientIndex)
+     memset(cl->be_displays, 0, screenInfo.numScreens * sizeof(Display *));
+ }
+ 
+-
+ /*
+ ** This procedure is called when the client who created the context goes
+ ** away OR when glXDestroyContext is called.  In either case, all we do is
+ ** flag that the ID is no longer valid, and (maybe) free the context.
+ ** use.
+ */
+-static int ContextGone(__GLXcontext* cx, XID id)
++static int
++ContextGone(__GLXcontext * cx, XID id)
+ {
+     cx->idExists = GL_FALSE;
+     if (!cx->isCurrent) {
+@@ -122,7 +127,8 @@ static int ContextGone(__GLXcontext* cx, XID id)
+ /*
+ ** Free a client's state.
+ */
+-static int ClientGone(int clientIndex, XID id)
++static int
++ClientGone(int clientIndex, XID id)
+ {
+     __GLXcontext *cx;
+     __GLXclientState *cl = __glXClients[clientIndex];
+@@ -155,10 +161,10 @@ static int ClientGone(int clientIndex, XID id)
+ /*
+ ** Free a GLX Pixmap.
+ */
+-void __glXFreeGLXPixmap( __GLXpixmap *pGlxPixmap )
++void
++__glXFreeGLXPixmap(__GLXpixmap * pGlxPixmap)
+ {
+-   if (!pGlxPixmap->idExists &&
+-       !pGlxPixmap->refcnt) {
++    if (!pGlxPixmap->idExists && !pGlxPixmap->refcnt) {
+ 
+        PixmapPtr pPixmap = (PixmapPtr) pGlxPixmap->pDraw;
+ 
+@@ -173,7 +179,8 @@ void __glXFreeGLXPixmap( __GLXpixmap *pGlxPixmap )
+ 
+ }
+ 
+-static int PixmapGone(__GLXpixmap *pGlxPixmap, XID id)
++static int
++PixmapGone(__GLXpixmap * pGlxPixmap, XID id)
+ {
+ 
+     pGlxPixmap->idExists = False;
+@@ -182,7 +189,8 @@ static int PixmapGone(__GLXpixmap *pGlxPixmap, XID id)
+     return True;
+ }
+ 
+-void __glXFreeGLXWindow(__glXWindow *pGlxWindow)
++void
++__glXFreeGLXWindow(__glXWindow * pGlxWindow)
+ {
+     if (!pGlxWindow->idExists && !pGlxWindow->refcnt) {
+ 	WindowPtr pWindow = (WindowPtr) pGlxWindow->pDraw;
+@@ -199,13 +207,15 @@ void __glXFreeGLXWindow(__glXWindow *pGlxWindow)
+     }
+ }
+ 
+-static void WindowGone(__glXWindow *pGlxWindow, XID id)
++static void
++WindowGone(__glXWindow * pGlxWindow, XID id)
+ {
+     pGlxWindow->idExists = False;
+     __glXFreeGLXWindow(pGlxWindow);
+ }
+ 
+-void __glXFreeGLXPbuffer(__glXPbuffer *pGlxPbuffer)
++void
++__glXFreeGLXPbuffer(__glXPbuffer * pGlxPbuffer)
+ {
+     if (!pGlxPbuffer->idExists && !pGlxPbuffer->refcnt) {
+         free(pGlxPbuffer->be_xids);
+@@ -213,7 +223,8 @@ void __glXFreeGLXPbuffer(__glXPbuffer *pGlxPbuffer)
+     }
+ }
+ 
+-static void PbufferGone(__glXPbuffer *pGlxPbuffer, XID id)
++static void
++PbufferGone(__glXPbuffer * pGlxPbuffer, XID id)
+ {
+     pGlxPbuffer->idExists = False;
+     __glXFreeGLXPbuffer(pGlxPbuffer);
+@@ -222,9 +233,11 @@ static void PbufferGone(__glXPbuffer *pGlxPbuffer, XID id)
+ /*
+ ** Free a context.
+ */
+-GLboolean __glXFreeContext(__GLXcontext *cx)
++GLboolean
++__glXFreeContext(__GLXcontext * cx)
+ {
+-    if (cx->idExists || cx->isCurrent) return GL_FALSE;
++    if (cx->idExists || cx->isCurrent)
++        return GL_FALSE;
+     
+     free(cx->feedbackBuf);
+     free(cx->selectBuf);
+@@ -279,7 +292,8 @@ GLboolean __glXFreeContext(__GLXcontext *cx)
+ /*
+ ** Initialize the GLX extension.
+ */
+-void GlxExtensionInit(void)
++void
++GlxExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
+     int i;
+@@ -364,14 +378,16 @@ void GlxExtensionInit(void)
+ 
+ /************************************************************************/
+ 
+-Bool __glXCoreType(void)
++Bool
++__glXCoreType(void)
+ {
+     return 0;
+ }
+ 
+ /************************************************************************/
+ 
+-void __glXFlushContextCache(void)
++void
++__glXFlushContextCache(void)
+ {
+     __glXLastContext = 0;
+ }
+@@ -381,7 +397,8 @@ void __glXFlushContextCache(void)
+ /*
+ ** Top level dispatcher; all commands are executed from here down.
+ */
+-static int __glXDispatch(ClientPtr client)
++static int
++__glXDispatch(ClientPtr client)
+ {
+     REQUEST(xGLXSingleReq);
+     CARD8 opcode;
+@@ -410,6 +427,7 @@ static int __glXDispatch(ClientPtr client)
+ 	** with the client so we will be notified when the client dies.
+ 	*/
+ 	XID xid = FakeClientID(client->index);
++
+ 	if (!AddResource( xid, __glXClientRes, (pointer)(long)client->index)) {
+ 	    return BadAlloc;
+ 	}
+@@ -433,7 +451,8 @@ static int __glXDispatch(ClientPtr client)
+     return (*proc)(cl, (GLbyte *) stuff);
+ }
+ 
+-static int __glXSwapDispatch(ClientPtr client)
++static int
++__glXSwapDispatch(ClientPtr client)
+ {
+     REQUEST(xGLXSingleReq);
+     CARD8 opcode;
+@@ -462,6 +481,7 @@ static int __glXSwapDispatch(ClientPtr client)
+ 	** with the client so we will be notified when the client dies.
+ 	*/
+ 	XID xid = FakeClientID(client->index);
++
+ 	if (!AddResource( xid, __glXClientRes, (pointer)(long)client->index)) {
+ 	    return BadAlloc;
+ 	}
+@@ -484,13 +504,14 @@ static int __glXSwapDispatch(ClientPtr client)
+     return (*proc)(cl, (GLbyte *) stuff);
+ }
+ 
+-int __glXNoSuchSingleOpcode(__GLXclientState *cl, GLbyte *pc)
++int
++__glXNoSuchSingleOpcode(__GLXclientState * cl, GLbyte * pc)
+ {
+     return BadRequest;
+ }
+ 
+-void __glXNoSuchRenderOpcode(GLbyte *pc)
++void
++__glXNoSuchRenderOpcode(GLbyte * pc)
+ {
+     return;
+ }
+-

@@ -1,0 +1,22 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostproxy.c b/hw/kdrive/ephyr/ephyrhostproxy.c
+index 3137055..410e6b6 100644
+--- a/hw/kdrive/ephyr/ephyrhostproxy.c
++++ b/hw/kdrive/ephyr/ephyrhostproxy.c
+@@ -50,11 +50,9 @@
+     dpy->bufptr += SIZEOF(xReq);\
+     dpy->request++
+ 
+-
+ Bool
+ ephyrHostProxyDoForward (pointer a_request_buffer,
+-                         struct XReply *a_reply,
+-                         Bool a_do_swap)
++                        struct XReply *a_reply, Bool a_do_swap)
+ {
+     Bool is_ok = FALSE ;
+     int n=0 ;
+@@ -91,4 +89,3 @@ out:
+     EPHYR_LOG ("leave\n") ;
+     return is_ok ;
+ }
+-

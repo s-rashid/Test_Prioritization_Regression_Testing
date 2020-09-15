@@ -1,0 +1,25 @@
+diff --git a/randr/mirrcrtc.c b/randr/mirrcrtc.c
+index a9ee6b4..d493a0e 100644
+--- a/randr/mirrcrtc.c
++++ b/randr/mirrcrtc.c
+@@ -28,6 +28,11 @@ miRRSetScreenConfig(ScreenPtr screen,
+ {
+     RRScreenConfigRec	old_screen_config;
+ 
++    /* XXX deal with separate pixmap/screen sizes */
++    if (screen_config->screen_pixmap_width != screen_config->screen_width ||
++	screen_config->screen_pixmap_height != screen_config->screen_height)
++	return FALSE;
++
+     RRScreenCurrentConfig(screen, &old_screen_config);
+ 
+     /* Check and see if nothing has changed */
+@@ -42,8 +47,6 @@ miRRSetScreenConfig(ScreenPtr screen,
+     return RRScreenSizeSet(screen,
+ 			   screen_config->screen_width,
+ 			   screen_config->screen_height,
+-			   screen_config->screen_pixmap_width,
+-			   screen_config->screen_pixmap_height,
+ 			   screen_config->mm_width,
+ 			   screen_config->mm_height);
+ }

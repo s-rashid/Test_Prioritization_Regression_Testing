@@ -1,0 +1,144 @@
+diff --git a/hw/kdrive/src/kxv.h b/hw/kdrive/src/kxv.h
+index 21a295b..29118bc 100644
+--- a/hw/kdrive/src/kxv.h
++++ b/hw/kdrive/src/kxv.h
+@@ -85,7 +85,6 @@ typedef struct {
+   int scanline_order;
+ } KdImageRec, *KdImagePtr;
+ 
+-
+ typedef struct {
+   KdScreenInfo * screen;
+   int id;
+@@ -95,41 +94,48 @@ typedef struct {
+   DevUnion devPrivate;
+ } KdSurfaceRec, *KdSurfacePtr;
+ 
+-
+ typedef int (* PutVideoFuncPtr)( KdScreenInfo * screen, DrawablePtr pDraw,
+-	short vid_x, short vid_y, short drw_x, short drw_y,
+-	short vid_w, short vid_h, short drw_w, short drw_h,
+-	RegionPtr clipBoxes, pointer data );
++                                short vid_x, short vid_y, short drw_x,
++                                short drw_y, short vid_w, short vid_h,
++                                short drw_w, short drw_h, RegionPtr clipBoxes,
++                                pointer data);
+ typedef int (* PutStillFuncPtr)( KdScreenInfo * screen,  DrawablePtr pDraw,
+-	short vid_x, short vid_y, short drw_x, short drw_y,
+-	short vid_w, short vid_h, short drw_w, short drw_h,
+-	RegionPtr clipBoxes, pointer data );
++                                short vid_x, short vid_y, short drw_x,
++                                short drw_y, short vid_w, short vid_h,
++                                short drw_w, short drw_h, RegionPtr clipBoxes,
++                                pointer data);
+ typedef int (* GetVideoFuncPtr)( KdScreenInfo * screen,  DrawablePtr pDraw,
+-	short vid_x, short vid_y, short drw_x, short drw_y,
+-	short vid_w, short vid_h, short drw_w, short drw_h,
+-	RegionPtr clipBoxes, pointer data );
++                                short vid_x, short vid_y, short drw_x,
++                                short drw_y, short vid_w, short vid_h,
++                                short drw_w, short drw_h, RegionPtr clipBoxes,
++                                pointer data);
+ typedef int (* GetStillFuncPtr)( KdScreenInfo * screen,  DrawablePtr pDraw,
+-	short vid_x, short vid_y, short drw_x, short drw_y,
+-	short vid_w, short vid_h, short drw_w, short drw_h,
+-	RegionPtr clipBoxes, pointer data );
+-typedef void (* StopVideoFuncPtr)(KdScreenInfo * screen, pointer data, Bool Exit);
++                                short vid_x, short vid_y, short drw_x,
++                                short drw_y, short vid_w, short vid_h,
++                                short drw_w, short drw_h, RegionPtr clipBoxes,
++                                pointer data);
++typedef void (*StopVideoFuncPtr) (KdScreenInfo * screen, pointer data,
++                                  Bool Exit);
+ typedef int (* SetPortAttributeFuncPtr)(KdScreenInfo * screen, Atom attribute,
+ 	int value, pointer data);
+ typedef int (* GetPortAttributeFuncPtr)(KdScreenInfo * screen, Atom attribute,
+ 	int *value, pointer data);
+ typedef void (* QueryBestSizeFuncPtr)(KdScreenInfo * screen, Bool motion,
+-	short vid_w, short vid_h, short drw_w, short drw_h,
+-	unsigned int *p_w, unsigned int *p_h, pointer data);
++                                      short vid_w, short vid_h, short drw_w,
++                                      short drw_h, unsigned int *p_w,
++                                      unsigned int *p_h, pointer data);
+ typedef int (* PutImageFuncPtr)( KdScreenInfo * screen,  DrawablePtr pDraw,
+-	short src_x, short src_y, short drw_x, short drw_y,
+-	short src_w, short src_h, short drw_w, short drw_h,
+-	int image, unsigned char* buf, short width, short height, Bool Sync,
+-	RegionPtr clipBoxes, pointer data );
++                                short src_x, short src_y, short drw_x,
++                                short drw_y, short src_w, short src_h,
++                                short drw_w, short drw_h, int image,
++                                unsigned char *buf, short width, short height,
++                                Bool Sync, RegionPtr clipBoxes, pointer data);
+ typedef int (* ReputImageFuncPtr)( KdScreenInfo * screen, DrawablePtr pDraw,
+-				  short drw_x, short drw_y,
+-				  RegionPtr clipBoxes, pointer data );
+-typedef int (*QueryImageAttributesFuncPtr)(KdScreenInfo * screen,
+-	int image, unsigned short *width, unsigned short *height,
++                                  short drw_x, short drw_y, RegionPtr clipBoxes,
++                                  pointer data);
++typedef int (*QueryImageAttributesFuncPtr) (KdScreenInfo * screen, int image,
++                                            unsigned short *width,
++                                            unsigned short *height,
+ 	int *pitches, int *offsets);
+ 
+ typedef enum {
+@@ -187,35 +193,29 @@ typedef struct {
+ } KdVideoAdaptorRec, *KdVideoAdaptorPtr;
+ 
+ Bool
+-KdXVScreenInit(
+-   ScreenPtr pScreen,
+-   KdVideoAdaptorPtr 	*Adaptors,
+-   int num
+-);
++ KdXVScreenInit(ScreenPtr pScreen, KdVideoAdaptorPtr * Adaptors, int num);
+ 
+ typedef int (* KdXVInitGenericAdaptorPtr)(KdScreenInfo * screen,
+ 	KdVideoAdaptorPtr **Adaptors);
+ 
+ int
+-KdXVRegisterGenericAdaptorDriver(
+-    KdXVInitGenericAdaptorPtr InitFunc
+-);
++ KdXVRegisterGenericAdaptorDriver(KdXVInitGenericAdaptorPtr InitFunc);
+ 
+ int
+-KdXVListGenericAdaptors(
+-    KdScreenInfo *          screen,
+-    KdVideoAdaptorPtr  **Adaptors
+-);
++ KdXVListGenericAdaptors(KdScreenInfo * screen, KdVideoAdaptorPtr ** Adaptors);
+ 
+ void
++
+ KdXVCopyPackedData(KdScreenInfo *screen, CARD8 *src, CARD8 *dst, int randr,
+-   int srcPitch, int dstPitch, int srcW, int srcH, int top, int left,
+-   int h, int w);
++                   int srcPitch, int dstPitch, int srcW, int srcH, int top,
++                   int left, int h, int w);
+ 
+ void
++
+ KdXVCopyPlanarData(KdScreenInfo *screen, CARD8 *src, CARD8 *dst, int randr,
+-   int srcPitch, int srcPitch2, int dstPitch, int srcW, int srcH, int height,
+-   int top, int left, int h, int w, int id);
++                   int srcPitch, int srcPitch2, int dstPitch, int srcW,
++                   int srcH, int height, int top, int left, int h, int w,
++                   int id);
+ 
+ void
+ KXVPaintRegion (DrawablePtr pDraw, RegionPtr pRgn, Pixel fg);
+@@ -230,7 +230,6 @@ void KdXVDisable(ScreenPtr);
+ 
+ /*** These are DDX layer privates ***/
+ 
+-
+ typedef struct {
+    CreateWindowProcPtr		CreateWindow;
+    DestroyWindowProcPtr		DestroyWindow;
+@@ -276,4 +275,3 @@ typedef struct _KdXVWindowRec{
+ } KdXVWindowRec, *KdXVWindowPtr;
+ 
+ #endif  /* _XVDIX_H_ */
+-

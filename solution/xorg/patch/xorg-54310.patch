@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 0849690..db49e31 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1385,7 +1385,7 @@ DeliverTouchEmulatedEvent(DeviceIntPtr dev, TouchPointInfoPtr ti, InternalEvent
+     if (grab)
+     {
+         /* this side-steps the usual activation mechansims, but... */
+-        if (ev->any.type == ET_TouchBegin)
++        if (ev->any.type == ET_TouchBegin && !dev->deviceGrab.grab)
+             ActivatePassiveGrab(dev, grab, ptrev, ev); /* also delivers the event */
+         else {
+             int deliveries = 0;

@@ -1,0 +1,13 @@
+diff --git a/fb/fbpoint.c b/fb/fbpoint.c
+index c0ea8ba..f260a69 100644
+--- a/fb/fbpoint.c
++++ b/fb/fbpoint.c
+@@ -154,7 +154,7 @@ fbPolyPoint (DrawablePtr    pDrawable,
+     case 32:    dots = fbDots32; break;
+     }
+ #endif
+-    for (nBox = REGION_NUM_RECTS (pClip), pBox = REGION_RECTS (pClip);
++    for (nBox = RegionNumRects (pClip), pBox = RegionRects (pClip);
+ 	 nBox--; pBox++)
+ 	(*dots) (dst, dstStride, dstBpp, pBox, pptInit, nptInit, 
+ 		 pDrawable->x, pDrawable->y, dstXoff, dstYoff, and, xor);

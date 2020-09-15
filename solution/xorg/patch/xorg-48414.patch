@@ -1,0 +1,37 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index ad7b3db..296c57f 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -63,8 +63,6 @@ static Bool miPointerDisplayCursor(DeviceIntPtr pDev, ScreenPtr pScreen,
+                                    CursorPtr pCursor);
+ static void miPointerConstrainCursor(DeviceIntPtr pDev, ScreenPtr pScreen,
+                                      BoxPtr pBox); 
+-static void miPointerPointerNonInterestBox(DeviceIntPtr pDev, 
+-                                           ScreenPtr pScreen, BoxPtr pBox);
+ static void miPointerCursorLimits(DeviceIntPtr pDev, ScreenPtr pScreen,
+                                   CursorPtr pCursor, BoxPtr pHotBox, 
+                                   BoxPtr pTopLeftBox);
+@@ -115,7 +113,6 @@ miPointerInitialize (ScreenPtr                  pScreen,
+     pScreen->UnrealizeCursor = miPointerUnrealizeCursor;
+     pScreen->SetCursorPosition = miPointerSetCursorPosition;
+     pScreen->RecolorCursor = miRecolorCursor;
+-    pScreen->PointerNonInterestBox = miPointerPointerNonInterestBox;
+     pScreen->DeviceCursorInitialize = miPointerDeviceInitialize;
+     pScreen->DeviceCursorCleanup = miPointerDeviceCleanup;
+ 
+@@ -211,15 +208,6 @@ miPointerConstrainCursor (DeviceIntPtr pDev, ScreenPtr pScreen, BoxPtr pBox)
+ 
+ /*ARGSUSED*/
+ static void
+-miPointerPointerNonInterestBox (DeviceIntPtr    pDev,
+-                                ScreenPtr       pScreen,
+-                                BoxPtr          pBox)
+-{
+-    /* until DIX uses this, this will remain a stub */
+-}
+-
+-/*ARGSUSED*/
+-static void
+ miPointerCursorLimits(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor,
+                       BoxPtr pHotBox, BoxPtr pTopLeftBox)
+ {

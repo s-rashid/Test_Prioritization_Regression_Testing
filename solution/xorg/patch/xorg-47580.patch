@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/os-support/sco/VTsw_sco.c b/hw/xfree86/os-support/sco/VTsw_sco.c
+index d126e78..0a59fb9 100644
+--- a/hw/xfree86/os-support/sco/VTsw_sco.c
++++ b/hw/xfree86/os-support/sco/VTsw_sco.c
+@@ -115,3 +115,13 @@ xf86VTSwitchTo(void)
+     return TRUE;
+   }
+ }
++
++Bool
++xf86VTActivate(int vtno)
++{
++	if (ioctl(xf86Info.consoleFd, VT_ACTIVATE, vtno - 1) < 0) {
++		return(FALSE);
++	}
++
++	return(TRUE);
++}

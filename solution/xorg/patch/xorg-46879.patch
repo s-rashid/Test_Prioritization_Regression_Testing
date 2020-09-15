@@ -1,0 +1,14 @@
+diff --git a/exa/exa_migration_mixed.c b/exa/exa_migration_mixed.c
+index 6065d75..ea6f878 100644
+--- a/exa/exa_migration_mixed.c
++++ b/exa/exa_migration_mixed.c
+@@ -210,7 +210,8 @@ void exaFinishAccess_mixed(PixmapPtr pPixmap, int index)
+ {
+     ExaPixmapPriv(pPixmap);
+ 
+-    if (pExaPixmap->pDamage && exaPixmapIsOffscreen(pPixmap)) {
++    if (pExaPixmap->pDamage && !pExaPixmap->offscreen &&
++	    exaPixmapIsOffscreen(pPixmap)){
+ 	DamageRegionProcessPending(&pPixmap->drawable);
+ 
+ 	if (index == EXA_PREPARE_DEST || index == EXA_PREPARE_AUX_DEST) {

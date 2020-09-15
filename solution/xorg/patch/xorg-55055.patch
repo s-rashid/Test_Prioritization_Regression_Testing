@@ -1,0 +1,25 @@
+diff --git a/config/config.c b/config/config.c
+index 0dae3ad..2b96dbb 100644
+--- a/config/config.c
++++ b/config/config.c
+@@ -112,18 +112,15 @@ device_is_duplicate(const char *config_info)
+ {
+     DeviceIntPtr dev;
+ 
+-    for (dev = inputInfo.devices; dev; dev = dev->next)
+-    {
++    for (dev = inputInfo.devices; dev; dev = dev->next) {
+         if (dev->config_info && (strcmp(dev->config_info, config_info) == 0))
+             return TRUE;
+     }
+ 
+-    for (dev = inputInfo.off_devices; dev; dev = dev->next)
+-    {
++    for (dev = inputInfo.off_devices; dev; dev = dev->next) {
+         if (dev->config_info && (strcmp(dev->config_info, config_info) == 0))
+             return TRUE;
+     }
+ 
+     return FALSE;
+ }
+-

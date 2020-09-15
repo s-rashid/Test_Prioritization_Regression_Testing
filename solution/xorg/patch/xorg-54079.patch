@@ -1,0 +1,12 @@
+diff --git a/config/hal.c b/config/hal.c
+index aa234eb..088c993 100644
+--- a/config/hal.c
++++ b/config/hal.c
+@@ -348,6 +348,7 @@ device_added(LibHalContext *hal_ctx, const char *udi)
+                         if (!strcasecmp(tmp, ".options") && (!xkb_opts.options))
+                             xkb_opts.options = strdup(tmp_val);
+                     }
++                    free(tmp_val);
+                 }
+             }
+         }

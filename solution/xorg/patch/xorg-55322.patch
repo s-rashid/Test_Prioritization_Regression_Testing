@@ -1,0 +1,404 @@
+diff --git a/hw/dmx/input/dmxcommon.c b/hw/dmx/input/dmxcommon.c
+index c665dad..5f25e88 100644
+--- a/hw/dmx/input/dmxcommon.c
++++ b/hw/dmx/input/dmxcommon.c
+@@ -71,8 +71,8 @@ typedef struct _myPrivate {
+     DMX_COMMON_PRIVATE;
+ } myPrivate;
+ 
+-static void dmxCommonKbdSetAR(Display *display,
+-                              unsigned char *old, unsigned char *new)
++static void
++dmxCommonKbdSetAR(Display * display, unsigned char *old, unsigned char *new)
+ {
+     XKeyboardControl kc;
+     XKeyboardState   ks;
+@@ -102,7 +102,8 @@ static void dmxCommonKbdSetAR(Display *display,
+     }
+ }
+ 
+-static void dmxCommonKbdSetLeds(Display *display, unsigned long new)
++static void
++dmxCommonKbdSetLeds(Display * display, unsigned long new)
+ {
+     int              i;
+     XKeyboardControl kc;
+@@ -114,15 +115,13 @@ static void dmxCommonKbdSetLeds(Display *display, unsigned long new)
+     }
+ }
+ 
+-static void dmxCommonKbdSetCtrl(Display *display,
+-                                KeybdCtrl *old, KeybdCtrl *new)
++static void
++dmxCommonKbdSetCtrl(Display * display, KeybdCtrl * old, KeybdCtrl * new)
+ {
+     XKeyboardControl kc;
+     unsigned long    mask = KBKeyClickPercent | KBAutoRepeatMode;
+ 
+-    if (!old
+-        || old->click         != new->click
+-        || old->autoRepeat    != new->autoRepeat) {
++    if (!old || old->click != new->click || old->autoRepeat != new->autoRepeat) {
+         
+         kc.key_click_percent = new->click;
+         kc.auto_repeat_mode  = new->autoRepeat;
+@@ -131,18 +130,17 @@ static void dmxCommonKbdSetCtrl(Display *display,
+     }
+ 
+     dmxCommonKbdSetLeds(display, new->leds);
+-    dmxCommonKbdSetAR(display, old ? old->autoRepeats : NULL,
+-                      new->autoRepeats);
++    dmxCommonKbdSetAR(display, old ? old->autoRepeats : NULL, new->autoRepeats);
+ }
+ 
+-static void dmxCommonMouSetCtrl(Display *display, PtrCtrl *old, PtrCtrl *new)
++static void
++dmxCommonMouSetCtrl(Display * display, PtrCtrl * old, PtrCtrl * new)
+ {
+     Bool do_accel, do_threshold;
+     
+     if (!old
+         || old->num != new->num
+-        || old->den != new->den
+-        || old->threshold != new->threshold) {
++        || old->den != new->den || old->threshold != new->threshold) {
+         do_accel     = (new->num > 0 && new->den > 0);
+         do_threshold = (new->threshold > 0);
+         if (do_accel || do_threshold) {
+@@ -153,21 +151,24 @@ static void dmxCommonMouSetCtrl(Display *display, PtrCtrl *old, PtrCtrl *new)
+ }
+ 
+ /** Update the keyboard control. */
+-void dmxCommonKbdCtrl(DevicePtr pDev, KeybdCtrl *ctrl)
++void
++dmxCommonKbdCtrl(DevicePtr pDev, KeybdCtrl * ctrl)
+ {
+     GETPRIVFROMPDEV;
+ 
+-    if (!priv->stateSaved && priv->be) dmxCommonSaveState(priv);
+-    if (!priv->display || !priv->stateSaved) return;
++    if (!priv->stateSaved && priv->be)
++        dmxCommonSaveState(priv);
++    if (!priv->display || !priv->stateSaved)
++        return;
+     dmxCommonKbdSetCtrl(priv->display,
+-                        priv->kctrlset ? &priv->kctrl : NULL,
+-                        ctrl);
++                        priv->kctrlset ? &priv->kctrl : NULL, ctrl);
+     priv->kctrl    = *ctrl;
+     priv->kctrlset = 1;
+ }
+ 
+ /** Update the mouse control. */
+-void dmxCommonMouCtrl(DevicePtr pDev, PtrCtrl *ctrl)
++void
++dmxCommonMouCtrl(DevicePtr pDev, PtrCtrl * ctrl)
+ {
+     GETPRIVFROMPDEV;
+ 
+@@ -180,15 +181,15 @@ void dmxCommonMouCtrl(DevicePtr pDev, PtrCtrl *ctrl)
+                                  * scale of the window. */
+     if (priv->be) {
+         dmxCommonMouSetCtrl(priv->display,
+-                            priv->mctrlset ? &priv->mctrl : NULL,
+-                            ctrl);
++                            priv->mctrlset ? &priv->mctrl : NULL, ctrl);
+         priv->mctrl    = *ctrl;
+         priv->mctrlset = 1;
+     }
+ }
+ 
+ /** Sound they keyboard bell. */
+-void dmxCommonKbdBell(DevicePtr pDev, int percent,
++void
++dmxCommonKbdBell(DevicePtr pDev, int percent,
+                       int volume, int pitch, int duration)
+ {
+     GETPRIVFROMPDEV;
+@@ -196,7 +197,8 @@ void dmxCommonKbdBell(DevicePtr pDev, int percent,
+     XKeyboardState   ks;
+     unsigned long    mask = KBBellPercent | KBBellPitch | KBBellDuration;
+     
+-    if (!priv->be) XGetKeyboardControl(priv->display, &ks);
++    if (!priv->be)
++        XGetKeyboardControl(priv->display, &ks);
+     kc.bell_percent  = volume;
+     kc.bell_pitch    = pitch;
+     kc.bell_duration = duration;
+@@ -211,7 +213,8 @@ void dmxCommonKbdBell(DevicePtr pDev, int percent,
+ }
+ 
+ /** Get the keyboard mapping. */
+-void dmxCommonKbdGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
++void
++dmxCommonKbdGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+ {
+     GETPRIVFROMPDEV;
+     int             min_keycode;
+@@ -237,7 +240,6 @@ void dmxCommonKbdGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+     pKeySyms->mapWidth   = map_width;
+     pKeySyms->map        = keyboard_mapping;
+ 
+-
+                                 /* Compute pModMap  */
+     modifier_mapping     = XGetModifierMapping(priv->display);
+     for (i = 0; i < MAP_LENGTH; i++)
+@@ -246,7 +248,8 @@ void dmxCommonKbdGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+         int max_keypermod = modifier_mapping->max_keypermod;
+         
+         for (i = 0; i < max_keypermod; i++) {
+-            CARD8 keycode = modifier_mapping->modifiermap[j*max_keypermod + i];
++            CARD8 keycode =
++                modifier_mapping->modifiermap[j * max_keypermod + i];
+             if (keycode)
+                 pModMap[keycode] |= 1 << j;
+         }
+@@ -256,7 +259,8 @@ void dmxCommonKbdGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+ 
+ /** Fill in the XKEYBOARD parts of the \a info structure for the
+  * specified \a pDev. */
+-void dmxCommonKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxCommonKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -279,16 +283,19 @@ void dmxCommonKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+                     "XKEYBOARD: symbols  = %s\n", info->names.symbols);
+         dmxLogInput(dmxInput,
+                     "XKEYBOARD: geometry = %s\n", info->names.geometry);
+-        if ((pt = strchr(info->names.keycodes, '+'))) *pt = '\0';
++        if ((pt = strchr(info->names.keycodes, '+')))
++            *pt = '\0';
+     }
+     dmxCommonRestoreState(priv);
+ }
+ 
+ /** Turn \a pDev on (i.e., take input from \a pDev). */
+-int dmxCommonKbdOn(DevicePtr pDev)
++int
++dmxCommonKbdOn(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+-    if (priv->be) dmxCommonSaveState(priv);
++    if (priv->be)
++        dmxCommonSaveState(priv);
+     priv->eventMask |= DMX_KEYBOARD_EVENT_MASK;
+     XSelectInput(priv->display, priv->window, priv->eventMask);
+     if (priv->be)
+@@ -298,7 +305,8 @@ int dmxCommonKbdOn(DevicePtr pDev)
+ }
+ 
+ /** Turn \a pDev off. */
+-void dmxCommonKbdOff(DevicePtr pDev)
++void
++dmxCommonKbdOff(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     priv->eventMask &= ~DMX_KEYBOARD_EVENT_MASK;
+@@ -307,7 +315,8 @@ void dmxCommonKbdOff(DevicePtr pDev)
+ }
+ 
+ /** Turn \a pDev on (i.e., take input from \a pDev). */
+-int dmxCommonOthOn(DevicePtr pDev)
++int
++dmxCommonOthOn(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -351,17 +360,20 @@ int dmxCommonOthOn(DevicePtr pDev)
+ }
+ 
+ /** Turn \a pDev off. */
+-void dmxCommonOthOff(DevicePtr pDev)
++void
++dmxCommonOthOff(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     
+-    if (priv->xi) XCloseDevice(priv->display, priv->xi);
++    if (priv->xi)
++        XCloseDevice(priv->display, priv->xi);
+     priv->xi = NULL;
+ }
+ 
+ /** Fill the \a info structure with information needed to initialize \a
+  * pDev. */ 
+-void dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -389,6 +401,7 @@ void dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+                 XKeyInfoPtr      ki;
+                 XButtonInfoPtr   bi;
+                 XValuatorInfoPtr vi;
++
+                 for (j = 0, any = devices[i].inputclassinfo;
+                      j < devices[i].num_classes;
+                      any = (XAnyClassPtr)((char *)any + any->length), j++) {
+@@ -442,41 +455,48 @@ void dmxCommonOthGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+         }
+         XFreeDeviceList(devices);
+     }
+-    if (display != priv->display) XCloseDisplay(display);
++    if (display != priv->display)
++        XCloseDisplay(display);
+ }
+ 
+ /** Obtain the mouse button mapping. */
+-void dmxCommonMouGetMap(DevicePtr pDev, unsigned char *map, int *nButtons)
++void
++dmxCommonMouGetMap(DevicePtr pDev, unsigned char *map, int *nButtons)
+ {
+     GETPRIVFROMPDEV;
+     int i;
+     
+     *nButtons = XGetPointerMapping(priv->display, map, DMX_MAX_BUTTONS);
+-    for (i = 0; i <= *nButtons; i++) map[i] = i;
++    for (i = 0; i <= *nButtons; i++)
++        map[i] = i;
+ }
+ 
+-static void *dmxCommonXSelect(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxCommonXSelect(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     myPrivate *priv = closure;
++
+     XSelectInput(dmxScreen->beDisplay, dmxScreen->scrnWin, priv->eventMask);
+     return NULL;
+ }
+ 
+-static void *dmxCommonAddEnabledDevice(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxCommonAddEnabledDevice(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     AddEnabledDevice(XConnectionNumber(dmxScreen->beDisplay));
+     return NULL;
+ }
+ 
+-static void *dmxCommonRemoveEnabledDevice(DMXScreenInfo *dmxScreen,
+-                                          void *closure)
++static void *
++dmxCommonRemoveEnabledDevice(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     RemoveEnabledDevice(XConnectionNumber(dmxScreen->beDisplay));
+     return NULL;
+ }
+ 
+ /** Turn \a pDev on (i.e., take input from \a pDev). */
+-int dmxCommonMouOn(DevicePtr pDev)
++int
++dmxCommonMouOn(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -484,15 +504,14 @@ int dmxCommonMouOn(DevicePtr pDev)
+     priv->eventMask |= DMX_POINTER_EVENT_MASK;
+     if (dmxShadowFB) {
+         XWarpPointer(priv->display, priv->window, priv->window,
+-                     0, 0, 0, 0,
+-                     priv->initPointerX,
+-                     priv->initPointerY);
++                     0, 0, 0, 0, priv->initPointerX, priv->initPointerY);
+         dmxSync(&dmxScreens[dmxInput->scrnIdx], TRUE);
+     }
+     if (!priv->be) {
+         XSelectInput(priv->display, priv->window, priv->eventMask);
+         AddEnabledDevice(XConnectionNumber(priv->display));
+-    } else {
++    }
++    else {
+         dmxPropertyIterate(priv->be, dmxCommonXSelect, priv);
+         dmxPropertyIterate(priv->be, dmxCommonAddEnabledDevice, dmxInput);
+     }
+@@ -501,7 +520,8 @@ int dmxCommonMouOn(DevicePtr pDev)
+ }
+ 
+ /** Turn \a pDev off. */
+-void dmxCommonMouOff(DevicePtr pDev)
++void
++dmxCommonMouOff(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -510,7 +530,8 @@ void dmxCommonMouOff(DevicePtr pDev)
+     if (!priv->be) {
+         RemoveEnabledDevice(XConnectionNumber(priv->display));
+         XSelectInput(priv->display, priv->window, priv->eventMask);
+-    } else {
++    }
++    else {
+         dmxPropertyIterate(priv->be, dmxCommonRemoveEnabledDevice, dmxInput);
+         dmxPropertyIterate(priv->be, dmxCommonXSelect, priv);
+     }
+@@ -521,12 +542,14 @@ void dmxCommonMouOff(DevicePtr pDev)
+  * not on any screen, return -1.  The number returned is an index into
+  * \a dmxScreenInfo and is between -1 and \a dmxNumScreens - 1,
+  * inclusive. */
+-int dmxFindPointerScreen(int x, int y)
++int
++dmxFindPointerScreen(int x, int y)
+ {
+     int i;
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+ 	ScreenPtr pScreen = screenInfo.screens[i];
++
+ 	if (x >= pScreen->x && x < pScreen->x + pScreen->width &&
+ 	    y >= pScreen->y && y < pScreen->y + pScreen->height)
+ 	    return i;
+@@ -540,7 +563,8 @@ int dmxFindPointerScreen(int x, int y)
+  * (e.g., when a keyboard and mouse form a pair that should share the
+  * same private area).  If the requested private area cannot be located,
+  * then NULL is returned. */
+-pointer dmxCommonCopyPrivate(DeviceIntPtr pDevice)
++pointer
++dmxCommonCopyPrivate(DeviceIntPtr pDevice)
+ {
+     GETDMXLOCALFROMPDEVICE;
+     DMXInputInfo *dmxInput = &dmxInputs[dmxLocal->inputIdx];
+@@ -563,15 +587,18 @@ pointer dmxCommonCopyPrivate(DeviceIntPtr pDevice)
+  * active or not active (for a full-screen window, this only happens at
+  * server startup and server shutdown).
+  */
+-void dmxCommonSaveState(pointer private)
++void
++dmxCommonSaveState(pointer private)
+ {
+     GETPRIVFROMPRIVATE;
+     XKeyboardState   ks;
+     unsigned long    i;
+     XModifierKeymap  *modmap;
+ 
+-    if (dmxInput->console) priv = dmxInput->devs[0]->private;
+-    if (!priv->display || priv->stateSaved) return;
++    if (dmxInput->console)
++        priv = dmxInput->devs[0]->private;
++    if (!priv->display || priv->stateSaved)
++        return;
+     DMXDBG0("dmxCommonSaveState\n");
+     if (dmxUseXKB && (priv->xkb = XkbAllocKeyboard())) {
+         if (XkbGetIndicatorMap(priv->display, XkbAllIndicatorsMask, priv->xkb)
+@@ -579,7 +606,8 @@ void dmxCommonSaveState(pointer private)
+             dmxLogInput(dmxInput, "Could not get XKB information\n");
+             XkbFreeKeyboard(priv->xkb, 0, True);
+             priv->xkb = NULL;
+-        } else {
++        }
++        else {
+             if (priv->xkb->indicators) {
+                 priv->savedIndicators = *priv->xkb->indicators;
+                 for (i = 0; i < XkbNumIndicators; i++)
+@@ -617,7 +645,8 @@ void dmxCommonSaveState(pointer private)
+ }
+ 
+ /** This routine restores all the information saved by #dmxCommonSaveState. */
+-void dmxCommonRestoreState(pointer private)
++void
++dmxCommonRestoreState(pointer private)
+ {
+     GETPRIVFROMPRIVATE;
+     int retcode = -1;

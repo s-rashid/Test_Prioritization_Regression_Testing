@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winrandr.c b/hw/xwin/winrandr.c
+index c581193..596c1ab 100644
+--- a/hw/xwin/winrandr.c
++++ b/hw/xwin/winrandr.c
+@@ -122,8 +122,6 @@ Bool
+ winRandRScreenSetSize (ScreenPtr  pScreen,
+ 		       CARD16	    width,
+ 		       CARD16	    height,
+-		       CARD16       pixWidth,
+-		       CARD16       pixHeight,
+ 		       CARD32	    mmWidth,
+ 		       CARD32	    mmHeight)
+ {

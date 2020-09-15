@@ -1,0 +1,24 @@
+diff --git a/composite/compext.c b/composite/compext.c
+index d37d52a..30d9dc2 100644
+--- a/composite/compext.c
++++ b/composite/compext.c
+@@ -50,8 +50,8 @@
+ #include "protocol-versions.h"
+ 
+ static CARD8	CompositeReqCode;
+-static int CompositeClientPrivateKeyIndex;
+-static DevPrivateKey CompositeClientPrivateKey = &CompositeClientPrivateKeyIndex;
++static DevPrivateKeyRec CompositeClientPrivateKeyRec;
++#define CompositeClientPrivateKey (&CompositeClientPrivateKeyRec)
+ RESTYPE		CompositeClientWindowType;
+ RESTYPE		CompositeClientSubwindowsType;
+ RESTYPE		CompositeClientOverlayType;
+@@ -558,7 +558,7 @@ CompositeExtensionInit (void)
+     if (!CompositeClientOverlayType)
+ 	return;
+ 
+-    if (!dixRequestPrivate(CompositeClientPrivateKey,
++    if (!dixRegisterPrivateKey(&CompositeClientPrivateKeyRec, PRIVATE_CLIENT,
+ 			   sizeof(CompositeClientRec)))
+ 	return;
+ 

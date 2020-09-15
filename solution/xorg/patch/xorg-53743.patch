@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index 73b6573..1a1f42a 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -44,6 +44,7 @@
+ #include "xf86Xinput.h"
+ #include "xf86Optrec.h"
+ #include "xf86Parser.h"
++#include "optionstr.h"
+ 
+ static Bool ParseOptionValue(int scrnIndex, XF86OptionPtr options, OptionInfoPtr p,
+ 			     Bool markUsed);

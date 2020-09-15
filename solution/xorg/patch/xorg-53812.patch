@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/os-support/bsd/sparc64_video.c b/hw/xfree86/os-support/bsd/sparc64_video.c
+index a2a30c9..960c850 100644
+--- a/hw/xfree86/os-support/bsd/sparc64_video.c
++++ b/hw/xfree86/os-support/bsd/sparc64_video.c
+@@ -34,10 +34,6 @@
+ #include "xf86_OSlib.h"
+ #include "xf86OSpriv.h"
+ 
+-#ifndef MAP_FAILED
+-#define MAP_FAILED ((caddr_t)-1)
+-#endif
+-
+ /***************************************************************************/
+ /* Video Memory Mapping section                                            */
+ /***************************************************************************/

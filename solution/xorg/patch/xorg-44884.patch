@@ -1,0 +1,67 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index 88416bb..8200aad 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -364,42 +364,36 @@ void
+ winUpdateIcon (Window id)
+ {
+   WindowPtr		pWin;
+-  HICON			hIcon, hiconOld;
++  HICON			hIcon, hIconSmall=NULL, hIconOld;
+ 
+   pWin = (WindowPtr) LookupIDByType (id, RT_WINDOW);
+   if (!pWin) return;
++  winWindowPriv(pWin);
++  if (pWinPriv->hWnd) {
+   hIcon = winOverrideIcon ((unsigned long)pWin);
+-
+-  if (!hIcon)
++    if (!hIcon) {
+     hIcon = winXIconToHICON (pWin, GetSystemMetrics(SM_CXICON));
++      if (!hIcon) {
++        hIcon = g_hIconX;
++        hIconSmall = g_hSmallIconX;
++      } else {
++        /* Leave undefined if not found */
++        hIconSmall = winXIconToHICON (pWin, GetSystemMetrics(SM_CXSMICON));
++      }
++    }
+ 
+-  if (hIcon)
+-    {
+-      winWindowPriv(pWin);
+-
+-      if (pWinPriv->hWnd)
+-	{
+-	  hiconOld = (HICON) SetClassLong (pWinPriv->hWnd,
+-					   GCL_HICON,
+-					   (int) hIcon);
++    /* Set the large icon */
++    hIconOld = (HICON) SendMessage (pWinPriv->hWnd,
++                     WM_SETICON, ICON_BIG, (LPARAM) hIcon);
+ 	  
+ 	  /* Delete the icon if its not the default */
+-	  winDestroyIcon(hiconOld);
+-	}
+-    }
++    winDestroyIcon(hIconOld);
+  
+-  hIcon = winXIconToHICON (pWin, GetSystemMetrics(SM_CXSMICON));
+-  if (hIcon)
+-    {
+-      winWindowPriv(pWin);
++    /* Same for the small icon */
++    hIconOld = (HICON) SendMessage (pWinPriv->hWnd,
++                    WM_SETICON, ICON_SMALL, (LPARAM) hIconSmall);
++    winDestroyIcon(hIconOld);
+ 
+-      if (pWinPriv->hWnd)
+-	{
+-	  hiconOld = (HICON) SetClassLong (pWinPriv->hWnd,
+-					   GCL_HICONSM,
+-					   (int) hIcon);
+-	  winDestroyIcon (hiconOld);
+-	}
+     }
+ }
+ 

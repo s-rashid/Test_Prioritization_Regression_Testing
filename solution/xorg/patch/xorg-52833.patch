@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/xpr/xprCursor.c b/hw/xquartz/xpr/xprCursor.c
+index 216678e..2b31865 100644
+--- a/hw/xquartz/xpr/xprCursor.c
++++ b/hw/xquartz/xpr/xprCursor.c
+@@ -37,7 +37,6 @@
+ 
+ #include "quartz.h"
+ #include "xpr.h"
+-#include "darwin.h"
+ #include "darwinEvents.h"
+ #include <Xplugin.h>
+ 

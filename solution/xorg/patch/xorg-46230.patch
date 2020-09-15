@@ -1,0 +1,24 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index 0400062..6b0e9fd 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -642,9 +642,6 @@ int AllocXTestDevice (ClientPtr client, char* name,
+     if ( retval == Success ){
+         dixSetPrivate(&((*ptr)->devPrivates), XTestDevicePrivateKey, (void *)master_ptr->id);
+         dixSetPrivate(&((*keybd)->devPrivates), XTestDevicePrivateKey, (void *)master_keybd->id);
+-    }
+-
+-    xfree( xtestname );
+ 
+     XIChangeDeviceProperty(*ptr, XIGetKnownProperty(XI_PROP_XTEST_DEVICE),
+                            XA_INTEGER, 8, PropModeReplace, 1, &dummy,
+@@ -656,6 +653,9 @@ int AllocXTestDevice (ClientPtr client, char* name,
+                            FALSE);
+     XISetDevicePropertyDeletable(*keybd, XIGetKnownProperty(XI_PROP_XTEST_DEVICE), FALSE);
+     XIRegisterPropertyHandler(*keybd, DeviceSetXTestProperty, NULL, NULL);
++    }
++
++    xfree( xtestname );
+ 
+     return retval;
+ }

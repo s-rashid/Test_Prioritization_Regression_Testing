@@ -1,0 +1,745 @@
+diff --git a/hw/dmx/glxProxy/glxcmdsswap.c b/hw/dmx/glxProxy/glxcmdsswap.c
+index f28a79d..ec0e83d 100644
+--- a/hw/dmx/glxProxy/glxcmdsswap.c
++++ b/hw/dmx/glxProxy/glxcmdsswap.c
+@@ -52,9 +52,11 @@ int __glXSwapGetFBConfigsSGIX(__GLXclientState *cl, GLbyte *pc);
+ ** it is called at the end of the unswapped routine.
+ */
+ 
+-int __glXSwapCreateContext(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreateContext(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreateContextReq *req = (xGLXCreateContextReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -66,9 +68,11 @@ int __glXSwapCreateContext(__GLXclientState *cl, GLbyte *pc)
+     return __glXCreateContext(cl, pc);
+ }
+ 
+-int __glXSwapCreateNewContext(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreateNewContext(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreateNewContextReq *req = (xGLXCreateNewContextReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -80,9 +84,11 @@ int __glXSwapCreateNewContext(__GLXclientState *cl, GLbyte *pc)
+     return __glXCreateNewContext(cl, pc);
+ }
+ 
+-int __glXSwapCreateContextWithConfigSGIX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreateContextWithConfigSGIX(__GLXclientState * cl, GLbyte * pc)
+ {
+-    xGLXCreateContextWithConfigSGIXReq *req = (xGLXCreateContextWithConfigSGIXReq *) pc;
++    xGLXCreateContextWithConfigSGIXReq *req =
++        (xGLXCreateContextWithConfigSGIXReq *) pc;
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -94,7 +100,8 @@ int __glXSwapCreateContextWithConfigSGIX(__GLXclientState *cl, GLbyte *pc)
+     return __glXCreateContextWithConfigSGIX(cl, pc);
+ }
+ 
+-int __glXSwapQueryMaxSwapBarriersSGIX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapQueryMaxSwapBarriersSGIX(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXQueryMaxSwapBarriersSGIXReq *req =
+ 	(xGLXQueryMaxSwapBarriersSGIXReq *)pc;
+@@ -106,9 +113,11 @@ int __glXSwapQueryMaxSwapBarriersSGIX(__GLXclientState *cl, GLbyte *pc)
+     return __glXQueryMaxSwapBarriersSGIX(cl, pc);
+ }
+ 
+-int __glXSwapBindSwapBarrierSGIX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapBindSwapBarrierSGIX(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXBindSwapBarrierSGIXReq *req = (xGLXBindSwapBarrierSGIXReq *)pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -118,9 +127,11 @@ int __glXSwapBindSwapBarrierSGIX(__GLXclientState *cl, GLbyte *pc)
+     return __glXBindSwapBarrierSGIX(cl, pc);
+ }
+ 
+-int __glXSwapJoinSwapGroupSGIX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapJoinSwapGroupSGIX(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXJoinSwapGroupSGIXReq *req = (xGLXJoinSwapGroupSGIXReq *)pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -130,9 +141,11 @@ int __glXSwapJoinSwapGroupSGIX(__GLXclientState *cl, GLbyte *pc)
+     return __glXJoinSwapGroupSGIX(cl, pc);
+ }
+ 
+-int __glXSwapDestroyContext(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapDestroyContext(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXDestroyContextReq *req = (xGLXDestroyContextReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -141,9 +154,11 @@ int __glXSwapDestroyContext(__GLXclientState *cl, GLbyte *pc)
+     return __glXDestroyContext(cl, pc);
+ }
+ 
+-int __glXSwapMakeCurrent(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapMakeCurrent(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXMakeCurrentReq *req = (xGLXMakeCurrentReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -154,9 +169,11 @@ int __glXSwapMakeCurrent(__GLXclientState *cl, GLbyte *pc)
+     return __glXMakeCurrent(cl, pc);
+ }
+ 
+-int __glXSwapMakeContextCurrent(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapMakeContextCurrent(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXMakeContextCurrentReq *req = (xGLXMakeContextCurrentReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -168,9 +185,11 @@ int __glXSwapMakeContextCurrent(__GLXclientState *cl, GLbyte *pc)
+     return __glXMakeContextCurrent(cl, pc);
+ }
+ 
+-int __glXSwapMakeCurrentReadSGI(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapMakeCurrentReadSGI(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXMakeCurrentReadSGIReq *req = (xGLXMakeCurrentReadSGIReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -182,9 +201,11 @@ int __glXSwapMakeCurrentReadSGI(__GLXclientState *cl, GLbyte *pc)
+     return __glXMakeCurrentReadSGI(cl, pc);
+ }
+ 
+-int __glXSwapIsDirect(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapIsDirect(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXIsDirectReq *req = (xGLXIsDirectReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -193,9 +214,11 @@ int __glXSwapIsDirect(__GLXclientState *cl, GLbyte *pc)
+     return __glXIsDirect(cl, pc);
+ }
+ 
+-int __glXSwapQueryVersion(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapQueryVersion(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXQueryVersionReq *req = (xGLXQueryVersionReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -205,9 +228,11 @@ int __glXSwapQueryVersion(__GLXclientState *cl, GLbyte *pc)
+     return __glXQueryVersion(cl, pc);
+ }
+ 
+-int __glXSwapWaitGL(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapWaitGL(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXWaitGLReq *req = (xGLXWaitGLReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -216,9 +241,11 @@ int __glXSwapWaitGL(__GLXclientState *cl, GLbyte *pc)
+     return __glXWaitGL(cl, pc);
+ }
+ 
+-int __glXSwapWaitX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapWaitX(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXWaitXReq *req = (xGLXWaitXReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -227,9 +254,11 @@ int __glXSwapWaitX(__GLXclientState *cl, GLbyte *pc)
+     return __glXWaitX(cl, pc);
+ }
+ 
+-int __glXSwapCopyContext(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCopyContext(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCopyContextReq *req = (xGLXCopyContextReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -240,7 +269,8 @@ int __glXSwapCopyContext(__GLXclientState *cl, GLbyte *pc)
+     return __glXCopyContext(cl, pc);
+ }
+ 
+-int __glXSwapGetVisualConfigs(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapGetVisualConfigs(__GLXclientState * cl, GLbyte * pc)
+ {
+    ClientPtr client = cl->client;
+     xGLXGetVisualConfigsReq *req = (xGLXGetVisualConfigsReq *) pc;
+@@ -250,6 +280,7 @@ int __glXSwapGetVisualConfigs(__GLXclientState *cl, GLbyte *pc)
+     CARD32 buf[__GLX_TOTAL_CONFIG];
+     unsigned int screen;
+     int i, p;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -328,9 +359,11 @@ int __glXSwapGetVisualConfigs(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXSwapCreateGLXPixmap(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreateGLXPixmap(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreateGLXPixmapReq *req = (xGLXCreateGLXPixmapReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -342,9 +375,11 @@ int __glXSwapCreateGLXPixmap(__GLXclientState *cl, GLbyte *pc)
+     return __glXCreateGLXPixmap(cl, pc);
+ }
+ 
+-int __glXSwapCreatePixmap(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreatePixmap(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreatePixmapReq *req = (xGLXCreatePixmapReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -357,9 +392,11 @@ int __glXSwapCreatePixmap(__GLXclientState *cl, GLbyte *pc)
+     return __glXCreatePixmap(cl, pc);
+ }
+ 
+-int __glXSwapDestroyGLXPixmap(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapDestroyGLXPixmap(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXDestroyGLXPixmapReq *req = (xGLXDestroyGLXPixmapReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -368,9 +405,11 @@ int __glXSwapDestroyGLXPixmap(__GLXclientState *cl, GLbyte *pc)
+     return __glXDestroyGLXPixmap(cl, pc);
+ }
+ 
+-int __glXSwapSwapBuffers(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapSwapBuffers(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXSwapBuffersReq *req = (xGLXSwapBuffersReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -380,9 +419,11 @@ int __glXSwapSwapBuffers(__GLXclientState *cl, GLbyte *pc)
+     return __glXSwapBuffers(cl, pc);
+ }
+ 
+-int __glXSwapUseXFont(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapUseXFont(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXUseXFontReq *req = (xGLXUseXFontReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -395,10 +436,11 @@ int __glXSwapUseXFont(__GLXclientState *cl, GLbyte *pc)
+     return __glXUseXFont(cl, pc);
+ }
+ 
+-
+-int __glXSwapQueryExtensionsString(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapQueryExtensionsString(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXQueryExtensionsStringReq *req = NULL;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -407,9 +449,11 @@ int __glXSwapQueryExtensionsString(__GLXclientState *cl, GLbyte *pc)
+     return __glXQueryExtensionsString(cl, pc);
+ }
+ 
+-int __glXSwapQueryServerString(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapQueryServerString(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXQueryServerStringReq *req = (xGLXQueryServerStringReq *)pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -419,9 +463,11 @@ int __glXSwapQueryServerString(__GLXclientState *cl, GLbyte *pc)
+     return __glXQueryServerString(cl, pc);
+ }
+ 
+-int __glXSwapClientInfo(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapClientInfo(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXClientInfoReq *req = (xGLXClientInfoReq *)pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -432,9 +478,11 @@ int __glXSwapClientInfo(__GLXclientState *cl, GLbyte *pc)
+     return __glXClientInfo(cl, pc);
+ }
+ 
+-int __glXSwapQueryContextInfoEXT(__GLXclientState *cl, char *pc)
++int
++__glXSwapQueryContextInfoEXT(__GLXclientState * cl, char *pc)
+ {
+     xGLXQueryContextInfoEXTReq *req = (xGLXQueryContextInfoEXTReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -449,7 +497,8 @@ int __glXSwapQueryContextInfoEXT(__GLXclientState *cl, char *pc)
+ ** Swap replies.
+ */
+ 
+-void __glXSwapMakeCurrentReply(ClientPtr client,  xGLXMakeCurrentReadSGIReply *reply)
++void
++__glXSwapMakeCurrentReply(ClientPtr client, xGLXMakeCurrentReadSGIReply * reply)
+ {
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -462,7 +511,8 @@ void __glXSwapMakeCurrentReply(ClientPtr client,  xGLXMakeCurrentReadSGIReply *r
+     WriteToClient(client, sz_xGLXMakeCurrentReadSGIReply, (char *)reply);
+ }
+ 
+-void __glXSwapIsDirectReply(ClientPtr client, xGLXIsDirectReply *reply)
++void
++__glXSwapIsDirectReply(ClientPtr client, xGLXIsDirectReply * reply)
+ {
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -470,7 +520,8 @@ void __glXSwapIsDirectReply(ClientPtr client, xGLXIsDirectReply *reply)
+     WriteToClient(client, sz_xGLXIsDirectReply, (char *)reply);
+ }
+ 
+-void __glXSwapQueryVersionReply(ClientPtr client, xGLXQueryVersionReply *reply)
++void
++__glXSwapQueryVersionReply(ClientPtr client, xGLXQueryVersionReply * reply)
+ {
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -480,10 +531,13 @@ void __glXSwapQueryVersionReply(ClientPtr client, xGLXQueryVersionReply *reply)
+     WriteToClient(client, sz_xGLXQueryVersionReply, (char *)reply);
+ }
+ 
+-void glxSwapQueryExtensionsStringReply(ClientPtr client,
+-				       xGLXQueryExtensionsStringReply *reply, char *buf)
++void
++glxSwapQueryExtensionsStringReply(ClientPtr client,
++                                  xGLXQueryExtensionsStringReply * reply,
++                                  char *buf)
+ {
+     int length = reply->length;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -494,10 +548,12 @@ void glxSwapQueryExtensionsStringReply(ClientPtr client,
+     WriteToClient(client, length << 2, buf);
+ }
+ 
+-void glxSwapQueryServerStringReply(ClientPtr client,
++void
++glxSwapQueryServerStringReply(ClientPtr client,
+ 				   xGLXQueryServerStringReply *reply, char *buf)
+ {
+     int length = reply->length;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+     __GLX_SWAP_INT(&reply->length);
+@@ -508,9 +564,13 @@ void glxSwapQueryServerStringReply(ClientPtr client,
+     WriteToClient(client, length << 2, buf);
+ }
+ 
+-void __glXSwapQueryContextInfoEXTReply(ClientPtr client, xGLXQueryContextInfoEXTReply *reply, int *buf)
++void
++__glXSwapQueryContextInfoEXTReply(ClientPtr client,
++                                  xGLXQueryContextInfoEXTReply * reply,
++                                  int *buf)
+ {
+     int length = reply->length;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -521,11 +581,12 @@ void __glXSwapQueryContextInfoEXTReply(ClientPtr client, xGLXQueryContextInfoEXT
+     WriteToClient(client, length << 2, (char *)buf);
+ }
+ 
+-
+-void __glXSwapQueryContextReply(ClientPtr client,
++void
++__glXSwapQueryContextReply(ClientPtr client,
+                                 xGLXQueryContextReply *reply, int *buf)
+ {
+     int length = reply->length;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -536,8 +597,10 @@ void __glXSwapQueryContextReply(ClientPtr client,
+     WriteToClient(client, length << 2, (char *)buf);
+ }
+ 
+-void __glXSwapGetDrawableAttributesReply(ClientPtr client,
+-                                 xGLXGetDrawableAttributesReply *reply, int *buf) 
++void
++__glXSwapGetDrawableAttributesReply(ClientPtr client,
++                                    xGLXGetDrawableAttributesReply * reply,
++                                    int *buf)
+ {
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+@@ -549,7 +612,10 @@ void __glXSwapGetDrawableAttributesReply(ClientPtr client,
+     WriteToClient(client, reply->length << 2, (char *)buf);
+ }
+ 
+-void __glXSwapQueryMaxSwapBarriersSGIXReply(ClientPtr client, xGLXQueryMaxSwapBarriersSGIXReply *reply)
++void
++__glXSwapQueryMaxSwapBarriersSGIXReply(ClientPtr client,
++                                       xGLXQueryMaxSwapBarriersSGIXReply *
++                                       reply)
+ {
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_SWAP_SHORT(&reply->sequenceNumber);
+@@ -565,12 +631,14 @@ void __glXSwapQueryMaxSwapBarriersSGIXReply(ClientPtr client, xGLXQueryMaxSwapBa
+ ** client library to send batches of GL rendering commands.
+ */
+ 
+-int __glXSwapRender(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapRender(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXRenderReq *req;
+     int left;
+     __GLXrenderHeader *hdr;
+     ClientPtr client = cl->client;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -606,10 +674,12 @@ int __glXSwapRender(__GLXclientState *cl, GLbyte *pc)
+ 	     (opcode <= __GLX_MAX_RENDER_OPCODE) ) {
+ 	    proc = __glXSwapRenderTable[opcode];
+ #if __GLX_MAX_RENDER_OPCODE_EXT > __GLX_MIN_RENDER_OPCODE_EXT
+-	} else if ( (opcode >= __GLX_MIN_RENDER_OPCODE_EXT) && 
++        }
++        else if ((opcode >= __GLX_MIN_RENDER_OPCODE_EXT) &&
+ 	     (opcode <= __GLX_MAX_RENDER_OPCODE_EXT) ) {
+ 	    int index = opcode - __GLX_MIN_RENDER_OPCODE_EXT;
+ 	    __GLXRenderSwapInfo *info = &__glXSwapRenderTable_EXT[index];
++
+ 	    if (info->swapfunc) {
+ 	       proc = info->swapfunc;
+ 	    }
+@@ -620,16 +690,19 @@ int __glXSwapRender(__GLXclientState *cl, GLbyte *pc)
+ 			                info->nelems );
+ 	       }
+ 	       else if (info->elem_size == 2 && info->nelems > 0) {
+-		  __GLX_SWAP_SHORT_ARRAY( (short *)(pc + __GLX_RENDER_HDR_SIZE), 
++                    __GLX_SWAP_SHORT_ARRAY((short *) (pc +
++                                                      __GLX_RENDER_HDR_SIZE),
+ 			                info->nelems );
+ 	       }
+ 	       else if (info->elem_size == 8 && info->nelems > 0) {
+-		  __GLX_SWAP_DOUBLE_ARRAY( (double *)(pc + __GLX_RENDER_HDR_SIZE), 
++                    __GLX_SWAP_DOUBLE_ARRAY((double *) (pc +
++                                                        __GLX_RENDER_HDR_SIZE),
+ 			                info->nelems );
+ 	       }
+ 	    }
+ #endif /* __GLX_MAX_RENDER_OPCODE_EXT > __GLX_MIN_RENDER_OPCODE_EXT */
+-	} else {
++        }
++        else {
+ 	    client->errorValue = 0;
+ 	    return __glXBadRenderRequest;
+ 	}
+@@ -650,11 +723,13 @@ int __glXSwapRender(__GLXclientState *cl, GLbyte *pc)
+ /*
+ ** Execute a large rendering request (one that spans multiple X requests).
+ */
+-int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapRenderLarge(__GLXclientState * cl, GLbyte * pc)
+ {
+    ClientPtr client = cl->client;
+     xGLXRenderLargeReq *req;
+     __GLXrenderLargeHeader *hdr;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -686,15 +761,18 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 	     (opcode <= __GLX_MAX_RENDER_OPCODE) ) {
+ 	    proc = __glXSwapRenderTable[opcode];
+ #if __GLX_MAX_RENDER_OPCODE_EXT > __GLX_MIN_RENDER_OPCODE_EXT
+-	} else if ( (opcode >= __GLX_MIN_RENDER_OPCODE_EXT) && 
++        }
++        else if ((opcode >= __GLX_MIN_RENDER_OPCODE_EXT) &&
+ 	     (opcode <= __GLX_MAX_RENDER_OPCODE_EXT) ) {
+ 	    int index = opcode - __GLX_MIN_RENDER_OPCODE_EXT;
++
+ 	    info = &__glXSwapRenderTable_EXT[index];
+ 	    if (info->swapfunc) {
+ 	       proc = info->swapfunc;
+ 	    }
+ #endif /* __GLX_MAX_RENDER_OPCODE_EXT > __GLX_MIN_RENDER_OPCODE_EXT */
+-	} else {
++        }
++        else {
+ 	    client->errorValue = 0;
+ 	    cl->largeCmdRequestsTotal = 0;
+ 	    return __glXBadLargeRequest;
+@@ -706,8 +784,10 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 	if (cl->largeCmdBufSize < hdr->length) {
+ 	    if (!cl->largeCmdBuf) {
+ 		cl->largeCmdBuf = (GLbyte *) malloc(hdr->length);
+-	    } else {
+-		cl->largeCmdBuf = (GLbyte *) realloc(cl->largeCmdBuf, hdr->length);
++            }
++            else {
++                cl->largeCmdBuf =
++                    (GLbyte *) realloc(cl->largeCmdBuf, hdr->length);
+ 	    }
+ 	    if (!cl->largeCmdBuf) {
+ 	       cl->largeCmdRequestsTotal = 0;
+@@ -727,7 +807,6 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 
+ 	return Success;
+ 	
+-
+     }
+     else if (req->requestNumber < cl->largeCmdRequestsTotal) {
+        /*
+@@ -738,8 +817,7 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 	    return __glXBadLargeRequest;
+        }
+ 
+-       memcpy(cl->largeCmdBuf + cl->largeCmdBytesSoFar, 
+-	           pc, req->dataBytes);
++        memcpy(cl->largeCmdBuf + cl->largeCmdBytesSoFar, pc, req->dataBytes);
+ 
+        cl->largeCmdBytesSoFar += req->dataBytes;
+ 
+@@ -760,8 +838,7 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 	    return __glXBadLargeRequest;
+        }
+ 
+-       memcpy(cl->largeCmdBuf + cl->largeCmdBytesSoFar, 
+-	           pc, req->dataBytes);
++        memcpy(cl->largeCmdBuf + cl->largeCmdBytesSoFar, pc, req->dataBytes);
+ 
+        cl->largeCmdBytesSoFar += req->dataBytes;
+ 
+@@ -769,7 +846,8 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 	  cl->largeCmdMaxReqDataSize = req->dataBytes;
+ 
+ 	if (cl->largeCmdRequestsSwapProc != NULL) {
+-	   (*cl->largeCmdRequestsSwapProc)(cl->largeCmdBuf + __GLX_RENDER_LARGE_HDR_SIZE);
++            (*cl->largeCmdRequestsSwapProc) (cl->largeCmdBuf +
++                                             __GLX_RENDER_LARGE_HDR_SIZE);
+ 	}
+ 	else if (cl->largeCmdRequestsSwap_info &&
+ 	         cl->largeCmdRequestsSwap_info->nelems > 0) {
+@@ -778,11 +856,13 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ 		       cl->largeCmdRequestsSwap_info->nelems );
+ 	   }
+ 	   else if (cl->largeCmdRequestsSwap_info->elem_size == 2) {
+-	      __GLX_SWAP_SHORT_ARRAY( (short *)(pc + __GLX_RENDER_LARGE_HDR_SIZE), 
++                __GLX_SWAP_SHORT_ARRAY((short *) (pc +
++                                                  __GLX_RENDER_LARGE_HDR_SIZE),
+ 		       cl->largeCmdRequestsSwap_info->nelems );
+ 	   }
+ 	   else if (cl->largeCmdRequestsSwap_info->elem_size == 8) {
+-	      __GLX_SWAP_DOUBLE_ARRAY( (double *)(pc + __GLX_RENDER_LARGE_HDR_SIZE), 
++                __GLX_SWAP_DOUBLE_ARRAY((double *) (pc +
++                                                    __GLX_RENDER_LARGE_HDR_SIZE),
+ 		       cl->largeCmdRequestsSwap_info->nelems );
+ 	   }
+ 	}
+@@ -805,7 +885,8 @@ int __glXSwapRenderLarge(__GLXclientState *cl, GLbyte *pc)
+ ** allocating these entry points in the dispatch table.
+ */
+ 
+-int __glXSwapVendorPrivate(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapVendorPrivate(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXVendorPrivateReq *req;
+     CARD32 vendorCode;
+@@ -816,7 +897,6 @@ int __glXSwapVendorPrivate(__GLXclientState *cl, GLbyte *pc)
+     vendorCode = req->vendorCode;
+     __GLX_SWAP_INT(&vendorCode);
+ 
+-
+     switch( vendorCode ) {
+ 
+        case X_GLvop_DeleteTexturesEXT:
+@@ -867,7 +947,8 @@ int __glXSwapVendorPrivate(__GLXclientState *cl, GLbyte *pc)
+ 
+ }
+ 
+-int __glXSwapVendorPrivateWithReply(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapVendorPrivateWithReply(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXVendorPrivateWithReplyReq *req;
+     CARD32 vendorCode;
+@@ -945,9 +1026,11 @@ int __glXSwapVendorPrivateWithReply(__GLXclientState *cl, GLbyte *pc)
+ 
+ }
+ 
+-int __glXSwapGetFBConfigs(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapGetFBConfigs(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXGetFBConfigsReq *req = (xGLXGetFBConfigsReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -956,7 +1039,8 @@ int __glXSwapGetFBConfigs(__GLXclientState *cl, GLbyte *pc)
+     return __glXGetFBConfigs(cl, pc);
+ }
+ 
+-int __glXSwapGetFBConfigsSGIX(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapGetFBConfigsSGIX(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXGetFBConfigsSGIXReq *req = (xGLXGetFBConfigsSGIXReq *)pc;
+    xGLXGetFBConfigsReq new_req;
+@@ -969,9 +1053,11 @@ int __glXSwapGetFBConfigsSGIX(__GLXclientState *cl, GLbyte *pc)
+    return( __glXSwapGetFBConfigs( cl, (GLbyte *)&new_req ) );
+ }
+ 
+-int __glXSwapCreateWindow(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreateWindow(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreateWindowReq *req = (xGLXCreateWindowReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -984,9 +1070,11 @@ int __glXSwapCreateWindow(__GLXclientState *cl, GLbyte *pc)
+     return( __glXCreateWindow( cl, (GLbyte *)pc ) );
+ }
+ 
+-int __glXSwapDestroyWindow(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapDestroyWindow(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXDestroyWindowReq *req = (xGLXDestroyWindowReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -995,7 +1083,8 @@ int __glXSwapDestroyWindow(__GLXclientState *cl, GLbyte *pc)
+     return( __glXDestroyWindow( cl, (GLbyte *)pc ) );
+ }
+ 
+-int __glXSwapQueryContext(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapQueryContext(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXQueryContextReq *req = (xGLXQueryContextReq *)pc;
+ 
+@@ -1008,10 +1097,12 @@ int __glXSwapQueryContext(__GLXclientState *cl, GLbyte *pc)
+  
+ }
+ 
+-int __glXSwapCreatePbuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapCreatePbuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreatePbufferReq *req = (xGLXCreatePbufferReq *)pc;
+     int nattr = req->numAttribs;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -1025,9 +1116,11 @@ int __glXSwapCreatePbuffer(__GLXclientState *cl, GLbyte *pc)
+     return( __glXCreatePbuffer( cl, pc ) );
+ }
+ 
+-int __glXSwapDestroyPbuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapDestroyPbuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXDestroyPbufferReq *req = (xGLXDestroyPbufferReq *) pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -1036,9 +1129,11 @@ int __glXSwapDestroyPbuffer(__GLXclientState *cl, GLbyte *pc)
+     return( __glXDestroyPbuffer( cl, (GLbyte *)pc ) );
+ }
+ 
+-int __glXSwapGetDrawableAttributes(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapGetDrawableAttributes(__GLXclientState * cl, GLbyte * pc)
+ {
+    xGLXGetDrawableAttributesReq *req = (xGLXGetDrawableAttributesReq *)pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT(&req->length);
+@@ -1047,9 +1142,11 @@ int __glXSwapGetDrawableAttributes(__GLXclientState *cl, GLbyte *pc)
+     return( __glXGetDrawableAttributes(cl, pc) );
+ }
+ 
+-int __glXSwapChangeDrawableAttributes(__GLXclientState *cl, GLbyte *pc)
++int
++__glXSwapChangeDrawableAttributes(__GLXclientState * cl, GLbyte * pc)
+ {
+-   xGLXChangeDrawableAttributesReq *req = (xGLXChangeDrawableAttributesReq *)pc;
++    xGLXChangeDrawableAttributesReq *req =
++        (xGLXChangeDrawableAttributesReq *) pc;
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 

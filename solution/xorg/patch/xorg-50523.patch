@@ -1,0 +1,56 @@
+diff --git a/hw/xquartz/xpr/appledri.c b/hw/xquartz/xpr/appledri.c
+index ebd4a43..ff70a38 100644
+--- a/hw/xquartz/xpr/appledri.c
++++ b/hw/xquartz/xpr/appledri.c
+@@ -76,27 +76,6 @@ typedef struct _DRIEvent {
+     unsigned int    mask;
+ } DRIEventRec;
+ 
+-
+-void
+-AppleDRIExtensionInit(void)
+-{
+-    ExtensionEntry* extEntry;
+-
+-    if (DRIExtensionInit() &&
+-        (extEntry = AddExtension(APPLEDRINAME,
+-                                 AppleDRINumberEvents,
+-                                 AppleDRINumberErrors,
+-                                 ProcAppleDRIDispatch,
+-                                 SProcAppleDRIDispatch,
+-                                 AppleDRIResetProc,
+-                                 StandardMinorOpcode))) {
+-        DRIReqCode = (unsigned char)extEntry->base;
+-        DRIErrorBase = extEntry->errorBase;
+-        DRIEventBase = extEntry->eventBase;
+-        EventSwapVector[DRIEventBase] = (EventSwapPtr) SNotifyEvent;
+-    }
+-}
+-
+ /*ARGSUSED*/
+ static void
+ AppleDRIResetProc (
+@@ -419,3 +398,23 @@ SProcAppleDRIDispatch (
+         return BadRequest;
+     }
+ }
++
++void
++AppleDRIExtensionInit(void)
++{
++    ExtensionEntry* extEntry;
++
++    if (DRIExtensionInit() &&
++        (extEntry = AddExtension(APPLEDRINAME,
++                                 AppleDRINumberEvents,
++                                 AppleDRINumberErrors,
++                                 ProcAppleDRIDispatch,
++                                 SProcAppleDRIDispatch,
++                                 AppleDRIResetProc,
++                                 StandardMinorOpcode))) {
++        DRIReqCode = (unsigned char)extEntry->base;
++        DRIErrorBase = extEntry->errorBase;
++        DRIEventBase = extEntry->eventBase;
++        EventSwapVector[DRIEventBase] = (EventSwapPtr) SNotifyEvent;
++    }
++}

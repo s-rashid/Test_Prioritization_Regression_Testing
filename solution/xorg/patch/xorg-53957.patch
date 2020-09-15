@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Config.h b/hw/xfree86/common/xf86Config.h
+index de28704..411fc2c 100644
+--- a/hw/xfree86/common/xf86Config.h
++++ b/hw/xfree86/common/xf86Config.h
+@@ -51,7 +51,7 @@ typedef enum _ConfigStatus {
+ } ConfigStatus;
+ 
+ typedef struct _ModuleDefault {
+-    char *name;
++    const char *name;
+     Bool toLoad;
+     XF86OptionPtr load_opt;
+ } ModuleDefault;

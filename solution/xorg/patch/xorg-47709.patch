@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winconfig.c b/hw/xwin/winconfig.c
+index f1e805c..259b3d2 100644
+--- a/hw/xwin/winconfig.c
++++ b/hw/xwin/winconfig.c
+@@ -136,8 +136,8 @@ winReadConfigfile ()
+ 
+   /* Parse config file into data structure */
+   xf86initConfigFiles();
+-  filename = xf86openConfigFile (CONFIGPATH, xf86ConfigFile, PROJECTROOT);
+   dirname = xf86openConfigDirFiles (CONFIGDIRPATH, xf86ConfigDir, PROJECTROOT);
++  filename = xf86openConfigFile (CONFIGPATH, xf86ConfigFile, PROJECTROOT);
+ 
+   /* Hack for backward compatibility */
+   if (!filename && from == X_DEFAULT)

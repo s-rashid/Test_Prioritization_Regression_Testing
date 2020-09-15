@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86noBus.c b/hw/xfree86/common/xf86noBus.c
+index 0b96349..4f55def 100644
+--- a/hw/xfree86/common/xf86noBus.c
++++ b/hw/xfree86/common/xf86noBus.c
+@@ -51,7 +51,7 @@ xf86ClaimNoSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+ {
+     EntityPtr p;
+     int num;
+-    
++
+     num = xf86AllocateEntity();
+     p = xf86Entities[num];
+     p->driver = drvp;

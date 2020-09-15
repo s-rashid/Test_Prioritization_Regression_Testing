@@ -1,0 +1,15 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 7335fad..696b793 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -37,10 +37,6 @@ SOFTWARE.
+  *      translation from client ids to server addresses.
+  */
+ 
+-#ifdef DEBUG
+-#define MAX_REQUEST_LOG 100
+-#endif
+-
+ extern _X_EXPORT CallbackListPtr ClientStateCallback;
+ 
+ typedef struct {

@@ -1,0 +1,14 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index d5f8b29..e963069 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -164,8 +164,7 @@ CursorDisplayCursor (DeviceIntPtr pDev,
+ 	CursorCurrent[pDev->id] = pCursor;
+ 	for (e = cursorEvents; e; e = e->next)
+ 	{
+-	    if ((e->eventMask & XFixesDisplayCursorNotifyMask) &&
+-		!e->pClient->clientGone)
++	    if ((e->eventMask & XFixesDisplayCursorNotifyMask))
+ 	    {
+ 		xXFixesCursorNotifyEvent	ev;
+ 		ev.type = XFixesEventBase + XFixesCursorNotify;

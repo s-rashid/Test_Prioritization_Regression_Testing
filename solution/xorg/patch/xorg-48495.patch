@@ -1,0 +1,13 @@
+diff --git a/Xi/gtmotion.c b/Xi/gtmotion.c
+index 8e91c5a..32d80ee 100644
+--- a/Xi/gtmotion.c
++++ b/Xi/gtmotion.c
+@@ -154,7 +154,7 @@ ProcXGetDeviceMotionEvents(ClientPtr client)
+ 	WriteToClient(client, length * 4, (char *)coords);
+     }
+     if (coords)
+-	xfree(coords);
++	free(coords);
+     return Success;
+ }
+ 

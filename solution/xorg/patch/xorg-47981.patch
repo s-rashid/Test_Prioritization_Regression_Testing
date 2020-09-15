@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/indirect.c b/hw/xquartz/GL/indirect.c
+index f2af3ff..70558ed 100644
+--- a/hw/xquartz/GL/indirect.c
++++ b/hw/xquartz/GL/indirect.c
+@@ -548,7 +548,7 @@ static CGLPixelFormatObj makeFormat(__GLXconfig *conf) {
+        attr[i++] = conf->samples;
+     }
+      
+-    attr[i + 1] = 0;
++    attr[i] = 0;
+ 
+     error = CGLChoosePixelFormat(attr, &fobj, &formats);
+     if(error) {

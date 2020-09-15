@@ -1,0 +1,22 @@
+diff --git a/hw/dmx/dmx-config.h b/hw/dmx/dmx-config.h
+index 5b7b605..9791dc0 100644
+--- a/hw/dmx/dmx-config.h
++++ b/hw/dmx/dmx-config.h
+@@ -72,17 +72,4 @@
+ /* Enable the DMX extension */
+ #define DMXEXT
+ 
+-/* Disable the extensions that are not currently supported */
+-#undef MULTIBUFFER
+-#undef XV
+-#undef DBE
+-#undef XF86VIDMODE
+-#undef XFreeXDGA
+-#undef XF86DRI
+-#undef SCREENSAVER
+-#undef RANDR
+-#undef XFIXES
+-#undef DAMAGE
+-#undef COMPOSITE
+-
+ #endif /* DMX_CONFIG_H */

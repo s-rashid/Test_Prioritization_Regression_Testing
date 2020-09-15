@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/bus/linuxPci.c b/hw/xfree86/os-support/bus/linuxPci.c
+index 920a149..289315e 100644
+--- a/hw/xfree86/os-support/bus/linuxPci.c
++++ b/hw/xfree86/os-support/bus/linuxPci.c
+@@ -445,7 +445,7 @@ xf86MapLegacyIO(struct pci_device *dev)
+ 						  PCIIOC_MMAP_IS_IO);
+ 	}
+ 	else { /* legacy_io file exists, encode fd */
+-	    DomainMmappedIO[domain] = (pointer)(fd << 24);
++	    DomainMmappedIO[domain] = (pointer)(intptr_t)(fd << 24);
+ 	}
+     }
+ 

@@ -1,0 +1,15 @@
+diff --git a/mi/mieq.c b/mi/mieq.c
+index 8ceda43..0f07b16 100644
+--- a/mi/mieq.c
++++ b/mi/mieq.c
+@@ -277,6 +277,10 @@ ChangeDeviceID(DeviceIntPtr dev, InternalEvent* event)
+         case ET_DeviceChanged:
+             event->device.deviceid = dev->id;
+             break;
++#if XFreeXDGA
++	case ET_DGAEvent:
++	    break;
++#endif
+         case ET_Raw:
+             event->raw.deviceid = dev->id;
+             break;

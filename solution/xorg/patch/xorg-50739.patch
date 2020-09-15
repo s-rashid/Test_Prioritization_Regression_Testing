@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index f197def..4d6771c 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -656,7 +656,6 @@ extern DeviceIntPtr             g_pwinKeyboard;
+ extern FARPROC			g_fpDirectDrawCreate;
+ extern FARPROC			g_fpDirectDrawCreateClipper;
+ 
+-extern HMODULE			g_hmodCommonControls;
+ extern FARPROC			g_fpTrackMouseEvent;
+ 
+ 

@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxinit.c b/hw/dmx/dmxinit.c
+index 6a0c259..e5598e3 100644
+--- a/hw/dmx/dmxinit.c
++++ b/hw/dmx/dmxinit.c
+@@ -59,7 +59,9 @@
+ 
+ #include <X11/Xos.h>                /* For gettimeofday */
+ #include "dixstruct.h"
++#ifdef PANORAMIX
+ #include "panoramiXsrv.h"
++#endif
+ 
+ #include <signal.h>             /* For SIGQUIT */
+ 

@@ -1,0 +1,222 @@
+diff --git a/hw/xquartz/GL/glcontextmodes.c b/hw/xquartz/GL/glcontextmodes.c
+index 79fadf8..dc97f89 100644
+--- a/hw/xquartz/GL/glcontextmodes.c
++++ b/hw/xquartz/GL/glcontextmodes.c
+@@ -193,7 +193,8 @@ _gl_copy_visual_to_context_mode(__GLcontextModes * mode,
+         GL_TRUE : GL_FALSE;
+     mode->bindToMipmapTexture = mode->rgbMode ? GL_TRUE : GL_FALSE;
+     mode->bindToTextureTargets = mode->rgbMode ?
+-        GLX_TEXTURE_1D_BIT_EXT | GLX_TEXTURE_2D_BIT_EXT |
++                                 GLX_TEXTURE_1D_BIT_EXT |
++                                 GLX_TEXTURE_2D_BIT_EXT |
+         GLX_TEXTURE_RECTANGLE_BIT_EXT : 0;
+     mode->yInverted = GL_FALSE;
+ }
+@@ -215,130 +216,172 @@ _gl_get_context_mode_data(const __GLcontextModes * mode, int attribute,
+     case GLX_USE_GL:
+         *value_return = GL_TRUE;
+         return 0;
++
+     case GLX_BUFFER_SIZE:
+         *value_return = mode->rgbBits;
+         return 0;
++
+     case GLX_RGBA:
+         *value_return = mode->rgbMode;
+         return 0;
++
+     case GLX_RED_SIZE:
+         *value_return = mode->redBits;
+         return 0;
++
+     case GLX_GREEN_SIZE:
+         *value_return = mode->greenBits;
+         return 0;
++
+     case GLX_BLUE_SIZE:
+         *value_return = mode->blueBits;
+         return 0;
++
+     case GLX_ALPHA_SIZE:
+         *value_return = mode->alphaBits;
+         return 0;
++
+     case GLX_DOUBLEBUFFER:
+         *value_return = mode->doubleBufferMode;
+         return 0;
++
+     case GLX_STEREO:
+         *value_return = mode->stereoMode;
+         return 0;
++
+     case GLX_AUX_BUFFERS:
+         *value_return = mode->numAuxBuffers;
+         return 0;
++
+     case GLX_DEPTH_SIZE:
+         *value_return = mode->depthBits;
+         return 0;
++
+     case GLX_STENCIL_SIZE:
+         *value_return = mode->stencilBits;
+         return 0;
++
+     case GLX_ACCUM_RED_SIZE:
+         *value_return = mode->accumRedBits;
+         return 0;
++
+     case GLX_ACCUM_GREEN_SIZE:
+         *value_return = mode->accumGreenBits;
+         return 0;
++
+     case GLX_ACCUM_BLUE_SIZE:
+         *value_return = mode->accumBlueBits;
+         return 0;
++
+     case GLX_ACCUM_ALPHA_SIZE:
+         *value_return = mode->accumAlphaBits;
+         return 0;
++
+     case GLX_LEVEL:
+         *value_return = mode->level;
+         return 0;
++
+     case GLX_TRANSPARENT_TYPE_EXT:
+         *value_return = mode->transparentPixel;
+         return 0;
++
+     case GLX_TRANSPARENT_RED_VALUE:
+         *value_return = mode->transparentRed;
+         return 0;
++
+     case GLX_TRANSPARENT_GREEN_VALUE:
+         *value_return = mode->transparentGreen;
+         return 0;
++
+     case GLX_TRANSPARENT_BLUE_VALUE:
+         *value_return = mode->transparentBlue;
+         return 0;
++
+     case GLX_TRANSPARENT_ALPHA_VALUE:
+         *value_return = mode->transparentAlpha;
+         return 0;
++
+     case GLX_TRANSPARENT_INDEX_VALUE:
+         *value_return = mode->transparentIndex;
+         return 0;
++
+     case GLX_X_VISUAL_TYPE:
+         *value_return = mode->visualType;
+         return 0;
++
+     case GLX_CONFIG_CAVEAT:
+         *value_return = mode->visualRating;
+         return 0;
++
+     case GLX_VISUAL_ID:
+         *value_return = mode->visualID;
+         return 0;
++
+     case GLX_DRAWABLE_TYPE:
+         *value_return = mode->drawableType;
+         return 0;
++
+     case GLX_RENDER_TYPE:
+         *value_return = mode->renderType;
+         return 0;
++
+     case GLX_X_RENDERABLE:
+         *value_return = mode->xRenderable;
+         return 0;
++
+     case GLX_FBCONFIG_ID:
+         *value_return = mode->fbconfigID;
+         return 0;
++
+     case GLX_MAX_PBUFFER_WIDTH:
+         *value_return = mode->maxPbufferWidth;
+         return 0;
++
+     case GLX_MAX_PBUFFER_HEIGHT:
+         *value_return = mode->maxPbufferHeight;
+         return 0;
++
+     case GLX_MAX_PBUFFER_PIXELS:
+         *value_return = mode->maxPbufferPixels;
+         return 0;
++
+     case GLX_OPTIMAL_PBUFFER_WIDTH_SGIX:
+         *value_return = mode->optimalPbufferWidth;
+         return 0;
++
+     case GLX_OPTIMAL_PBUFFER_HEIGHT_SGIX:
+         *value_return = mode->optimalPbufferHeight;
+         return 0;
++
+     case GLX_SWAP_METHOD_OML:
+         *value_return = mode->swapMethod;
+         return 0;
++
+     case GLX_SAMPLE_BUFFERS_SGIS:
+         *value_return = mode->sampleBuffers;
+         return 0;
++
+     case GLX_SAMPLES_SGIS:
+         *value_return = mode->samples;
+         return 0;
++
+     case GLX_BIND_TO_TEXTURE_RGB_EXT:
+         *value_return = mode->bindToTextureRgb;
+         return 0;
++
+     case GLX_BIND_TO_TEXTURE_RGBA_EXT:
+         *value_return = mode->bindToTextureRgba;
+         return 0;
++
+     case GLX_BIND_TO_MIPMAP_TEXTURE_EXT:
+         *value_return = mode->bindToMipmapTexture == GL_TRUE ? GL_TRUE :
+             GL_FALSE;
+         return 0;
++
+     case GLX_BIND_TO_TEXTURE_TARGETS_EXT:
+         *value_return = mode->bindToTextureTargets;
+         return 0;
++
+     case GLX_Y_INVERTED_EXT:
+         *value_return = mode->yInverted;
+         return 0;
+@@ -494,11 +537,13 @@ _gl_context_modes_are_same(const __GLcontextModes * a,
+             (a->stereoMode == b->stereoMode) &&
+             (a->redBits == b->redBits) &&
+             (a->greenBits == b->greenBits) &&
+-            (a->blueBits == b->blueBits) && (a->alphaBits == b->alphaBits) &&
++            (a->blueBits == b->blueBits) &&
++            (a->alphaBits == b->alphaBits) &&
+ #if 0                           /* For some reason these don't get set on the client-side in libGL. */
+             (a->redMask == b->redMask) &&
+             (a->greenMask == b->greenMask) &&
+-            (a->blueMask == b->blueMask) && (a->alphaMask == b->alphaMask) &&
++            (a->blueMask == b->blueMask) &&
++            (a->alphaMask == b->alphaMask) &&
+ #endif
+             (a->rgbBits == b->rgbBits) &&
+             (a->indexBits == b->indexBits) &&
+@@ -512,14 +557,18 @@ _gl_context_modes_are_same(const __GLcontextModes * a,
+             (a->level == b->level) &&
+             (a->pixmapMode == b->pixmapMode) &&
+             (a->visualRating == b->visualRating) &&
++
+             (a->transparentPixel == b->transparentPixel) &&
++
+             ((a->transparentPixel != GLX_TRANSPARENT_RGB) ||
+              ((a->transparentRed == b->transparentRed) &&
+               (a->transparentGreen == b->transparentGreen) &&
+               (a->transparentBlue == b->transparentBlue) &&
+               (a->transparentAlpha == b->transparentAlpha))) &&
++
+             ((a->transparentPixel != GLX_TRANSPARENT_INDEX) ||
+              (a->transparentIndex == b->transparentIndex)) &&
++
+             (a->sampleBuffers == b->sampleBuffers) &&
+             (a->samples == b->samples) &&
+             ((a->drawableType & b->drawableType) != 0) &&

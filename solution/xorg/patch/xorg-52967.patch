@@ -1,0 +1,11 @@
+diff --git a/exa/exa_driver.c b/exa/exa_driver.c
+index b9903d1..795cb00 100644
+--- a/exa/exa_driver.c
++++ b/exa/exa_driver.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 2009 Maarten Maathuis
++ * Copyright Â© 2009 Maarten Maathuis
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),

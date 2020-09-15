@@ -1,0 +1,89 @@
+diff --git a/hw/dmx/dmxcb.c b/hw/dmx/dmxcb.c
+index d0eb351..86015f3 100644
+--- a/hw/dmx/dmxcb.c
++++ b/hw/dmx/dmxcb.c
+@@ -58,7 +58,8 @@ extern int     PanoramiXNumScreens;
+  * box dimensions that Xinerama computes, so save those and update them
+  * here.
+  */
+-void dmxSetWidthHeight(int width, int height)
++void
++dmxSetWidthHeight(int width, int height)
+ {
+     dmxGlobalWidth  = width;
+     dmxGlobalHeight = height;
+@@ -67,7 +68,8 @@ void dmxSetWidthHeight(int width, int height)
+ /** Computes the global bounding box for DMX.  This may be larger than
+  * the one computed by Xinerama because of the DMX configuration
+  * file. */
+-void dmxComputeWidthHeight(DMXRecomputeFlag flag)
++void
++dmxComputeWidthHeight(DMXRecomputeFlag flag)
+ {
+     int           i;
+     DMXScreenInfo *dmxScreen;
+@@ -85,7 +87,8 @@ void dmxComputeWidthHeight(DMXRecomputeFlag flag)
+     }
+     if (!dmxGlobalWidth && !dmxGlobalHeight) {
+         dmxLog(dmxInfo, "Using %dx%d as global bounding box\n", w, h);
+-    } else {
++    }
++    else {
+         switch (flag) {
+         case DMX_NO_RECOMPUTE_BOUNDING_BOX:
+             dmxLog(dmxInfo,
+@@ -109,7 +112,8 @@ void dmxComputeWidthHeight(DMXRecomputeFlag flag)
+ /** A callback routine that hooks into Xinerama and provides a
+  * convenient place to print summary log information during server
+  * startup.  This routine does not modify any values. */
+-void dmxConnectionBlockCallback(void)
++void
++dmxConnectionBlockCallback(void)
+ {
+     xWindowRoot *root   = (xWindowRoot *)(ConnectionInfo+connBlockScreenStart);
+     int         offset  = connBlockScreenStart + sizeof(xWindowRoot);
+@@ -132,14 +136,16 @@ void dmxConnectionBlockCallback(void)
+                    dmxGlobalWidth, dmxGlobalHeight);
+             PanoramiXPixWidth  = root->pixWidth  = dmxGlobalWidth;
+             PanoramiXPixHeight = root->pixHeight = dmxGlobalHeight;
+-        } else {
++        }
++        else {
+             dmxGlobalWidth  = PanoramiXPixWidth;
+             dmxGlobalHeight = PanoramiXPixHeight;
+         }
+         dmxLog(dmxInfo, "%d screens configured with Xinerama (%d %d)\n",
+                PanoramiXNumScreens, PanoramiXPixWidth, PanoramiXPixHeight);
+ 	FOR_NSCREENS(i) found[i] = FALSE;
+-    } else {
++    }
++    else {
+ #endif
+                                 /* This never happens because we're
+                                  * either called from a Xinerama
+@@ -178,6 +184,7 @@ void dmxConnectionBlockCallback(void)
+ #ifdef PANORAMIX
+ 	    if (!noPanoramiXExtension) {
+ 		int  k;
++
+ 		FOR_NSCREENS(k) {
+ 		    DMXScreenInfo *dmxScreen = &dmxScreens[k];
+ 
+@@ -187,7 +194,8 @@ void dmxConnectionBlockCallback(void)
+ 			if (pvi->depth == depth->depth &&
+ 			    pvi->class == visual->class)
+ 			    found[k] = TRUE;
+-		    } else {
++                    }
++                    else {
+ 			/* Screen #k is detatched, so it always succeeds */
+ 			found[k] = TRUE;
+ 		    }
+@@ -204,6 +212,7 @@ void dmxConnectionBlockCallback(void)
+ #ifdef PANORAMIX
+     if (!noPanoramiXExtension) {
+ 	Bool fatal = FALSE;
++
+ 	FOR_NSCREENS(i) {
+ 	    fatal |= !found[i];
+ 	    if (!found[i]) {

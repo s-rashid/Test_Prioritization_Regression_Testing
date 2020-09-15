@@ -1,0 +1,63 @@
+diff --git a/include/colormapst.h b/include/colormapst.h
+index bb79c86..ac0c62e 100644
+--- a/include/colormapst.h
++++ b/include/colormapst.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -53,8 +52,7 @@ SOFTWARE.
+ #include "privates.h"
+ 
+ /* Shared color -- the color is used by AllocColorPlanes */
+-typedef struct
+-{
++typedef struct {
+     unsigned short color;
+     short  refcnt;
+ } SHAREDCOLOR;
+@@ -62,8 +60,7 @@ typedef struct
+ /* LOCO -- a local color for a PseudoColor cell. DirectColor maps always
+  * use the first value (called red) in the structure.  What channel they
+  * are really talking about depends on which map they are in. */
+-typedef struct
+-{
++typedef struct {
+     unsigned short	red, green, blue;
+ } LOCO;
+ 
+@@ -71,17 +68,13 @@ typedef struct
+  * DirectColor maps always use the first value (called red) in the structure.
+  * What channel they are really talking about depends on which map they
+  * are in. */
+-typedef struct 
+-{
++typedef struct {
+     SHAREDCOLOR *red, *green, *blue;
+ } SHCO;
+ 
+-
+ /* color map entry */
+-typedef struct _CMEntry
+-{
+-    union
+-    {
++typedef struct _CMEntry {
++    union {
+ 	LOCO	local;
+ 	SHCO	shco;
+     } co;
+@@ -93,8 +86,7 @@ typedef struct _CMEntry
+  * only needs one cell table, we arbitrarily pick red.  We keep track
+  * of that table with freeRed, numPixelsRed, and clientPixelsRed */
+ 
+-typedef struct _ColormapRec
+-{
++typedef struct _ColormapRec {
+     VisualPtr	pVisual;
+     short	class;		/* PseudoColor or DirectColor */
+     XID		mid;		/* client's name for colormap */

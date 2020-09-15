@@ -1,0 +1,12 @@
+diff --git a/Xext/xcalibrate.c b/Xext/xcalibrate.c
+index 364b92a..8659384 100644
+--- a/Xext/xcalibrate.c
++++ b/Xext/xcalibrate.c
+@@ -59,7 +59,6 @@ xcalibrate_event_hook (int x, int y, int pressure, void *closure)
+   ev.y = y;
+   ev.pressure = pressure;
+ 
+-  if (!pClient->clientGone)
+     WriteEventsToClient (pClient, 1, (xEvent *) &ev);
+ }
+ 

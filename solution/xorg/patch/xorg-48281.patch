@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86Cursors.c b/hw/xfree86/modes/xf86Cursors.c
+index f90ecc2..cfbe778 100644
+--- a/hw/xfree86/modes/xf86Cursors.c
++++ b/hw/xfree86/modes/xf86Cursors.c
+@@ -609,7 +609,7 @@ xf86_reload_cursors (ScreenPtr screen)
+     cursor_screen_priv = dixLookupPrivate(&screen->devPrivates,
+ 					  xf86CursorScreenKey);
+     /* return if HW cursor is inactive, to avoid displaying two cursors */
+-    if (!cursor_screen_priv->isUp)
++    if (!cursor_screen_priv || !cursor_screen_priv->isUp)
+ 	return;
+ 
+     scrn = xf86Screens[screen->myNum];

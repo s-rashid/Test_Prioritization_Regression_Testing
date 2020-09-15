@@ -1,0 +1,18 @@
+diff --git a/xfixes/region.c b/xfixes/region.c
+index 81ead4d..f493496 100644
+--- a/xfixes/region.c
++++ b/xfixes/region.c
+@@ -757,13 +757,11 @@ ProcXFixesSetPictureClipRegion (ClientPtr client)
+     PicturePtr		pPicture;
+     RegionPtr		pRegion;
+     ScreenPtr		pScreen;
+-    PictureScreenPtr	ps;
+     REQUEST(xXFixesSetPictureClipRegionReq);
+     
+     REQUEST_SIZE_MATCH (xXFixesSetPictureClipRegionReq);
+     VERIFY_PICTURE(pPicture, stuff->picture, client, DixSetAttrAccess);
+     pScreen = pPicture->pDrawable->pScreen;
+-    ps = GetPictureScreen (pScreen);
+     VERIFY_REGION_OR_NONE(pRegion, stuff->region, client, DixReadAccess);
+     
+     return SetPictureClipRegion (pPicture, stuff->xOrigin, stuff->yOrigin,

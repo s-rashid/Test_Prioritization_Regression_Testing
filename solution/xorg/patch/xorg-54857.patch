@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index ec679df..b22b617 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -125,6 +125,11 @@ static ModuleDefault ModuleDefaults[] = {
+ #ifdef DRI2
+     {.name = "dri2",.toLoad = TRUE,.load_opt = NULL},
+ #endif
++#ifdef __CYGWIN__
++    /* load DIX modules used by drivers first */
++    {.name = "fb",.toLoad = TRUE,.load_opt = NULL},
++    {.name = "shadow",.toLoad = TRUE,.load_opt = NULL},
++#endif
+     {.name = NULL,.toLoad = FALSE,.load_opt = NULL}
+ };
+ 

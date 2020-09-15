@@ -1,0 +1,764 @@
+diff --git a/hw/dmx/dmxpict.c b/hw/dmx/dmxpict.c
+index 1fb5462..b1177cf 100644
+--- a/hw/dmx/dmxpict.c
++++ b/hw/dmx/dmxpict.c
+@@ -57,13 +57,11 @@
+ #include "mipict.h"
+ #include "fbpict.h"
+ 
+-
+ extern int RenderErrBase;
+ extern int (*ProcRenderVector[RenderNumberRequests])(ClientPtr);
+ 
+ static int (*dmxSaveRenderVector[RenderNumberRequests])(ClientPtr);
+ 
+-
+ static int dmxProcRenderCreateGlyphSet(ClientPtr client);
+ static int dmxProcRenderFreeGlyphSet(ClientPtr client);
+ static int dmxProcRenderAddGlyphs(ClientPtr client);
+@@ -71,6 +69,7 @@ static int dmxProcRenderFreeGlyphs(ClientPtr client);
+ static int dmxProcRenderCompositeGlyphs(ClientPtr client);
+ static int dmxProcRenderSetPictureTransform(ClientPtr client);
+ static int dmxProcRenderSetPictureFilter(ClientPtr client);
++
+ #if 0
+ /* FIXME: Not (yet) supported */
+ static int dmxProcRenderCreateCursor(ClientPtr client);
+@@ -80,20 +79,21 @@ static int dmxProcRenderCreateAnimCursor(ClientPtr client);
+ /** Catch errors that might occur when allocating Glyph Sets.  Errors
+  *  are saved in dmxGlyphLastError for later handling. */
+ static int dmxGlyphLastError;
+-static int dmxGlyphErrorHandler(Display *dpy, XErrorEvent *ev)
++static int
++dmxGlyphErrorHandler(Display * dpy, XErrorEvent * ev)
+ {
+     dmxGlyphLastError = ev->error_code;
+     return 0;
+ }
+ 
+-
+ /** Initialize the Proc Vector for the RENDER extension.  The functions
+  *  here cannot be handled by the mi layer RENDER hooks either because
+  *  the required information is no longer available when it reaches the
+  *  mi layer or no mi layer hooks exist.  This function is called from
+  *  InitOutput() since it should be initialized only once per server
+  *  generation. */
+-void dmxInitRender(void)
++void
++dmxInitRender(void)
+ {
+     int i;
+ 
+@@ -123,7 +123,8 @@ void dmxInitRender(void)
+ /** Reset the Proc Vector for the RENDER extension back to the original
+  *  functions.  This function is called from dmxCloseScreen() during the
+  *  server reset (only for screen #0). */
+-void dmxResetRender(void)
++void
++dmxResetRender(void)
+ {
+     int i;
+ 
+@@ -134,18 +135,21 @@ void dmxResetRender(void)
+ /** Initialize the RENDER extension, allocate the picture privates and
+  *  wrap mi function hooks.  If the shadow frame buffer is used, then
+  *  call the appropriate fb initialization function. */
+-Bool dmxPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
++Bool
++dmxPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+     PictureScreenPtr  ps;
+ 
+     /* The shadow framebuffer only relies on FB to be initialized */
+-    if (dmxShadowFB) return fbPictureInit(pScreen, formats, nformats);
++    if (dmxShadowFB)
++        return fbPictureInit(pScreen, formats, nformats);
+ 
+     if (!miPictureInit(pScreen, formats, nformats))
+ 	return FALSE;
+ 
+-    if (!dixRegisterPrivateKey(&dmxPictPrivateKeyRec, PRIVATE_PICTURE, sizeof(dmxPictPrivRec)))
++    if (!dixRegisterPrivateKey
++        (&dmxPictPrivateKeyRec, PRIVATE_PICTURE, sizeof(dmxPictPrivRec)))
+ 	return FALSE;
+ 
+     ps = GetPictureScreen(pScreen);
+@@ -169,33 +173,44 @@ Bool dmxPictureInit(ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+     return TRUE;
+ }
+ 
+-
+ /** Find the appropriate format on the requested screen given the
+  *  internal format requested.  The list of formats is searched
+  *  sequentially as the XRenderFindFormat() function does not always
+  *  find the appropriate format when a specific format is requested. */
+-static XRenderPictFormat *dmxFindFormat(DMXScreenInfo *dmxScreen,
+-					PictFormatPtr pFmt)
++static XRenderPictFormat *
++dmxFindFormat(DMXScreenInfo * dmxScreen, PictFormatPtr pFmt)
+ {
+     XRenderPictFormat *pFormat = NULL;
+     int                i       = 0;
+ 
+-    if (!pFmt || !dmxScreen->beDisplay) return pFormat;
++    if (!pFmt || !dmxScreen->beDisplay)
++        return pFormat;
+ 
+     while (1) {
+ 	pFormat = XRenderFindFormat(dmxScreen->beDisplay, 0, 0, i++);
+-	if (!pFormat) break;
+-
+-	if (pFormat->type             != pFmt->type)             continue;
+-	if (pFormat->depth            != pFmt->depth)            continue;
+-	if (pFormat->direct.red       != pFmt->direct.red)       continue;
+-	if (pFormat->direct.redMask   != pFmt->direct.redMask)   continue;
+-	if (pFormat->direct.green     != pFmt->direct.green)     continue;
+-	if (pFormat->direct.greenMask != pFmt->direct.greenMask) continue;
+-	if (pFormat->direct.blue      != pFmt->direct.blue)      continue;
+-	if (pFormat->direct.blueMask  != pFmt->direct.blueMask)  continue;
+-	if (pFormat->direct.alpha     != pFmt->direct.alpha)     continue;
+-	if (pFormat->direct.alphaMask != pFmt->direct.alphaMask) continue;
++        if (!pFormat)
++            break;
++
++        if (pFormat->type != pFmt->type)
++            continue;
++        if (pFormat->depth != pFmt->depth)
++            continue;
++        if (pFormat->direct.red != pFmt->direct.red)
++            continue;
++        if (pFormat->direct.redMask != pFmt->direct.redMask)
++            continue;
++        if (pFormat->direct.green != pFmt->direct.green)
++            continue;
++        if (pFormat->direct.greenMask != pFmt->direct.greenMask)
++            continue;
++        if (pFormat->direct.blue != pFmt->direct.blue)
++            continue;
++        if (pFormat->direct.blueMask != pFmt->direct.blueMask)
++            continue;
++        if (pFormat->direct.alpha != pFmt->direct.alpha)
++            continue;
++        if (pFormat->direct.alphaMask != pFmt->direct.alphaMask)
++            continue;
+ 
+ 	/* We have a match! */
+ 	break;
+@@ -205,7 +220,8 @@ static XRenderPictFormat *dmxFindFormat(DMXScreenInfo *dmxScreen,
+ }
+ 
+ /** Free \a glyphSet on back-end screen number \a idx. */
+-Bool dmxBEFreeGlyphSet(ScreenPtr pScreen, GlyphSetPtr glyphSet)
++Bool
++dmxBEFreeGlyphSet(ScreenPtr pScreen, GlyphSetPtr glyphSet)
+ {
+     dmxGlyphPrivPtr  glyphPriv = DMX_GET_GLYPH_PRIV(glyphSet);
+     int              idx       = pScreen->myNum;
+@@ -221,7 +237,8 @@ Bool dmxBEFreeGlyphSet(ScreenPtr pScreen, GlyphSetPtr glyphSet)
+ }
+ 
+ /** Create \a glyphSet on the backend screen number \a idx. */
+-int dmxBECreateGlyphSet(int idx, GlyphSetPtr glyphSet)
++int
++dmxBECreateGlyphSet(int idx, GlyphSetPtr glyphSet)
+ {
+     XRenderPictFormat *pFormat;
+     DMXScreenInfo     *dmxScreen = &dmxScreens[idx];
+@@ -254,9 +271,11 @@ int dmxBECreateGlyphSet(int idx, GlyphSetPtr glyphSet)
+  *  screen in the Glyph Set's private structure.  Fail if the format
+  *  requested is not available or if the Glyph Set cannot be created on
+  *  the screen. */
+-static int dmxProcRenderCreateGlyphSet(ClientPtr client)
++static int
++dmxProcRenderCreateGlyphSet(ClientPtr client)
+ {
+     int  ret;
++
+     REQUEST(xRenderCreateGlyphSetReq);
+ 
+     ret = dmxSaveRenderVector[stuff->renderReqType](client);
+@@ -275,7 +294,8 @@ static int dmxProcRenderCreateGlyphSet(ClientPtr client)
+ 				client, DixDestroyAccess);
+ 
+ 	glyphPriv = malloc(sizeof(dmxGlyphPrivRec));
+-	if (!glyphPriv) return BadAlloc;
++        if (!glyphPriv)
++            return BadAlloc;
+         glyphPriv->glyphSets = NULL;
+         MAXSCREENSALLOC_RETURN(glyphPriv->glyphSets, BadAlloc);
+ 	DMX_SET_GLYPH_PRIV(glyphSet, glyphPriv);
+@@ -308,9 +328,11 @@ static int dmxProcRenderCreateGlyphSet(ClientPtr client)
+ }
+ 
+ /** Free the previously allocated Glyph Sets for each screen. */
+-static int dmxProcRenderFreeGlyphSet(ClientPtr client)
++static int
++dmxProcRenderFreeGlyphSet(ClientPtr client)
+ {
+     GlyphSetPtr  glyphSet;
++
+     REQUEST(xRenderFreeGlyphSetReq);
+ 
+     REQUEST_SIZE_MATCH(xRenderFreeGlyphSetReq);
+@@ -340,9 +362,11 @@ static int dmxProcRenderFreeGlyphSet(ClientPtr client)
+ }
+ 
+ /** Add glyphs to the Glyph Set on each screen. */
+-static int dmxProcRenderAddGlyphs(ClientPtr client)
++static int
++dmxProcRenderAddGlyphs(ClientPtr client)
+ {
+     int  ret;
++
+     REQUEST(xRenderAddGlyphsReq);
+ 
+     ret = dmxSaveRenderVector[stuff->renderReqType](client);
+@@ -372,7 +396,8 @@ static int dmxProcRenderAddGlyphs(ClientPtr client)
+ 		  (sizeof(CARD32) + sizeof(xGlyphInfo)) * nglyphs);
+ 
+         gidsCopy = malloc(sizeof(*gidsCopy) * nglyphs);
+-        for (i = 0; i < nglyphs; i++) gidsCopy[i] = gids[i];
++        for (i = 0; i < nglyphs; i++)
++            gidsCopy[i] = gids[i];
+ 
+ 	/* FIXME: Will this ever fail? */
+ 	for (i = 0; i < dmxNumScreens; i++) {
+@@ -383,9 +408,7 @@ static int dmxProcRenderAddGlyphs(ClientPtr client)
+ 				 glyphPriv->glyphSets[i],
+ 				 gidsCopy,
+ 				 (XGlyphInfo *)gi,
+-				 nglyphs,
+-				 (char *)bits,
+-				 nbytes);
++                                 nglyphs, (char *) bits, nbytes);
+ 		dmxSync(dmxScreen, FALSE);
+ 	    }
+ 	}
+@@ -396,9 +419,11 @@ static int dmxProcRenderAddGlyphs(ClientPtr client)
+ }
+ 
+ /** Free glyphs from the Glyph Set for each screen. */
+-static int dmxProcRenderFreeGlyphs(ClientPtr client)
++static int
++dmxProcRenderFreeGlyphs(ClientPtr client)
+ {
+     GlyphSetPtr  glyphSet;
++
+     REQUEST(xRenderFreeGlyphsReq);
+ 
+     REQUEST_AT_LEAST_SIZE(xRenderFreeGlyphsReq);
+@@ -437,9 +462,11 @@ static int dmxProcRenderFreeGlyphs(ClientPtr client)
+ /** Composite glyphs on each screen into the requested picture.  If
+  *  either the src or dest picture has not been allocated due to lazy
+  *  window creation, this request will gracefully return. */
+-static int dmxProcRenderCompositeGlyphs(ClientPtr client)
++static int
++dmxProcRenderCompositeGlyphs(ClientPtr client)
+ {
+     int  ret;
++
+     REQUEST(xRenderCompositeGlyphsReq);
+ 
+     ret = dmxSaveRenderVector[stuff->renderReqType](client);
+@@ -476,8 +503,7 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 	dmxGlyphPrivPtr    glyphPriv;
+ 
+ 	dixLookupResourceByType((pointer*) &pSrc,
+-				stuff->src, PictureType,
+-				client, DixReadAccess);
++                                stuff->src, PictureType, client, DixReadAccess);
+ 
+ 	pSrcPriv = DMX_GET_PICT_PRIV(pSrc);
+ 	if (!pSrcPriv->pict)
+@@ -511,10 +537,17 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 	pFormat = dmxFindFormat(dmxScreen, pFmt);
+ 
+ 	switch (stuff->renderReqType) {
+-	case X_RenderCompositeGlyphs8:  size = sizeof(CARD8);  break;
+-	case X_RenderCompositeGlyphs16: size = sizeof(CARD16); break;
+-	case X_RenderCompositeGlyphs32: size = sizeof(CARD32); break;
+-        default:                        return BadPictOp; /* Can't happen */
++        case X_RenderCompositeGlyphs8:
++            size = sizeof(CARD8);
++            break;
++        case X_RenderCompositeGlyphs16:
++            size = sizeof(CARD16);
++            break;
++        case X_RenderCompositeGlyphs32:
++            size = sizeof(CARD32);
++            break;
++        default:
++            return BadPictOp;   /* Can't happen */
+ 	}
+ 
+ 	buffer = (CARD8 *)(stuff + 1);
+@@ -527,11 +560,13 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 
+ 	    if (elt->len == 0xff) {
+ 		buffer += 4;
+-	    } else {
++            }
++            else {
+ 		nelt++;
+ 		nglyph += elt->len;
+ 		space = size * elt->len;
+-		if (space & 3) space += 4 - (space & 3);
++                if (space & 3)
++                    space += 4 - (space & 3);
+ 		buffer += space;
+ 	    }
+ 	}
+@@ -566,12 +601,11 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 	    if (elt->len == 0xff) {
+ 		dixLookupResourceByType((pointer*) &glyphSet,
+ 					*((CARD32 *)buffer),
+-					GlyphSetType,
+-					client,
+-					DixReadAccess);
++                                        GlyphSetType, client, DixReadAccess);
+ 		glyphPriv = DMX_GET_GLYPH_PRIV(glyphSet);
+ 		buffer += 4;
+-	    } else {
++            }
++            else {
+ 		curElt->glyphset = glyphPriv->glyphSets[scrnNum];
+ 		curElt->xOff = elt->deltax;
+ 		curElt->yOff = elt->deltay;
+@@ -584,7 +618,8 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 		curElt++;
+ 
+ 		space = size * elt->len;
+-		if (space & 3) space += 4 - (space & 3);
++                if (space & 3)
++                    space += 4 - (space & 3);
+ 		buffer += space;
+ 	    }
+ 	}
+@@ -594,8 +629,7 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ 	    XRenderCompositeText8(dmxScreen->beDisplay, stuff->op,
+ 				  pSrcPriv->pict, pDstPriv->pict,
+ 				  pFormat,
+-				  stuff->xSrc, stuff->ySrc,
+-				  0, 0, elts, nelt);
++                                  stuff->xSrc, stuff->ySrc, 0, 0, elts, nelt);
+ 	    break;
+ 	case X_RenderCompositeGlyphs16:
+ 	    XRenderCompositeText16(dmxScreen->beDisplay, stuff->op,
+@@ -623,12 +657,14 @@ static int dmxProcRenderCompositeGlyphs(ClientPtr client)
+ }
+ 
+ /** Set the picture transform on each screen. */
+-static int dmxProcRenderSetPictureTransform(ClientPtr client)
++static int
++dmxProcRenderSetPictureTransform(ClientPtr client)
+ {
+     DMXScreenInfo  *dmxScreen;
+     PicturePtr      pPicture;
+     dmxPictPrivPtr  pPictPriv;
+     XTransform      xform;
++
+     REQUEST(xRenderSetPictureTransformReq);
+ 
+     REQUEST_SIZE_MATCH(xRenderSetPictureTransformReq);
+@@ -652,8 +688,7 @@ static int dmxProcRenderSetPictureTransform(ClientPtr client)
+ 	xform.matrix[2][2] = stuff->transform.matrix33;
+ 
+ 	XRenderSetPictureTransform(dmxScreen->beDisplay,
+-				   pPictPriv->pict,
+-				   &xform);
++                                   pPictPriv->pict, &xform);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 
+@@ -661,7 +696,8 @@ static int dmxProcRenderSetPictureTransform(ClientPtr client)
+ }
+ 
+ /** Set the picture filter on each screen. */
+-static int dmxProcRenderSetPictureFilter(ClientPtr client)
++static int
++dmxProcRenderSetPictureFilter(ClientPtr client)
+ {
+     DMXScreenInfo  *dmxScreen;
+     PicturePtr      pPicture;
+@@ -669,6 +705,7 @@ static int dmxProcRenderSetPictureFilter(ClientPtr client)
+     char           *filter;
+     XFixed         *params;
+     int             nparams;
++
+     REQUEST(xRenderSetPictureFilterReq);
+ 
+     REQUEST_AT_LEAST_SIZE(xRenderSetPictureFilterReq);
+@@ -686,22 +723,19 @@ static int dmxProcRenderSetPictureFilter(ClientPtr client)
+ 	nparams = ((XFixed *)stuff + client->req_len) - params;
+ 
+ 	XRenderSetPictureFilter(dmxScreen->beDisplay,
+-				pPictPriv->pict,
+-				filter,
+-				params,
+-				nparams);
++                                pPictPriv->pict, filter, params, nparams);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 
+     return dmxSaveRenderVector[stuff->renderReqType](client);
+ }
+ 
+-
+ /** Create a picture on the appropriate screen.  This is the actual
+  *  function that creates the picture.  However, if the associated
+  *  window has not yet been created due to lazy window creation, then
+  *  delay the picture creation until the window is mapped. */
+-static Picture dmxDoCreatePicture(PicturePtr pPicture)
++static Picture
++dmxDoCreatePicture(PicturePtr pPicture)
+ {
+     DrawablePtr               pDraw     = pPicture->pDrawable;
+     ScreenPtr                 pScreen   = pDraw->pScreen;
+@@ -720,7 +754,8 @@ static Picture dmxDoCreatePicture(PicturePtr pPicture)
+ 	    pWinPriv->hasPict = TRUE;
+ 	    return 0;
+ 	}
+-    } else {
++    }
++    else {
+ 	dmxPixPrivPtr  pPixPriv = DMX_GET_PIXMAP_PRIV((PixmapPtr)(pDraw));
+ 
+ 	if (!(draw = pPixPriv->pixmap)) {
+@@ -745,7 +780,8 @@ static Picture dmxDoCreatePicture(PicturePtr pPicture)
+  *  dmxCreateAndRealizeWindow() during the lazy window creation
+  *  realization process.  It creates the entire list of pictures that
+  *  are associated with the given window. */
+-void dmxCreatePictureList(WindowPtr pWindow)
++void
++dmxCreatePictureList(WindowPtr pWindow)
+ {
+     PicturePtr  pPicture = GetPictureWindow(pWindow);
+ 
+@@ -762,7 +798,8 @@ void dmxCreatePictureList(WindowPtr pWindow)
+ }
+ 
+ /** Create \a pPicture on the backend. */
+-int dmxBECreatePicture(PicturePtr pPicture)
++int
++dmxBECreatePicture(PicturePtr pPicture)
+ {
+     dmxPictPrivPtr    pPictPriv = DMX_GET_PICT_PRIV(pPicture);
+ 
+@@ -778,7 +815,8 @@ int dmxBECreatePicture(PicturePtr pPicture)
+ /** Create a picture.  This function handles the CreatePicture
+  *  unwrapping/wrapping and calls dmxDoCreatePicture to actually create
+  *  the picture on the appropriate screen.  */
+-int dmxCreatePicture(PicturePtr pPicture)
++int
++dmxCreatePicture(PicturePtr pPicture)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -802,7 +840,8 @@ int dmxCreatePicture(PicturePtr pPicture)
+ }
+ 
+ /** Destroy \a pPicture on the back-end server. */
+-Bool dmxBEFreePicture(PicturePtr pPicture)
++Bool
++dmxBEFreePicture(PicturePtr pPicture)
+ {
+     ScreenPtr      pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -820,7 +859,8 @@ Bool dmxBEFreePicture(PicturePtr pPicture)
+ /** Destroy a list of pictures that are associated with the window that
+  *  is being destroyed.  This function is called by #dmxDestroyWindow().
+  *  */
+-Bool dmxDestroyPictureList(WindowPtr pWindow)
++Bool
++dmxDestroyPictureList(WindowPtr pWindow)
+ {
+     PicturePtr  pPicture = GetPictureWindow(pWindow);
+     Bool        ret      = FALSE;
+@@ -836,7 +876,8 @@ Bool dmxDestroyPictureList(WindowPtr pWindow)
+ /** Destroy a picture.  This function calls the wrapped function that
+  *  frees the resources in the DMX server associated with this
+  *  picture. */
+-void dmxDestroyPicture(PicturePtr pPicture)
++void
++dmxDestroyPicture(PicturePtr pPicture)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -856,8 +897,8 @@ void dmxDestroyPicture(PicturePtr pPicture)
+ }
+ 
+ /** Change the picture's list of clip rectangles. */
+-int dmxChangePictureClip(PicturePtr pPicture, int clipType,
+-			 pointer value, int n)
++int
++dmxChangePictureClip(PicturePtr pPicture, int clipType, pointer value, int n)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -879,7 +920,8 @@ int dmxChangePictureClip(PicturePtr pPicture, int clipType,
+ 	    /* Disable clipping, show all */
+ 	    XFixesSetPictureClipRegion(dmxScreen->beDisplay,
+ 				       pPictPriv->pict, 0, 0, None);
+-	} else if (pPicture->clientClip) {
++        }
++        else if (pPicture->clientClip) {
+ 	    RegionPtr   pClip = pPicture->clientClip;
+ 	    BoxPtr      pBox  = RegionRects(pClip);
+ 	    int         nBox  = RegionNumRects(pClip);
+@@ -901,17 +943,16 @@ int dmxChangePictureClip(PicturePtr pPicture, int clipType,
+ 
+ 	    XRenderSetPictureClipRectangles(dmxScreen->beDisplay,
+ 					    pPictPriv->pict,
+-					    0, 0,
+-					    pRects,
+-					    nRects);
++                                            0, 0, pRects, nRects);
+ 	    free(pRects);
+-	} else {
++        }
++        else {
+ 	    XRenderSetPictureClipRectangles(dmxScreen->beDisplay,
+-					    pPictPriv->pict,
+-					    0, 0, NULL, 0);
++                                            pPictPriv->pict, 0, 0, NULL, 0);
+ 	}
+ 	dmxSync(dmxScreen, FALSE);
+-    } else {
++    }
++    else {
+ 	/* FIXME: Handle saving clip region when offscreen */
+     }
+ 
+@@ -921,7 +962,8 @@ int dmxChangePictureClip(PicturePtr pPicture, int clipType,
+ }
+ 
+ /** Destroy the picture's list of clip rectangles. */
+-void dmxDestroyPictureClip(PicturePtr pPicture)
++void
++dmxDestroyPictureClip(PicturePtr pPicture)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -937,10 +979,10 @@ void dmxDestroyPictureClip(PicturePtr pPicture)
+     /* Destroy picture clip rects on back-end server */
+     if (pPictPriv->pict) {
+ 	XRenderSetPictureClipRectangles(dmxScreen->beDisplay,
+-					pPictPriv->pict,
+-					0, 0, NULL, 0);
++                                        pPictPriv->pict, 0, 0, NULL, 0);
+ 	dmxSync(dmxScreen, FALSE);
+-    } else {
++    }
++    else {
+ 	/* FIXME: Handle destroying clip region when offscreen */
+     }
+ 
+@@ -951,7 +993,8 @@ void dmxDestroyPictureClip(PicturePtr pPicture)
+  *  been created due to lazy window creation, save the mask so that it
+  *  can be used to appropriately initialize the picture's attributes
+  *  when it is created later. */
+-void dmxChangePicture(PicturePtr pPicture, Mask mask)
++void
++dmxChangePicture(PicturePtr pPicture, Mask mask)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -973,7 +1016,8 @@ void dmxChangePicture(PicturePtr pPicture, Mask mask)
+ /** Validate the picture's attributes before rendering to it.  Update
+  *  any picture attributes that have been changed by one of the higher
+  *  layers. */
+-void dmxValidatePicture(PicturePtr pPicture, Mask mask)
++void
++dmxValidatePicture(PicturePtr pPicture, Mask mask)
+ {
+     ScreenPtr         pScreen   = pPicture->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -992,14 +1036,17 @@ void dmxValidatePicture(PicturePtr pPicture, Mask mask)
+ 	if (mask & CPAlphaMap) {
+ 	    if (pPicture->alphaMap) {
+ 		dmxPictPrivPtr  pAlphaPriv;
++
+ 		pAlphaPriv = DMX_GET_PICT_PRIV(pPicture->alphaMap);
+ 		if (pAlphaPriv->pict) {
+ 		    attribs.alpha_map = pAlphaPriv->pict;
+-		} else {
++                }
++                else {
+ 		    /* FIXME: alpha picture drawable has not been created?? */
+ 		    return; /* or should this be: attribs.alpha_map = None; */
+ 		}
+-	    } else {
++            }
++            else {
+ 		attribs.alpha_map = None;
+ 	    }
+ 	}
+@@ -1027,7 +1074,8 @@ void dmxValidatePicture(PicturePtr pPicture, Mask mask)
+ 	XRenderChangePicture(dmxScreen->beDisplay, pPictPriv->pict,
+ 			     mask, &attribs);
+ 	dmxSync(dmxScreen, FALSE);
+-    } else {
++    }
++    else {
+ 	pPictPriv->savedMask |= mask;
+     }
+ 
+@@ -1044,12 +1092,12 @@ void dmxValidatePicture(PicturePtr pPicture, Mask mask)
+  *  the specified rectangle of the dst using op as the compositing
+  *  operator.  For a complete description see the protocol document of
+  *  the RENDER library. */
+-void dmxComposite(CARD8 op,
++void
++dmxComposite(CARD8 op,
+ 		  PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
+ 		  INT16 xSrc, INT16 ySrc,
+ 		  INT16 xMask, INT16 yMask,
+-		  INT16 xDst, INT16 yDst,
+-		  CARD16 width, CARD16 height)
++             INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
+ {
+     ScreenPtr         pScreen   = pDst->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -1058,14 +1106,14 @@ void dmxComposite(CARD8 op,
+     dmxPictPrivPtr    pMaskPriv = NULL;
+     dmxPictPrivPtr    pDstPriv  = DMX_GET_PICT_PRIV(pDst);
+ 
+-    if (pMask) pMaskPriv = DMX_GET_PICT_PRIV(pMask);
++    if (pMask)
++        pMaskPriv = DMX_GET_PICT_PRIV(pMask);
+ 
+     DMX_UNWRAP(Composite, dmxScreen, ps);
+ #if 0
+     if (ps->Composite)
+ 	ps->Composite(op, pSrc, pMask, pDst,
+-		      xSrc, ySrc, xMask, yMask, xDst, yDst,
+-		      width, height);
++                      xSrc, ySrc, xMask, yMask, xDst, yDst, width, height);
+ #endif
+ 
+     /* Composite on back-end server */
+@@ -1076,21 +1124,18 @@ void dmxComposite(CARD8 op,
+ 			 pSrcPriv->pict,
+ 			 pMaskPriv ? pMaskPriv->pict : None,
+ 			 pDstPriv->pict,
+-			 xSrc, ySrc,
+-			 xMask, yMask,
+-			 xDst, yDst,
+-			 width, height);
++                         xSrc, ySrc, xMask, yMask, xDst, yDst, width, height);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 
+-
+     DMX_WRAP(Composite, dmxComposite, dmxScreen, ps);
+ }
+ 
+ /** Null function to catch when/if RENDER calls lower level mi hooks.
+  *  Compositing glyphs is handled by dmxProcRenderCompositeGlyphs().
+  *  This function should never be called. */
+-void dmxGlyphs(CARD8 op,
++void
++dmxGlyphs(CARD8 op,
+ 	       PicturePtr pSrc, PicturePtr pDst,
+ 	       PictFormatPtr maskFormat,
+ 	       INT16 xSrc, INT16 ySrc,
+@@ -1103,10 +1148,10 @@ void dmxGlyphs(CARD8 op,
+  *  with the dest picture in the area specified by the list of
+  *  rectangles.  For a complete description see the protocol document of
+  *  the RENDER library. */
+-void dmxCompositeRects(CARD8 op,
++void
++dmxCompositeRects(CARD8 op,
+ 		       PicturePtr pDst,
+-		       xRenderColor *color,
+-		       int nRect, xRectangle *rects)
++                  xRenderColor * color, int nRect, xRectangle *rects)
+ {
+     ScreenPtr         pScreen   = pDst->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -1125,8 +1170,7 @@ void dmxCompositeRects(CARD8 op,
+ 			      op,
+ 			      pPictPriv->pict,
+ 			      (XRenderColor *)color,
+-			      (XRectangle *)rects,
+-			      nRect);
++                              (XRectangle *) rects, nRect);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 
+@@ -1134,18 +1178,21 @@ void dmxCompositeRects(CARD8 op,
+ }
+ 
+ /** Indexed color visuals are not yet supported. */
+-Bool dmxInitIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
++Bool
++dmxInitIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
+ {
+     return TRUE;
+ }
+ 
+ /** Indexed color visuals are not yet supported. */
+-void dmxCloseIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
++void
++dmxCloseIndexed(ScreenPtr pScreen, PictFormatPtr pFormat)
+ {
+ }
+ 
+ /** Indexed color visuals are not yet supported. */
+-void dmxUpdateIndexed(ScreenPtr pScreen, PictFormatPtr pFormat,
++void
++dmxUpdateIndexed(ScreenPtr pScreen, PictFormatPtr pFormat,
+ 		      int ndef, xColorItem *pdef)
+ {
+ }
+@@ -1153,10 +1200,10 @@ void dmxUpdateIndexed(ScreenPtr pScreen, PictFormatPtr pFormat,
+ /** Composite a list of trapezoids on the appropriate screen.  For a
+  *  complete description see the protocol document of the RENDER
+  *  library. */
+-void dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
++void
++dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ 		   PictFormatPtr maskFormat,
+-		   INT16 xSrc, INT16 ySrc,
+-		   int ntrap, xTrapezoid *traps)
++              INT16 xSrc, INT16 ySrc, int ntrap, xTrapezoid * traps)
+ {
+     ScreenPtr         pScreen   = pDst->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -1184,9 +1231,7 @@ void dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ 				   pSrcPriv->pict,
+ 				   pDstPriv->pict,
+ 				   pFormat,
+-				   xSrc, ySrc,
+-				   (XTrapezoid *)traps,
+-				   ntrap);
++                                   xSrc, ySrc, (XTrapezoid *) traps, ntrap);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 
+@@ -1196,10 +1241,10 @@ void dmxTrapezoids(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ /** Composite a list of triangles on the appropriate screen.  For a
+  *  complete description see the protocol document of the RENDER
+  *  library. */
+-void dmxTriangles(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
++void
++dmxTriangles(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ 		  PictFormatPtr maskFormat,
+-		  INT16 xSrc, INT16 ySrc,
+-		  int ntri, xTriangle *tris)
++             INT16 xSrc, INT16 ySrc, int ntri, xTriangle * tris)
+ {
+     ScreenPtr         pScreen   = pDst->pDrawable->pScreen;
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -1227,9 +1272,7 @@ void dmxTriangles(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ 				  pSrcPriv->pict,
+ 				  pDstPriv->pict,
+ 				  pFormat,
+-				  xSrc, ySrc,
+-				  (XTriangle *)tris,
+-				  ntri);
++                                  xSrc, ySrc, (XTriangle *) tris, ntri);
+ 	dmxSync(dmxScreen, FALSE);
+     }
+ 

@@ -1,0 +1,14 @@
+diff --git a/Xi/opendev.c b/Xi/opendev.c
+index ba0d304..e7c00a2 100644
+--- a/Xi/opendev.c
++++ b/Xi/opendev.c
+@@ -107,7 +107,8 @@ ProcXOpenDevice(ClientPtr client)
+ 		break;
+ 	if (dev == NULL)
+ 	    return BadDevice;
+-    } else if (status != Success)
++    }
++    else if (status != Success)
+ 	return status;
+ 
+     if (IsMaster(dev))

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 2f4b0d2..9aff336 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -706,7 +706,7 @@ OsVendorInit (void)
+   } 
+   LogSetParameter (XLOG_FLUSH, 1);
+   LogSetParameter (XLOG_VERBOSITY, g_iLogVerbose);
+-  LogSetParameter (XLOG_FILE_VERBOSITY, 1);
++  LogSetParameter (XLOG_FILE_VERBOSITY, g_iLogVerbose);
+ 
+   /* Log the version information */
+   if (serverGeneration == 1)

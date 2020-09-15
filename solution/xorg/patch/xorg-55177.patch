@@ -1,0 +1,90 @@
+diff --git a/glx/glxscreens.c b/glx/glxscreens.c
+index ebb9747..74b4c42 100644
+--- a/glx/glxscreens.c
++++ b/glx/glxscreens.c
+@@ -45,6 +45,7 @@
+ #include "protocol-versions.h"
+ 
+ static DevPrivateKeyRec glxScreenPrivateKeyRec;
++
+ #define glxScreenPrivateKey (&glxScreenPrivateKeyRec)
+ 
+ const char GLServerVersion[] = "1.4";
+@@ -153,10 +154,7 @@ static const char GLServerExtensions[] =
+ 			"GL_SGIS_texture_edge_clamp "
+ 			"GL_SGIS_texture_lod "
+ 			"GL_SGIX_depth_texture "
+-			"GL_SGIX_shadow "
+-			"GL_SGIX_shadow_ambient "
+-			"GL_SUN_slice_accum "
+-			;
++    "GL_SGIX_shadow " "GL_SGIX_shadow_ambient " "GL_SUN_slice_accum ";
+ 
+ /*
+ ** We have made the simplifying assuption that the same extensions are 
+@@ -171,16 +169,12 @@ static char GLXServerExtensions[] =
+ 			"GLX_EXT_visual_rating "
+ 			"GLX_EXT_import_context "
+                         "GLX_EXT_texture_from_pixmap "
+-			"GLX_OML_swap_method "
+-			"GLX_SGI_make_current_read "
++    "GLX_OML_swap_method " "GLX_SGI_make_current_read "
+ #ifndef __APPLE__
+ 			"GLX_SGIS_multisample "
+ #endif
+ 			"GLX_SGIX_fbconfig "
+-			"GLX_SGIX_pbuffer "
+-			"GLX_MESA_copy_sub_buffer "
+-                        "GLX_INTEL_swap_event"
+-			;
++    "GLX_SGIX_pbuffer " "GLX_MESA_copy_sub_buffer " "GLX_INTEL_swap_event";
+ 
+ static Bool
+ glxCloseScreen (int index, ScreenPtr pScreen)
+@@ -200,14 +194,15 @@ glxGetScreen(ScreenPtr pScreen)
+     return dixLookupPrivate(&pScreen->devPrivates, glxScreenPrivateKey);
+ }
+ 
+-_X_EXPORT void GlxSetVisualConfigs(int nconfigs,
+-                         void *configs, void **privates)
++_X_EXPORT void
++GlxSetVisualConfigs(int nconfigs, void *configs, void **privates)
+ {
+     /* We keep this stub around for the DDX drivers that still
+      * call it. */
+ }
+ 
+-GLint glxConvertToXVisualType(int visualType)
++GLint
++glxConvertToXVisualType(int visualType)
+ {
+     static const int x_visual_types[] = {
+ 	TrueColor,   DirectColor,
+@@ -261,6 +256,7 @@ static void
+ initGlxVisual(VisualPtr visual, __GLXconfig *config)
+ {
+     int maxBits;
++
+     maxBits = max(config->redBits, max(config->greenBits, config->blueBits));
+ 
+     config->visualID = visual->vid;
+@@ -319,7 +315,8 @@ pickFBConfig(__GLXscreen *pGlxScreen, VisualPtr visual)
+     return best;
+ }
+ 
+-void __glXScreenInit(__GLXscreen *pGlxScreen, ScreenPtr pScreen)
++void
++__glXScreenInit(__GLXscreen * pGlxScreen, ScreenPtr pScreen)
+ {
+     __GLXconfig *m;
+     __GLXconfig *config;
+@@ -417,7 +414,8 @@ void __glXScreenInit(__GLXscreen *pGlxScreen, ScreenPtr pScreen)
+     dixSetPrivate(&pScreen->devPrivates, glxScreenPrivateKey, pGlxScreen);
+ }
+ 
+-void __glXScreenDestroy(__GLXscreen *screen)
++void
++__glXScreenDestroy(__GLXscreen * screen)
+ {
+     free(screen->GLXvendor);
+     free(screen->GLXextensions);

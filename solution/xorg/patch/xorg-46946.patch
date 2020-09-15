@@ -1,0 +1,26 @@
+diff --git a/exa/exa_classic.c b/exa/exa_classic.c
+index 1eff570..12f3987 100644
+--- a/exa/exa_classic.c
++++ b/exa/exa_classic.c
+@@ -137,6 +137,10 @@ exaCreatePixmap_classic(ScreenPtr pScreen, int w, int h, int depth,
+     exaSetAccelBlock(pExaScr, pExaPixmap,
+                      w, h, bpp);
+ 
++    /* During a fallback we must prepare access. */
++    if (pExaScr->fallback_counter)
++	exaPrepareAccess(&pPixmap->drawable, EXA_PREPARE_AUX_DEST);
++
+     return pPixmap;
+ }
+ 
+@@ -216,6 +220,10 @@ exaDestroyPixmap_classic (PixmapPtr pPixmap)
+     {
+ 	ExaPixmapPriv (pPixmap);
+ 
++	/* During a fallback we must finish access, but we don't know the index. */
++	if (pExaScr->fallback_counter)
++	    exaFinishAccess(&pPixmap->drawable, -1);
++
+ 	if (pExaPixmap->area)
+ 	{
+ 	    DBG_PIXMAP(("-- 0x%p (0x%x) (%dx%d)\n",

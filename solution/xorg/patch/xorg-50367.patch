@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/GC.c b/hw/xnest/GC.c
+index 2761583..407cc77 100644
+--- a/hw/xnest/GC.c
++++ b/hw/xnest/GC.c
+@@ -92,8 +92,6 @@ xnestCreateGC(GCPtr pGC)
+ void
+ xnestValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+ {
+-  pGC->lastWinOrg.x = pDrawable->x;
+-  pGC->lastWinOrg.y = pDrawable->y;
+ }
+ 
+ void

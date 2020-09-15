@@ -1,0 +1,124 @@
+diff --git a/fb/fbpoint.c b/fb/fbpoint.c
+index bf61770..d5129d7 100644
+--- a/fb/fbpoint.c
++++ b/fb/fbpoint.c
+@@ -33,11 +33,7 @@ typedef void	(*FbDots)  (FbBits	*dst,
+ 			    xPoint	*pts,
+ 			    int		npt,
+ 			    int		xorg,
+-			    int		yorg,
+-			    int		xoff,
+-			    int		yoff,
+-			    FbBits	and,
+-			    FbBits	xor);
++                        int yorg, int xoff, int yoff, FbBits and, FbBits xor);
+ 
+ void
+ fbDots (FbBits	    *dstOrig,
+@@ -46,12 +42,7 @@ fbDots (FbBits	    *dstOrig,
+ 	BoxPtr	    pBox,
+ 	xPoint	    *pts,
+ 	int	    npt,
+-	int	    xorg,
+-	int	    yorg,
+-	int	    xoff,
+-	int	    yoff,
+-	FbBits	    andOrig,
+-	FbBits	    xorOrig)
++       int xorg, int yorg, int xoff, int yoff, FbBits andOrig, FbBits xorOrig)
+ {
+     FbStip	*dst = (FbStip *) dstOrig;
+     int		x1, y1, x2, y2;
+@@ -65,18 +56,15 @@ fbDots (FbBits	    *dstOrig,
+     y1 = pBox->y1;
+     x2 = pBox->x2;
+     y2 = pBox->y2;
+-    while (npt--)
+-    {
++    while (npt--) {
+ 	x = pts->x + xorg;
+ 	y = pts->y + yorg;
+ 	pts++;
+-	if (x1 <= x && x < x2 && y1 <= y && y < y2)
+-	{
++        if (x1 <= x && x < x2 && y1 <= y && y < y2) {
+ 	    x = (x + xoff) * dstBpp;
+ 	    d = dst + ((y + yoff) * dstStride) + (x >> FB_STIP_SHIFT);
+ 	    x &= FB_STIP_MASK;
+-	    if (dstBpp == 24)
+-	    {
++            if (dstBpp == 24) {
+ 		FbStip	leftMask, rightMask;
+ 		int	n, rot;
+ 		FbStip	andT, xorT;
+@@ -85,8 +73,7 @@ fbDots (FbBits	    *dstOrig,
+ 		andT = FbRot24Stip(and,rot);
+ 		xorT = FbRot24Stip(xor,rot);
+ 		FbMaskStip (x, 24, leftMask, n, rightMask);
+-		if (leftMask)
+-		{
++                if (leftMask) {
+ 		    WRITE(d, FbDoMaskRRop (READ(d), andT, xorT, leftMask));
+ 		    andT = FbNext24Stip(andT);
+ 		    xorT = FbNext24Stip(xorT);
+@@ -95,9 +82,9 @@ fbDots (FbBits	    *dstOrig,
+ 		if (rightMask)
+ 		    WRITE(d, FbDoMaskRRop(READ(d), andT, xorT, rightMask));
+ 	    }
+-	    else
+-	    {
++            else {
+ 		FbStip	mask;
++
+ 		mask = FbStipMask(x, dstBpp);
+ 		WRITE(d, FbDoMaskRRop (READ(d), and, xor, mask));
+ 	    }
+@@ -107,10 +94,7 @@ fbDots (FbBits	    *dstOrig,
+ 
+ void
+ fbPolyPoint (DrawablePtr    pDrawable,
+-	     GCPtr	    pGC,
+-	     int	    mode,
+-	     int	    nptInit,
+-	     xPoint	    *pptInit)
++            GCPtr pGC, int mode, int nptInit, xPoint * pptInit)
+ {
+     FbGCPrivPtr pPriv = fbGetGCPrivate (pGC);
+     RegionPtr	pClip = fbGetCompositeClip(pGC);
+@@ -128,11 +112,9 @@ fbPolyPoint (DrawablePtr    pDrawable,
+     /* make pointlist origin relative */
+     ppt = pptInit;
+     npt = nptInit;
+-    if (mode == CoordModePrevious)
+-    {
++    if (mode == CoordModePrevious) {
+ 	npt--;
+-	while(npt--)
+-	{
++        while (npt--) {
+ 	    ppt++;
+ 	    ppt->x += (ppt-1)->x;
+ 	    ppt->y += (ppt-1)->y;
+@@ -143,10 +125,18 @@ fbPolyPoint (DrawablePtr    pDrawable,
+     xor = pPriv->xor;
+     dots = fbDots;
+     switch (dstBpp) {
+-    case 8:	dots = fbDots8; break;
+-    case 16:    dots = fbDots16; break;
+-    case 24:    dots = fbDots24; break;
+-    case 32:    dots = fbDots32; break;
++    case 8:
++        dots = fbDots8;
++        break;
++    case 16:
++        dots = fbDots16;
++        break;
++    case 24:
++        dots = fbDots24;
++        break;
++    case 32:
++        dots = fbDots32;
++        break;
+     }
+     for (nBox = RegionNumRects (pClip), pBox = RegionRects (pClip);
+ 	 nBox--; pBox++)

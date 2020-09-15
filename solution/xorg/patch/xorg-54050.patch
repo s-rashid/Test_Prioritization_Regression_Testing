@@ -1,0 +1,15 @@
+diff --git a/Xext/xselinux_hooks.c b/Xext/xselinux_hooks.c
+index f1d8e5d..0d4c9ab 100644
+--- a/Xext/xselinux_hooks.c
++++ b/Xext/xselinux_hooks.c
+@@ -263,8 +263,8 @@ SELinuxAudit(void *auditdata,
+     if (client) {
+ 	REQUEST(xReq);
+ 	if (stuff) {
+-	    major = stuff->reqType;
+-	    minor = MinorOpcodeOfRequest(client);
++	    major = client->majorOp;
++	    minor = client->minorOp;
+ 	}
+     }
+     if (audit->id)

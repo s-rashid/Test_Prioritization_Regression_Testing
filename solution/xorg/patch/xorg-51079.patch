@@ -1,0 +1,15 @@
+diff --git a/render/render.c b/render/render.c
+index 00241f9..85a4392 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -2552,8 +2552,8 @@ static void swapStops(void *stuff, int num)
+     }
+     colors = (CARD16 *)(stops);
+     for (i = 0; i < 4*num; ++i) {
+-        swaps(stops, n);
+-        ++stops;
++        swaps(colors, n);
++        ++colors;
+     }
+ }
+ 

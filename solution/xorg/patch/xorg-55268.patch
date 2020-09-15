@@ -1,0 +1,24 @@
+diff --git a/hw/dmx/examples/dmxaddinput.c b/hw/dmx/examples/dmxaddinput.c
+index dcfd4f5..fdd09b9 100644
+--- a/hw/dmx/examples/dmxaddinput.c
++++ b/hw/dmx/examples/dmxaddinput.c
+@@ -36,7 +36,8 @@
+ #include <X11/Xlib.h>
+ #include <X11/extensions/dmxext.h>
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  event_base;
+@@ -72,7 +73,8 @@ int main(int argc, char **argv)
+ 
+     if (argv[2][0] == 'c') {
+         status = DMXAddConsoleInput(display, argv[3], atoi(argv[4]), &id);
+-    } else {
++    }
++    else {
+         status = DMXAddBackendInput(display, atoi(argv[3]), atoi(argv[4]),&id);
+     }
+ 

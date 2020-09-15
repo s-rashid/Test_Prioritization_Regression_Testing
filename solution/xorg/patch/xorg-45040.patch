@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartz.c b/hw/xquartz/quartz.c
+index 344edec..3f8f8b9 100644
+--- a/hw/xquartz/quartz.c
++++ b/hw/xquartz/quartz.c
+@@ -179,7 +179,7 @@ void QuartzInitInput(
+     int argc,
+     char **argv )
+ {
+-    X11ApplicationSetCanQuit(1);
++    X11ApplicationSetCanQuit(0);
+     X11ApplicationServerReady();
+     // Do final display mode specific initialization before handling events
+     if (quartzProcs->InitInput)

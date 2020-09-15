@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index 5935ac4..34d7f4b 100755
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -425,7 +425,6 @@ ProcWindowsWMFrameDraw (register ClientPtr client)
+   RECT rcNew;
+   int nCmdShow, rc;
+   RegionRec newShape;
+-  ScreenPtr pScreen;
+ 
+   REQUEST_SIZE_MATCH (xWindowsWMFrameDrawReq);
+ 
+@@ -491,7 +490,6 @@ ProcWindowsWMFrameDraw (register ClientPtr client)
+ 
+   if (wBoundingShape(pWin) != NULL)
+     {
+-      pScreen = pWin->drawable.pScreen;
+       /* wBoundingShape is relative to *inner* origin of window.
+ 	 Translate by borderWidth to get the outside-relative position. */
+       

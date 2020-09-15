@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86sbusBus.h b/hw/xfree86/common/xf86sbusBus.h
+index 5cdb095..66a96e3 100644
+--- a/hw/xfree86/common/xf86sbusBus.h
++++ b/hw/xfree86/common/xf86sbusBus.h
+@@ -97,4 +97,8 @@ extern _X_EXPORT char * sparcPromNode2Pathname(sbusPromNodePtr pnode);
+ extern _X_EXPORT int sparcPromPathname2Node(const char *pathName);
+ extern _X_EXPORT char *sparcDriverName(void);
+ 
++extern Bool xf86SbusConfigure(void *busData, sbusDevicePtr sBus);
++extern void xf86SbusConfigureNewDev(void *busData, sbusDevicePtr sBus,
++                                    GDevRec *GDev);
++
+ #endif /* _XF86_SBUSBUS_H */

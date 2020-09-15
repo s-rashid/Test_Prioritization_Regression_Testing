@@ -1,0 +1,13 @@
+diff --git a/miext/rootless/rootlessCommon.c b/miext/rootless/rootlessCommon.c
+index a9cd72a..861e8e8 100644
+--- a/miext/rootless/rootlessCommon.c
++++ b/miext/rootless/rootlessCommon.c
+@@ -40,8 +40,6 @@
+ #include "colormapst.h"
+ 
+ unsigned int rootless_CopyBytes_threshold = 0;
+-unsigned int rootless_FillBytes_threshold = 0;
+-unsigned int rootless_CompositePixels_threshold = 0;
+ unsigned int rootless_CopyWindow_threshold = 0;
+ int rootlessGlobalOffsetX = 0;
+ int rootlessGlobalOffsetY = 0;

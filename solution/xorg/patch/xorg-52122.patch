@@ -1,0 +1,14 @@
+diff --git a/glx/glxdricommon.h b/glx/glxdricommon.h
+index 41e2d27..2c55e60 100644
+--- a/glx/glxdricommon.h
++++ b/glx/glxdricommon.h
+@@ -38,4 +38,9 @@ glxConvertConfigs(const __DRIcoreExtension *core,
+ 
+ extern const __DRIsystemTimeExtension systemTimeExtension;
+ 
++void *
++glxProbeDriver(const char *name,
++	       void **coreExt, const char *coreName, int coreVersion,
++	       void **renderExt, const char *renderName, int renderVersion);
++
+ #endif

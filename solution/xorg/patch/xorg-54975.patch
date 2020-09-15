@@ -1,0 +1,25 @@
+diff --git a/Xi/getkmap.h b/Xi/getkmap.h
+index 58c8f12..8f0ff8e 100644
+--- a/Xi/getkmap.h
++++ b/Xi/getkmap.h
+@@ -30,15 +30,15 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #ifndef GETKMAP_H
+ #define GETKMAP_H 1
+ 
+-int SProcXGetDeviceKeyMapping(ClientPtr	/* client */
++int SProcXGetDeviceKeyMapping(ClientPtr /* client */
+     );
+ 
+-int ProcXGetDeviceKeyMapping(ClientPtr	/* client */
++int ProcXGetDeviceKeyMapping(ClientPtr  /* client */
+     );
+ 
+ void SRepXGetDeviceKeyMapping(ClientPtr /* client */ ,
+-			      int /* size */ ,
+-			      xGetDeviceKeyMappingReply *	/* rep */
++                              int /* size */ ,
++                              xGetDeviceKeyMappingReply *       /* rep */
+     );
+ 
+-#endif /* GETKMAP_H */
++#endif                          /* GETKMAP_H */

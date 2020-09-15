@@ -1,0 +1,24 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 3feacdc..066f5a5 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -45,6 +45,7 @@
+ #include "site.h"
+ #include "globals.h"
+ #include "dix.h"
++#include "xkbsrv.h"
+ 
+ #include <X11/extensions/XI.h>
+ #include <X11/extensions/XIproto.h>
+@@ -461,6 +462,11 @@ int DarwinParseModifierList(const char *constmodifiers, int separatelr)
+  */
+ void InitInput( int argc, char **argv )
+ {
++    XkbRMLVOSet rmlvo = { .rules = "base", .model = "empty", .layout = "empty",
++                          .variant = NULL, .options = NULL };
++    /* We need to really have rules... or something... */
++    XkbSetRulesDflts(&rmlvo);
++
+     darwinKeyboard = AddInputDevice(serverClient, DarwinKeybdProc, TRUE);
+     RegisterKeyboardDevice( darwinKeyboard );
+     darwinKeyboard->name = strdup("keyboard");

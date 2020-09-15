@@ -1,0 +1,17 @@
+diff --git a/test/xi2/protocol-xiquerydevice.c b/test/xi2/protocol-xiquerydevice.c
+index 63d725f..569aea9 100644
+--- a/test/xi2/protocol-xiquerydevice.c
++++ b/test/xi2/protocol-xiquerydevice.c
+@@ -213,9 +213,9 @@ static void reply_XIQueryDevice_data(ClientPtr client, int len, char *data, void
+                             }
+ 
+                             assert(si->increment.integral == si->number);
+-                            /* FIXME: frac testing with float/FP issues? */
+-                            assert(si->increment.frac > 0.3  * (1UL << 32));
+-                            assert(si->increment.frac < 0.6  * (1UL << 32));
++                            /* protocol-common.c sets up increments of 2.4 and 3.5 */
++                            assert(si->increment.frac > 0.3  * (1ULL << 32));
++                            assert(si->increment.frac < 0.6  * (1ULL << 32));
+                         }
+ 
+                     }

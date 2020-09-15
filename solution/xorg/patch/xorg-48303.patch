@@ -1,0 +1,72 @@
+diff --git a/os/utils.c b/os/utils.c
+index c89da94..7aa392a 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -1039,11 +1039,6 @@ Xalloc(unsigned long amount)
+     return malloc(amount);
+ }
+ 
+-/*****************
+- * XNFalloc
+- * "no failure" alloc
+- *****************/
+-
+ void *
+ XNFalloc(unsigned long amount)
+ {
+@@ -1053,20 +1048,12 @@ XNFalloc(unsigned long amount)
+     return ptr;
+ }
+ 
+-/*****************
+- * Xcalloc
+- *****************/
+-
+ void *
+ Xcalloc(unsigned long amount)
+ {
+     return calloc(1, amount);
+ }
+ 
+-/*****************
+- * XNFcalloc
+- *****************/
+-
+ void *
+ XNFcalloc(unsigned long amount)
+ {
+@@ -1076,10 +1063,6 @@ XNFcalloc(unsigned long amount)
+     return ret;
+ }
+ 
+-/*****************
+- * Xrealloc
+- *****************/
+-
+ void *
+ Xrealloc(void *ptr, unsigned long amount)
+ {
+@@ -1098,11 +1081,6 @@ Xrealloc(void *ptr, unsigned long amount)
+     return realloc(ptr, amount);
+ }
+                     
+-/*****************
+- * XNFrealloc 
+- * "no failure" realloc
+- *****************/
+-
+ void *
+ XNFrealloc(void *ptr, unsigned long amount)
+ {
+@@ -1112,11 +1090,6 @@ XNFrealloc(void *ptr, unsigned long amount)
+     return ret;
+ }
+ 
+-/*****************
+- *  Xfree
+- *    calls free 
+- *****************/    
+-
+ void
+ Xfree(void *ptr)
+ {

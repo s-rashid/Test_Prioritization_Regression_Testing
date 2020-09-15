@@ -1,0 +1,18 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index cb27d2f..1ca3f91 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -41,13 +41,6 @@
+ #include "propertyst.h"
+ #include "windowstr.h"
+ 
+-/*
+- * External global variables
+- */
+-
+-extern HICON		g_hIconX;
+-extern HICON		g_hSmallIconX;
+-
+ 
+ /*
+  * Prototypes for local functions

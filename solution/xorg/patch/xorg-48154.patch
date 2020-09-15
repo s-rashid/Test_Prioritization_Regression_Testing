@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index 926ce69..bb360bb 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -85,7 +85,7 @@ HWND		g_hwndKeyboardFocus = NULL;
+ Bool		g_fNoHelpMessageBox = FALSE;
+ Bool		g_fSoftwareCursor = FALSE;
+ Bool		g_fSilentDupError = FALSE;
+-
++Bool            g_fNativeGl = FALSE;
+ 
+ /*
+  * Global variables for dynamically loaded libraries and

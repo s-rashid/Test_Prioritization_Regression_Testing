@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/darwinEvents.c b/hw/xquartz/darwinEvents.c
+index fe744b7..1f22099 100644
+--- a/hw/xquartz/darwinEvents.c
++++ b/hw/xquartz/darwinEvents.c
+@@ -371,6 +371,10 @@ Bool DarwinEQInit(void) {
+     return TRUE;
+ }
+ 
++Bool DarwinEQFini(void) {
++    mieqFini();
++}
++
+ /*
+  * ProcessInputEvents
+  *  Read and process events from the event queue until it is empty.

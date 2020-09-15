@@ -1,0 +1,13 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 6fd66c5..a2cbbf3 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -3644,7 +3644,7 @@ register int            n;
+ 	swapl(&rep->indicators,n);
+     }
+ 
+-    start = desc = malloc(length);
++    start = desc = calloc(1, length);
+     if ( !start )
+ 	return BadAlloc;
+     if (xkb->names) {

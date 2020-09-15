@@ -1,0 +1,13 @@
+diff --git a/render/render.c b/render/render.c
+index 9aabcfb..fc6dbb1 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -1856,7 +1856,7 @@ ProcRenderCreateAnimCursor (ClientPtr client)
+ 	if (ret != Success)
+ 	{
+ 	    free(cursors);
+-	    return (ret == BadValue) ? BadCursor : ret;
++	    return ret;
+ 	}
+ 	deltas[i] = elt->delay;
+ 	elt++;

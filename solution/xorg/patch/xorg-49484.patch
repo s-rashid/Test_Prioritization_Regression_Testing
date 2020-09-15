@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index b02fdaf..3631369 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -1102,7 +1102,6 @@ ProcXF86VidModeValidateModeLine(ClientPtr client)
+     status = VidModeCheckModeForDriver(stuff->screen, modetmp);
+ 
+ status_reply:
+-    if(modetmp)
+       free(modetmp);
+ 
+     rep.type = X_Reply;

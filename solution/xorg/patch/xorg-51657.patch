@@ -1,0 +1,15 @@
+diff --git a/mi/miinitext.c b/mi/miinitext.c
+index a7441c9..4499f37 100644
+--- a/mi/miinitext.c
++++ b/mi/miinitext.c
+@@ -389,10 +389,8 @@ InitExtensions(int argc, char *argv[])
+     if (!noGEExtension) GEExtensionInit();
+ 
+ #ifdef PANORAMIX
+-# if !defined(NO_PANORAMIX)
+   if (!noPanoramiXExtension) PanoramiXExtensionInit();
+ # endif
+-#endif
+ #ifdef INXQUARTZ
+     if(!noPseudoramiXExtension) PseudoramiXExtensionInit();
+ #endif

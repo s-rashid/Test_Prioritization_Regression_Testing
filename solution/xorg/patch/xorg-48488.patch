@@ -1,0 +1,12 @@
+diff --git a/dix/colormap.c b/dix/colormap.c
+index f75eefe..12197ac 100644
+--- a/dix/colormap.c
++++ b/dix/colormap.c
+@@ -57,6 +57,7 @@ SOFTWARE.
+ #include <strings.h>
+ #include "misc.h"
+ #include "dix.h"
++#include "dixstruct.h"
+ #include "colormapst.h"
+ #include "os.h"
+ #include "scrnintstr.h"

@@ -1,0 +1,647 @@
+diff --git a/hw/xwin/winclipboardxevents.c b/hw/xwin/winclipboardxevents.c
+index b0006a0..59b1f07 100644
+--- a/hw/xwin/winclipboardxevents.c
++++ b/hw/xwin/winclipboardxevents.c
+@@ -36,23 +36,19 @@
+ #include "winclipboard.h"
+ #include "misc.h"
+ 
+-
+ /*
+  * References to external symbols
+  */
+ 
+ extern Bool		g_fUnicodeSupport;
+ 
+-
+ /*
+  * Process any pending X events
+  */
+ 
+ int
+ winClipboardFlushXEvents (HWND hwnd,
+-			  int iWindow,
+-			  Display *pDisplay,
+-			  Bool fUseUnicode)
++                         int iWindow, Display * pDisplay, Bool fUseUnicode)
+ {
+   static Atom atomLocalProperty;
+   static Atom atomCompoundText;
+@@ -60,8 +56,7 @@ winClipboardFlushXEvents (HWND hwnd,
+   static Atom atomTargets;
+   static int generation;
+ 
+-  if (generation != serverGeneration)
+-    {
++    if (generation != serverGeneration) {
+       generation = serverGeneration;
+       atomLocalProperty = XInternAtom (pDisplay, WIN_LOCAL_PROPERTY, False);
+       atomUTF8String = XInternAtom (pDisplay, "UTF8_STRING", False);
+@@ -70,8 +65,7 @@ winClipboardFlushXEvents (HWND hwnd,
+     }
+ 
+   /* Process all pending events */
+-  while (XPending (pDisplay))
+-    {
++    while (XPending(pDisplay)) {
+       XTextProperty		xtpText = {0};
+       XEvent			event;
+       XSelectionEvent		eventSelection;
+@@ -98,8 +92,7 @@ winClipboardFlushXEvents (HWND hwnd,
+       XNextEvent (pDisplay, &event);
+ 
+       /* Branch on the event type */
+-      switch (event.type)
+-	{
++        switch (event.type) {
+ 	  /*
+ 	   * SelectionRequest
+ 	   */
+@@ -107,6 +100,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	case SelectionRequest:
+ 	  {
+ 	    char			*pszAtomName = NULL;
++
+ 	    winDebug("SelectionRequest - target %d\n",
+                      event.xselectionrequest.target);
+ 
+@@ -121,20 +115,19 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  if (event.xselectionrequest.target != XA_STRING
+ 	      && event.xselectionrequest.target != atomUTF8String
+ 	      && event.xselectionrequest.target != atomCompoundText
+-	      && event.xselectionrequest.target != atomTargets)
+-	    {
++                && event.xselectionrequest.target != atomTargets) {
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+ 	      goto winClipboardFlushXEvents_SelectionRequest_Done;
+ 	    }
+ 
+ 	  /* Handle targets type of request */
+-	  if (event.xselectionrequest.target == atomTargets)
+-	    {
++            if (event.xselectionrequest.target == atomTargets) {
+ 	      Atom atomTargetArr[] = {atomTargets,
+ 				      atomCompoundText,
+ 				      atomUTF8String,
+-				      XA_STRING};
++                    XA_STRING
++                };
+ 
+ 	      /* Try to change the property */
+ 	      iReturn = XChangeProperty (pDisplay,
+@@ -149,12 +142,9 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	      if (iReturn == BadAlloc
+ 		  || iReturn == BadAtom
+ 		  || iReturn == BadMatch
+-		  || iReturn == BadValue
+-		  || iReturn == BadWindow)
+-		{
++                    || iReturn == BadValue || iReturn == BadWindow) {
+ 		  ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+-			  "XChangeProperty failed: %d\n",
+-			  iReturn);
++                           "XChangeProperty failed: %d\n", iReturn);
+ 		}
+ 
+ 	      /* Setup selection notify xevent */
+@@ -173,11 +163,8 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	       */
+ 	      iReturn = XSendEvent (pDisplay,
+ 				    eventSelection.requestor,
+-				    False,
+-				    0L,
+-				    (XEvent *) &eventSelection);
+-	      if (iReturn == BadValue || iReturn == BadWindow)
+-		{
++                                     False, 0L, (XEvent *) & eventSelection);
++                if (iReturn == BadValue || iReturn == BadWindow) {
+ 		  ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+ 			  "XSendEvent () failed\n");
+ 		}
+@@ -185,24 +172,24 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    }
+ 
+ 	  /* Check that clipboard format is available */
+-	  if (fUseUnicode
+-	      && !IsClipboardFormatAvailable (CF_UNICODETEXT))
+-	    {
++            if (fUseUnicode && !IsClipboardFormatAvailable(CF_UNICODETEXT)) {
+ 	      static int count; /* Hack to stop acroread spamming the log */
+ 	      static HWND lasthwnd; /* I've not seen any other client get here repeatedly? */
+-	      if (hwnd != lasthwnd) count = 0;
++
++                if (hwnd != lasthwnd)
++                    count = 0;
+ 	      count++;
+-	      if (count < 6) ErrorF ("winClipboardFlushXEvents - CF_UNICODETEXT is not "
+-		      "available from Win32 clipboard.  Aborting %d.\n", count);
++                if (count < 6)
++                    ErrorF("winClipboardFlushXEvents - CF_UNICODETEXT is not "
++                           "available from Win32 clipboard.  Aborting %d.\n",
++                           count);
+ 	      lasthwnd = hwnd;
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+ 	      goto winClipboardFlushXEvents_SelectionRequest_Done;
+ 	    }
+-	  else if (!fUseUnicode
+-		   && !IsClipboardFormatAvailable (CF_TEXT))
+-	    {
++            else if (!fUseUnicode && !IsClipboardFormatAvailable(CF_TEXT)) {
+ 	      ErrorF ("winClipboardFlushXEvents - CF_TEXT is not "
+ 		      "available from Win32 clipboard.  Aborting.\n");
+ 
+@@ -212,17 +199,14 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    }
+ 
+ 	  /* Close clipboard if we have it open already */
+-	  if (GetOpenClipboardWindow () == hwnd)
+-	    {
++            if (GetOpenClipboardWindow() == hwnd) {
+ 	      CloseClipboard ();
+ 	    }
+ 
+ 	  /* Access the clipboard */
+-	  if (!OpenClipboard (hwnd))
+-	    {
++            if (!OpenClipboard(hwnd)) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+-		      "OpenClipboard () failed: %08lx\n",
+-		      GetLastError ());
++                       "OpenClipboard () failed: %08lx\n", GetLastError());
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+@@ -249,21 +233,17 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	   */
+ 	  
+ 	  /* Get a pointer to the clipboard text, in desired format */
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ 	      /* Retrieve clipboard data */
+ 	      hGlobal = GetClipboardData (CF_UNICODETEXT);
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      /* Retrieve clipboard data */
+ 	      hGlobal = GetClipboardData (CF_TEXT);
+ 	    }
+-	  if (!hGlobal)
+-	    {
++            if (!hGlobal) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+-		      "GetClipboardData () failed: %08lx\n",
+-		      GetLastError ());
++                       "GetClipboardData () failed: %08lx\n", GetLastError());
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+@@ -272,16 +252,11 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  pszGlobalData = (char *) GlobalLock (hGlobal);
+ 
+ 	  /* Convert the Unicode string to UTF8 (MBCS) */
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ 	      iConvertDataLen = WideCharToMultiByte (CP_UTF8,
+ 						     0,
+ 						     (LPCWSTR)pszGlobalData,
+-						     -1,
+-						     NULL,
+-						     0,
+-						     NULL,
+-						     NULL);
++                                                      -1, NULL, 0, NULL, NULL);
+ 	      /* NOTE: iConvertDataLen includes space for null terminator */
+ 	      pszConvertData = (char *) malloc (iConvertDataLen);
+ 	      WideCharToMultiByte (CP_UTF8,
+@@ -289,12 +264,9 @@ winClipboardFlushXEvents (HWND hwnd,
+ 				   (LPCWSTR)pszGlobalData,
+ 				   -1,
+ 				   pszConvertData,
+-				   iConvertDataLen,
+-				   NULL,
+-				   NULL);
++                                    iConvertDataLen, NULL, NULL);
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      pszConvertData = strdup (pszGlobalData);
+ 	      iConvertDataLen = strlen (pszConvertData) + 1;
+ 	    }
+@@ -311,29 +283,21 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  xtpText.nitems = 0;
+ 
+ 	  /* Create the text property from the text list */
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ #ifdef X_HAVE_UTF8_STRING
+ 	      iReturn = Xutf8TextListToTextProperty (pDisplay,
+ 						     pszTextList,
+-						     1,
+-						     xiccesStyle,
+-						     &xtpText);
++                                                      1, xiccesStyle, &xtpText);
+ #endif
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      iReturn = XmbTextListToTextProperty (pDisplay,
+ 						   pszTextList,
+-						   1,
+-						   xiccesStyle,
+-						   &xtpText);
++                                                    1, xiccesStyle, &xtpText);
+ 	    }
+-	  if (iReturn == XNoMemory || iReturn == XLocaleNotSupported)
+-	    {
++            if (iReturn == XNoMemory || iReturn == XLocaleNotSupported) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+-		      "X*TextListToTextProperty failed: %d\n",
+-		      iReturn);
++                       "X*TextListToTextProperty failed: %d\n", iReturn);
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+@@ -351,15 +315,12 @@ winClipboardFlushXEvents (HWND hwnd,
+ 				     event.xselectionrequest.target,
+ 				     8,
+ 				     PropModeReplace,
+-				     xtpText.value,
+-				     xtpText.nitems);
++                                      xtpText.value, xtpText.nitems);
+ 	  if (iReturn == BadAlloc || iReturn == BadAtom
+ 	      || iReturn == BadMatch || iReturn == BadValue
+-	      || iReturn == BadWindow)
+-	    {
++                || iReturn == BadWindow) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+-		      "XChangeProperty failed: %d\n",
+-		      iReturn);
++                       "XChangeProperty failed: %d\n", iReturn);
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+@@ -390,11 +351,8 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  /* Notify the requesting window that the operation has completed */
+ 	  iReturn = XSendEvent (pDisplay,
+ 				eventSelection.requestor,
+-				False,
+-				0L,
+-				(XEvent *) &eventSelection);
+-	  if (iReturn == BadValue || iReturn == BadWindow)
+-	    {
++                                 False, 0L, (XEvent *) & eventSelection);
++            if (iReturn == BadValue || iReturn == BadWindow) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionRequest - "
+ 		      "XSendEvent () failed\n");
+ 
+@@ -405,8 +363,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 
+ 	winClipboardFlushXEvents_SelectionRequest_Done:
+ 	  /* Free allocated resources */
+-	  if (xtpText.value)
+-	  {
++            if (xtpText.value) {
+ 	    XFree (xtpText.value);
+ 	    xtpText.value = NULL;
+ 	    xtpText.nitems = 0;
+@@ -419,8 +376,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	   * Send a SelectionNotify event to the requesting
+ 	   * client when we abort.
+ 	   */
+-	  if (fAbort)
+-	    {
++            if (fAbort) {
+ 	      /* Setup selection notify event */
+ 	      eventSelection.type = SelectionNotify;
+ 	      eventSelection.send_event = True;
+@@ -434,11 +390,8 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	      /* Notify the requesting window that the operation is complete */
+ 	      iReturn = XSendEvent (pDisplay,
+ 				    eventSelection.requestor,
+-				    False,
+-				    0L,
+-				    (XEvent *) &eventSelection);
+-	      if (iReturn == BadValue || iReturn == BadWindow)
+-		{
++                                     False, 0L, (XEvent *) & eventSelection);
++                if (iReturn == BadValue || iReturn == BadWindow) {
+ 		  /*
+ 		   * Should not be a problem if XSendEvent fails because
+ 		   * the client may simply have exited.
+@@ -449,14 +402,12 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    }
+ 
+ 	  /* Close clipboard if it was opened */
+-	  if (fCloseClipboard)
+-	  {
++            if (fCloseClipboard) {
+ 	    fCloseClipboard = FALSE;
+ 	    CloseClipboard ();
+ 	  }
+ 	  break;
+ 
+-
+ 	  /*
+ 	   * SelectionNotify
+ 	   */ 
+@@ -466,10 +417,12 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  winDebug ("winClipboardFlushXEvents - SelectionNotify\n");
+ 	  {
+ 	    char		*pszAtomName;
++
+ 	    pszAtomName = XGetAtomName (pDisplay,
+ 					event.xselection.selection);
+ 
+-	    winDebug("winClipboardFlushXEvents - SelectionNotify - ATOM: %s\n",
++                winDebug
++                    ("winClipboardFlushXEvents - SelectionNotify - ATOM: %s\n",
+                      pszAtomName);
+ 	    XFree (pszAtomName);
+ 	  }
+@@ -477,51 +430,42 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  /*
+ 	   * Request conversion of UTF8 and CompoundText targets.
+ 	   */
+-	  if (event.xselection.property == None)
+-	    {
+-	      if (event.xselection.target == XA_STRING)
+-		{
++            if (event.xselection.property == None) {
++                if (event.xselection.target == XA_STRING) {
+ 		  winDebug ("winClipboardFlushXEvents - SelectionNotify - "
+                             "XA_STRING\n");
+ 
+ 		  return WIN_XEVENTS_CONVERT;
+ 		}
+-	      else if (event.xselection.target == atomUTF8String)
+-		{
++                else if (event.xselection.target == atomUTF8String) {
+ 		  winDebug("winClipboardFlushXEvents - SelectionNotify - "
+                            "Requesting conversion of UTF8 target.\n");
+ 
+ 		  XConvertSelection (pDisplay,
+ 				     event.xselection.selection,
+ 				     XA_STRING,
+-				     atomLocalProperty,
+-				     iWindow,
+-				     CurrentTime);
++                                      atomLocalProperty, iWindow, CurrentTime);
+ 
+ 		  /* Process the ConvertSelection event */
+ 		  XFlush (pDisplay);
+ 		  return WIN_XEVENTS_CONVERT;
+ 		}
+ #ifdef X_HAVE_UTF8_STRING
+-	      else if (event.xselection.target == atomCompoundText)
+-		{
++                else if (event.xselection.target == atomCompoundText) {
+ 		  winDebug("winClipboardFlushXEvents - SelectionNotify - "
+                            "Requesting conversion of CompoundText target.\n");
+ 
+ 		  XConvertSelection (pDisplay,
+ 				     event.xselection.selection,
+ 				     atomUTF8String,
+-				     atomLocalProperty,
+-				     iWindow,
+-				     CurrentTime);
++                                      atomLocalProperty, iWindow, CurrentTime);
+ 
+ 		  /* Process the ConvertSelection event */
+ 		  XFlush (pDisplay);
+ 		  return WIN_XEVENTS_CONVERT;
+ 		}
+ #endif
+-	      else
+-		{
++                else {
+ 		  ErrorF ("winClipboardFlushXEvents - SelectionNotify - "
+ 			  "Unknown format.  Cannot request conversion, "
+ 			  "aborting.\n");
+@@ -530,23 +474,16 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    }
+ 
+ 	  /* Retrieve the size of the stored data */
+-	  iReturn = XGetWindowProperty (pDisplay,
+-					iWindow,
+-					atomLocalProperty,
+-					0,
+-					0, /* Don't get data, just size */
++            iReturn = XGetWindowProperty(pDisplay, iWindow, atomLocalProperty, 0, 0,    /* Don't get data, just size */
+ 					False,
+ 					AnyPropertyType,
+ 					&xtpText.encoding,
+ 					&xtpText.format,
+ 					&xtpText.nitems,
+-					&ulReturnBytesLeft,
+-					&xtpText.value);
+-	  if (iReturn != Success)
+-	    {
++                                         &ulReturnBytesLeft, &xtpText.value);
++            if (iReturn != Success) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionNotify - "
+-		      "XGetWindowProperty () failed, aborting: %d\n",
+-		      iReturn);
++                       "XGetWindowProperty () failed, aborting: %d\n", iReturn);
+ 	      break;
+ 	    }
+ 
+@@ -564,13 +501,10 @@ winClipboardFlushXEvents (HWND hwnd,
+ 					&xtpText.encoding,
+ 					&xtpText.format,
+ 					&xtpText.nitems,
+-					&ulReturnBytesLeft,
+-					&xtpText.value);
+-	  if (iReturn != Success)
+-	    {
++                                         &ulReturnBytesLeft, &xtpText.value);
++            if (iReturn != Success) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionNotify - "
+-		      "XGetWindowProperty () failed, aborting: %d\n",
+-		      iReturn);
++                       "XGetWindowProperty () failed, aborting: %d\n", iReturn);
+ 	      break;
+ 	    }
+ 
+@@ -585,54 +519,43 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	      pszAtomName = NULL;
+ 	    }
+ 
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ #ifdef X_HAVE_UTF8_STRING
+ 	      /* Convert the text property to a text list */
+ 	      iReturn = Xutf8TextPropertyToTextList (pDisplay,
+ 						     &xtpText,
+-						     &ppszTextList,
+-						     &iCount);
++                                                      &ppszTextList, &iCount);
+ #endif
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      iReturn = XmbTextPropertyToTextList (pDisplay,
+ 						   &xtpText,
+-						   &ppszTextList,
+-						   &iCount);
++                                                    &ppszTextList, &iCount);
+ 	    }
+-	  if (iReturn == Success || iReturn > 0)
+-	    {
++            if (iReturn == Success || iReturn > 0) {
+ 	      /* Conversion succeeded or some unconvertible characters */
+-	      if (ppszTextList != NULL)
+-		{
++                if (ppszTextList != NULL) {
+ 		  iReturnDataLen = 0;
+-		  for (i = 0; i < iCount; i++)
+-		    {
++                    for (i = 0; i < iCount; i++) {
+ 		      iReturnDataLen += strlen(ppszTextList[i]);
+ 		    }
+ 		  pszReturnData = malloc (iReturnDataLen + 1);
+ 		  pszReturnData[0] = '\0';
+-		  for (i = 0; i < iCount; i++)
+-		    {
++                    for (i = 0; i < iCount; i++) {
+ 		      strcat (pszReturnData, ppszTextList[i]);
+ 		    }
+ 		}
+-	      else
+-		{
++                else {
+ 		  ErrorF ("winClipboardFlushXEvents - SelectionNotify - "
+ 			  "X*TextPropertyToTextList list_return is NULL.\n");
+ 		  pszReturnData = malloc (1);
+ 		  pszReturnData[0] = '\0';
+ 		}
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionNotify - "
+ 		      "X*TextPropertyToTextList returned: ");
+-	      switch (iReturn)
+-		{
++                switch (iReturn) {
+ 		case XNoMemory:
+ 		  ErrorF ("XNoMemory\n");
+ 		  break;
+@@ -661,21 +584,16 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  /* Convert the X clipboard string to DOS format */
+ 	  winClipboardUNIXtoDOS (&pszReturnData, strlen (pszReturnData));
+ 
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ 	      /* Find out how much space needed to convert MBCS to Unicode */
+ 	      iUnicodeLen = MultiByteToWideChar (CP_UTF8,
+ 						 0,
+-						 pszReturnData,
+-						 -1,
+-						 NULL,
+-						 0);
++                                                  pszReturnData, -1, NULL, 0);
+ 
+ 	      /* Allocate memory for the Unicode string */
+ 	      pwszUnicodeStr
+ 		= (wchar_t*) malloc (sizeof (wchar_t) * (iUnicodeLen + 1));
+-	      if (!pwszUnicodeStr)
+-		{
++                if (!pwszUnicodeStr) {
+ 		  ErrorF ("winClipboardFlushXEvents - SelectionNotify "
+ 			  "malloc failed for pwszUnicodeStr, aborting.\n");
+ 
+@@ -688,16 +606,13 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	      MultiByteToWideChar (CP_UTF8,
+ 				   0,
+ 				   pszReturnData,
+-				   -1,
+-				   pwszUnicodeStr,
+-				   iUnicodeLen);
++                                    -1, pwszUnicodeStr, iUnicodeLen);
+ 	      
+ 	      /* Allocate global memory for the X clipboard data */
+ 	      hGlobal = GlobalAlloc (GMEM_MOVEABLE,
+ 				     sizeof (wchar_t) * (iUnicodeLen + 1));
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      pszConvertData = strdup (pszReturnData);
+ 	      iConvertDataLen = strlen (pszConvertData) + 1;
+ 
+@@ -708,11 +623,9 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  free (pszReturnData);
+ 
+ 	  /* Check that global memory was allocated */
+-	  if (!hGlobal)
+-	    {
++            if (!hGlobal) {
+ 	      ErrorF ("winClipboardFlushXEvents - SelectionNotify "
+-		      "GlobalAlloc failed, aborting: %ld\n",
+-		      GetLastError ());
++                       "GlobalAlloc failed, aborting: %ld\n", GetLastError());
+ 
+ 	      /* Abort */
+ 	      fAbort = TRUE;
+@@ -721,8 +634,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 
+ 	  /* Obtain a pointer to the global memory */
+ 	  pszGlobalData = GlobalLock (hGlobal);
+-	  if (pszGlobalData == NULL)
+-	    {
++            if (pszGlobalData == NULL) {
+ 	      ErrorF ("winClipboardFlushXEvents - Could not lock global "
+ 		      "memory for clipboard transfer\n");
+ 
+@@ -732,16 +644,13 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    }
+ 
+ 	  /* Copy the returned string into the global memory */
+-	  if (fUseUnicode)
+-	    {
++            if (fUseUnicode) {
+ 	      memcpy (pszGlobalData,
+-		      pwszUnicodeStr,
+-		      sizeof (wchar_t) * (iUnicodeLen + 1));
++                       pwszUnicodeStr, sizeof(wchar_t) * (iUnicodeLen + 1));
+ 	      free (pwszUnicodeStr);
+ 	      pwszUnicodeStr = NULL;
+ 	    }
+-	  else
+-	    {
++            else {
+ 	      strcpy (pszGlobalData, pszConvertData);
+ 	      free (pszConvertData);
+ 	      pszConvertData = NULL;
+@@ -769,8 +678,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  /* Free allocated resources */
+ 	  if (ppszTextList)
+ 	    XFreeStringList (ppszTextList);
+-	  if (xtpText.value)
+-	  {
++            if (xtpText.value) {
+ 	    XFree (xtpText.value);
+ 	    xtpText.value = NULL;
+ 	    xtpText.nitems = 0;
+@@ -796,7 +704,8 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	  break;
+ 
+ 	default:
+-          ErrorF ("winClipboardFlushXEvents - unexpected event type %d\n", event.type);
++            ErrorF("winClipboardFlushXEvents - unexpected event type %d\n",
++                   event.type);
+ 	  break;
+ 	}
+     }

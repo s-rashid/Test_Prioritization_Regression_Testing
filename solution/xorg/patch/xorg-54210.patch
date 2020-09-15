@@ -1,0 +1,14 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index b05cf2c..2db6053 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1063,6 +1063,9 @@ ProcessOtherEvent(InternalEvent *ev, DeviceIntPtr device)
+         case  ET_RawButtonPress:
+         case  ET_RawButtonRelease:
+         case  ET_RawMotion:
++        case  ET_RawTouchBegin:
++        case  ET_RawTouchUpdate:
++        case  ET_RawTouchEnd:
+             DeliverRawEvent(&ev->raw_event, device);
+             break;
+         default:

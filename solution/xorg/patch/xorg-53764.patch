@@ -1,0 +1,18 @@
+diff --git a/hw/xquartz/applewm.c b/hw/xquartz/applewm.c
+index 27fb125..55976c4 100644
+--- a/hw/xquartz/applewm.c
++++ b/hw/xquartz/applewm.c
+@@ -725,10 +725,12 @@ AppleWMExtensionInit(
+                                  NULL,
+                                  StandardMinorOpcode)))
+     {
++        size_t i;
+         WMReqCode = (unsigned char)extEntry->base;
+         WMErrorBase = extEntry->errorBase;
+         WMEventBase = extEntry->eventBase;
+-        EventSwapVector[WMEventBase] = (EventSwapPtr) SNotifyEvent;
++        for (i=0; i < AppleWMNumberEvents; i++)
++            EventSwapVector[WMEventBase + i] = (EventSwapPtr) SNotifyEvent;
+         appleWMProcs = procsPtr;
+     }
+ }

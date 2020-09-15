@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/fake/fake.h b/hw/kdrive/fake/fake.h
+index 3c4a51b..d505860 100644
+--- a/hw/kdrive/fake/fake.h
++++ b/hw/kdrive/fake/fake.h
+@@ -85,10 +85,10 @@ void
+ fakeCardFini (KdCardInfo *card);
+ 
+ void
+-fakeGetColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++fakeGetColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ void
+-fakePutColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++fakePutColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ Bool
+ fakeMapFramebuffer (KdScreenInfo *screen);

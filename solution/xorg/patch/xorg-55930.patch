@@ -1,0 +1,610 @@
+diff --git a/include/input.h b/include/input.h
+index b7825a7..a9d0944 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -134,38 +133,32 @@ typedef struct _ValuatorMask ValuatorMask;
+ /* The DIX stores incoming input events in this list */
+ extern InternalEvent* InputEventList;
+ 
+-typedef int (*DeviceProc)(
+-    DeviceIntPtr /*device*/,
++typedef int (*DeviceProc) (DeviceIntPtr /*device */ ,
+     int /*what*/);
+ 
+-typedef void (*ProcessInputProc)(
+-    InternalEvent * /*event*/,
++typedef void (*ProcessInputProc) (InternalEvent * /*event */ ,
+     DeviceIntPtr /*device*/);
+ 
+-typedef Bool (*DeviceHandleProc)(
+-    DeviceIntPtr /*device*/,
++typedef Bool (*DeviceHandleProc) (DeviceIntPtr /*device */ ,
+     void* /*data*/
+     );
+ 
+-typedef void (*DeviceUnwrapProc)(
+-    DeviceIntPtr /*device*/,
++typedef void (*DeviceUnwrapProc) (DeviceIntPtr /*device */ ,
+     DeviceHandleProc /*proc*/,
+     void* /*data*/
+     );
+ 
+ /* pointer acceleration handling */
+-typedef void (*PointerAccelSchemeProc)(
+-    DeviceIntPtr /*device*/,
++typedef void (*PointerAccelSchemeProc) (DeviceIntPtr /*device */ ,
+     ValuatorMask* /*valuators*/,
+     CARD32 /*evtime*/);
+ 
+-typedef void (*DeviceCallbackProc)(
+-              DeviceIntPtr /*pDev*/);
++typedef void (*DeviceCallbackProc) (DeviceIntPtr /*pDev */ );
+ 
+ struct _ValuatorAccelerationRec;
+-typedef Bool (*PointerAccelSchemeInitProc)(
+-              DeviceIntPtr /*dev*/,
+-              struct _ValuatorAccelerationRec* /*protoScheme*/);
++typedef Bool (*PointerAccelSchemeInitProc) (DeviceIntPtr /*dev */ ,
++                                            struct _ValuatorAccelerationRec *
++                                            /*protoScheme */ );
+ 
+ typedef struct _DeviceRec {
+     pointer	devicePrivate;
+@@ -185,8 +178,7 @@ typedef struct {
+ 
+ typedef struct {
+     KeySym  *map;
+-    KeyCode minKeyCode,
+-	    maxKeyCode;
++    KeyCode minKeyCode, maxKeyCode;
+     int     mapWidth;
+ } KeySymsRec, *KeySymsPtr;
+ 
+@@ -260,21 +252,17 @@ extern int button_is_down(DeviceIntPtr pDev, int button, int type);
+ extern void InitCoreDevices(void);
+ extern void InitXTestDevices(void);
+ 
+-extern _X_EXPORT DeviceIntPtr AddInputDevice(
+-    ClientPtr /*client*/,
++extern _X_EXPORT DeviceIntPtr AddInputDevice(ClientPtr /*client */ ,
+     DeviceProc /*deviceProc*/,
+     Bool /*autoStart*/);
+ 
+-extern _X_EXPORT Bool EnableDevice(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool EnableDevice(DeviceIntPtr /*device */ ,
+     BOOL /* sendevent */);
+ 
+-extern _X_EXPORT Bool ActivateDevice(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool ActivateDevice(DeviceIntPtr /*device */ ,
+     BOOL /* sendevent */);
+ 
+-extern _X_EXPORT Bool DisableDevice(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool DisableDevice(DeviceIntPtr /*device */ ,
+     BOOL /* sendevent */);
+ 
+ extern int InitAndStartDevices(void);
+@@ -283,113 +271,103 @@ extern void CloseDownDevices(void);
+ 
+ extern void UndisplayDevices(void);
+ 
+-extern _X_EXPORT int RemoveDevice(
+-    DeviceIntPtr /*dev*/,
++extern _X_EXPORT int RemoveDevice(DeviceIntPtr /*dev */ ,
+     BOOL /* sendevent */);
+ 
+ extern _X_EXPORT int NumMotionEvents(void);
+ 
+-extern _X_EXPORT int dixLookupDevice(
+-    DeviceIntPtr *         /* dev */,
++extern _X_EXPORT int dixLookupDevice(DeviceIntPtr * /* dev */ ,
+     int                    /* id */,
+     ClientPtr              /* client */,
+     Mask                   /* access_mode */);
+ 
+-extern _X_EXPORT void QueryMinMaxKeyCodes(
+-    KeyCode* /*minCode*/,
++extern _X_EXPORT void QueryMinMaxKeyCodes(KeyCode * /*minCode */ ,
+     KeyCode* /*maxCode*/);
+ 
+-extern _X_EXPORT Bool SetKeySymsMap(
+-    KeySymsPtr /*dst*/,
++extern _X_EXPORT Bool SetKeySymsMap(KeySymsPtr /*dst */ ,
+     KeySymsPtr /*src*/);
+ 
+-extern _X_EXPORT Bool InitButtonClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool InitButtonClassDeviceStruct(DeviceIntPtr /*device */ ,
+     int /*numButtons*/,
+     Atom* /* labels */,
+     CARD8* /*map*/);
+ 
+-extern _X_INTERNAL ValuatorClassPtr AllocValuatorClass(
+-    ValuatorClassPtr src,
++extern _X_INTERNAL ValuatorClassPtr AllocValuatorClass(ValuatorClassPtr src,
+     int numAxes);
+ 
+-extern _X_EXPORT Bool InitValuatorClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool InitValuatorClassDeviceStruct(DeviceIntPtr /*device */ ,
+     int /*numAxes*/,
+     Atom* /* labels */,
+     int /*numMotionEvents*/,
+     int /*mode*/);
+ 
+-extern _X_EXPORT Bool InitPointerAccelerationScheme(
+-    DeviceIntPtr /*dev*/,
++extern _X_EXPORT Bool InitPointerAccelerationScheme(DeviceIntPtr /*dev */ ,
+     int /*scheme*/);
+ 
+-extern _X_EXPORT Bool InitFocusClassDeviceStruct(
+-    DeviceIntPtr /*device*/);
++extern _X_EXPORT Bool InitFocusClassDeviceStruct(DeviceIntPtr /*device */ );
+ 
+-extern _X_EXPORT Bool InitTouchClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool InitTouchClassDeviceStruct(DeviceIntPtr /*device */ ,
+     unsigned int /*max_touches*/,
+     unsigned int /*mode*/,
+     unsigned int /*numAxes*/);
+ 
+-typedef void (*BellProcPtr)(
+-    int /*percent*/,
++typedef void (*BellProcPtr) (int /*percent */ ,
+     DeviceIntPtr /*device*/,
+     pointer /*ctrl*/,
+     int);
+ 
+-typedef void (*KbdCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*KbdCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     KeybdCtrl * /*ctrl*/);
+ 
+-typedef void (*PtrCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*PtrCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     PtrCtrl * /*ctrl*/);
+ 
+-extern _X_EXPORT Bool InitPtrFeedbackClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
+-    PtrCtrlProcPtr /*controlProc*/);
++extern _X_EXPORT Bool InitPtrFeedbackClassDeviceStruct(DeviceIntPtr /*device */
++                                                       ,
++                                                       PtrCtrlProcPtr
++                                                       /*controlProc */ );
+ 
+-typedef void (*StringCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*StringCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     StringCtrl * /*ctrl*/);
+ 
+-extern _X_EXPORT Bool InitStringFeedbackClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
+-    StringCtrlProcPtr /*controlProc*/,
++extern _X_EXPORT Bool InitStringFeedbackClassDeviceStruct(DeviceIntPtr
++                                                          /*device */ ,
++                                                          StringCtrlProcPtr
++                                                          /*controlProc */ ,
+     int /*max_symbols*/,
+-    int /*num_symbols_supported*/,
+-    KeySym* /*symbols*/);
++                                                          int
++                                                          /*num_symbols_supported */
++                                                          ,
++                                                          KeySym * /*symbols */
++                                                          );
+ 
+-typedef void (*BellCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*BellCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     BellCtrl * /*ctrl*/);
+ 
+-extern _X_EXPORT Bool InitBellFeedbackClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
+-    BellProcPtr /*bellProc*/,
+-    BellCtrlProcPtr /*controlProc*/);
++extern _X_EXPORT Bool InitBellFeedbackClassDeviceStruct(DeviceIntPtr /*device */
++                                                        ,
++                                                        BellProcPtr
++                                                        /*bellProc */ ,
++                                                        BellCtrlProcPtr
++                                                        /*controlProc */ );
+ 
+-typedef void (*LedCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*LedCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     LedCtrl * /*ctrl*/);
+ 
+-extern _X_EXPORT Bool InitLedFeedbackClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
+-    LedCtrlProcPtr /*controlProc*/);
++extern _X_EXPORT Bool InitLedFeedbackClassDeviceStruct(DeviceIntPtr /*device */
++                                                       ,
++                                                       LedCtrlProcPtr
++                                                       /*controlProc */ );
+ 
+-typedef void (*IntegerCtrlProcPtr)(
+-    DeviceIntPtr /*device*/,
++typedef void (*IntegerCtrlProcPtr) (DeviceIntPtr /*device */ ,
+     IntegerCtrl * /*ctrl*/);
+ 
++extern _X_EXPORT Bool InitIntegerFeedbackClassDeviceStruct(DeviceIntPtr
++                                                           /*device */ ,
++                                                           IntegerCtrlProcPtr
++                                                           /*controlProc */ );
+ 
+-extern _X_EXPORT Bool InitIntegerFeedbackClassDeviceStruct(
+-    DeviceIntPtr /*device*/,
+-    IntegerCtrlProcPtr /*controlProc*/);
+-
+-extern _X_EXPORT Bool InitPointerDeviceStruct(
+-    DevicePtr /*device*/,
++extern _X_EXPORT Bool InitPointerDeviceStruct(DevicePtr /*device */ ,
+     CARD8* /*map*/,
+     int /*numButtons*/,
+     Atom* /* btn_labels */,
+@@ -398,50 +376,42 @@ extern _X_EXPORT Bool InitPointerDeviceStruct(
+     int /*numAxes*/,
+     Atom* /* axes_labels */);
+ 
+-extern _X_EXPORT Bool InitKeyboardDeviceStruct(
+-    DeviceIntPtr /*device*/,
++extern _X_EXPORT Bool InitKeyboardDeviceStruct(DeviceIntPtr /*device */ ,
+     XkbRMLVOSet * /*rmlvo*/,
+     BellProcPtr /*bellProc*/,
+-    KbdCtrlProcPtr /*controlProc*/);
++                                               KbdCtrlProcPtr /*controlProc */
++                                               );
+ 
+-extern int ApplyPointerMapping(
+-    DeviceIntPtr /* pDev */,
++extern int ApplyPointerMapping(DeviceIntPtr /* pDev */ ,
+     CARD8 *      /* map */,
+     int          /* len */,
+     ClientPtr	/* client */);
+ 
+-extern Bool BadDeviceMap(
+-    BYTE* /*buff*/,
++extern Bool BadDeviceMap(BYTE * /*buff */ ,
+     int /*length*/,
+     unsigned /*low*/,
+     unsigned /*high*/,
+     XID* /*errval*/);
+ 
+-extern void NoteLedState(
+-    DeviceIntPtr /*keybd*/,
++extern void NoteLedState(DeviceIntPtr /*keybd */ ,
+     int /*led*/,
+     Bool /*on*/);
+ 
+-extern void MaybeStopHint(
+-    DeviceIntPtr /*device*/,
++extern void MaybeStopHint(DeviceIntPtr /*device */ ,
+     ClientPtr /*client*/);
+ 
+-extern void ProcessPointerEvent(
+-    InternalEvent* /* ev */,
++extern void ProcessPointerEvent(InternalEvent * /* ev */ ,
+     DeviceIntPtr /*mouse*/);
+ 
+-extern void ProcessKeyboardEvent(
+-    InternalEvent* /*ev*/,
++extern void ProcessKeyboardEvent(InternalEvent * /*ev */ ,
+     DeviceIntPtr   /*keybd*/);
+ 
+-extern Bool LegalModifier(
+-    unsigned int /*key*/, 
++extern Bool LegalModifier(unsigned int /*key */ ,
+     DeviceIntPtr /*pDev*/);
+ 
+ extern _X_EXPORT void ProcessInputEvents(void);
+ 
+-extern _X_EXPORT void InitInput(
+-    int  /*argc*/,
++extern _X_EXPORT void InitInput(int /*argc */ ,
+     char ** /*argv*/);
+ extern _X_EXPORT void CloseInput(void);
+ 
+@@ -452,102 +422,73 @@ extern _X_EXPORT void FreeEventList(InternalEvent *list, int num_events);
+ 
+ extern void CreateClassesChangedEvent(InternalEvent *event,
+                                       DeviceIntPtr master,
+-                                      DeviceIntPtr slave,
+-                                      int flags);
++                                      DeviceIntPtr slave, int flags);
+ 
+-extern InternalEvent * UpdateFromMaster(
+-    InternalEvent *events,
++extern InternalEvent *UpdateFromMaster(InternalEvent *events,
+     DeviceIntPtr pDev,
+-    int type,
+-    int *num_events);
++                                       int type, int *num_events);
+ 
+-extern _X_EXPORT int GetPointerEvents(
+-    InternalEvent *events,
++extern _X_EXPORT int GetPointerEvents(InternalEvent *events,
+     DeviceIntPtr pDev,
+     int type,
+     int buttons,
+-    int flags,
+-    const ValuatorMask *mask);
++                                      int flags, const ValuatorMask *mask);
+ 
+-extern _X_EXPORT void QueuePointerEvents(
+-    DeviceIntPtr pDev,
++extern _X_EXPORT void QueuePointerEvents(DeviceIntPtr pDev,
+     int type,
+     int buttons,
+-    int flags,
+-    const ValuatorMask *mask);
++                                         int flags, const ValuatorMask *mask);
+ 
+-extern _X_EXPORT int GetKeyboardEvents(
+-    InternalEvent *events,
++extern _X_EXPORT int GetKeyboardEvents(InternalEvent *events,
+     DeviceIntPtr pDev,
+     int type,
+-    int key_code,
+-    const ValuatorMask *mask);
++                                       int key_code, const ValuatorMask *mask);
+ 
+-extern _X_EXPORT void QueueKeyboardEvents(
+-    DeviceIntPtr pDev,
++extern _X_EXPORT void QueueKeyboardEvents(DeviceIntPtr pDev,
+     int type,
+     int key_code,
+     const ValuatorMask *mask);
+ 
+-extern int GetTouchEvents(
+-    InternalEvent *events,
++extern int GetTouchEvents(InternalEvent *events,
+     DeviceIntPtr pDev,
+     uint32_t ddx_touchid,
+     uint16_t type,
+-    uint32_t flags,
+-    const ValuatorMask *mask);
++                          uint32_t flags, const ValuatorMask *mask);
+ 
+ void QueueTouchEvents(DeviceIntPtr device,
+                       int type,
+                       uint32_t ddx_touchid,
+-                      int flags,
+-                      const ValuatorMask *mask);
++                      int flags, const ValuatorMask *mask);
+ 
+-extern int GetTouchOwnershipEvents(
+-    InternalEvent *events,
++extern int GetTouchOwnershipEvents(InternalEvent *events,
+     DeviceIntPtr pDev,
+     TouchPointInfoPtr ti,
+-    uint8_t mode,
+-    XID resource,
+-    uint32_t flags);
++                                   uint8_t mode, XID resource, uint32_t flags);
+ 
+-extern _X_EXPORT int GetProximityEvents(
+-    InternalEvent *events,
++extern _X_EXPORT int GetProximityEvents(InternalEvent *events,
+     DeviceIntPtr pDev,
+-    int type,
+-    const ValuatorMask *mask);
++                                        int type, const ValuatorMask *mask);
+ 
+-extern _X_EXPORT void QueueProximityEvents(
+-    DeviceIntPtr pDev,
+-    int type,
+-    const ValuatorMask *mask);
++extern _X_EXPORT void QueueProximityEvents(DeviceIntPtr pDev,
++                                           int type, const ValuatorMask *mask);
+ 
+-extern void PostSyntheticMotion(
+-    DeviceIntPtr pDev,
+-    int x,
+-    int y,
+-    int screen,
+-    unsigned long time);
++extern void PostSyntheticMotion(DeviceIntPtr pDev,
++                                int x, int y, int screen, unsigned long time);
+ 
+-extern _X_EXPORT int GetMotionHistorySize(
+-    void);
++extern _X_EXPORT int GetMotionHistorySize(void);
+ 
+-extern _X_EXPORT void AllocateMotionHistory(
+-    DeviceIntPtr pDev);
++extern _X_EXPORT void AllocateMotionHistory(DeviceIntPtr pDev);
+ 
+-extern _X_EXPORT int GetMotionHistory(
+-    DeviceIntPtr pDev,
++extern _X_EXPORT int GetMotionHistory(DeviceIntPtr pDev,
+     xTimecoord **buff,
+     unsigned long start,
+     unsigned long stop,
+-    ScreenPtr pScreen,
+-    BOOL core);
++                                      ScreenPtr pScreen, BOOL core);
+ 
+ extern void ReleaseButtonsAndKeys(DeviceIntPtr dev);
+ 
+ extern int AttachDevice(ClientPtr client,
+-                        DeviceIntPtr slave,
+-                        DeviceIntPtr master);
++                        DeviceIntPtr slave, DeviceIntPtr master);
+ 
+ extern _X_EXPORT DeviceIntPtr GetPairedDevice(DeviceIntPtr kbd);
+ extern DeviceIntPtr GetMaster(DeviceIntPtr dev, int type);
+@@ -557,27 +498,24 @@ extern _X_EXPORT int AllocDevicePair(ClientPtr client,
+                              DeviceIntPtr* ptr,
+                              DeviceIntPtr* keybd,
+                              DeviceProc ptr_proc,
+-                             DeviceProc keybd_proc,
+-                             Bool master);
++                                     DeviceProc keybd_proc, Bool master);
+ extern void DeepCopyDeviceClasses(DeviceIntPtr from,
+-                                  DeviceIntPtr to,
+-                                  DeviceChangedEvent *dce);
++                                  DeviceIntPtr to, DeviceChangedEvent *dce);
+ 
+ /* Helper functions. */
+ extern _X_EXPORT int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+-                              KeyCode **modkeymap, int *max_keys_per_mod);
++                                        KeyCode **modkeymap,
++                                        int *max_keys_per_mod);
+ extern int change_modmap(ClientPtr client, DeviceIntPtr dev, KeyCode *map,
+                          int max_keys_per_mod);
+-extern int AllocXTestDevice(ClientPtr client,
+-                             const char* name,
+-                             DeviceIntPtr* ptr,
+-                             DeviceIntPtr* keybd,
+-                             DeviceIntPtr master_ptr,
+-                             DeviceIntPtr master_keybd);
++extern int AllocXTestDevice(ClientPtr client, const char *name,
++                            DeviceIntPtr *ptr, DeviceIntPtr *keybd,
++                            DeviceIntPtr master_ptr, DeviceIntPtr master_keybd);
+ extern BOOL IsXTestDevice(DeviceIntPtr dev, DeviceIntPtr master);
+ extern DeviceIntPtr GetXTestDevice(DeviceIntPtr master);
+ extern void SendDevicePresenceEvent(int deviceid, int type);
+-extern _X_EXPORT InputAttributes *DuplicateInputAttributes(InputAttributes *attrs);
++extern _X_EXPORT InputAttributes *DuplicateInputAttributes(InputAttributes *
++                                                           attrs);
+ extern _X_EXPORT void FreeInputAttributes(InputAttributes *attrs);
+ 
+ enum TouchListenerState{
+@@ -596,34 +534,40 @@ enum TouchListenerType {
+     LISTENER_POINTER_REGULAR,
+ };
+ 
+-extern void TouchInitDDXTouchPoint(DeviceIntPtr dev, DDXTouchPointInfoPtr ddxtouch);
+-extern DDXTouchPointInfoPtr TouchBeginDDXTouch(DeviceIntPtr dev, uint32_t ddx_id);
++extern void TouchInitDDXTouchPoint(DeviceIntPtr dev,
++                                   DDXTouchPointInfoPtr ddxtouch);
++extern DDXTouchPointInfoPtr TouchBeginDDXTouch(DeviceIntPtr dev,
++                                               uint32_t ddx_id);
+ extern void TouchEndDDXTouch(DeviceIntPtr dev, DDXTouchPointInfoPtr ti);
+ extern DDXTouchPointInfoPtr TouchFindByDDXID(DeviceIntPtr dev,
+-                                             uint32_t ddx_id,
+-                                             Bool create);
+-extern Bool TouchInitTouchPoint(TouchClassPtr touch, ValuatorClassPtr v, int index);
++                                             uint32_t ddx_id, Bool create);
++extern Bool TouchInitTouchPoint(TouchClassPtr touch, ValuatorClassPtr v,
++                                int index);
+ extern void TouchFreeTouchPoint(DeviceIntPtr dev, int index);
+ extern TouchPointInfoPtr TouchBeginTouch(DeviceIntPtr dev, int sourceid,
+-                                         uint32_t touchid, Bool emulate_pointer);
++                                         uint32_t touchid,
++                                         Bool emulate_pointer);
+ extern TouchPointInfoPtr TouchFindByClientID(DeviceIntPtr dev,
+                                              uint32_t client_id);
+ extern void TouchEndTouch(DeviceIntPtr dev, TouchPointInfoPtr ti);
+ extern Bool TouchEventHistoryAllocate(TouchPointInfoPtr ti);
+ extern void TouchEventHistoryFree(TouchPointInfoPtr ti);
+ extern void TouchEventHistoryPush(TouchPointInfoPtr ti, const DeviceEvent *ev);
+-extern void TouchEventHistoryReplay(TouchPointInfoPtr ti, DeviceIntPtr dev, XID resource);
++extern void TouchEventHistoryReplay(TouchPointInfoPtr ti, DeviceIntPtr dev,
++                                    XID resource);
+ extern Bool TouchResourceIsOwner(TouchPointInfoPtr ti, XID resource);
+-extern void TouchAddListener(TouchPointInfoPtr ti, XID resource, enum InputLevel level,
+-                             enum TouchListenerType type, enum TouchListenerState state,
+-                             WindowPtr window);
++extern void TouchAddListener(TouchPointInfoPtr ti, XID resource,
++                             enum InputLevel level, enum TouchListenerType type,
++                             enum TouchListenerState state, WindowPtr window);
+ extern Bool TouchRemoveListener(TouchPointInfoPtr ti, XID resource);
+-extern void TouchSetupListeners(DeviceIntPtr dev, TouchPointInfoPtr ti, InternalEvent *ev);
++extern void TouchSetupListeners(DeviceIntPtr dev, TouchPointInfoPtr ti,
++                                InternalEvent *ev);
+ extern Bool TouchEnsureSprite(DeviceIntPtr sourcedev, TouchPointInfoPtr ti,
+                               InternalEvent *ev);
+ extern Bool TouchBuildDependentSpriteTrace(DeviceIntPtr dev, SpritePtr sprite);
+ extern int TouchConvertToPointerEvent(const InternalEvent *ev,
+-                                      InternalEvent *motion, InternalEvent *button);
++                                      InternalEvent *motion,
++                                      InternalEvent *button);
+ extern int TouchGetPointerEventType(const InternalEvent *ev);
+ extern void TouchRemovePointerGrab(DeviceIntPtr dev);
+ extern void TouchListenerGone(XID resource);
+@@ -637,9 +581,7 @@ extern Bool WindowXI2MaskIsset(DeviceIntPtr dev, WindowPtr win, xEvent* ev);
+ extern int GetXI2MaskByte(XI2Mask *mask, DeviceIntPtr dev, int event_type);
+ void FixUpEventFromWindow(SpritePtr pSprite,
+                           xEvent *xE,
+-                          WindowPtr pWin,
+-                          Window child,
+-                          Bool calcChild);
++                          WindowPtr pWin, Window child, Bool calcChild);
+ extern WindowPtr XYToWindow(SpritePtr pSprite, int x, int y);
+ extern int EventIsDeliverable(DeviceIntPtr dev, int evtype, WindowPtr win);
+ extern Bool ActivatePassiveGrab(DeviceIntPtr dev, GrabPtr grab,
+@@ -664,17 +606,12 @@ enum EventDeliveryState {
+ };
+ 
+ /* Implemented by the DDX. */
+-extern _X_EXPORT int NewInputDeviceRequest(
+-    InputOption *options,
++extern _X_EXPORT int NewInputDeviceRequest(InputOption *options,
+     InputAttributes *attrs,
+     DeviceIntPtr *dev);
+-extern  _X_EXPORT void DeleteInputDeviceRequest(
+-    DeviceIntPtr dev);
++extern _X_EXPORT void DeleteInputDeviceRequest(DeviceIntPtr dev);
+ 
+-extern _X_EXPORT void DDXRingBell(
+-    int volume,
+-    int pitch,
+-    int duration);
++extern _X_EXPORT void DDXRingBell(int volume, int pitch, int duration);
+ 
+ #define VALUATOR_MODE_ALL_AXES -1
+ extern _X_HIDDEN int valuator_get_mode(DeviceIntPtr dev, int axis);
+@@ -687,13 +624,12 @@ extern Bool EnableCursor;
+ extern _X_EXPORT ValuatorMask  *valuator_mask_new(int num_valuators);
+ extern _X_EXPORT void valuator_mask_free(ValuatorMask **mask);
+ extern _X_EXPORT void valuator_mask_set_range(ValuatorMask *mask,
+-                                       int first_valuator, int num_valuators,
++                                              int first_valuator,
++                                              int num_valuators,
+                                        const int* valuators);
+-extern _X_EXPORT void valuator_mask_set(ValuatorMask *mask,
+-                                        int valuator,
++extern _X_EXPORT void valuator_mask_set(ValuatorMask *mask, int valuator,
+                                         int data);
+-extern _X_EXPORT void valuator_mask_set_double(ValuatorMask *mask,
+-                                               int valuator,
++extern _X_EXPORT void valuator_mask_set_double(ValuatorMask *mask, int valuator,
+                                                double data);
+ extern _X_EXPORT void valuator_mask_zero(ValuatorMask *mask);
+ extern _X_EXPORT int valuator_mask_size(const ValuatorMask *mask);
+@@ -711,14 +647,19 @@ extern _X_EXPORT Bool valuator_mask_fetch_double(const ValuatorMask *mask,
+                                                  int valnum, double *val);
+ 
+ /* InputOption handling interface */
+-extern _X_EXPORT InputOption* input_option_new(InputOption *list, const char *key, const char *value);
++extern _X_EXPORT InputOption *input_option_new(InputOption *list,
++                                               const char *key,
++                                               const char *value);
+ extern _X_EXPORT void input_option_free_list(InputOption **opt);
+-extern _X_EXPORT InputOption* input_option_free_element(InputOption *opt, const char *key);
+-extern _X_EXPORT InputOption* input_option_find(InputOption *list, const char *key);
++extern _X_EXPORT InputOption *input_option_free_element(InputOption *opt,
++                                                        const char *key);
++extern _X_EXPORT InputOption *input_option_find(InputOption *list,
++                                                const char *key);
+ extern _X_EXPORT const char* input_option_get_key(const InputOption *opt);
+ extern _X_EXPORT const char* input_option_get_value(const InputOption *opt);
+ extern _X_EXPORT void input_option_set_key(InputOption *opt, const char* key);
+-extern _X_EXPORT void input_option_set_value(InputOption *opt, const char* value);
++extern _X_EXPORT void input_option_set_value(InputOption *opt,
++                                             const char *value);
+ 
+ extern _X_HIDDEN Bool point_on_screen(ScreenPtr pScreen, int x, int y);
+ extern _X_HIDDEN void update_desktop_dimensions(void);

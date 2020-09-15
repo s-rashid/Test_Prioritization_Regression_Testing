@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/ephyr/ephyrdriext.c b/hw/kdrive/ephyr/ephyrdriext.c
+index 231b098..ba1733b 100644
+--- a/hw/kdrive/ephyr/ephyrdriext.c
++++ b/hw/kdrive/ephyr/ephyrdriext.c
+@@ -141,6 +141,10 @@ ephyrDRIExtensionInit (ScreenPtr a_screen)
+ 
+ #ifdef XF86DRI_EVENTS
+     EventType = CreateNewResourceType (XF86DRIFreeEvents);
++    if (!EventType) {
++        EPHYR_LOG_ERROR ("failed to register DRI event resource type\n") ;
++        goto out ;
++    }
+ #endif
+ 
+     if ((extEntry = AddExtension(XF86DRINAME,

@@ -1,0 +1,228 @@
+diff --git a/exa/exa_offscreen.c b/exa/exa_offscreen.c
+index 5abe3b8..5e1d139 100644
+--- a/exa/exa_offscreen.c
++++ b/exa/exa_offscreen.c
+@@ -47,8 +47,7 @@ ExaOffscreenValidate (ScreenPtr pScreen)
+ 
+     assert (pExaScr->info->offScreenAreas->base_offset == 
+ 	    pExaScr->info->offScreenBase);
+-    for (area = pExaScr->info->offScreenAreas; area; area = area->next)
+-    {
++    for (area = pExaScr->info->offScreenAreas; area; area = area->next) {
+ 	assert (area->offset >= area->base_offset &&
+ 		area->offset < (area->base_offset + area->size));
+ 	if (prev)
+@@ -101,8 +100,7 @@ exaFindAreaToEvict(ExaScreenPrivPtr pExaScr, int size, int align)
+     cost = 0;
+     best = 0;
+ 
+-    while (end != NULL)
+-    {
++    while (end != NULL) {
+ 	restart:
+ 	while (begin != NULL && begin->state == ExaOffscreenLocked)
+ 	    begin = end = begin->next;
+@@ -113,8 +111,7 @@ exaFindAreaToEvict(ExaScreenPrivPtr pExaScr, int size, int align)
+ 	/* adjust size needed to account for alignment loss for this area */
+ 	real_size = size + (begin->base_offset + begin->size - size) % align;
+ 
+-	while (avail < real_size && end != NULL)
+-	{
++        while (avail < real_size && end != NULL) {
+ 	    if (end->state == ExaOffscreenLocked) {
+ 		/* Can't more room here, restart after this locked area */
+ 		avail = 0;
+@@ -163,31 +160,31 @@ exaFindAreaToEvict(ExaScreenPrivPtr pExaScr, int size, int align)
+  */
+ ExaOffscreenArea *
+ exaOffscreenAlloc (ScreenPtr pScreen, int size, int align,
+-                   Bool locked,
+-                   ExaOffscreenSaveProc save,
+-                   pointer privData)
++                  Bool locked, ExaOffscreenSaveProc save, pointer privData)
+ {
+     ExaOffscreenArea *area;
++
+     ExaScreenPriv (pScreen);
+     int real_size = 0, largest_avail = 0;
++
+ #if DEBUG_OFFSCREEN
+     static int number = 0;
+-    ErrorF("================= ============ allocating a new pixmap %d\n", ++number);
++
++    ErrorF("================= ============ allocating a new pixmap %d\n",
++           ++number);
+ #endif
+ 
+     ExaOffscreenValidate (pScreen);
+     if (!align)
+ 	align = 1;
+ 
+-    if (!size)
+-    {
++    if (!size) {
+ 	DBG_OFFSCREEN (("Alloc 0x%x -> EMPTY\n", size));
+ 	return NULL;
+     }
+ 
+     /* throw out requests that cannot fit */
+-    if (size > (pExaScr->info->memorySize - pExaScr->info->offScreenBase))
+-    {
++    if (size > (pExaScr->info->memorySize - pExaScr->info->offScreenBase)) {
+ 	DBG_OFFSCREEN (("Alloc 0x%x vs (0x%lx) -> TOBIG\n", size,
+ 			pExaScr->info->memorySize -
+ 			pExaScr->info->offScreenBase));
+@@ -195,8 +192,7 @@ exaOffscreenAlloc (ScreenPtr pScreen, int size, int align,
+     }
+ 
+     /* Try to find a free space that'll fit. */
+-    for (area = pExaScr->info->offScreenAreas; area; area = area->next)
+-    {
++    for (area = pExaScr->info->offScreenAreas; area; area = area->next) {
+ 	/* skip allocated areas */
+ 	if (area->state != ExaOffscreenAvail)
+ 	    continue;
+@@ -212,12 +208,10 @@ exaOffscreenAlloc (ScreenPtr pScreen, int size, int align,
+ 	    largest_avail = area->size;
+     }
+ 
+-    if (!area)
+-    {
++    if (!area) {
+ 	area = exaFindAreaToEvict(pExaScr, size, align);
+ 
+-	if (!area)
+-	{
++        if (!area) {
+ 	    DBG_OFFSCREEN (("Alloc 0x%x -> NOSPACE\n", size));
+ 	    /* Could not allocate memory */
+ 	    ExaOffscreenValidate (pScreen);
+@@ -235,17 +229,16 @@ exaOffscreenAlloc (ScreenPtr pScreen, int size, int align,
+ 	/*
+ 	 * Now get the system to merge the other needed areas together
+ 	 */
+-	while (area->size < real_size)
+-	{
++        while (area->size < real_size) {
+ 	    assert (area->next && area->next->state == ExaOffscreenRemovable);
+ 	    (void) ExaOffscreenKickOut (pScreen, area->next);
+ 	}
+     }
+ 
+     /* save extra space in new area */
+-    if (real_size < area->size)
+-    {
++    if (real_size < area->size) {
+ 	ExaOffscreenArea   *new_area = malloc(sizeof (ExaOffscreenArea));
++
+ 	if (!new_area)
+ 	    return NULL;
+ 	new_area->base_offset = area->base_offset;
+@@ -266,7 +259,8 @@ exaOffscreenAlloc (ScreenPtr pScreen, int size, int align,
+ 	area->prev = new_area;
+ 	area->base_offset = new_area->base_offset + new_area->size;
+ 	area->size = real_size;
+-    } else
++    }
++    else
+ 	pExaScr->numOffscreenAvailable--;
+ 
+     /*
+@@ -300,14 +294,12 @@ ExaOffscreenSwapOut (ScreenPtr pScreen)
+ 
+     ExaOffscreenValidate (pScreen);
+     /* loop until a single free area spans the space */
+-    for (;;)
+-    {
++    for (;;) {
+ 	ExaOffscreenArea *area = pExaScr->info->offScreenAreas;
+ 
+ 	if (!area)
+ 	    break;
+-	if (area->state == ExaOffscreenAvail)
+-	{
++        if (area->state == ExaOffscreenAvail) {
+ 	    area = area->next;
+ 	    if (!area)
+ 		break;
+@@ -328,16 +320,13 @@ ExaOffscreenEjectPixmaps (ScreenPtr pScreen)
+ 
+     ExaOffscreenValidate (pScreen);
+     /* loop until a single free area spans the space */
+-    for (;;)
+-    {
++    for (;;) {
+ 	ExaOffscreenArea *area;
+ 
+ 	for (area = pExaScr->info->offScreenAreas; area != NULL;
+-	     area = area->next)
+-	{
++             area = area->next) {
+ 	    if (area->state == ExaOffscreenRemovable &&
+-		area->save == exaPixmapSave)
+-	    {
++                area->save == exaPixmapSave) {
+ 		(void) ExaOffscreenKickOut (pScreen, area);
+ 		ExaOffscreenValidate (pScreen);
+ 		break;
+@@ -374,6 +363,7 @@ void
+ exaEnableDisableFBAccess (int index, Bool enable)
+ {
+     ScreenPtr pScreen = screenInfo.screens[index];
++
+     ExaScreenPriv (pScreen);
+ 
+     if (pExaScr->info->flags & EXA_HANDLES_PIXMAPS)
+@@ -456,8 +446,7 @@ exaOffscreenFree (ScreenPtr pScreen, ExaOffscreenArea *area)
+ 	ExaOffscreenMerge (pExaScr, area);
+ 
+     /* link with prev area if free */
+-    if (prev && prev->state == ExaOffscreenAvail)
+-    {
++    if (prev && prev->state == ExaOffscreenAvail) {
+ 	area = prev;
+ 	ExaOffscreenMerge (pExaScr, area);
+     }
+@@ -502,9 +491,7 @@ ExaOffscreenDefragment (ScreenPtr pScreen)
+     pExaDstPix->use_gpu_copy = TRUE;
+ 
+     for (area = pExaScr->info->offScreenAreas->prev;
+-	 area != pExaScr->info->offScreenAreas;
+-	 )
+-    {
++         area != pExaScr->info->offScreenAreas;) {
+ 	ExaOffscreenArea *prev = area->prev;
+ 	PixmapPtr pSrcPix;
+ 	ExaPixmapPrivPtr pExaSrcPix;
+@@ -577,9 +564,7 @@ ExaOffscreenDefragment (ScreenPtr pScreen)
+ 	pExaScr->info->DoneCopy (pDstPix);
+ 	exaMarkSync (pScreen);
+ 
+-	DBG_OFFSCREEN(("Before swap: prev=0x%08x-0x%08x-0x%08x area=0x%08x-0x%08x-0x%08x\n",
+-		       prev->base_offset, prev->offset, prev->base_offset + prev->size,
+-		       area->base_offset, area->offset, area->base_offset + area->size));
++        DBG_OFFSCREEN(("Before swap: prev=0x%08x-0x%08x-0x%08x area=0x%08x-0x%08x-0x%08x\n", prev->base_offset, prev->offset, prev->base_offset + prev->size, area->base_offset, area->offset, area->base_offset + area->size));
+ 
+ 	/* Calculate swapped area offsets and sizes */
+ 	area->base_offset = prev->base_offset;
+@@ -594,9 +579,7 @@ ExaOffscreenDefragment (ScreenPtr pScreen)
+ 	    prev->size = pExaScr->info->memorySize - prev->base_offset;
+ 	area->size = prev->base_offset - area->base_offset;
+ 
+-	DBG_OFFSCREEN(("After swap: area=0x%08x-0x%08x-0x%08x prev=0x%08x-0x%08x-0x%08x\n",
+-		       area->base_offset, area->offset, area->base_offset + area->size,
+-		       prev->base_offset, prev->offset, prev->base_offset + prev->size));
++        DBG_OFFSCREEN(("After swap: area=0x%08x-0x%08x-0x%08x prev=0x%08x-0x%08x-0x%08x\n", area->base_offset, area->offset, area->base_offset + area->size, prev->base_offset, prev->offset, prev->base_offset + prev->size));
+ 
+ 	/* Swap areas in list */
+ 	if (area->next)
+@@ -688,8 +671,7 @@ ExaOffscreenFini (ScreenPtr pScreen)
+     ExaOffscreenArea *area;
+ 
+     /* just free all of the area records */
+-    while ((area = pExaScr->info->offScreenAreas))
+-    {
++    while ((area = pExaScr->info->offScreenAreas)) {
+ 	pExaScr->info->offScreenAreas = area->next;
+ 	free(area);
+     }

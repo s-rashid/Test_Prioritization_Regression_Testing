@@ -1,0 +1,25 @@
+diff --git a/glx/glxscreens.c b/glx/glxscreens.c
+index ffe70c3..a5b61df 100644
+--- a/glx/glxscreens.c
++++ b/glx/glxscreens.c
+@@ -44,8 +44,8 @@
+ #include "glxext.h"
+ #include "protocol-versions.h"
+ 
+-static int glxScreenPrivateKeyIndex;
+-static DevPrivateKey glxScreenPrivateKey = &glxScreenPrivateKeyIndex;
++static DevPrivateKeyRec glxScreenPrivateKeyRec;
++#define glxScreenPrivateKey (&glxScreenPrivateKeyRec)
+ 
+ const char GLServerVersion[] = "1.4";
+ static const char GLServerExtensions[] = 
+@@ -352,6 +352,9 @@ void __glXScreenInit(__GLXscreen *pGlxScreen, ScreenPtr pScreen)
+     __GLXconfig *config;
+     int i;
+ 
++    if (!dixRegisterPrivateKey(&glxScreenPrivateKeyRec, PRIVATE_SCREEN, 0))
++	return;
++
+     pGlxScreen->pScreen       = pScreen;
+     pGlxScreen->GLextensions  = xstrdup(GLServerExtensions);
+     pGlxScreen->GLXvendor     = xstrdup(GLXServerVendorName);

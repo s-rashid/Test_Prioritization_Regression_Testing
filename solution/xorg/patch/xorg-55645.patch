@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ramdac/xf86RamDacPriv.h b/hw/xfree86/ramdac/xf86RamDacPriv.h
+index f68e588..ae1c665 100644
+--- a/hw/xfree86/ramdac/xf86RamDacPriv.h
++++ b/hw/xfree86/ramdac/xf86RamDacPriv.h
+@@ -8,6 +8,6 @@
+ 
+ void RamDacGetRecPrivate(void);
+ Bool RamDacGetRec(ScrnInfoPtr pScrn);
+-int  RamDacGetScreenIndex(void);
++int RamDacGetScreenIndex(void);
+ void RamDacLoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices,
+-    			LOCO *colors, VisualPtr pVisual);
++                       LOCO * colors, VisualPtr pVisual);

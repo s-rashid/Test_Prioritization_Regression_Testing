@@ -1,0 +1,10 @@
+diff --git a/include/validate.h b/include/validate.h
+index e88fb41..1df22a3 100644
+--- a/include/validate.h
++++ b/include/validate.h
+@@ -37,4 +37,4 @@ typedef union _Validate *ValidatePtr;
+ 
+ #define UnmapValData ((ValidatePtr)1)
+ 
+-#endif /* VALIDATE_H */
++#endif                          /* VALIDATE_H */

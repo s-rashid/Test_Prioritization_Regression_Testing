@@ -1,0 +1,368 @@
+diff --git a/hw/xfree86/xaa/xaaBitmap.c b/hw/xfree86/xaa/xaaBitmap.c
+index f7ae78d..45d5a09 100644
+--- a/hw/xfree86/xaa/xaaBitmap.c
++++ b/hw/xfree86/xaa/xaaBitmap.c
+@@ -1,5 +1,4 @@
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -9,10 +8,8 @@
+ #include "xaacexp.h"
+ #include "xf86.h"
+ 
+-
+ /********** byte swapping ***************/
+ 
+-
+ #ifdef FIXEDBASE
+ # define DEST(i)	*dest
+ # define RETURN(i)	return(dest)
+@@ -27,14 +24,11 @@
+ # define SOURCE(i)	src[i]
+ #endif
+ 
+-
+ typedef CARD32 *(* BitmapScanlineProcPtr)(CARD32 *, CARD32 *, int, int);
+ 
+ #ifdef TRIPLE_BITS
+ static CARD32*
+-BitmapScanline(
+-   CARD32 *src, CARD32 *base,
+-   int count, int skipleft )
++BitmapScanline(CARD32 *src, CARD32 *base, int count, int skipleft)
+ {
+      CARD32 bits;
+ 
+@@ -47,7 +41,8 @@ BitmapScanline(
+      if (count == 2) {
+ 	bits = *src;
+ 	WRITE_BITS2(bits);
+-     } else if (count == 1) {
++    }
++    else if (count == 1) {
+ 	bits = *src;
+ 	WRITE_BITS1(bits);
+      }
+@@ -56,9 +51,7 @@ BitmapScanline(
+ }
+ 
+ static CARD32*
+-BitmapScanline_Inverted(
+-   CARD32 *src, CARD32 *base,
+-   int count, int skipleft )
++BitmapScanline_Inverted(CARD32 *src, CARD32 *base, int count, int skipleft)
+ {
+      CARD32 bits;
+ 
+@@ -71,7 +64,8 @@ BitmapScanline_Inverted(
+      if (count == 2) {
+ 	bits = ~(*src);
+ 	WRITE_BITS2(bits);
+-     } else if (count == 1) {
++    }
++    else if (count == 1) {
+ 	bits = ~(*src);
+ 	WRITE_BITS1(bits);
+      }
+@@ -79,11 +73,8 @@ BitmapScanline_Inverted(
+      return base;
+ }
+ 
+-
+ static CARD32*
+-BitmapScanline_Shifted(
+-   CARD32 *src, CARD32 *base,
+-   int count, int skipleft )
++BitmapScanline_Shifted(CARD32 *src, CARD32 *base, int count, int skipleft)
+ {
+      CARD32 bits;
+ 
+@@ -96,7 +87,8 @@ BitmapScanline_Shifted(
+      if (count == 2) {
+ 	bits = SHIFT_R(*src,skipleft) | SHIFT_L(*(src + 1),(32 - skipleft));
+ 	WRITE_BITS2(bits);
+-     } else if (count == 1) {
++    }
++    else if (count == 1) {
+ 	bits = SHIFT_R(*src,skipleft) | SHIFT_L(*(src + 1),(32 - skipleft));
+ 	WRITE_BITS1(bits);
+      }
+@@ -105,23 +97,26 @@ BitmapScanline_Shifted(
+ }
+ 
+ static CARD32*
+-BitmapScanline_Shifted_Inverted(
+-   CARD32 *src, CARD32 *base,
++BitmapScanline_Shifted_Inverted(CARD32 *src, CARD32 *base,
+    int count, int skipleft )
+ {
+      CARD32 bits;
+ 
+      while(count >= 3) {
+-	bits = ~(SHIFT_R(*src,skipleft) | SHIFT_L(*(src + 1),(32 - skipleft)));
++        bits =
++            ~(SHIFT_R(*src, skipleft) | SHIFT_L(*(src + 1), (32 - skipleft)));
+ 	WRITE_BITS3(bits);
+ 	src++;
+ 	count -= 3;
+      }
+      if (count == 2) {
+-	bits = ~(SHIFT_R(*src,skipleft) | SHIFT_L(*(src + 1),(32 - skipleft)));
++        bits =
++            ~(SHIFT_R(*src, skipleft) | SHIFT_L(*(src + 1), (32 - skipleft)));
+ 	WRITE_BITS2(bits);
+-     } else if (count == 1) {
+-	bits = ~(SHIFT_R(*src,skipleft) | SHIFT_L(*(src + 1),(32 - skipleft)));
++    }
++    else if (count == 1) {
++        bits =
++            ~(SHIFT_R(*src, skipleft) | SHIFT_L(*(src + 1), (32 - skipleft)));
+ 	WRITE_BITS1(bits);
+      }
+      
+@@ -133,9 +128,7 @@ BitmapScanline_Shifted_Inverted(
+ 
+ #else
+ static CARD32*
+-BitmapScanline(
+-   CARD32 *src, CARD32 *dest,
+-   int count, int skipleft )
++BitmapScanline(CARD32 *src, CARD32 *dest, int count, int skipleft)
+ {
+    while(count >= 4) {
+ 	DEST(0) = SOURCE(0);
+@@ -149,19 +142,20 @@ BitmapScanline(
+ #endif
+    }
+    
+-   if(!count) return dest;
++    if (!count)
++        return dest;
+    DEST(0) = SOURCE(0);
+-   if(count == 1) RETURN(1);
++    if (count == 1)
++        RETURN(1);
+    DEST(1) = SOURCE(1);
+-   if(count == 2) RETURN(2);
++    if (count == 2)
++        RETURN(2);
+    DEST(2) = SOURCE(2);
+    RETURN(3);
+ }
+ 
+ static CARD32*
+-BitmapScanline_Inverted(
+-   CARD32 *src, CARD32 *dest,
+-   int count, int skipleft )
++BitmapScanline_Inverted(CARD32 *src, CARD32 *dest, int count, int skipleft)
+ {
+    while(count >= 4) {
+ 	DEST(0) = ~SOURCE(0);
+@@ -175,20 +169,20 @@ BitmapScanline_Inverted(
+ #endif
+    }
+    
+-   if(!count) return dest;
++    if (!count)
++        return dest;
+    DEST(0) = ~SOURCE(0);
+-   if(count == 1) RETURN(1);
++    if (count == 1)
++        RETURN(1);
+    DEST(1) = ~SOURCE(1);
+-   if(count == 2) RETURN(2);
++    if (count == 2)
++        RETURN(2);
+    DEST(2) = ~SOURCE(2);
+    RETURN(3);
+ }
+ 
+-
+ static CARD32*
+-BitmapScanline_Shifted(
+-   CARD32 *bits, CARD32 *base,
+-   int count, int skipleft )
++BitmapScanline_Shifted(CARD32 *bits, CARD32 *base, int count, int skipleft)
+ {
+      while(count--) {
+ 	register CARD32 tmp = SHIFT_R(*bits,skipleft) | 
+@@ -200,8 +194,7 @@ BitmapScanline_Shifted(
+ }
+ 
+ static CARD32*
+-BitmapScanline_Shifted_Inverted(
+-   CARD32 *bits, CARD32 *base,
++BitmapScanline_Shifted_Inverted(CARD32 *bits, CARD32 *base,
+    int count, int skipleft )
+ {
+      while(count--) {
+@@ -214,11 +207,11 @@ BitmapScanline_Shifted_Inverted(
+ }
+ 
+ static CARD32*
+-BitmapScanline_Shifted_Careful(
+-   CARD32 *bits, CARD32 *base,
++BitmapScanline_Shifted_Careful(CARD32 *bits, CARD32 *base,
+    int count, int skipleft )
+ {
+      register CARD32 tmp;
++
+      while(--count) {
+  	tmp = SHIFT_R(*bits,skipleft) | SHIFT_L(*(bits + 1),(32 - skipleft));
+ 	WRITE_BITS(tmp);
+@@ -231,13 +224,14 @@ BitmapScanline_Shifted_Careful(
+ }
+ 
+ static CARD32*
+-BitmapScanline_Shifted_Inverted_Careful(
+-   CARD32 *bits, CARD32 *base,
++BitmapScanline_Shifted_Inverted_Careful(CARD32 *bits, CARD32 *base,
+    int count, int skipleft )
+ {
+      register CARD32 tmp;
++
+      while(--count) {
+-	tmp = ~(SHIFT_R(*bits,skipleft) | SHIFT_L(*(bits + 1),(32 - skipleft)));
++        tmp =
++            ~(SHIFT_R(*bits, skipleft) | SHIFT_L(*(bits + 1), (32 - skipleft)));
+ 	WRITE_BITS(tmp);
+ 	bits++;
+      }
+@@ -267,10 +261,7 @@ EXPNAME(XAAWriteBitmapColorExpand)(
+     int srcwidth,
+     int skipleft,
+     int fg, int bg,
+-    int rop,
+-    unsigned int planemask 
+-)
+-{
++                                        int rop, unsigned int planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     CARD32* base;
+     unsigned char *srcp = src;
+@@ -293,7 +284,9 @@ EXPNAME(XAAWriteBitmapColorExpand)(
+ 	if((rop == GXcopy) && infoRec->SetupForSolidFill) {
+     	    (*infoRec->SetupForSolidFill)(pScrn, bg, rop, planemask);
+             (*infoRec->SubsequentSolidFillRect)(pScrn, x, y, w, h);
+-	} else SecondPassColor = bg;
++        }
++        else
++            SecondPassColor = bg;
+ 	bg = -1;
+     }
+ 
+@@ -302,20 +295,23 @@ EXPNAME(XAAWriteBitmapColorExpand)(
+ #else
+     if(skipleft && 
+ 	(!(infoRec->CPUToScreenColorExpandFillFlags & LEFT_EDGE_CLIPPING) || 
+-	(!(infoRec->CPUToScreenColorExpandFillFlags & LEFT_EDGE_CLIPPING_NEGATIVE_X) && 
++         (!(infoRec->
++            CPUToScreenColorExpandFillFlags & LEFT_EDGE_CLIPPING_NEGATIVE_X) &&
+ 		(skipleft > x)))) {
+ #endif
+ 	if((skipleft + ((w + 31) & ~31)) > ((skipleft + w + 31) & ~31)) {
+ 	    /* don't read past the end */
+ 	    firstFunc = BitmapScanline_Shifted_Careful;
+  	    secondFunc = BitmapScanline_Shifted_Inverted_Careful;
+-	} else {
++        }
++        else {
+ 	    firstFunc = BitmapScanline_Shifted;
+  	    secondFunc = BitmapScanline_Shifted_Inverted;
+ 	}
+ 	shift = skipleft;
+ 	skipleft = 0;
+-    } else {
++    }
++    else {
+ 	firstFunc = BitmapScanline;
+  	secondFunc = BitmapScanline_Inverted;
+ 	w += skipleft;
+@@ -332,10 +328,10 @@ SECOND_PASS:
+ 
+     flag = (infoRec->CPUToScreenColorExpandFillFlags 
+ 	     & CPU_TRANSFER_PAD_QWORD) && ((dwords * h) & 0x01);
+-    (*infoRec->SetupForCPUToScreenColorExpandFill)(
+-					pScrn, fg, bg, rop, planemask);
+-    (*infoRec->SubsequentCPUToScreenColorExpandFill)(
+-					pScrn, x, y, w, h, skipleft);
++    (*infoRec->SetupForCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                    planemask);
++    (*infoRec->SubsequentCPUToScreenColorExpandFill) (pScrn, x, y, w, h,
++                                                      skipleft);
+ 
+     base = (CARD32*)infoRec->ColorExpandBase;
+ 
+@@ -368,7 +364,8 @@ SECOND_PASS:
+ 
+     if(infoRec->CPUToScreenColorExpandFillFlags & SYNC_AFTER_COLOR_EXPAND) 
+ 	(*infoRec->Sync)(pScrn);
+-    else SET_SYNC_FLAG(infoRec);
++    else
++        SET_SYNC_FLAG(infoRec);
+ }
+ 
+ #ifndef FIXEDBASE
+@@ -386,9 +383,7 @@ EXPNAME(XAAWriteBitmapScanlineColorExpand)(
+     int skipleft,
+     int fg, int bg,
+     int rop,
+-    unsigned int planemask 
+-)
+-{
++                                                unsigned int planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     CARD32* base;
+     unsigned char *srcp = src;
+@@ -404,12 +399,15 @@ EXPNAME(XAAWriteBitmapScanlineColorExpand)(
+ 	(!CHECK_RGB_EQUAL(bg))))) {
+ #else
+     if((bg != -1) && 
+-	(infoRec->ScanlineCPUToScreenColorExpandFillFlags & TRANSPARENCY_ONLY)){
++        (infoRec->
++         ScanlineCPUToScreenColorExpandFillFlags & TRANSPARENCY_ONLY)) {
+ #endif
+ 	if((rop == GXcopy) && infoRec->SetupForSolidFill) {
+     	    (*infoRec->SetupForSolidFill)(pScrn, bg, rop, planemask);
+             (*infoRec->SubsequentSolidFillRect)(pScrn, x, y, w, h);
+-	} else SecondPassColor = bg;
++        }
++        else
++            SecondPassColor = bg;
+ 	bg = -1;
+     }
+ 
+@@ -426,13 +424,15 @@ EXPNAME(XAAWriteBitmapScanlineColorExpand)(
+ 	    /* don't read past the end */
+ 	    firstFunc = BitmapScanline_Shifted_Careful;
+  	    secondFunc = BitmapScanline_Shifted_Inverted_Careful;
+-	} else {
++        }
++        else {
+ 	    firstFunc = BitmapScanline_Shifted;
+  	    secondFunc = BitmapScanline_Shifted_Inverted;
+ 	}
+ 	shift = skipleft;
+ 	skipleft = 0;
+-    } else {
++    }
++    else {
+ 	firstFunc = BitmapScanline;
+  	secondFunc = BitmapScanline_Inverted;
+ 	w += skipleft;
+@@ -447,9 +447,10 @@ EXPNAME(XAAWriteBitmapScanlineColorExpand)(
+ 
+ SECOND_PASS:
+ 
+-    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill)(pScrn, fg, bg, rop, planemask);
+-    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(
+-					pScrn, x, y, w, h, skipleft);
++    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                            planemask);
++    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, x, y, w, h,
++                                                              skipleft);
+ 
+     bufferNo = 0;
+ 

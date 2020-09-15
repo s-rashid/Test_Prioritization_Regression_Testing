@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fake/fake.c b/hw/kdrive/fake/fake.c
+index ff59798..ea88f0e 100644
+--- a/hw/kdrive/fake/fake.c
++++ b/hw/kdrive/fake/fake.c
+@@ -458,7 +458,6 @@ fakeCardFini (KdCardInfo *card)
+ {
+     FakePriv	*priv = card->driver;
+     
+-    if (priv->base)
+ 	free (priv->base);
+     xfree (priv);
+ }

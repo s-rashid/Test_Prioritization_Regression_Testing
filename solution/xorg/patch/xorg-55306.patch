@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxutil.c b/hw/dmx/glxProxy/glxutil.c
+index c519d14..f90dbf1 100644
+--- a/hw/dmx/glxProxy/glxutil.c
++++ b/hw/dmx/glxProxy/glxutil.c
+@@ -31,4 +31,7 @@
+ #include "glxserver.h"
+ #include "glxutil.h"
+ 
+-void __glXNop(void) {}
++void
++__glXNop(void)
++{
++}

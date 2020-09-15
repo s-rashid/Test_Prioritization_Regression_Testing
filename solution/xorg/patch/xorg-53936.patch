@@ -1,0 +1,22 @@
+diff --git a/include/xkbfile.h b/include/xkbfile.h
+index a4b99ee..db7dbfa 100644
+--- a/include/xkbfile.h
++++ b/include/xkbfile.h
+@@ -136,7 +136,7 @@ extern _X_EXPORT char *	XkbConfigText(
+     unsigned 	/* format */
+ );
+ 
+-extern _X_EXPORT char *	XkbSIMatchText(
++extern _X_EXPORT const char *	XkbSIMatchText(
+     unsigned	/* type */,
+     unsigned	/* format */
+ );
+@@ -161,7 +161,7 @@ extern _X_EXPORT char *	XkbDoodadTypeText(
+     unsigned	/* format */
+ );
+ 
+-extern _X_EXPORT char *	XkbActionTypeText(
++extern _X_EXPORT const char *	XkbActionTypeText(
+     unsigned	/* type */,
+     unsigned	/* format */
+ );

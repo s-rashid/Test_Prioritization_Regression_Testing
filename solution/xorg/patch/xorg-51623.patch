@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winscrinit.c b/hw/xwin/winscrinit.c
+index bf6181a..46f6693 100644
+--- a/hw/xwin/winscrinit.c
++++ b/hw/xwin/winscrinit.c
+@@ -190,10 +190,6 @@ winScreenInit (int index,
+ 	{
+ 	  pScreenInfo->dwWidth = GetSystemMetrics (SM_CXVIRTUALSCREEN);
+ 	  pScreenInfo->dwHeight = GetSystemMetrics (SM_CYVIRTUALSCREEN);
+-	  pScreenInfo->dwWidth_mm = (pScreenInfo->dwWidth /
+-				     WIN_DEFAULT_DPI) * 25.4;
+-	  pScreenInfo->dwHeight_mm = (pScreenInfo->dwHeight /
+-				      WIN_DEFAULT_DPI) * 25.4;
+ 	}
+     }
+   else

@@ -1,0 +1,62 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_apm.c b/hw/xfree86/os-support/linux/lnx_apm.c
+index 54c6989..a37331e 100644
+--- a/hw/xfree86/os-support/linux/lnx_apm.c
++++ b/hw/xfree86/os-support/linux/lnx_apm.c
+@@ -42,23 +42,26 @@ static struct {
+     apm_event_t apmLinux;
+     pmEvent xf86;
+ } LinuxToXF86[] = {
+-    { APM_SYS_STANDBY, XF86_APM_SYS_STANDBY },
+-    { APM_SYS_SUSPEND, XF86_APM_SYS_SUSPEND },
+-    { APM_NORMAL_RESUME, XF86_APM_NORMAL_RESUME },
+-    { APM_CRITICAL_RESUME, XF86_APM_CRITICAL_RESUME },
+-    { APM_LOW_BATTERY, XF86_APM_LOW_BATTERY },
+-    { APM_POWER_STATUS_CHANGE, XF86_APM_POWER_STATUS_CHANGE },
+-    { APM_UPDATE_TIME, XF86_APM_UPDATE_TIME },
+-    { APM_CRITICAL_SUSPEND, XF86_APM_CRITICAL_SUSPEND },
+-    { APM_USER_STANDBY, XF86_APM_USER_STANDBY },
+-    { APM_USER_SUSPEND, XF86_APM_USER_SUSPEND },
+-    { APM_STANDBY_RESUME, XF86_APM_STANDBY_RESUME },
++    {
++    APM_SYS_STANDBY, XF86_APM_SYS_STANDBY}, {
++    APM_SYS_SUSPEND, XF86_APM_SYS_SUSPEND}, {
++    APM_NORMAL_RESUME, XF86_APM_NORMAL_RESUME}, {
++    APM_CRITICAL_RESUME, XF86_APM_CRITICAL_RESUME}, {
++    APM_LOW_BATTERY, XF86_APM_LOW_BATTERY}, {
++    APM_POWER_STATUS_CHANGE, XF86_APM_POWER_STATUS_CHANGE}, {
++    APM_UPDATE_TIME, XF86_APM_UPDATE_TIME}, {
++    APM_CRITICAL_SUSPEND, XF86_APM_CRITICAL_SUSPEND}, {
++    APM_USER_STANDBY, XF86_APM_USER_STANDBY}, {
++    APM_USER_SUSPEND, XF86_APM_USER_SUSPEND}, {
++    APM_STANDBY_RESUME, XF86_APM_STANDBY_RESUME},
+ #if defined(APM_CAPABILITY_CHANGED)
+-    { APM_CAPABILITY_CHANGED, XF86_CAPABILITY_CHANGED },
++    {
++    APM_CAPABILITY_CHANGED, XF86_CAPABILITY_CHANGED},
+ #endif
+ #if 0
+-    { APM_STANDBY_FAILED, XF86_APM_STANDBY_FAILED },
+-    { APM_SUSPEND_FAILED, XF86_APM_SUSPEND_FAILED }
++    {
++    APM_STANDBY_FAILED, XF86_APM_STANDBY_FAILED}, {
++    APM_SUSPEND_FAILED, XF86_APM_SUSPEND_FAILED}
+ #endif
+ };
+ 
+@@ -165,13 +168,13 @@ lnxAPMOpen(void)
+    
+     DebugF("APM: Opening device\n");
+     if ((fd = open( APM_DEVICE, O_RDWR )) > -1) {
+-	if (access( APM_PROC, R_OK ) ||
+-	    ((pfd = open( APM_PROC, O_RDONLY)) == -1)) {
++        if (access(APM_PROC, R_OK) || ((pfd = open(APM_PROC, O_RDONLY)) == -1)) {
+ 	    xf86MsgVerb(X_WARNING,3,"Cannot open APM (%s) (%s)\n",
+ 			APM_PROC, strerror(errno));
+ 	    close(fd);
+ 	    return NULL;
+-	} else
++        }
++        else
+ 	    close(pfd);
+ 	xf86PMGetEventFromOs = lnxPMGetEventFromOs;
+ 	xf86PMConfirmEventToOs = lnxPMConfirmEventToOs;

@@ -1,0 +1,56 @@
+diff --git a/os/xprintf.c b/os/xprintf.c
+index 3b4bb41..17fea2e 100644
+--- a/os/xprintf.c
++++ b/os/xprintf.c
+@@ -134,6 +134,7 @@ Xasprintf(char ** ret, const char * _X_RESTRICT_KYWD format, ...)
+ {
+     int size;
+     va_list va;
++
+     va_start(va, format);
+     size = vasprintf(ret, format, va);
+     va_end(va);
+@@ -155,6 +156,7 @@ int
+ XNFvasprintf(char **ret, const char * _X_RESTRICT_KYWD format, va_list va)
+ {
+     int size = vasprintf(ret, format, va);
++
+     if ((size == -1) || (*ret == NULL)) {
+ 	FatalError("XNFvasprintf failed: %s", strerror(errno));
+     }
+@@ -177,6 +179,7 @@ XNFasprintf(char ** ret, const char * _X_RESTRICT_KYWD format, ...)
+ {
+     int size;
+     va_list va;
++
+     va_start(va, format);
+     size = XNFvasprintf(ret, format, va);
+     va_end(va);
+@@ -195,10 +198,12 @@ Xvprintf(const char *format, va_list va)
+     return ret;
+ }
+ 
+-char *Xprintf(const char *format, ...)
++char *
++Xprintf(const char *format, ...)
+ {
+     char *ret;
+     va_list va;
++
+     va_start(va, format);
+     if (vasprintf(&ret, format, va) == -1)
+ 	ret = NULL;
+@@ -216,10 +221,12 @@ XNFvprintf(const char *format, va_list va)
+     return ret;
+ }
+ 
+-char *XNFprintf(const char *format, ...)
++char *
++XNFprintf(const char *format, ...)
+ {
+     char *ret;
+     va_list va;
++
+     va_start(va, format);
+     XNFvasprintf(&ret, format, va);
+     va_end(va);

@@ -1,0 +1,18 @@
+diff --git a/Xi/ungrdev.h b/Xi/ungrdev.h
+index 8e3c210..8a85c27 100644
+--- a/Xi/ungrdev.h
++++ b/Xi/ungrdev.h
+@@ -30,10 +30,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #ifndef UNGRDEV_H
+ #define UNGRDEV_H 1
+ 
+-int SProcXUngrabDevice(ClientPtr	/* client */
++int SProcXUngrabDevice(ClientPtr        /* client */
+     );
+ 
+-int ProcXUngrabDevice(ClientPtr	/* client */
++int ProcXUngrabDevice(ClientPtr /* client */
+     );
+ 
+-#endif /* UNGRDEV_H */
++#endif                          /* UNGRDEV_H */

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/GL/capabilities.h b/hw/xquartz/GL/capabilities.h
+index 361856b..634c8e8 100644
+--- a/hw/xquartz/GL/capabilities.h
++++ b/hw/xquartz/GL/capabilities.h
+@@ -55,7 +55,7 @@ struct glCapabilitiesConfig {
+     struct glCapabilitiesConfig *next;
+ };
+ 
+-struct glCapabilities  {
++struct glCapabilities {
+     struct glCapabilitiesConfig *configurations;
+     int total_configurations;
+ };

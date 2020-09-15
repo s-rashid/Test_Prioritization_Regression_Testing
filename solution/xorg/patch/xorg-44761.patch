@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 1d49d7c..385c5e8 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -257,6 +257,8 @@ do_get_buffers(DrawablePtr pDraw, int *width, int *height,
+ 
+     pPriv->buffers = buffers;
+     pPriv->bufferCount = *out_count;
++    pPriv->width = pDraw->width;
++    pPriv->height = pDraw->height;
+     *width = pPriv->width;
+     *height = pPriv->height;
+ 

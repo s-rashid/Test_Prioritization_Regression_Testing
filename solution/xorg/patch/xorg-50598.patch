@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index e506f6a..7a7bbdf 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -2430,7 +2430,7 @@ AttachDevice(ClientPtr client, DeviceIntPtr dev, DeviceIntPtr master)
+         WindowPtr currentRoot;
+ 
+         if (dev->spriteInfo->sprite)
+-            currentRoot = dev->spriteInfo->sprite->spriteTrace[0];
++            currentRoot = GetCurrentRootWindow(dev);
+         else /* new device auto-set to floating */
+             currentRoot = screenInfo.screens[0]->root;
+ 

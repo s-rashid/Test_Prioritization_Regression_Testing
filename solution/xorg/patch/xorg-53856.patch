@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index aac33d3..9532151 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -808,6 +808,9 @@ xf86CrtcScreenInit (ScreenPtr screen)
+     config->CloseScreen = screen->CloseScreen;
+     screen->CloseScreen = xf86CrtcCloseScreen;
+     
++    /* This might still be marked wrapped from a previous generation */
++    config->BlockHandler = NULL;
++    
+ #ifdef XFreeXDGA
+     _xf86_di_dga_init_internal(screen);
+ #endif

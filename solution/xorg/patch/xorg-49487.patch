@@ -1,0 +1,13 @@
+diff --git a/Xi/getprop.c b/Xi/getprop.c
+index 2460459..ba98fc8 100644
+--- a/Xi/getprop.c
++++ b/Xi/getprop.c
+@@ -164,7 +164,7 @@ XEventClass
+ 			*buf++ = (id << 8) | EventInfo[j].type;
+ 		}
+ 	}
+-    return (buf);
++    return buf;
+ }
+ 
+ /***********************************************************************

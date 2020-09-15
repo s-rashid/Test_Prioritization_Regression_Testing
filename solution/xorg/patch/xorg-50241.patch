@@ -1,0 +1,24 @@
+diff --git a/include/XIstubs.h b/include/XIstubs.h
+index ba2f861..0bb773e 100644
+--- a/include/XIstubs.h
++++ b/include/XIstubs.h
+@@ -27,19 +27,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #define XI_STUBS_H 1
+ 
+ extern _X_EXPORT void
+-CloseInputDevice (
+-	DeviceIntPtr           /* d */,
+-	ClientPtr              /* client */);
+-
+-extern _X_EXPORT void
+ AddOtherInputDevices (void);
+ 
+-extern _X_EXPORT void
+-OpenInputDevice (
+-	DeviceIntPtr           /* dev */,
+-	ClientPtr              /* client */,
+-	int *                  /* status */);
+-
+ extern _X_EXPORT int
+ SetDeviceMode (
+ 	ClientPtr              /* client */,

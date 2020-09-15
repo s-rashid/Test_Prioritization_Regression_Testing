@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index 1abc182..132e8bc 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -2460,8 +2460,8 @@ xf86HandleConfigFile(Bool autoconfig)
+ 	    dirfrom = X_CMDLINE;
+ 
+ 	xf86initConfigFiles();
+-	filename = xf86openConfigFile(filesearch, xf86ConfigFile, PROJECTROOT);
+ 	dirname = xf86openConfigDirFiles(dirsearch, xf86ConfigDir, PROJECTROOT);
++	filename = xf86openConfigFile(filesearch, xf86ConfigFile, PROJECTROOT);
+ 	if (filename) {
+ 	    xf86MsgVerb(filefrom, 0, "Using config file: \"%s\"\n", filename);
+ 	    xf86ConfigFile = xnfstrdup(filename);

@@ -1,0 +1,47 @@
+diff --git a/hw/xfree86/exa/examodule.c b/hw/xfree86/exa/examodule.c
+index 1556051..72cf798 100644
+--- a/hw/xfree86/exa/examodule.c
++++ b/hw/xfree86/exa/examodule.c
+@@ -43,6 +43,7 @@ typedef struct _ExaXorgScreenPrivRec {
+ } ExaXorgScreenPrivRec, *ExaXorgScreenPrivPtr;
+ 
+ static DevPrivateKeyRec exaXorgScreenPrivateKeyRec;
++
+ #define exaXorgScreenPrivateKey (&exaXorgScreenPrivateKeyRec)
+ 
+ typedef enum {
+@@ -149,12 +150,10 @@ exaDDXDriverInit(ScreenPtr pScreen)
+ 
+ 	pExaScr->optimize_migration =
+ 	    xf86ReturnOptValBool(pScreenPriv->options,
+-				 EXAOPT_OPTIMIZE_MIGRATION,
+-				 TRUE);
++                                 EXAOPT_OPTIMIZE_MIGRATION, TRUE);
+     }
+ 
+-    if (xf86ReturnOptValBool(pScreenPriv->options,
+-                             EXAOPT_NO_COMPOSITE, FALSE)) {
++    if (xf86ReturnOptValBool(pScreenPriv->options, EXAOPT_NO_COMPOSITE, FALSE)) {
+ 	xf86DrvMsg(pScreen->myNum, X_CONFIG,
+ 		   "EXA: Disabling Composite operation "
+ 		   "(RENDER acceleration)\n");
+@@ -163,8 +162,7 @@ exaDDXDriverInit(ScreenPtr pScreen)
+     }
+ 
+     if (xf86ReturnOptValBool(pScreenPriv->options, EXAOPT_NO_UTS, FALSE)) {
+-	xf86DrvMsg(pScreen->myNum, X_CONFIG,
+-		   "EXA: Disabling UploadToScreen\n");
++        xf86DrvMsg(pScreen->myNum, X_CONFIG, "EXA: Disabling UploadToScreen\n");
+ 	pExaScr->info->UploadToScreen = NULL;
+     }
+ 
+@@ -184,8 +182,7 @@ exaDDXDriverInit(ScreenPtr pScreen)
+     
+ }
+ 
+-static XF86ModuleVersionInfo exaVersRec =
+-{
++static XF86ModuleVersionInfo exaVersRec = {
+ 	"exa",
+ 	MODULEVENDORSTRING,
+ 	MODINFOSTRING1,

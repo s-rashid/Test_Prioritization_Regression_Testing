@@ -1,0 +1,12 @@
+diff --git a/test/xtest.c b/test/xtest.c
+index af75f0c..6ea6862 100644
+--- a/test/xtest.c
++++ b/test/xtest.c
+@@ -61,7 +61,6 @@ static void xtest_init_devices(void)
+     InitAtoms();
+ 
+     XkbInitPrivates();
+-    XTestInitPrivates();
+ 
+     /* this also inits the xtest devices */
+     InitCoreDevices();

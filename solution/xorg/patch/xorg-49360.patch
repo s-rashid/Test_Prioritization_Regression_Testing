@@ -1,0 +1,22 @@
+diff --git a/test/xtest.c b/test/xtest.c
+index cc1188d..af75f0c 100644
+--- a/test/xtest.c
++++ b/test/xtest.c
+@@ -30,6 +30,7 @@
+ #include "inputstr.h"
+ #include "scrnintstr.h"
+ #include "exevents.h"
++#include "xkbsrv.h"
+ #include "xserver-properties.h"
+ 
+ #include <glib.h>
+@@ -59,6 +60,9 @@ static void xtest_init_devices(void)
+     dixResetPrivates();
+     InitAtoms();
+ 
++    XkbInitPrivates();
++    XTestInitPrivates();
++
+     /* this also inits the xtest devices */
+     InitCoreDevices();
+ 

@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/os-support/xf86_OSlib.h b/hw/xfree86/os-support/xf86_OSlib.h
+index 1d59060..2a4d079 100644
+--- a/hw/xfree86/os-support/xf86_OSlib.h
++++ b/hw/xfree86/os-support/xf86_OSlib.h
+@@ -378,10 +378,6 @@
+ #define DEV_MEM "/dev/mem"
+ #endif
+ 
+-#ifndef VT_SYSREQ_DEFAULT
+-#define VT_SYSREQ_DEFAULT FALSE
+-#endif
+-
+ #define SYSCALL(call) while(((call) == -1) && (errno == EINTR))
+ 
+ #define XF86_OS_PRIVS

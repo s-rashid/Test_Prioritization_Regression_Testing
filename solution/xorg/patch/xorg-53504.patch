@@ -1,0 +1,21 @@
+diff --git a/Xi/ungrdevb.c b/Xi/ungrdevb.c
+index 4e93f1a..9e9ece4 100644
+--- a/Xi/ungrdevb.c
++++ b/Xi/ungrdevb.c
+@@ -76,13 +76,11 @@ SOFTWARE.
+ int
+ SProcXUngrabDeviceButton(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xUngrabDeviceButtonReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xUngrabDeviceButtonReq);
+-    swapl(&stuff->grabWindow, n);
+-    swaps(&stuff->modifiers, n);
++    swapl(&stuff->grabWindow);
++    swaps(&stuff->modifiers);
+     return (ProcXUngrabDeviceButton(client));
+ }
+ 

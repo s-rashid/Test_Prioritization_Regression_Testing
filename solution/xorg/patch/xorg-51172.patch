@@ -1,0 +1,12 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index d17a752..e5bc64f 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -2192,7 +2192,6 @@ SyncResetProc(ExtensionEntry *extEntry)
+     RTCounter = 0;
+ }
+ 
+-
+ /*
+  * ** Initialise the extension.
+  */

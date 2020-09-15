@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/loader/loadext.c b/hw/xfree86/loader/loadext.c
+index 39a92c8..8ac50a6 100644
+--- a/hw/xfree86/loader/loadext.c
++++ b/hw/xfree86/loader/loadext.c
+@@ -378,9 +378,7 @@ tsort(void)
+ 	if (n == NULL)
+ 	    ErrorF("tsort: internal error -- could not find cycle");
+     }
+-    if (cycle_buf)
+ 	free(cycle_buf);
+-    if (longest_cycle)
+ 	free(longest_cycle);
+     if (graph)
+ 	free_nodes(graph);

@@ -1,0 +1,13 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index 754383d..02db88a 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -223,7 +223,7 @@ ProcDamageCreate (ClientPtr client)
+     if (pDrawable->type == DRAWABLE_WINDOW)
+     {
+ 	pRegion = &((WindowPtr) pDrawable)->borderClip;
+-	DamageDamageRegion(pDrawable, pRegion);
++	DamageReportDamage(pDamageExt->pDamage, pRegion);
+     }
+ 
+     return Success;

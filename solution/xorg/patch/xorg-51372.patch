@@ -1,0 +1,13 @@
+diff --git a/exa/exa_unaccel.c b/exa/exa_unaccel.c
+index a078cc1..d3c405f 100644
+--- a/exa/exa_unaccel.c
++++ b/exa/exa_unaccel.c
+@@ -748,6 +748,8 @@ exaGetPixmapFirstPixel (PixmapPtr pPixmap)
+ 	    return pixel;
+ 	}
+     case 8:
++    case 4:
++    case 1:
+ 	{
+ 	    CARD8 pixel;
+ 

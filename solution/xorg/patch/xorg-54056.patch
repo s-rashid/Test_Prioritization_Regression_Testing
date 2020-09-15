@@ -1,0 +1,16 @@
+diff --git a/hw/kdrive/ephyr/hostx.c b/hw/kdrive/ephyr/hostx.c
+index 47a6681..ebe4e52 100644
+--- a/hw/kdrive/ephyr/hostx.c
++++ b/hw/kdrive/ephyr/hostx.c
+@@ -332,6 +332,11 @@ hostx_set_title (char *title)
+   ephyrTitle = title;
+ }
+ 
++#ifdef __SUNPRO_C
++/* prevent "Function has no return statement" error for x_io_error_handler */
++#pragma does_not_return(exit)
++#endif
++
+ static int _X_NORETURN
+ x_io_error_handler (Display *dpy) {
+     ErrorF("Lost connection to X server: %s\n", strerror(errno));

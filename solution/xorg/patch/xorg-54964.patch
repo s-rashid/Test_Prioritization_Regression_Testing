@@ -1,0 +1,12 @@
+diff --git a/Xi/exglobals.h b/Xi/exglobals.h
+index 8c5a42e..9f235e0 100644
+--- a/Xi/exglobals.h
++++ b/Xi/exglobals.h
+@@ -79,6 +79,7 @@ extern int DevicePropertyNotify;
+ extern RESTYPE RT_INPUTCLIENT;
+ 
+ extern DevPrivateKeyRec XIClientPrivateKeyRec;
++
+ #define XIClientPrivateKey (&XIClientPrivateKeyRec)
+ 
+ #endif /* EXGLOBALS_H */

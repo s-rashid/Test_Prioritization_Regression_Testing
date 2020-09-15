@@ -1,0 +1,59 @@
+diff --git a/Xext/xres.c b/Xext/xres.c
+index 4989d3e..a073409 100644
+--- a/Xext/xres.c
++++ b/Xext/xres.c
+@@ -27,6 +27,7 @@
+ #include "list.h"
+ #include "misc.h"
+ #include <string.h>
++#include "picturestr.h"
+ 
+ /** @brief Holds fragments of responses for ConstructClientIds.
+  *
+@@ -288,6 +289,17 @@ ResGetApproxPixmapBytes(PixmapPtr pix)
+ }
+ 
+ static void
++ResFindResourcePixmaps(pointer value, XID id, RESTYPE type, pointer cdata)
++{
++    SizeType sizeFunc = GetResourceTypeSizeFunc(type);
++    ResourceSizeRec size = { 0, 0 };
++    unsigned long *bytes = cdata;
++
++    sizeFunc(value, id, &size);
++    *bytes += size.pixmapRefSize;
++}
++
++static void 
+ ResFindPixmaps(pointer value, XID id, pointer cdata)
+ {
+     unsigned long *bytes = (unsigned long *) cdata;
+@@ -322,6 +334,14 @@ ResFindGCPixmaps(pointer value, XID id, pointer cdata)
+         *bytes += ResGetApproxPixmapBytes(pGC->tile.pixmap);
+ }
+ 
++static void
++ResFindPicturePixmaps(pointer value, XID id, pointer cdata)
++{
++#ifdef RENDER
++    ResFindResourcePixmaps(value, id, PictureType, cdata);
++#endif
++}
++
+ static int
+ ProcXResQueryClientPixmapBytes(ClientPtr client)
+ {
+@@ -356,6 +376,13 @@ ProcXResQueryClientPixmapBytes(ClientPtr client)
+     FindClientResourcesByType(clients[clientID], RT_GC,
+                               ResFindGCPixmaps, (pointer) (&bytes));
+ 
++#ifdef RENDER
++    /* Render extension picture pixmaps. */
++    FindClientResourcesByType(clients[clientID], PictureType,
++                              ResFindPicturePixmaps,
++                              (pointer)(&bytes));
++#endif
++
+ #ifdef COMPOSITE
+     /* FIXME: include composite pixmaps too */
+ #endif

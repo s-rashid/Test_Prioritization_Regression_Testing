@@ -1,0 +1,29 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 8ec80b5..6693c67 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -286,7 +286,7 @@ int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+ {
+     CARD8 keys_per_mod[8];
+     int max_keys_per_mod;
+-    KeyCode *modkeymap;
++    KeyCode *modkeymap = NULL;
+     int i, j, ret;
+ 
+     ret = XaceHook(XACE_DEVICE_ACCESS, client, dev, DixGetAttrAccess);
+@@ -310,6 +310,7 @@ int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+         }
+     }
+ 
++    if (max_keys_per_mod != 0) {
+     modkeymap = calloc(max_keys_per_mod * 8, sizeof(KeyCode));
+     if (!modkeymap)
+         return BadAlloc;
+@@ -325,6 +326,7 @@ int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+             }
+         }
+     }
++    }
+ 
+     *max_keys_per_mod_out = max_keys_per_mod;
+     *modkeymap_out = modkeymap;

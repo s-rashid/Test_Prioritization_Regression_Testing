@@ -1,0 +1,153 @@
+diff --git a/fb/fbgc.c b/fb/fbgc.c
+index 8108c3a..e6f8279 100644
+--- a/fb/fbgc.c
++++ b/fb/fbgc.c
+@@ -96,12 +96,10 @@ fbPadPixmap (PixmapPtr pPixmap)
+     width = pPixmap->drawable.width * pPixmap->drawable.bitsPerPixel;
+     height = pPixmap->drawable.height;
+     mask = FbBitsMask (0, width);
+-    while (height--)
+-    {
++    while (height--) {
+ 	b = READ(bits) & mask;
+ 	w = width;
+-	while (w < FB_UNIT)
+-	{
++        while (w < FB_UNIT) {
+ 	    b = b | FbScrRight(b, w);
+ 	    w <<= 1;
+ 	}
+@@ -124,8 +122,7 @@ fbBitsRepeat (FbBits bits, int len, int width)
+     
+     if (width > FB_UNIT)
+ 	width = FB_UNIT;
+-    for (i = 0; i < width / len; i++)
+-    {
++    for (i = 0; i < width / len; i++) {
+ 	if ((bits & mask) != orig)
+ 	    return FALSE;
+ 	bits = FbScrLeft(bits,len);
+@@ -172,11 +169,11 @@ fbCanEvenStipple (PixmapPtr pStipple, int bpp)
+     /* make sure the stipple width is a multiple of the even stipple width */
+     if (pStipple->drawable.width % len != 0)
+ 	return FALSE;
+-    fbGetDrawable (&pStipple->drawable, bits, stride, stip_bpp, stipXoff, stipYoff);
++    fbGetDrawable(&pStipple->drawable, bits, stride, stip_bpp, stipXoff,
++                  stipYoff);
+     h = pStipple->drawable.height;
+     /* check to see that the stipple repeats horizontally */
+-    while (h--)
+-    {
++    while (h--) {
+ 	if (!fbLineRepeat (bits, len, pStipple->drawable.width)) {
+ 	    fbFinishAccess (&pStipple->drawable);
+ 	    return FALSE;
+@@ -199,55 +196,49 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+      * we need to recompute the composite clip 
+      */
+ 
+-    if ((changes & (GCClipXOrigin|GCClipYOrigin|GCClipMask|GCSubwindowMode)) ||
++    if ((changes &
++         (GCClipXOrigin | GCClipYOrigin | GCClipMask | GCSubwindowMode)) ||
+ 	(pDrawable->serialNumber != (pGC->serialNumber & DRAWABLE_SERIAL_BITS))
+-	)
+-    {
++        ) {
+ 	miComputeCompositeClip (pGC, pDrawable);
+     }
+     
+-    if (pPriv->bpp != pDrawable->bitsPerPixel)
+-    {
++    if (pPriv->bpp != pDrawable->bitsPerPixel) {
+ 	changes |= GCStipple|GCForeground|GCBackground|GCPlaneMask;
+ 	pPriv->bpp = pDrawable->bitsPerPixel;
+     }
+-    if ((changes & GCTile) && fbGetRotatedPixmap(pGC))
+-    {
++    if ((changes & GCTile) && fbGetRotatedPixmap(pGC)) {
+ 	(*pGC->pScreen->DestroyPixmap) (fbGetRotatedPixmap(pGC));
+ 	fbGetRotatedPixmap(pGC) = 0;
+     }
+ 	
+-    if (pGC->fillStyle == FillTiled)
+-    {
++    if (pGC->fillStyle == FillTiled) {
+ 	PixmapPtr	pOldTile, pNewTile;
+ 
+ 	pOldTile = pGC->tile.pixmap;
+-	if (pOldTile->drawable.bitsPerPixel != pDrawable->bitsPerPixel)
+-	{
++        if (pOldTile->drawable.bitsPerPixel != pDrawable->bitsPerPixel) {
+ 	    pNewTile = fbGetRotatedPixmap(pGC);
+-	    if (!pNewTile || pNewTile ->drawable.bitsPerPixel != pDrawable->bitsPerPixel)
+-	    {
++            if (!pNewTile ||
++                pNewTile->drawable.bitsPerPixel != pDrawable->bitsPerPixel) {
+ 		if (pNewTile)
+ 		    (*pGC->pScreen->DestroyPixmap) (pNewTile);
+-		pNewTile = fb24_32ReformatTile (pOldTile, pDrawable->bitsPerPixel);
++                pNewTile =
++                    fb24_32ReformatTile(pOldTile, pDrawable->bitsPerPixel);
+ 	    }
+-	    if (pNewTile)
+-	    {
++            if (pNewTile) {
+ 		fbGetRotatedPixmap(pGC) = pOldTile;
+ 		pGC->tile.pixmap = pNewTile;
+ 		changes |= GCTile;
+ 	    }
+ 	}
+     }
+-    if (changes & GCTile)
+-    {
++    if (changes & GCTile) {
+ 	if (!pGC->tileIsPixel && 
+ 	    FbEvenTile (pGC->tile.pixmap->drawable.width *
+ 			pDrawable->bitsPerPixel))
+ 	    fbPadPixmap (pGC->tile.pixmap);
+     }
+-    if (changes & GCStipple)
+-    {
++    if (changes & GCStipple) {
+ 	pPriv->evenStipple = FALSE;
+ 
+ 	if (pGC->stipple) {
+@@ -258,15 +249,15 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+ 	       (fbCanEvenStipple (pGC->stipple, pDrawable->bitsPerPixel)))
+ 	   	pPriv->evenStipple = TRUE;
+ 
+-	    if (pGC->stipple->drawable.width * pDrawable->bitsPerPixel < FB_UNIT)
++            if (pGC->stipple->drawable.width * pDrawable->bitsPerPixel <
++                FB_UNIT)
+ 		fbPadPixmap (pGC->stipple);
+ 	}
+     }
+     /*
+      * Recompute reduced rop values
+      */
+-    if (changes & (GCForeground|GCBackground|GCPlaneMask|GCFunction))
+-    {
++    if (changes & (GCForeground | GCBackground | GCPlaneMask | GCFunction)) {
+ 	int	s;
+ 	FbBits	depthMask;
+ 	
+@@ -282,8 +273,7 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+ 	    pPriv->pm = pGC->planemask & mask;    
+ 	
+ 	s = pDrawable->bitsPerPixel;
+-	while (s < FB_UNIT)
+-	{
++        while (s < FB_UNIT) {
+ 	    pPriv->fg |= pPriv->fg << s;
+ 	    pPriv->bg |= pPriv->bg << s;
+ 	    pPriv->pm |= pPriv->pm << s;
+@@ -294,8 +284,7 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+ 	pPriv->bgand = fbAnd(pGC->alu, pPriv->bg, pPriv->pm);
+ 	pPriv->bgxor = fbXor(pGC->alu, pPriv->bg, pPriv->pm);
+     }
+-    if (changes & GCDashList)
+-    {
++    if (changes & GCDashList) {
+ 	unsigned short	n = pGC->numInDashList;
+ 	unsigned char	*dash = pGC->dash;
+ 	unsigned int	dashLength = 0;

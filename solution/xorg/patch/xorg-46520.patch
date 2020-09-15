@@ -1,0 +1,21 @@
+diff --git a/glx/glxext.c b/glx/glxext.c
+index 2de8b84..9f9c0ed 100644
+--- a/glx/glxext.c
++++ b/glx/glxext.c
+@@ -364,14 +364,14 @@ void GlxExtensionInit(void)
+ 
+ 	    glxScreen = p->screenProbe(pScreen);
+ 	    if (glxScreen != NULL) {
++	        if (glxScreen->GLXminor < glxMinorVersion)
++		    glxMinorVersion = glxScreen->GLXminor;
+ 		LogMessage(X_INFO,
+ 			   "GLX: Initialized %s GL provider for screen %d\n",
+ 			   p->name, i);
+ 		break;
+ 	    }
+ 
+-	    if (glxScreen->GLXminor < glxMinorVersion)
+-		glxMinorVersion = glxScreen->GLXminor;
+ 	}
+ 
+ 	if (!p)

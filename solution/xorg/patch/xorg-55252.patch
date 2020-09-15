@@ -1,0 +1,98 @@
+diff --git a/hw/dmx/dmxpixmap.c b/hw/dmx/dmxpixmap.c
+index 81b7115..17aca92 100644
+--- a/hw/dmx/dmxpixmap.c
++++ b/hw/dmx/dmxpixmap.c
+@@ -47,16 +47,19 @@
+ #include "privates.h"
+ 
+ /** Initialize a private area in \a pScreen for pixmap information. */
+-Bool dmxInitPixmap(ScreenPtr pScreen)
++Bool
++dmxInitPixmap(ScreenPtr pScreen)
+ {
+-    if (!dixRegisterPrivateKey(&dmxPixPrivateKeyRec, PRIVATE_PIXMAP, sizeof(dmxPixPrivRec)))
++    if (!dixRegisterPrivateKey
++        (&dmxPixPrivateKeyRec, PRIVATE_PIXMAP, sizeof(dmxPixPrivRec)))
+ 	return FALSE;
+ 
+     return TRUE;
+ }
+ 
+ /** Create a pixmap on the back-end server. */
+-void dmxBECreatePixmap(PixmapPtr pPixmap)
++void
++dmxBECreatePixmap(PixmapPtr pPixmap)
+ {
+     ScreenPtr      pScreen   = pPixmap->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -81,7 +84,8 @@ void dmxBECreatePixmap(PixmapPtr pPixmap)
+ 
+ /** Create a pixmap for \a pScreen with the specified \a width, \a
+  *  height, and \a depth. */
+-PixmapPtr dmxCreatePixmap(ScreenPtr pScreen, int width, int height, int depth,
++PixmapPtr
++dmxCreatePixmap(ScreenPtr pScreen, int width, int height, int depth,
+ 			  unsigned usage_hint)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -96,8 +100,10 @@ PixmapPtr dmxCreatePixmap(ScreenPtr pScreen, int width, int height, int depth,
+ #endif
+ 
+     /* Create pixmap on back-end server */
+-    if (depth == 24) bpp = 32;
+-    else             bpp = depth;
++    if (depth == 24)
++        bpp = 32;
++    else
++        bpp = depth;
+ 
+     pPixmap = AllocatePixmap(pScreen, 0);
+     if (!pPixmap)
+@@ -135,7 +141,8 @@ PixmapPtr dmxCreatePixmap(ScreenPtr pScreen, int width, int height, int depth,
+ }
+ 
+ /** Destroy the pixmap on the back-end server. */
+-Bool dmxBEFreePixmap(PixmapPtr pPixmap)
++Bool
++dmxBEFreePixmap(PixmapPtr pPixmap)
+ {
+     ScreenPtr      pScreen = pPixmap->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -151,7 +158,8 @@ Bool dmxBEFreePixmap(PixmapPtr pPixmap)
+ }
+ 
+ /** Destroy the pixmap pointed to by \a pPixmap. */
+-Bool dmxDestroyPixmap(PixmapPtr pPixmap)
++Bool
++dmxDestroyPixmap(PixmapPtr pPixmap)
+ {
+     ScreenPtr      pScreen = pPixmap->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -169,6 +177,7 @@ Bool dmxDestroyPixmap(PixmapPtr pPixmap)
+ 	if (dmxBEFreePixmap(pPixmap)) {
+ 	    /* Also make sure that we destroy any detached image */
+ 	    dmxPixPrivPtr  pPixPriv = DMX_GET_PIXMAP_PRIV(pPixmap);
++
+ 	    if (pPixPriv->detachedImage)
+ 		XDestroyImage(pPixPriv->detachedImage);
+ 	    dmxSync(dmxScreen, FALSE);
+@@ -187,7 +196,8 @@ Bool dmxDestroyPixmap(PixmapPtr pPixmap)
+ 
+ /** Create and return a region based on the pixmap pointed to by \a
+  *  pPixmap. */
+-RegionPtr dmxBitmapToRegion(PixmapPtr pPixmap)
++RegionPtr
++dmxBitmapToRegion(PixmapPtr pPixmap)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pPixmap->drawable.pScreen->myNum];
+     dmxPixPrivPtr  pPixPriv = DMX_GET_PIXMAP_PRIV(pPixmap);
+@@ -224,7 +234,8 @@ RegionPtr dmxBitmapToRegion(PixmapPtr pPixmap)
+ 		if (previousPixel == 0L) { 
+ 		    /* left edge */
+ 		    Box.x1 = x;
+-		} else if (currentPixel == 0L) {
++                }
++                else if (currentPixel == 0L) {
+ 		    /* right edge */
+ 		    Box.x2 = x;
+ 		    RegionReset(pTmpReg, &Box);

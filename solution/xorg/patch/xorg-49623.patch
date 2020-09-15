@@ -1,0 +1,15 @@
+diff --git a/mi/mifillrct.c b/mi/mifillrct.c
+index e2bd7c9..1c63a35 100644
+--- a/mi/mifillrct.c
++++ b/mi/mifillrct.c
+@@ -111,8 +111,8 @@ miPolyFillRect(
+     pwFirst = malloc(maxheight * sizeof(int));
+     if(!pptFirst || !pwFirst)
+     {
+-	if (pwFirst) free(pwFirst);
+-	if (pptFirst) free(pptFirst);
++	free(pwFirst);
++	free(pptFirst);
+ 	return;
+     }
+ 

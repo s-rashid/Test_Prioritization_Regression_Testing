@@ -1,0 +1,22 @@
+diff --git a/xkb/xkbUtils.c b/xkb/xkbUtils.c
+index e3fb9dc..0766922 100644
+--- a/xkb/xkbUtils.c
++++ b/xkb/xkbUtils.c
+@@ -1977,7 +1977,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         /* font */
+         if (src->geom->label_font) {
+             if (!dst->geom->label_font) {
+-                tmp = malloc(strlen(src->geom->label_font));
++                tmp = malloc(strlen(src->geom->label_font) + 1);
+                 if (!tmp)
+                     return FALSE;
+                 dst->geom->label_font = tmp;
+@@ -1985,7 +1985,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             else if (strlen(src->geom->label_font) !=
+                 strlen(dst->geom->label_font)) {
+                 tmp = realloc(dst->geom->label_font,
+-                               strlen(src->geom->label_font));
++                               strlen(src->geom->label_font) + 1);
+                 if (!tmp)
+                     return FALSE;
+                 dst->geom->label_font = tmp;

@@ -1,0 +1,269 @@
+diff --git a/hw/xfree86/xaa/xaaGCmisc.c b/hw/xfree86/xaa/xaaGCmisc.c
+index 5823cc0..ca69aae 100644
+--- a/hw/xfree86/xaa/xaaGCmisc.c
++++ b/hw/xfree86/xaa/xaaGCmisc.c
+@@ -20,10 +20,7 @@
+ #include "pixmapstr.h"
+ 
+ void
+-XAAValidateCopyArea(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidateCopyArea(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+ 
+@@ -38,10 +35,7 @@ XAAValidateCopyArea(
+ }
+ 
+ void
+-XAAValidatePutImage(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidatePutImage(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+ 
+@@ -57,10 +51,7 @@ XAAValidatePutImage(
+ }
+ 
+ void
+-XAAValidateCopyPlane(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidateCopyPlane(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+ 
+@@ -76,10 +67,7 @@ XAAValidateCopyPlane(
+ }
+ 
+ void
+-XAAValidatePushPixels(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidatePushPixels(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+ 
+@@ -98,27 +86,23 @@ XAAValidatePushPixels(
+ 
+ }
+ 
+-
+ /* We make the assumption that the FillSpans, PolyFillRect, FillPolygon
+    and PolyFillArc functions are linked in a way that they all have 
+    the same rop/color/planemask restrictions. If the driver provides 
+    a GC level replacement for these, it will need to supply a new 
+    Validate functions if it breaks this assumption */
+ 
+-
+ void
+-XAAValidateFillSpans(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidateFillSpans(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+ 
+-   if(pGC->fillStyle != FillTiled) changes &= ~GCTile;
++    if (pGC->fillStyle != FillTiled)
++        changes &= ~GCTile;
+    if((pGC->fillStyle == FillTiled) || (pGC->fillStyle == FillSolid)) 
+ 	changes &= ~GCStipple;
+-   if(!changes) return;
+-   
++    if (!changes)
++        return;
+ 
+    pGC->ops->FillSpans = XAAFallbackOps.FillSpans;
+    pGC->ops->PolyFillRect = XAAFallbackOps.PolyFillRect;
+@@ -147,7 +131,8 @@ XAAValidateFillSpans(
+ 	     pGC->ops->PolyFillRect = infoRec->PolyFillRectStippled;
+ 	     if(infoRec->FillPolygonStippled)
+ 	         pGC->ops->FillPolygon = infoRec->FillPolygonStippled;
+-	     else pGC->ops->FillPolygon = miFillPolygon;
++            else
++                pGC->ops->FillPolygon = miFillPolygon;
+ 	     pGC->ops->PolyFillArc = miPolyFillArc;
+ 	}
+ 	break;
+@@ -157,7 +142,8 @@ XAAValidateFillSpans(
+ 	     pGC->ops->PolyFillRect = infoRec->PolyFillRectOpaqueStippled;
+ 	     if(infoRec->FillPolygonOpaqueStippled)
+ 	         pGC->ops->FillPolygon = infoRec->FillPolygonOpaqueStippled;
+-	     else pGC->ops->FillPolygon = miFillPolygon;
++            else
++                pGC->ops->FillPolygon = miFillPolygon;
+ 	     pGC->ops->PolyFillArc = miPolyFillArc;
+ 	}
+ 	break;
+@@ -167,15 +153,16 @@ XAAValidateFillSpans(
+ 	     pGC->ops->PolyFillRect = infoRec->PolyFillRectTiled;
+ 	     if(infoRec->FillPolygonTiled)
+ 	         pGC->ops->FillPolygon = infoRec->FillPolygonTiled;
+-	     else pGC->ops->FillPolygon = miFillPolygon;
++            else
++                pGC->ops->FillPolygon = miFillPolygon;
+ 	     pGC->ops->PolyFillArc = miPolyFillArc;
+ 	}
+ 	break;
+-   default: return;
++    default:
++        return;
+    }
+ }
+ 
+-
+ /* We make the assumption that these Text8/16 and GlyphBlt functions
+    are linked in a way that they all have the same rop/color/planemask
+    restrictions. If the driver provides a GC level replacement for
+@@ -183,10 +170,7 @@ XAAValidateFillSpans(
+    this assumption */
+ 
+ void
+-XAAValidatePolyGlyphBlt(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidatePolyGlyphBlt(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+    Bool BigFont = FALSE;
+@@ -195,8 +179,10 @@ XAAValidatePolyGlyphBlt(
+    pGC->ops->PolyText16 = XAAFallbackOps.PolyText16;
+    pGC->ops->PolyGlyphBlt = XAAFallbackOps.PolyGlyphBlt;
+ 
+-   if(!pGC->font) return;
+-   if(pGC->fillStyle != FillSolid) return;
++    if (!pGC->font)
++        return;
++    if (pGC->fillStyle != FillSolid)
++        return;
+ 
+    if((FONTMAXBOUNDS(pGC->font, rightSideBearing) - 
+ 	FONTMINBOUNDS(pGC->font, leftSideBearing) > 32))
+@@ -221,7 +207,8 @@ XAAValidatePolyGlyphBlt(
+ 	    pGC->ops->PolyText16 = infoRec->PolyText16NonTE;
+ 	    pGC->ops->PolyGlyphBlt = infoRec->PolyGlyphBltNonTE;
+ 	}
+-   } else {
++    }
++    else {
+ 	if(infoRec->PolyGlyphBltTE &&
+ 	    CHECK_PLANEMASK(pGC,infoRec->PolyGlyphBltTEFlags) &&
+ 	    CHECK_ROP(pGC,infoRec->PolyGlyphBltTEFlags) &&
+@@ -238,10 +225,7 @@ XAAValidatePolyGlyphBlt(
+ }
+ 
+ void
+-XAAValidateImageGlyphBlt(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidateImageGlyphBlt(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+    Bool BigFont = FALSE;
+@@ -250,7 +234,8 @@ XAAValidateImageGlyphBlt(
+    pGC->ops->ImageText16 = XAAFallbackOps.ImageText16;
+    pGC->ops->ImageGlyphBlt = XAAFallbackOps.ImageGlyphBlt;
+ 
+-   if(!pGC->font) return;
++    if (!pGC->font)
++        return;
+ 
+    if((FONTMAXBOUNDS(pGC->font, rightSideBearing) - 
+ 	FONTMINBOUNDS(pGC->font, leftSideBearing) > 32))
+@@ -261,7 +246,6 @@ XAAValidateImageGlyphBlt(
+ 	((FONTASCENT(pGC->font) + FONTDESCENT(pGC->font)) <= 0))
+ 	return;
+ 
+-
+    /* Check for TE Fonts */
+    if(!TERMINALFONT(pGC->font) || BigFont || (pGC->depth == 32)) {
+ 	if(infoRec->ImageGlyphBltNonTE &&
+@@ -269,26 +253,25 @@ XAAValidateImageGlyphBlt(
+ 		CHECK_FG(pGC,infoRec->ImageGlyphBltNonTEFlags) &&
+ 	   infoRec->SetupForSolidFill &&
+ 		CHECK_PLANEMASK(pGC,infoRec->SolidFillFlags) &&
+-		CHECK_BG(pGC,infoRec->SolidFillFlags))
+-	{
++            CHECK_BG(pGC, infoRec->SolidFillFlags)) {
+ 		pGC->ops->ImageText8 = infoRec->ImageText8NonTE;
+ 		pGC->ops->ImageText16 = infoRec->ImageText16NonTE;
+ 		pGC->ops->ImageGlyphBlt = infoRec->ImageGlyphBltNonTE;
+ 	}
+-   } else if(infoRec->ImageGlyphBltTE &&
++    }
++    else if (infoRec->ImageGlyphBltTE &&
+ 	     CHECK_PLANEMASK(pGC,infoRec->ImageGlyphBltTEFlags)){
+ 	if(!(infoRec->ImageGlyphBltTEFlags & TRANSPARENCY_ONLY) &&  
+-		CHECK_COLORS(pGC,infoRec->ImageGlyphBltTEFlags))
+-	{
++            CHECK_COLORS(pGC, infoRec->ImageGlyphBltTEFlags)) {
+ 		pGC->ops->ImageText8 = infoRec->ImageText8TE;
+ 		pGC->ops->ImageText16 = infoRec->ImageText16TE;
+ 		pGC->ops->ImageGlyphBlt = infoRec->ImageGlyphBltTE;
+-	} else {
++        }
++        else {
+ 	   if(CHECK_FG(pGC,infoRec->ImageGlyphBltTEFlags) &&
+ 	      infoRec->SetupForSolidFill &&
+ 	      CHECK_PLANEMASK(pGC,infoRec->SolidFillFlags) &&
+-	      CHECK_BG(pGC,infoRec->SolidFillFlags)) 
+-	   {
++                CHECK_BG(pGC, infoRec->SolidFillFlags)) {
+ 		pGC->ops->ImageText8 = infoRec->ImageText8TE;
+ 		pGC->ops->ImageText16 = infoRec->ImageText16TE;
+ 		pGC->ops->ImageGlyphBlt = infoRec->ImageGlyphBltTE;
+@@ -297,19 +280,17 @@ XAAValidateImageGlyphBlt(
+     }
+ }
+ 
+-
+ void
+-XAAValidatePolylines(
+-   GCPtr         pGC,
+-   unsigned long changes,
+-   DrawablePtr   pDraw )
++XAAValidatePolylines(GCPtr pGC, unsigned long changes, DrawablePtr pDraw)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+    XAAGCPtr pGCPriv = (XAAGCPtr)dixLookupPrivate(&pGC->devPrivates,
+ 						 XAAGetGCKey());
+ 
+-   if(pGC->lineStyle == LineSolid) changes &= ~GCDashList;
+-   if(!changes) return;
++    if (pGC->lineStyle == LineSolid)
++        changes &= ~GCDashList;
++    if (!changes)
++        return;
+ 
+    pGC->ops->PolySegment = XAAFallbackOps.PolySegment;
+    pGC->ops->Polylines = XAAFallbackOps.Polylines;
+@@ -358,7 +339,8 @@ XAAValidatePolylines(
+ 
+ 		pGC->ops->Polylines = infoRec->PolylinesThinSolid;
+ 	    }
+-	} else if((pGC->lineStyle == LineOnOffDash) && pGCPriv->DashPattern){
++        }
++        else if ((pGC->lineStyle == LineOnOffDash) && pGCPriv->DashPattern) {
+ 
+ 	   if(infoRec->PolySegmentThinDashed &&
+ 		!(infoRec->PolySegmentThinDashedFlags & NO_TRANSPARENCY) &&
+@@ -387,7 +369,8 @@ XAAValidatePolylines(
+ 	   if(pGC->ops->Polylines != XAAFallbackOps.Polylines)
+ 		pGC->ops->PolyRectangle = miPolyRectangle;
+ 
+-	} else if(pGCPriv->DashPattern && (pGC->depth != 32)) { 
++        }
++        else if (pGCPriv->DashPattern && (pGC->depth != 32)) {
+            /* LineDoubleDash */
+ 	   if(infoRec->PolySegmentThinDashed &&
+ 		!(infoRec->PolySegmentThinDashedFlags & TRANSPARENCY_ONLY) &&

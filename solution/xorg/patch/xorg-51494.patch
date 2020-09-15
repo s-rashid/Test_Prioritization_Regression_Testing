@@ -1,0 +1,14 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 00d014c..9952325 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -135,7 +135,8 @@ typedef    void (* SourceValidateProcPtr)(
+ 	int /*x*/,
+ 	int /*y*/,
+ 	int /*width*/,
+-	int /*height*/);
++	int /*height*/,
++	unsigned int /*subWindowMode*/);
+ 
+ typedef    Bool (* CreateWindowProcPtr)(
+ 	WindowPtr /*pWindow*/);

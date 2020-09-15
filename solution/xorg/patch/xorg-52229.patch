@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/applewm.c b/hw/xquartz/applewm.c
+index ec20534..2f26e61 100644
+--- a/hw/xquartz/applewm.c
++++ b/hw/xquartz/applewm.c
+@@ -437,7 +437,7 @@ ProcAppleWMSetWindowLevel(register ClientPtr client)
+ 				   DixReadAccess))
+         return BadValue;
+ 
+-    if (stuff->level < 0 || stuff->level >= AppleWMNumWindowLevels) {
++    if (stuff->level >= AppleWMNumWindowLevels) {
+         return BadValue;
+     }
+ 

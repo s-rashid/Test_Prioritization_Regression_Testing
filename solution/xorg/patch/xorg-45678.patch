@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartzKeyboard.c b/hw/xquartz/quartzKeyboard.c
+index 8dfea27..6d5bad9 100644
+--- a/hw/xquartz/quartzKeyboard.c
++++ b/hw/xquartz/quartzKeyboard.c
+@@ -349,6 +349,8 @@ void DarwinKeyboardInit(DeviceIntPtr pDev) {
+ 
+         XkbSetRepeatKeys(pDev, -1, AutoRepeatModeOn);
+     }
++
++    SetKeySymsMap(&inputInfo.keyboard->key->curKeySyms, &pDev->key->curKeySyms);
+ }
+ 
+ void DarwinKeyboardReloadHandler(int screenNum, xEventPtr xe, DeviceIntPtr pDev, int nevents) {

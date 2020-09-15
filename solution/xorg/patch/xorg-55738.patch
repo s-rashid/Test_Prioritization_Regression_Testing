@@ -1,0 +1,15 @@
+diff --git a/hw/xnest/Keyboard.h b/hw/xnest/Keyboard.h
+index 546a1cb..45d56bc 100644
+--- a/hw/xnest/Keyboard.h
++++ b/hw/xnest/Keyboard.h
+@@ -21,8 +21,8 @@ is" without express or implied warranty.
+ extern DeviceIntPtr xnestKeyboardDevice;
+ 
+ void xnestBell(int volume, DeviceIntPtr pDev, pointer ctrl, int cls);
+-void xnestChangeKeyboardControl(DeviceIntPtr pDev, KeybdCtrl *ctrl);
++void xnestChangeKeyboardControl(DeviceIntPtr pDev, KeybdCtrl * ctrl);
+ int xnestKeyboardProc(DeviceIntPtr pDev, int onoff);
+ void xnestUpdateModifierState(unsigned int state);
+ 
+-#endif /* XNESTKEYBOARD_H */
++#endif                          /* XNESTKEYBOARD_H */

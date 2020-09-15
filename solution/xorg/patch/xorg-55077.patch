@@ -1,0 +1,975 @@
+diff --git a/dix/enterleave.c b/dix/enterleave.c
+index 89a82ab..725080a 100644
+--- a/dix/enterleave.c
++++ b/dix/enterleave.c
+@@ -106,6 +106,7 @@ static BOOL
+ HasFocus(WindowPtr win)
+ {
+     int i;
++
+     for (i = 0; i < MAXDEVICES; i++)
+         if (FocusWindows[i] == win)
+             return TRUE;
+@@ -133,8 +134,8 @@ static WindowPtr
+ FirstPointerChild(WindowPtr win)
+ {
+     int i;
+-    for (i = 0; i < MAXDEVICES; i++)
+-    {
++
++    for (i = 0; i < MAXDEVICES; i++) {
+         if (PointerWindows[i] && IsParent(win, PointerWindows[i]))
+             return PointerWindows[i];
+     }
+@@ -153,8 +154,8 @@ static WindowPtr
+ FirstFocusChild(WindowPtr win)
+ {
+     int i;
+-    for (i = 0; i < MAXDEVICES; i++)
+-    {
++
++    for (i = 0; i < MAXDEVICES; i++) {
+         if (FocusWindows[i] && FocusWindows[i] != PointerRootWin &&
+             IsParent(win, FocusWindows[i]))
+             return FocusWindows[i];
+@@ -199,9 +200,6 @@ SetFocusOut(DeviceIntPtr dev)
+     FocusWindows[dev->id] = NULL;
+ }
+ 
+-
+-
+-
+ /**
+  * Return the common ancestor of 'a' and 'b' (if one exists).
+  * @param a A window with the same ancestor as b.
+@@ -210,16 +208,14 @@ SetFocusOut(DeviceIntPtr dev)
+  *         NullWindow if they do not have a common ancestor.
+  */
+ WindowPtr
+-CommonAncestor(
+-    WindowPtr a,
+-    WindowPtr b)
++CommonAncestor(WindowPtr a, WindowPtr b)
+ {
+     for (b = b->parent; b; b = b->parent)
+-	if (IsParent(b, a)) return b;
++        if (IsParent(b, a))
++            return b;
+     return NullWindow;
+ }
+ 
+-
+ /**
+  * Send enter notifies to all windows between 'ancestor' and 'child' (excluding
+  * both). Events are sent running up the window hierarchy. This function
+@@ -228,10 +224,7 @@ CommonAncestor(
+ static void
+ DeviceEnterNotifies(DeviceIntPtr dev,
+               int sourceid,
+-              WindowPtr ancestor,
+-              WindowPtr child,
+-              int mode,
+-              int detail)
++                    WindowPtr ancestor, WindowPtr child, int mode, int detail)
+ {
+     WindowPtr	parent = child->parent;
+ 
+@@ -249,17 +242,14 @@ DeviceEnterNotifies(DeviceIntPtr dev,
+  */
+ static void
+ CoreEnterNotifies(DeviceIntPtr dev,
+-                  WindowPtr ancestor,
+-                  WindowPtr child,
+-                  int mode,
+-                  int detail)
++                  WindowPtr ancestor, WindowPtr child, int mode, int detail)
+ {
+     WindowPtr	parent = child->parent;
++
+     if (ancestor == parent)
+ 	return;
+     CoreEnterNotifies(dev, ancestor, parent, mode, detail);
+ 
+-
+     /* Case 3:
+      A is above W, B is a descendant
+ 
+@@ -286,18 +276,14 @@ CoreEnterNotifies(DeviceIntPtr dev,
+ 
+ static void
+ CoreLeaveNotifies(DeviceIntPtr dev,
+-                  WindowPtr child,
+-                  WindowPtr ancestor,
+-                  int mode,
+-                  int detail)
++                  WindowPtr child, WindowPtr ancestor, int mode, int detail)
+ {
+     WindowPtr  win;
+ 
+     if (ancestor == child)
+         return;
+ 
+-    for (win = child->parent; win != ancestor; win = win->parent)
+-    {
++    for (win = child->parent; win != ancestor; win = win->parent) {
+         /*Case 7:
+         A is a descendant of W, B is above W
+ 
+@@ -321,7 +307,8 @@ CoreLeaveNotifies(DeviceIntPtr dev,
+         if (HasPointer(dev, win) || FirstPointerChild(win))
+             return;
+ 
+-        CoreEnterLeaveEvent(dev, LeaveNotify, mode, detail, win, child->drawable.id);
++        CoreEnterLeaveEvent(dev, LeaveNotify, mode, detail, win,
++                            child->drawable.id);
+ 
+         child = win;
+     }
+@@ -334,17 +321,13 @@ CoreLeaveNotifies(DeviceIntPtr dev,
+ static void
+ DeviceLeaveNotifies(DeviceIntPtr dev,
+               int sourceid,
+-              WindowPtr child,
+-              WindowPtr ancestor,
+-              int mode,
+-              int detail)
++                    WindowPtr child, WindowPtr ancestor, int mode, int detail)
+ {
+     WindowPtr  win;
+ 
+     if (ancestor == child)
+ 	return;
+-    for (win = child->parent; win != ancestor; win = win->parent)
+-    {
++    for (win = child->parent; win != ancestor; win = win->parent) {
+         DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, detail, win,
+                                   child->drawable.id);
+         child = win;
+@@ -356,12 +339,10 @@ DeviceLeaveNotifies(DeviceIntPtr dev,
+  * B a descendant of A.
+  */
+ static void
+-CoreEnterLeaveNonLinear(DeviceIntPtr dev,
+-                        WindowPtr A,
+-                        WindowPtr B,
+-                        int mode)
++CoreEnterLeaveNonLinear(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     WindowPtr X = CommonAncestor(A, B);
++
+     /* Case 4:
+      A is W, B is above W
+ 
+@@ -382,16 +363,17 @@ CoreEnterLeaveNonLinear(DeviceIntPtr dev,
+           vice versa depending on the the new P(W)
+      */
+ 
+-    if (!HasPointer(dev, A))
+-    {
++    if (!HasPointer(dev, A)) {
+         WindowPtr child = FirstPointerChild(A);
++
+         if (child)
+-            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyInferior, A, None);
++            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyInferior, A,
++                                None);
+         else
+-            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyNonlinear, A, None);
++            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyNonlinear, A,
++                                None);
+     }
+ 
+-
+     CoreLeaveNotifies(dev, A, X, mode, NotifyNonlinearVirtual);
+ 
+     /*
+@@ -402,7 +384,6 @@ CoreEnterLeaveNonLinear(DeviceIntPtr dev,
+         MPX: The pointer window stays the same or moves to a different
+           descendant of W. No events should be generated on W.
+ 
+-
+        Therefore, no event to X.
+     */
+ 
+@@ -426,13 +407,15 @@ CoreEnterLeaveNonLinear(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear
+           or vice-versa depending on the previous P(W). */
+ 
+-     if (!HasPointer(dev, B))
+-     {
++    if (!HasPointer(dev, B)) {
+          WindowPtr child = FirstPointerChild(B);
++
+          if (child)
+-             CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyInferior, B, None);
++            CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyInferior, B,
++                                None);
+          else
+-             CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyNonlinear, B, None);
++            CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyNonlinear, B,
++                                None);
+      }
+ }
+ 
+@@ -440,10 +423,7 @@ CoreEnterLeaveNonLinear(DeviceIntPtr dev,
+  * Pointer dev moves from A to B and A is a descendant of B.
+  */
+ static void
+-CoreEnterLeaveToAncestor(DeviceIntPtr dev,
+-                         WindowPtr A,
+-                         WindowPtr B,
+-                         int mode)
++CoreEnterLeaveToAncestor(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     /* Case 4:
+      A is W, B is above W
+@@ -464,13 +444,15 @@ CoreEnterLeaveToAncestor(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear or
+           vice versa depending on the the new P(W)
+      */
+-    if (!HasPointer(dev, A))
+-    {
++    if (!HasPointer(dev, A)) {
+         WindowPtr child = FirstPointerChild(A);
++
+         if (child)
+-            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyInferior, A, None);
++            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyInferior, A,
++                                None);
+         else
+-            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyAncestor, A, None);
++            CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyAncestor, A,
++                                None);
+     }
+ 
+     CoreLeaveNotifies(dev, A, B, mode, NotifyVirtual);
+@@ -493,15 +475,11 @@ CoreEnterLeaveToAncestor(DeviceIntPtr dev,
+ 
+ }
+ 
+-
+ /**
+  * Pointer dev moves from A to B and B is a descendant of A.
+  */
+ static void
+-CoreEnterLeaveToDescendant(DeviceIntPtr dev,
+-                           WindowPtr A,
+-                           WindowPtr B,
+-                           int mode)
++CoreEnterLeaveToDescendant(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     /* Case 6:
+     A is W, B is a descendant of W
+@@ -519,7 +497,6 @@ CoreEnterLeaveToDescendant(DeviceIntPtr dev,
+     if (!HasPointer(dev, A))
+         CoreEnterLeaveEvent(dev, LeaveNotify, mode, NotifyInferior, A, None);
+ 
+-
+     CoreEnterNotifies(dev, A, B, mode, NotifyVirtual);
+ 
+     /* Case 2:
+@@ -540,21 +517,20 @@ CoreEnterLeaveToDescendant(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear
+           or vice-versa depending on the previous P(W). */
+ 
+-     if (!HasPointer(dev, B))
+-     {
++    if (!HasPointer(dev, B)) {
+          WindowPtr child = FirstPointerChild(B);
++
+          if (child)
+-             CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyInferior, B, None);
++            CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyInferior, B,
++                                None);
+          else
+-             CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyAncestor, B, None);
++            CoreEnterLeaveEvent(dev, EnterNotify, mode, NotifyAncestor, B,
++                                None);
+      }
+ }
+ 
+ static void
+-CoreEnterLeaveEvents(DeviceIntPtr dev,
+-                     WindowPtr from,
+-                     WindowPtr to,
+-                     int mode)
++CoreEnterLeaveEvents(DeviceIntPtr dev, WindowPtr from, WindowPtr to, int mode)
+ {
+     if (!IsMaster(dev))
+         return;
+@@ -573,31 +549,34 @@ CoreEnterLeaveEvents(DeviceIntPtr dev,
+ 
+ static void
+ DeviceEnterLeaveEvents(DeviceIntPtr dev,
+-                       int          sourceid,
+-                       WindowPtr    from,
+-                       WindowPtr    to,
+-                       int          mode)
+-{
+-    if (IsParent(from, to))
++                       int sourceid, WindowPtr from, WindowPtr to, int mode)
+     {
+-        DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyInferior, from, None);
++    if (IsParent(from, to)) {
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyInferior,
++                              from, None);
+         DeviceEnterNotifies(dev, sourceid, from, to, mode, NotifyVirtual);
+-        DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyAncestor, to, None);
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyAncestor, to,
++                              None);
+     }
+-    else if (IsParent(to, from))
+-    {
+-	DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyAncestor, from, None);
++    else if (IsParent(to, from)) {
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyAncestor,
++                              from, None);
+ 	DeviceLeaveNotifies(dev, sourceid, from, to, mode, NotifyVirtual);
+-	DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyInferior, to, None);
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyInferior, to,
++                              None);
+     }
+-    else
+-    { /* neither from nor to is descendent of the other */
++    else {                      /* neither from nor to is descendent of the other */
+ 	WindowPtr common = CommonAncestor(to, from);
++
+ 	/* common == NullWindow ==> different screens */
+-        DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyNonlinear, from, None);
+-        DeviceLeaveNotifies(dev, sourceid, from, common, mode, NotifyNonlinearVirtual);
+-        DeviceEnterNotifies(dev, sourceid, common, to, mode, NotifyNonlinearVirtual);
+-        DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyNonlinear, to, None);
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Leave, mode, NotifyNonlinear,
++                              from, None);
++        DeviceLeaveNotifies(dev, sourceid, from, common, mode,
++                            NotifyNonlinearVirtual);
++        DeviceEnterNotifies(dev, sourceid, common, to, mode,
++                            NotifyNonlinearVirtual);
++        DeviceEnterLeaveEvent(dev, sourceid, XI_Enter, mode, NotifyNonlinear,
++                              to, None);
+     }
+ }
+ 
+@@ -610,10 +589,7 @@ DeviceEnterLeaveEvents(DeviceIntPtr dev,
+  */
+ void
+ DoEnterLeaveEvents(DeviceIntPtr pDev,
+-        int sourceid,
+-        WindowPtr fromWin,
+-        WindowPtr toWin,
+-        int mode)
++                   int sourceid, WindowPtr fromWin, WindowPtr toWin, int mode)
+ {
+     if (!IsPointerDevice(pDev))
+         return;
+@@ -632,10 +608,7 @@ DoEnterLeaveEvents(DeviceIntPtr pDev,
+  */
+ static void
+ DeviceFocusOutEvents(DeviceIntPtr dev,
+-                     WindowPtr child,
+-                     WindowPtr ancestor,
+-                     int mode,
+-                     int detail)
++                     WindowPtr child, WindowPtr ancestor, int mode, int detail)
+ {
+     WindowPtr  win;
+ 
+@@ -645,7 +618,6 @@ DeviceFocusOutEvents(DeviceIntPtr dev,
+         DeviceFocusEvent(dev, XI_FocusOut, mode, detail, win);
+ }
+ 
+-
+ /**
+  * Send enter notifies to all windows between 'ancestor' and 'child' (excluding
+  * both). Events are sent running up the window hierarchy. This function
+@@ -653,10 +625,7 @@ DeviceFocusOutEvents(DeviceIntPtr dev,
+  */
+ static void
+ DeviceFocusInEvents(DeviceIntPtr dev,
+-                    WindowPtr ancestor,
+-                    WindowPtr child,
+-                    int mode,
+-                    int detail)
++                    WindowPtr ancestor, WindowPtr child, int mode, int detail)
+ {
+     WindowPtr	parent = child->parent;
+ 
+@@ -673,17 +642,14 @@ DeviceFocusInEvents(DeviceIntPtr dev,
+  */
+ static void
+ CoreFocusInEvents(DeviceIntPtr dev,
+-                  WindowPtr ancestor,
+-                  WindowPtr child,
+-                  int mode,
+-                  int detail)
++                  WindowPtr ancestor, WindowPtr child, int mode, int detail)
+ {
+     WindowPtr	parent = child->parent;
++
+     if (ancestor == parent)
+ 	return;
+     CoreFocusInEvents(dev, ancestor, parent, mode, detail);
+ 
+-
+     /* Case 3:
+      A is above W, B is a descendant
+ 
+@@ -708,18 +674,14 @@ CoreFocusInEvents(DeviceIntPtr dev,
+ 
+ static void
+ CoreFocusOutEvents(DeviceIntPtr dev,
+-                   WindowPtr child,
+-                   WindowPtr ancestor,
+-                   int mode,
+-                   int detail)
++                   WindowPtr child, WindowPtr ancestor, int mode, int detail)
+ {
+     WindowPtr  win;
+ 
+     if (ancestor == child)
+         return;
+ 
+-    for (win = child->parent; win != ancestor; win = win->parent)
+-    {
++    for (win = child->parent; win != ancestor; win = win->parent) {
+         /*Case 7:
+         A is a descendant of W, B is above W
+ 
+@@ -760,9 +722,7 @@ CoreFocusOutEvents(DeviceIntPtr dev,
+ static void
+ CoreFocusOutNotifyPointerEvents(DeviceIntPtr dev,
+                                 WindowPtr pwin_parent,
+-                                WindowPtr exclude,
+-                                int mode,
+-                                int inclusive)
++                                WindowPtr exclude, int mode, int inclusive)
+ {
+     WindowPtr P, stopAt;
+ 
+@@ -790,10 +750,7 @@ CoreFocusOutNotifyPointerEvents(DeviceIntPtr dev,
+  */
+ static void
+ CoreFocusInRecurse(DeviceIntPtr dev,
+-                   WindowPtr win,
+-                   WindowPtr stopAt,
+-                   int mode,
+-                   int inclusive)
++                   WindowPtr win, WindowPtr stopAt, int mode, int inclusive)
+ {
+     if ((!inclusive && win == stopAt) || !win)
+         return;
+@@ -802,7 +759,6 @@ CoreFocusInRecurse(DeviceIntPtr dev,
+     CoreFocusEvent(dev, FocusIn, mode, NotifyPointer, win);
+ }
+ 
+-
+ /**
+  * Send FocusIn(NotifyPointer) events from pwin_parent down to
+  * including the current pointer window (which is a descendant of pwin_parent).
+@@ -815,9 +771,7 @@ CoreFocusInRecurse(DeviceIntPtr dev,
+ static void
+ CoreFocusInNotifyPointerEvents(DeviceIntPtr dev,
+                                WindowPtr pwin_parent,
+-                               WindowPtr exclude,
+-                               int mode,
+-                               int inclusive)
++                               WindowPtr exclude, int mode, int inclusive)
+ {
+     WindowPtr P;
+ 
+@@ -832,16 +786,12 @@ CoreFocusInNotifyPointerEvents(DeviceIntPtr dev,
+     CoreFocusInRecurse(dev, P, pwin_parent, mode, inclusive);
+ }
+ 
+-
+ /**
+  * Focus of dev moves from A to B and A neither a descendant of B nor is
+  * B a descendant of A.
+  */
+ static void
+-CoreFocusNonLinear(DeviceIntPtr dev,
+-                   WindowPtr A,
+-                   WindowPtr B,
+-                   int mode)
++CoreFocusNonLinear(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     WindowPtr X = CommonAncestor(A, B);
+ 
+@@ -864,23 +814,21 @@ CoreFocusNonLinear(DeviceIntPtr dev,
+           vice versa depending on the the new F(W)
+      */
+ 
+-    if (!HasFocus(A))
+-    {
++    if (!HasFocus(A)) {
+         WindowPtr child = FirstFocusChild(A);
+-        if (child)
+-        {
++
++        if (child) {
+             /* NotifyPointer P-A unless P is child or below*/
+             CoreFocusOutNotifyPointerEvents(dev, A, child, mode, FALSE);
+             CoreFocusEvent(dev, FocusOut, mode, NotifyInferior, A);
+-        } else
+-        {
++        }
++        else {
+             /* NotifyPointer P-A */
+             CoreFocusOutNotifyPointerEvents(dev, A, None, mode, FALSE);
+             CoreFocusEvent(dev, FocusOut, mode, NotifyNonlinear, A);
+         }
+     }
+ 
+-
+     CoreFocusOutEvents(dev, A, X, mode, NotifyNonlinearVirtual);
+ 
+     /*
+@@ -891,7 +839,6 @@ CoreFocusNonLinear(DeviceIntPtr dev,
+         MPX: The focus window stays the same or moves to a different
+           descendant of W. No events should be generated on W.
+ 
+-
+        Therefore, no event to X.
+     */
+ 
+@@ -914,15 +861,15 @@ CoreFocusNonLinear(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear
+           or vice-versa depending on the previous F(W). */
+ 
+-     if (!HasFocus(B))
+-     {
++    if (!HasFocus(B)) {
+          WindowPtr child = FirstFocusChild(B);
+-         if (child)
+-         {
++
++        if (child) {
+              CoreFocusEvent(dev, FocusIn, mode, NotifyInferior, B);
+              /* NotifyPointer B-P unless P is child or below. */
+              CoreFocusInNotifyPointerEvents(dev, B, child, mode, FALSE);
+-         } else {
++        }
++        else {
+              CoreFocusEvent(dev, FocusIn, mode, NotifyNonlinear, B);
+              /* NotifyPointer B-P unless P is child or below. */
+              CoreFocusInNotifyPointerEvents(dev, B, None, mode, FALSE);
+@@ -930,15 +877,11 @@ CoreFocusNonLinear(DeviceIntPtr dev,
+      }
+ }
+ 
+-
+ /**
+  * Focus of dev moves from A to B and A is a descendant of B.
+  */
+ static void
+-CoreFocusToAncestor(DeviceIntPtr dev,
+-                    WindowPtr A,
+-                    WindowPtr B,
+-                    int mode)
++CoreFocusToAncestor(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     /* Case 4:
+      A is W, B is above W
+@@ -958,15 +901,15 @@ CoreFocusToAncestor(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear or
+           vice versa depending on the the new F(W)
+      */
+-    if (!HasFocus(A))
+-    {
++    if (!HasFocus(A)) {
+         WindowPtr child = FirstFocusChild(A);
+-        if (child)
+-        {
++
++        if (child) {
+             /* NotifyPointer P-A unless P is child or below*/
+             CoreFocusOutNotifyPointerEvents(dev, A, child, mode, FALSE);
+             CoreFocusEvent(dev, FocusOut, mode, NotifyInferior, A);
+-        } else
++        }
++        else
+             CoreFocusEvent(dev, FocusOut, mode, NotifyAncestor, A);
+     }
+ 
+@@ -984,8 +927,7 @@ CoreFocusToAncestor(DeviceIntPtr dev,
+         Case 3B: Otherwise:
+           F(W) changes from a descendant to W itself. */
+ 
+-    if (!HasFocus(B))
+-    {
++    if (!HasFocus(B)) {
+         CoreFocusEvent(dev, FocusIn, mode, NotifyInferior, B);
+         /* NotifyPointer B-P unless P is A or below. */
+         CoreFocusInNotifyPointerEvents(dev, B, A, mode, FALSE);
+@@ -996,10 +938,7 @@ CoreFocusToAncestor(DeviceIntPtr dev,
+  * Focus of dev moves from A to B and B is a descendant of A.
+  */
+ static void
+-CoreFocusToDescendant(DeviceIntPtr dev,
+-                      WindowPtr A,
+-                      WindowPtr B,
+-                      int mode)
++CoreFocusToDescendant(DeviceIntPtr dev, WindowPtr A, WindowPtr B, int mode)
+ {
+     /* Case 6:
+     A is W, B is a descendant of W
+@@ -1013,14 +952,12 @@ CoreFocusToDescendant(DeviceIntPtr dev,
+         Case 3B: Otherwise:
+           F(W) changes from W to a descendant of W. */
+ 
+-    if (!HasFocus(A))
+-    {
++    if (!HasFocus(A)) {
+         /* NotifyPointer P-A unless P is B or below*/
+         CoreFocusOutNotifyPointerEvents(dev, A, B, mode, FALSE);
+         CoreFocusEvent(dev, FocusOut, mode, NotifyInferior, A);
+     }
+ 
+-
+     CoreFocusInEvents(dev, A, B, mode, NotifyVirtual);
+ 
+     /* Case 2:
+@@ -1040,15 +977,15 @@ CoreFocusToDescendant(DeviceIntPtr dev,
+           The detail may need to be changed from Ancestor to Nonlinear
+           or vice-versa depending on the previous F(W). */
+ 
+-     if (!HasFocus(B))
+-     {
++    if (!HasFocus(B)) {
+          WindowPtr child = FirstFocusChild(B);
+-         if (child)
+-         {
++
++        if (child) {
+              CoreFocusEvent(dev, FocusIn, mode, NotifyInferior, B);
+              /* NotifyPointer B-P unless P is child or below. */
+              CoreFocusInNotifyPointerEvents(dev, B, child, mode, FALSE);
+-         } else
++        }
++        else
+              CoreFocusEvent(dev, FocusIn, mode, NotifyAncestor, B);
+      }
+ }
+@@ -1070,8 +1007,7 @@ HasOtherPointer(WindowPtr win, DeviceIntPtr exclude)
+  * Assumption: Neither A nor B are valid windows.
+  */
+ static void
+-CoreFocusPointerRootNoneSwitch(DeviceIntPtr dev,
+-                               WindowPtr A, /* PointerRootWin or NoneWin */
++CoreFocusPointerRootNoneSwitch(DeviceIntPtr dev, WindowPtr A,   /* PointerRootWin or NoneWin */
+                                WindowPtr B, /* NoneWin or PointerRootWin */
+                                int mode)
+ {
+@@ -1084,23 +1020,25 @@ CoreFocusPointerRootNoneSwitch(DeviceIntPtr dev,
+         nscreens = 1;
+ #endif
+ 
+-    for (i = 0; i < nscreens; i++)
+-    {
++    for (i = 0; i < nscreens; i++) {
+         root = screenInfo.screens[i]->root;
+-        if (!HasOtherPointer(root, GetMaster(dev, POINTER_OR_FLOAT)) && !FirstFocusChild(root))
+-        {
++        if (!HasOtherPointer(root, GetMaster(dev, POINTER_OR_FLOAT)) &&
++            !FirstFocusChild(root)) {
+             /* If pointer was on PointerRootWin and changes to NoneWin, and
+              * the pointer paired with dev is below the current root window,
+              * do a NotifyPointer run. */
+             if (dev->focus && dev->focus->win == PointerRootWin &&
+-                B != PointerRootWin)
+-            {
++                B != PointerRootWin) {
+                 WindowPtr ptrwin = PointerWin(GetMaster(dev, POINTER_OR_FLOAT));
++
+                 if (ptrwin && IsParent(root, ptrwin))
+-                    CoreFocusOutNotifyPointerEvents(dev, root, None, mode, TRUE);
++                    CoreFocusOutNotifyPointerEvents(dev, root, None, mode,
++                                                    TRUE);
+             }
+-            CoreFocusEvent(dev, FocusOut, mode, A ? NotifyPointerRoot : NotifyDetailNone, root);
+-            CoreFocusEvent(dev, FocusIn, mode, B ? NotifyPointerRoot : NotifyDetailNone, root);
++            CoreFocusEvent(dev, FocusOut, mode,
++                           A ? NotifyPointerRoot : NotifyDetailNone, root);
++            CoreFocusEvent(dev, FocusIn, mode,
++                           B ? NotifyPointerRoot : NotifyDetailNone, root);
+             if (B == PointerRootWin)
+                 CoreFocusInNotifyPointerEvents(dev, root, None, mode, TRUE);
+         }
+@@ -1113,9 +1051,7 @@ CoreFocusPointerRootNoneSwitch(DeviceIntPtr dev,
+  * Assumption: A is a valid window and not PointerRoot or None.
+  */
+ static void
+-CoreFocusToPointerRootOrNone(DeviceIntPtr dev,
+-                       WindowPtr A,
+-                       WindowPtr B, /* PointerRootWin or NoneWin */
++CoreFocusToPointerRootOrNone(DeviceIntPtr dev, WindowPtr A, WindowPtr B,        /* PointerRootWin or NoneWin */
+                        int mode)
+ {
+     WindowPtr root;
+@@ -1127,15 +1063,15 @@ CoreFocusToPointerRootOrNone(DeviceIntPtr dev,
+         nscreens = 1;
+ #endif
+ 
+-    if (!HasFocus(A))
+-    {
++    if (!HasFocus(A)) {
+         WindowPtr child = FirstFocusChild(A);
+-        if (child)
+-        {
++
++        if (child) {
+             /* NotifyPointer P-A unless P is B or below*/
+             CoreFocusOutNotifyPointerEvents(dev, A, B, mode, FALSE);
+             CoreFocusEvent(dev, FocusOut, mode, NotifyInferior, A);
+-        } else {
++        }
++        else {
+             /* NotifyPointer P-A */
+             CoreFocusOutNotifyPointerEvents(dev, A, None, mode, FALSE);
+             CoreFocusEvent(dev, FocusOut, mode, NotifyNonlinear, A);
+@@ -1145,12 +1081,11 @@ CoreFocusToPointerRootOrNone(DeviceIntPtr dev,
+     /* NullWindow means we include the root window */
+     CoreFocusOutEvents(dev, A, NullWindow, mode, NotifyNonlinearVirtual);
+ 
+-    for (i = 0; i < nscreens; i++)
+-    {
++    for (i = 0; i < nscreens; i++) {
+         root = screenInfo.screens[i]->root;
+-        if (!HasFocus(root) && !FirstFocusChild(root))
+-        {
+-            CoreFocusEvent(dev, FocusIn, mode, B ? NotifyPointerRoot : NotifyDetailNone, root);
++        if (!HasFocus(root) && !FirstFocusChild(root)) {
++            CoreFocusEvent(dev, FocusIn, mode,
++                           B ? NotifyPointerRoot : NotifyDetailNone, root);
+             if (B == PointerRootWin)
+                 CoreFocusInNotifyPointerEvents(dev, root, None, mode, TRUE);
+         }
+@@ -1162,10 +1097,8 @@ CoreFocusToPointerRootOrNone(DeviceIntPtr dev,
+  * Assumption: B is a valid window and not PointerRoot or None.
+  */
+ static void
+-CoreFocusFromPointerRootOrNone(DeviceIntPtr dev,
+-                               WindowPtr A, /* PointerRootWin or NoneWin */
+-                               WindowPtr B,
+-                               int mode)
++CoreFocusFromPointerRootOrNone(DeviceIntPtr dev, WindowPtr A,   /* PointerRootWin or NoneWin */
++                               WindowPtr B, int mode)
+ {
+     WindowPtr root;
+     int i;
+@@ -1176,22 +1109,22 @@ CoreFocusFromPointerRootOrNone(DeviceIntPtr dev,
+         nscreens = 1;
+ #endif
+ 
+-    for (i = 0; i < nscreens; i++)
+-    {
++    for (i = 0; i < nscreens; i++) {
+         root = screenInfo.screens[i]->root;
+-        if (!HasFocus(root) && !FirstFocusChild(root))
+-        {
++        if (!HasFocus(root) && !FirstFocusChild(root)) {
+             /* If pointer was on PointerRootWin and changes to NoneWin, and
+              * the pointer paired with dev is below the current root window,
+              * do a NotifyPointer run. */
+             if (dev->focus && dev->focus->win == PointerRootWin &&
+-                B != PointerRootWin)
+-            {
++                B != PointerRootWin) {
+                 WindowPtr ptrwin = PointerWin(GetMaster(dev, POINTER_OR_FLOAT));
++
+                 if (ptrwin)
+-                    CoreFocusOutNotifyPointerEvents(dev, root, None, mode, TRUE);
++                    CoreFocusOutNotifyPointerEvents(dev, root, None, mode,
++                                                    TRUE);
+             }
+-            CoreFocusEvent(dev, FocusOut, mode, A ? NotifyPointerRoot : NotifyDetailNone, root);
++            CoreFocusEvent(dev, FocusOut, mode,
++                           A ? NotifyPointerRoot : NotifyDetailNone, root);
+         }
+     }
+ 
+@@ -1199,22 +1132,20 @@ CoreFocusFromPointerRootOrNone(DeviceIntPtr dev,
+     while(root->parent)
+         root = root->parent;
+ 
+-    if (B != root)
+-    {
++    if (B != root) {
+         CoreFocusEvent(dev, FocusIn, mode, NotifyNonlinearVirtual, root);
+         CoreFocusInEvents(dev, root, B, mode, NotifyNonlinearVirtual);
+     }
+ 
+-
+-    if (!HasFocus(B))
+-    {
++    if (!HasFocus(B)) {
+         WindowPtr child = FirstFocusChild(B);
+-        if (child)
+-        {
++
++        if (child) {
+              CoreFocusEvent(dev, FocusIn, mode, NotifyInferior, B);
+              /* NotifyPointer B-P unless P is child or below. */
+              CoreFocusInNotifyPointerEvents(dev, B, child, mode, FALSE);
+-        } else {
++        }
++        else {
+             CoreFocusEvent(dev, FocusIn, mode, NotifyNonlinear, B);
+             /* NotifyPointer B-P unless P is child or below. */
+             CoreFocusInNotifyPointerEvents(dev, B, None, mode, FALSE);
+@@ -1224,10 +1155,7 @@ CoreFocusFromPointerRootOrNone(DeviceIntPtr dev,
+ }
+ 
+ static void
+-CoreFocusEvents(DeviceIntPtr dev,
+-                WindowPtr from,
+-                WindowPtr to,
+-                int mode)
++CoreFocusEvents(DeviceIntPtr dev, WindowPtr from, WindowPtr to, int mode)
+ {
+     if (!IsMaster(dev))
+         return;
+@@ -1252,10 +1180,7 @@ CoreFocusEvents(DeviceIntPtr dev,
+ }
+ 
+ static void
+-DeviceFocusEvents(DeviceIntPtr dev,
+-                  WindowPtr from,
+-                  WindowPtr to,
+-                  int mode)
++DeviceFocusEvents(DeviceIntPtr dev, WindowPtr from, WindowPtr to, int mode)
+ {
+     int out, in;		       /* for holding details for to/from
+                                           PointerRoot/None */
+@@ -1274,19 +1199,18 @@ DeviceFocusEvents(DeviceIntPtr dev,
+         nscreens = 1;
+ #endif
+ 
+-    if ((to == NullWindow) || (to == PointerRootWin))
+-    {
+-        if ((from == NullWindow) || (from == PointerRootWin))
+-        {
++    if ((to == NullWindow) || (to == PointerRootWin)) {
++        if ((from == NullWindow) || (from == PointerRootWin)) {
+             if (from == PointerRootWin)
+-                DeviceFocusOutEvents(dev, sprite->win, GetCurrentRootWindow(dev), mode,
++                DeviceFocusOutEvents(dev, sprite->win,
++                                     GetCurrentRootWindow(dev), mode,
+                         NotifyPointer);
+             /* Notify all the roots */
+             for (i = 0; i < nscreens; i++)
+-                DeviceFocusEvent(dev, XI_FocusOut, mode, out, screenInfo.screens[i]->root);
++                DeviceFocusEvent(dev, XI_FocusOut, mode, out,
++                                 screenInfo.screens[i]->root);
+         }
+-        else
+-        {
++        else {
+             if (IsParent(from, sprite->win))
+                 DeviceFocusOutEvents(dev, sprite->win, from, mode,
+                         NotifyPointer);
+@@ -1297,45 +1221,43 @@ DeviceFocusEvents(DeviceIntPtr dev,
+         }
+         /* Notify all the roots */
+         for (i = 0; i < nscreens; i++)
+-            DeviceFocusEvent(dev, XI_FocusIn, mode, in, screenInfo.screens[i]->root);
+-        if (to == PointerRootWin)
+-        {
+-            DeviceFocusInEvents(dev, GetCurrentRootWindow(dev), sprite->win, mode, NotifyPointer);
++            DeviceFocusEvent(dev, XI_FocusIn, mode, in,
++                             screenInfo.screens[i]->root);
++        if (to == PointerRootWin) {
++            DeviceFocusInEvents(dev, GetCurrentRootWindow(dev), sprite->win,
++                                mode, NotifyPointer);
+             DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyPointer, sprite->win);
+         }
+     }
+-    else
+-    {
+-        if ((from == NullWindow) || (from == PointerRootWin))
+-        {
++    else {
++        if ((from == NullWindow) || (from == PointerRootWin)) {
+             if (from == PointerRootWin)
+-                DeviceFocusOutEvents(dev, sprite->win, GetCurrentRootWindow(dev), mode,
++                DeviceFocusOutEvents(dev, sprite->win,
++                                     GetCurrentRootWindow(dev), mode,
+                         NotifyPointer);
+             for (i = 0; i < nscreens; i++)
+-                DeviceFocusEvent(dev, XI_FocusOut, mode, out, screenInfo.screens[i]->root);
++                DeviceFocusEvent(dev, XI_FocusOut, mode, out,
++                                 screenInfo.screens[i]->root);
+             if (to->parent != NullWindow)
+-                DeviceFocusInEvents(dev, GetCurrentRootWindow(dev), to, mode, NotifyNonlinearVirtual);
++                DeviceFocusInEvents(dev, GetCurrentRootWindow(dev), to, mode,
++                                    NotifyNonlinearVirtual);
+             DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyNonlinear, to);
+             if (IsParent(to, sprite->win))
+                 DeviceFocusInEvents(dev, to, sprite->win, mode, NotifyPointer);
+         }
+-        else
+-        {
+-            if (IsParent(to, from))
+-            {
++        else {
++            if (IsParent(to, from)) {
+                 DeviceFocusEvent(dev, XI_FocusOut, mode, NotifyAncestor, from);
+-                DeviceFocusOutEvents(dev, from, to, mode,
+-                        NotifyVirtual);
++                DeviceFocusOutEvents(dev, from, to, mode, NotifyVirtual);
+                 DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyInferior, to);
+                 if ((IsParent(to, sprite->win)) &&
+                         (sprite->win != from) &&
+                         (!IsParent(from, sprite->win)) &&
+                         (!IsParent(sprite->win, from)))
+-                    DeviceFocusInEvents(dev, to, sprite->win, mode, NotifyPointer);
++                    DeviceFocusInEvents(dev, to, sprite->win, mode,
++                                        NotifyPointer);
+             }
+-            else
+-                if (IsParent(from, to))
+-                {
++            else if (IsParent(from, to)) {
+                     if ((IsParent(from, sprite->win)) &&
+                             (sprite->win != from) &&
+                             (!IsParent(to, sprite->win)) &&
+@@ -1346,10 +1268,10 @@ DeviceFocusEvents(DeviceIntPtr dev,
+                     DeviceFocusInEvents(dev, from, to, mode, NotifyVirtual);
+                     DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyAncestor, to);
+                 }
+-                else
+-                {
++            else {
+                     /* neither from or to is child of other */
+                     WindowPtr common = CommonAncestor(to, from);
++
+                     /* common == NullWindow ==> different screens */
+                     if (IsParent(from, sprite->win))
+                         DeviceFocusOutEvents(dev, sprite->win, from, mode,
+@@ -1359,10 +1281,12 @@ DeviceFocusEvents(DeviceIntPtr dev,
+                         DeviceFocusOutEvents(dev, from, common, mode,
+                                 NotifyNonlinearVirtual);
+                     if (to->parent != NullWindow)
+-                        DeviceFocusInEvents(dev, common, to, mode, NotifyNonlinearVirtual);
++                    DeviceFocusInEvents(dev, common, to, mode,
++                                        NotifyNonlinearVirtual);
+                     DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyNonlinear, to);
+                     if (IsParent(to, sprite->win))
+-                        DeviceFocusInEvents(dev, to, sprite->win, mode, NotifyPointer);
++                    DeviceFocusInEvents(dev, to, sprite->win, mode,
++                                        NotifyPointer);
+                 }
+         }
+     }
+@@ -1376,10 +1300,7 @@ DeviceFocusEvents(DeviceIntPtr dev,
+  * @param to Window the focus moved into.
+  */
+ void
+-DoFocusEvents(DeviceIntPtr pDev,
+-              WindowPtr from,
+-              WindowPtr to,
+-              int mode)
++DoFocusEvents(DeviceIntPtr pDev, WindowPtr from, WindowPtr to, int mode)
+ {
+     if (!IsKeyboardDevice(pDev))
+         return;

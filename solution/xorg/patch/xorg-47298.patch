@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86AutoConfig.c b/hw/xfree86/common/xf86AutoConfig.c
+index a6199b0..1c4595e 100644
+--- a/hw/xfree86/common/xf86AutoConfig.c
++++ b/hw/xfree86/common/xf86AutoConfig.c
+@@ -273,6 +273,7 @@ xf86AutoConfig(void)
+ 	xf86ErrorFVerb(3, "\t%s", *cp);
+     xf86MsgVerb(X_DEFAULT, 3, "--- End of built-in configuration ---\n");
+     
++    xf86initConfigFiles();
+     xf86setBuiltinConfig(builtinConfig);
+     ret = xf86HandleConfigFile(TRUE);
+     FreeConfig();

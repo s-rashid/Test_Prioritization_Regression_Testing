@@ -1,0 +1,24 @@
+diff --git a/hw/kdrive/ephyr/ephyrinit.c b/hw/kdrive/ephyr/ephyrinit.c
+index 27cab3b..2deb7b8 100644
+--- a/hw/kdrive/ephyr/ephyrinit.c
++++ b/hw/kdrive/ephyr/ephyrinit.c
+@@ -358,13 +358,18 @@ ephyrDeviceCursorInitialize(DeviceIntPtr pDev, ScreenPtr pScreen)
+   return TRUE;
+ }
+ 
++static void
++ephyrDeviceCursorCleanup(DeviceIntPtr pDev, ScreenPtr pScreen)
++{
++}
++
+ miPointerSpriteFuncRec EphyrPointerSpriteFuncs = {
+ 	ephyrRealizeCursor,
+ 	ephyrUnrealizeCursor,
+ 	ephyrSetCursor,
+ 	ephyrMoveCursor,
+ 	ephyrDeviceCursorInitialize,
+-	NULL
++	ephyrDeviceCursorCleanup
+ };
+ 
+ 

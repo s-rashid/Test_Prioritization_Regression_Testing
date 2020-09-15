@@ -1,0 +1,13 @@
+diff --git a/glx/glthread.h b/glx/glthread.h
+index 782a2a3..28793fc 100644
+--- a/glx/glthread.h
++++ b/glx/glthread.h
+@@ -68,7 +68,7 @@
+ #define _glapi_Dispatch _mglapi_Dispatch
+ #endif
+ 
+-#if (defined(PTHREADS) || defined(WIN32_THREADS) || defined(BEOS_THREADS)) \
++#if (defined(PTHREADS) || defined(WIN32_THREADS)) \
+     && !defined(THREADS)
+ # define THREADS
+ #endif

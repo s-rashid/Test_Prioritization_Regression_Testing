@@ -1,0 +1,13 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index ce65314..990cb67 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -2174,7 +2174,7 @@ static XSyncValue *pnext_time;
+ 
+ /*
+ *** Server Block Handler
+-*** code inspired by multibuffer extension
++*** code inspired by multibuffer extension (now deprecated)
+  */
+ /*ARGSUSED*/
+ static void

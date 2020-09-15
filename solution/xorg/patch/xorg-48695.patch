@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index 87d40e0..f84feec 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -833,7 +833,6 @@ DoConfigure(void)
+ 
+ 	ConfiguredMonitor = NULL;
+ 
+-	xf86EnableAccess(xf86Screens[dev2screen[j]]);
+ 	if ((*xf86Screens[dev2screen[j]]->PreInit)(xf86Screens[dev2screen[j]], 
+ 						   PROBE_DETECT) &&
+ 	    ConfiguredMonitor) {

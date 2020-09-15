@@ -1,0 +1,17 @@
+diff --git a/include/eventconvert.h b/include/eventconvert.h
+index bb45eef..571a511 100644
+--- a/include/eventconvert.h
++++ b/include/eventconvert.h
+@@ -31,12 +31,6 @@
+ 
+ #define FP1616(integral, frac) ((integral) * (1 << 16) + (frac) * (1 << 16))
+ 
+-enum InputLevel {
+-    CORE,
+-    XI,
+-    XI2,
+-};
+-
+ _X_EXPORT int EventToCore(InternalEvent *event, xEvent **core, int *count);
+ _X_EXPORT int EventToXI(InternalEvent *ev, xEvent **xi, int *count);
+ _X_EXPORT int EventToXI2(InternalEvent *ev, xEvent **xi);

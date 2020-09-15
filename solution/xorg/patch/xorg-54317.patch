@@ -1,0 +1,13 @@
+diff --git a/dix/resource.c b/dix/resource.c
+index eb9f049..be8a8f8 100644
+--- a/dix/resource.c
++++ b/dix/resource.c
+@@ -242,7 +242,7 @@ CallResourceStateCallback(ResourceState state, ResourceRec *res)
+ }
+ 
+ RESTYPE
+-CreateNewResourceType(DeleteType deleteFunc, char *name)
++CreateNewResourceType(DeleteType deleteFunc, const char *name)
+ {
+     RESTYPE next = lastResourceType + 1;
+     struct ResourceType *types;

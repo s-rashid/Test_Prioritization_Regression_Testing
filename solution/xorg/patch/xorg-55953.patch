@@ -1,0 +1,36 @@
+diff --git a/include/servermd.h b/include/servermd.h
+index 271d936..d6a9a3a 100644
+--- a/include/servermd.h
++++ b/include/servermd.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -171,7 +170,6 @@ SOFTWARE.
+ 
+ #endif /* sun && !(i386 && SVR4) */
+ 
+-
+ #if defined(ibm032) || defined (ibm)
+ 
+ #ifdef __i386__
+@@ -232,7 +230,6 @@ SOFTWARE.
+ 
+ #endif /* linux/s390x */
+ 
+-
+ #if defined(__ia64__) || defined(ia64)
+ 
+ # define IMAGE_BYTE_ORDER	LSBFirst
+@@ -275,7 +272,6 @@ SOFTWARE.
+ 
+ #endif /* linux/m68k */
+ 
+-
+ /* linux on ARM */
+ #if defined(linux) && defined(__arm__)
+ #define IMAGE_BYTE_ORDER	LSBFirst

@@ -1,0 +1,12 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 89cb137..7fa771d 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -257,7 +257,6 @@ exaDestroyPixmap_mixed(PixmapPtr pPixmap)
+ 	pExaPixmap->driverPriv = NULL;
+ 
+ 	if (pExaPixmap->pDamage) {
+-	    if (pExaPixmap->sys_ptr)
+ 		free(pExaPixmap->sys_ptr);
+ 	    pExaPixmap->sys_ptr = NULL;
+ 	    pExaPixmap->pDamage = NULL;

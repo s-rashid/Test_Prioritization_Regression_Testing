@@ -1,0 +1,20 @@
+diff --git a/glx/indirect_reqsize.c b/glx/indirect_reqsize.c
+index 20e2a5d..86ea970 100644
+--- a/glx/indirect_reqsize.c
++++ b/glx/indirect_reqsize.c
+@@ -25,7 +25,6 @@
+  * SOFTWARE.
+  */
+ 
+-
+ #include <GL/gl.h>
+ #include "glxserver.h"
+ #include "glxbyteorder.h"
+@@ -48,7 +47,6 @@
+     { return __glX ## to ## ReqSize( pc, swap ); }
+ #endif
+ 
+-
+ int
+ __glXCallListsReqSize(const GLbyte *pc, Bool swap)
+ {

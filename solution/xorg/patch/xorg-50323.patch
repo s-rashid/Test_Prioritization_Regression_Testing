@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index f5d2952..e506f6a 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -2352,7 +2352,7 @@ RecalculateMasterButtons(DeviceIntPtr slave)
+ 
+         event.header = ET_Internal;
+         event.type = ET_DeviceChanged;
+-        event.time = CurrentTime;
++        event.time = GetTimeInMillis();
+         event.deviceid = master->id;
+         event.flags = DEVCHANGE_POINTER_EVENT | DEVCHANGE_DEVICE_CHANGE;
+         event.buttons.num_buttons = maxbuttons;

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 6c14578..dc07b47 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -81,7 +81,7 @@ ProcDRI2QueryVersion(ClientPtr client)
+     rep.length = 0;
+     rep.sequenceNumber = client->sequence;
+     rep.majorVersion = SERVER_DRI2_MAJOR_VERSION;
+-    rep.minorVersion = SERVER_DRI2_MAJOR_VERSION;
++    rep.minorVersion = SERVER_DRI2_MINOR_VERSION;
+ 
+     if (client->swapped) {
+     	swaps(&rep.sequenceNumber, n);

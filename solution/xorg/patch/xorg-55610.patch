@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/parser/Extensions.c b/hw/xfree86/parser/Extensions.c
+index 662f526..ec0bda4 100644
+--- a/hw/xfree86/parser/Extensions.c
++++ b/hw/xfree86/parser/Extensions.c
+@@ -41,8 +41,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec ExtensionsTab[] =
+-{
++static xf86ConfigSymTabRec ExtensionsTab[] = {
+     {ENDSECTION, "endsection"},
+     {OPTION,     "option"},
+     {-1,         ""},
+@@ -54,6 +53,7 @@ XF86ConfExtensionsPtr
+ xf86parseExtensionsSection (void)
+ {
+     int token;
++
+     parsePrologue (XF86ConfExtensionsPtr, XF86ConfExtensionsRec);
+ 
+     while ((token = xf86getToken (ExtensionsTab)) != ENDSECTION) {

@@ -1,0 +1,46 @@
+diff --git a/hw/xfree86/xaa/xaaCpyWin.c b/hw/xfree86/xaa/xaaCpyWin.c
+index c3c2690..e851f4a 100644
+--- a/hw/xfree86/xaa/xaaCpyWin.c
++++ b/hw/xfree86/xaa/xaaCpyWin.c
+@@ -22,10 +22,7 @@
+ */
+ 
+ void
+-XAACopyWindow(
+-    WindowPtr pWin,
+-    DDXPointRec ptOldOrg,
+-    RegionPtr prgnSrc )
++XAACopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ {
+     DDXPointPtr pptSrc, ppt;
+     RegionRec rgnDst;
+@@ -33,8 +30,7 @@ XAACopyWindow(
+     int dx, dy, nbox;
+     WindowPtr pwinRoot;
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+-    XAAInfoRecPtr infoRec = 
+-	GET_XAAINFORECPTR_FROM_DRAWABLE((&pWin->drawable));
++    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_DRAWABLE((&pWin->drawable));
+ 
+     if (!infoRec->pScrn->vtSema || !infoRec->ScreenToScreenBitBlt) { 
+ 	XAA_SCREEN_PROLOGUE (pScreen, CopyWindow);
+@@ -58,8 +54,7 @@ XAACopyWindow(
+ 
+     pbox = RegionRects(&rgnDst);
+     nbox = RegionNumRects(&rgnDst);
+-    if(!nbox || 
+-      !(pptSrc = (DDXPointPtr )malloc(nbox * sizeof(DDXPointRec)))) {
++    if (!nbox || !(pptSrc = (DDXPointPtr) malloc(nbox * sizeof(DDXPointRec)))) {
+ 	RegionUninit(&rgnDst);
+ 	return;
+     }
+@@ -68,7 +63,8 @@ XAACopyWindow(
+     while(nbox--) {
+ 	ppt->x = pbox->x1 + dx;
+ 	ppt->y = pbox->y1 + dy;
+-	ppt++; pbox++;
++        ppt++;
++        pbox++;
+     }
+     
+     infoRec->ScratchGC.planemask = ~0L;

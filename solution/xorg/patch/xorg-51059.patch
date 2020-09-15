@@ -1,0 +1,12 @@
+diff --git a/Xext/panoramiXsrv.h b/Xext/panoramiXsrv.h
+index 5b1a3a9..b0a5a6e 100644
+--- a/Xext/panoramiXsrv.h
++++ b/Xext/panoramiXsrv.h
+@@ -26,6 +26,7 @@ extern _X_EXPORT unsigned long XRT_WINDOW;
+ extern _X_EXPORT unsigned long XRT_PIXMAP;
+ extern _X_EXPORT unsigned long XRT_GC;
+ extern _X_EXPORT unsigned long XRT_COLORMAP;
++extern _X_EXPORT unsigned long XRT_PICTURE;
+ 
+ /*
+  * Drivers are allowed to wrap this function.  Each wrapper can decide that the

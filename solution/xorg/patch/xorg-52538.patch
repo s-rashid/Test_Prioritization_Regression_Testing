@@ -1,0 +1,21 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index 1ca3f91..44956e3 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -624,6 +624,7 @@ void winSelectIcons(WindowPtr pWin, HICON *pIcon, HICON *pSmallIcon)
+     *pIcon = hIcon;
+   else
+     winDestroyIcon(hIcon);
++
+   if (pSmallIcon)
+     *pSmallIcon = hSmallIcon;
+   else
+@@ -632,7 +633,7 @@ void winSelectIcons(WindowPtr pWin, HICON *pIcon, HICON *pSmallIcon)
+ 
+ void winDestroyIcon(HICON hIcon)
+ {
+-  /* Delete the icon if its not the default */
++  /* Delete the icon if its not one of the application defaults or an override */
+   if (hIcon &&
+       hIcon != g_hIconX &&
+       hIcon != g_hSmallIconX &&

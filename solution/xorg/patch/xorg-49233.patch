@@ -1,0 +1,13 @@
+diff --git a/hw/vfb/InitOutput.c b/hw/vfb/InitOutput.c
+index 2f41955..be8c036 100644
+--- a/hw/vfb/InitOutput.c
++++ b/hw/vfb/InitOutput.c
+@@ -570,7 +570,7 @@ vfbAllocateMmappedFramebuffer(vfbScreenInfoPtr pvfb)
+ 
+     /* Extend the file to be the proper size */
+ 
+-    bzero(dummyBuffer, DUMMY_BUFFER_SIZE);
++    memset(dummyBuffer, 0, DUMMY_BUFFER_SIZE);
+     for (currentFileSize = 0;
+ 	 currentFileSize < pvfb->sizeInBytes;
+ 	 currentFileSize += writeThisTime)

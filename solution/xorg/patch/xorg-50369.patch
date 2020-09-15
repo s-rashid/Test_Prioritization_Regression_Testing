@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/xaa/xaaGC.c b/hw/xfree86/xaa/xaaGC.c
+index fbef88d..fb24387 100644
+--- a/hw/xfree86/xaa/xaaGC.c
++++ b/hw/xfree86/xaa/xaaGC.c
+@@ -651,5 +651,4 @@ GCOps XAAPixmapOps = {
+     XAAPolyText16Pixmap, XAAImageText8Pixmap, 
+     XAAImageText16Pixmap, XAAImageGlyphBltPixmap, 
+     XAAPolyGlyphBltPixmap, XAAPushPixelsPixmap,
+-    {NULL}		/* devPrivate */
+ };

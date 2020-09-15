@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhw.c b/hw/xfree86/fbdevhw/fbdevhw.c
+index d7b4d3c..2019741 100644
+--- a/hw/xfree86/fbdevhw/fbdevhw.c
++++ b/hw/xfree86/fbdevhw/fbdevhw.c
+@@ -98,8 +98,6 @@ fbdevHWFreeRec(ScrnInfoPtr pScrn)
+ {
+ 	if (fbdevHWPrivateIndex < 0)
+ 		return;
+-	if (FBDEVHWPTR(pScrn) == NULL)
+-		return;
+ 	free(FBDEVHWPTR(pScrn));
+ 	FBDEVHWPTRLVAL(pScrn) = NULL;
+ }

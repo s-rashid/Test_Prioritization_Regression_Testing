@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaa.h b/hw/xfree86/xaa/xaa.h
+index 2af954f..40b49e5 100644
+--- a/hw/xfree86/xaa/xaa.h
++++ b/hw/xfree86/xaa/xaa.h
+@@ -1241,8 +1241,6 @@ typedef struct _XAAInfoRec {
+    GetImageProcPtr GetImage;
+    GetSpansProcPtr GetSpans;
+    CopyWindowProcPtr CopyWindow;
+-   BackingStoreSaveAreasProcPtr SaveAreas;
+-   BackingStoreRestoreAreasProcPtr RestoreAreas;
+ 
+    unsigned int offscreenDepths;
+    Bool offscreenDepthsInitialized;

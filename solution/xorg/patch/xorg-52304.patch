@@ -1,0 +1,20 @@
+diff --git a/fb/fbbits.c b/fb/fbbits.c
+index 8083743..850d163 100644
+--- a/fb/fbbits.c
++++ b/fb/fbbits.c
+@@ -89,7 +89,6 @@
+ #undef BITS4
+ #endif
+ 
+-#ifdef FB_24BIT
+ #define BRESSOLID   fbBresSolid24
+ #define BRESDASH    fbBresDash24
+ #define DOTS        fbDots24
+@@ -147,7 +146,6 @@
+ #undef ARC
+ #undef POLYLINE
+ #undef POLYSEGMENT
+-#endif /* FB_24BIT */
+ 
+ #define BRESSOLID   fbBresSolid32
+ #define BRESDASH    fbBresDash32

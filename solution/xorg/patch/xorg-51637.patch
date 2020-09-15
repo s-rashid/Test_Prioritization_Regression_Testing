@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index bbc0f2f..2eea345 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -400,6 +400,8 @@ typedef struct
+   Bool			fUserGaveHeightAndWidth;
+ 
+   DWORD			dwScreen;
++
++  int			iMonitor;
+   DWORD			dwUserWidth;
+   DWORD			dwUserHeight;
+   DWORD			dwWidth;

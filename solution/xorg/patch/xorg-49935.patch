@@ -1,0 +1,13 @@
+diff --git a/os/xprintf.c b/os/xprintf.c
+index 07eaa1f..3fe19b3 100644
+--- a/os/xprintf.c
++++ b/os/xprintf.c
+@@ -54,7 +54,7 @@ Xvprintf(const char *format, va_list va)
+     size = vsnprintf(NULL, 0, format, va2);
+     va_end(va2);
+ 
+-    ret = (char *)Xalloc(size + 1);
++    ret = (char *)malloc(size + 1);
+     if (ret == NULL)
+         return NULL;
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index 631f12e..655cdb1 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -114,8 +114,6 @@ winInitializeGlobals (void)
+ {
+   g_dwCurrentThreadID = GetCurrentThreadId ();
+ #ifdef XWIN_CLIPBOARD
+-  g_fClipboardLaunched = FALSE;
+-  g_fClipboardStarted = FALSE;
+   g_iClipboardWindow = None;
+   g_pClipboardDisplay = NULL;
+   g_atomLastOwnedSelection = None;

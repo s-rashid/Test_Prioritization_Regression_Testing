@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/compsize.c b/hw/dmx/glxProxy/compsize.c
+index 9a40d65..5a5d5d0 100644
+--- a/hw/dmx/glxProxy/compsize.c
++++ b/hw/dmx/glxProxy/compsize.c
+@@ -29,6 +29,7 @@
+  */
+ 
+ #include <GL/gl.h>
++#include "compsize.h"
+ 
+ GLint __glFogiv_size(GLenum pname)
+ {

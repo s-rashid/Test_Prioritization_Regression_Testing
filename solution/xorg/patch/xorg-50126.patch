@@ -1,0 +1,23 @@
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index c36dba0..59c7fc5 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -1410,6 +1410,7 @@ void
+ XkbFakeDeviceButton(DeviceIntPtr dev,Bool press,int button)
+ {
+     DeviceIntPtr        ptr;
++    int                 down;
+ 
+     /* If dev is a slave device, and the SD is attached, do nothing. If we'd
+      * post through the attached master pointer we'd get duplicate events.
+@@ -1427,6 +1428,10 @@ XkbFakeDeviceButton(DeviceIntPtr dev,Bool press,int button)
+     else
+         return;
+ 
++    down = button_is_down(ptr, button, BUTTON_PROCESSED);
++    if (press == down)
++        return;
++
+     InjectPointerKeyEvents(dev, press ? ButtonPress : ButtonRelease,
+                            button, 0, 0, NULL);
+ }

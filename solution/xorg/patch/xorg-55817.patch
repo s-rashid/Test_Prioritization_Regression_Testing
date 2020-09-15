@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/xpr/xprEvent.h b/hw/xquartz/xpr/xprEvent.h
+index ebfa36b..efa10c7 100644
+--- a/hw/xquartz/xpr/xprEvent.h
++++ b/hw/xquartz/xpr/xprEvent.h
+@@ -29,6 +29,6 @@
+ #ifndef __XPR_EVENT_H__
+ #define __XPR_EVENT_H__
+ 
+-Bool QuartzModeEventHandler(int screenNum, XQuartzEvent *e, DeviceIntPtr dev);
++Bool QuartzModeEventHandler(int screenNum, XQuartzEvent * e, DeviceIntPtr dev);
+ 
+ #endif

@@ -1,0 +1,12 @@
+diff --git a/dix/events.c b/dix/events.c
+index 78663ea..b5b0521 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2065,6 +2065,7 @@ DeliverEventsToWindow(DeviceIntPtr pDev, WindowPtr pWin, xEvent
+ 	GrabRec tempGrab;
+         OtherInputMasks *inputMasks;
+ 
++        memset(&tempGrab, 0, sizeof(GrabRec));
+         tempGrab.next = NULL;
+ 	tempGrab.device = pDev;
+ 	tempGrab.resource = client->clientAsMask;

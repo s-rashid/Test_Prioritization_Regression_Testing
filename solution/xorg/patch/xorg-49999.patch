@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/vgahw/vgaCmap.c b/hw/xfree86/vgahw/vgaCmap.c
+index 4720f4d..83c29c3 100644
+--- a/hw/xfree86/vgahw/vgaCmap.c
++++ b/hw/xfree86/vgahw/vgaCmap.c
+@@ -51,7 +51,7 @@ vgaListInstalledColormaps(pScreen, pmaps)
+    * is always a colormap installed */
+   
+   *pmaps = GetInstalledmiColormap(pScreen)->mid;
+-  return(1);
++  return 1;
+ }
+ 
+ int
+@@ -63,7 +63,7 @@ vgaGetInstalledColormaps(pScreen, pmaps)
+    * is always a colormap installed */
+   
+   *pmaps = GetInstalledmiColormap(pScreen);
+-  return(1);
++  return 1;
+ }
+ 
+ int vgaCheckColorMap(ColormapPtr pmap)

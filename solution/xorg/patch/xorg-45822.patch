@@ -1,0 +1,12 @@
+diff --git a/dix/enterleave.h b/dix/enterleave.h
+index 4da4e02..471f4ef 100644
+--- a/dix/enterleave.h
++++ b/dix/enterleave.h
+@@ -76,6 +76,7 @@ extern void EnterWindow(DeviceIntPtr dev,
+                         WindowPtr win,
+                         int mode);
+ 
++extern void LeaveWindow(DeviceIntPtr dev);
+ 
+ extern void CoreFocusEvent(DeviceIntPtr kbd,
+                            int type,

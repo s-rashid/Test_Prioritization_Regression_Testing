@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 87b5100..57db056 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -692,9 +692,9 @@ NewInputDeviceRequest (InputOption *options, InputAttributes *attrs,
+             }
+         }
+ 
+-        /* Right now, the only automatic config we know of is HAL. */
+         if (strcmp(option->key, "_source") == 0 &&
+-            strcmp(option->value, "server/hal") == 0) {
++            (strcmp(option->value, "server/hal") == 0 ||
++             strcmp(option->value, "server/udev") == 0)) {
+             is_auto = 1;
+             if (!xf86Info.autoAddDevices) {
+                 rval = BadMatch;

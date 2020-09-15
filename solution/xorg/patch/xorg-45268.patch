@@ -1,0 +1,18 @@
+diff --git a/Xi/xisetclientpointer.c b/Xi/xisetclientpointer.c
+index 2736185..09db8ff 100644
+--- a/Xi/xisetclientpointer.c
++++ b/Xi/xisetclientpointer.c
+@@ -98,10 +98,11 @@ ProcXISetClientPointer(ClientPtr client)
+     } else
+         targetClient = client;
+ 
+-    if (!SetClientPointer(targetClient, pDev))
++    rc = SetClientPointer(targetClient, pDev);
++    if (rc != Success)
+     {
+         client->errorValue = stuff->deviceid;
+-        return BadDevice;
++        return rc;
+     }
+ 
+     return Success;

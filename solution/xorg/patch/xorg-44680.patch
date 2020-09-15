@@ -1,0 +1,15 @@
+diff --git a/glx/glxcmds.c b/glx/glxcmds.c
+index 86e8dd8..1ae3151 100644
+--- a/glx/glxcmds.c
++++ b/glx/glxcmds.c
+@@ -799,8 +799,8 @@ int __glXDisp_WaitX(__GLXclientState *cl, GLbyte *pc)
+ 	    return error;
+     }
+ 
+-    if (glxc && glxc->drawPriv->waitGL)
+-	(*glxc->drawPriv->waitGL)(glxc->drawPriv);
++    if (glxc && glxc->drawPriv->waitX)
++	(*glxc->drawPriv->waitX)(glxc->drawPriv);
+ 
+     return Success;
+ }

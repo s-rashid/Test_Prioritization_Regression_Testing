@@ -1,0 +1,20 @@
+diff --git a/Xext/xselinux.c b/Xext/xselinux.c
+index 2c72621..3a6f096 100644
+--- a/Xext/xselinux.c
++++ b/Xext/xselinux.c
+@@ -1346,15 +1346,6 @@ ProcSELinuxSetCreateContext(ClientPtr client, unsigned offset)
+ 	    goto out;
+ 	privPtr = &serverClient->devPrivates;
+     }
+-    else if (offset == USE_SEL) {
+-	/* Selection use context currently requires no selections owned */
+-	Selection *pSel;
+-	for (pSel = CurrentSelections; pSel; pSel = pSel->next)
+-	    if (pSel->client == client) {
+-		rc = BadMatch;
+-		goto out;
+-	    }
+-    }
+ 
+     ptr = dixLookupPrivate(privPtr, subjectKey);
+     pSid = (security_id_t *)(ptr + offset);

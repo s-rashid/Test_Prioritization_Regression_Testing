@@ -1,0 +1,13 @@
+diff --git a/hw/vfb/InitOutput.c b/hw/vfb/InitOutput.c
+index 0e701e5..1218547 100644
+--- a/hw/vfb/InitOutput.c
++++ b/hw/vfb/InitOutput.c
+@@ -863,6 +863,8 @@ vfbScreenInit(int index, ScreenPtr pScreen, int argc, char **argv)
+ 				   (1 << DirectColor)),
+ 				  10, TrueColor, 0x3ff00000, 0x000ffc00, 0x000003ff);
+ 	break;
++    default:
++	return FALSE;
+     }
+ 
+     miSetPixmapDepths ();

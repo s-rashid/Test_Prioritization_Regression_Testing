@@ -1,0 +1,12 @@
+diff --git a/dix/privates.c b/dix/privates.c
+index 3a2deb8..e3e7274 100644
+--- a/dix/privates.c
++++ b/dix/privates.c
+@@ -303,6 +303,7 @@ dixResetPrivates(void)
+     /* reset private descriptors */
+     for (i = 1; i < nextPriv; i++) {
+ 	*items[i].key = 0;
++	items[i].size = 0;
+ 	DeleteCallbackList(&items[i].initfuncs);
+ 	DeleteCallbackList(&items[i].deletefuncs);
+     }

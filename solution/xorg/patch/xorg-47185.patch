@@ -1,0 +1,23 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 35f8d1c..c490f8b 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -6704,6 +6704,10 @@ XkbExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
+ 
++    RT_XKBCLIENT = CreateNewResourceType(XkbClientGone);
++    if (!RT_XKBCLIENT)
++	return;
++
+     if ((extEntry = AddExtension(XkbName, XkbNumberEvents, XkbNumberErrors,
+ 				 ProcXkbDispatch, SProcXkbDispatch,
+ 				 NULL, StandardMinorOpcode))) {
+@@ -6711,7 +6715,6 @@ XkbExtensionInit(void)
+ 	XkbEventBase = (unsigned char)extEntry->eventBase;
+ 	XkbErrorBase = (unsigned char)extEntry->errorBase;
+ 	XkbKeyboardErrorCode = XkbErrorBase+XkbKeyboard;
+-	RT_XKBCLIENT = CreateNewResourceType(XkbClientGone);
+     }
+     return;
+ }

@@ -1,0 +1,23 @@
+diff --git a/hw/xwin/glx/indirect.c b/hw/xwin/glx/indirect.c
+index 1cf82a7..3891885 100755
+--- a/hw/xwin/glx/indirect.c
++++ b/hw/xwin/glx/indirect.c
+@@ -444,7 +444,7 @@ glxLogExtensions(const char *prefix, const char *extensions)
+ {
+   int length = 0;
+   char *strl;
+-  char *str = malloc(strlen(extensions) + 1);
++  char *str = strdup(extensions);
+ 
+   if (str == NULL)
+     {
+@@ -452,9 +452,6 @@ glxLogExtensions(const char *prefix, const char *extensions)
+       return;
+     }
+ 
+-  str[strlen(extensions)] = '\0';
+-  strncpy (str, extensions, strlen(extensions));
+-
+   strl = strtok(str, " ");
+   ErrorF("%s%s", prefix, strl);
+   length = strlen(prefix) + strlen(strl);

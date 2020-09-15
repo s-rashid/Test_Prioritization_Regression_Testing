@@ -1,0 +1,12 @@
+diff --git a/dix/region.c b/dix/region.c
+index 911fe16..a77d17b 100644
+--- a/dix/region.c
++++ b/dix/region.c
+@@ -762,7 +762,6 @@ RegionOp(
+ 	AppendRegions(newReg, r2BandEnd, r2End);
+     }
+ 
+-    if (oldData)
+ 	free(oldData);
+ 
+     if (!(numRects = newReg->data->numRects))

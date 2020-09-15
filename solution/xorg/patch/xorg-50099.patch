@@ -1,0 +1,14 @@
+diff --git a/os/connection.c b/os/connection.c
+index c143fb6..77910be 100644
+--- a/os/connection.c
++++ b/os/connection.c
+@@ -1033,6 +1033,9 @@ CloseDownConnection(ClientPtr client)
+ {
+     OsCommPtr oc = (OsCommPtr)client->osPrivate;
+ 
++    if (FlushCallback)
++	CallCallbacks(&FlushCallback, NULL);
++
+     if (oc->output && oc->output->count)
+ 	FlushClient(client, oc, (char *)NULL, 0);
+ #ifdef XDMCP

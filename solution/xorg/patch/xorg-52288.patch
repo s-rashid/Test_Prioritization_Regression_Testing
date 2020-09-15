@@ -1,0 +1,13 @@
+diff --git a/glx/singlepix.c b/glx/singlepix.c
+index a0a6a79..85fc486 100644
+--- a/glx/singlepix.c
++++ b/glx/singlepix.c
+@@ -91,7 +91,7 @@ int __glXDisp_ReadPixels(__GLXclientState *cl, GLbyte *pc)
+ 	__GLX_SEND_HEADER();
+ 	__GLX_SEND_VOID_ARRAY(compsize);
+     }
+-    __GLX_NOTE_FLUSHED_CMDS(cx);
++    cx->hasUnflushedCommands = GL_FALSE;
+     return Success;
+ }
+ 

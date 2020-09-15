@@ -1,0 +1,12 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index c80554e..d923434 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -50,7 +50,6 @@ DamageExtNotify (DamageExtPtr pDamageExt, BoxPtr pBoxes, int nBoxes)
+     UpdateCurrentTimeIf ();
+     ev.type = DamageEventBase + XDamageNotify;
+     ev.level = pDamageExt->level;
+-    ev.sequenceNumber = pClient->sequence;
+     ev.drawable = pDamageExt->drawable;
+     ev.damage = pDamageExt->id;
+     ev.timestamp = currentTime.milliseconds;

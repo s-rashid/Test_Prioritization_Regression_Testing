@@ -1,0 +1,700 @@
+diff --git a/hw/xfree86/common/xf86pciBus.c b/hw/xfree86/common/xf86pciBus.c
+index b95b253..e52f1da 100644
+--- a/hw/xfree86/common/xf86pciBus.c
++++ b/hw/xfree86/common/xf86pciBus.c
+@@ -77,7 +77,6 @@ Bool pciSlotClaimed = FALSE;
+     (((c) & 0x00ffff00) \
+ 	 == ((PCI_CLASS_DISPLAY << 16) | (PCI_SUBCLASS_DISPLAY_VGA << 8)))
+ 
+-
+ static struct pci_slot_match xf86IsolateDevice = {
+     PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, 0
+ };
+@@ -95,7 +94,6 @@ xf86PciProbe(void)
+     struct pci_device_iterator *iter;
+     struct pci_device ** xf86PciVideoInfo = NULL;
+ 
+-
+     if (!xf86scanpci()) {
+ 	xf86PciVideoInfo = NULL;
+ 	return;
+@@ -134,7 +132,8 @@ xf86PciProbe(void)
+ 		if (primaryBus.type == BUS_NONE) {
+ 		    primaryBus.type = BUS_PCI;
+ 		    primaryBus.id.pci = info;
+-		} else {
++                }
++                else {
+ 		    xf86Msg(X_NOTICE,
+ 			    "More than one possible primary device found\n");
+ 		    primaryBus.type ^= (BusType)(-1);
+@@ -148,7 +147,6 @@ xf86PciProbe(void)
+ 	const char *prim = " ";
+ 	Bool memdone = FALSE, iodone = FALSE;
+ 
+-
+ 	info = xf86PciVideoInfo[k];
+ 
+ 	if (!PCIALWAYSPRINTCLASSES(info->device_class))
+@@ -171,7 +169,8 @@ xf86PciProbe(void)
+ 		if (!memdone) {
+ 		    xf86ErrorF(", Mem @ ");
+ 		    memdone = TRUE;
+-		} else
++                }
++                else
+ 		    xf86ErrorF(", ");
+ 		xf86ErrorF("0x%08lx/%ld", (long)r->base_addr, (long)r->size);
+ 	    }
+@@ -184,14 +183,16 @@ xf86PciProbe(void)
+ 		if (!iodone) {
+ 		    xf86ErrorF(", I/O @ ");
+ 		    iodone = TRUE;
+-		} else
++                }
++                else
+ 		    xf86ErrorF(", ");
+ 		xf86ErrorF("0x%08lx/%ld", (long)r->base_addr, (long)r->size);
+ 	    }
+ 	}
+ 
+ 	if ( info->rom_size ) {
+-	    xf86ErrorF(", BIOS @ 0x\?\?\?\?\?\?\?\?/%ld", (long)info->rom_size);
++            xf86ErrorF(", BIOS @ 0x\?\?\?\?\?\?\?\?/%ld",
++                       (long) info->rom_size);
+ 	}
+ 
+ 	xf86ErrorF("\n");
+@@ -225,7 +226,8 @@ xf86ClaimPciSlot(struct pci_device * d, DriverPtr drvp,
+ 	pciSlotClaimed = TRUE;
+ 
+  	return num;
+-    } else
++    }
++    else
+  	return -1;
+ }
+ 
+@@ -334,7 +336,8 @@ xf86ComparePciBusString(const char *busID, int bus, int device, int func)
+ 
+     if (xf86ParsePciBusString(busID, &ibus, &idevice, &ifunc)) {
+ 	return bus == ibus && device == idevice && func == ifunc;
+-    } else {
++    }
++    else {
+ 	return FALSE;
+     }
+ }
+@@ -411,7 +414,6 @@ xf86PciAddMatchingDev(DriverPtr drvp)
+     struct pci_device_iterator *iter;
+     int numFound = 0;
+ 
+-
+     iter = pci_id_match_iterator_create(NULL);
+     while ((pPci = pci_device_next(iter)) != NULL) {
+     /* Determine if this device is supported by the driver.  If it is,
+@@ -423,8 +425,9 @@ xf86PciAddMatchingDev(DriverPtr drvp)
+          && ((devices[j].device_class_mask & pPci->device_class)
+              == devices[j].device_class) ) {
+         if (xf86CheckPciSlot(pPci)) {
+-            GDevPtr pGDev = xf86AddBusDeviceToConfigure(
+-                    drvp->driverName, BUS_PCI, pPci, -1);
++                    GDevPtr pGDev =
++                        xf86AddBusDeviceToConfigure(drvp->driverName, BUS_PCI,
++                                                    pPci, -1);
+             if (pGDev != NULL) {
+             /* After configure pass 1, chipID and chipRev are
+              * treated as over-rides, so clobber them here.
+@@ -460,7 +463,6 @@ xf86PciProbeDev(DriverPtr drvp)
+        struct pci_device_iterator *iter;
+        unsigned device_id;
+ 
+-
+        /* Find the pciVideoRec associated with this device section.
+         */
+        iter = pci_id_match_iterator_create(NULL);
+@@ -469,8 +471,7 @@ xf86PciProbeDev(DriverPtr drvp)
+                if (xf86ComparePciBusString(devList[i]->busID,
+                                            ((pPci->domain << 8)
+                                             | pPci->bus),
+-                                           pPci->dev,
+-                                           pPci->func)) {
++                                            pPci->dev, pPci->func)) {
+                    break;
+                }
+            }
+@@ -487,7 +488,6 @@ xf86PciProbeDev(DriverPtr drvp)
+        device_id = (devList[i]->chipID > 0)
+          ? devList[i]->chipID : pPci->device_id;
+ 
+-
+        /* Once the pciVideoRec is found, determine if the device is supported
+         * by the driver.  If it is, probe it!
+         */
+@@ -520,6 +520,7 @@ xf86PciProbeDev(DriverPtr drvp)
+ 
+                    for (k = 0; k < xf86NumEntities; k++ ) {
+                        EntityPtr pEnt = xf86Entities[k];
++
+                        if (pEnt->bus.type != BUS_PCI)
+                            continue;
+                        if (pEnt->bus.id.pci == pPci) {
+@@ -534,7 +535,8 @@ xf86PciProbeDev(DriverPtr drvp)
+                    if ((*drvp->PciProbe)(drvp, entry, pPci,
+                                          devices[j].match_data)) {
+                        foundScreen = TRUE;
+-                   } else
++                    }
++                    else
+                        xf86UnclaimPciSlot(pPci);
+                }
+ 
+@@ -557,7 +559,8 @@ xf86PciIsolateDevice(char *argument)
+         xf86IsolateDevice.bus = PCI_BUS_NO_DOMAIN(bus);
+         xf86IsolateDevice.dev = device;
+         xf86IsolateDevice.func = func;
+-    } else
++    }
++    else
+         FatalError("Invalid isolated device specification\n");
+ }
+ 
+@@ -585,7 +588,6 @@ struct Inst {
+     int 		screen;
+ };
+ 
+-
+ /**
+  * Find set of unclaimed devices matching a given vendor ID.
+  *
+@@ -637,7 +639,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 
+     *foundEntities = NULL;
+ 
+-
+     /* Each PCI device will contribute at least one entry.  Each device
+      * section can contribute at most one entry.  The sum of the two is
+      * guaranteed to be larger than the maximum possible number of entries.
+@@ -661,7 +662,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	unsigned device_class = pPci->device_class;
+ 	Bool foundVendor = FALSE;
+ 
+-
+ 	/* Convert the pre-PCI 2.0 device class for a VGA adapter to the
+ 	 * 2.0 version of the same class.
+ 	 */
+@@ -669,7 +669,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	    device_class = 0x00030000;
+ 	}
+ 
+-
+ 	/* Find PCI devices that match the given vendor ID.  The vendor ID is
+ 	 * either specified explicitly as a parameter to the function or
+ 	 * implicitly encoded in the high bits of id->PCIid.
+@@ -687,7 +686,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	    const unsigned match_class = 0x00030000 | id->PCIid;
+ 
+ 	    if ((vendor_id == pPci->vendor_id)
+-		|| ((vendorID == PCI_VENDOR_GENERIC) && (match_class == device_class))) {
++                || ((vendorID == PCI_VENDOR_GENERIC) &&
++                    (match_class == device_class))) {
+ 		if (!foundVendor && (instances != NULL)) {
+ 		    ++allocatedInstances;
+ 		    instances[allocatedInstances - 1].pci = pPci;
+@@ -707,12 +707,12 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 			instances[allocatedInstances - 1].chip = id->numChipset;
+ 		    }
+ 
+-
+ 		    if ( xf86DoConfigure && xf86DoConfigurePass1 ) {
+ 			if (xf86CheckPciSlot(pPci)) {
+ 			    GDevPtr pGDev =
+ 			      xf86AddBusDeviceToConfigure(drvp->driverName,
+ 							  BUS_PCI, pPci, -1);
++
+ 			    if (pGDev) {
+ 				/* After configure pass 1, chipID and chipRev
+ 				 * are treated as over-rides, so clobber them
+@@ -737,7 +737,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 
+     pci_iterator_destroy(iter);
+ 
+-
+     /* In "probe only" or "configure" mode (signaled by instances being NULL),
+      * our work is done.  Return the number of detected devices.
+      */
+@@ -745,7 +744,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	return numFound;
+     }
+ 
+-
+     /*
+      * This may be debatable, but if no PCI devices with a matching vendor
+      * type is found, return zero now.  It is probably not desirable to
+@@ -756,7 +754,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	return 0;
+     }
+ 
+-
+     DebugF("%s instances found: %d\n", driverName, allocatedInstances);
+ 
+    /*
+@@ -768,17 +765,17 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+     */
+ 
+     for (j = 0; j < numDevs; j++) {
+-        if (devList[j]->screen > 0 && devList[j]->busID
+-	    && *devList[j]->busID) {
++        if (devList[j]->screen > 0 && devList[j]->busID && *devList[j]->busID) {
+ 	    for (i = 0; i < allocatedInstances; i++) {
+ 	        pPci = instances[i].pci;
+ 	        if (xf86ComparePciBusString(devList[j]->busID,
+-					    PCI_MAKE_BUS( pPci->domain, pPci->bus ),
+-					    pPci->dev,
++                                            PCI_MAKE_BUS(pPci->domain,
++                                                         pPci->bus), pPci->dev,
+ 					    pPci->func)) {
+ 		    allocatedInstances++;
+ 		    instances[allocatedInstances - 1] = instances[i];
+-		    instances[allocatedInstances - 1].screen = devList[j]->screen;
++                    instances[allocatedInstances - 1].screen =
++                        devList[j]->screen;
+ 		    numFound++;
+ 		    break;
+ 		}
+@@ -794,8 +791,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	for (j = 0; j < numDevs; j++) {
+ 	    if (devList[j]->busID && *devList[j]->busID) {
+ 		if (xf86ComparePciBusString(devList[j]->busID,
+-					    PCI_MAKE_BUS( pPci->domain, pPci->bus ),
+-					    pPci->dev,
++                                            PCI_MAKE_BUS(pPci->domain,
++                                                         pPci->bus), pPci->dev,
+ 					    pPci->func) &&
+ 		    devList[j]->screen == instances[i].screen) {
+ 
+@@ -808,7 +805,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 		    else
+ 			devBus = devList[j];
+ 		}
+-	    } else {
++            }
++            else {
+ 		/*
+ 		 * if device section without BusID is found
+ 		 * only assign to it to the primary device.
+@@ -819,13 +817,15 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 		    if (dev || devBus)
+ 			xf86MsgVerb(X_WARNING, 0,
+ 			    "%s: More than one matching Device section "
+-			    "found: %s\n", driverName, devList[j]->identifier);
++                                    "found: %s\n", driverName,
++                                    devList[j]->identifier);
+ 		    else
+ 			dev = devList[j];
+ 		}
+ 	    }
+ 	}
+-	if (devBus) dev = devBus;  /* busID preferred */
++        if (devBus)
++            dev = devBus;       /* busID preferred */
+ 	if (!dev) {
+ 	    if (xf86CheckPciSlot(pPci) && pciDeviceHasBars(pPci)) {
+ 		xf86MsgVerb(X_WARNING, 0, "%s: No matching Device section "
+@@ -833,7 +833,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 			    driverName, pPci->domain, pPci->bus, pPci->dev,
+ 			    pPci->func);
+ 	    }
+-	} else {
++        }
++        else {
+ 	    numClaimedInstances++;
+ 	    instances[i].claimed = TRUE;
+ 	    instances[i].dev = dev;
+@@ -863,7 +864,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 			    "section \"%s\" isn't valid for this driver\n",
+ 			    driverName, instances[i].dev->chipset,
+ 			    instances[i].dev->identifier);
+-	    } else {
++            }
++            else {
+ 		instances[i].chip = c->token;
+ 
+ 		for (id = PCIchipsets; id->numChipset >= 0; id++) {
+@@ -874,7 +876,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 		    xf86Msg(X_CONFIG,"Chipset override: %s\n",
+ 			     instances[i].dev->chipset);
+ 		    from = X_CONFIG;
+-		} else {
++                }
++                else {
+ 		    instances[i].claimed = FALSE;
+ 		    numClaimedInstances--;
+ 		    xf86MsgVerb(X_WARNING, 0, "%s: Chipset \"%s\" in Device "
+@@ -883,7 +886,8 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 				instances[i].dev->identifier);
+ 		}
+ 	    }
+-	} else if (instances[i].dev->chipID > 0) {
++        }
++        else if (instances[i].dev->chipID > 0) {
+ 	    for (id = PCIchipsets; id->numChipset >= 0; id++) {
+ 		if (id->PCIid == instances[i].dev->chipID)
+ 		    break;
+@@ -895,14 +899,16 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 			    "section \"%s\" isn't valid for this driver\n",
+ 			    driverName, instances[i].dev->chipID,
+ 			    instances[i].dev->identifier);
+-	    } else {
++            }
++            else {
+ 		instances[i].chip = id->numChipset;
+ 
+ 		xf86Msg( X_CONFIG,"ChipID override: 0x%04X\n",
+ 			 instances[i].dev->chipID);
+ 		from = X_CONFIG;
+ 	    }
+-	} else if (!instances[i].foundHW) {
++        }
++        else if (!instances[i].foundHW) {
+ 	    /*
+ 	     * This means that there was no override and the PCI chipType
+ 	     * doesn't match one that is supported
+@@ -915,8 +921,7 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 		if (c->token == instances[i].chip)
+ 		    break;
+ 	    }
+-	    xf86Msg(from,"Chipset %s found\n",
+-		    c->name);
++            xf86Msg(from, "Chipset %s found\n", c->name);
+ 	}
+     }
+ 
+@@ -930,7 +935,6 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+ 	    continue;
+ 	pPci = instances[i].pci;
+ 
+-
+         /*
+ 	 * Allow the same entity to be used more than once for devices with
+ 	 * multiple screens per entity.  This assumes implicitly that there
+@@ -955,6 +959,7 @@ xf86MatchPciInstances(const char *driverName, int vendorID,
+         if (retEntities[numFound - 1] == -1 && instances[i].screen > 0) {
+ 	    for (j = 0; j < xf86NumEntities; j++) {
+ 	        EntityPtr pEnt = xf86Entities[j];
++
+ 	        if (pEnt->bus.type != BUS_PCI)
+ 		    continue;
+ 	        if (pEnt->bus.id.pci == pPci) {
+@@ -1000,7 +1005,9 @@ xf86ConfigPciEntity(ScrnInfoPtr pScrn, int scrnFlag, int entityIndex,
+ 			  EntityProc enter, EntityProc leave, pointer private)
+ {
+     EntityInfoPtr pEnt = xf86GetEntityInfo(entityIndex);
+-    if (!pEnt) return pScrn;
++
++    if (!pEnt)
++        return pScrn;
+ 
+     if (!(pEnt->location.type == BUS_PCI)
+ 	|| !xf86GetPciInfoForEntity(entityIndex)) {
+@@ -1008,8 +1015,7 @@ xf86ConfigPciEntity(ScrnInfoPtr pScrn, int scrnFlag, int entityIndex,
+ 	return pScrn;
+     }
+     if (!pEnt->active) {
+-	xf86ConfigPciEntityInactive(pEnt, p_chip, init,  enter,
+-				    leave,  private);
++        xf86ConfigPciEntityInactive(pEnt, p_chip, init, enter, leave, private);
+ 	free(pEnt);
+ 	return pScrn;
+     }
+@@ -1040,7 +1046,9 @@ xf86ConfigActivePciEntity(ScrnInfoPtr pScrn, int entityIndex,
+                           EntityProc enter, EntityProc leave, pointer private)
+ {
+     EntityInfoPtr pEnt = xf86GetEntityInfo(entityIndex);
+-    if (!pEnt) return FALSE;
++
++    if (!pEnt)
++        return FALSE;
+ 
+     if (!pEnt->active || !(pEnt->location.type == BUS_PCI)) {
+         free(pEnt);
+@@ -1060,12 +1068,12 @@ videoPtrToDriverList(struct pci_device *dev,
+ 		     char *returnList[], int returnListMax)
+ {
+     int i;
++
+     /* Add more entries here if we ever return more than 4 drivers for
+        any device */
+     const char *driverList[5] = { NULL, NULL, NULL, NULL, NULL };
+ 
+-    switch (dev->vendor_id)
+-    {
++    switch (dev->vendor_id) {
+ 	/* AMD Geode LX */
+ 	case 0x1022:
+ 	    if (dev->device_id == 0x2081)
+@@ -1079,7 +1087,8 @@ videoPtrToDriverList(struct pci_device *dev,
+ 		/* GX2 support started its life in the NSC tree and was later
+ 		   forked by AMD for GEODE so we keep it as a backup */
+ 		driverList[1] = "nsc";
+-	    } else
++        }
++        else
+ 		/* other NSC variant e.g. 0x0104 (SC1400), 0x0504 (SCx200) */
+ 		driverList[0] = "nsc";
+ 	    break;
+@@ -1088,70 +1097,128 @@ videoPtrToDriverList(struct pci_device *dev,
+ 	    if (dev->device_id == 0x0104)
+ 		driverList[0] = "cyrix";
+ 	    break;
+-	case 0x1142:		    driverList[0] = "apm"; break;
+-	case 0xedd8:		    driverList[0] = "ark"; break;
+-	case 0x1a03:		    driverList[0] = "ast"; break;
+-	case 0x1002:		    driverList[0] = "ati"; break;
+-	case 0x102c:		    driverList[0] = "chips"; break;
+-	case 0x1013:		    driverList[0] = "cirrus"; break;
+-	case 0x3d3d:		    driverList[0] = "glint"; break;
+-	case 0x105d:		    driverList[0] = "i128"; break;
++    case 0x1142:
++        driverList[0] = "apm";
++        break;
++    case 0xedd8:
++        driverList[0] = "ark";
++        break;
++    case 0x1a03:
++        driverList[0] = "ast";
++        break;
++    case 0x1002:
++        driverList[0] = "ati";
++        break;
++    case 0x102c:
++        driverList[0] = "chips";
++        break;
++    case 0x1013:
++        driverList[0] = "cirrus";
++        break;
++    case 0x3d3d:
++        driverList[0] = "glint";
++        break;
++    case 0x105d:
++        driverList[0] = "i128";
++        break;
+ 	case 0x8086:
+ 	    if ((dev->device_id == 0x00d1) || (dev->device_id == 0x7800)) {
+ 		driverList[0] = "i740";
+-            } else if (dev->device_id == 0x8108) {
++        }
++        else if (dev->device_id == 0x8108) {
+                 break; /* "hooray" for poulsbo */
+-	    } else {
++        }
++        else {
+ 		driverList[0] = "intel";
+ 	    }
+ 	    break;
+-	case 0x102b:		    driverList[0] = "mga";	break;
+-	case 0x10c8:		    driverList[0] = "neomagic"; break;
+-	case 0x10de: case 0x12d2:
++    case 0x102b:
++        driverList[0] = "mga";
++        break;
++    case 0x10c8:
++        driverList[0] = "neomagic";
++        break;
++    case 0x10de:
++    case 0x12d2:
+ 	{
+ 	    int idx = 0;
++
+ #ifdef __linux__
+ 	    driverList[idx++] = "nouveau";
+ #endif
+ 	    driverList[idx++] = "nv";
+ 	    break;
+ 	}
+-	case 0x1106:		    driverList[0] = "openchrome"; break;
+-        case 0x1b36:		    driverList[0] = "qxl"; break;
+-	case 0x1163:		    driverList[0] = "rendition"; break;
++    case 0x1106:
++        driverList[0] = "openchrome";
++        break;
++    case 0x1b36:
++        driverList[0] = "qxl";
++        break;
++    case 0x1163:
++        driverList[0] = "rendition";
++        break;
+ 	case 0x5333:
+-	    switch (dev->device_id)
+-	    {
+-		case 0x88d0: case 0x88d1: case 0x88f0: case 0x8811:
+-		case 0x8812: case 0x8814: case 0x8901:
+-		    driverList[0] = "s3"; break;
+-		case 0x5631: case 0x883d: case 0x8a01: case 0x8a10:
+-		case 0x8c01: case 0x8c03: case 0x8904: case 0x8a13:
+-		    driverList[0] = "s3virge"; break;
++        switch (dev->device_id) {
++        case 0x88d0:
++        case 0x88d1:
++        case 0x88f0:
++        case 0x8811:
++        case 0x8812:
++        case 0x8814:
++        case 0x8901:
++            driverList[0] = "s3";
++            break;
++        case 0x5631:
++        case 0x883d:
++        case 0x8a01:
++        case 0x8a10:
++        case 0x8c01:
++        case 0x8c03:
++        case 0x8904:
++        case 0x8a13:
++            driverList[0] = "s3virge";
++            break;
+ 		default:
+-		    driverList[0] = "savage"; break;
++            driverList[0] = "savage";
++            break;
+ 	    }
+ 	    break;
+-	case 0x1039:		    driverList[0] = "sis";	break;
+-	case 0x126f:		    driverList[0] = "siliconmotion"; break;
++    case 0x1039:
++        driverList[0] = "sis";
++        break;
++    case 0x126f:
++        driverList[0] = "siliconmotion";
++        break;
+ 	case 0x121a:
+ 	    if (dev->device_id < 0x0003)
+ 	        driverList[0] = "voodoo";
+ 	    else
+ 	        driverList[0] = "tdfx";
+ 	    break;
+-	case 0x1011:		    driverList[0] = "tga"; break;
+-	case 0x1023:		    driverList[0] = "trident"; break;
+-	case 0x100c:		    driverList[0] = "tseng"; break;
+-	case 0x80ee:		    driverList[0] = "vboxvideo"; break;
+-	case 0x15ad:		    driverList[0] = "vmware"; break;
++    case 0x1011:
++        driverList[0] = "tga";
++        break;
++    case 0x1023:
++        driverList[0] = "trident";
++        break;
++    case 0x100c:
++        driverList[0] = "tseng";
++        break;
++    case 0x80ee:
++        driverList[0] = "vboxvideo";
++        break;
++    case 0x15ad:
++        driverList[0] = "vmware";
++        break;
+ 	case 0x18ca:
+ 	    if (dev->device_id == 0x47)
+ 		driverList[0] = "xgixp";
+ 	    else
+ 		driverList[0] = "xgi";
+ 	    break;
+-	default: break;
++    default:
++        break;
+     }
+     for (i = 0; (i < returnListMax) && (driverList[i] != NULL); i++) {
+ 	returnList[i] = xnfstrdup(driverList[i]);
+@@ -1197,7 +1264,9 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+     if (!idsdir)
+         return;
+ 
+-    xf86Msg(X_INFO, "Scanning %s directory for additional PCI ID's supported by the drivers\n", PCI_TXT_IDS_PATH);
++    xf86Msg(X_INFO,
++            "Scanning %s directory for additional PCI ID's supported by the drivers\n",
++            PCI_TXT_IDS_PATH);
+     direntry = readdir(idsdir);
+     /* Read the directory */
+     while (direntry) {
+@@ -1213,7 +1282,8 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+                      PCI_TXT_IDS_PATH, direntry->d_name);
+             fp = fopen(path_name, "r");
+             if (fp == NULL) {
+-                xf86Msg(X_ERROR, "Could not open %s for reading. Exiting.\n", path_name);
++                xf86Msg(X_ERROR, "Could not open %s for reading. Exiting.\n",
++                        path_name);
+                 goto end;
+             }
+             /* Read the file */
+@@ -1229,12 +1299,14 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+                     if ((strlen(&line[4])) == 0) {
+                         chip_str[0] = '\0';
+                         chip = -1;
+-                    } else {
++                    }
++                    else {
+                         /* Handle trailing whitespace */
+                         if (isspace(line[4])) {
+                             chip_str[0] = '\0';
+                             chip = -1;
+-                        } else {
++                        }
++                        else {
+                             /* Ok, it's a real ID */
+                             strlcpy(chip_str, &line[4], sizeof(chip_str));
+                             chip = (int)strtol(chip_str, NULL, 16);
+@@ -1245,9 +1317,12 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+                         while (matches[i]) {
+                             i++;
+                         }
+-                        matches[i] = (char*)malloc(sizeof(char) * strlen(direntry->d_name) -  3);
++                        matches[i] =
++                            (char *) malloc(sizeof(char) *
++                                            strlen(direntry->d_name) - 3);
+                         if (!matches[i]) {
+-                            xf86Msg(X_ERROR, "Could not allocate space for the module name. Exiting.\n");
++                            xf86Msg(X_ERROR,
++                                    "Could not allocate space for the module name. Exiting.\n");
+                             goto end;
+                         }
+                         /* hack off the .ids suffix. This should guard
+@@ -1257,13 +1332,16 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+                             if (direntry->d_name[j] == '.') {
+                                 matches[i][j] = '\0';
+                                 break;
+-                            } else {
++                            }
++                            else {
+                                 matches[i][j] = direntry->d_name[j];
+                             }
+                         }
+-                        xf86Msg(X_INFO, "Matched %s from file name %s\n", matches[i], direntry->d_name);
++                        xf86Msg(X_INFO, "Matched %s from file name %s\n",
++                                matches[i], direntry->d_name);
++                    }
+                     }
+-                } else {
++                else {
+                     /* TODO Handle driver overrides here */
+                 }
+             }
+@@ -1282,7 +1360,8 @@ matchDriverFromFiles (char** matches, uint16_t match_vendor, uint16_t match_chip
+  *  drivers.
+  */
+ int
+-xf86PciMatchDriver(char* matches[], int nmatches) {
++xf86PciMatchDriver(char *matches[], int nmatches)
++{
+     int i;
+     struct pci_device * info = NULL;
+     struct pci_device_iterator *iter;
+@@ -1321,8 +1400,7 @@ xf86PciConfigure(void *busData, struct pci_device *pDev)
+     if (pDev &&
+         (pDev->domain == pVideo->domain) &&
+         (pDev->bus == pVideo->bus) &&
+-        (pDev->dev == pVideo->dev) &&
+-        (pDev->func == pVideo->func))
++        (pDev->dev == pVideo->dev) && (pDev->func == pVideo->func))
+         return 0;
+ 
+     return 1;

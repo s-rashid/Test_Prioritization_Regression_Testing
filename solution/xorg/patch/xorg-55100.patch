@@ -1,0 +1,78 @@
+diff --git a/dix/swapreq.c b/dix/swapreq.c
+index d07cd10..d058518 100644
+--- a/dix/swapreq.c
++++ b/dix/swapreq.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ********************************************************/
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -197,7 +195,6 @@ SProcConfigureWindow(ClientPtr client)
+ 
+ }
+ 
+-
+ int
+ SProcInternAtom(ClientPtr client)
+ {
+@@ -288,6 +285,7 @@ SProcSendEvent(ClientPtr client)
+ {
+     xEvent eventT;
+     EventSwapPtr proc;
++
+     REQUEST(xSendEventReq);
+     swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xSendEventReq);
+@@ -715,7 +713,6 @@ SProcCreateColormap(ClientPtr client)
+     return((* ProcVector[X_CreateColormap])(client));
+ }
+ 
+-
+ int
+ SProcCopyColormapAndFree(ClientPtr client)
+ {
+@@ -890,7 +887,6 @@ SProcCreateGlyphCursor (ClientPtr client)
+     return((* ProcVector[X_CreateGlyphCursor])(client));
+ }
+ 
+-
+ int
+ SProcRecolorCursor (ClientPtr client)
+ {
+@@ -940,7 +936,6 @@ SProcChangeKeyboardMapping (ClientPtr client)
+     return((* ProcVector[X_ChangeKeyboardMapping])(client));
+ }
+ 
+-
+ int
+ SProcChangeKeyboardControl (ClientPtr client)
+ {
+@@ -964,7 +959,6 @@ SProcChangePointerControl (ClientPtr client)
+     return((* ProcVector[X_ChangePointerControl])(client));
+ }
+ 
+-
+ int
+ SProcSetScreenSaver (ClientPtr client)
+ {
+@@ -987,7 +981,8 @@ SProcChangeHosts (ClientPtr client)
+ 
+ }
+ 
+-int SProcRotateProperties (ClientPtr client)
++int
++SProcRotateProperties(ClientPtr client)
+ {
+     REQUEST(xRotatePropertiesReq);
+     swaps(&stuff->length);

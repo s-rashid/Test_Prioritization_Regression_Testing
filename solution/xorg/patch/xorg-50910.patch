@@ -1,0 +1,12 @@
+diff --git a/glx/single2.c b/glx/single2.c
+index 56ad86d..f93ce6e 100644
+--- a/glx/single2.c
++++ b/glx/single2.c
+@@ -377,7 +377,6 @@ int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap)
+ 
+     __GLX_SEND_HEADER();
+     WriteToClient(client, length, (char *) string); 
+-    if (buf != NULL)
+ 	free(buf);
+ 
+     return Success;

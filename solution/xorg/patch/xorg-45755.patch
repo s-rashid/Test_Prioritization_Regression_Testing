@@ -1,0 +1,13 @@
+diff --git a/dix/eventconvert.c b/dix/eventconvert.c
+index 039a17f..943178e 100644
+--- a/dix/eventconvert.c
++++ b/dix/eventconvert.c
+@@ -42,7 +42,7 @@
+ #include "dix.h"
+ #include "inputstr.h"
+ #include "misc.h"
+-#include "events.h"
++#include "eventstr.h"
+ #include "exglobals.h"
+ #include "eventconvert.h"
+ #include "xiquerydevice.h"

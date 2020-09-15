@@ -1,0 +1,13 @@
+diff --git a/mi/mibitblt.c b/mi/mibitblt.c
+index 98857e8..49e17bd 100644
+--- a/mi/mibitblt.c
++++ b/mi/mibitblt.c
+@@ -379,7 +379,7 @@ miGetPlane(
+ 	    pOut += delta;
+ 	}
+     }
+-    return(result);    
++    return result;
+ 
+ }
+ 

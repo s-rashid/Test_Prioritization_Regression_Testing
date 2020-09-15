@@ -1,0 +1,13 @@
+diff --git a/dix/globals.c b/dix/globals.c
+index 82a85c2..b128569 100644
+--- a/dix/globals.c
++++ b/dix/globals.c
+@@ -123,8 +123,6 @@ CursorPtr rootCursor;
+ Bool party_like_its_1989 = FALSE;
+ Bool whiteRoot = FALSE;
+ 
+-int cursorScreenDevPriv[MAXSCREENS];
+-
+ TimeStamp currentTime;
+ TimeStamp lastDeviceEventTime;
+ 

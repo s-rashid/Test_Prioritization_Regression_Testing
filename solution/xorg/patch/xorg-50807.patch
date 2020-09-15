@@ -1,0 +1,7 @@
+diff --git a/hw/xfree86/xf4bpp/ibmTrace.h b/hw/xfree86/xf4bpp/ibmTrace.h
+deleted file mode 100644
+index f1d8840..0000000
+--- a/hw/xfree86/xf4bpp/ibmTrace.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#define TRACE(x) /* empty */

@@ -1,0 +1,30 @@
+diff --git a/test/xi2/protocol-common.c b/test/xi2/protocol-common.c
+index 10d82a5..6ffc697 100644
+--- a/test/xi2/protocol-common.c
++++ b/test/xi2/protocol-common.c
+@@ -29,7 +29,6 @@
+ #include "extinit.h" /* for XInputExtensionInit */
+ #include "exglobals.h"
+ #include "xkbsrv.h" /* for XkbInitPrivates */
+-#include <glib.h>
+ 
+ #include "protocol-common.h"
+ 
+@@ -134,7 +133,7 @@ void init_window(WindowPtr window, WindowPtr parent, int id)
+     }
+     window->parent = parent;
+     window->optional = calloc(1, sizeof(WindowOptRec));
+-    g_assert(window->optional);
++    assert(window->optional);
+ }
+ 
+ extern DevPrivateKeyRec miPointerScreenKeyRec;
+@@ -171,7 +170,7 @@ void init_simple(void)
+ 
+ void __wrap_WriteToClient(ClientPtr client, int len, void *data)
+ {
+-    g_assert(reply_handler != NULL);
++    assert(reply_handler != NULL);
+ 
+     (*reply_handler)(client, len, data, userdata);
+ }

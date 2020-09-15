@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 608f9bd..cdc67cb 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -66,6 +66,8 @@ typedef struct {
+     int			vtPendingNum;
+ #endif
+     Bool		dontVTSwitch;
++    Bool		autoVTSwitch;
++    Bool		ShareVTs;
+     Bool		dontZap;
+     Bool		dontZoom;
+     Bool		notrapSignals;	/* don't exit cleanly - die at fault */

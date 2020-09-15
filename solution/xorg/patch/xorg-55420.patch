@@ -1,0 +1,94 @@
+diff --git a/hw/xfree86/common/xf86Events.c b/hw/xfree86/common/xf86Events.c
+index 41ffabd..058057e 100644
+--- a/hw/xfree86/common/xf86Events.c
++++ b/hw/xfree86/common/xf86Events.c
+@@ -120,7 +120,6 @@ typedef struct x_IHRec {
+ 
+ static IHPtr InputHandlers = NULL;
+ 
+-
+ Bool
+ LegalModifier(unsigned int key, DeviceIntPtr pDev)
+ {
+@@ -166,6 +165,7 @@ ProcessInputEvents (void)
+ 
+   /* FIXME: This is a problem if we have multiple pointers */
+   miPointerGetPosition(inputInfo.pointer, &x, &y);
++
+   xf86SetViewport(xf86Info.currentScreen, x, y);
+ }
+ 
+@@ -281,10 +281,10 @@ xf86Wakeup(pointer blockData, int err, pointer pReadmask)
+ 	}
+     }
+ 
+-    if (xf86VTSwitchPending()) xf86VTSwitch();
++    if (xf86VTSwitchPending())
++        xf86VTSwitch();
+ }
+ 
+-
+ /*
+  * xf86SigioReadInput --
+  *    signal handler for the SIGIO signal.
+@@ -395,8 +395,7 @@ xf86ReleaseKeys(DeviceIntPtr pDev)
+      */
+ 
+     for (i = keyc->xkbInfo->desc->min_key_code;
+-         i < keyc->xkbInfo->desc->max_key_code;
+-         i++) {
++         i < keyc->xkbInfo->desc->max_key_code; i++) {
+         if (key_is_down(pDev, i, KEY_POSTED)) {
+             sigstate = xf86BlockSIGIO ();
+             QueueKeyboardEvents(pDev, KeyRelease, i, NULL);
+@@ -492,7 +491,8 @@ xf86VTSwitch(void)
+ 
+       xf86UnblockSIGIO(prevSIGIO);
+ 
+-    } else {
++        }
++        else {
+ #ifdef XF86PM
+ 	  if (xf86OSPMClose)
+ 	      xf86OSPMClose();
+@@ -509,9 +509,11 @@ xf86VTSwitch(void)
+ 	if (xorgHWAccess)
+ 	    xf86DisableIO();
+     }
+-  } else {
++    }
++    else {
+     DebugF("xf86VTSwitch: Entering\n");
+-    if (!xf86VTSwitchTo()) return;
++        if (!xf86VTSwitchTo())
++            return;
+ 
+ #ifdef XF86PM
+     xf86OSPMClose = xf86OSPMOpen();
+@@ -547,7 +549,6 @@ xf86VTSwitch(void)
+   }
+ }
+ 
+-
+ /* Input handler registration */
+ 
+ static pointer
+@@ -737,7 +738,8 @@ xf86EnableVTSwitch(Bool new)
+ 	/* Disable VT switching */
+ 	def = VTSwitchEnabled;
+ 	VTSwitchEnabled = FALSE;
+-    } else {
++    }
++    else {
+ 	/* Restore VT switching to default */
+ 	VTSwitchEnabled = def;
+     }
+@@ -745,6 +747,7 @@ xf86EnableVTSwitch(Bool new)
+ }
+ 
+ void
+-DDXRingBell(int volume, int pitch, int duration) {
++DDXRingBell(int volume, int pitch, int duration)
++{
+     xf86OSRingBell(volume, pitch, duration);
+ }

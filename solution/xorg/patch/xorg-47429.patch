@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxbackend.c b/hw/dmx/input/dmxbackend.c
+index b94c6d4..55615cf 100644
+--- a/hw/dmx/input/dmxbackend.c
++++ b/hw/dmx/input/dmxbackend.c
+@@ -236,7 +236,7 @@ static int dmxBackendOffscreen(int screen, int x, int y)
+ }
+ 
+ /** This routine is called from #dmxCoreMotion for each motion
+- * event. #x and #y are global coordinants. */
++ * event. \a x and \a y are global coordinants. */
+ void dmxBackendUpdatePosition(pointer private, int x, int y)
+ {
+     GETPRIVFROMPRIVATE;

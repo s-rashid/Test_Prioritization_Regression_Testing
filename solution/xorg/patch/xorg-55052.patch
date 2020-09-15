@@ -1,0 +1,29 @@
+diff --git a/composite/compoverlay.c b/composite/compoverlay.c
+index 047f069..d3cfaf0 100644
+--- a/composite/compoverlay.c
++++ b/composite/compoverlay.c
+@@ -62,8 +62,7 @@ compFreeOverlayClient (CompOverlayClientPtr pOcToDel)
+     CompScreenPtr	    cs = GetCompScreen (pScreen);
+     CompOverlayClientPtr    *pPrev, pOc;
+ 
+-    for (pPrev = &cs->pOverlayClients; (pOc = *pPrev); pPrev = &pOc->pNext)
+-    {
++    for (pPrev = &cs->pOverlayClients; (pOc = *pPrev); pPrev = &pOc->pNext) {
+ 	if (pOc == pOcToDel) {
+ 	    *pPrev = pOc->pNext;
+ 	    free(pOc);
+@@ -136,8 +135,7 @@ compCreateOverlayWindow (ScreenPtr pScreen)
+     int		    h = pScreen->height;
+ 
+ #ifdef PANORAMIX
+-    if (!noPanoramiXExtension)
+-    {
++    if (!noPanoramiXExtension) {
+ 	w = PanoramiXPixWidth;
+ 	h = PanoramiXPixHeight;
+     }
+@@ -170,4 +168,3 @@ compDestroyOverlayWindow (ScreenPtr pScreen)
+     cs->pOverlayWin = NullWindow;
+     FreeResource (cs->overlayWid, RT_NONE);
+ }
+-

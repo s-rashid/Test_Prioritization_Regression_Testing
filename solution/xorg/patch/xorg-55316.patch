@@ -1,0 +1,11 @@
+diff --git a/hw/dmx/input/ChkNotMaskEv.h b/hw/dmx/input/ChkNotMaskEv.h
+index f79075e..78ad51f 100644
+--- a/hw/dmx/input/ChkNotMaskEv.h
++++ b/hw/dmx/input/ChkNotMaskEv.h
+@@ -36,5 +36,5 @@
+ 
+ #ifndef _CHKNOTMASKEV_H_
+ #define _CHKNOTMASKEV_H_
+-extern Bool XCheckNotMaskEvent (Display *dpy, long mask, XEvent *event);
++extern Bool XCheckNotMaskEvent(Display * dpy, long mask, XEvent * event);
+ #endif

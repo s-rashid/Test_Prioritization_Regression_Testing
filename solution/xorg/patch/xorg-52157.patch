@@ -1,0 +1,13 @@
+diff --git a/render/mipict.c b/render/mipict.c
+index a057840..08b2fa7 100644
+--- a/render/mipict.c
++++ b/render/mipict.c
+@@ -601,8 +601,6 @@ miPictureInit (ScreenPtr pScreen, PictFormatPtr formats, int nformats)
+     ps->CompositeRects	= miCompositeRects;
+     ps->Trapezoids	= 0;
+     ps->Triangles	= 0;
+-    ps->TriStrip	= miTriStrip;
+-    ps->TriFan		= miTriFan;
+     
+     ps->RasterizeTrapezoid = 0;			/* requires DDX support */
+     ps->AddTraps	= 0;			/* requires DDX support */

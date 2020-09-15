@@ -1,0 +1,12 @@
+diff --git a/Xi/stubs.c b/Xi/stubs.c
+index 04ba976..8285549 100644
+--- a/Xi/stubs.c
++++ b/Xi/stubs.c
+@@ -241,6 +241,6 @@ NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
+  *
+  */
+ void
+-DeleteInputDeviceRequest(DeviceIntPtr dev)
++DeleteInputDeviceRequest(DeviceIntPtr dev, int flags)
+ {
+ }

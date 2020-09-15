@@ -1,0 +1,177 @@
+diff --git a/hw/xfree86/i2c/fi1236.c b/hw/xfree86/i2c/fi1236.c
+index 0bc50e5..282fe7e 100644
+--- a/hw/xfree86/i2c/fi1236.c
++++ b/hw/xfree86/i2c/fi1236.c
+@@ -15,8 +15,7 @@
+ 
+ #define NUM_TUNERS    8
+ 
+-const FI1236_parameters tuner_parms[NUM_TUNERS] =
+-{
++const FI1236_parameters tuner_parms[NUM_TUNERS] = {
+     /* 0 - FI1236 */
+     { 733, 884, 12820, 2516, 7220, 0xA2, 0x94, 0x34, 0x8e },
+     /* !!!based on documentation - it should be:
+@@ -39,7 +38,6 @@ const FI1236_parameters tuner_parms[NUM_TUNERS] =
+     { 623, 16*48.25, 16*863.25, 16*158.00, 16*442.00, 0x1, 0x2, 0x4, 0x8e }
+ };
+ 
+-
+ FI1236Ptr
+ Detect_FI1236 (I2CBusPtr b, I2CSlaveAddr addr)
+ {
+@@ -86,7 +84,6 @@ MT2032_dump_parameters (FI1236Ptr f, MT2032_parameters *m)
+                m->f_lo1, m->f_lo2, m->LO1I, m->LO2I, m->SEL, m->STEP, m->NUM);
+ }
+ 
+-
+ static void
+ MT2032_getid (FI1236Ptr f)
+ {
+@@ -201,6 +198,7 @@ MT2032_no_spur_in_band (MT2032_parameters *m)
+ {
+     int n_max, n1, n2;
+     double f_test;
++
+     n_max = 5;
+     n1 = 1;
+     while (1) {
+@@ -234,9 +232,11 @@ MT2032_no_spur_in_band (MT2032_parameters *m)
+ 
+ static void
+ MT2032_calculate_register_settings (MT2032_parameters *m, double f_rf,
+-   double f_if1, double f_if2, double f_ref, double f_ifbw, double f_step)
++                                   double f_if1, double f_if2, double f_ref,
++                                   double f_ifbw, double f_step)
+ {
+     int n;
++
+     m->f_rf = f_rf;
+     m->f_if1 = f_if1;
+     m->f_if2 = f_if2;
+@@ -369,7 +369,8 @@ MT2032_optimize_VCO (FI1236Ptr f, MT2032_parameters *m)
+         if (m->SEL == 0)
+             return;
+         m->SEL--;
+-    } else {
++    }
++    else {
+         if (m->SEL >= 4)
+             return;
+         m->SEL++;
+@@ -388,6 +389,7 @@ FI1236_get_afc_hint (FI1236Ptr f)
+ 
+     if ((f->type == TUNER_TYPE_FM1216ME) || (f->type == TUNER_TYPE_FI1236W)) {
+         TDA9885Ptr t = (TDA9885Ptr)f->afc_source;
++
+         if (t == NULL)
+             return TUNER_OFF;
+ 
+@@ -405,7 +407,8 @@ FI1236_get_afc_hint (FI1236Ptr f)
+             return TUNER_JUST_ABOVE;
+         else if (AFC == 0x0f)
+             return TUNER_TUNED;
+-    } else {
++    }
++    else {
+         I2C_WriteRead(&(f->d), NULL, 0, &out, 1);
+         AFC = out & 0x7;
+         xf86DrvMsg(f->d.pI2CBus->scrnIndex, X_INFO,
+@@ -427,6 +430,7 @@ MT2032_get_afc_hint (FI1236Ptr f)
+     CARD8 in;
+     CARD8 out[2];
+     CARD8 AFC;
++
+     in = 0x0e;
+     I2C_WriteRead(&(f->d), (I2CByte *)&in, 1, out, 2);
+     AFC = (out[0] >> 4) & 0x7;
+@@ -480,12 +484,12 @@ MT2032_dump_status (FI1236Ptr f)
+     xf86DrvMsg(f->d.pI2CBus->scrnIndex, X_INFO,
+                "MT2032: status: OSCILLATOR:%s PLL1:%s PLL2:%s\n",
+                XOK ? "ok" : "off",
+-               LO1LK ? "locked" : "off",
+-               LO2LK ? "locked" : "off");
++               LO1LK ? "locked" : "off", LO2LK ? "locked" : "off");
+ 
+ }
+ 
+-static void MT2032_tune(FI1236Ptr f, double freq, double step)
++static void
++MT2032_tune(FI1236Ptr f, double freq, double step)
+ {
+     MT2032_parameters m;
+     CARD8 data[10];
+@@ -494,10 +498,13 @@ static void MT2032_tune(FI1236Ptr f, double freq, double step)
+     /* NTSC IF is 44mhz.. but 733/16=45.8125 and all TDAXXXX docs mention
+        45.75, 39, 58.75 and 30. */
+ #if 0
+-    MT2032_calculate_register_settings(&m, freq, 1090.0, 45.125, 5.25, 6.0, step);
+-    MT2032_calculate_register_settings(&m, freq, 1090.0, 45.74, 5.25, 6.0, step);
++    MT2032_calculate_register_settings(&m, freq, 1090.0, 45.125, 5.25, 6.0,
++                                       step);
++    MT2032_calculate_register_settings(&m, freq, 1090.0, 45.74, 5.25, 6.0,
++                                       step);
+ #endif
+-    MT2032_calculate_register_settings(&m, freq, 1090.0, f->video_if, 5.25, 3.0, step);
++    MT2032_calculate_register_settings(&m, freq, 1090.0, f->video_if, 5.25, 3.0,
++                                       step);
+     MT2032_dump_parameters(f, &m);
+     MT2032_implement_settings(f, &m);
+  /* MT2032_dump_parameters(f, &m); */
+@@ -537,11 +544,11 @@ FI1236_set_tuner_type (FI1236Ptr f, int type)
+     }
+ }
+ 
+-
+ static CARD32
+ AFC_TimerCallback(OsTimerPtr timer, CARD32 time, pointer data)
+ {
+     FI1236Ptr f = (FI1236Ptr)data;
++
+     if (FI1236_AFC(f))
+         return 150;
+     else {
+@@ -557,8 +564,10 @@ FI1236_tune(FI1236Ptr f, CARD32 frequency)
+     CARD16 divider;
+     CARD8 data;
+ 
+-    if (frequency < f->parm.min_freq) frequency = f->parm.min_freq;
+-    if (frequency > f->parm.max_freq) frequency = f->parm.max_freq;
++    if (frequency < f->parm.min_freq)
++        frequency = f->parm.min_freq;
++    if (frequency > f->parm.max_freq)
++        frequency = f->parm.max_freq;
+ 
+     divider = (f->parm.fcar + (CARD16)frequency) & 0x7fff;
+     f->tuner_data.div1 = (CARD8)((divider >> 8)&0x7f);
+@@ -591,8 +600,10 @@ FI1236_tune(FI1236Ptr f, CARD32 frequency)
+ void
+ TUNER_set_frequency(FI1236Ptr f, CARD32 frequency)
+ {
+-    if (frequency < f->parm.min_freq) frequency = f->parm.min_freq;
+-    if (frequency > f->parm.max_freq) frequency = f->parm.max_freq;
++    if (frequency < f->parm.min_freq)
++        frequency = f->parm.min_freq;
++    if (frequency > f->parm.max_freq)
++        frequency = f->parm.max_freq;
+ 
+     f->afc_delta=0;
+     f->original_frequency=frequency;
+@@ -610,7 +621,6 @@ TUNER_set_frequency(FI1236Ptr f, CARD32 frequency)
+ 
+ }
+ 
+-
+ int
+ FI1236_AFC(FI1236Ptr f)
+ {
+@@ -642,7 +652,8 @@ FI1236_AFC(FI1236Ptr f)
+         if (f->last_afc_hint == TUNER_OFF)
+             return 0;
+         return 1; /* call me again */
+-    } else {
++    }
++    else {
+         f->last_afc_hint = FI1236_get_afc_hint(f);
+         if (f->last_afc_hint == TUNER_TUNED) {
+             xf86DrvMsg(f->d.pI2CBus->scrnIndex, X_INFO, "AFC: TUNER_TUNNED\n");

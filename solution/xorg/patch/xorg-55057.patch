@@ -1,0 +1,40 @@
+diff --git a/config/dbus.c b/config/dbus.c
+index f0fc568..99a1537 100644
+--- a/config/dbus.c
++++ b/config/dbus.c
+@@ -89,6 +89,7 @@ add_device(DBusMessage *message, DBusMessage *reply, DBusError *error)
+     /* signature should be [ss][ss]... */
+     while (dbus_message_iter_get_arg_type(&iter) == DBUS_TYPE_ARRAY) {
+         char *key, *value;
++
+         dbus_message_iter_recurse(&iter, &subiter);
+ 
+         if (dbus_message_iter_get_arg_type(&subiter) != DBUS_TYPE_STRING)
+@@ -336,8 +337,7 @@ connect_hook(DBusConnection *connection, void *data)
+     }
+ 
+     if (!dbus_connection_register_object_path(info->connection,
+-                                              info->busobject, &vtable,
+-                                              info)) {
++                                              info->busobject, &vtable, info)) {
+         ErrorF("[config/dbus] couldn't register object path\n");
+         goto err_match;
+     }
+@@ -372,8 +372,7 @@ pre_disconnect_hook(void)
+     dbus_error_init(&error);
+     dbus_connection_unregister_object_path(connection_data->connection,
+                                            connection_data->busobject);
+-    dbus_bus_remove_match(connection_data->connection, MATCH_RULE,
+-                          &error);
++    dbus_bus_remove_match(connection_data->connection, MATCH_RULE, &error);
+     dbus_bus_release_name(connection_data->connection,
+                           connection_data->busname, &error);
+     dbus_error_free(&error);
+@@ -381,6 +380,7 @@ pre_disconnect_hook(void)
+ #endif
+ 
+ static struct connection_info connection_data;
++
+ static struct config_dbus_core_hook core_hook = {
+     .connect = connect_hook,
+     .disconnect = disconnect_hook,

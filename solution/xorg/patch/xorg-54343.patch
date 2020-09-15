@@ -1,0 +1,13 @@
+diff --git a/os/mitauth.c b/os/mitauth.c
+index 4b8f6e9..477736e 100644
+--- a/os/mitauth.c
++++ b/os/mitauth.c
+@@ -76,7 +76,7 @@ MitCheckCookie (
+     unsigned short	data_length,
+     const char		*data,
+     ClientPtr		client,
+-    char		**reason)
++    const char		**reason)
+ {
+     struct auth	*auth;
+ 

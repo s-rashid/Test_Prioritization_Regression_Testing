@@ -1,0 +1,26 @@
+diff --git a/hw/xquartz/xpr/xprFrame.c b/hw/xquartz/xpr/xprFrame.c
+index 6dc2c87..9f5d8a6 100644
+--- a/hw/xquartz/xpr/xprFrame.c
++++ b/hw/xquartz/xpr/xprFrame.c
+@@ -163,8 +163,8 @@ xprCreateFrame(RootlessWindowPtr pFrame, ScreenPtr pScreen,
+ 
+     if (pShape != NULL)
+     {
+-        wc.shape_nrects = REGION_NUM_RECTS(pShape);
+-        wc.shape_rects = REGION_RECTS(pShape);
++        wc.shape_nrects = RegionNumRects(pShape);
++        wc.shape_rects = RegionRects(pShape);
+         wc.shape_tx = wc.shape_ty = 0;
+         mask |= XP_SHAPE;
+     }
+@@ -306,8 +306,8 @@ xprReshapeFrame(RootlessFrameID wid, RegionPtr pShape)
+     
+     if (pShape != NULL)
+     {
+-        wc.shape_nrects = REGION_NUM_RECTS(pShape);
+-        wc.shape_rects = REGION_RECTS(pShape);
++        wc.shape_nrects = RegionNumRects(pShape);
++        wc.shape_rects = RegionRects(pShape);
+     }
+     else
+     {

@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winclipboard.h b/hw/xwin/winclipboard.h
+index 089c291..6b5249f 100644
+--- a/hw/xwin/winclipboard.h
++++ b/hw/xwin/winclipboard.h
+@@ -39,7 +39,6 @@
+ #include <sys/select.h>
+ #else
+ #include <X11/Xwinsock.h>
+-#define HAS_WINSOCK
+ #endif
+ #include <fcntl.h>
+ #include <setjmp.h>

@@ -1,0 +1,13 @@
+diff --git a/randr/randr.c b/randr/randr.c
+index 6077705..d337129 100644
+--- a/randr/randr.c
++++ b/randr/randr.c
+@@ -270,6 +270,8 @@ Bool RRScreenInit(ScreenPtr pScreen)
+     
+     wrap (pScrPriv, pScreen, CloseScreen, RRCloseScreen);
+ 
++    pScreen->ConstrainCursorHarder = RRConstrainCursorHarder;
++
+     pScrPriv->numOutputs = 0;
+     pScrPriv->outputs = NULL;
+     pScrPriv->numCrtcs = 0;

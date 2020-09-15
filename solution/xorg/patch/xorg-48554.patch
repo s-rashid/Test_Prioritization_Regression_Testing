@@ -1,0 +1,15 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index 31286d4..edcbb49 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -519,6 +519,10 @@ void PanoramiXExtensionInit(int argc, char *argv[])
+ 	    panoramiXGeneration = serverGeneration;
+ 	    success = TRUE;
+ 	}
++	SetResourceTypeErrorValue(XRT_WINDOW, BadWindow);
++	SetResourceTypeErrorValue(XRT_PIXMAP, BadPixmap);
++	SetResourceTypeErrorValue(XRT_GC, BadGC);
++	SetResourceTypeErrorValue(XRT_COLORMAP, BadColor);
+     }
+ 
+     if (!success) {

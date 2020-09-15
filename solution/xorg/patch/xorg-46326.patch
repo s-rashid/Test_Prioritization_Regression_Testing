@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/loader/loadext.c b/hw/xfree86/loader/loadext.c
+index a61b28c..29cdaf1 100644
+--- a/hw/xfree86/loader/loadext.c
++++ b/hw/xfree86/loader/loadext.c
+@@ -430,6 +430,8 @@ LoaderSortExtensions(void)
+     }
+     if (sorted)
+ 	free_nodes(sorted);
++    if (graph)
++	free_nodes(graph);
+     newList[i].name = NULL;
+     xfree(ExtensionModuleList);
+     ExtensionModuleList = newList;

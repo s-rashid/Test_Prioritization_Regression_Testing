@@ -1,0 +1,381 @@
+diff --git a/hw/xfree86/parser/scan.c b/hw/xfree86/parser/scan.c
+index 156bc29..795da61 100644
+--- a/hw/xfree86/parser/scan.c
++++ b/hw/xfree86/parser/scan.c
+@@ -51,7 +51,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -149,7 +148,8 @@ xf86getNextLine(void)
+ 			free(tmpConfigBuf);
+ 			free(tmpConfigRBuf);
+ 
+-		} else {
++        }
++        else {
+ 
+ 			/*
+ 			 * malloc succeeded; free the old buffers and use the new
+@@ -180,7 +180,8 @@ xf86getNextLine(void)
+ 			if (pos != 0) {
+ 				strcpy(&configBuf[pos], "\n");
+ 				ret = configBuf;
+-			} else
++            }
++            else
+ 				break;
+ 		}
+ 
+@@ -189,7 +190,8 @@ xf86getNextLine(void)
+ 		for (i = pos; i < (configBufLen - 1); i++) {
+ 			c = configBuf[i];
+ 
+-			if (c == '\0') break;
++            if (c == '\0')
++                break;
+ 
+ 			if ((c == '\n') || (c == '\r')) {
+ 				eolFound = 1;
+@@ -217,12 +219,15 @@ xf86getNextLine(void)
+ 				 * EOL
+ 				 */
+ 
+-				if (tmpConfigBuf) configBuf = tmpConfigBuf;
+-				if (tmpConfigRBuf) configRBuf = tmpConfigRBuf;
++                if (tmpConfigBuf)
++                    configBuf = tmpConfigBuf;
++                if (tmpConfigRBuf)
++                    configRBuf = tmpConfigRBuf;
+ 
+ 				break;
+ 
+-			} else {
++            }
++            else {
+ 
+ 				/* reallocation succeeded */
+ 
+@@ -255,8 +260,7 @@ xf86getToken (xf86ConfigSymTabRec * tab)
+ 	 */
+ 	if (pushToken == EOF_TOKEN)
+ 		return EOF_TOKEN;
+-	else if (pushToken == LOCK_TOKEN)
+-	{
++    else if (pushToken == LOCK_TOKEN) {
+ 		/*
+ 		 * eol_seen is only set for the first token after a newline.
+ 		 */
+@@ -270,9 +274,9 @@ xf86getToken (xf86ConfigSymTabRec * tab)
+ 		 */
+ 
+ again:
+-		if (!c)
+-		{
++        if (!c) {
+ 			char *ret;
++
+ 			if (numFiles > 0)
+ 				ret = xf86getNextLine();
+ 			else {
+@@ -280,14 +284,12 @@ again:
+ 					ret = NULL;
+ 				else {
+ 					strlcpy(configBuf,
+-						builtinConfig[builtinIndex],
+-						CONFIG_BUF_LEN);
++                            builtinConfig[builtinIndex], CONFIG_BUF_LEN);
+ 					ret = configBuf;
+ 					builtinIndex++;
+ 				}
+ 			}
+-			if (ret == NULL)
+-			{
++            if (ret == NULL) {
+ 				/*
+ 				 * if necessary, move to the next file and
+ 				 * read the first line
+@@ -323,10 +325,8 @@ again:
+ 		if (c == '\0')
+ 			goto again;
+ 
+-		if (c == '#')
+-		{
+-			do
+-			{
++        if (c == '#') {
++            do {
+ 				configRBuf[i++] = (c = configBuf[configPos++]);
+ 			}
+ 			while ((c != '\n') && (c != '\r') && (c != '\0'));
+@@ -339,36 +339,30 @@ again:
+ 		}
+ 
+ 		/* GJA -- handle '-' and ','  * Be careful: "-hsync" is a keyword. */
+-		else if ((c == ',') && !isalpha (configBuf[configPos]))
+-		{
++        else if ((c == ',') && !isalpha(configBuf[configPos])) {
+ 			return COMMA;
+ 		}
+-		else if ((c == '-') && !isalpha (configBuf[configPos]))
+-		{
++        else if ((c == '-') && !isalpha(configBuf[configPos])) {
+ 			return DASH;
+ 		}
+ 
+ 		/* 
+ 		 * Numbers are returned immediately ...
+ 		 */
+-		if (isdigit (c))
+-		{
++        if (isdigit(c)) {
+ 			int base;
+ 
+ 			if (c == '0')
+ 				if ((configBuf[configPos] == 'x') ||
+-					(configBuf[configPos] == 'X'))
+-                                {
++                    (configBuf[configPos] == 'X')) {
+ 					base = 16;
+                                         val.numType = PARSE_HEX;
+                                 }
+-				else
+-                                {
++                else {
+ 					base = 8;
+                                         val.numType = PARSE_OCTAL;
+                                 }
+-			else
+-                        {
++            else {
+ 				base = 10;
+                                 val.numType = PARSE_DECIMAL;
+                         }
+@@ -390,11 +384,9 @@ again:
+ 		/* 
+ 		 * All Strings START with a \" ...
+ 		 */
+-		else if (c == '\"')
+-		{
++        else if (c == '\"') {
+ 			i = -1;
+-			do
+-			{
++            do {
+ 				configRBuf[++i] = (c = configBuf[configPos++]);
+ 			}
+ 			while ((c != '\"') && (c != '\n') && (c != '\r') && (c != '\0'));
+@@ -408,29 +400,28 @@ again:
+ 		 * ... and now we MUST have a valid token.  The search is
+ 		 * handled later along with the pushed tokens.
+ 		 */
+-		else
+-		{
++        else {
+ 			configRBuf[0] = c;
+ 			i = 0;
+-			do
+-			{
++            do {
+ 				configRBuf[++i] = (c = configBuf[configPos++]);
+ 			}
+-			while ((c != ' ') && (c != '\t') && (c != '\n') && (c != '\r') && (c != '\0') && (c != '#'));
++            while ((c != ' ') && (c != '\t') && (c != '\n') && (c != '\r') &&
++                   (c != '\0') && (c != '#'));
+ 			--configPos;
+ 			configRBuf[i] = '\0';
+ 			i = 0;
+ 		}
+ 
+ 	}
+-	else
+-	{
++    else {
+ 
+ 		/* 
+ 		 * Here we deal with pushed tokens. Reinitialize pushToken again. If
+ 		 * the pushed token was NUMBER || STRING return them again ...
+ 		 */
+ 		int temp = pushToken;
++
+ 		pushToken = LOCK_TOKEN;
+ 
+ 		if (temp == COMMA || temp == DASH)
+@@ -442,8 +433,7 @@ again:
+ 	/* 
+ 	 * Joop, at last we have to lookup the token ...
+ 	 */
+-	if (tab)
+-	{
++    if (tab) {
+ 		i = 0;
+ 		while (tab[i].token != -1)
+ 			if (xf86nameCompare (configRBuf, tab[i].name) == 0)
+@@ -469,8 +459,7 @@ xf86getSubToken (char **comment)
+ 		else
+ 			return token;
+ 	}
+-	/*NOTREACHED*/
+-}
++ /*NOTREACHED*/}
+ 
+ int
+ xf86getSubTokenWithTab (char **comment, xf86ConfigSymTabRec *tab)
+@@ -486,8 +475,7 @@ xf86getSubTokenWithTab (char **comment, xf86ConfigSymTabRec *tab)
+ 		else
+ 			return token;
+ 	}
+-	/*NOTREACHED*/
+-}
++ /*NOTREACHED*/}
+ 
+ void
+ xf86unGetToken (int token)
+@@ -596,8 +584,7 @@ xf86pathIsSafe(const char *path)
+ 
+ static char *
+ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+-				int *cmdlineUsed, int *envUsed,
+-				const char *XConfigFile)
++               int *cmdlineUsed, int *envUsed, const char *XConfigFile)
+ {
+ 	char *result;
+ 	int i, l;
+@@ -618,14 +605,16 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 		if (template[i] != '%') {
+ 			result[l++] = template[i];
+ 			CHECK_LENGTH;
+-		} else {
++        }
++        else {
+ 			switch (template[++i]) {
+ 			case 'A':
+ 				if (cmdline && xf86pathIsAbsolute(cmdline)) {
+ 					APPEND_STR(cmdline);
+ 					if (cmdlineUsed)
+ 						*cmdlineUsed = 1;
+-				} else
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'R':
+@@ -633,7 +622,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					APPEND_STR(cmdline);
+ 					if (cmdlineUsed)
+ 						*cmdlineUsed = 1;
+-				} else 
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'S':
+@@ -641,7 +631,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					APPEND_STR(cmdline);
+ 					if (cmdlineUsed)
+ 						*cmdlineUsed = 1;
+-				} else 
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'X':
+@@ -652,7 +643,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					if ((hostname = malloc(MAXHOSTNAMELEN + 1))) {
+ 						if (gethostname(hostname, MAXHOSTNAMELEN) == 0) {
+ 							hostname[MAXHOSTNAMELEN] = '\0';
+-						} else {
++                        }
++                        else {
+ 							free(hostname);
+ 							hostname = NULL;
+ 						}
+@@ -668,7 +660,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					APPEND_STR(env);
+ 					if (envUsed)
+ 						*envUsed = 1;
+-				} else
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'F':
+@@ -678,7 +671,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					APPEND_STR(env);
+ 					if (envUsed)
+ 						*envUsed = 1;
+-				} else
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'G':
+@@ -688,7 +682,8 @@ DoSubstitution(const char *template, const char *cmdline, const char *projroot,
+ 					APPEND_STR(env);
+ 					if (envUsed)
+ 						*envUsed = 1;
+-				} else
++                }
++                else
+ 					BAIL_OUT;
+ 				break;
+ 			case 'P':
+@@ -796,16 +791,14 @@ AddConfigDirFiles(const char *dirpath, struct dirent **list, int num)
+ 
+ 		if (numFiles >= CONFIG_MAX_FILES) {
+ 			if (!warnOnce) {
+-				ErrorF("Maximum number of configuration "
+-				       "files opened\n");
++                ErrorF("Maximum number of configuration " "files opened\n");
+ 				warnOnce = TRUE;
+ 			}
+ 			continue;
+ 		}
+ 
+ 		path = malloc(PATH_MAX + 1);
+-		snprintf(path, PATH_MAX + 1, "%s/%s", dirpath,
+-			 list[i]->d_name);
++        snprintf(path, PATH_MAX + 1, "%s/%s", dirpath, list[i]->d_name);
+ 		file = fopen(path, "r");
+ 		if (!file) {
+ 			free(path);
+@@ -1042,15 +1035,13 @@ StringToToken (const char *str, xf86ConfigSymTabRec * tab)
+ {
+ 	int i;
+ 
+-	for (i = 0; tab[i].token != -1; i++)
+-	{
++    for (i = 0; tab[i].token != -1; i++) {
+ 		if (!xf86nameCompare (tab[i].name, str))
+ 			return tab[i].token;
+ 	}
+ 	return ERROR_TOKEN;
+ }
+ 
+-
+ /* 
+  * Compare two names.  The characters '_', ' ', and '\t' are ignored
+  * in the comparison.
+@@ -1073,8 +1064,7 @@ xf86nameCompare (const char *s1, const char *s2)
+ 		s2++;
+ 	c1 = (isupper (*s1) ? tolower (*s1) : *s1);
+ 	c2 = (isupper (*s2) ? tolower (*s2) : *s2);
+-	while (c1 == c2)
+-	{
++    while (c1 == c2) {
+ 		if (c1 == '\0')
+ 			return 0;
+ 		s1++;
+@@ -1152,7 +1142,8 @@ xf86getBoolValue(Bool *val, const char *str)
+ 		return FALSE;
+ 	if (*str == '\0') {
+ 		*val = TRUE;
+-	} else {
++    }
++    else {
+ 		if (xf86nameCompare(str, "1") == 0)
+ 			*val = TRUE;
+ 		else if (xf86nameCompare(str, "on") == 0)

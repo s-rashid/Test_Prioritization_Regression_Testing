@@ -1,0 +1,171 @@
+diff --git a/hw/xfree86/parser/Flags.c b/hw/xfree86/parser/Flags.c
+index c2a0406..29a60a2 100644
+--- a/hw/xfree86/parser/Flags.c
++++ b/hw/xfree86/parser/Flags.c
+@@ -51,7 +51,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -67,8 +66,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec ServerFlagsTab[] =
+-{
++static xf86ConfigSymTabRec ServerFlagsTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{NOTRAPSIGNALS, "notrapsignals"},
+ 	{DONTZAP, "dontzap"},
+@@ -93,15 +91,15 @@ XF86ConfFlagsPtr
+ xf86parseFlagsSection (void)
+ {
+ 	int token;
++
+ 	parsePrologue (XF86ConfFlagsPtr, XF86ConfFlagsRec)
+ 
+-	while ((token = xf86getToken (ServerFlagsTab)) != ENDSECTION)
+-	{
++        while ((token = xf86getToken(ServerFlagsTab)) != ENDSECTION) {
+ 		int hasvalue = FALSE;
+ 		int strvalue = FALSE;
+ 		int tokentype;
+-		switch (token)
+-		{
++
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->flg_comment = xf86addComment(ptr->flg_comment, val.str);
+ 			break;
+@@ -126,22 +124,22 @@ xf86parseFlagsSection (void)
+ 		case ALLOWMOUSEOPENFAIL:
+ 			{
+ 				int i = 0;
+-				while (ServerFlagsTab[i].token != -1)
+-				{
++
++            while (ServerFlagsTab[i].token != -1) {
+ 					char *tmp;
+ 
+-					if (ServerFlagsTab[i].token == token)
+-					{
++                if (ServerFlagsTab[i].token == token) {
+ 						char *valstr = NULL;
++
+ 						tmp = strdup (ServerFlagsTab[i].name);
+-						if (hasvalue)
+-						{
++                    if (hasvalue) {
+ 							tokentype = xf86getSubToken(&(ptr->flg_comment));
+ 							if (strvalue) {
+ 								if (tokentype != STRING)
+ 									Error (QUOTE_MSG, tmp);
+ 								valstr = val.str;
+-							} else {
++                        }
++                        else {
+ 								if (tokentype != NUMBER)
+ 									Error (NUMBER_MSG, tmp);
+ 								if (asprintf(&valstr, "%d", val.num) == -1)
+@@ -236,8 +234,7 @@ xf86optionListDup (XF86OptionPtr opt)
+ 	XF86OptionPtr newopt = NULL;
+ 	char *val;
+ 
+-	while (opt)
+-	{
++    while (opt) {
+ 		val = opt->opt_val ? strdup(opt->opt_val) : NULL;
+ 		newopt = xf86addNewOption(newopt, strdup(opt->opt_name), val);
+ 		newopt->opt_used = opt->opt_used;
+@@ -253,8 +250,7 @@ xf86optionListFree (XF86OptionPtr opt)
+ {
+ 	XF86OptionPtr prev;
+ 
+-	while (opt)
+-	{
++    while (opt) {
+ 		TestFree (opt->opt_name);
+ 		TestFree (opt->opt_val);
+ 		TestFree (opt->opt_comment);
+@@ -314,8 +310,7 @@ xf86nextOption(XF86OptionPtr list)
+ XF86OptionPtr
+ xf86findOption (XF86OptionPtr list, const char *name)
+ {
+-	while (list)
+-	{
++    while (list) {
+ 		if (xf86nameCompare (list->opt_name, name) == 0)
+ 			return list;
+ 		list = list->list.next;
+@@ -335,8 +330,7 @@ xf86findOptionValue (XF86OptionPtr list, const char *name)
+ {
+ 	XF86OptionPtr p = xf86findOption (list, name);
+ 
+-	if (p)
+-	{
++    if (p) {
+ 		if (p->opt_val)
+ 			return p->opt_val;
+ 		else
+@@ -352,18 +346,15 @@ xf86optionListCreate( const char **options, int count, int used )
+ 	char *t1, *t2;
+ 	int i;
+ 
+-	if (count == -1)
+-	{
+-		for (count = 0; options[count]; count++)
+-			;
++    if (count == -1) {
++        for (count = 0; options[count]; count++);
+ 	}
+-	if( (count % 2) != 0 )
+-	{
+-		fprintf( stderr, "xf86optionListCreate: count must be an even number.\n" );
++    if ((count % 2) != 0) {
++        fprintf(stderr,
++                "xf86optionListCreate: count must be an even number.\n");
+ 		return NULL;
+ 	}
+-	for (i = 0; i < count; i += 2)
+-	{
++    for (i = 0; i < count; i += 2) {
+ 		t1 = strdup(options[i]);
+ 		t2 = strdup(options[i + 1]);
+ 		p = addNewOption2 (p, t1, t2, used);
+@@ -401,7 +392,8 @@ xf86optionListMerge (XF86OptionPtr head, XF86OptionPtr tail)
+ 			bp = a;
+ 			a = tail;
+ 			ap = NULL;
+-		} else {
++        }
++        else {
+ 			ap = a;
+ 			if (!(a = a->list.next)) {
+ 				a = tail;
+@@ -413,10 +405,10 @@ xf86optionListMerge (XF86OptionPtr head, XF86OptionPtr tail)
+ 	}
+ 
+ 	if (head) {
+-		for (a = head; a->list.next; a = a->list.next)
+-			;
++        for (a = head; a->list.next; a = a->list.next);
+ 		a->list.next = tail;
+-	} else 
++    }
++    else
+ 		head = tail;
+ 
+ 	return head;
+@@ -493,7 +485,8 @@ xf86printOptionList(FILE *fp, XF86OptionPtr list, int tabs)
+ 		for (i = 0; i < tabs; i++)
+ 			fputc('\t', fp);
+ 		if (list->opt_val)
+-			fprintf(fp, "Option	    \"%s\" \"%s\"", list->opt_name, list->opt_val);
++            fprintf(fp, "Option	    \"%s\" \"%s\"", list->opt_name,
++                    list->opt_val);
+ 		else
+ 			fprintf(fp, "Option	    \"%s\"", list->opt_name);
+ 		if (list->opt_comment)

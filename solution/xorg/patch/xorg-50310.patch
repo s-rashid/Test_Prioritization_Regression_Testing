@@ -1,0 +1,21 @@
+diff --git a/xkb/xkbLEDs.c b/xkb/xkbLEDs.c
+index 1682671..515e9b7 100644
+--- a/xkb/xkbLEDs.c
++++ b/xkb/xkbLEDs.c
+@@ -556,6 +556,7 @@ Bool			checkNames;
+     else if ((kf!=NULL)&&((kf->xkb_sli->flags&XkbSLI_IsDefault)!=0)) {
+ 	XkbDescPtr	xkb;
+ 	xkb= dev->key->xkbInfo->desc;
++	sli= kf->xkb_sli;
+ 	sli->physIndicators=	xkb->indicators->phys_indicators;
+ 	if (xkb->names->indicators!=sli->names) {
+ 	    checkNames= TRUE;
+@@ -584,6 +585,8 @@ Bool			checkNames;
+ 	sli->maps=		NULL;
+ 	sli->names=		NULL;
+     }
++    else
++	return NULL;
+     if ((sli->names==NULL)&&(needed_parts&XkbXI_IndicatorNamesMask))
+ 	sli->names= calloc(XkbNumIndicators, sizeof(Atom));
+     if ((sli->maps==NULL)&&(needed_parts&XkbXI_IndicatorMapsMask))

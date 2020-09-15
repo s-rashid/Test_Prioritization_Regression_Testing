@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winclipboardwndproc.c b/hw/xwin/winclipboardwndproc.c
+index 65faedf..292ca87 100644
+--- a/hw/xwin/winclipboardwndproc.c
++++ b/hw/xwin/winclipboardwndproc.c
+@@ -38,9 +38,6 @@
+ #include "winclipboard.h"
+ #include "misc.h"
+ 
+-extern void		winFixClipboardChain();
+-
+-
+ /*
+  * Constants
+  */

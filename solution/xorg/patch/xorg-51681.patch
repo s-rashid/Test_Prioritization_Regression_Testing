@@ -1,0 +1,12 @@
+diff --git a/include/input.h b/include/input.h
+index a20f8a0..c1db544 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -533,6 +533,7 @@ void FixUpEventFromWindow(SpritePtr pSprite,
+                           WindowPtr pWin,
+                           Window child,
+                           Bool calcChild);
++extern WindowPtr XYToWindow(SpritePtr pSprite, int x, int y);
+ extern int EventIsDeliverable(DeviceIntPtr dev, InternalEvent* event,
+                               WindowPtr win);
+ /**

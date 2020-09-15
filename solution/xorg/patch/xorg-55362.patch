@@ -1,0 +1,224 @@
+diff --git a/hw/kdrive/ephyr/ephyrglxext.c b/hw/kdrive/ephyr/ephyrglxext.c
+index dfc43e1..dab028b 100644
+--- a/hw/kdrive/ephyr/ephyrglxext.c
++++ b/hw/kdrive/ephyr/ephyrglxext.c
+@@ -41,7 +41,6 @@
+ #include "glx/unpack.h"
+ #include "hostx.h"
+ 
+-
+ #ifndef TRUE
+ #define TRUE 1
+ #endif
+@@ -50,7 +49,6 @@
+ #define FALSE 0
+ #endif
+ 
+-
+ int ephyrGLXQueryVersion (__GLXclientState *cl, GLbyte *pc) ;
+ int ephyrGLXQueryVersionSwap (__GLXclientState *cl, GLbyte *pc) ;
+ int ephyrGLXGetVisualConfigs (__GLXclientState *cl, GLbyte *pc) ;
+@@ -160,8 +158,7 @@ ephyrGLXQueryVersion(__GLXclientState *a_cl, GLbyte *a_pc)
+         EPHYR_LOG_ERROR ("ephyrHostGLXQueryVersion() failed\n") ;
+         goto out ;
+     }
+-    EPHYR_LOG ("major:%d, minor:%d\n",
+-                major, minor);
++    EPHYR_LOG("major:%d, minor:%d\n", major, minor);
+     reply.majorVersion = major ;
+     reply.minorVersion = minor ;
+     reply.length = 0 ;
+@@ -170,7 +167,8 @@ ephyrGLXQueryVersion(__GLXclientState *a_cl, GLbyte *a_pc)
+ 
+     if (client->swapped) {
+         __glXSwapQueryVersionReply(client, &reply);
+-    } else {
++    }
++    else {
+         WriteToClient(client, sz_xGLXQueryVersionReply, (char *)&reply);
+     }
+ 
+@@ -184,6 +182,7 @@ int
+ ephyrGLXQueryVersionSwap (__GLXclientState *a_cl, GLbyte *a_pc)
+ {
+     xGLXQueryVersionReq *req = (xGLXQueryVersionReq *) a_pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT (&req->length);
+@@ -194,16 +193,14 @@ ephyrGLXQueryVersionSwap (__GLXclientState *a_cl, GLbyte *a_pc)
+ 
+ static int
+ ephyrGLXGetVisualConfigsReal (__GLXclientState *a_cl,
+-                              GLbyte *a_pc,
+-                              Bool a_do_swap)
++                             GLbyte * a_pc, Bool a_do_swap)
+ {
+     xGLXGetVisualConfigsReq *req = (xGLXGetVisualConfigsReq *) a_pc;
+     ClientPtr client = a_cl->client;
+     xGLXGetVisualConfigsReply reply;
+     int32_t *props_buf=NULL, num_visuals=0,
+             num_props=0, res=BadImplementation, i=0,
+-            props_per_visual_size=0,
+-            props_buf_size=0;
++        props_per_visual_size = 0, props_buf_size = 0;
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -212,8 +209,7 @@ ephyrGLXGetVisualConfigsReal (__GLXclientState *a_cl,
+     if (!ephyrHostGLXGetVisualConfigs (req->screen,
+                                        &num_visuals,
+                                        &num_props,
+-                                       &props_buf_size,
+-                                       &props_buf)) {
++                                      &props_buf_size, &props_buf)) {
+         EPHYR_LOG_ERROR ("ephyrHostGLXGetVisualConfigs() failed\n") ;
+         goto out ;
+     }
+@@ -251,16 +247,14 @@ out:
+ 
+ static int
+ ephyrGLXGetFBConfigsSGIXReal (__GLXclientState *a_cl,
+-                              GLbyte *a_pc,
+-                              Bool a_do_swap)
++                             GLbyte * a_pc, Bool a_do_swap)
+ {
+     xGLXGetFBConfigsSGIXReq *req = (xGLXGetFBConfigsSGIXReq *)a_pc;
+     ClientPtr client = a_cl->client;
+     xGLXGetVisualConfigsReply reply;
+     int32_t *props_buf=NULL, num_visuals=0,
+             num_props=0, res=BadImplementation, i=0,
+-            props_per_visual_size=0,
+-            props_buf_size=0;
++        props_per_visual_size = 0, props_buf_size = 0;
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+ 
+@@ -269,8 +263,7 @@ ephyrGLXGetFBConfigsSGIXReal (__GLXclientState *a_cl,
+     if (!ephyrHostGLXVendorPrivGetFBConfigsSGIX (req->screen,
+                                                  &num_visuals,
+                                                  &num_props,
+-                                                 &props_buf_size,
+-                                                 &props_buf)) {
++                                                &props_buf_size, &props_buf)) {
+         EPHYR_LOG_ERROR ("ephyrHostGLXGetVisualConfigs() failed\n") ;
+         goto out ;
+     }
+@@ -318,7 +311,6 @@ ephyrGLXGetVisualConfigsSwap (__GLXclientState *a_cl, GLbyte *a_pc)
+     return ephyrGLXGetVisualConfigsReal (a_cl, a_pc, TRUE) ;
+ }
+ 
+-
+ int
+ ephyrGLXClientInfo(__GLXclientState *a_cl, GLbyte *a_pc)
+ {
+@@ -341,6 +333,7 @@ int
+ ephyrGLXClientInfoSwap (__GLXclientState *a_cl, GLbyte *a_pc)
+ {
+     xGLXClientInfoReq *req = (xGLXClientInfoReq *)a_pc;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_SHORT (&req->length);
+@@ -405,7 +398,6 @@ ephyrGLXQueryServerStringSwap(__GLXclientState *a_cl, GLbyte *a_pc)
+     return BadImplementation ;
+ }
+ 
+-
+ int
+ ephyrGLXGetFBConfigsSGIX (__GLXclientState *a_cl, GLbyte *a_pc)
+ {
+@@ -423,6 +415,7 @@ ephyrGLXCreateContextReal (xGLXCreateContextReq *a_req, Bool a_do_swap)
+ {
+     int res=BadImplementation;
+     EphyrHostWindowAttributes host_w_attrs ;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     EPHYR_RETURN_VAL_IF_FAIL (a_req, BadValue) ;
+@@ -453,8 +446,7 @@ ephyrGLXCreateContextReal (xGLXCreateContextReq *a_req, Bool a_do_swap)
+     if (!ephyrHostGLXCreateContext (a_req->screen,
+                                     host_w_attrs.visualid,
+                                     a_req->context,
+-                                    a_req->shareList,
+-                                    a_req->isDirect)) {
++                                   a_req->shareList, a_req->isDirect)) {
+         EPHYR_LOG_ERROR ("ephyrHostGLXCreateContext() failed\n") ;
+         goto out ;
+     }
+@@ -472,16 +464,17 @@ ephyrGLXCreateContext (__GLXclientState *cl, GLbyte *pc)
+     return ephyrGLXCreateContextReal (req, FALSE) ;
+ }
+ 
+-int ephyrGLXCreateContextSwap (__GLXclientState *cl, GLbyte *pc)
++int
++ephyrGLXCreateContextSwap(__GLXclientState * cl, GLbyte * pc)
+ {
+     xGLXCreateContextReq *req = (xGLXCreateContextReq *) pc;
++
+     return ephyrGLXCreateContextReal (req, TRUE) ;
+ }
+ 
+ static int
+ ephyrGLXDestroyContextReal (__GLXclientState *a_cl,
+-                            GLbyte *a_pc,
+-                            Bool a_do_swap)
++                           GLbyte * a_pc, Bool a_do_swap)
+ {
+     int res=BadImplementation;
+     ClientPtr client = a_cl->client;
+@@ -523,14 +516,10 @@ ephyrGLXMakeCurrentReal (__GLXclientState *a_cl, GLbyte *a_pc, Bool a_do_swap)
+ 
+     EPHYR_LOG ("enter\n") ;
+     rc = dixLookupDrawable (&drawable,
+-                            req->drawable,
+-                            a_cl->client,
+-                            0,
+-                            DixReadAccess);
++                           req->drawable, a_cl->client, 0, DixReadAccess);
+     EPHYR_RETURN_VAL_IF_FAIL (drawable, BadValue) ;
+     EPHYR_RETURN_VAL_IF_FAIL (drawable->pScreen, BadValue) ;
+-    EPHYR_LOG ("screen nummber requested:%d\n",
+-               drawable->pScreen->myNum) ;
++    EPHYR_LOG("screen nummber requested:%d\n", drawable->pScreen->myNum);
+ 
+     memset (&reply, 0, sizeof (reply)) ;
+     if (!ephyrHostGLXMakeCurrent (hostx_get_window (drawable->pScreen->myNum),
+@@ -575,6 +564,7 @@ ephyrGLXGetStringReal (__GLXclientState *a_cl, GLbyte *a_pc, Bool a_do_swap)
+     ClientPtr client=NULL ;
+     int context_tag=0, name=0, res=BadImplementation, length=0 ;
+     char *string=NULL;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     EPHYR_RETURN_VAL_IF_FAIL (a_cl && a_pc, BadValue) ;
+@@ -593,15 +583,15 @@ ephyrGLXGetStringReal (__GLXclientState *a_cl, GLbyte *a_pc, Bool a_do_swap)
+     EPHYR_LOG ("context_tag:%d, name:%d\n", context_tag, name) ;
+     if (!ephyrHostGLXGetStringFromServer (context_tag,
+                                           name,
+-                                          EPHYR_HOST_GLX_GetString,
+-                                          &string)) {
++                                         EPHYR_HOST_GLX_GetString, &string)) {
+         EPHYR_LOG_ERROR ("failed to get string from server\n") ;
+         goto out ;
+     }
+     if (string) {
+         length = strlen (string) + 1;
+         EPHYR_LOG ("got string:'%s', size:%d\n", string, length) ;
+-    } else {
++    }
++    else {
+         EPHYR_LOG ("got string: string (null)\n") ;
+     }
+     __GLX_BEGIN_REPLY (length);
+@@ -651,9 +641,7 @@ ephyrGLXGetIntegervReal (__GLXclientState *a_cl, GLbyte *a_pc, Bool a_do_swap)
+         goto out ;
+     }
+     buf = __glXGetAnswerBuffer (a_cl, sizeof (value),
+-                                answer_buf_room,
+-                                sizeof (answer_buf_room),
+-                                4) ;
++                               answer_buf_room, sizeof(answer_buf_room), 4);
+ 
+     if (!buf) {
+         EPHYR_LOG_ERROR ("failed to allocate reply buffer\n") ;

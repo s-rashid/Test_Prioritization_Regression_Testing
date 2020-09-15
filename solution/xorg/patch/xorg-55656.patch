@@ -1,0 +1,231 @@
+diff --git a/hw/xfree86/vgahw/vgaCmap.c b/hw/xfree86/vgahw/vgaCmap.c
+index 83c29c3..0cfabc5 100644
+--- a/hw/xfree86/vgahw/vgaCmap.c
++++ b/hw/xfree86/vgahw/vgaCmap.c
+@@ -21,7 +21,6 @@
+  *
+  */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -39,7 +38,6 @@
+ #include <X11/extensions/xf86dgaproto.h>
+ #include "dgaproc.h"
+ 
+-
+ #define NOMAPYET        (ColormapPtr) 0
+ 
+ int
+@@ -66,12 +64,12 @@ vgaGetInstalledColormaps(pScreen, pmaps)
+   return 1;
+ }
+ 
+-int vgaCheckColorMap(ColormapPtr pmap)
++int
++vgaCheckColorMap(ColormapPtr pmap)
+ {
+   return (pmap != GetInstalledmiColormap(pmap->pScreen));
+ }
+ 
+-
+ void
+ vgaStoreColors(pmap, ndef, pdefs)
+      ColormapPtr	pmap;
+@@ -96,15 +94,13 @@ vgaStoreColors(pmap, ndef, pdefs)
+     if (vgaCheckColorMap(pmap))
+         return;
+ 
+-    if ((pmap->pVisual->class | DynamicClass) == DirectColor)
+-    {
++    if ((pmap->pVisual->class | DynamicClass) == DirectColor) {
+         ndef = miExpandDirectColors (pmap, ndef, pdefs, directDefs);
+         pdefs = directDefs;
+     }
+     
+     writeColormap = scrninfp->vtSema;
+-    if (DGAAvailable(scrnIndex))
+-    {
++    if (DGAAvailable(scrnIndex)) {
+ 	writeColormap = writeColormap ||
+ 			(DGAGetDirectMode(scrnIndex) &&
+ 			 !(DGAGetFlags(scrnIndex) & XF86DGADirectColormap)) ||
+@@ -114,10 +110,8 @@ vgaStoreColors(pmap, ndef, pdefs)
+     if (writeColormap)
+ 	hwp->enablePalette(hwp);
+ 
+-    for(i = 0; i < ndef; i++)
+-    {
+-        if (pdefs[i].pixel == overscan)
+-	{
++    for (i = 0; i < ndef; i++) {
++        if (pdefs[i].pixel == overscan) {
+ 	    new_overscan = TRUE;
+ 	}
+         cmap = &(hwp->ModeReg.DAC[pdefs[i].pixel*3]);
+@@ -132,17 +126,18 @@ vgaStoreColors(pmap, ndef, pdefs)
+             cmap[2] = pdefs[i].blue  >> 10;
+         }
+ #if 0
+-	if (clgd6225Lcd)
+-	{
++        if (clgd6225Lcd) {
+ 		/* The LCD doesn't like white */
+-		if (cmap[0] == 63) cmap[0]= 62;
+-		if (cmap[1] == 63) cmap[1]= 62;
+-		if (cmap[2] == 63) cmap[2]= 62;
++            if (cmap[0] == 63)
++                cmap[0] = 62;
++            if (cmap[1] == 63)
++                cmap[1] = 62;
++            if (cmap[2] == 63)
++                cmap[2] = 62;
+ 	}
+ #endif
+ 
+-        if (writeColormap)
+-	{
++        if (writeColormap) {
+ 	    if (hwp->ShowOverscan && i == 255)
+ 		continue;
+ 	    hwp->writeDacWriteAddr(hwp, pdefs[i].pixel);
+@@ -155,17 +150,12 @@ vgaStoreColors(pmap, ndef, pdefs)
+ 	    DACDelay(hwp);
+ 	}
+     }
+-    if (new_overscan && !hwp->ShowOverscan)
+-    {
++    if (new_overscan && !hwp->ShowOverscan) {
+ 	new_overscan = FALSE;
+-        for(i = 0; i < ndef; i++)
+-        {
+-            if (pdefs[i].pixel == overscan)
+-	    {
++        for (i = 0; i < ndef; i++) {
++            if (pdefs[i].pixel == overscan) {
+ 	        if ((pdefs[i].red != 0) || 
+-	            (pdefs[i].green != 0) || 
+-	            (pdefs[i].blue != 0))
+-	        {
++                    (pdefs[i].green != 0) || (pdefs[i].blue != 0)) {
+ 	            new_overscan = TRUE;
+ 		    tmp_overscan = overscan;
+         	    tmp = &(hwp->ModeReg.DAC[pdefs[i].pixel*3]);
+@@ -173,36 +163,29 @@ vgaStoreColors(pmap, ndef, pdefs)
+ 	        break;
+ 	    }
+         }
+-        if (new_overscan)
+-        {
++        if (new_overscan) {
+             /*
+              * Find a black pixel, or the nearest match.
+              */
+-            for (i=255; i >= 0; i--)
+-	    {
++            for (i = 255; i >= 0; i--) {
+                 cmap = &(hwp->ModeReg.DAC[i*3]);
+-	        if ((cmap[0] == 0) && (cmap[1] == 0) && (cmap[2] == 0))
+-	        {
++                if ((cmap[0] == 0) && (cmap[1] == 0) && (cmap[2] == 0)) {
+ 	            overscan = i;
+ 	            break;
+ 	        }
+-	        else
+-	        {
++                else {
+ 	            if ((cmap[0] < tmp[0]) && 
+-		        (cmap[1] < tmp[1]) && (cmap[2] < tmp[2]))
+-	            {
++                        (cmap[1] < tmp[1]) && (cmap[2] < tmp[2])) {
+ 		        tmp = cmap;
+ 		        tmp_overscan = i;
+ 	            }
+ 	        }
+ 	    }
+-	    if (i < 0)
+-	    {
++            if (i < 0) {
+ 	        overscan = tmp_overscan;
+ 	    }
+ 	    hwp->ModeReg.Attribute[OVERSCAN] = overscan;
+-            if (writeColormap)
+-	    {
++            if (writeColormap) {
+ 	      hwp->writeAttr(hwp, OVERSCAN, overscan);
+ 	    }
+         }
+@@ -212,7 +195,6 @@ vgaStoreColors(pmap, ndef, pdefs)
+ 	hwp->disablePalette(hwp);
+ }
+ 
+-
+ void
+ vgaInstallColormap(pmap)
+      ColormapPtr	pmap;
+@@ -224,14 +206,12 @@ vgaInstallColormap(pmap)
+   xColorItem *defs;
+   int         i;
+ 
+-
+   if (pmap == oldmap)
+     return;
+ 
+   if ((pmap->pVisual->class | DynamicClass) == DirectColor)
+     entries = (pmap->pVisual->redMask |
+-	       pmap->pVisual->greenMask |
+-	       pmap->pVisual->blueMask) + 1;
++                   pmap->pVisual->greenMask | pmap->pVisual->blueMask) + 1;
+   else
+     entries = pmap->pVisual->ColormapEntries;
+ 
+@@ -244,12 +224,12 @@ vgaInstallColormap(pmap)
+ 
+   SetInstalledmiColormap(pmap->pScreen, pmap);
+ 
+-  for ( i=0; i<entries; i++) ppix[i] = i;
++    for (i = 0; i < entries; i++)
++        ppix[i] = i;
+ 
+   QueryColors(pmap, entries, ppix, prgb, serverClient);
+ 
+-  for ( i=0; i<entries; i++) /* convert xrgbs to xColorItems */
+-    {
++    for (i = 0; i < entries; i++) {     /* convert xrgbs to xColorItems */
+       defs[i].pixel = ppix[i];
+       defs[i].red = prgb[i].red;
+       defs[i].green = prgb[i].green;
+@@ -265,7 +245,6 @@ vgaInstallColormap(pmap)
+   free(defs);
+ }
+ 
+-
+ void
+ vgaUninstallColormap(pmap)
+      ColormapPtr pmap;
+@@ -276,8 +255,9 @@ vgaUninstallColormap(pmap)
+   if ( pmap != GetInstalledmiColormap(pmap->pScreen))
+     return;
+ 
+-  dixLookupResourceByType((pointer *)&defColormap, pmap->pScreen->defColormap,
+-			  RT_COLORMAP, serverClient, DixInstallAccess);
++    dixLookupResourceByType((pointer *) &defColormap,
++                            pmap->pScreen->defColormap, RT_COLORMAP,
++                            serverClient, DixInstallAccess);
+ 
+   if (defColormap == GetInstalledmiColormap(pmap->pScreen))
+     return;
+@@ -285,7 +265,6 @@ vgaUninstallColormap(pmap)
+   (*pmap->pScreen->InstallColormap) (defColormap);
+ }
+ 
+-
+ void
+ vgaHandleColormaps(ScreenPtr pScreen, ScrnInfoPtr scrnp)
+ {
+@@ -298,4 +277,3 @@ vgaHandleColormaps(ScreenPtr pScreen, ScrnInfoPtr scrnp)
+     }
+   }
+ }
+-

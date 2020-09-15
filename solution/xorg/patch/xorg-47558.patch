@@ -1,0 +1,32 @@
+diff --git a/glx/swap_interval.c b/glx/swap_interval.c
+index 3a52420..0bae324 100644
+--- a/glx/swap_interval.c
++++ b/glx/swap_interval.c
+@@ -53,8 +53,6 @@ int DoSwapInterval(__GLXclientState *cl, GLbyte *pc, int do_swap)
+ 
+     cx = __glXLookupContextByTag(cl, tag);
+ 
+-    LogMessage(X_ERROR, "%s: cx = %p, GLX screen = %p\n", __func__,
+-	       cx, (cx == NULL) ? NULL : cx->pGlxScreen);
+     if ((cx == NULL) || (cx->pGlxScreen == NULL)) {
+ 	client->errorValue = tag;
+ 	return __glXError(GLXBadContext);
+@@ -68,7 +66,7 @@ int DoSwapInterval(__GLXclientState *cl, GLbyte *pc, int do_swap)
+ 
+     if (cx->drawPriv == NULL) {
+ 	client->errorValue = tag;
+-	return __glXError(GLXBadDrawable);
++	return BadValue;
+     }
+     
+     pc += __GLX_VENDPRIV_HDR_SIZE;
+@@ -76,6 +74,9 @@ int DoSwapInterval(__GLXclientState *cl, GLbyte *pc, int do_swap)
+       ? bswap_32(*(int *)(pc + 0))
+       :          *(int *)(pc + 0);
+ 
++    if (interval <= 0)
++	return BadValue;
++
+     (void) (*cx->pGlxScreen->swapInterval)(cx->drawPriv, interval);
+     return Success;
+ }

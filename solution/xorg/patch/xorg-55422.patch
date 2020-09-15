@@ -1,0 +1,596 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 248ccf4..8c948cf 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -64,7 +64,6 @@
+ 
+ static int xf86ScrnInfoPrivateCount = 0;
+ 
+-
+ /* Add a pointer to a new DriverRec to xf86DriverList */
+ 
+ void
+@@ -84,8 +83,7 @@ xf86AddDriver(DriverPtr driver, pointer module, int flags)
+     if (flags & HaveDriverFuncs)
+ 	*xf86DriverList[xf86NumDrivers - 1] = *driver;
+     else {
+-	(void) memset( xf86DriverList[xf86NumDrivers - 1], 0,
+-		       sizeof( DriverRec ) );
++        (void) memset(xf86DriverList[xf86NumDrivers - 1], 0, sizeof(DriverRec));
+ 	(void) memcpy( xf86DriverList[xf86NumDrivers - 1], driver,
+ 		       sizeof(DriverRec1));
+ 
+@@ -120,7 +118,8 @@ xf86AddInputDriver(InputDriverPtr driver, pointer module, int flags)
+ 
+     xf86NumInputDrivers++;
+     xf86InputDriverList = xnfrealloc(xf86InputDriverList,
+-				xf86NumInputDrivers * sizeof(InputDriverPtr));
++                                     xf86NumInputDrivers *
++                                     sizeof(InputDriverPtr));
+     xf86InputDriverList[xf86NumInputDrivers - 1] =
+ 				xnfalloc(sizeof(InputDriverRec));
+     *xf86InputDriverList[xf86NumInputDrivers - 1] = *driver;
+@@ -193,7 +192,6 @@ xf86AllocateScreen(DriverPtr drv, int flags)
+     return xf86Screens[i];
+ }
+ 
+-
+ /*
+  * Remove an entry from xf86Screens.  Ideally it should free all allocated
+  * data.  To do this properly may require a driver hook.
+@@ -420,7 +418,8 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
+ 		scrp->bitsPerPixel = fbbpp;
+ 	    if (depth > 0)
+ 		scrp->depth = depth;
+-	} else {
++        }
++        else {
+ 	    scrp->depth = GLOBAL_DEFAULT_DEPTH;
+ 	}
+     }
+@@ -451,33 +450,39 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
+ 				scrp->bitsPerPixel = 24;
+ 			    else
+ 				scrp->bitsPerPixel = 32;
+-			} else {
++                        }
++                        else {
+ 			    nomatch = TRUE;
+ 			}
+-		    } else if (pix24 == Pix24Use24) {
++                    }
++                    else if (pix24 == Pix24Use24) {
+ 			if (DO_PIX24(depth24flags)) {
+ 			    if (CHOOSE32FOR24(depth24flags))
+ 				scrp->bitsPerPixel = 32;
+ 			    else
+ 				scrp->bitsPerPixel = 24;
+-			} else {
++                        }
++                        else {
+ 			    nomatch = TRUE;
+ 			}
+ 		    }
+-		} else {
++                }
++                else {
+ 		    if (DO_PIX32(depth24flags)) {
+ 			if (CHOOSE24FOR32(depth24flags))
+ 			    scrp->bitsPerPixel = 24;
+ 			else
+ 			    scrp->bitsPerPixel = 32;
+-		    } else if (DO_PIX24(depth24flags)) {
++                    }
++                    else if (DO_PIX24(depth24flags)) {
+ 			if (CHOOSE32FOR24(depth24flags))
+ 			    scrp->bitsPerPixel = 32;
+ 			else
+ 			    scrp->bitsPerPixel = 24;
+ 		    }
+ 		}
+-	    } else if (scrp->depth <= 32)
++            }
++            else if (scrp->depth <= 32)
+ 		scrp->bitsPerPixel = 32;
+ 	    else {
+ 		xf86DrvMsg(scrp->scrnIndex, X_ERROR,
+@@ -485,7 +490,8 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
+ 			   scrp->depth);
+ 		return FALSE;
+ 	    }
+-	} else {
++        }
++        else {
+ 	    xf86DrvMsg(scrp->scrnIndex, X_ERROR,
+ 			"xf86SetDepthBpp: internal error: depth and fbbpp"
+ 			" are both not set\n");
+@@ -624,7 +630,8 @@ xf86SetDepthBpp(ScrnInfoPtr scrp, int depth, int dummy, int fbbpp,
+ 	/* Planar modes need these settings */
+ 	scrp->bitmapScanlineUnit = 8;
+ 	scrp->bitmapBitOrder = MSBFirst;
+-    } else {
++    }
++    else {
+ 	scrp->bitmapScanlineUnit = BITMAP_SCANLINE_UNIT;
+ 	scrp->bitmapBitOrder = BITMAP_BIT_ORDER;
+     }
+@@ -684,13 +691,16 @@ xf86SetWeight(ScrnInfoPtr scrp, rgb weight, rgb mask)
+     if (xf86Weight.red > 0 && xf86Weight.green > 0 && xf86Weight.blue > 0) {
+ 	scrp->weight = xf86Weight;
+ 	weightFrom = X_CMDLINE;
+-    } else if (scrp->display->weight.red > 0 && scrp->display->weight.green > 0
++    }
++    else if (scrp->display->weight.red > 0 && scrp->display->weight.green > 0
+ 	       && scrp->display->weight.blue > 0) {
+ 	scrp->weight = scrp->display->weight;
+ 	weightFrom = X_CONFIG;
+-    } else if (weight.red > 0 && weight.green > 0 && weight.blue > 0) {
++    }
++    else if (weight.red > 0 && weight.green > 0 && weight.blue > 0) {
+ 	scrp->weight = weight;
+-    } else {
++    }
++    else {
+ 	switch (scrp->depth) {
+ 	case 1:
+ 	case 4:
+@@ -755,7 +765,8 @@ xf86SetWeight(ScrnInfoPtr scrp, rgb weight, rgb mask)
+ 	scrp->mask.green = ((1 << scrp->weight.green) - 1)
+ 				<< scrp->offset.green;
+ 	scrp->mask.blue = (1 << scrp->weight.blue) - 1;
+-    } else {
++    }
++    else {
+ 	/* Initialise to the values passed */
+ 	scrp->mask.red = mask.red;
+ 	scrp->mask.green = mask.green;
+@@ -775,12 +786,15 @@ xf86SetDefaultVisual(ScrnInfoPtr scrp, int visual)
+     if (defaultColorVisualClass >= 0) {
+ 	scrp->defaultVisual = defaultColorVisualClass;
+ 	visualFrom = X_CMDLINE;
+-    } else if (scrp->display->defaultVisual >= 0) {
++    }
++    else if (scrp->display->defaultVisual >= 0) {
+ 	scrp->defaultVisual = scrp->display->defaultVisual;
+ 	visualFrom = X_CONFIG;
+-    } else if (visual >= 0) {
++    }
++    else if (visual >= 0) {
+ 	scrp->defaultVisual = visual;
+-    } else {
++    }
++    else {
+ 	if (scrp->depth == 1)
+ 	    scrp->defaultVisual = StaticGray;
+ 	else if (scrp->depth == 4)
+@@ -818,6 +832,7 @@ Bool
+ xf86SetGamma(ScrnInfoPtr scrp, Gamma gamma)
+ {
+     MessageType from = X_DEFAULT;
++
+ #if 0
+     xf86MonPtr DDC = (xf86MonPtr)(scrp->monitor->DDC);
+ #endif
+@@ -826,13 +841,15 @@ xf86SetGamma(ScrnInfoPtr scrp, Gamma gamma)
+ 	scrp->gamma.red = SET_GAMMA(xf86Gamma.red);
+ 	scrp->gamma.green = SET_GAMMA(xf86Gamma.green);
+ 	scrp->gamma.blue = SET_GAMMA(xf86Gamma.blue);
+-    } else if (TEST_GAMMA(scrp->monitor->gamma)) {
++    }
++    else if (TEST_GAMMA(scrp->monitor->gamma)) {
+ 	from = X_CONFIG;
+ 	scrp->gamma.red = SET_GAMMA(scrp->monitor->gamma.red);
+ 	scrp->gamma.green = SET_GAMMA(scrp->monitor->gamma.green);
+ 	scrp->gamma.blue = SET_GAMMA(scrp->monitor->gamma.blue);
+ #if 0
+-    } else if ( DDC && DDC->features.gamma > GAMMA_ZERO ) {
++    }
++    else if (DDC && DDC->features.gamma > GAMMA_ZERO) {
+         from = X_PROBED;
+ 	scrp->gamma.red = SET_GAMMA(DDC->features.gamma);
+ 	scrp->gamma.green = SET_GAMMA(DDC->features.gamma);
+@@ -840,11 +857,13 @@ xf86SetGamma(ScrnInfoPtr scrp, Gamma gamma)
+ 	/* EDID structure version 2 gives optional seperate red, green & blue gamma values
+ 	 * in bytes 0x57-0x59 */
+ #endif
+-    } else if (TEST_GAMMA(gamma)) {
++    }
++    else if (TEST_GAMMA(gamma)) {
+ 	scrp->gamma.red = SET_GAMMA(gamma.red);
+ 	scrp->gamma.green = SET_GAMMA(gamma.green);
+ 	scrp->gamma.blue = SET_GAMMA(gamma.blue);
+-    } else {
++    }
++    else {
+ 	scrp->gamma.red = 1.0;
+ 	scrp->gamma.green = 1.0;
+ 	scrp->gamma.blue = 1.0;
+@@ -864,7 +883,6 @@ xf86SetGamma(ScrnInfoPtr scrp, Gamma gamma)
+ #undef TEST_GAMMA
+ #undef SET_GAMMA
+ 
+-
+ /*
+  * Set the DPI from the command line option.  XXX should allow it to be
+  * calculated from the widthmm/heightmm values.
+@@ -891,7 +909,8 @@ xf86SetDpi(ScrnInfoPtr pScrn, int x, int y)
+        */
+       ddcWidthmm = DDC->features.hsize * 10; /* 10mm in 1cm */
+       ddcHeightmm = DDC->features.vsize * 10; /* 10mm in 1cm */
+-    } else {
++    }
++    else {
+       ddcWidthmm = ddcHeightmm = 0;
+     }
+ 
+@@ -899,7 +918,8 @@ xf86SetDpi(ScrnInfoPtr pScrn, int x, int y)
+ 	pScrn->xDpi = monitorResolution;
+ 	pScrn->yDpi = monitorResolution;
+ 	from = X_CMDLINE;
+-    } else if (pScrn->widthmm > 0 || pScrn->heightmm > 0) {
++    }
++    else if (pScrn->widthmm > 0 || pScrn->heightmm > 0) {
+ 	from = X_CONFIG;
+ 	if (pScrn->widthmm > 0) {
+ 	   pScrn->xDpi =
+@@ -920,22 +940,26 @@ xf86SetDpi(ScrnInfoPtr pScrn, int x, int y)
+ 	if ( ddcWidthmm && ddcHeightmm ) {
+ 	  if (pScrn->widthmm > 0) {
+ 	    widthErr  = abs(ddcWidthmm  - pScrn->widthmm);
+-	  } else {
++            }
++            else {
+ 	    widthErr  = 0;
+ 	  }
+ 	  if (pScrn->heightmm > 0) {
+ 	    heightErr = abs(ddcHeightmm - pScrn->heightmm);
+-	  } else {
++            }
++            else {
+ 	    heightErr = 0;
+ 	  }
+ 	  if (widthErr>10 || heightErr>10) {
+ 	    /* Should include config file name for monitor here */
+ 	    xf86DrvMsg(pScrn->scrnIndex, X_WARNING,
+ 		       "Probed monitor is %dx%d mm, using Displaysize %dx%d mm\n",
+-		       ddcWidthmm,ddcHeightmm, pScrn->widthmm,pScrn->heightmm);
++                           ddcWidthmm, ddcHeightmm, pScrn->widthmm,
++                           pScrn->heightmm);
++            }
+ 	  }
+ 	}
+-    } else if ( ddcWidthmm && ddcHeightmm ) {
++    else if (ddcWidthmm && ddcHeightmm) {
+ 	from = X_PROBED;
+ 	xf86DrvMsg(pScrn->scrnIndex, from, "Display dimensions: (%d, %d) mm\n",
+ 		   ddcWidthmm, ddcHeightmm );
+@@ -953,7 +977,8 @@ xf86SetDpi(ScrnInfoPtr pScrn, int x, int y)
+ 	    pScrn->yDpi = pScrn->xDpi;
+ 	if (pScrn->yDpi > 0 && pScrn->xDpi <= 0)
+ 	    pScrn->xDpi = pScrn->yDpi;
+-    } else {
++    }
++    else {
+ 	if (x > 0)
+ 	    pScrn->xDpi = x;
+ 	else
+@@ -969,14 +994,14 @@ xf86SetDpi(ScrnInfoPtr pScrn, int x, int y)
+ 
+ #undef MMPERINCH
+ 
+-
+ void
+ xf86SetBlackWhitePixels(ScreenPtr pScreen)
+ {
+     if (xf86FlipPixels) {
+ 	pScreen->whitePixel = 0;
+ 	pScreen->blackPixel = 1;
+-    } else {
++    }
++    else {
+ 	pScreen->whitePixel = 1;
+ 	pScreen->blackPixel = 0;
+     }
+@@ -1009,8 +1034,7 @@ xf86EnableDisableFBAccess(int scrnIndex, Bool enable)
+     PixmapPtr pspix;
+ 
+     pspix = (*pScreen->GetScreenPixmap) (pScreen);
+-    if (enable)
+-    {
++    if (enable) {
+ 	/*
+ 	 * Restore all of the clip lists on the screen
+ 	 */
+@@ -1018,8 +1042,7 @@ xf86EnableDisableFBAccess(int scrnIndex, Bool enable)
+ 	    SetRootClip (pScreen, TRUE);
+ 
+     }
+-    else
+-    {
++    else {
+ 	/*
+ 	 * Empty all of the clip lists on the screen
+ 	 */
+@@ -1087,8 +1110,8 @@ xf86VIDrvMsgVerb(InputInfoPtr dev, MessageType type, int verb,
+ 
+ /* Print input driver message, with verbose level specified directly */
+ void
+-xf86IDrvMsgVerb(InputInfoPtr dev, MessageType type, int verb, const char *format,
+-	       ...)
++xf86IDrvMsgVerb(InputInfoPtr dev, MessageType type, int verb,
++                const char *format, ...)
+ {
+     va_list ap;
+ 
+@@ -1108,7 +1131,6 @@ xf86IDrvMsg(InputInfoPtr dev, MessageType type, const char *format, ...)
+     va_end(ap);
+ }
+ 
+-
+ /* Print non-driver messages with verbose level specified directly */
+ void
+ xf86MsgVerb(MessageType type, int verb, const char *format, ...)
+@@ -1155,7 +1177,6 @@ xf86ErrorF(const char *format, ...)
+     va_end(ap);
+ }
+ 
+-
+ void
+ xf86LogInit(void)
+ {
+@@ -1190,7 +1211,6 @@ xf86CloseLog(enum ExitCode error)
+     LogClose(error);
+ }
+ 
+-
+ /*
+  * Drivers can use these for using their own SymTabRecs.
+  */
+@@ -1200,8 +1220,7 @@ xf86TokenToString(SymTabPtr table, int token)
+ {
+     int i;
+ 
+-    for (i = 0; table[i].token >= 0 && table[i].token != token; i++)
+-	;
++    for (i = 0; table[i].token >= 0 && table[i].token != token; i++);
+ 
+     if (table[i].token < 0)
+ 	return NULL;
+@@ -1217,8 +1236,7 @@ xf86StringToToken(SymTabPtr table, const char *string)
+     if (string == NULL)
+ 	return -1;
+ 
+-    for (i = 0; table[i].token >= 0 && xf86NameCmp(string, table[i].name); i++)
+-	;
++    for (i = 0; table[i].token >= 0 && xf86NameCmp(string, table[i].name); i++);
+ 
+     return table[i].token;
+ }
+@@ -1242,7 +1260,6 @@ xf86ShowClocks(ScrnInfoPtr scrp, MessageType from)
+     xf86ErrorF("\n");
+ }
+ 
+-
+ /*
+  * This prints out the driver identify message, including the names of
+  * the supported chipsets.
+@@ -1265,7 +1282,8 @@ xf86PrintChipsets(const char *drvname, const char *drvmsg, SymTabPtr chips)
+ 	if (len + 2 + strlen(chips[i].name) < 78) {
+ 	    xf86ErrorF(" ");
+ 	    len++;
+-	} else {
++        }
++        else {
+ 	    xf86ErrorF("\n\t");
+ 	    len = 8;
+ 	}
+@@ -1275,7 +1293,6 @@ xf86PrintChipsets(const char *drvname, const char *drvmsg, SymTabPtr chips)
+     xf86ErrorF("\n");
+ }
+ 
+-
+ int
+ xf86MatchDevice(const char *drivername, GDevPtr **sectlist)
+ {
+@@ -1362,7 +1379,6 @@ xf86GetVisualName(int visual)
+     return xf86VisualNames[visual];
+ }
+ 
+-
+ int
+ xf86GetVerbosity(void)
+ {
+@@ -1375,84 +1391,72 @@ xf86GetPix24(void)
+     return xf86Info.pixmap24;
+ }
+ 
+-
+ int
+ xf86GetDepth(void)
+ {
+     return xf86Depth;
+ }
+ 
+-
+ rgb
+ xf86GetWeight(void)
+ {
+     return xf86Weight;
+ }
+ 
+-
+ Gamma
+ xf86GetGamma(void)
+ {
+     return xf86Gamma;
+ }
+ 
+-
+ Bool
+ xf86GetFlipPixels(void)
+ {
+     return xf86FlipPixels;
+ }
+ 
+-
+ const char *
+ xf86GetServerName(void)
+ {
+     return xf86ServerName;
+ }
+ 
+-
+ Bool
+ xf86ServerIsExiting(void)
+ {
+     return (dispatchException & DE_TERMINATE) == DE_TERMINATE;
+ }
+ 
+-
+ Bool
+ xf86ServerIsResetting(void)
+ {
+     return xf86Resetting;
+ }
+ 
+-
+ Bool
+ xf86ServerIsInitialising(void)
+ {
+     return xf86Initialising;
+ }
+ 
+-
+ Bool
+ xf86ServerIsOnlyDetecting(void)
+ {
+     return xf86DoConfigure;
+ }
+ 
+-
+ Bool
+ xf86CaughtSignal(void)
+ {
+     return xf86Info.caughtSignal;
+ }
+ 
+-
+ Bool
+ xf86GetVidModeAllowNonLocal(void)
+ {
+     return xf86Info.vidModeAllowNonLocal;
+ }
+ 
+-
+ Bool
+ xf86GetVidModeEnabled(void)
+ {
+@@ -1465,21 +1469,18 @@ xf86GetModInDevAllowNonLocal(void)
+     return xf86Info.miscModInDevAllowNonLocal;
+ }
+ 
+-
+ Bool
+ xf86GetModInDevEnabled(void)
+ {
+     return xf86Info.miscModInDevEnabled;
+ }
+ 
+-
+ Bool
+ xf86GetAllowMouseOpenFail(void)
+ {
+     return xf86Info.allowMouseOpenFail;
+ }
+ 
+-
+ void
+ xf86DisableRandR(void)
+ {
+@@ -1587,10 +1588,12 @@ xf86SetBackingStore(ScreenPtr pScreen)
+     if (xf86bsEnableFlag) {
+ 	from = X_CMDLINE;
+ 	useBS = TRUE;
+-    } else if (xf86bsDisableFlag) {
++    }
++    else if (xf86bsDisableFlag) {
+ 	from = X_CMDLINE;
+ 	useBS = FALSE;
+-    } else {
++    }
++    else {
+ 	if (xf86GetOptValBool(options, OPTION_BACKING_STORE, &useBS))
+ 	    from = X_CONFIG;
+     }
+@@ -1601,7 +1604,6 @@ xf86SetBackingStore(ScreenPtr pScreen)
+ 		   useBS ? "enabled" : "disabled");
+ }
+ 
+-
+ typedef enum {
+    OPTION_SILKEN_MOUSE
+ } SMOpts;
+@@ -1629,7 +1631,8 @@ xf86SetSilkenMouse (ScreenPtr pScreen)
+     if (xf86silkenMouseDisableFlag) {
+         from = X_CMDLINE;
+ 	useSM = FALSE;
+-    } else {
++    }
++    else {
+ 	if (xf86GetOptValBool(options, OPTION_SILKEN_MOUSE, &useSM))
+ 	    from = X_CONFIG;
+     }
+@@ -1656,14 +1659,18 @@ xf86FindXvOptions(int scrnIndex, int adaptor_index, char *port_name,
+     int i;
+ 
+     if (adaptor_index >= pScrn->confScreen->numxvadaptors) {
+-	if (adaptor_name) *adaptor_name = NULL;
+-	if (adaptor_options) *adaptor_options = NULL;
++        if (adaptor_name)
++            *adaptor_name = NULL;
++        if (adaptor_options)
++            *adaptor_options = NULL;
+ 	return NULL;
+     }
+ 
+     adaptor = &pScrn->confScreen->xvadaptors[adaptor_index];
+-    if (adaptor_name) *adaptor_name = adaptor->identifier;
+-    if (adaptor_options) *adaptor_options = adaptor->options;
++    if (adaptor_name)
++        *adaptor_name = adaptor->identifier;
++    if (adaptor_options)
++        *adaptor_options = adaptor->options;
+ 
+     for (i = 0; i < adaptor->numports; i++)
+ 	if (!xf86NameCmp(adaptor->ports[i].identifier, port_name))
+@@ -1693,7 +1700,9 @@ xf86ConfigFbEntity(ScrnInfoPtr pScrn, int scrnFlag, int entityIndex,
+ 		   pointer private)
+ {
+     EntityInfoPtr pEnt = xf86GetEntityInfo(entityIndex);
+-    if (!pEnt) return pScrn;
++
++    if (!pEnt)
++        return pScrn;
+ 
+     if (!(pEnt->location.type == BUS_NONE)) {
+ 	free(pEnt);
+@@ -1761,7 +1770,8 @@ xf86RegisterRootWindowProperty(int ScrnIndex, Atom property, Atom type,
+        * the changes are made in the order they were requested.
+        */
+       pNewProp->next = NULL;
+-    } else {
++    }
++    else {
+       free(pNewProp->name);
+       existing = TRUE;
+     }
+@@ -1789,7 +1799,8 @@ xf86RegisterRootWindowProperty(int ScrnIndex, Atom property, Atom type,
+     if (!existing) {
+       if ( xf86RegisteredPropertiesTable[ScrnIndex] == NULL) {
+ 	xf86RegisteredPropertiesTable[ScrnIndex] = pNewProp;
+-      } else {
++        }
++        else {
+ 	pRegProp = xf86RegisteredPropertiesTable[ScrnIndex];
+ 	while (pRegProp->next != NULL) {
+ 	  DebugF("- next %p\n", (void *)pRegProp);

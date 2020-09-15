@@ -1,0 +1,12 @@
+diff --git a/include/privates.h b/include/privates.h
+index 9fb6ae8..7ef2cb7 100644
+--- a/include/privates.h
++++ b/include/privates.h
+@@ -51,6 +51,7 @@ typedef enum {
+     PRIVATE_GLYPH,
+     PRIVATE_GLYPHSET,
+     PRIVATE_PICTURE,
++    PRIVATE_SYNC_FENCE,
+ 
+     /* last private type */
+     PRIVATE_LAST,

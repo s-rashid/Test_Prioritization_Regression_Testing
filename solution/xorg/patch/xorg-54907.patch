@@ -1,0 +1,21 @@
+diff --git a/Xext/dpmsstubs.c b/Xext/dpmsstubs.c
+index f0f54d2..80f13f5 100644
+--- a/Xext/dpmsstubs.c
++++ b/Xext/dpmsstubs.c
+@@ -34,12 +34,14 @@ Equipment Corporation.
+ 
+ #define FALSE 0
+ 
+-Bool DPMSSupported(void)
++Bool
++DPMSSupported(void)
+ {
+     return FALSE;
+ }
+ 
+-int DPMSSet(ClientPtr client, int level)
++int
++DPMSSet(ClientPtr client, int level)
+ {
+     return Success;
+ }

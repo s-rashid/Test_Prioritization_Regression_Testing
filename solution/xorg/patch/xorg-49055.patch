@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index 754fe37..4487628 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -347,7 +347,7 @@ SendXF86VidModeNotify(ScreenPtr pScreen, int state, Bool forced)
+ 	ev.type = XF86VidModeNotify + XF86VidModeEventBase;
+ 	ev.state = state;
+ 	ev.timestamp = currentTime.milliseconds;
+-	ev.root = WindowTable[pScreen->myNum]->drawable.id;
++	ev.root = pScreen->root->drawable.id;
+ 	ev.kind = kind;
+ 	ev.forced = forced;
+ 	WriteEventsToClient (pEv->client, 1, (xEvent *) &ev);

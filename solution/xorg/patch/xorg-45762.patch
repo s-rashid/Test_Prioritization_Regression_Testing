@@ -1,0 +1,12 @@
+diff --git a/dix/events.c b/dix/events.c
+index f50229a..a6a1075 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -162,6 +162,7 @@ typedef const char *string;
+ #include "geext.h"
+ #include "geint.h"
+ 
++#include "eventstr.h"
+ #include "enterleave.h"
+ #include "eventconvert.h"
+ 

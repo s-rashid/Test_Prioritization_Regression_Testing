@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxwindow.h b/hw/dmx/dmxwindow.h
+index 8bd1f74..f93121e 100644
+--- a/hw/dmx/dmxwindow.h
++++ b/hw/dmx/dmxwindow.h
+@@ -96,9 +96,6 @@ extern Bool dmxBEDestroyWindow(WindowPtr pWindow);
+ /* Support for shape extension */
+ extern void dmxSetShape(WindowPtr pWindow, int kind);
+ 
+-/** Private index.  \see dmxwindow.c \see dmxscrinit.c */
+-extern DevPrivateKey dmxWinPrivateKey;
+-
+ /** Get window private pointer. */
+ #define DMX_GET_WINDOW_PRIV(_pWin) ((dmxWinPrivPtr) \
+     dixLookupPrivate(&(_pWin)->devPrivates, dmxWinPrivateKey))

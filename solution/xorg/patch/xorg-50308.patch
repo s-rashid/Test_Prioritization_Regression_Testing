@@ -1,0 +1,12 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 935f5ea..a82cc38 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -3019,6 +3019,7 @@ register unsigned	bit;
+ 	    to = (CARD8 *)wire;
+ 	    if ((to-map)!=length) {
+ 		client->errorValue = _XkbErrCode2(0xff,length);
++		free(map);
+ 		return BadLength;
+ 	    }
+ 	}

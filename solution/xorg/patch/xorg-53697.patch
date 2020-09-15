@@ -1,0 +1,31 @@
+diff --git a/randr/rrproperty.c b/randr/rrproperty.c
+index 6ed24d3..d0a9020 100644
+--- a/randr/rrproperty.c
++++ b/randr/rrproperty.c
+@@ -550,6 +550,7 @@ ProcRRDeleteOutputProperty (ClientPtr client)
+ {
+     REQUEST(xRRDeleteOutputPropertyReq);
+     RROutputPtr	output;
++    RRPropertyPtr	prop;
+               
+     REQUEST_SIZE_MATCH(xRRDeleteOutputPropertyReq);
+     UpdateCurrentTime();
+@@ -561,6 +562,18 @@ ProcRRDeleteOutputProperty (ClientPtr client)
+ 	return BadAtom;
+     }
+ 
++    prop = RRQueryOutputProperty(output, stuff->property);
++    if (!prop)
++    {
++	client->errorValue = stuff->property;
++	return BadName;
++    }
++
++    if (prop->immutable)
++    {
++	client->errorValue = stuff->property;
++	return BadAccess;
++    }
+ 
+     RRDeleteOutputProperty(output, stuff->property);
+     return Success;

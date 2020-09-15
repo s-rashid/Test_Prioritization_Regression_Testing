@@ -1,0 +1,12 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 1460bc4..f8171ca 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -478,6 +478,7 @@ typedef struct _Screen {
+     pointer		devPrivate;
+     short       	numVisuals;
+     VisualPtr		visuals;
++    WindowPtr		root;
+     ScreenSaverStuffRec screensaver;
+ 
+     /* Random screen procedures */

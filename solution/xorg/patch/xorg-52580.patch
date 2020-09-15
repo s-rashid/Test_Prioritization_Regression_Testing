@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/glx/wgl_ext_api.c b/hw/xwin/glx/wgl_ext_api.c
+index 4b8359f..1020916 100644
+--- a/hw/xwin/glx/wgl_ext_api.c
++++ b/hw/xwin/glx/wgl_ext_api.c
+@@ -35,7 +35,7 @@
+ #include <GL/glext.h>
+ #include <glx/glxserver.h>
+ #include <glx/glxext.h>
+-#include "wglext.h"
++#include <GL/wglext.h>
+ #include <wgl_ext_api.h>
+ #include "glwindows.h"
+ 

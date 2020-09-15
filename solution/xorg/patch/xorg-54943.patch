@@ -1,0 +1,350 @@
+diff --git a/Xext/xvmc.c b/Xext/xvmc.c
+index 47b9f47..8a1d940 100644
+--- a/Xext/xvmc.c
++++ b/Xext/xvmc.c
+@@ -28,12 +28,11 @@
+ #include <sys/shm.h>
+ #endif /* HAS_XVMCSHM */
+    
+-
+-
+ #define DR_CLIENT_DRIVER_NAME_SIZE 48
+ #define DR_BUSID_SIZE 48
+ 
+ static DevPrivateKeyRec XvMCScreenKeyRec;
++
+ #define XvMCScreenKey (&XvMCScreenKeyRec)
+ static Bool XvMCInUse;
+ 
+@@ -60,7 +59,6 @@ typedef struct {
+ #define XVMC_GET_PRIVATE(pScreen) \
+     (XvMCScreenPtr)(dixLookupPrivate(&(pScreen)->devPrivates, XvMCScreenKey))
+ 
+-
+ static int
+ XvMCDestroyContextRes(pointer data, XID id)
+ {
+@@ -70,6 +68,7 @@ XvMCDestroyContextRes(pointer data, XID id)
+ 
+    if(!pContext->refcnt) {
+   	 XvMCScreenPtr pScreenPriv = XVMC_GET_PRIVATE(pContext->pScreen);
++
+ 	(*pScreenPriv->adaptors[pContext->adapt_num].DestroyContext)(pContext);
+ 	free(pContext);
+    }	   
+@@ -92,7 +91,6 @@ XvMCDestroySurfaceRes(pointer data, XID id)
+    return Success;
+ }
+ 
+-
+ static int
+ XvMCDestroySubpictureRes(pointer data, XID id)
+ {
+@@ -112,6 +110,7 @@ static int
+ ProcXvMCQueryVersion(ClientPtr client)
+ {
+     xvmcQueryVersionReply rep;
++
+     /* REQUEST(xvmcQueryVersionReq); */
+     REQUEST_SIZE_MATCH(xvmcQueryVersionReq);
+     rep.type = X_Reply;
+@@ -123,7 +122,6 @@ ProcXvMCQueryVersion(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int 
+ ProcXvMCListSurfaceTypes(ClientPtr client)
+ {
+@@ -134,6 +132,7 @@ ProcXvMCListSurfaceTypes(ClientPtr client)
+     xvmcSurfaceInfo info;
+     XvMCAdaptorPtr adaptor = NULL;
+     XvMCSurfaceInfoPtr surface;
++
+     REQUEST(xvmcListSurfaceTypesReq);
+     REQUEST_SIZE_MATCH(xvmcListSurfaceTypesReq);
+ 
+@@ -141,6 +140,7 @@ ProcXvMCListSurfaceTypes(ClientPtr client)
+ 
+     if(XvMCInUse) { /* any adaptors at all */
+        ScreenPtr pScreen = pPort->pAdaptor->pScreen;
++
+        if((pScreenPriv = XVMC_GET_PRIVATE(pScreen))) {  /* any this screen */
+           for(i = 0; i < pScreenPriv->num_adaptors; i++) {
+              if(pPort->pAdaptor == pScreenPriv->adaptors[i].xv_adaptor) {
+@@ -187,6 +187,7 @@ ProcXvMCCreateContext(ClientPtr client)
+     XvMCAdaptorPtr adaptor = NULL;
+     XvMCSurfaceInfoPtr surface = NULL;
+     xvmcCreateContextReply rep;
++
+     REQUEST(xvmcCreateContextReq);
+     REQUEST_SIZE_MATCH(xvmcCreateContextReq);
+ 
+@@ -219,8 +220,8 @@ ProcXvMCCreateContext(ClientPtr client)
+     }
+ 
+     /* adaptor doesn't support this suface_type_id */
+-    if(!surface) return BadMatch;
+-
++    if (!surface)
++        return BadMatch;
+ 
+     if((stuff->width > surface->max_width) ||
+        (stuff->height > surface->max_height))
+@@ -230,7 +231,6 @@ ProcXvMCCreateContext(ClientPtr client)
+ 	return BadAlloc;
+     }
+ 
+-
+     pContext->pScreen = pScreen;
+     pContext->adapt_num = adapt_num;
+     pContext->context_id = stuff->context_id;
+@@ -269,6 +269,7 @@ ProcXvMCDestroyContext(ClientPtr client)
+ {
+     pointer val;
+     int rc;
++
+     REQUEST(xvmcDestroyContextReq);
+     REQUEST_SIZE_MATCH(xvmcDestroyContextReq);
+ 
+@@ -292,6 +293,7 @@ ProcXvMCCreateSurface(ClientPtr client)
+     XvMCSurfacePtr pSurface;
+     XvMCScreenPtr pScreenPriv;
+     xvmcCreateSurfaceReply rep;
++
+     REQUEST(xvmcCreateSurfaceReq);
+     REQUEST_SIZE_MATCH(xvmcCreateSurfaceReq);
+ 
+@@ -309,8 +311,10 @@ ProcXvMCCreateSurface(ClientPtr client)
+     pSurface->surface_type_id = pContext->surface_type_id;
+     pSurface->context = pContext;
+ 
+-    result = (*pScreenPriv->adaptors[pContext->adapt_num].CreateSurface)(
+-                pSurface, &dwords, &data);
++    result =
++        (*pScreenPriv->adaptors[pContext->adapt_num].CreateSurface) (pSurface,
++                                                                     &dwords,
++                                                                     &data);
+ 
+     if(result != Success) {
+         free(pSurface);
+@@ -338,6 +342,7 @@ ProcXvMCDestroySurface(ClientPtr client)
+ {
+     pointer val;
+     int rc;
++
+     REQUEST(xvmcDestroySurfaceReq);
+     REQUEST_SIZE_MATCH(xvmcDestroySurfaceReq);
+ 
+@@ -363,6 +368,7 @@ ProcXvMCCreateSubpicture(ClientPtr client)
+     xvmcCreateSubpictureReply rep;
+     XvMCAdaptorPtr adaptor;
+     XvMCSurfaceInfoPtr surface = NULL;
++
+     REQUEST(xvmcCreateSubpictureReq);
+     REQUEST_SIZE_MATCH(xvmcCreateSubpictureReq);
+ 
+@@ -383,19 +389,23 @@ ProcXvMCCreateSubpicture(ClientPtr client)
+ 	}
+     } 
+ 
+-    if(!surface) return BadMatch;
++    if (!surface)
++        return BadMatch;
+ 
+     /* make sure this surface supports that xvimage format */
+-    if(!surface->compatible_subpictures) return BadMatch;
++    if (!surface->compatible_subpictures)
++        return BadMatch;
+ 
+     for(i = 0; i < surface->compatible_subpictures->num_xvimages; i++) {
+-      if(surface->compatible_subpictures->xvimage_ids[i] == stuff->xvimage_id) {
++        if (surface->compatible_subpictures->xvimage_ids[i] ==
++            stuff->xvimage_id) {
+ 	   image_supported = TRUE;
+ 	   break;
+       }
+     }
+ 
+-    if(!image_supported) return BadMatch;
++    if (!image_supported)
++        return BadMatch;
+ 
+     /* make sure the size is OK */
+     if((stuff->width > surface->subpicture_max_width) ||
+@@ -417,8 +427,9 @@ ProcXvMCCreateSubpicture(ClientPtr client)
+     pSubpicture->component_order[3] = 0;
+     pSubpicture->context = pContext;
+    
+-    result = (*pScreenPriv->adaptors[pContext->adapt_num].CreateSubpicture)(
+-                pSubpicture, &dwords, &data);
++    result =
++        (*pScreenPriv->adaptors[pContext->adapt_num].
++         CreateSubpicture) (pSubpicture, &dwords, &data);
+ 
+     if(result != Success) {
+         free(pSubpicture);
+@@ -454,6 +465,7 @@ ProcXvMCDestroySubpicture(ClientPtr client)
+ {
+     pointer val;
+     int rc;
++
+     REQUEST(xvmcDestroySubpictureReq);
+     REQUEST_SIZE_MATCH(xvmcDestroySubpictureReq);
+ 
+@@ -467,7 +479,6 @@ ProcXvMCDestroySubpicture(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int
+ ProcXvMCListSubpictureTypes(ClientPtr client)
+ {
+@@ -480,6 +491,7 @@ ProcXvMCListSubpictureTypes(ClientPtr client)
+     xvImageFormatInfo info;
+     XvImagePtr pImage;
+     int i, j;
++
+     REQUEST(xvmcListSubpictureTypesReq);
+     REQUEST_SIZE_MATCH(xvmcListSubpictureTypesReq);
+ 
+@@ -500,7 +512,8 @@ ProcXvMCListSubpictureTypes(ClientPtr client)
+         }
+     }
+ 
+-    if(!adaptor) return BadMatch;
++    if (!adaptor)
++        return BadMatch;
+ 
+     for(i = 0; i < adaptor->num_surfaces; i++) {
+         if(adaptor->surfaces[i]->surface_type_id == stuff->surface_type_id) {
+@@ -509,7 +522,8 @@ ProcXvMCListSubpictureTypes(ClientPtr client)
+         }
+     }
+ 
+-    if(!surface) return BadMatch;
++    if (!surface)
++        return BadMatch;
+ 
+     rep.type = X_Reply;
+     rep.sequenceNumber = client->sequence;
+@@ -525,13 +539,13 @@ ProcXvMCListSubpictureTypes(ClientPtr client)
+ 	pImage = NULL;
+ 	for(j = 0; j < adaptor->num_subpictures; j++) {
+ 	    if(surface->compatible_subpictures->xvimage_ids[i] ==
+-	       adaptor->subpictures[j]->id)
+-	    {
++                adaptor->subpictures[j]->id) {
+ 		pImage = adaptor->subpictures[j];
+ 	        break;
+ 	    }
+ 	}
+-	if(!pImage) return BadImplementation;
++        if (!pImage)
++            return BadImplementation;
+ 
+         info.id = pImage->id;      
+ 	info.type = pImage->type;  
+@@ -620,18 +634,14 @@ ProcXvMCGetDRInfo(ClientPtr client)
+     }
+ #endif /* HAS_XVMCSHM */
+     
+-    WriteToClient(client, sizeof(xvmcGetDRInfoReply), 
+-		  (char*)&rep);
++    WriteToClient(client, sizeof(xvmcGetDRInfoReply), (char *) &rep);
+     if (rep.length) {      
+-	WriteToClient(client, rep.nameLen, 
+-		      pScreenPriv->clientDriverName);
+-	WriteToClient(client, rep.busIDLen, 
+-		      pScreenPriv->busID);
++        WriteToClient(client, rep.nameLen, pScreenPriv->clientDriverName);
++        WriteToClient(client, rep.busIDLen, pScreenPriv->busID);
+     }	
+     return Success;
+ }
+ 
+-
+ int (*ProcXvMCVector[xvmcNumRequest])(ClientPtr) = {
+   ProcXvMCQueryVersion,
+   ProcXvMCListSurfaceTypes,
+@@ -641,9 +651,7 @@ int (*ProcXvMCVector[xvmcNumRequest])(ClientPtr) = {
+   ProcXvMCDestroySurface,
+   ProcXvMCCreateSubpicture,
+   ProcXvMCDestroySubpicture,
+-  ProcXvMCListSubpictureTypes,
+-  ProcXvMCGetDRInfo
+-};
++        ProcXvMCListSubpictureTypes, ProcXvMCGetDRInfo};
+ 
+ static int
+ ProcXvMCDispatch (ClientPtr client)
+@@ -687,13 +695,17 @@ XvMCExtensionInit(void)
+                               ProcXvMCDispatch, SProcXvMCDispatch,
+                               NULL, StandardMinorOpcode);
+ 
+-   if(!extEntry) return;
++    if (!extEntry)
++        return;
+   
+    XvMCReqCode = extEntry->base;
+    XvMCEventBase = extEntry->eventBase;
+-   SetResourceTypeErrorValue(XvMCRTContext, extEntry->errorBase + XvMCBadContext);
+-   SetResourceTypeErrorValue(XvMCRTSurface, extEntry->errorBase + XvMCBadSurface);
+-   SetResourceTypeErrorValue(XvMCRTSubpicture, extEntry->errorBase + XvMCBadSubpicture);
++    SetResourceTypeErrorValue(XvMCRTContext,
++                              extEntry->errorBase + XvMCBadContext);
++    SetResourceTypeErrorValue(XvMCRTSurface,
++                              extEntry->errorBase + XvMCBadSurface);
++    SetResourceTypeErrorValue(XvMCRTSubpicture,
++                              extEntry->errorBase + XvMCBadSubpicture);
+ }
+ 
+ static Bool
+@@ -708,7 +720,6 @@ XvMCCloseScreen (int i, ScreenPtr pScreen)
+     return (*pScreen->CloseScreen)(i, pScreen);
+ }
+ 
+-
+ int
+ XvMCScreenInit(ScreenPtr pScreen, int num, XvMCAdaptorPtr pAdapt)
+ {
+@@ -738,7 +749,8 @@ XvMCScreenInit(ScreenPtr pScreen, int num, XvMCAdaptorPtr pAdapt)
+    return Success;
+ }
+ 
+-XvImagePtr XvMCFindXvImage(XvPortPtr pPort, CARD32 id)
++XvImagePtr
++XvMCFindXvImage(XvPortPtr pPort, CARD32 id)
+ {
+     XvImagePtr pImage = NULL;
+     ScreenPtr pScreen = pPort->pAdaptor->pScreen;
+@@ -759,7 +771,8 @@ XvImagePtr XvMCFindXvImage(XvPortPtr pPort, CARD32 id)
+        }
+     }
+ 
+-    if(!adaptor) return NULL;
++    if (!adaptor)
++        return NULL;
+ 
+     for(i = 0; i < adaptor->num_subpictures; i++) {
+         if(adaptor->subpictures[i]->id == id) {
+@@ -773,16 +786,14 @@ XvImagePtr XvMCFindXvImage(XvPortPtr pPort, CARD32 id)
+ 
+ int
+ xf86XvMCRegisterDRInfo(ScreenPtr pScreen, char *name,
+-		       char *busID, int major, int minor,
+-		       int patchLevel)
++                       char *busID, int major, int minor, int patchLevel)
+ {
+     XvMCScreenPtr pScreenPriv = XVMC_GET_PRIVATE(pScreen);
+-    strlcpy(pScreenPriv->clientDriverName, name,
+-	    DR_CLIENT_DRIVER_NAME_SIZE);
++
++    strlcpy(pScreenPriv->clientDriverName, name, DR_CLIENT_DRIVER_NAME_SIZE);
+     strlcpy(pScreenPriv->busID, busID, DR_BUSID_SIZE);
+     pScreenPriv->major = major;
+     pScreenPriv->minor = minor;
+     pScreenPriv->patchLevel = patchLevel;
+     return Success;
+ }
+-

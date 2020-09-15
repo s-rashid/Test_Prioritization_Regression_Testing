@@ -1,0 +1,12 @@
+diff --git a/miext/damage/damagestr.h b/miext/damage/damagestr.h
+index 812075a..d7435b2 100644
+--- a/miext/damage/damagestr.h
++++ b/miext/damage/damagestr.h
+@@ -54,6 +54,7 @@ typedef struct _damage {
+     RegionRec		pendingDamage; /* will be flushed post submission at the latest */
+     RegionRec		backupDamage; /* for use with damageMarker */
+     ScreenPtr		pScreen;
++    PrivateRec		*devPrivates;
+ } DamageRec;
+ 
+ typedef struct _damageScrPriv {

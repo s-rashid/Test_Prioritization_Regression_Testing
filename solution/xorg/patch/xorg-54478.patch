@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winwin32rootless.c b/hw/xwin/winwin32rootless.c
+index d9e71c0..91399c2 100644
+--- a/hw/xwin/winwin32rootless.c
++++ b/hw/xwin/winwin32rootless.c
+@@ -551,7 +551,7 @@ winMWExtWMRestackFrame (RootlessFrameID wid, RootlessFrameID nextWid)
+   winDebug ("winMWExtWMRestackFrame (%08x)\n", (int) pRLWinPriv);
+ #endif
+ 
+-  if (pScreenPriv->fRestacking) return;
++  if (pScreenPriv && pScreenPriv->fRestacking) return;
+ 
+   if (pScreenPriv) pScreenInfo = pScreenPriv->pScreenInfo;
+ 

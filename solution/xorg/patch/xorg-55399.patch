@@ -1,0 +1,34 @@
+diff --git a/hw/kdrive/src/kinfo.c b/hw/kdrive/src/kinfo.c
+index 0055b16..01ae1e4 100644
+--- a/hw/kdrive/src/kinfo.c
++++ b/hw/kdrive/src/kinfo.c
+@@ -28,8 +28,7 @@
+ KdCardInfo  *kdCardInfo;
+ 
+ KdCardInfo *
+-KdCardInfoAdd (KdCardFuncs  *funcs,
+-	       void	    *closure)
++KdCardInfoAdd(KdCardFuncs * funcs, void *closure)
+ {
+     KdCardInfo	*ci, **prev;
+ 
+@@ -63,8 +62,7 @@ KdCardInfoDispose (KdCardInfo *ci)
+     KdCardInfo	**prev;
+ 
+     for (prev = &kdCardInfo; *prev; prev = &(*prev)->next)
+-	if (*prev == ci)
+-	{
++        if (*prev == ci) {
+ 	    *prev = ci->next;
+ 	    free(ci);
+ 	    break;
+@@ -95,8 +93,7 @@ KdScreenInfoDispose (KdScreenInfo *si)
+     KdScreenInfo    **prev;
+ 
+     for (prev = &ci->screenList; *prev; prev = &(*prev)->next) {
+-	if (*prev == si)
+-	{
++        if (*prev == si) {
+ 	    *prev = si->next;
+ 	    free(si);
+ 	    if (!ci->screenList)

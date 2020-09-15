@@ -1,0 +1,195 @@
+diff --git a/xkb/xkbInit.c b/xkb/xkbInit.c
+index f578f16..4e8e267 100644
+--- a/xkb/xkbInit.c
++++ b/xkb/xkbInit.c
+@@ -81,7 +81,6 @@ typedef struct	_SrvXkmInfo {
+ 	XkbDescPtr	xkb;
+ } SrvXkmInfo;
+ 
+-
+ /***====================================================================***/
+ 
+ #ifndef XKB_DFLT_RULES_PROP
+@@ -159,7 +158,8 @@ char *			pval;
+ 
+     len+= 5; /* trailing NULs */
+ 
+-    name= MakeAtom(_XKB_RF_NAMES_PROP_ATOM,strlen(_XKB_RF_NAMES_PROP_ATOM),1);
++    name =
++        MakeAtom(_XKB_RF_NAMES_PROP_ATOM, strlen(_XKB_RF_NAMES_PROP_ATOM), 1);
+     if (name==None) {
+ 	ErrorF("[xkb] Atom error: %s not created\n",_XKB_RF_NAMES_PROP_ATOM);
+ 	return TRUE;
+@@ -200,8 +200,8 @@ char *			pval;
+ 	ErrorF("[xkb] Internal Error! bad size (%d!=%d) for _XKB_RULES_NAMES\n",
+ 								out,len);
+     }
+-    dixChangeWindowProperty(serverClient, screenInfo.screens[0]->root, name, XA_STRING, 8,
+-			    PropModeReplace, len, pval, TRUE);
++    dixChangeWindowProperty(serverClient, screenInfo.screens[0]->root, name,
++                            XA_STRING, 8, PropModeReplace, len, pval, TRUE);
+     free(pval);
+     return TRUE;
+ }
+@@ -297,8 +297,7 @@ XkbInitKeyTypes(XkbDescPtr xkb)
+     initTypeNames(NULL);
+     if (XkbAllocClientMap(xkb,XkbKeyTypesMask,num_dflt_types)!=Success)
+ 	return FALSE;
+-    if (XkbCopyKeyTypes(dflt_types,xkb->map->types,num_dflt_types)!=
+-    								 Success) {
++    if (XkbCopyKeyTypes(dflt_types, xkb->map->types, num_dflt_types) != Success) {
+ 	return FALSE;
+     }
+     xkb->map->size_types= xkb->map->num_types= num_dflt_types;
+@@ -313,7 +312,6 @@ XkbInitRadioGroups(XkbSrvInfoPtr xkbi)
+     return;
+ }
+ 
+-
+ static Status
+ XkbInitCompatStructs(XkbDescPtr xkb)
+ {
+@@ -334,10 +332,12 @@ XkbCompatMapPtr	compat;
+ 	compat->groups[i]= compatMap.groups[i];
+ 	if (compat->groups[i].vmods!=0) {
+ 	    unsigned mask;
++
+ 	    mask= XkbMaskForVMask(xkb,compat->groups[i].vmods);
+ 	    compat->groups[i].mask= compat->groups[i].real_mods|mask;
+ 	}
+-	else compat->groups[i].mask= compat->groups[i].real_mods;
++        else
++            compat->groups[i].mask = compat->groups[i].real_mods;
+     }
+     return Success;
+ }
+@@ -365,12 +365,18 @@ Atom		unknown;
+ 	return rtrn;
+     unknown= CREATE_ATOM("unknown");
+     names = xkb->names;
+-    if (names->keycodes==None)		names->keycodes= unknown;
+-    if (names->geometry==None)		names->geometry= unknown;
+-    if (names->phys_symbols==None)	names->phys_symbols= unknown;
+-    if (names->symbols==None)		names->symbols= unknown;
+-    if (names->types==None)		names->types= unknown;
+-    if (names->compat==None)		names->compat= unknown;
++    if (names->keycodes == None)
++        names->keycodes = unknown;
++    if (names->geometry == None)
++        names->geometry = unknown;
++    if (names->phys_symbols == None)
++        names->phys_symbols = unknown;
++    if (names->symbols == None)
++        names->symbols = unknown;
++    if (names->types == None)
++        names->types = unknown;
++    if (names->compat == None)
++        names->compat = unknown;
+     if (!(xkb->defined & XkmVirtualModsMask)) {
+         if (names->vmods[vmod_NumLock]==None)
+             names->vmods[vmod_NumLock]= CREATE_ATOM("NumLock");
+@@ -397,7 +403,8 @@ Atom		unknown;
+ 
+     if (xkb->geom!=NULL)
+ 	 names->geometry= xkb->geom->name;
+-    else names->geometry= unknown;
++    else
++        names->geometry = unknown;
+ 
+     return Success;
+ }
+@@ -461,8 +468,7 @@ XkbControlsPtr	ctrls;
+     ctrls->ignore_lock.real_mods = 0;
+     ctrls->ignore_lock.vmods = 0;
+     ctrls->enabled_ctrls = XkbAccessXTimeoutMask|XkbRepeatKeysMask|
+-				XkbMouseKeysAccelMask|XkbAudibleBellMask|
+-				XkbIgnoreGroupLockMask;
++        XkbMouseKeysAccelMask | XkbAudibleBellMask | XkbIgnoreGroupLockMask;
+     if (XkbWantAccessX)
+ 	ctrls->enabled_ctrls|= XkbAccessXKeysMask;
+     AccessXInit(pXDev);
+@@ -485,13 +491,11 @@ InitKeyboardDeviceStruct(DeviceIntPtr dev, XkbRMLVOSet *rmlvo,
+     if (dev->key || dev->kbdfeed)
+ 	return FALSE;
+ 
+-    if (!rmlvo)
+-    {
++    if (!rmlvo) {
+         rmlvo = &rmlvo_dflts;
+         XkbGetRulesDflts(rmlvo);
+     }
+ 
+-
+     memset(&changes, 0, sizeof(changes));
+     XkbSetCauseUnknown(&cause);
+ 
+@@ -611,7 +615,6 @@ unwind_key:
+     return FALSE;
+ }
+ 
+-
+ /***====================================================================***/
+ 
+ 	/*
+@@ -676,15 +679,18 @@ XkbProcessArguments(int argc,char *argv[],int i)
+ 	if(++i < argc) {
+ #if !defined(WIN32) && !defined(__CYGWIN__)
+ 	    if (getuid() != geteuid()) {
+-		LogMessage(X_WARNING, "-xkbdir is not available for setuid X servers\n");
++                LogMessage(X_WARNING,
++                           "-xkbdir is not available for setuid X servers\n");
+ 		return -1;
+-	    } else
++            }
++            else
+ #endif
+ 	    {
+ 		if (strlen(argv[i]) < PATH_MAX) {
+ 		    XkbBaseDirectory= argv[i];
+ 		    return 2;
+-	        } else {
++                }
++                else {
+ 		    LogMessage(X_ERROR, "-xkbdir pathname too long\n");
+ 		    return -1;
+ 		}
+@@ -697,6 +703,7 @@ XkbProcessArguments(int argc,char *argv[],int i)
+     else if ((strncmp(argv[i],"-accessx",8)==0)||
+                  (strncmp(argv[i],"+accessx",8)==0)) {
+ 	int j=1;	    
++
+ 	if (argv[i][0]=='-')        
+ 	    XkbWantAccessX= 0;
+ 	else {
+@@ -732,15 +739,15 @@ XkbProcessArguments(int argc,char *argv[],int i)
+ 	}
+ 	return j;
+     }
+-    if ((strcmp(argv[i], "-ardelay") == 0) ||
+-        (strcmp (argv[i], "-ar1") == 0)) {	/* -ardelay int */
+-	if (++i >= argc) UseMsg ();
++    if ((strcmp(argv[i], "-ardelay") == 0) || (strcmp(argv[i], "-ar1") == 0)) { /* -ardelay int */
++        if (++i >= argc)
++            UseMsg();
+ 	XkbDfltRepeatDelay = (long)atoi(argv[i]);
+ 	return 2;
+     }
+-    if ((strcmp(argv[i], "-arinterval") == 0) ||
+-        (strcmp (argv[i], "-ar2") == 0)) {	/* -arinterval int */
+-	if (++i >= argc) UseMsg ();
++    if ((strcmp(argv[i], "-arinterval") == 0) || (strcmp(argv[i], "-ar2") == 0)) {      /* -arinterval int */
++        if (++i >= argc)
++            UseMsg();
+ 	XkbDfltRepeatInterval = (long)atoi(argv[i]);
+ 	return 2;
+     }
+@@ -750,7 +757,8 @@ XkbProcessArguments(int argc,char *argv[],int i)
+ void
+ XkbUseMsg(void)
+ {
+-    ErrorF("[+-]accessx [ timeout [ timeout_mask [ feedback [ options_mask] ] ] ]\n");
++    ErrorF
++        ("[+-]accessx [ timeout [ timeout_mask [ feedback [ options_mask] ] ] ]\n");
+     ErrorF("                       enable/disable accessx key sequences\n");
+     ErrorF("-ardelay               set XKB autorepeat delay\n");
+     ErrorF("-arinterval            set XKB autorepeat interval\n");

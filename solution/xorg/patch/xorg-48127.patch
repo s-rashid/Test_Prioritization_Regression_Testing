@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 8c7ebf0..0ab6929 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -64,7 +64,7 @@ typedef HRESULT (*SHGETFOLDERPATHPROC)(
+  */
+ 
+ extern int			g_iNumScreens;
+-extern winScreenInfo		g_ScreenInfo[];
++extern winScreenInfo *		g_ScreenInfo;
+ extern char *			g_pszCommandLine;
+ extern Bool			g_fSilentFatalError;
+ 

@@ -1,0 +1,12 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index abfa957..7ba62ea 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -82,6 +82,7 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+     datasize = h * paddedWidth;
+ 
+     /* We will allocate the system pixmap later if needed. */
++    pPixmap->devPrivate.ptr = NULL;
+     pExaPixmap->sys_ptr = NULL;
+     pExaPixmap->sys_pitch = paddedWidth;
+ 

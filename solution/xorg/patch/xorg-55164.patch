@@ -1,0 +1,80 @@
+diff --git a/glx/glthread.h b/glx/glthread.h
+index 532401a..62c9bd4 100644
+--- a/glx/glthread.h
++++ b/glx/glthread.h
+@@ -22,7 +22,6 @@
+  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+-
+ /*
+  * Thread support for gl dispatch.
+  *
+@@ -63,7 +62,6 @@
+ #ifndef GLTHREAD_H
+ #define GLTHREAD_H
+ 
+-
+ #if defined(USE_MGL_NAMESPACE)
+ #define _glapi_Dispatch _mglapi_Dispatch
+ #endif
+@@ -115,9 +113,6 @@ typedef pthread_mutex_t _glthread_Mutex;
+ 
+ #endif /* PTHREADS */
+ 
+-
+-
+-
+ /*
+  * Solaris threads. Use only up to Solaris 2.4.
+  * Solaris 2.5 and higher provide POSIX threads.
+@@ -125,9 +120,6 @@ typedef pthread_mutex_t _glthread_Mutex;
+  * use -D_REENTRANT if using gcc.
+  */
+ 
+-
+-
+-
+ /*
+  * Windows threads. Should work with Windows NT and 95.
+  * IMPORTANT: Link with multithreaded runtime library when THREADS are
+@@ -184,8 +176,6 @@ typedef benaphore _glthread_Mutex;
+ 
+ #endif /* BEOS_THREADS */
+ 
+-
+-
+ #ifndef THREADS
+ 
+ /*
+@@ -210,8 +200,6 @@ typedef int _glthread_Mutex;
+ 
+ #endif /* THREADS */
+ 
+-
+-
+ /*
+  * Platform independent thread specific data API.
+  */
+@@ -219,14 +207,10 @@ typedef int _glthread_Mutex;
+ extern unsigned long
+ _glthread_GetID(void);
+ 
+-
+ extern void
+ _glthread_InitTSD(_glthread_TSD *);
+ 
+-
+-extern void *
+-_glthread_GetTSD(_glthread_TSD *);
+-
++extern void *_glthread_GetTSD(_glthread_TSD *);
+ 
+ extern void
+ _glthread_SetTSD(_glthread_TSD *, void *);
+@@ -247,5 +231,4 @@ extern TLS struct _glapi_table * _glapi_tls_Dispatch;
+ # endif /* defined(THREADS) */
+ #endif  /* ndef GL_CALL */
+ 
+-
+ #endif /* THREADS_H */

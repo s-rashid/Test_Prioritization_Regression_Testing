@@ -1,0 +1,12 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 9610427..efa2577 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -98,6 +98,7 @@ typedef struct _Client {
+     int         clientGone;
+     int         noClientException;	/* this client died or needs to be
+ 					 * killed */
++    int         ignoreCount;		/* count for Attend/IgnoreClient */
+     SaveSetElt	*saveSet;
+     int         numSaved;
+     int         (**requestVector) (

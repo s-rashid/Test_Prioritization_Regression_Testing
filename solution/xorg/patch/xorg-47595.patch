@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 587a928..cd69ca0 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -914,7 +914,7 @@ static XF86ModuleVersionInfo DRI2VersRec =
+     MODINFOSTRING1,
+     MODINFOSTRING2,
+     XORG_VERSION_CURRENT,
+-    1, 1, 0,
++    1, 2, 0,
+     ABI_CLASS_EXTENSION,
+     ABI_EXTENSION_VERSION,
+     MOD_CLASS_NONE,

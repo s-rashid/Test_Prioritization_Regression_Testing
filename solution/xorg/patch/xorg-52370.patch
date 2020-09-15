@@ -1,0 +1,18 @@
+diff --git a/fb/fbsetsp.c b/fb/fbsetsp.c
+index 61dc4dc..65ec8b8 100644
+--- a/fb/fbsetsp.c
++++ b/fb/fbsetsp.c
+@@ -46,13 +46,11 @@ fbSetSpans (DrawablePtr	    pDrawable,
+     int		    xoff;
+     int		    x1, x2;
+     
+-#ifdef FB_24_32BIT
+     if (pDrawable->bitsPerPixel != BitsPerPixel(pDrawable->depth))
+     {
+ 	fb24_32SetSpans (pDrawable, pGC, src, ppt, pwidth, nspans, fSorted);
+ 	return;
+     }
+-#endif
+     fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+     while (nspans--)
+     {

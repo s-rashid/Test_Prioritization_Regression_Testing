@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaaOverlay.c b/hw/xfree86/xaa/xaaOverlay.c
+index 2af8083..14de9bd 100644
+--- a/hw/xfree86/xaa/xaaOverlay.c
++++ b/hw/xfree86/xaa/xaaOverlay.c
+@@ -54,7 +54,7 @@ XAACopyWindow8_32(
+     	return;
+     }
+ 
+-    pwinRoot = WindowTable[pScreen->myNum];
++    pwinRoot = pScreen->root;
+ 
+     if(doUnderlay)
+ 	freeReg = miOverlayCollectUnderlayRegions(pWin, &borderClip);

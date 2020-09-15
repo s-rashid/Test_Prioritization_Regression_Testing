@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index 307e0c4..7d738d5 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -659,8 +659,6 @@ DoConfigure(void)
+     }
+ 
+     /* Disable PCI devices */
+-    xf86ResourceBrokerInit();
+-    xf86AccessInit();
+     xf86FindPrimaryDevice();
+  
+     /* Create XF86Config file structure */

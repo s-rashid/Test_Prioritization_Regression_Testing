@@ -1,0 +1,337 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 9e0c551..223d547 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -48,15 +48,13 @@ check_butmap_change(DeviceIntPtr dev, CARD8 *map, int len, CARD32 *errval_out,
+ {
+     int i, ret;
+ 
+-    if (!dev || !dev->button)
+-    {
++    if (!dev || !dev->button) {
+         client->errorValue = (dev) ? dev->id : 0;
+         return BadDevice;
+     }
+ 
+     ret = XaceHook(XACE_DEVICE_ACCESS, client, dev, DixManageAccess);
+-    if (ret != Success)
+-    {
++    if (ret != Success) {
+         client->errorValue = dev->id;
+         return ret;
+     }
+@@ -207,9 +205,9 @@ check_modmap_change_slave(ClientPtr client, DeviceIntPtr master,
+          * extended keyboard, ignore the whole remap request. */
+         for (j = 0;
+              j < XkbKeyNumSyms(slave_xkb, i) &&
+-              j < XkbKeyNumSyms(master_xkb, i);
+-             j++)
+-            if (XkbKeySymsPtr(slave_xkb, i)[j] != XkbKeySymsPtr(master_xkb, i)[j])
++             j < XkbKeyNumSyms(master_xkb, i); j++)
++            if (XkbKeySymsPtr(slave_xkb, i)[j] !=
++                XkbKeySymsPtr(master_xkb, i)[j])
+                 return 0;
+     }
+ 
+@@ -227,7 +225,8 @@ do_modmap_change(ClientPtr client, DeviceIntPtr dev, CARD8 *modmap)
+ }
+ 
+ /* Rebuild modmap (key -> mod) from map (mod -> key). */
+-static int build_modmap_from_modkeymap(CARD8 *modmap, KeyCode *modkeymap,
++static int
++build_modmap_from_modkeymap(CARD8 *modmap, KeyCode *modkeymap,
+                                        int max_keys_per_mod)
+ {
+     int i, len = max_keys_per_mod * 8;
+@@ -276,7 +275,8 @@ change_modmap(ClientPtr client, DeviceIntPtr dev, KeyCode *modkeymap,
+                     do_modmap_change(client, tmp, modmap);
+         }
+     }
+-    else if (!IsFloating(dev) && GetMaster(dev, MASTER_KEYBOARD)->lastSlave == dev) {
++    else if (!IsFloating(dev) &&
++             GetMaster(dev, MASTER_KEYBOARD)->lastSlave == dev) {
+         /* If this fails, expect the results to be weird. */
+         if (check_modmap_change(client, dev->master, modmap))
+             do_modmap_change(client, dev->master, modmap);
+@@ -285,7 +285,8 @@ change_modmap(ClientPtr client, DeviceIntPtr dev, KeyCode *modkeymap,
+     return Success;
+ }
+ 
+-int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
++int
++generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+                        KeyCode **modkeymap_out, int *max_keys_per_mod_out)
+ {
+     CARD8 keys_per_mod[8];
+@@ -370,8 +371,7 @@ DuplicateInputAttributes(InputAttributes *attrs)
+ 
+     new_attr->flags = attrs->flags;
+ 
+-    if ((tags = attrs->tags))
+-    {
++    if ((tags = attrs->tags)) {
+         while(*tags++)
+             ntags++;
+ 
+@@ -382,8 +382,7 @@ DuplicateInputAttributes(InputAttributes *attrs)
+         tags = attrs->tags;
+         new_tags = new_attr->tags;
+ 
+-        while(*tags)
+-        {
++        while (*tags) {
+             *new_tags = strdup(*tags);
+             if (!*new_tags)
+                 goto unwind;
+@@ -432,6 +431,7 @@ valuator_mask_new(int num_valuators)
+      * flying-car future, when we can dynamically alloc the masks and are
+      * not constrained by signals, we can start using num_valuators */
+     ValuatorMask *mask = calloc(1, sizeof(ValuatorMask));
++
+     if (mask == NULL)
+         return NULL;
+ 
+@@ -446,20 +446,20 @@ valuator_mask_free(ValuatorMask **mask)
+     *mask = NULL;
+ }
+ 
+-
+ /**
+  * Sets a range of valuators between first_valuator and num_valuators with
+  * the data in the valuators array. All other values are set to 0.
+  */
+ void
+-valuator_mask_set_range(ValuatorMask *mask, int first_valuator, int num_valuators,
+-                        const int* valuators)
++valuator_mask_set_range(ValuatorMask *mask, int first_valuator,
++                        int num_valuators, const int *valuators)
+ {
+     int i;
+ 
+     valuator_mask_zero(mask);
+ 
+-    for (i = first_valuator; i < min(first_valuator + num_valuators, MAX_VALUATORS); i++)
++    for (i = first_valuator;
++         i < min(first_valuator + num_valuators, MAX_VALUATORS); i++)
+         valuator_mask_set(mask, i, valuators[i - first_valuator]);
+ }
+ 
+@@ -550,13 +550,14 @@ valuator_mask_get(const ValuatorMask *mask, int valuator)
+  * FALSE is returned.
+  */
+ Bool
+-valuator_mask_fetch_double(const ValuatorMask *mask, int valuator, double *value)
+-{
+-    if (valuator_mask_isset(mask, valuator))
++valuator_mask_fetch_double(const ValuatorMask *mask, int valuator,
++                           double *value)
+     {
++    if (valuator_mask_isset(mask, valuator)) {
+         *value = valuator_mask_get_double(mask, valuator);
+         return TRUE;
+-    } else
++    }
++    else
+         return FALSE;
+ }
+ 
+@@ -570,11 +571,11 @@ valuator_mask_fetch_double(const ValuatorMask *mask, int valuator, double *value
+ Bool
+ valuator_mask_fetch(const ValuatorMask *mask, int valuator, int *value)
+ {
+-    if (valuator_mask_isset(mask, valuator))
+-    {
++    if (valuator_mask_isset(mask, valuator)) {
+         *value = valuator_mask_get(mask, valuator);
+         return TRUE;
+-    } else
++    }
++    else
+         return FALSE;
+ }
+ 
+@@ -624,17 +625,16 @@ CountBits(const uint8_t *mask, int len)
+  * memdumps the first 32 bytes of event to the log, a backtrace, then kill
+  * the server.
+  */
+-void verify_internal_event(const InternalEvent *ev)
+-{
+-    if (ev && ev->any.header != ET_Internal)
++void
++verify_internal_event(const InternalEvent *ev)
+     {
++    if (ev && ev->any.header != ET_Internal) {
+         int i;
+         const unsigned char *data = (const unsigned char*)ev;
+ 
+         ErrorF("dix: invalid event type %d\n", ev->any.header);
+ 
+-        for (i = 0; i < sizeof(xEvent); i++, data++)
+-        {
++        for (i = 0; i < sizeof(xEvent); i++, data++) {
+             ErrorF("%02hhx ", *data);
+ 
+             if ((i % 8) == 7)
+@@ -650,7 +650,8 @@ void verify_internal_event(const InternalEvent *ev)
+  * Initializes the given event to zero (or default values), for the given
+  * device.
+  */
+-void init_device_event(DeviceEvent *event, DeviceIntPtr dev, Time ms)
++void
++init_device_event(DeviceEvent *event, DeviceIntPtr dev, Time ms)
+ {
+     memset(event, 0, sizeof(DeviceEvent));
+     event->header = ET_Internal;
+@@ -660,18 +661,23 @@ void init_device_event(DeviceEvent *event, DeviceIntPtr dev, Time ms)
+     event->sourceid = dev->id;
+ }
+ 
+-int event_get_corestate(DeviceIntPtr mouse, DeviceIntPtr kbd)
++int
++event_get_corestate(DeviceIntPtr mouse, DeviceIntPtr kbd)
+ {
+     int corestate;
++
+     /* core state needs to be assembled BEFORE the device is updated. */
+-    corestate = (kbd && kbd->key) ? XkbStateFieldFromRec(&kbd->key->xkbInfo->state) : 0;
++    corestate = (kbd &&
++                 kbd->key) ? XkbStateFieldFromRec(&kbd->key->xkbInfo->
++                                                  state) : 0;
+     corestate |= (mouse && mouse->button) ? (mouse->button->state) : 0;
+     corestate |= (mouse && mouse->touch) ? (mouse->touch->state) : 0;
+ 
+     return corestate;
+ }
+ 
+-void event_set_state(DeviceIntPtr mouse, DeviceIntPtr kbd, DeviceEvent *event)
++void
++event_set_state(DeviceIntPtr mouse, DeviceIntPtr kbd, DeviceEvent *event)
+ {
+     int i;
+ 
+@@ -682,9 +688,9 @@ void event_set_state(DeviceIntPtr mouse, DeviceIntPtr kbd, DeviceEvent *event)
+     if (mouse && mouse->touch && mouse->touch->buttonsDown > 0)
+         SetBit(event->buttons, mouse->button->map[1]);
+ 
+-    if (kbd && kbd->key)
+-    {
++    if (kbd && kbd->key) {
+         XkbStatePtr state;
++
+         /* we need the state before the event happens */
+         if (event->type == ET_KeyPress || event->type == ET_KeyRelease)
+             state = &kbd->key->xkbInfo->prev_state;
+@@ -742,6 +748,7 @@ update_desktop_dimensions(void)
+ 
+     for (i = 0; i < screenInfo.numScreens; i++) {
+         ScreenPtr screen = screenInfo.screens[i];
++
+         x1 = min(x1, screen->x);
+         y1 = min(y1, screen->y);
+         x2 = max(x2, screen->x + screen->width);
+@@ -791,12 +798,9 @@ input_option_new(InputOption* list, const char *key, const char *value)
+     if (!key)
+         return NULL;
+ 
+-    if (list)
+-    {
+-        nt_list_for_each_entry(opt, list, list.next)
+-        {
+-            if (strcmp(input_option_get_key(opt), key) == 0)
+-            {
++    if (list) {
++        nt_list_for_each_entry(opt, list, list.next) {
++            if (strcmp(input_option_get_key(opt), key) == 0) {
+                 input_option_set_value(opt, value);
+                 return list;
+             }
+@@ -811,11 +815,12 @@ input_option_new(InputOption* list, const char *key, const char *value)
+     input_option_set_key(opt, key);
+     input_option_set_value(opt, value);
+ 
+-    if (list)
+-    {
++    if (list) {
+         nt_list_append(opt, list, InputOption, list.next);
++
+         return list;
+-    } else
++    }
++    else
+         return opt;
+ }
+ 
+@@ -827,6 +832,7 @@ input_option_free_element(InputOption *list, const char *key)
+     nt_list_for_each_entry(element, list, list.next) {
+         if (strcmp(input_option_get_key(element), key) == 0) {
+             nt_list_del(element, list, InputOption, list.next);
++
+             input_option_free(element);
+             break;
+         }
+@@ -844,12 +850,12 @@ input_option_free_list(InputOption **opt)
+ 
+     nt_list_for_each_entry_safe(element, tmp, *opt, list.next) {
+         nt_list_del(element, *opt, InputOption, list.next);
++
+         input_option_free(element);
+     }
+     *opt = NULL;
+ }
+ 
+-
+ /**
+  * Find the InputOption with the given option name.
+  *
+@@ -896,7 +902,6 @@ input_option_set_value(InputOption *opt, const char *value)
+         opt->opt_val = strdup(value);
+ }
+ 
+-
+ /* FP1616/FP3232 conversion functions.
+  * Fixed point types are encoded as signed integral and unsigned frac. So any
+  * negative number -n.m is encoded as floor(n) + (1 - 0.m).
+@@ -915,12 +920,12 @@ double
+ fp3232_to_double(FP3232 in)
+ {
+     double ret;
++
+     ret  = (double)in.integral;
+     ret += (double)in.frac * (1.0 / (1ULL << 32)); /* Optimized: ldexp((double)in.frac, -32); */
+     return ret;
+ }
+ 
+-
+ FP1616
+ double_to_fp1616(double in)
+ {
+@@ -973,10 +978,10 @@ xi2mask_new_with_size(size_t nmasks, size_t size)
+     int i;
+ 
+     XI2Mask *mask = calloc(1, sizeof(*mask));
++
+     if (!mask)
+         return NULL;
+ 
+-
+     mask->nmasks = nmasks;
+     mask->mask_size = size;
+ 
+@@ -996,7 +1001,6 @@ unwind:
+     return NULL;
+ }
+ 
+-
+ /**
+  * Create a new XI2 mask of the standard size, i.e. for all devices + fake
+  * devices and for the highest supported XI2 event type.
+@@ -1120,7 +1124,8 @@ xi2mask_mask_size(const XI2Mask *mask)
+  * parts are copied.
+  */
+ void
+-xi2mask_set_one_mask(XI2Mask *xi2mask, int deviceid, const unsigned char *mask, size_t mask_size)
++xi2mask_set_one_mask(XI2Mask *xi2mask, int deviceid, const unsigned char *mask,
++                     size_t mask_size)
+ {
+     BUG_WARN(deviceid < 0);
+     BUG_WARN(deviceid >= xi2mask->nmasks);

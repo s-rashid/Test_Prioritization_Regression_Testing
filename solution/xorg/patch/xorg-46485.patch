@@ -1,0 +1,59 @@
+diff --git a/hw/xquartz/xpr/xprEvent.c b/hw/xquartz/xpr/xprEvent.c
+index f8e985a..6245cce 100644
+--- a/hw/xquartz/xpr/xprEvent.c
++++ b/hw/xquartz/xpr/xprEvent.c
+@@ -39,6 +39,7 @@
+ #include   "windowstr.h"
+ #include   "pixmapstr.h"
+ #include   "inputstr.h"
++#include   "eventstr.h"
+ #include   "mi.h"
+ #include   "scrnintstr.h"
+ #include   "mipointer.h"
+@@ -55,36 +56,26 @@
+ #include "rootlessWindow.h"
+ #include "xprEvent.h"
+ 
+-static void xprEventHandler(int screenNum, xEventPtr xe, DeviceIntPtr dev, int nevents) {
+-    int i;
+-    
++Bool QuartzModeEventHandler(int screenNum, XQuartzEvent *e, DeviceIntPtr dev) {
+     TA_SERVER();
+     
+-    DEBUG_LOG("DarwinEventHandler(%d, %p, %p, %d)\n", screenNum, xe, dev, nevents);
+-    for (i=0; i<nevents; i++) {
+-        switch(xe[i].u.u.type) {
+-                
++    switch(e->subtype) {
+             case kXquartzWindowState:
+                 DEBUG_LOG("kXquartzWindowState\n");
+-                RootlessNativeWindowStateChanged(xprGetXWindow(xe[i].u.clientMessage.u.l.longs0),
+-                                                 xe[i].u.clientMessage.u.l.longs1);
+-                break;
++            RootlessNativeWindowStateChanged(xprGetXWindow(e->data[0]),
++                                             e->data[1]);
++            return TRUE;
+                 
+             case kXquartzWindowMoved:
+                 DEBUG_LOG("kXquartzWindowMoved\n");
+-                RootlessNativeWindowMoved(xprGetXWindow(xe[i].u.clientMessage.u.l.longs0));
+-                break;
++            RootlessNativeWindowMoved(xprGetXWindow(e->data[0]));
++            return TRUE;
+                 
+             case kXquartzBringAllToFront:
+                 DEBUG_LOG("kXquartzBringAllToFront\n");
+                 RootlessOrderAllWindows();
+-                break;
+-        }
++            return TRUE;
++        default:
++            return FALSE;
+     }
+ }
+-
+-void QuartzModeEQInit(void) {
+-    mieqSetHandler(kXquartzWindowState, xprEventHandler);
+-    mieqSetHandler(kXquartzWindowMoved, xprEventHandler);
+-    mieqSetHandler(kXquartzBringAllToFront, xprEventHandler);
+-}

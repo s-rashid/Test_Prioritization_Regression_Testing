@@ -1,0 +1,28 @@
+diff --git a/hw/xnest/GC.c b/hw/xnest/GC.c
+index 7968b4f..48fe4dc 100644
+--- a/hw/xnest/GC.c
++++ b/hw/xnest/GC.c
+@@ -81,7 +81,6 @@ xnestCreateGC(GCPtr pGC)
+   xnestGCPriv(pGC)->gc = XCreateGC(xnestDisplay, 
+ 				   xnestDefaultDrawables[pGC->depth], 
+ 				   0L, NULL);
+-  xnestGCPriv(pGC)->nClipRects = 0;
+ 
+   return True;
+ }
+@@ -282,7 +281,6 @@ xnestChangeClip(GCPtr pGC, int type, pointer pValue, int nRects)
+ 
+   pGC->clientClipType = type;
+   pGC->clientClip = pValue;
+-  xnestGCPriv(pGC)->nClipRects = nRects;
+ }
+ 
+ void
+@@ -294,7 +292,6 @@ xnestDestroyClip(GCPtr pGC)
+  
+   pGC->clientClipType = CT_NONE;
+   pGC->clientClip = NULL;
+-  xnestGCPriv(pGC)->nClipRects = 0;
+ }
+ 
+ void

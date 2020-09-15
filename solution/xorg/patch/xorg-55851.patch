@@ -1,0 +1,131 @@
+diff --git a/hw/xwin/wingc.c b/hw/xwin/wingc.c
+index e351c50..8b7c704 100644
+--- a/hw/xwin/wingc.c
++++ b/hw/xwin/wingc.c
+@@ -34,8 +34,9 @@
+ #include "win.h"
+ 
+ void
+-winPushPixels (GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable, int dx, int dy, int xOrg, int yOrg);
+ 
++winPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable, int dx,
++              int dy, int xOrg, int yOrg);
+ 
+ /*
+  * Local prototypes
+@@ -47,9 +48,8 @@ winChangeGCNativeGDI (GCPtr pGC, unsigned long ulChanges);
+ #endif
+ 
+ static void
+-winValidateGCNativeGDI (GCPtr pGC,
+-			unsigned long changes,
+-			DrawablePtr pDrawable);
++
++winValidateGCNativeGDI(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable);
+ 
+ #if 0
+ static void
+@@ -122,7 +122,6 @@ const GCOps winGCOps = {
+   miPushPixels,
+ };
+ 
+-
+ /* See Porting Layer Definition - p. 45 */
+ /* See mfb/mfbgc.c - mfbCreateGC() */
+ /* See Strategies for Porting - pp. 15, 16 */
+@@ -133,8 +132,7 @@ winCreateGCNativeGDI (GCPtr pGC)
+   winPrivScreenPtr	pScreenPriv = NULL;
+ 
+ #if 0
+-  ErrorF ("winCreateGCNativeGDI - depth: %d\n",
+-	  pGC->depth);
++    ErrorF("winCreateGCNativeGDI - depth: %d\n", pGC->depth);
+ #endif
+ 
+   pGC->ops = (GCOps *) &winGCOps;
+@@ -145,8 +143,7 @@ winCreateGCNativeGDI (GCPtr pGC)
+ 
+   /* Allocate privates for this GC */
+   pGCPriv = winGetGCPriv (pGC);
+-  if (pGCPriv == NULL)
+-    {
++    if (pGCPriv == NULL) {
+       ErrorF ("winCreateGCNativeGDI () - Privates pointer was NULL\n");
+       return FALSE;
+     }
+@@ -161,7 +158,6 @@ winCreateGCNativeGDI (GCPtr pGC)
+   return TRUE;
+ }
+ 
+-
+ #if 0
+ /* See Porting Layer Definition - p. 45 */
+ static void
+@@ -173,20 +169,18 @@ winChangeGCNativeGDI (GCPtr pGC, unsigned long ulChanges)
+ }
+ #endif
+ 
+-
+ static void
+ winValidateGCNativeGDI (GCPtr pGC,
+-			unsigned long ulChanges,
+-			DrawablePtr pDrawable)
+-{
+-  if ((ulChanges & (GCClipXOrigin | GCClipYOrigin | GCClipMask | GCSubwindowMode)) 
+-      || (pDrawable->serialNumber != (pGC->serialNumber & DRAWABLE_SERIAL_BITS)))
++                       unsigned long ulChanges, DrawablePtr pDrawable)
+   {
++    if ((ulChanges &
++         (GCClipXOrigin | GCClipYOrigin | GCClipMask | GCSubwindowMode))
++        || (pDrawable->serialNumber !=
++            (pGC->serialNumber & DRAWABLE_SERIAL_BITS))) {
+     miComputeCompositeClip (pGC, pDrawable);
+   }
+ }
+ 
+-
+ #if 0
+ /* See Porting Layer Definition - p. 46 */
+ static void
+@@ -196,7 +190,6 @@ winCopyGCNativeGDI (GCPtr pGCsrc, unsigned long ulMask, GCPtr pGCdst)
+ }
+ #endif
+ 
+-
+ /* See Porting Layer Definition - p. 46 */
+ static void
+ winDestroyGCNativeGDI (GCPtr pGC)
+@@ -208,15 +201,13 @@ winDestroyGCNativeGDI (GCPtr pGC)
+ 	RegionDestroy(pGC->pCompositeClip);
+ 
+   /* Free the memory DC */
+-  if (pGCPriv->hdcMem != NULL)
+-    {
++    if (pGCPriv->hdcMem != NULL) {
+       DeleteDC (pGCPriv->hdcMem);
+       pGCPriv->hdcMem = NULL;
+     }
+ 
+   /* Release the screen DC for the display window */
+-  if (pGCPriv->hdc != NULL)
+-    {
++    if (pGCPriv->hdc != NULL) {
+       ReleaseDC (pScreenPriv->hwndScreen, pGCPriv->hdc);
+       pGCPriv->hdc = NULL;
+     }
+@@ -233,7 +224,6 @@ winChangeClipNativeGDI (GCPtr pGC, int nType, pointer pValue, int nRects)
+ 
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 47 */
+ static void
+ winDestroyClipNativeGDI (GCPtr pGC)
+@@ -241,7 +231,6 @@ winDestroyClipNativeGDI (GCPtr pGC)
+ 
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 47 */
+ static void
+ winCopyClipNativeGDI (GCPtr pGCdst, GCPtr pGCsrc)

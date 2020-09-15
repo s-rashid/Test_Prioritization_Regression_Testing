@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 0974893..2a7d0a3 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -1053,7 +1053,7 @@ AbortDDX(enum ExitCode error)
+ }
+ 
+ void
+-OsVendorFatalError(void)
++OsVendorFatalError(const char *f, va_list args)
+ {
+ #ifdef VENDORSUPPORT
+     ErrorF("\nPlease refer to your Operating System Vendor support pages\n"

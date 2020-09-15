@@ -1,0 +1,15 @@
+diff --git a/dix/main.c b/dix/main.c
+index d4db90c..da910fe 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -255,9 +255,9 @@ int main(int argc, char *argv[], char *envp[])
+ 	    InitRootWindow(WindowTable[i]);
+ 
+         InitCoreDevices();
+-        config_init();
+ 	InitInput(argc, argv);
+ 	InitAndStartDevices();
++	config_init();
+ 
+ 	dixSaveScreens(serverClient, SCREEN_SAVER_FORCER, ScreenSaverReset);
+ 

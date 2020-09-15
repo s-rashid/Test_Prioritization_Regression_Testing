@@ -1,0 +1,13 @@
+diff --git a/os/strcasestr.c b/os/strcasestr.c
+index b3d4549..f89b2f2 100644
+--- a/os/strcasestr.c
++++ b/os/strcasestr.c
+@@ -54,7 +54,7 @@ xstrcasestr(const char *s, const char *find)
+                 do {
+                         do {
+                                 if ((sc = *s++) == 0)
+-                                        return (NULL);
++                                        return NULL;
+                         } while ((char)tolower((unsigned char)sc) != c);
+                 } while (strncasecmp(s, find, len) != 0);
+                 s--;

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index 26f822d..9982601 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -87,6 +87,8 @@ typedef struct {
+     Bool		miscModInDevEnabled;	/* Allow input devices to be
+ 						 * changed */
+     Bool		miscModInDevAllowNonLocal;
++    Bool		useSIGIO;		/* Use SIGIO for handling
++						   input device events */
+     Pix24Flags		pixmap24;
+     MessageType		pix24From;
+ #ifdef __i386__

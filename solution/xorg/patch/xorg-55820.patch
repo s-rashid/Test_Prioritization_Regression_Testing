@@ -1,0 +1,74 @@
+diff --git a/hw/xwin/InitInput.c b/hw/xwin/InitInput.c
+index 9cf5735..395b533 100644
+--- a/hw/xwin/InitInput.c
++++ b/hw/xwin/InitInput.c
+@@ -33,7 +33,6 @@
+ #include "dixstruct.h"
+ #include "inputstr.h"
+ 
+-
+ /*
+  * Local function prototypes
+  */
+@@ -44,7 +43,6 @@ int winProcQueryTree(ClientPtr /* client */);
+ int winProcSetSelectionOwner(ClientPtr /* client */);
+ #endif
+ 
+-
+ /*
+  * Local global declarations
+  */
+@@ -67,7 +65,6 @@ LegalModifier (unsigned int uiKey, DeviceIntPtr pDevice)
+   return TRUE;
+ }
+ 
+-
+ /* Called from dix/dispatch.c */
+ /*
+  * Run through the Windows message queue(s) one more time.
+@@ -87,14 +84,13 @@ ProcessInputEvents (void)
+ #endif
+ }
+ 
+-
+-void DDXRingBell(int volume, int pitch, int duration)
++void
++DDXRingBell(int volume, int pitch, int duration)
+ {
+   /* winKeybdBell is used instead */
+   return;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 17 */
+ void
+ InitInput (int argc, char *argv[])
+@@ -107,8 +103,7 @@ InitInput (int argc, char *argv[])
+   /*
+    * Wrap some functions at every generation of the server.
+    */
+-  if (InitialVector[2] != winProcEstablishConnection)
+-    {
++    if (InitialVector[2] != winProcEstablishConnection) {
+       winProcEstablishConnectionOrig = InitialVector[2];
+       InitialVector[2] = winProcEstablishConnection;
+     }
+@@ -126,15 +121,12 @@ InitInput (int argc, char *argv[])
+ 
+ #ifdef HAS_DEVWINDOWS
+   /* Only open the windows message queue device once */
+-  if (g_fdMessageQueue == WIN_FD_INVALID)
+-    {
++    if (g_fdMessageQueue == WIN_FD_INVALID) {
+       /* Open a file descriptor for the Windows message queue */
+       g_fdMessageQueue = open (WIN_MSG_QUEUE_FNAME, O_RDONLY);
+       
+-      if (g_fdMessageQueue == -1)
+-	{
+-	  FatalError ("InitInput - Failed opening %s\n",
+-		      WIN_MSG_QUEUE_FNAME);
++        if (g_fdMessageQueue == -1) {
++            FatalError("InitInput - Failed opening %s\n", WIN_MSG_QUEUE_FNAME);
+ 	}
+ 
+       /* Add the message queue as a device to wait for in WaitForSomething */

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/appledri.c b/hw/xquartz/xpr/appledri.c
+index 1304d5a..f6bc32b 100644
+--- a/hw/xquartz/xpr/appledri.c
++++ b/hw/xquartz/xpr/appledri.c
+@@ -279,7 +279,7 @@ ProcAppleDRICreatePixmap(ClientPtr client)
+ 		
+     /* No need for swapping, because this only runs if LocalClient is true. */
+     rep.type = X_Reply;
+-    rep.length = sizeof(rep) + rep.stringLength;
++    rep.length = bytes_to_int32(rep.stringLength);
+     rep.sequenceNumber = client->sequence;
+     rep.width = width;
+     rep.height = height;

@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/common/xf86pciBus.c b/hw/xfree86/common/xf86pciBus.c
+index df62e07..ac018e7 100644
+--- a/hw/xfree86/common/xf86pciBus.c
++++ b/hw/xfree86/common/xf86pciBus.c
+@@ -124,7 +124,7 @@ xf86PciProbe(void)
+ 	    info->user_data = 0;
+ 	}
+     }
+-
++    free(iter);
+ 
+     /* If we haven't found a primary device try a different heuristic */
+     if (primaryBus.type == BUS_NONE && num) {
+@@ -212,6 +212,7 @@ xf86PciProbe(void)
+ 
+ 	xf86ErrorF("\n");
+     }
++    xfree(xf86PciVideoInfo);
+ }
+ 
+ /*

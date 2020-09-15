@@ -1,0 +1,81 @@
+diff --git a/hw/xfree86/ramdac/IBM.h b/hw/xfree86/ramdac/IBM.h
+index 6fa18b2..986be2f 100644
+--- a/hw/xfree86/ramdac/IBM.h
++++ b/hw/xfree86/ramdac/IBM.h
+@@ -1,19 +1,54 @@
+ 
+ #include <xf86RamDac.h>
+ 
+-extern _X_EXPORT RamDacHelperRecPtr IBMramdacProbe(ScrnInfoPtr pScrn, RamDacSupportedInfoRecPtr ramdacs);
+-extern _X_EXPORT void IBMramdacSave(ScrnInfoPtr pScrn, RamDacRecPtr RamDacRec, RamDacRegRecPtr RamDacRegRec);
+-extern _X_EXPORT void IBMramdacRestore(ScrnInfoPtr pScrn, RamDacRecPtr RamDacRec, RamDacRegRecPtr RamDacRegRec);
+-extern _X_EXPORT void IBMramdac526SetBpp(ScrnInfoPtr pScrn, RamDacRegRecPtr RamDacRegRec);
+-extern _X_EXPORT void IBMramdac640SetBpp(ScrnInfoPtr pScrn, RamDacRegRecPtr RamDacRegRec);
+-extern _X_EXPORT unsigned long IBMramdac526CalculateMNPCForClock(unsigned long RefClock,
+-    unsigned long ReqClock, char IsPixClock, unsigned long MinClock,
+-    unsigned long MaxClock, unsigned long *rM, unsigned long *rN,
+-    unsigned long *rP, unsigned long *rC);
+-extern _X_EXPORT unsigned long IBMramdac640CalculateMNPCForClock(unsigned long RefClock,
+-    unsigned long ReqClock, char IsPixClock, unsigned long MinClock,
+-    unsigned long MaxClock, unsigned long *rM, unsigned long *rN,
+-    unsigned long *rP, unsigned long *rC);
++extern _X_EXPORT RamDacHelperRecPtr IBMramdacProbe(ScrnInfoPtr pScrn,
++                                                   RamDacSupportedInfoRecPtr
++                                                   ramdacs);
++extern _X_EXPORT void IBMramdacSave(ScrnInfoPtr pScrn, RamDacRecPtr RamDacRec,
++                                    RamDacRegRecPtr RamDacRegRec);
++extern _X_EXPORT void IBMramdacRestore(ScrnInfoPtr pScrn,
++                                       RamDacRecPtr RamDacRec,
++                                       RamDacRegRecPtr RamDacRegRec);
++extern _X_EXPORT void IBMramdac526SetBpp(ScrnInfoPtr pScrn,
++                                         RamDacRegRecPtr RamDacRegRec);
++extern _X_EXPORT void IBMramdac640SetBpp(ScrnInfoPtr pScrn,
++                                         RamDacRegRecPtr RamDacRegRec);
++extern _X_EXPORT unsigned long IBMramdac526CalculateMNPCForClock(unsigned long
++                                                                 RefClock,
++                                                                 unsigned long
++                                                                 ReqClock,
++                                                                 char
++                                                                 IsPixClock,
++                                                                 unsigned long
++                                                                 MinClock,
++                                                                 unsigned long
++                                                                 MaxClock,
++                                                                 unsigned long
++                                                                 *rM,
++                                                                 unsigned long
++                                                                 *rN,
++                                                                 unsigned long
++                                                                 *rP,
++                                                                 unsigned long
++                                                                 *rC);
++extern _X_EXPORT unsigned long IBMramdac640CalculateMNPCForClock(unsigned long
++                                                                 RefClock,
++                                                                 unsigned long
++                                                                 ReqClock,
++                                                                 char
++                                                                 IsPixClock,
++                                                                 unsigned long
++                                                                 MinClock,
++                                                                 unsigned long
++                                                                 MaxClock,
++                                                                 unsigned long
++                                                                 *rM,
++                                                                 unsigned long
++                                                                 *rN,
++                                                                 unsigned long
++                                                                 *rP,
++                                                                 unsigned long
++                                                                 *rC);
+ extern _X_EXPORT void IBMramdac526HWCursorInit(xf86CursorInfoPtr infoPtr);
+ extern _X_EXPORT void IBMramdac640HWCursorInit(xf86CursorInfoPtr infoPtr);
+ 
+@@ -119,8 +154,6 @@ extern _X_EXPORT IBMramdac526SetBppProc *IBMramdac526SetBppWeak(void);
+ #define IBMRGB_vram_mask_3	0x93
+ #define IBMRGB_curs_array	0x100
+ 
+-
+-
+ /* Constants rgb525.h */  
+ 
+ /* RGB525_REVISION_LEVEL */

@@ -1,0 +1,23 @@
+diff --git a/composite/compalloc.c b/composite/compalloc.c
+index f0d868e..47d5c0a 100644
+--- a/composite/compalloc.c
++++ b/composite/compalloc.c
+@@ -514,14 +514,14 @@ compNewPixmap (WindowPtr pWin, int x, int y, int w, int h, Bool map)
+     if (TraverseTree(pWin, bgNoneVisitWindow, NULL) == WT_NOMATCH)
+ 	return pPixmap;
+ 
+-    if (pParent->drawable.depth == pWin->drawable.depth)
+-    {
+-	GCPtr	pGC = GetScratchGC (pWin->drawable.depth, pScreen);
+-	
+ 	/*
+ 	 * Copy bits from the parent into the new pixmap so that it will
+ 	 * have "reasonable" contents in case for background None areas.
+ 	 */
++    if (pParent->drawable.depth == pWin->drawable.depth)
++    {
++	GCPtr	pGC = GetScratchGC (pWin->drawable.depth, pScreen);
++	
+ 	if (pGC)
+ 	{
+ 	    ChangeGCVal val;

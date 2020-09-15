@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index d4b9351..1aad2d1 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -1062,7 +1062,7 @@ xf86SetBlackWhitePixels(ScreenPtr pScreen)
+ static void
+ xf86SetRootClip (ScreenPtr pScreen, Bool enable)
+ {
+-    WindowPtr	pWin = WindowTable[pScreen->myNum];
++    WindowPtr	pWin = pScreen->root;
+     WindowPtr	pChild;
+     Bool	WasViewable = (Bool)(pWin->viewable);
+     Bool	anyMarked = FALSE;

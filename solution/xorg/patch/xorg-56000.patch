@@ -1,0 +1,31 @@
+diff --git a/mi/mipolyseg.c b/mi/mipolyseg.c
+index bf7f0f9..d6f1807 100644
+--- a/mi/mipolyseg.c
++++ b/mi/mipolyseg.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -65,15 +64,14 @@ SOFTWARE.
+  *    
+  *****************************************************************/
+ 
+-
+ void
+ miPolySegment(DrawablePtr pDraw, GCPtr pGC, int nseg, xSegment *pSegs)
+ {
+     int i;
+ 
+-    for (i=0; i<nseg; i++)
+-    {
+-        (*pGC->ops->Polylines)(pDraw, pGC, CoordModeOrigin, 2,(DDXPointPtr)pSegs);
++    for (i = 0; i < nseg; i++) {
++        (*pGC->ops->Polylines) (pDraw, pGC, CoordModeOrigin, 2,
++                                (DDXPointPtr) pSegs);
+     	pSegs++;
+     }
+ }

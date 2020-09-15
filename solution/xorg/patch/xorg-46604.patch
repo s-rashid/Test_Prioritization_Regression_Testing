@@ -1,0 +1,23 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index e16b2a3..9f46a64 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -543,7 +543,8 @@ winUpdateIcon (Window id)
+   HICON			hIcon, hIconSmall=NULL, hIconOld;
+ 
+   pWin = (WindowPtr) LookupIDByType (id, RT_WINDOW);
+-  if (!pWin) return;
++  if (pWin)
++    {
+   winWindowPriv(pWin);
+   if (pWinPriv->hWnd) {
+     hIcon = winOverrideIcon ((unsigned long)pWin);
+@@ -569,7 +570,7 @@ winUpdateIcon (Window id)
+     hIconOld = (HICON) SendMessage (pWinPriv->hWnd,
+                     WM_SETICON, ICON_SMALL, (LPARAM) hIconSmall);
+     winDestroyIcon(hIconOld);
+-
++      }
+   }
+ }
+ 

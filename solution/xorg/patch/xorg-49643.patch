@@ -1,0 +1,24 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 1d99d36..a99c0f1 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -84,8 +84,7 @@ FILE *debug_log_fp = NULL;
+  * X server shared global variables
+  */
+ int                     darwinScreensFound = 0;
+-static int              darwinScreenKeyIndex;
+-DevPrivateKey           darwinScreenKey = &darwinScreenKeyIndex;
++DevPrivateKeyRec        darwinScreenKeyRec;
+ io_connect_t            darwinParamConnect = 0;
+ int                     darwinEventReadFD = -1;
+ int                     darwinEventWriteFD = -1;
+@@ -185,6 +184,9 @@ static Bool DarwinScreenInit(int index, ScreenPtr pScreen, int argc, char **argv
+     Bool        ret;
+     DarwinFramebufferPtr dfb;
+ 
++    if (!dixRegisterPrivateKey(&darwinScreenKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
+     // reset index of found screens for each server generation
+     if (index == 0) {
+         foundIndex = 0;

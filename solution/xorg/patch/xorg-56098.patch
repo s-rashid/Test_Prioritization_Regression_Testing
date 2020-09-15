@@ -1,0 +1,33 @@
+diff --git a/render/mitrap.c b/render/mitrap.c
+index 445f236..17b6dcd 100644
+--- a/render/mitrap.c
++++ b/render/mitrap.c
+@@ -40,6 +40,7 @@ miLineFixedX (xLineFixed *l, xFixed y, Bool ceil)
+     xFixed	    dx = l->p2.x - l->p1.x;
+     xFixed_32_32    ex = (xFixed_32_32) (y - l->p1.y) * dx;
+     xFixed	    dy = l->p2.y - l->p1.y;
++
+     if (ceil)
+ 	ex += (dy - 1);
+     return l->p1.x + (xFixed) (ex / dy);
+@@ -52,8 +53,7 @@ miTrapezoidBounds (int ntrap, xTrapezoid *traps, BoxPtr box)
+     box->y2 = MINSHORT;
+     box->x1 = MAXSHORT;
+     box->x2 = MINSHORT;
+-    for (; ntrap; ntrap--, traps++)
+-    {
++    for (; ntrap; ntrap--, traps++) {
+ 	INT16 x1, y1, x2, y2;
+ 
+ 	if (!xTrapezoidValid(traps))
+@@ -71,7 +71,9 @@ miTrapezoidBounds (int ntrap, xTrapezoid *traps, BoxPtr box)
+ 	if (x1 < box->x1)
+ 	    box->x1 = x1;
+ 	
+-	x2 = xFixedToInt (xFixedCeil (max (miLineFixedX (&traps->right, traps->top, TRUE),
++        x2 = xFixedToInt(xFixedCeil
++                         (max
++                          (miLineFixedX(&traps->right, traps->top, TRUE),
+ 					   miLineFixedX (&traps->right, traps->bottom, TRUE))));
+ 	if (x2 > box->x2)
+ 	    box->x2 = x2;

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winmultiwindowwm.c b/hw/xwin/winmultiwindowwm.c
+index 194dbf6..7421379 100644
+--- a/hw/xwin/winmultiwindowwm.c
++++ b/hw/xwin/winmultiwindowwm.c
+@@ -57,7 +57,7 @@
+ #include "ddraw.h"
+ #include "winwindow.h"
+ #ifdef XWIN_MULTIWINDOWEXTWM
+-#include "windowswmstr.h"
++#include <X11/extensions/windowswmstr.h>
+ #else
+ /* We need the native HWND atom for intWM, so for consistency use the
+    same name as extWM would if we were building with enabled... */

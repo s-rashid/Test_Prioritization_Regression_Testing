@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index 94d2b15..569695c 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -552,7 +552,7 @@ xf86DriverlistFromCompile(void)
+  *      Print a READABLE ErrorMessage!!!  All information that is 
+  *      available is printed.
+  */
+-static void
++static void _X_ATTRIBUTE_PRINTF(1,2)
+ xf86ConfigError(const char *msg, ...)
+ {
+     va_list ap;

@@ -1,0 +1,13 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 9ef6d19..b37339f 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -242,7 +242,7 @@ SecurityDeleteAuthorizationEventClient(
+ 	    else
+ 		pAuth->eventClients = pEventClient->next;
+ 	    free(pEventClient);
+-	    return(Success);
++	    return Success;
+ 	}
+ 	prev = pEventClient;
+     }

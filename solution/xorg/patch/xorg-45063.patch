@@ -1,0 +1,12 @@
+diff --git a/dix/enterleave.c b/dix/enterleave.c
+index d7f5f58..488a943 100644
+--- a/dix/enterleave.c
++++ b/dix/enterleave.c
+@@ -30,6 +30,7 @@
+ 
+ #include <X11/X.h>
+ #include <X11/extensions/XI2.h>
++#include "inputstr.h"
+ #include "windowstr.h"
+ #include "scrnintstr.h"
+ #include "exglobals.h"

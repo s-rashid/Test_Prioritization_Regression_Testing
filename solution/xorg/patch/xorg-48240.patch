@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ramdac/xf86Cursor.c b/hw/xfree86/ramdac/xf86Cursor.c
+index f5f0873..346e994 100644
+--- a/hw/xfree86/ramdac/xf86Cursor.c
++++ b/hw/xfree86/ramdac/xf86Cursor.c
+@@ -312,6 +312,8 @@ xf86CursorSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCurs,
+             xf86SetCursor(pScreen, NullCursor, x, y);
+             ScreenPriv->isUp = FALSE;
+         }
++	if (ScreenPriv->CurrentCursor)
++	    FreeCursor(ScreenPriv->CurrentCursor, None);
+         ScreenPriv->CurrentCursor = NullCursor;
+         return;
+     }

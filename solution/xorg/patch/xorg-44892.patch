@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winwin32rootlesswindow.c b/hw/xwin/winwin32rootlesswindow.c
+index 3f521d6..2b2f630 100755
+--- a/hw/xwin/winwin32rootlesswindow.c
++++ b/hw/xwin/winwin32rootlesswindow.c
+@@ -177,12 +177,12 @@ winMWExtWMUpdateIcon (Window id)
+ 
+       if (pRLWinPriv->hWnd)
+ 	{
+-	  hiconOld = (HICON) SetClassLong (pRLWinPriv->hWnd,
+-					   GCL_HICON,
+-					   (int) hIcon);
+ 	  
++          hiconOld = (HICON) SendMessage (pRLWinPriv->hWnd,
++                     WM_SETICON, ICON_BIG, (LPARAM) hIcon);
+           winDestroyIcon(hiconOld);
+ 	}
++      hIcon=NULL;
+     }
+ }
+ 

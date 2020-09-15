@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/loader/loader.h b/hw/xfree86/loader/loader.h
+index 6121e02..9695c6c 100644
+--- a/hw/xfree86/loader/loader.h
++++ b/hw/xfree86/loader/loader.h
+@@ -91,7 +91,4 @@ extern unsigned long LoaderOptions;
+ int LoaderOpen(const char *, const char *, int, int *, int *, int *, int);
+ int LoaderHandleOpen(int);
+ 
+-/* Loader backends. */
+-#include "dlloader.h"
+-
+ #endif /* _LOADER_H */

@@ -1,0 +1,22 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index a9f089f..41ba0fb 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -269,7 +269,7 @@ ProcXFixesSelectCursorInput (ClientPtr client)
+     if (stuff->eventMask & ~CursorAllEvents)
+     {
+ 	client->errorValue = stuff->eventMask;
+-	return( BadValue );
++	return BadValue;
+     }
+     return XFixesSelectCursorInput (client, pWin, stuff->eventMask);
+ }
+@@ -732,7 +732,7 @@ static Bool
+ TestForCursorName (CursorPtr pCursor, pointer closure)
+ {
+     Atom *pName = closure;
+-    return (pCursor->name == *pName);
++    return pCursor->name == *pName;
+ }
+ 
+ int

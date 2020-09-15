@@ -1,0 +1,25 @@
+diff --git a/hw/xfree86/exa/examodule.c b/hw/xfree86/exa/examodule.c
+index 601288c..bcb6a40 100644
+--- a/hw/xfree86/exa/examodule.c
++++ b/hw/xfree86/exa/examodule.c
+@@ -122,9 +122,9 @@ exaDDXDriverInit(ScreenPtr pScreen)
+     memcpy(pScreenPriv->options, EXAOptions, sizeof(EXAOptions));
+     xf86ProcessOptions (pScrn->scrnIndex, pScrn->options, pScreenPriv->options);
+ 
+-    if ((pExaScr->info->flags & EXA_OFFSCREEN_PIXMAPS) &&
+-  	pExaScr->info->offScreenBase < pExaScr->info->memorySize)
+-    {
++    if (pExaScr->info->flags & EXA_OFFSCREEN_PIXMAPS) {
++	if (!(pExaScr->info->flags & EXA_HANDLES_PIXMAPS) &&
++	    pExaScr->info->offScreenBase < pExaScr->info->memorySize) {
+ 	char *heuristicName;
+ 
+ 	heuristicName = xf86GetOptValString (pScreenPriv->options,
+@@ -142,6 +142,7 @@ exaDDXDriverInit(ScreenPtr pScreen)
+ 			    heuristicName);
+ 	    }
+ 	}
++	}
+ 
+ 	pExaScr->optimize_migration =
+ 	    xf86ReturnOptValBool(pScreenPriv->options,

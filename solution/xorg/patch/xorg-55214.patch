@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/config/dmxconfig.h b/hw/dmx/config/dmxconfig.h
+index 91a6662..deb293c 100644
+--- a/hw/dmx/config/dmxconfig.h
++++ b/hw/dmx/config/dmxconfig.h
+@@ -40,8 +40,8 @@
+ #include <xkb-config.h>
+ 
+ extern void dmxConfigStoreDisplay(const char *display);
+-extern void dmxConfigStoreInput(const char *input); /* Core devices */
+-extern void dmxConfigStoreXInput(const char *input); /* Non-core devices */
++extern void dmxConfigStoreInput(const char *input);     /* Core devices */
++extern void dmxConfigStoreXInput(const char *input);    /* Non-core devices */
+ extern void dmxConfigStoreFile(const char *file);
+ extern void dmxConfigStoreConfig(const char *config);
+ extern void dmxConfigConfigure(void);

@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/pseudoramiX.c b/hw/xquartz/pseudoramiX.c
+index 1de7af6..c3154b9 100644
+--- a/hw/xquartz/pseudoramiX.c
++++ b/hw/xquartz/pseudoramiX.c
+@@ -94,7 +94,7 @@ PseudoramiXAddScreen(int x, int y, int w, int h)
+ 
+     if (pseudoramiXNumScreens == pseudoramiXScreensAllocated) {
+         pseudoramiXScreensAllocated += pseudoramiXScreensAllocated + 1;
+-        pseudoramiXScreens = xrealloc(pseudoramiXScreens,
++        pseudoramiXScreens = realloc(pseudoramiXScreens,
+                                       pseudoramiXScreensAllocated *
+                                       sizeof(PseudoramiXScreenRec));
+     }

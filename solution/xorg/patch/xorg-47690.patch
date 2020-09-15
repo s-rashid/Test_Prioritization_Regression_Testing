@@ -1,0 +1,19 @@
+diff --git a/dix/window.c b/dix/window.c
+index caff1cb..2676a54 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -3233,8 +3233,13 @@ dixSaveScreens(ClientPtr client, int on, int mode)
+ 	}
+     }
+     screenIsSaved = what;
+-    if (mode == ScreenSaverReset)
++    if (mode == ScreenSaverReset) {
++	if (on == SCREEN_SAVER_FORCER) {
++	    UpdateCurrentTimeIf();
++	    lastDeviceEventTime = currentTime;
++	}
+        SetScreenSaverTimer();
++    }
+     return Success;
+ }
+ 

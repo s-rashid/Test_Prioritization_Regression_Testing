@@ -1,0 +1,12 @@
+diff --git a/render/picture.c b/render/picture.c
+index 86e2e0f..211fa38 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1115,7 +1115,6 @@ ChangePicture (PicturePtr	pPicture,
+ 			if (error != Success)
+ 			{
+ 			    client->errorValue = pid;
+-			    error = (error == BadValue) ? RenderErrBase + BadPicture : error;
+ 			    break;
+ 			}
+ 			if (pAlpha->pDrawable == NULL ||

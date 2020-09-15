@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 8fd35e6..dcfbcde 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -324,7 +324,7 @@ xf86ProcessCommonOptions(LocalDevicePtr local,
+  * Returns TRUE on success, or FALSE otherwise.
+  ***********************************************************************
+  */
+-int
++static int
+ xf86ActivateDevice(LocalDevicePtr local)
+ {
+     DeviceIntPtr	dev;

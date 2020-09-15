@@ -1,0 +1,29 @@
+diff --git a/render/picturestr.h b/render/picturestr.h
+index c536c38..7b7f911 100644
+--- a/render/picturestr.h
++++ b/render/picturestr.h
+@@ -260,24 +260,6 @@ typedef void	(*TrianglesProcPtr)	    (CARD8	    op,
+ 					     int	    ntri,
+ 					     xTriangle	    *tris);
+ 
+-typedef void	(*TriStripProcPtr)	    (CARD8	    op,
+-					     PicturePtr	    pSrc,
+-					     PicturePtr	    pDst,
+-					     PictFormatPtr  maskFormat,
+-					     INT16	    xSrc,
+-					     INT16	    ySrc,
+-					     int	    npoint,
+-					     xPointFixed    *points);
+-
+-typedef void	(*TriFanProcPtr)	    (CARD8	    op,
+-					     PicturePtr	    pSrc,
+-					     PicturePtr	    pDst,
+-					     PictFormatPtr  maskFormat,
+-					     INT16	    xSrc,
+-					     INT16	    ySrc,
+-					     int	    npoint,
+-					     xPointFixed    *points);
+-
+ typedef Bool	(*InitIndexedProcPtr)	    (ScreenPtr	    pScreen,
+ 					     PictFormatPtr  pFormat);
+ 

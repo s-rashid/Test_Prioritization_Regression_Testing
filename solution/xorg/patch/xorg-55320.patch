@@ -1,0 +1,429 @@
+diff --git a/hw/dmx/input/dmxbackend.c b/hw/dmx/input/dmxbackend.c
+index e917a5c..9463c87 100644
+--- a/hw/dmx/input/dmxbackend.c
++++ b/hw/dmx/input/dmxbackend.c
+@@ -101,10 +101,12 @@ typedef struct _myPrivate {
+ #endif
+ 
+ /** Create and return a private data structure. */
+-pointer dmxBackendCreatePrivate(DeviceIntPtr pDevice)
++pointer
++dmxBackendCreatePrivate(DeviceIntPtr pDevice)
+ {
+     GETDMXLOCALFROMPDEVICE;
+     myPrivate *priv = calloc(1, sizeof(*priv));
++
+     priv->dmxLocal  = dmxLocal;
+     return priv;
+ }
+@@ -112,16 +114,19 @@ pointer dmxBackendCreatePrivate(DeviceIntPtr pDevice)
+ /** Destroy the private data structure.  No checking is performed to
+  * verify that the structure was actually created by
+  * #dmxBackendCreatePrivate. */
+-void dmxBackendDestroyPrivate(pointer private)
++void
++dmxBackendDestroyPrivate(pointer private)
+ {
+     free(private);
+ }
+ 
+-static void *dmxBackendTestScreen(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxBackendTestScreen(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     long target = (long)closure;
+ 
+-    if (dmxScreen->index == target) return dmxScreen;
++    if (dmxScreen->index == target)
++        return dmxScreen;
+     return NULL;
+ }
+ 
+@@ -130,13 +135,15 @@ static void *dmxBackendTestScreen(DMXScreenInfo *dmxScreen, void *closure)
+  * different screens).  Since this is a common operation, the results
+  * are cached.  The cache is invalidated if \a priv is NULL (this should
+  * be done with each server generation and reconfiguration). */
+-static int dmxBackendSameDisplay(myPrivate *priv, long screen)
++static int
++dmxBackendSameDisplay(myPrivate * priv, long screen)
+ {
+     static myPrivate *oldpriv  = NULL;
+     static int       oldscreen = -1;
+     static int       retcode   = 0;
+ 
+-    if (priv == oldpriv && screen == oldscreen) return retcode;
++    if (priv == oldpriv && screen == oldscreen)
++        return retcode;
+     if (!priv) {                /* Invalidate cache */
+         oldpriv   = NULL;
+         oldscreen = -1;
+@@ -144,19 +151,23 @@ static int dmxBackendSameDisplay(myPrivate *priv, long screen)
+         return 0;
+     }
+ 
+-    if (screen == priv->myScreen)                     retcode = 1;
+-    else if (screen < 0 || screen >= dmxNumScreens)   retcode = 0;
++    if (screen == priv->myScreen)
++        retcode = 1;
++    else if (screen < 0 || screen >= dmxNumScreens)
++        retcode = 0;
+     else if (dmxPropertyIterate(priv->be,
+-                                dmxBackendTestScreen,
+-                                (void *)screen))      retcode = 2;
+-    else                                              retcode = 0;
++                                dmxBackendTestScreen, (void *) screen))
++        retcode = 2;
++    else
++        retcode = 0;
+ 
+     oldpriv   = priv;
+     oldscreen = screen;
+     return retcode;
+ }
+ 
+-static void *dmxBackendTestEvents(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxBackendTestEvents(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     XEvent *X = (XEvent *)closure;
+     
+@@ -165,7 +176,8 @@ static void *dmxBackendTestEvents(DMXScreenInfo *dmxScreen, void *closure)
+     return NULL;
+ }
+ 
+-static void *dmxBackendTestMotionEvent(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxBackendTestMotionEvent(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     XEvent *X = (XEvent *)closure;
+ 
+@@ -174,7 +186,8 @@ static void *dmxBackendTestMotionEvent(DMXScreenInfo *dmxScreen, void *closure)
+     return NULL;
+ }
+ 
+-static DMXScreenInfo *dmxBackendGetEvent(myPrivate *priv, XEvent *X)
++static DMXScreenInfo *
++dmxBackendGetEvent(myPrivate * priv, XEvent * X)
+ {
+     DMXScreenInfo *dmxScreen;
+ 
+@@ -183,27 +196,33 @@ static DMXScreenInfo *dmxBackendGetEvent(myPrivate *priv, XEvent *X)
+     return NULL;
+ }
+ 
+-static DMXScreenInfo *dmxBackendPendingMotionEvent(myPrivate *priv, int save)
++static DMXScreenInfo *
++dmxBackendPendingMotionEvent(myPrivate * priv, int save)
+ {
+     DMXScreenInfo *dmxScreen;
+     XEvent        N;
+ 
+     if ((dmxScreen = dmxPropertyIterate(priv->be,
+                                         dmxBackendTestMotionEvent, &N))) {
+-        if (save) XPutBackEvent(dmxScreen->beDisplay, &N);
++        if (save)
++            XPutBackEvent(dmxScreen->beDisplay, &N);
+         return dmxScreen;
+     }
+     return NULL;
+ }
+ 
+-static void *dmxBackendTestWindow(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxBackendTestWindow(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     Window win = (Window)(long)closure;
+-    if (dmxScreen->scrnWin == win) return dmxScreen;
++
++    if (dmxScreen->scrnWin == win)
++        return dmxScreen;
+     return NULL;
+ }
+ 
+-static DMXScreenInfo *dmxBackendFindWindow(myPrivate *priv, Window win)
++static DMXScreenInfo *
++dmxBackendFindWindow(myPrivate * priv, Window win)
+ {
+     return dmxPropertyIterate(priv->be, dmxBackendTestWindow,
+                               (void *)(long)win);
+@@ -212,23 +231,28 @@ static DMXScreenInfo *dmxBackendFindWindow(myPrivate *priv, Window win)
+ /* If the cursor is over a set of overlapping screens and one of those
+  * screens takes backend input, then we want that particular screen to
+  * be current, not one of the other ones. */
+-static int dmxBackendFindOverlapping(myPrivate *priv, int screen, int x, int y)
++static int
++dmxBackendFindOverlapping(myPrivate * priv, int screen, int x, int y)
+ {
+     DMXScreenInfo *start = &dmxScreens[screen];
+     DMXScreenInfo *pt;
+ 
+-    if (!start->over) return screen;
++    if (!start->over)
++        return screen;
+     
+     for (pt = start->over; /* condition at end of loop */; pt = pt->over) {
+         if (pt->index == priv->myScreen
+-            && dmxOnScreen(x, y, &dmxScreens[pt->index])) return pt->index;
+-        if (pt == start) break;
++            && dmxOnScreen(x, y, &dmxScreens[pt->index]))
++            return pt->index;
++        if (pt == start)
++            break;
+     }
+     return screen;
+ }
+ 
+ /* Return non-zero if \a x and \a y are off \a screen. */
+-static int dmxBackendOffscreen(int screen, int x, int y)
++static int
++dmxBackendOffscreen(int screen, int x, int y)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[screen];
+ 
+@@ -237,7 +261,8 @@ static int dmxBackendOffscreen(int screen, int x, int y)
+ 
+ /** This routine is called from #dmxCoreMotion for each motion
+  * event. \a x and \a y are global coordinants. */
+-void dmxBackendUpdatePosition(pointer private, int x, int y)
++void
++dmxBackendUpdatePosition(pointer private, int x, int y)
+ {
+     GETPRIVFROMPRIVATE;
+     int           screen      = miPointerGetScreen(inputInfo.pointer)->myNum;
+@@ -262,13 +287,15 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+                 DMXDBG0("   Off screen, but not absolute\n");
+                 priv->relative = 0;
+             }
+-        } else {
++        }
++        else {
+             if (!priv->relative) {
+                 DMXDBG0("   Off screen, but not relative\n");
+                 priv->relative = 1;
+             }
+         }
+-    } else {
++    }
++    else {
+         if (topscreen != screen) {
+             DMXDBG2("   Using screen %d instead of %d (from mi)\n",
+                     topscreen, screen);
+@@ -278,7 +305,8 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+                 DMXDBG0("   On screen, but not absolute\n");
+                 priv->relative = 0;
+             }
+-        } else {
++        }
++        else {
+             if (!priv->relative) {
+                 DMXDBG0("   Not on screen, but not relative\n");
+                 priv->relative = 1;
+@@ -287,8 +315,7 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+     }
+ 
+     if (oldRelative != priv->relative) {
+-        DMXDBG2("   Do switch, relative=%d same=%d\n",
+-                priv->relative, same);
++        DMXDBG2("   Do switch, relative=%d same=%d\n", priv->relative, same);
+         /* Discard all pre-switch events */
+         dmxSync(dmxScreen, TRUE);
+         while (dmxBackendPendingMotionEvent(priv, FALSE));
+@@ -309,7 +336,8 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+             }
+             DMXDBG0("   Capturing console\n");
+             dmxConsoleCapture(dmxInput);
+-        } else {
++        }
++        else {
+             priv->newscreen = 1;
+             if (priv->relative && !dmxInput->console) {
+                 DMXDBG5("   Hide cursor; warp from %d,%d to %d,%d on %d\n",
+@@ -322,7 +350,8 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+                 XWarpPointer(priv->display, None, priv->window,
+                              0, 0, 0, 0, priv->lastX, priv->lastY);
+                 dmxSync(dmxScreen, TRUE);
+-            } else {
++            }
++            else {
+                 DMXDBG0("   Check cursor\n");
+                 dmxCheckCursor();
+             }
+@@ -332,11 +361,11 @@ void dmxBackendUpdatePosition(pointer private, int x, int y)
+ 
+ /** Get events from the X queue on the backend servers and put the
+  * events into the DMX event queue. */
+-void dmxBackendCollectEvents(DevicePtr pDev,
++void
++dmxBackendCollectEvents(DevicePtr pDev,
+                              dmxMotionProcPtr motion,
+                              dmxEnqueueProcPtr enqueue,
+-                             dmxCheckSpecialProcPtr checkspecial,
+-                             DMXBlockType block)
++                        dmxCheckSpecialProcPtr checkspecial, DMXBlockType block)
+ {
+     GETPRIVFROMPDEV;
+     GETDMXINPUTFROMPRIV;
+@@ -382,8 +411,7 @@ void dmxBackendCollectEvents(DevicePtr pDev,
+             DMXDBG7("dmxBackendCollectEvents: Leave %lu %d,%d %d %d %s %s\n",
+                     X.xcrossing.root, X.xcrossing.x, X.xcrossing.y,
+                     X.xcrossing.detail, X.xcrossing.focus,
+-                    priv->grabbedScreen ? "UNGRAB" : "",
+-                    dmxScreen->name);
++                    priv->grabbedScreen ? "UNGRAB" : "", dmxScreen->name);
+             if (priv->grabbedScreen) {
+                 XUngrabPointer(priv->grabbedScreen->beDisplay, CurrentTime);
+                 dmxSync(priv->grabbedScreen, TRUE);
+@@ -411,10 +439,15 @@ void dmxBackendCollectEvents(DevicePtr pDev,
+                 if (!priv->newscreen) {
+                     int width  = dmxScreen->rootWidth;
+                     int height = dmxScreen->rootHeight;
+-                    if (!newX)              newX = -1;
+-                    if (newX == width - 1)  newX = width;
+-                    if (!newY)              newY = -1;
+-                    if (newY == height - 1) newY = height;
++
++                    if (!newX)
++                        newX = -1;
++                    if (newX == width - 1)
++                        newX = width;
++                    if (!newY)
++                        newY = -1;
++                    if (newY == height - 1)
++                        newY = height;
+                 }
+                 priv->newscreen = 0;
+                 v[0] = dmxScreen->rootXOrigin + newX;
+@@ -426,9 +459,11 @@ void dmxBackendCollectEvents(DevicePtr pDev,
+                         priv->be->scrnWidth, priv->be->scrnHeight);
+                 motion(priv->mou, v, 0, 2, DMX_ABSOLUTE, block);
+                 priv->entered = 0;
+-            } else {
++            }
++            else {
+                 int newX = priv->lastX - X.xmotion.x;
+                 int newY = priv->lastY - X.xmotion.y;
++
+                 priv->lastX = X.xmotion.x;
+                 priv->lastY = X.xmotion.y;
+                 v[0]        = newX;
+@@ -465,15 +500,15 @@ void dmxBackendCollectEvents(DevicePtr pDev,
+ /** Called after input events are processed from the DMX queue.  No
+  * event processing actually takes place here, but this is a convenient
+  * place to update the pointer. */
+-void dmxBackendProcessInput(pointer private)
++void
++dmxBackendProcessInput(pointer private)
+ {
+     GETPRIVFROMPRIVATE;
+ 
+     DMXDBG6("dmxBackendProcessInput: myScreen=%d relative=%d"
+             " last=%d,%d center=%d,%d\n",
+             priv->myScreen, priv->relative,
+-            priv->lastX, priv->lastY,
+-            priv->centerX, priv->centerY);
++            priv->lastX, priv->lastY, priv->centerX, priv->centerY);
+ 
+     if (priv->relative
+         && !dmxInput->console
+@@ -488,7 +523,8 @@ void dmxBackendProcessInput(pointer private)
+     }
+ }
+ 
+-static void dmxBackendComputeCenter(myPrivate *priv)
++static void
++dmxBackendComputeCenter(myPrivate * priv)
+ {
+     int centerX;
+     int centerY;
+@@ -496,16 +532,21 @@ static void dmxBackendComputeCenter(myPrivate *priv)
+     centerX       = priv->be->rootWidth / 2 + priv->be->rootX;
+     centerY       = priv->be->rootHeight / 2 + priv->be->rootY;
+ 
+-    if (centerX > priv->be->rootWidth)  centerX = priv->be->rootWidth  - 1;
+-    if (centerY > priv->be->rootHeight) centerY = priv->be->rootHeight - 1;
+-    if (centerX < 1)                    centerX = 1;
+-    if (centerY < 1)                    centerY = 1;
++    if (centerX > priv->be->rootWidth)
++        centerX = priv->be->rootWidth - 1;
++    if (centerY > priv->be->rootHeight)
++        centerY = priv->be->rootHeight - 1;
++    if (centerX < 1)
++        centerX = 1;
++    if (centerY < 1)
++        centerY = 1;
+ 
+     priv->centerX = centerX;
+     priv->centerY = centerY;
+ }
+ 
+-static DMXScreenInfo *dmxBackendInitPrivate(DevicePtr pDev)
++static DMXScreenInfo *
++dmxBackendInitPrivate(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     DMXInputInfo      *dmxInput = &dmxInputs[dmxLocal->inputIdx];
+@@ -532,7 +573,8 @@ static DMXScreenInfo *dmxBackendInitPrivate(DevicePtr pDev)
+ 
+ /** Re-initialized the backend device described by \a pDev (after a
+  * reconfig). */
+-void dmxBackendLateReInit(DevicePtr pDev)
++void
++dmxBackendLateReInit(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     int               x, y;
+@@ -549,16 +591,20 @@ void dmxBackendLateReInit(DevicePtr pDev)
+ }
+ 
+ /** Initialized the backend device described by \a pDev. */
+-void dmxBackendInit(DevicePtr pDev)
++void
++dmxBackendInit(DevicePtr pDev)
+ {
+     GETPRIVFROMPDEV;
+     DMXScreenInfo     *dmxScreen;
+ 
+     dmxBackendSameDisplay(NULL, 0); /* Invalidate cache */
+ 
+-    if (dmxLocal->type == DMX_LOCAL_MOUSE)    priv->mou = pDev;
+-    if (dmxLocal->type == DMX_LOCAL_KEYBOARD) priv->kbd = pDev;
+-    if (priv->initialized++) return; /* Only do once for mouse/keyboard pair */
++    if (dmxLocal->type == DMX_LOCAL_MOUSE)
++        priv->mou = pDev;
++    if (dmxLocal->type == DMX_LOCAL_KEYBOARD)
++        priv->kbd = pDev;
++    if (priv->initialized++)
++        return;                 /* Only do once for mouse/keyboard pair */
+ 
+     dmxScreen = dmxBackendInitPrivate(pDev);
+ 
+@@ -573,7 +619,8 @@ void dmxBackendInit(DevicePtr pDev)
+ }
+ 
+ /** Get information about the backend pointer (for initialization). */
+-void dmxBackendMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxBackendMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     const DMXScreenInfo *dmxScreen = dmxBackendInitPrivate(pDev);
+ 
+@@ -592,7 +639,8 @@ void dmxBackendMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ }
+ 
+ /** Get information about the backend keyboard (for initialization). */
+-void dmxBackendKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxBackendKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     dmxCommonKbdGetInfo(pDev, info);
+     info->keyboard         = 1;
+@@ -605,7 +653,8 @@ void dmxBackendKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ 
+ /** Process #DMXFunctionType functions.  The only function handled here
+  * is to acknowledge a pending server shutdown. */
+-int dmxBackendFunctions(pointer private, DMXFunctionType function)
++int
++dmxBackendFunctions(pointer private, DMXFunctionType function)
+ {
+     switch (function) {
+     case DMX_FUNCTION_TERMINATE:

@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 7a84c6b..5e446ec 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1033,7 +1033,7 @@ ProcessOtherEvent(InternalEvent *ev, DeviceIntPtr device)
+ 
+     if (grab)
+         DeliverGrabbedEvent((InternalEvent*)event, device, deactivateDeviceGrab);
+-    else if (device->focus && !IsPointerEvent((InternalEvent*)ev))
++    else if (device->focus && !IsPointerEvent(ev))
+         DeliverFocusedEvent(device, (InternalEvent*)event,
+                             GetSpriteWindow(device));
+     else

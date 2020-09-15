@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index 066cc39..e1881ba 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -257,6 +257,7 @@ extern _X_EXPORT Bool DRI2CanFlip(DrawablePtr pDraw);
+ 
+ extern _X_EXPORT Bool DRI2CanExchange(DrawablePtr pDraw);
+ 
++/* Note: use *only* for MSC related waits */
+ extern _X_EXPORT void DRI2BlockClient(ClientPtr client, DrawablePtr pDraw);
+ 
+ extern _X_EXPORT void DRI2SwapComplete(ClientPtr client, DrawablePtr pDraw,

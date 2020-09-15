@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/common/xf86Option.c b/hw/xfree86/common/xf86Option.c
+index aa6ea30..99b533b 100644
+--- a/hw/xfree86/common/xf86Option.c
++++ b/hw/xfree86/common/xf86Option.c
+@@ -150,13 +150,6 @@ xf86CollectInputOptions(InputInfoPtr pInfo, const char **defaultOpts,
+ 	else
+ 	    pInfo->options = tmp;
+     }
+-    if (pInfo->conf_idev && pInfo->conf_idev->extraOptions) {
+-	tmp = xf86optionListDup(pInfo->conf_idev->extraOptions);
+-	if (pInfo->options)
+-	    pInfo->options = xf86optionListMerge(pInfo->options, tmp);
+-	else
+-	    pInfo->options = tmp;
+-    }
+     if (extras) {
+ 	tmp = xf86optionListDup(extras);
+ 	if (pInfo->options)

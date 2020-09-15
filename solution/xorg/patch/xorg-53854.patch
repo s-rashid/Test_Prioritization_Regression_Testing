@@ -1,0 +1,13 @@
+diff --git a/Xext/xselinux_ext.c b/Xext/xselinux_ext.c
+index 641368a..a18a367 100644
+--- a/Xext/xselinux_ext.c
++++ b/Xext/xselinux_ext.c
+@@ -337,7 +337,7 @@ static int
+ SELinuxSendItemsToClient(ClientPtr client, SELinuxListItemRec *items,
+ 			 int size, int count)
+ {
+-    int rc, k, n, pos = 0;
++    int rc, k, pos = 0;
+     SELinuxListItemsReply rep;
+     CARD32 *buf;
+ 

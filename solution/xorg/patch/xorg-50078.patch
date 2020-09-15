@@ -1,0 +1,13 @@
+diff --git a/mi/mioverlay.c b/mi/mioverlay.c
+index e7a9401..766c5e7 100644
+--- a/mi/mioverlay.c
++++ b/mi/mioverlay.c
+@@ -444,7 +444,7 @@ miOverlayMarkOverlappedWindows(
+ 	MIOVERLAY_GET_SCREEN_PRIVATE(pScreen)->underlayMarked = TRUE;	
+     }
+ 
+-    return (underMarked || overMarked);
++    return underMarked || overMarked;
+ }
+ 
+ 

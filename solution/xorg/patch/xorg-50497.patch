@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/loader/loadmod.c b/hw/xfree86/loader/loadmod.c
+index 615e8c6..a9d04b8 100644
+--- a/hw/xfree86/loader/loadmod.c
++++ b/hw/xfree86/loader/loadmod.c
+@@ -926,8 +926,7 @@ doLoadModule(const char *module, const char *path, const char **subdirlist,
+ 	    *errmin = 0;
+ 	goto LoadModule_fail;
+     }
+-    ret->handle = LoaderOpen(found, name, 0,
+-			     errmaj, errmin, &wasLoaded, flags);
++    ret->handle = LoaderOpen(found, 0, errmaj, errmin, &wasLoaded, flags);
+     if (ret->handle < 0)
+ 	goto LoadModule_fail;
+ 

@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 7d4853a..4013a67 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -390,8 +390,6 @@ xf86GetDevFromEntity(int entityIndex, int instance)
+ void
+ xf86AccessEnter(void)
+ {
+-    return;
+-
+     /*
+      * on enter we simply disable routing of special resources
+      * to any bus and let the RAC code to "open" the right bridges.
+@@ -412,7 +410,6 @@ xf86AccessEnter(void)
+ void
+ xf86AccessLeave(void)
+ {
+-    return;
+     EntityLeave();
+ }
+ 

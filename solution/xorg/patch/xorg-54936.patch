@@ -1,0 +1,172 @@
+diff --git a/Xext/xselinux_hooks.c b/Xext/xselinux_hooks.c
+index 0d4c9ab..e9c7e93 100644
+--- a/Xext/xselinux_hooks.c
++++ b/Xext/xselinux_hooks.c
+@@ -45,7 +45,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define _XSELINUX_NEED_FLASK_MAP
+ #include "xselinuxint.h"
+ 
+-
+ /* structure passed to auditing callback */
+ typedef struct {
+     ClientPtr client;	/* client */
+@@ -80,7 +79,6 @@ static void SELinuxScreen(CallbackListPtr *, pointer, pointer);
+ /* "true" pointer value for use as callback data */
+ static pointer truep = (pointer)1;
+ 
+-
+ /*
+  * Performs an SELinux permission check.
+  */
+@@ -133,11 +131,12 @@ SELinuxLabelClient(ClientPtr client)
+ 	/* Get cached command name if CLIENTIDS is enabled. */
+ 	const char *cmdname = GetClientCmdName(client);
+ 	Bool cached = (cmdname != NULL);
++
+ 	/* If CLIENTIDS is disabled, figure out the command name from
+ 	 * scratch. */
+-	if (!cmdname)
+-	{
++        if (!cmdname) {
+ 	    pid_t pid = DetermineClientPid(client);
++
+ 	    if (pid != -1)
+ 		DetermineClientCmd(pid, &cmdname, NULL);
+ 	}
+@@ -228,8 +227,10 @@ SELinuxLabelResource(XaceResourceAccessRec *rec, SELinuxSubjectRec *subj,
+ 	/* Use the SID of the parent object in the labeling operation */
+ 	PrivateRec **privatePtr = DEVPRIV_AT(rec->parent, offset);
+ 	SELinuxObjectRec *pobj = dixLookupPrivate(privatePtr, objectKey);
++
+ 	tsid = pobj->sid;
+-    } else {
++    }
++    else {
+ 	/* Use the SID of the subject */
+ 	tsid = subj->sid;
+     }
+@@ -243,16 +244,13 @@ SELinuxLabelResource(XaceResourceAccessRec *rec, SELinuxSubjectRec *subj,
+     return Success;
+ }
+ 
+-
+ /*
+  * Libselinux Callbacks
+  */
+ 
+ static int
+ SELinuxAudit(void *auditdata,
+-	     security_class_t class,
+-	     char *msgbuf,
+-	     size_t msgbufsize)
++             security_class_t class, char *msgbuf, size_t msgbufsize)
+ {
+     SELinuxAuditRec *audit = auditdata;
+     ClientPtr client = audit->client;
+@@ -343,13 +341,15 @@ SELinuxDevice(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+     /* If this is a new object that needs labeling, do it now */
+     if (rec->access_mode & DixCreateAccess) {
+ 	SELinuxSubjectRec *dsubj;
++
+ 	dsubj = dixLookupPrivate(&rec->dev->devPrivates, subjectKey);
+ 
+ 	if (subj->dev_create_sid) {
+ 	    /* Label the device with the create context */
+ 	    obj->sid = subj->dev_create_sid;
+ 	    dsubj->sid = subj->dev_create_sid;
+-	} else {
++        }
++        else {
+ 	    /* Label the device directly with the process SID */
+ 	    obj->sid = subj->sid;
+ 	    dsubj->sid = subj->sid;
+@@ -628,7 +628,8 @@ SELinuxResource(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+ 	class = SECCLASS_X_RESOURCE;
+ 	privatePtr = &clients[CLIENT_ID(rec->id)]->devPrivates;
+ 	obj = dixLookupPrivate(privatePtr, objectKey);
+-    } else {
++    }
++    else {
+ 	/* Yes: use the SID from the resource object itself */
+ 	class = SELinuxTypeToClass(rec->rtype);
+ 	privatePtr = DEVPRIV_AT(rec->res, offset);
+@@ -733,7 +734,6 @@ SELinuxServer(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+ 	rec->status = rc;
+ }
+ 
+-
+ /*
+  * DIX Callbacks
+  */
+@@ -772,6 +772,7 @@ SELinuxResourceState(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+     if (subj->sid) {
+ 	security_context_t ctx;
+ 	int rc = avc_sid_to_context_raw(subj->sid, &ctx);
++
+ 	if (rc < 0)
+ 	    FatalError("SELinux: Failed to get security context!\n");
+ 	rc = dixChangeWindowProperty(serverClient,
+@@ -780,7 +781,8 @@ SELinuxResourceState(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+ 	if (rc != Success)
+ 	    FatalError("SELinux: Failed to set label property on window!\n");
+ 	freecon(ctx);
+-    } else
++    }
++    else
+ 	FatalError("SELinux: Unexpected unlabeled client found\n");
+ 
+     obj = dixLookupPrivate(&pWin->devPrivates, objectKey);
+@@ -788,6 +790,7 @@ SELinuxResourceState(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+     if (obj->sid) {
+ 	security_context_t ctx;
+ 	int rc = avc_sid_to_context_raw(obj->sid, &ctx);
++
+ 	if (rc < 0)
+ 	    FatalError("SELinux: Failed to get security context!\n");
+ 	rc = dixChangeWindowProperty(serverClient,
+@@ -796,11 +799,11 @@ SELinuxResourceState(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+ 	if (rc != Success)
+ 	    FatalError("SELinux: Failed to set label property on window!\n");
+ 	freecon(ctx);
+-    } else
++    }
++    else
+ 	FatalError("SELinux: Unexpected unlabeled window found\n");
+ }
+ 
+-
+ static int netlink_fd;
+ 
+ static void
+@@ -868,11 +871,13 @@ SELinuxFlaskInit(void)
+ 
+     /* Set up SELinux stuff */
+     selinux_set_callback(SELINUX_CB_LOG, (union selinux_callback)SELinuxLog);
+-    selinux_set_callback(SELINUX_CB_AUDIT, (union selinux_callback)SELinuxAudit);
++    selinux_set_callback(SELINUX_CB_AUDIT,
++                         (union selinux_callback) SELinuxAudit);
+ 
+     if (selinux_set_mapping(map) < 0) {
+ 	if (errno == EINVAL) {
+-	    ErrorF("SELinux: Invalid object class mapping, disabling SELinux support.\n");
++            ErrorF
++                ("SELinux: Invalid object class mapping, disabling SELinux support.\n");
+ 	    return;
+ 	}
+ 	FatalError("SELinux: Failed to set up security class mapping\n");
+@@ -893,9 +898,12 @@ SELinuxFlaskInit(void)
+ 	FatalError("SELinux: Failed to open the system audit log\n");
+ 
+     /* Allocate private storage */
+-    if (!dixRegisterPrivateKey(subjectKey, PRIVATE_XSELINUX, sizeof(SELinuxSubjectRec)) ||
+-	!dixRegisterPrivateKey(objectKey, PRIVATE_XSELINUX, sizeof(SELinuxObjectRec)) ||
+-	!dixRegisterPrivateKey(dataKey, PRIVATE_XSELINUX, sizeof(SELinuxObjectRec)))
++    if (!dixRegisterPrivateKey
++        (subjectKey, PRIVATE_XSELINUX, sizeof(SELinuxSubjectRec)) ||
++        !dixRegisterPrivateKey(objectKey, PRIVATE_XSELINUX,
++                               sizeof(SELinuxObjectRec)) ||
++        !dixRegisterPrivateKey(dataKey, PRIVATE_XSELINUX,
++                               sizeof(SELinuxObjectRec)))
+ 	FatalError("SELinux: Failed to allocate private storage.\n");
+ 
+     /* Create atoms for doing window labeling */

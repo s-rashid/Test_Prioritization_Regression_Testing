@@ -1,0 +1,452 @@
+diff --git a/hw/dmx/dmxwindow.c b/hw/dmx/dmxwindow.c
+index 704fcff..855e56b 100644
+--- a/hw/dmx/dmxwindow.c
++++ b/hw/dmx/dmxwindow.c
+@@ -58,16 +58,18 @@ static void dmxDoChangeWindowAttributes(WindowPtr pWindow,
+ static void dmxDoSetShape(WindowPtr pWindow);
+ 
+ /** Initialize the private area for the window functions. */
+-Bool dmxInitWindow(ScreenPtr pScreen)
++Bool
++dmxInitWindow(ScreenPtr pScreen)
+ {
+-    if (!dixRegisterPrivateKey(&dmxWinPrivateKeyRec, PRIVATE_WINDOW, sizeof(dmxWinPrivRec)))
++    if (!dixRegisterPrivateKey
++        (&dmxWinPrivateKeyRec, PRIVATE_WINDOW, sizeof(dmxWinPrivRec)))
+ 	return FALSE;
+ 
+     return TRUE;
+ }
+ 
+-
+-Window dmxCreateRootWindow(WindowPtr pWindow)
++Window
++dmxCreateRootWindow(WindowPtr pWindow)
+ {
+     ScreenPtr             pScreen   = pWindow->drawable.pScreen;
+     DMXScreenInfo        *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -108,16 +110,13 @@ Window dmxCreateRootWindow(WindowPtr pWindow)
+ 			 pWindow->drawable.height,
+ 			 pWindow->borderWidth,
+ 			 pWindow->drawable.depth,
+-			 pWindow->drawable.class,
+-			 visual,
+-			 mask,
+-			 &attribs);
++                         pWindow->drawable.class, visual, mask, &attribs);
+ }
+ 
+ /** Change the location and size of the "screen" window.  Called from
+  *  dmxextension.c dmxConfigureScreenWindow(). */
+-void dmxResizeScreenWindow(ScreenPtr pScreen,
+-			   int x, int y, int w, int h)
++void
++dmxResizeScreenWindow(ScreenPtr pScreen, int x, int y, int w, int h)
+ {
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+     unsigned int    m;
+@@ -139,8 +138,8 @@ void dmxResizeScreenWindow(ScreenPtr pScreen,
+ 
+ /** Change the location and size of the "root" window.  Called from
+  *  #dmxCreateWindow. */
+-void dmxResizeRootWindow(WindowPtr pRoot,
+-			 int x, int y, int w, int h)
++void
++dmxResizeRootWindow(WindowPtr pRoot, int x, int y, int w, int h)
+ {
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pRoot->drawable.pScreen->myNum];
+     dmxWinPrivPtr   pWinPriv = DMX_GET_WINDOW_PRIV(pRoot);
+@@ -164,7 +163,8 @@ void dmxResizeRootWindow(WindowPtr pRoot,
+ 		XUnmapWindow(dmxScreen->beDisplay, pWinPriv->window);
+ 	    pWinPriv->mapped = FALSE;
+ 	}
+-    } else if (!pWinPriv->mapped) {
++    }
++    else if (!pWinPriv->mapped) {
+ 	if (dmxScreen->beDisplay)
+ 	    XMapWindow(dmxScreen->beDisplay, pWinPriv->window);
+ 	pWinPriv->mapped = TRUE;
+@@ -174,9 +174,9 @@ void dmxResizeRootWindow(WindowPtr pRoot,
+ 	dmxSync(dmxScreen, False);
+ }
+ 
+-void dmxGetDefaultWindowAttributes(WindowPtr pWindow,
+-				   Colormap *cmap,
+-				   Visual **visual)
++void
++dmxGetDefaultWindowAttributes(WindowPtr pWindow,
++                              Colormap * cmap, Visual ** visual)
+ {
+     ScreenPtr  pScreen = pWindow->drawable.pScreen;
+ 
+@@ -196,16 +196,19 @@ void dmxGetDefaultWindowAttributes(WindowPtr pWindow,
+ 				    RT_COLORMAP, NullClient, DixUnknownAccess);
+ 	    pCmapPriv = DMX_GET_COLORMAP_PRIV(pCmap);
+ 	    *cmap = pCmapPriv->cmap;
+-	} else {
++        }
++        else {
+ 	    *cmap = dmxColormapFromDefaultVisual(pScreen, *visual);
+ 	}
+-    } else {
++    }
++    else {
+ 	*visual = CopyFromParent;
+ 	*cmap = (Colormap)0;
+     }
+ }
+ 
+-static Window dmxCreateNonRootWindow(WindowPtr pWindow)
++static Window
++dmxCreateNonRootWindow(WindowPtr pWindow)
+ {
+     ScreenPtr             pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo        *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -262,9 +265,7 @@ static Window dmxCreateNonRootWindow(WindowPtr pWindow)
+ 			 pWindow->borderWidth,
+ 			 pWindow->drawable.depth,
+ 			 pWindow->drawable.class,
+-			 pWinPriv->visual,
+-			 mask,
+-			 &attribs);
++                         pWinPriv->visual, mask, &attribs);
+ }
+ 
+ /** This function handles lazy window creation and realization.  Window
+@@ -276,28 +277,35 @@ static Window dmxCreateNonRootWindow(WindowPtr pWindow)
+  *  associated with it, those pictures are created on the back-end
+  *  server by calling #dmxCreatePictureList().  If \a doSync is TRUE,
+  *  then #dmxSync() is called. */
+-void dmxCreateAndRealizeWindow(WindowPtr pWindow, Bool doSync)
++void
++dmxCreateAndRealizeWindow(WindowPtr pWindow, Bool doSync)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     dmxWinPrivPtr  pWinPriv = DMX_GET_WINDOW_PRIV(pWindow);
+ 
+-    if (!dmxScreen->beDisplay) return;
++    if (!dmxScreen->beDisplay)
++        return;
+ 
+     pWinPriv->window = dmxCreateNonRootWindow(pWindow);
+-    if (pWinPriv->restacked) dmxDoRestackWindow(pWindow);
+-    if (pWinPriv->isShaped) dmxDoSetShape(pWindow);
+-    if (pWinPriv->hasPict) dmxCreatePictureList(pWindow);
+-    if (pWinPriv->mapped) XMapWindow(dmxScreen->beDisplay,
+-				      pWinPriv->window);
+-    if (doSync) dmxSync(dmxScreen, False);
++    if (pWinPriv->restacked)
++        dmxDoRestackWindow(pWindow);
++    if (pWinPriv->isShaped)
++        dmxDoSetShape(pWindow);
++    if (pWinPriv->hasPict)
++        dmxCreatePictureList(pWindow);
++    if (pWinPriv->mapped)
++        XMapWindow(dmxScreen->beDisplay, pWinPriv->window);
++    if (doSync)
++        dmxSync(dmxScreen, False);
+ }
+ 
+ /** Create \a pWindow on the back-end server.  If the lazy window
+  *  creation optimization is enabled, then the actual creation and
+  *  realization of the window is handled by
+  *  #dmxCreateAndRealizeWindow(). */
+-Bool dmxCreateWindow(WindowPtr pWindow)
++Bool
++dmxCreateWindow(WindowPtr pWindow)
+ {
+     ScreenPtr             pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo        *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -346,10 +354,10 @@ Bool dmxCreateWindow(WindowPtr pWindow)
+ 		pWindow->origin.x = dmxScreen->rootX;
+ 		pWindow->origin.y = dmxScreen->rootY;
+ 	    }
+-	} else {
++        }
++        else {
+ 	    dmxGetDefaultWindowAttributes(pWindow,
+-					  &pWinPriv->cmap,
+-					  &pWinPriv->visual);
++                                          &pWinPriv->cmap, &pWinPriv->visual);
+ 
+ 	    if (dmxLazyWindowCreation) {
+ 		/* Save parent's visual for use later */
+@@ -357,7 +365,8 @@ Bool dmxCreateWindow(WindowPtr pWindow)
+ 		    pWinPriv->visual =
+ 			dmxLookupVisualFromID(pScreen,
+ 					      wVisual(pWindow->parent));
+-	    } else {
++            }
++            else {
+ 		pWinPriv->window = dmxCreateNonRootWindow(pWindow);
+ 	    }
+ 	}
+@@ -371,7 +380,8 @@ Bool dmxCreateWindow(WindowPtr pWindow)
+ }
+ 
+ /** Destroy \a pWindow on the back-end server. */
+-Bool dmxBEDestroyWindow(WindowPtr pWindow)
++Bool
++dmxBEDestroyWindow(WindowPtr pWindow)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -388,12 +398,14 @@ Bool dmxBEDestroyWindow(WindowPtr pWindow)
+ 
+ /** Destroy \a pWindow on the back-end server.  If any RENDER pictures
+     were created, destroy them as well. */
+-Bool dmxDestroyWindow(WindowPtr pWindow)
++Bool
++dmxDestroyWindow(WindowPtr pWindow)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     Bool           ret = TRUE;
+     Bool           needSync = FALSE;
++
+ #ifdef GLXEXT
+     dmxWinPrivPtr  pWinPriv = DMX_GET_WINDOW_PRIV(pWindow);
+ #endif
+@@ -405,7 +417,8 @@ Bool dmxDestroyWindow(WindowPtr pWindow)
+ 
+     /* Destroy window on back-end server */
+     needSync |= dmxBEDestroyWindow(pWindow);
+-    if (needSync) dmxSync(dmxScreen, FALSE);
++    if (needSync)
++        dmxSync(dmxScreen, FALSE);
+ 
+ #ifdef GLXEXT
+     if (pWinPriv->swapGroup && pWinPriv->windowDestroyed)
+@@ -421,7 +434,8 @@ Bool dmxDestroyWindow(WindowPtr pWindow)
+ }
+ 
+ /** Change the position of \a pWindow to be \a x, \a y. */
+-Bool dmxPositionWindow(WindowPtr pWindow, int x, int y)
++Bool
++dmxPositionWindow(WindowPtr pWindow, int x, int y)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -444,7 +458,8 @@ Bool dmxPositionWindow(WindowPtr pWindow, int x, int y)
+        been created yet, create it and map it */
+     if (!pWinPriv->window && pWinPriv->mapped && !pWinPriv->offscreen) {
+ 	dmxCreateAndRealizeWindow(pWindow, TRUE);
+-    } else if (pWinPriv->window) {
++    }
++    else if (pWinPriv->window) {
+ 	/* Position window on back-end server */
+ 	m = CWX | CWY | CWWidth | CWHeight;
+ 	c.x = pWindow->origin.x - wBorderWidth(pWindow);
+@@ -465,9 +480,9 @@ Bool dmxPositionWindow(WindowPtr pWindow, int x, int y)
+     return ret;
+ }
+ 
+-static void dmxDoChangeWindowAttributes(WindowPtr pWindow,
+-					unsigned long *mask,
+-					XSetWindowAttributes *attribs)
++static void
++dmxDoChangeWindowAttributes(WindowPtr pWindow,
++                            unsigned long *mask, XSetWindowAttributes * attribs)
+ {
+     dmxPixPrivPtr         pPixPriv;
+ 
+@@ -557,7 +572,8 @@ static void dmxDoChangeWindowAttributes(WindowPtr pWindow,
+ }
+ 
+ /** Change the window attributes of \a pWindow. */
+-Bool dmxChangeWindowAttributes(WindowPtr pWindow, unsigned long mask)
++Bool
++dmxChangeWindowAttributes(WindowPtr pWindow, unsigned long mask)
+ {
+     ScreenPtr             pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo        *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -592,7 +608,8 @@ Bool dmxChangeWindowAttributes(WindowPtr pWindow, unsigned long mask)
+ /** Realize \a pWindow on the back-end server.  If the lazy window
+  *  creation optimization is enabled, the window is only realized when
+  *  it at least partially overlaps the screen. */
+-Bool dmxRealizeWindow(WindowPtr pWindow)
++Bool
++dmxRealizeWindow(WindowPtr pWindow)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -631,7 +648,8 @@ Bool dmxRealizeWindow(WindowPtr pWindow)
+ }
+ 
+ /** Unrealize \a pWindow on the back-end server. */
+-Bool dmxUnrealizeWindow(WindowPtr pWindow)
++Bool
++dmxUnrealizeWindow(WindowPtr pWindow)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -666,7 +684,8 @@ Bool dmxUnrealizeWindow(WindowPtr pWindow)
+     return ret;
+ }
+ 
+-static void dmxDoRestackWindow(WindowPtr pWindow)
++static void
++dmxDoRestackWindow(WindowPtr pWindow)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -681,7 +700,8 @@ static void dmxDoRestackWindow(WindowPtr pWindow)
+ 	c.sibling = (Window)0;
+ 	c.stack_mode = Below;
+ 	XConfigureWindow(dmxScreen->beDisplay, pWinPriv->window, m, &c);
+-    } else {
++    }
++    else {
+ 	/* Window is not at the bottom of the stack */
+ 	dmxWinPrivPtr  pNextSibPriv = DMX_GET_WINDOW_PRIV(pNextSib);
+ 
+@@ -714,7 +734,8 @@ static void dmxDoRestackWindow(WindowPtr pWindow)
+ 
+ /** Handle window restacking.  The actual restacking occurs in
+  *  #dmxDoRestackWindow(). */
+-void dmxRestackWindow(WindowPtr pWindow, WindowPtr pOldNextSib)
++void
++dmxRestackWindow(WindowPtr pWindow, WindowPtr pOldNextSib)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -741,7 +762,8 @@ void dmxRestackWindow(WindowPtr pWindow, WindowPtr pOldNextSib)
+     dmxUpdateWindowInfo(DMX_UPDATE_RESTACK, pWindow);
+ }
+ 
+-static Bool dmxWindowExposurePredicate(Display *dpy, XEvent *ev, XPointer ptr)
++static Bool
++dmxWindowExposurePredicate(Display * dpy, XEvent * ev, XPointer ptr)
+ {
+     return (ev->type == Expose && ev->xexpose.window == *(Window *)ptr);
+ }
+@@ -749,8 +771,8 @@ static Bool dmxWindowExposurePredicate(Display *dpy, XEvent *ev, XPointer ptr)
+ /** Handle exposures on \a pWindow.  Since window exposures are handled
+  *  in DMX, the events that are generated by the back-end server are
+  *  redundant, so we eat them here. */
+-void dmxWindowExposures(WindowPtr pWindow, RegionPtr prgn,
+-			RegionPtr other_exposed)
++void
++dmxWindowExposures(WindowPtr pWindow, RegionPtr prgn, RegionPtr other_exposed)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -785,7 +807,8 @@ void dmxWindowExposures(WindowPtr pWindow, RegionPtr prgn,
+ /** Move \a pWindow on the back-end server.  Determine whether or not it
+  *  is on or offscreen, and realize it if it is newly on screen and the
+  *  lazy window creation optimization is enabled. */
+-void dmxCopyWindow(WindowPtr pWindow, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
++void
++dmxCopyWindow(WindowPtr pWindow, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -807,7 +830,8 @@ void dmxCopyWindow(WindowPtr pWindow, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+        been created yet, create it and map it */
+     if (!pWinPriv->window && pWinPriv->mapped && !pWinPriv->offscreen) {
+ 	dmxCreateAndRealizeWindow(pWindow, TRUE);
+-    } else if (pWinPriv->window) {
++    }
++    else if (pWinPriv->window) {
+ 	/* Move window on back-end server */
+ 	m = CWX | CWY | CWWidth | CWHeight;
+ 	c.x = pWindow->origin.x - wBorderWidth(pWindow);
+@@ -826,7 +850,8 @@ void dmxCopyWindow(WindowPtr pWindow, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ /** Resize \a pWindow on the back-end server.  Determine whether or not
+  *  it is on or offscreen, and realize it if it is newly on screen and
+  *  the lazy window creation optimization is enabled. */
+-void dmxResizeWindow(WindowPtr pWindow, int x, int y,
++void
++dmxResizeWindow(WindowPtr pWindow, int x, int y,
+ 		     unsigned int w, unsigned int h, WindowPtr pSib)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+@@ -853,7 +878,8 @@ void dmxResizeWindow(WindowPtr pWindow, int x, int y,
+        been created yet, create it and map it */
+     if (!pWinPriv->window && pWinPriv->mapped && !pWinPriv->offscreen) {
+ 	dmxCreateAndRealizeWindow(pWindow, TRUE);
+-    } else if (pWinPriv->window) {
++    }
++    else if (pWinPriv->window) {
+ 	/* Handle resizing on back-end server */
+ 	m = CWX | CWY | CWWidth | CWHeight;
+ 	c.x = pWindow->origin.x - wBorderWidth(pWindow);
+@@ -870,7 +896,8 @@ void dmxResizeWindow(WindowPtr pWindow, int x, int y,
+ }
+ 
+ /** Reparent \a pWindow on the back-end server. */
+-void dmxReparentWindow(WindowPtr pWindow, WindowPtr pPriorParent)
++void
++dmxReparentWindow(WindowPtr pWindow, WindowPtr pPriorParent)
+ {
+     ScreenPtr      pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -901,7 +928,8 @@ void dmxReparentWindow(WindowPtr pWindow, WindowPtr pPriorParent)
+ }
+ 
+ /** Change border width for \a pWindow to \a width pixels. */
+-void dmxChangeBorderWidth(WindowPtr pWindow, unsigned int width)
++void
++dmxChangeBorderWidth(WindowPtr pWindow, unsigned int width)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -929,7 +957,8 @@ void dmxChangeBorderWidth(WindowPtr pWindow, unsigned int width)
+     DMX_WRAP(ChangeBorderWidth, dmxChangeBorderWidth, dmxScreen, pScreen);
+ }
+ 
+-static void dmxDoSetShape(WindowPtr pWindow)
++static void
++dmxDoSetShape(WindowPtr pWindow)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -955,10 +984,10 @@ static void dmxDoSetShape(WindowPtr pWindow)
+ 	}
+ 	XShapeCombineRectangles(dmxScreen->beDisplay, pWinPriv->window,
+ 				ShapeBounding, 0, 0,
+-				pRectFirst, nRect,
+-				ShapeSet, YXBanded);
++                                pRectFirst, nRect, ShapeSet, YXBanded);
+ 	free(pRectFirst);
+-    } else {
++    }
++    else {
+ 	XShapeCombineMask(dmxScreen->beDisplay, pWinPriv->window,
+ 			  ShapeBounding, 0, 0, None, ShapeSet);
+     }
+@@ -978,10 +1007,10 @@ static void dmxDoSetShape(WindowPtr pWindow)
+ 	}
+ 	XShapeCombineRectangles(dmxScreen->beDisplay, pWinPriv->window,
+ 				ShapeClip, 0, 0,
+-				pRectFirst, nRect,
+-				ShapeSet, YXBanded);
++                                pRectFirst, nRect, ShapeSet, YXBanded);
+ 	free(pRectFirst);
+-    } else {
++    }
++    else {
+ 	XShapeCombineMask(dmxScreen->beDisplay, pWinPriv->window,
+ 			  ShapeClip, 0, 0, None, ShapeSet);
+     }
+@@ -993,7 +1022,8 @@ static void dmxDoSetShape(WindowPtr pWindow)
+ }
+ 
+ /** Set shape of \a pWindow on the back-end server. */
+-void dmxSetShape(WindowPtr pWindow, int kind)
++void
++dmxSetShape(WindowPtr pWindow, int kind)
+ {
+     ScreenPtr       pScreen = pWindow->drawable.pScreen;
+     DMXScreenInfo  *dmxScreen = &dmxScreens[pScreen->myNum];
+@@ -1009,7 +1039,8 @@ void dmxSetShape(WindowPtr pWindow, int kind)
+ 	/* Handle setting the current shape on the back-end server */
+ 	dmxDoSetShape(pWindow);
+ 	dmxSync(dmxScreen, False);
+-    } else {
++    }
++    else {
+ 	pWinPriv->isShaped = TRUE;
+     }
+ 

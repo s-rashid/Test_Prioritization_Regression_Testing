@@ -1,0 +1,22 @@
+diff --git a/mi/miscrinit.c b/mi/miscrinit.c
+index d349206..fb01c68 100644
+--- a/mi/miscrinit.c
++++ b/mi/miscrinit.c
+@@ -283,17 +283,6 @@ miScreenInit(
+     return miScreenDevPrivateInit(pScreen, width, pbits);
+ }
+ 
+-static DevPrivateKeyRec privateKeyRec;
+-#define privateKey (&privateKeyRec)
+-
+-DevPrivateKey
+-miAllocateGCPrivateIndex(void)
+-{
+-    if (!dixRegisterPrivateKey(&privateKeyRec, PRIVATE_GC, 0))
+-	return NULL;
+-    return privateKey;
+-}
+-
+ DevPrivateKeyRec miZeroLineScreenKeyRec;
+ 
+ void

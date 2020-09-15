@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxsingle.c b/hw/dmx/glxProxy/glxsingle.c
+index a41257e..a076134 100644
+--- a/hw/dmx/glxProxy/glxsingle.c
++++ b/hw/dmx/glxProxy/glxsingle.c
+@@ -750,7 +750,6 @@ int __glXDisp_ReadPixels(__GLXclientState *cl, GLbyte *pc)
+     GLboolean swapBytes, lsbFirst;
+     ClientPtr client = cl->client;
+     DrawablePtr pDraw;
+-    int error;
+     __GLXcontext *glxc;
+     int from_screen = 0;
+     int to_screen = 0;

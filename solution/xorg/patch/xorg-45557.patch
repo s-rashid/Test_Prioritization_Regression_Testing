@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/ddc/ddcPriv.h b/hw/xfree86/ddc/ddcPriv.h
+deleted file mode 100644
+index b5cb9b8..0000000
+--- a/hw/xfree86/ddc/ddcPriv.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-extern unsigned char *GetEDID_DDC1(
+-    unsigned int *
+-);
+-
+-extern int DDC_checksum(
+-    unsigned char *,
+-    int
+-);
+-

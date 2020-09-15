@@ -1,0 +1,263 @@
+diff --git a/Xi/xiselectev.c b/Xi/xiselectev.c
+index 1b6c47a..3405227 100644
+--- a/Xi/xiselectev.c
++++ b/Xi/xiselectev.c
+@@ -27,7 +27,6 @@
+ #include <dix-config.h>
+ #endif
+ 
+-
+ #include "dixstruct.h"
+ #include "windowstr.h"
+ #include "exglobals.h"
+@@ -43,15 +42,14 @@
+  *
+  * @return BadValue if at least one invalid bit is set or Success otherwise.
+  */
+-int XICheckInvalidMaskBits(ClientPtr client, unsigned char *mask, int len)
+-{
+-    if (len >= XIMaskLen(XI2LASTEVENT))
++int
++XICheckInvalidMaskBits(ClientPtr client, unsigned char *mask, int len)
+     {
++    if (len >= XIMaskLen(XI2LASTEVENT)) {
+         int i;
+-        for (i = XI2LASTEVENT + 1; i < len * 8; i++)
+-        {
+-            if (BitIsOn(mask, i))
+-            {
++
++        for (i = XI2LASTEVENT + 1; i < len * 8; i++) {
++            if (BitIsOn(mask, i)) {
+                 client->errorValue = i;
+                 return BadValue;
+             }
+@@ -74,11 +72,11 @@ SProcXISelectEvents(ClientPtr client)
+     swaps(&stuff->num_masks);
+ 
+     evmask = (xXIEventMask*)&stuff[1];
+-    for (i = 0; i < stuff->num_masks; i++)
+-    {
++    for (i = 0; i < stuff->num_masks; i++) {
+         swaps(&evmask->deviceid);
+         swaps(&evmask->mask_len);
+-        evmask = (xXIEventMask*)(((char*)&evmask[1]) + evmask->mask_len * 4);
++        evmask =
++            (xXIEventMask *) (((char *) &evmask[1]) + evmask->mask_len * 4);
+     }
+ 
+     return (ProcXISelectEvents(client));
+@@ -110,8 +108,7 @@ ProcXISelectEvents(ClientPtr client)
+     /* check request validity */
+     evmask = (xXIEventMask*)&stuff[1];
+     num_masks = stuff->num_masks;
+-    while(num_masks--)
+-    {
++    while (num_masks--) {
+         len += sizeof(xXIEventMask) + evmask->mask_len * 4;
+ 
+         if (bytes_to_int32(len) > stuff->length)
+@@ -127,20 +124,19 @@ ProcXISelectEvents(ClientPtr client)
+             return rc;
+ 
+         /* hierarchy event mask is not allowed on devices */
+-        if (evmask->deviceid != XIAllDevices && evmask->mask_len >= 1)
+-        {
++        if (evmask->deviceid != XIAllDevices && evmask->mask_len >= 1) {
+             unsigned char *bits = (unsigned char*)&evmask[1];
+-            if (BitIsOn(bits, XI_HierarchyChanged))
+-            {
++
++            if (BitIsOn(bits, XI_HierarchyChanged)) {
+                 client->errorValue = XI_HierarchyChanged;
+                 return BadValue;
+             }
+         }
+ 
+         /* Raw events may only be selected on root windows */
+-        if (win->parent && evmask->mask_len >= 1)
+-        {
++        if (win->parent && evmask->mask_len >= 1) {
+             unsigned char *bits = (unsigned char*)&evmask[1];
++
+             if (BitIsOn(bits, XI_RawKeyPress) ||
+                 BitIsOn(bits, XI_RawKeyRelease) ||
+                 BitIsOn(bits, XI_RawButtonPress) ||
+@@ -148,15 +144,13 @@ ProcXISelectEvents(ClientPtr client)
+                 BitIsOn(bits, XI_RawMotion) ||
+                 BitIsOn(bits, XI_RawTouchBegin) ||
+                 BitIsOn(bits, XI_RawTouchUpdate) ||
+-                BitIsOn(bits, XI_RawTouchEnd))
+-            {
++                BitIsOn(bits, XI_RawTouchEnd)) {
+                 client->errorValue = XI_RawKeyPress;
+                 return BadValue;
+             }
+         }
+ 
+-        if (evmask->mask_len >= 1)
+-        {
++        if (evmask->mask_len >= 1) {
+             unsigned char *bits = (unsigned char*)&evmask[1];
+ 
+             /* All three touch events must be selected at once */
+@@ -166,8 +160,7 @@ ProcXISelectEvents(ClientPtr client)
+                  BitIsOn(bits, XI_TouchEnd)) &&
+                 (!BitIsOn(bits, XI_TouchBegin) ||
+                  !BitIsOn(bits, XI_TouchUpdate) ||
+-                 !BitIsOn(bits, XI_TouchEnd)))
+-            {
++                 !BitIsOn(bits, XI_TouchEnd))) {
+                 client->errorValue = XI_TouchBegin;
+                 return BadValue;
+             }
+@@ -175,20 +168,20 @@ ProcXISelectEvents(ClientPtr client)
+             /* Only one client per window may select for touch events on the
+              * same devices, including master devices.
+              * XXX: This breaks if a device goes from floating to attached. */
+-            if (BitIsOn(bits, XI_TouchBegin))
+-            {
++            if (BitIsOn(bits, XI_TouchBegin)) {
+                 OtherInputMasks *inputMasks = wOtherInputMasks(win);
+                 InputClients *iclient = NULL;
++
+                 if (inputMasks)
+                     iclient = inputMasks->inputClients;
+-                for (; iclient; iclient = iclient->next)
+-                {
++                for (; iclient; iclient = iclient->next) {
+                     DeviceIntPtr dummy;
+ 
+                     if (CLIENT_ID(iclient->resource) == client->index)
+                         continue;
+ 
+-                    dixLookupDevice(&dummy, evmask->deviceid, serverClient, DixReadAccess);
++                    dixLookupDevice(&dummy, evmask->deviceid, serverClient,
++                                    DixReadAccess);
+                     if (!dummy)
+                         return BadImplementation; /* this shouldn't happen */
+ 
+@@ -202,7 +195,9 @@ ProcXISelectEvents(ClientPtr client)
+                                    evmask->mask_len * 4) != Success)
+             return BadValue;
+ 
+-        evmask = (xXIEventMask*)(((unsigned char*)evmask) + evmask->mask_len * 4);
++        evmask =
++            (xXIEventMask *) (((unsigned char *) evmask) +
++                              evmask->mask_len * 4);
+         evmask++;
+     }
+ 
+@@ -212,19 +207,20 @@ ProcXISelectEvents(ClientPtr client)
+     /* Set masks on window */
+     evmask = (xXIEventMask*)&stuff[1];
+     num_masks = stuff->num_masks;
+-    while(num_masks--)
+-    {
++    while (num_masks--) {
+         if (evmask->deviceid == XIAllDevices ||
+-            evmask->deviceid == XIAllMasterDevices)
+-        {
++            evmask->deviceid == XIAllMasterDevices) {
+             dummy.id = evmask->deviceid;
+             dev = &dummy;
+-        } else
++        }
++        else
+             dixLookupDevice(&dev, evmask->deviceid, client, DixUseAccess);
+         if (XISetEventMask(dev, win, client, evmask->mask_len * 4,
+                            (unsigned char*)&evmask[1]) != Success)
+             return BadAlloc;
+-        evmask = (xXIEventMask*)(((unsigned char*)evmask) + evmask->mask_len * 4);
++        evmask =
++            (xXIEventMask *) (((unsigned char *) evmask) +
++                              evmask->mask_len * 4);
+         evmask++;
+     }
+ 
+@@ -234,7 +230,6 @@ ProcXISelectEvents(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ int
+ SProcXIGetSelectedEvents(ClientPtr client)
+ {
+@@ -272,8 +267,7 @@ ProcXIGetSelectedEvents(ClientPtr client)
+     reply.num_masks = 0;
+ 
+     masks = wOtherInputMasks(win);
+-    if (masks)
+-    {
++    if (masks) {
+ 	for (others = wOtherInputMasks(win)->inputClients; others;
+ 	     others = others->next) {
+ 	    if (SameClient(others, client)) {
+@@ -282,42 +276,37 @@ ProcXIGetSelectedEvents(ClientPtr client)
+         }
+     }
+ 
+-    if (!others)
+-    {
++    if (!others) {
+         WriteReplyToClient(client, sizeof(xXIGetSelectedEventsReply), &reply);
+         return Success;
+     }
+ 
+-    buffer = calloc(MAXDEVICES, sizeof(xXIEventMask) + pad_to_int32(XI2MASKSIZE));
++    buffer =
++        calloc(MAXDEVICES, sizeof(xXIEventMask) + pad_to_int32(XI2MASKSIZE));
+     if (!buffer)
+         return BadAlloc;
+ 
+     evmask = (xXIEventMask*)buffer;
+-    for (i = 0; i < MAXDEVICES; i++)
+-    {
++    for (i = 0; i < MAXDEVICES; i++) {
+         int j;
+         const unsigned char *devmask = xi2mask_get_one_mask(others->xi2mask, i);
+ 
+-        if (i > 2)
+-        {
++        if (i > 2) {
+             rc = dixLookupDevice(&dev, i, client, DixGetAttrAccess);
+             if (rc != Success)
+                 continue;
+         }
+ 
+-
+-        for (j = xi2mask_mask_size(others->xi2mask) - 1; j >= 0; j--)
+-        {
+-            if (devmask[j] != 0)
+-            {
++        for (j = xi2mask_mask_size(others->xi2mask) - 1; j >= 0; j--) {
++            if (devmask[j] != 0) {
+                 int mask_len = (j + 4)/4; /* j is an index, hence + 4, not + 3 */
++
+                 evmask->deviceid = i;
+                 evmask->mask_len = mask_len;
+                 reply.num_masks++;
+                 reply.length += sizeof(xXIEventMask)/4 + evmask->mask_len;
+ 
+-                if (client->swapped)
+-                {
++                if (client->swapped) {
+                     swaps(&evmask->deviceid);
+                     swaps(&evmask->mask_len);
+                 }
+@@ -339,7 +328,8 @@ ProcXIGetSelectedEvents(ClientPtr client)
+     return Success;
+ }
+ 
+-void SRepXIGetSelectedEvents(ClientPtr client,
++void
++SRepXIGetSelectedEvents(ClientPtr client,
+                             int len, xXIGetSelectedEventsReply *rep)
+ {
+     swaps(&rep->sequenceNumber);
+@@ -347,5 +337,3 @@ void SRepXIGetSelectedEvents(ClientPtr client,
+     swaps(&rep->num_masks);
+     WriteToClient(client, len, (char *)rep);
+ }
+-
+-

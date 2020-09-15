@@ -1,0 +1,80 @@
+diff --git a/include/privates.h b/include/privates.h
+index 2b0040c..c34b951 100644
+--- a/include/privates.h
++++ b/include/privates.h
+@@ -175,39 +175,47 @@ dixLookupPrivateAddr(PrivatePtr *privates, const DevPrivateKey key)
+ }
+ 
+ extern _X_EXPORT Bool
+-dixRegisterScreenPrivateKey(DevScreenPrivateKey key, ScreenPtr pScreen, DevPrivateType type, unsigned size);
++
++dixRegisterScreenPrivateKey(DevScreenPrivateKey key, ScreenPtr pScreen,
++                            DevPrivateType type, unsigned size);
+ 
+ extern _X_EXPORT DevPrivateKey
+ _dixGetScreenPrivateKey(const DevScreenPrivateKey key, ScreenPtr pScreen);
+ 
+ static inline void *
+-dixGetScreenPrivateAddr(PrivatePtr *privates, const DevScreenPrivateKey key, ScreenPtr pScreen)
++dixGetScreenPrivateAddr(PrivatePtr *privates, const DevScreenPrivateKey key,
++                        ScreenPtr pScreen)
+ {
+     return dixGetPrivateAddr(privates, _dixGetScreenPrivateKey(key, pScreen));
+ }
+ 
+ static inline void *
+-dixGetScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key, ScreenPtr pScreen)
++dixGetScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key,
++                    ScreenPtr pScreen)
+ {
+     return dixGetPrivate(privates, _dixGetScreenPrivateKey(key, pScreen));
+ }
+ 
+ static inline void
+-dixSetScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key, ScreenPtr pScreen, pointer val)
++dixSetScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key,
++                    ScreenPtr pScreen, pointer val)
+ {
+     dixSetPrivate(privates, _dixGetScreenPrivateKey(key, pScreen), val);
+ }
+ 
+ static inline pointer
+-dixLookupScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key, ScreenPtr pScreen)
++dixLookupScreenPrivate(PrivatePtr *privates, const DevScreenPrivateKey key,
++                       ScreenPtr pScreen)
+ {
+     return dixLookupPrivate(privates, _dixGetScreenPrivateKey(key, pScreen));
+ }
+ 
+ static inline pointer *
+-dixLookupScreenPrivateAddr(PrivatePtr *privates, const DevScreenPrivateKey key, ScreenPtr pScreen)
++dixLookupScreenPrivateAddr(PrivatePtr *privates, const DevScreenPrivateKey key,
++                           ScreenPtr pScreen)
+ {
+-    return dixLookupPrivateAddr(privates, _dixGetScreenPrivateKey(key, pScreen));
++    return dixLookupPrivateAddr(privates,
++                                _dixGetScreenPrivateKey(key, pScreen));
+ }
+ 
+ /*
+@@ -249,13 +257,17 @@ _dixFiniPrivates(PrivatePtr privates, DevPrivateType type);
+  * for almost all objects, except for the list described
+  * above for dixAllocatePrivates.
+  */
+-extern _X_EXPORT void *
+-_dixAllocateObjectWithPrivates(unsigned size, unsigned clear, unsigned offset, DevPrivateType type);
++extern _X_EXPORT void *_dixAllocateObjectWithPrivates(unsigned size,
++                                                      unsigned clear,
++                                                      unsigned offset,
++                                                      DevPrivateType type);
+ 
+ #define dixAllocateObjectWithPrivates(t, type) (t *) _dixAllocateObjectWithPrivates(sizeof(t), sizeof(t), offsetof(t, devPrivates), type)
+ 
+ extern _X_EXPORT void
+-_dixFreeObjectWithPrivates(void *object, PrivatePtr privates, DevPrivateType type);
++
++_dixFreeObjectWithPrivates(void *object, PrivatePtr privates,
++                           DevPrivateType type);
+ 
+ #define dixFreeObjectWithPrivates(o,t) _dixFreeObjectWithPrivates(o, (o)->devPrivates, t)
+ 

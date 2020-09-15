@@ -1,0 +1,12 @@
+diff --git a/Xext/geext.c b/Xext/geext.c
+index e61989c..8319c92 100644
+--- a/Xext/geext.c
++++ b/Xext/geext.c
+@@ -28,7 +28,6 @@
+ #endif
+ #include "windowstr.h"
+ #include <X11/extensions/ge.h>
+-#include "registry.h"
+ 
+ #include "geint.h"
+ #include "geext.h"

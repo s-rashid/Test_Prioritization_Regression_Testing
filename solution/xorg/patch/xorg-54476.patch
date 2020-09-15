@@ -1,0 +1,32 @@
+diff --git a/hw/xwin/winnativegdi.c b/hw/xwin/winnativegdi.c
+index 4d7afe8..68f8020 100644
+--- a/hw/xwin/winnativegdi.c
++++ b/hw/xwin/winnativegdi.c
+@@ -315,7 +315,6 @@ static Bool
+ winActivateAppNativeGDI (ScreenPtr pScreen)
+ {
+   winScreenPriv(pScreen);
+-  winScreenInfo		*pScreenInfo = pScreenPriv->pScreenInfo;
+ 
+   /*
+    * Are we active?
+@@ -323,7 +322,8 @@ winActivateAppNativeGDI (ScreenPtr pScreen)
+    */
+   if (pScreenPriv != NULL
+       && pScreenPriv->fActive
+-      && pScreenInfo->fFullScreen)
++      && pScreenPriv->pScreenInfo
++      && pScreenPriv->pScreenInfo->fFullScreen)
+     {
+       /*
+        * Activating, attempt to bring our window 
+@@ -338,7 +338,8 @@ winActivateAppNativeGDI (ScreenPtr pScreen)
+    */
+   if (pScreenPriv != NULL
+       && !pScreenPriv->fActive
+-      && pScreenInfo->fFullScreen)
++      && pScreenPriv->pScreenInfo
++      && pScreenPriv->pScreenInfo->fFullScreen)
+     {
+       /*
+        * Deactivating, stuff our window onto the

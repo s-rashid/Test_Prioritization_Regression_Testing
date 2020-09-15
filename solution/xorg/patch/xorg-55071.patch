@@ -1,0 +1,256 @@
+diff --git a/dix/cursor.c b/dix/cursor.c
+index 6bff447..1ee127a 100644
+--- a/dix/cursor.c
++++ b/dix/cursor.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,8 +44,6 @@ SOFTWARE.
+ 
+ ******************************************************************/
+ 
+-
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -89,16 +86,12 @@ FreeCursorBits(CursorBitsPtr bits)
+     free(bits->argb);
+ #endif
+     dixFiniPrivates(bits, PRIVATE_CURSOR_BITS);
+-    if (bits->refcnt == 0)
+-    {
++    if (bits->refcnt == 0) {
+ 	GlyphSharePtr *prev, this;
+ 
+ 	for (prev = &sharedGlyphs;
+-	     (this = *prev) && (this->bits != bits);
+-	     prev = &this->next)
+-	    ;
+-	if (this)
+-	{
++             (this = *prev) && (this->bits != bits); prev = &this->next);
++        if (this) {
+ 	    *prev = this->next;
+ 	    CloseFont(this->font, (Font)0);
+ 	    free(this);
+@@ -124,8 +117,7 @@ FreeCursor(pointer value, XID cid)
+     if ( --pCurs->refcnt != 0)
+ 	return Success;
+ 
+-    for (nscr = 0; nscr < screenInfo.numScreens; nscr++)
+-    {
++    for (nscr = 0; nscr < screenInfo.numScreens; nscr++) {
+ 	pscr = screenInfo.screens[nscr];
+         (void)( *pscr->UnrealizeCursor)(pDev, pscr, pCurs);
+     }
+@@ -135,7 +127,6 @@ FreeCursor(pointer value, XID cid)
+     return Success;
+ }
+ 
+-
+ /*
+  * We check for empty cursors so that we won't have to display them
+  */
+@@ -147,14 +138,16 @@ CheckForEmptyMask(CursorBitsPtr bits)
+ 
+     bits->emptyMask = FALSE;
+     while(n--) 
+-	if(*(msk++) != 0) return;
++        if (*(msk++) != 0)
++            return;
+ #ifdef ARGB_CURSOR
+-    if (bits->argb)
+-    {
++    if (bits->argb) {
+ 	CARD32 *argb = bits->argb;
++
+ 	n = bits->width * bits->height;
+ 	while (n--)
+-	    if (*argb++ & 0xff000000) return;
++            if (*argb++ & 0xff000000)
++                return;
+     }
+ #endif
+     bits->emptyMask = TRUE;
+@@ -174,15 +167,11 @@ RealizeCursorAllScreens(CursorPtr pCurs)
+     ScreenPtr   pscr;
+     int nscr;
+ 
+-    for (nscr = 0; nscr < screenInfo.numScreens; nscr++)
+-    {
++    for (nscr = 0; nscr < screenInfo.numScreens; nscr++) {
+         pscr = screenInfo.screens[nscr];
+-        for (pDev = inputInfo.devices; pDev; pDev = pDev->next)
+-        {
+-            if (DevHasCursor(pDev))
+-            {
+-                if (!( *pscr->RealizeCursor)(pDev, pscr, pCurs))
+-                {
++        for (pDev = inputInfo.devices; pDev; pDev = pDev->next) {
++            if (DevHasCursor(pDev)) {
++                if (!(*pscr->RealizeCursor) (pDev, pscr, pCurs)) {
+                     /* Realize failed for device pDev on screen pscr.
+                      * We have to assume that for all devices before, realize
+                      * worked. We need to rollback all devices so far on the
+@@ -190,19 +179,17 @@ RealizeCursorAllScreens(CursorPtr pCurs)
+                      * screens.
+                      */
+                     DeviceIntPtr pDevIt = inputInfo.devices; /*dev iterator*/
+-                    while(pDevIt && pDevIt != pDev)
+-                    {
++
++                    while (pDevIt && pDevIt != pDev) {
+                         if (DevHasCursor(pDevIt))
+                             ( *pscr->UnrealizeCursor)(pDevIt, pscr, pCurs);
+                         pDevIt = pDevIt->next;
+                     }
+-                    while (--nscr >= 0)
+-                    {
++                    while (--nscr >= 0) {
+                         pscr = screenInfo.screens[nscr];
+                         /* now unrealize all devices on previous screens */
+                         pDevIt = inputInfo.devices;
+-                        while (pDevIt)
+-                        {
++                        while (pDevIt) {
+                             if (DevHasCursor(pDevIt))
+                                 ( *pscr->UnrealizeCursor)(pDevIt, pscr, pCurs);
+                             pDevIt = pDevIt->next;
+@@ -218,7 +205,6 @@ RealizeCursorAllScreens(CursorPtr pCurs)
+     return Success;
+ }
+ 
+-
+ /**
+  * does nothing about the resource table, just creates the data structure.
+  * does not copy the src and mask bits
+@@ -310,34 +296,28 @@ AllocGlyphCursor(Font source, unsigned sourceChar, Font mask, unsigned maskChar,
+     CursorPtr 	pCurs;
+     GlyphSharePtr pShare;
+ 
+-    rc = dixLookupResourceByType((pointer *)&sourcefont, source, RT_FONT, client,
+-				 DixUseAccess);
+-    if (rc != Success)
+-    {
++    rc = dixLookupResourceByType((pointer *) &sourcefont, source, RT_FONT,
++                                 client, DixUseAccess);
++    if (rc != Success) {
+ 	client->errorValue = source;
+ 	return rc;
+     }
+     rc = dixLookupResourceByType((pointer *)&maskfont, mask, RT_FONT, client,
+ 				 DixUseAccess);
+-    if (rc != Success && mask != None)
+-    {
++    if (rc != Success && mask != None) {
+ 	client->errorValue = mask;
+ 	return rc;
+     }
+     if (sourcefont != maskfont)
+ 	pShare = (GlyphSharePtr)NULL;
+-    else
+-    {
++    else {
+ 	for (pShare = sharedGlyphs;
+ 	     pShare &&
+ 	     ((pShare->font != sourcefont) ||
+ 	      (pShare->sourceChar != sourceChar) ||
+-	      (pShare->maskChar != maskChar));
+-	     pShare = pShare->next)
+-	    ;
++              (pShare->maskChar != maskChar)); pShare = pShare->next);
+     }
+-    if (pShare)
+-    {
++    if (pShare) {
+ 	pCurs = (CursorPtr)calloc(CURSOR_REC_SIZE, 1);
+ 	if (!pCurs)
+ 	    return BadAlloc;
+@@ -345,15 +325,12 @@ AllocGlyphCursor(Font source, unsigned sourceChar, Font mask, unsigned maskChar,
+ 	bits = pShare->bits;
+ 	bits->refcnt++;
+     }
+-    else
+-    {
+-	if (!CursorMetricsFromGlyph(sourcefont, sourceChar, &cm))
+-	{
++    else {
++        if (!CursorMetricsFromGlyph(sourcefont, sourceChar, &cm)) {
+ 	    client->errorValue = sourceChar;
+ 	    return BadValue;
+ 	}
+-	if (!maskfont)
+-	{
++        if (!maskfont) {
+ 	    long n;
+ 	    unsigned char *mskptr;
+ 
+@@ -364,40 +341,33 @@ AllocGlyphCursor(Font source, unsigned sourceChar, Font mask, unsigned maskChar,
+ 	    while (--n >= 0)
+ 		*mskptr++ = ~0;
+ 	}
+-	else
+-	{
+-	    if (!CursorMetricsFromGlyph(maskfont, maskChar, &cm))
+-	    {
++        else {
++            if (!CursorMetricsFromGlyph(maskfont, maskChar, &cm)) {
+ 		client->errorValue = maskChar;
+ 		return BadValue;
+ 	    }
+ 	    if ((rc = ServerBitsFromGlyph(maskfont, maskChar, &cm, &mskbits)))
+ 		return rc;
+ 	}
+-	if ((rc = ServerBitsFromGlyph(sourcefont, sourceChar, &cm, &srcbits)))
+-	{
++        if ((rc = ServerBitsFromGlyph(sourcefont, sourceChar, &cm, &srcbits))) {
+ 	    free(mskbits);
+ 	    return rc;
+ 	}
+-	if (sourcefont != maskfont)
+-	{
+-	    pCurs = 
+-                (CursorPtr)calloc(CURSOR_REC_SIZE + CURSOR_BITS_SIZE, 1);
++        if (sourcefont != maskfont) {
++            pCurs = (CursorPtr) calloc(CURSOR_REC_SIZE + CURSOR_BITS_SIZE, 1);
+ 	    if (pCurs)
+ 		bits = (CursorBitsPtr)((char *)pCurs + CURSOR_REC_SIZE);
+ 	    else
+ 		bits = (CursorBitsPtr)NULL;
+ 	}
+-	else
+-	{
++        else {
+ 	    pCurs = (CursorPtr)calloc(CURSOR_REC_SIZE, 1);
+ 	    if (pCurs)
+ 		bits = (CursorBitsPtr)calloc(CURSOR_BITS_SIZE, 1);
+ 	    else
+ 		bits = (CursorBitsPtr)NULL;
+ 	}
+-	if (!bits)
+-	{
++        if (!bits) {
+ 	    free(pCurs);
+ 	    free(mskbits);
+ 	    free(srcbits);
+@@ -416,12 +386,10 @@ AllocGlyphCursor(Font source, unsigned sourceChar, Font mask, unsigned maskChar,
+ 	bits->yhot = cm.yhot;
+ 	if (sourcefont != maskfont)
+ 	    bits->refcnt = -1;
+-	else
+-	{
++        else {
+ 	    bits->refcnt = 1;
+ 	    pShare = malloc(sizeof(GlyphShare));
+-	    if (!pShare)
+-	    {
++            if (!pShare) {
+ 		FreeCursorBits(bits);
+ 		return BadAlloc;
+ 	    }

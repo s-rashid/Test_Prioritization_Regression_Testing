@@ -1,0 +1,143 @@
+diff --git a/hw/xfree86/xaa/xaaNonTEGlyph.c b/hw/xfree86/xaa/xaaNonTEGlyph.c
+index 7431ba2..bfe7f9a 100644
+--- a/hw/xfree86/xaa/xaaNonTEGlyph.c
++++ b/hw/xfree86/xaa/xaaNonTEGlyph.c
+@@ -1,5 +1,4 @@
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -47,21 +46,20 @@ EXPNAME(XAANonTEGlyphRenderer)(
+     int xText, int wText, 
+     int y, int h, int skipleft, int startline, 
+     NonTEGlyphInfo *glyphp,
+-    int fg, int rop,
+-    unsigned int planemask )
+-{
++                                    int fg, int rop, unsigned int planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     CARD32* base = (CARD32*)infoRec->ColorExpandBase;
++
+ #ifdef TRIPLE_BITS
+     int dwords = ((3 * wText + 31) >> 5) * h;
+ #else
+     int dwords = ((wText + 31) >> 5) * h;
+ #endif
+ 
+-    (*infoRec->SetupForCPUToScreenColorExpandFill)(
+-					pScrn, fg, -1, rop, planemask);
+-    (*infoRec->SubsequentCPUToScreenColorExpandFill)(
+-					pScrn, xText, y, wText, h, 0);
++    (*infoRec->SetupForCPUToScreenColorExpandFill) (pScrn, fg, -1, rop,
++                                                    planemask);
++    (*infoRec->SubsequentCPUToScreenColorExpandFill) (pScrn, xText, y, wText, h,
++                                                      0);
+ 
+ #ifndef FIXEDBASE
+ #ifdef TRIPLE_BITS
+@@ -84,7 +82,8 @@ EXPNAME(XAANonTEGlyphRenderer)(
+ 
+     if(infoRec->CPUToScreenColorExpandFillFlags & SYNC_AFTER_COLOR_EXPAND) 
+ 	(*infoRec->Sync)(pScrn);
+-    else SET_SYNC_FLAG(infoRec);
++    else
++        SET_SYNC_FLAG(infoRec);
+ }
+ 
+ #ifndef FIXEDBASE
+@@ -98,19 +97,18 @@ EXPNAME(XAANonTEGlyphRendererScanline)(
+ #endif
+     ScrnInfoPtr pScrn,
+     int xText, int wText, 
+-    int y, int h, int skipleft, int startline, 
+-    NonTEGlyphInfo *glyphp,
+-    int fg, int rop,
+-    unsigned int planemask )
+-{
++                                            int y, int h, int skipleft,
++                                            int startline,
++                                            NonTEGlyphInfo * glyphp, int fg,
++                                            int rop, unsigned int planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     int bufferNo = 0;
+     CARD32* base;
+ 
+-    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill)(
+-				pScrn, fg, -1, rop, planemask);
+-    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(
+-				pScrn, xText, y, wText, h, 0);
++    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill) (pScrn, fg, -1, rop,
++                                                            planemask);
++    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, xText, y,
++                                                              wText, h, 0);
+ 
+     while(h--) {
+ 	base = (CARD32*)infoRec->ScanlineColorExpandBuffers[bufferNo];
+@@ -131,12 +129,9 @@ EXPNAME(XAANonTEGlyphRendererScanline)(
+ 
+ ********************************************************************/
+ 
+-
+ CARD32* 
+-NonTEGlyphFunc(
+-    CARD32 *base,
+-    NonTEGlyphInfo *glyphp,
+-    int line, int TotalWidth, int skipleft )
++NonTEGlyphFunc(CARD32 *base,
++               NonTEGlyphInfo * glyphp, int line, int TotalWidth, int skipleft)
+ {
+     CARD32 bits = 0;
+     int shift = glyphp->width; 
+@@ -145,10 +140,10 @@ NonTEGlyphFunc(
+ 	if((line >= glyphp->firstline) && (line <= glyphp->lastline))
+             bits = SHIFT_R(glyphp->bitsp[line], skipleft);
+ 	shift -= skipleft;
+-    } else if((line >= glyphp->firstline) && (line <= glyphp->lastline))
++    }
++    else if ((line >= glyphp->firstline) && (line <= glyphp->lastline))
+             bits =  glyphp->bitsp[line];
+  
+-
+     while(TotalWidth > 32) {
+ 	while(shift < 32) {
+ 	    glyphp++;
+@@ -162,10 +157,10 @@ NonTEGlyphFunc(
+ 	WRITE_BITS(bits);
+ #endif
+ 	shift &= 31;
+-	if(shift && 
+-	 (line >= glyphp->firstline) && (line <= glyphp->lastline)) 
++        if (shift && (line >= glyphp->firstline) && (line <= glyphp->lastline))
+            bits = SHIFT_R(glyphp->bitsp[line], glyphp->width - shift);
+-	else bits = 0;
++        else
++            bits = 0;
+ 	TotalWidth -= 32;
+     }
+ 
+@@ -181,9 +176,11 @@ NonTEGlyphFunc(
+ #ifdef TRIPLE_BITS
+ 	if (shift >= 22) {
+ 	    WRITE_BITS3(bits);
+-	} else if (shift >= 11) {
++        }
++        else if (shift >= 11) {
+ 	    WRITE_BITS2(bits);
+-	} else {
++        }
++        else {
+ 	    WRITE_BITS1(bits);
+ 	}
+ #else
+@@ -191,10 +188,5 @@ NonTEGlyphFunc(
+ #endif
+     }
+ 
+-  
+     return base;
+ }
+-
+-
+-
+-

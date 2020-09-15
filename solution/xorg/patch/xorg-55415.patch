@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/common/xf86Config.h b/hw/xfree86/common/xf86Config.h
+index 411fc2c..de06677 100644
+--- a/hw/xfree86/common/xf86Config.h
++++ b/hw/xfree86/common/xf86Config.h
+@@ -59,14 +59,14 @@ typedef struct _ModuleDefault {
+ /*
+  * prototypes
+  */
+-char ** xf86ModulelistFromConfig(pointer **);
+-char ** xf86DriverlistFromConfig(void);
+-char ** xf86DriverlistFromCompile(void);
+-char ** xf86InputDriverlistFromConfig(void);
++char **xf86ModulelistFromConfig(pointer **);
++char **xf86DriverlistFromConfig(void);
++char **xf86DriverlistFromCompile(void);
++char **xf86InputDriverlistFromConfig(void);
+ Bool xf86BuiltinInputDriver(const char *);
+ ConfigStatus xf86HandleConfigFile(Bool);
+ 
+ Bool xf86AutoConfig(void);
+ GDevPtr autoConfigDevice(GDevPtr preconf_device);
+ 
+-#endif /* _xf86_config_h */
++#endif                          /* _xf86_config_h */

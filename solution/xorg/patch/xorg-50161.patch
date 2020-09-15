@@ -1,0 +1,13 @@
+diff --git a/xkb/xkbAccessX.c b/xkb/xkbAccessX.c
+index be1dcee..b5486b7 100644
+--- a/xkb/xkbAccessX.c
++++ b/xkb/xkbAccessX.c
+@@ -394,7 +394,7 @@ XkbSrvLedInfoPtr	sli;
+ 	unsigned timeElapsed = (now-xkbi->lastPtrEventTime);
+ 
+ 	if (timeToWait > timeElapsed)
+-	    return (timeToWait - timeElapsed);
++	    return timeToWait - timeElapsed;
+     }
+     old= *ctrls;
+     xkbi->shiftKeyCount= 0;

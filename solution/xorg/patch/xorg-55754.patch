@@ -1,0 +1,182 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index b718a41..4624fd4 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -38,19 +38,24 @@
+ 
+ #include "os.h"
+ 
+-static void handleBufferModes(struct glCapabilitiesConfig *c, GLint bufferModes) {
++static void
++handleBufferModes(struct glCapabilitiesConfig *c, GLint bufferModes)
++{
+     if(bufferModes & kCGLStereoscopicBit) {
+ 	c->stereo = true;
+     }
+ 
+     if(bufferModes & kCGLDoubleBufferBit) {
+ 	c->buffers = 2;
+-    } else {
++    }
++    else {
+ 	c->buffers = 1;
+     }
+ }
+ 
+-static void handleStencilModes(struct glCapabilitiesConfig *c, GLint smodes) {
++static void
++handleStencilModes(struct glCapabilitiesConfig *c, GLint smodes)
++{
+     int offset = 0;
+     
+     if(kCGL0Bit & smodes)
+@@ -109,8 +114,10 @@ static void handleStencilModes(struct glCapabilitiesConfig *c, GLint smodes) {
+     c->total_stencil_bit_depths = offset;
+ }
+ 
+-static int handleColorAndAccumulation(struct glColorBufCapabilities *c, 
+-				       GLint cmodes, int forAccum) {
++static int
++handleColorAndAccumulation(struct glColorBufCapabilities *c,
++                           GLint cmodes, int forAccum)
++{
+     int offset = 0;
+         
+     /*1*/
+@@ -290,22 +297,28 @@ static int handleColorAndAccumulation(struct glColorBufCapabilities *c,
+     return offset;
+ }
+ 
+-
+-static void handleColorModes(struct glCapabilitiesConfig *c, GLint cmodes) {
++static void
++handleColorModes(struct glCapabilitiesConfig *c, GLint cmodes)
++{
+     c->total_color_buffers = handleColorAndAccumulation(c->color_buffers,
+ 							cmodes, 0);
+     
+     assert(c->total_color_buffers < GLCAPS_COLOR_BUFFERS);
+ }
+ 
+-static void handleAccumulationModes(struct glCapabilitiesConfig *c, GLint cmodes) {
++static void
++handleAccumulationModes(struct glCapabilitiesConfig *c, GLint cmodes)
++{
+     c->total_accum_buffers = handleColorAndAccumulation(c->accum_buffers,
+ 							cmodes, 1);
+     assert(c->total_accum_buffers < GLCAPS_COLOR_BUFFERS);
+ }
+ 
+-static void handleDepthModes(struct glCapabilitiesConfig *c, GLint dmodes) {
++static void
++handleDepthModes(struct glCapabilitiesConfig *c, GLint dmodes)
++{
+     int offset = 0;
++
+ #define DEPTH(flag,value) do { \
+ 	if(dmodes & flag) { \
+ 	    c->depth_buffers[offset++] = value; \
+@@ -354,8 +367,10 @@ static void handleDepthModes(struct glCapabilitiesConfig *c, GLint dmodes) {
+ }
+ 
+ /* Return non-zero if an error occured. */
+-static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r, 
+-					   struct glCapabilitiesConfig *c) {
++static CGLError
++handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
++                           struct glCapabilitiesConfig *c)
++{
+     CGLError err;
+     GLint accelerated = 0, flags = 0, aux = 0, samplebufs = 0, samples = 0;
+ 
+@@ -382,7 +397,6 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+     
+     c->aux_buffers = aux;
+ 
+-    
+     /* Depth buffer size */
+     err = CGLDescribeRenderer(info, r, kCGLRPDepthModes, &flags);
+     
+@@ -391,7 +405,6 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+ 
+     handleDepthModes(c, flags);
+ 
+-
+     /* Multisample buffers */
+     err = CGLDescribeRenderer(info, r, kCGLRPMaxSampleBuffers, &samplebufs);
+ 
+@@ -400,7 +413,6 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+ 
+     c->multisample_buffers = samplebufs;
+     
+-
+     /* Multisample samples per multisample buffer */
+     err = CGLDescribeRenderer(info, r, kCGLRPMaxSamples, &samples);
+ 
+@@ -409,7 +421,6 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+ 
+     c->multisample_samples = samples;
+ 
+-
+     /* Stencil bit depths */
+     err = CGLDescribeRenderer(info, r, kCGLRPStencilModes, &flags);
+ 
+@@ -418,7 +429,6 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+ 
+     handleStencilModes(c, flags);   
+ 
+-
+     /* Color modes (RGB/RGBA depths supported */
+     err = CGLDescribeRenderer(info, r, kCGLRPColorModes, &flags);
+ 
+@@ -437,12 +447,16 @@ static CGLError handleRendererDescriptions(CGLRendererInfoObj info, GLint r,
+     return kCGLNoError;
+ }
+ 
+-static void initCapabilities(struct glCapabilities *cap) {
++static void
++initCapabilities(struct glCapabilities *cap)
++{
+     cap->configurations = NULL;
+     cap->total_configurations = 0;
+ }
+ 
+-static void initConfig(struct glCapabilitiesConfig *c) {
++static void
++initConfig(struct glCapabilitiesConfig *c)
++{
+     int i;
+ 
+     c->accelerated = false;
+@@ -486,7 +500,9 @@ static void initConfig(struct glCapabilitiesConfig *c) {
+     c->next = NULL;
+ }
+ 
+-void freeGlCapabilities(struct glCapabilities *cap) {
++void
++freeGlCapabilities(struct glCapabilities *cap)
++{
+     struct glCapabilitiesConfig *conf, *next;
+     
+     conf = cap->configurations;
+@@ -501,7 +517,9 @@ void freeGlCapabilities(struct glCapabilities *cap) {
+ }
+ 
+ /*Return true if an error occured. */
+-bool getGlCapabilities(struct glCapabilities *cap) {
++bool
++getGlCapabilities(struct glCapabilities *cap)
++{
+ 	CGLRendererInfoObj info;
+     CGLError err;
+ 	GLint numRenderers = 0, r;
+@@ -521,7 +539,8 @@ bool getGlCapabilities(struct glCapabilities *cap) {
+ 
+ 	    err = handleRendererDescriptions(info, r, &tmpconf);
+ 	    if(err) {
+-            ErrorF("handleRendererDescriptions returned error: %s\n", CGLErrorString(err));
++            ErrorF("handleRendererDescriptions returned error: %s\n",
++                   CGLErrorString(err));
+             ErrorF("trying to continue...\n");
+             continue;
+ 	    }

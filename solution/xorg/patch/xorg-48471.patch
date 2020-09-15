@@ -1,0 +1,22 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index 312fcc9..8c4a7eb 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -368,7 +368,7 @@ ProcXF86BigfontQueryVersion(
+     }
+     WriteToClient(client,
+ 		  sizeof(xXF86BigfontQueryVersionReply), (char *)&reply);
+-    return client->noClientException;
++    return Success;
+ }
+ 
+ static void
+@@ -698,7 +698,7 @@ ProcXF86BigfontQueryFont(
+ 	    if (shmid == -1) free(pIndex2UniqIndex);
+ 	    if (!pDesc) free(pCI);
+ 	}
+-	return (client->noClientException);
++	return Success;
+     }
+ }
+ 

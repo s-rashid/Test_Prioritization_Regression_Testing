@@ -1,0 +1,16 @@
+diff --git a/hw/dmx/glxProxy/glxscreens.c b/hw/dmx/glxProxy/glxscreens.c
+index a0e8bea..4cbac66 100644
+--- a/hw/dmx/glxProxy/glxscreens.c
++++ b/hw/dmx/glxProxy/glxscreens.c
+@@ -35,11 +35,6 @@
+ #include "dmx.h"
+ #include "dmxlog.h"
+ 
+-#undef Xmalloc
+-#undef Xcalloc
+-#undef Xrealloc
+-#undef Xfree
+-
+ #include "glxserver.h"
+ 
+ #include <windowstr.h>

@@ -1,0 +1,62 @@
+diff --git a/hw/xfree86/loader/loadext.c b/hw/xfree86/loader/loadext.c
+index 4078b77..daa1abf 100644
+--- a/hw/xfree86/loader/loadext.c
++++ b/hw/xfree86/loader/loadext.c
+@@ -59,7 +59,8 @@ NewExtensionModule(void)
+     if (ExtensionModuleList == NULL) {
+ 	ExtensionModuleList = save;
+ 	return NULL;
+-    } else {
++    }
++    else {
+ 	numExtensionModules++;
+ 	ExtensionModuleList[numExtensionModules].name = NULL;
+ 	return ExtensionModuleList + (numExtensionModules - 1);
+@@ -78,8 +79,7 @@ LoadExtension(ExtensionModule * e, Bool builtin)
+ 	return;
+ 
+     if (builtin)
+-	xf86MsgVerb(X_INFO, 2, "Initializing built-in extension %s\n",
+-		    e->name);
++        xf86MsgVerb(X_INFO, 2, "Initializing built-in extension %s\n", e->name);
+     else
+ 	xf86MsgVerb(X_INFO, 2, "Loading extension %s\n", e->name);
+ 
+@@ -160,8 +160,7 @@ get_node(const char *name)
+ {
+     NODE *n;
+ 
+-    for (n = graph; n && n->n_name && strcmp(n->n_name, name);
+-	 n = n->n_next) ;
++    for (n = graph; n && n->n_name && strcmp(n->n_name, name); n = n->n_next);
+     if (n)
+ 	return n;
+ 
+@@ -296,14 +295,14 @@ find_cycle(NODE * from, NODE * to, int longest_len, int depth)
+ 		memcpy((char *)longest_cycle,
+ 		       (char *)cycle_buf, longest_len * sizeof(NODE *));
+ 	    }
+-	} else {
++        }
++        else {
+ 	    if ((*np)->n_flags & (NF_MARK | NF_ACYCLIC | NF_NODEST))
+ 		continue;
+ 	    len = find_cycle(*np, to, longest_len, depth + 1);
+ 
+ #ifdef DEBUG
+-	    ErrorF("%*s %s->%s %d\n", depth, "",
+-		   from->n_name, to->n_name, len);
++            ErrorF("%*s %s->%s %d\n", depth, "", from->n_name, to->n_name, len);
+ #endif
+ 
+ 	    if (len == 0)
+@@ -368,7 +367,8 @@ tsort(void)
+ 		    remove_node(n);
+ 		    clear_cycle();
+ 		    break;
+-		} else {
++                }
++                else {
+ 		    /* to avoid further checks */
+ 		    n->n_flags |= NF_ACYCLIC;
+ 		    clear_cycle();

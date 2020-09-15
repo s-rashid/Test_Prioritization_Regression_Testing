@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/vbe/vbe.c b/hw/xfree86/vbe/vbe.c
+index 06a6284..6ecca68 100644
+--- a/hw/xfree86/vbe/vbe.c
++++ b/hw/xfree86/vbe/vbe.c
+@@ -170,7 +170,7 @@ vbeFree(vbeInfoPtr pVbe)
+ static Bool
+ vbeProbeDDC(vbeInfoPtr pVbe)
+ {
+-    char *ddc_level;
++    const char *ddc_level;
+     int screen = pVbe->pInt10->scrnIndex;
+     
+     if (pVbe->ddc == DDC_NONE)

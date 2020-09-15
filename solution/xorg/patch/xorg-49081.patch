@@ -1,0 +1,13 @@
+diff --git a/composite/compext.c b/composite/compext.c
+index ed43775..d37d52a 100644
+--- a/composite/compext.c
++++ b/composite/compext.c
+@@ -218,7 +218,7 @@ ProcCompositeCreateRegionFromBorderClip (ClientPtr client)
+     pRegion = XFixesRegionCopy (pBorderClip);
+     if (!pRegion)
+ 	return BadAlloc;
+-    REGION_TRANSLATE (pScreen, pRegion, -pWin->drawable.x, -pWin->drawable.y);
++    RegionTranslate(pRegion, -pWin->drawable.x, -pWin->drawable.y);
+     
+     if (!AddResource (stuff->region, RegionResType, (pointer) pRegion))
+ 	return BadAlloc;

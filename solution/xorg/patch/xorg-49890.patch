@@ -1,0 +1,15 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index eee3887..2256424 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -208,10 +208,7 @@ char	tmpname[PATH_MAX];
+ 	return BadImplementation;
+     }
+     list->nFound[what]= 0;
+-    if (buf) {
+         free(buf);
+-        buf = NULL;
+-    }
+     buf = malloc(PATH_MAX * sizeof(char));
+     if (!buf)
+         return BadAlloc;

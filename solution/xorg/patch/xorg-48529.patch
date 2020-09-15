@@ -1,0 +1,20 @@
+diff --git a/dix/extension.c b/dix/extension.c
+index 6940b68..d3d4db0 100644
+--- a/dix/extension.c
++++ b/dix/extension.c
+@@ -293,7 +293,7 @@ ProcQueryExtension(ClientPtr client)
+ 	}
+     }
+     WriteReplyToClient(client, sizeof(xQueryExtensionReply), &reply);
+-    return(client->noClientException);
++    return Success;
+ }
+ 
+ int
+@@ -354,5 +354,5 @@ ProcListExtensions(ClientPtr client)
+         WriteToClient(client, total_length, buffer);
+         free(buffer);
+     }
+-    return(client->noClientException);
++    return Success;
+ }

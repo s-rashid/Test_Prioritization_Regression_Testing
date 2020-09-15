@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86.h b/hw/xfree86/common/xf86.h
+index 2cf3e04..51c91a2 100644
+--- a/hw/xfree86/common/xf86.h
++++ b/hw/xfree86/common/xf86.h
+@@ -249,7 +249,6 @@ extern _X_EXPORT Bool xf86ServerIsExiting(void);
+ extern _X_EXPORT Bool xf86ServerIsResetting(void);
+ extern _X_EXPORT Bool xf86ServerIsInitialising(void);
+ extern _X_EXPORT Bool xf86ServerIsOnlyDetecting(void);
+-extern _X_EXPORT Bool xf86ServerIsOnlyProbing(void);
+ extern _X_EXPORT Bool xf86CaughtSignal(void);
+ extern _X_EXPORT Bool xf86GetVidModeAllowNonLocal(void);
+ extern _X_EXPORT Bool xf86GetVidModeEnabled(void);

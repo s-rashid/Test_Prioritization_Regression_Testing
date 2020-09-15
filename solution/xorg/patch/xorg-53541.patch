@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 9fbcba9..41c9340 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -936,7 +936,8 @@ NewInputDeviceRequest (InputOption *options, InputAttributes *attrs,
+ 
+         if (strcmp(input_option_get_key(option), "_source") == 0 &&
+             (strcmp(input_option_get_value(option), "server/hal") == 0 ||
+-             strcmp(input_option_get_value(option), "server/udev") == 0)) {
++             strcmp(input_option_get_value(option), "server/udev") == 0 ||
++             strcmp(input_option_get_value(option), "server/wscons") == 0)) {
+             is_auto = 1;
+             if (!xf86Info.autoAddDevices) {
+                 rval = BadMatch;

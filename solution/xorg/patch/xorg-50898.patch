@@ -1,0 +1,15 @@
+diff --git a/miext/shadow/shpacked.c b/miext/shadow/shpacked.c
+index 20d2ea1..06606bc 100644
+--- a/miext/shadow/shpacked.c
++++ b/miext/shadow/shpacked.c
+@@ -102,8 +102,8 @@ shadowUpdatePacked (ScreenPtr	    pScreen,
+ 		width -= i;
+ 		scr += i;
+ #define PickBit(a,i)	(((a) >> (i)) & 1)
+-		while (i--)
+-		    *win++ = *sha++;
++		memcpy(win, sha, i * sizeof(FbBits));
++		sha += i;
+ 	    }
+ 	    shaLine += shaStride;
+ 	    y++;

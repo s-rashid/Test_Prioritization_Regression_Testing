@@ -1,0 +1,14 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 6f1936c..21b4a16 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -423,7 +423,8 @@ typedef    void (* ReparentWindowProcPtr)(
+     WindowPtr /*pPriorParent*/);
+ 
+ typedef    void (* SetShapeProcPtr)(
+-	WindowPtr /*pWin*/);
++        WindowPtr /*pWin*/,
++        int /* kind */);
+ 
+ typedef    void (* ChangeBorderWidthProcPtr)(
+ 	WindowPtr /*pWin*/,

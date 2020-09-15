@@ -1,0 +1,14 @@
+diff --git a/os/backtrace.c b/os/backtrace.c
+index a886688..a421140 100644
+--- a/os/backtrace.c
++++ b/os/backtrace.c
+@@ -29,7 +29,9 @@
+ #include "misc.h"
+ 
+ #ifdef HAVE_BACKTRACE
++#ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
++#endif
+ #include <dlfcn.h>
+ #include <execinfo.h>
+ 

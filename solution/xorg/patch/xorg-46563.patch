@@ -1,0 +1,13 @@
+diff --git a/Xext/xvdisp.c b/Xext/xvdisp.c
+index 04cd11a..5229916 100644
+--- a/Xext/xvdisp.c
++++ b/Xext/xvdisp.c
+@@ -1912,7 +1912,7 @@ void XineramifyXv(void)
+ 	    if((pAdapt->type & XvImageMask) && (pAdapt->nImages > 0)) {
+ 	      hasOverlay = FALSE;
+               for(l = 0; l < pAdapt->nAttributes; l++) {
+-	         if(!strcmp(pAdapt->name, "XV_COLORKEY")) {
++	         if(!strcmp(pAdapt->pAttributes[l].name, "XV_COLORKEY")) {
+ 		   hasOverlay = TRUE;
+ 		   break;
+ 		 }

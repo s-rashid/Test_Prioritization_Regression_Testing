@@ -1,0 +1,17 @@
+diff --git a/Xi/querydev.c b/Xi/querydev.c
+index 0d661a9..a44cf22 100644
+--- a/Xi/querydev.c
++++ b/Xi/querydev.c
+@@ -70,6 +70,12 @@ ProcXIQueryDevice(ClientPtr client)
+     REQUEST(xXIQueryDeviceReq);
+     REQUEST_SIZE_MATCH(xXIQueryDeviceReq);
+ 
++    if (stuff->deviceid > 0xFF) /* FIXME */
++    {
++        client->errorValue = stuff->deviceid;
++        return BadImplementation;
++    }
++
+     if (stuff->deviceid != XIAllDevices && stuff->deviceid != XIAllMasterDevices)
+     {
+         rc = dixLookupDevice(&dev, stuff->deviceid, client, DixGetAttrAccess);

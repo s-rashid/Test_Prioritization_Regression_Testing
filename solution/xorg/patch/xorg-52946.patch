@@ -1,0 +1,11 @@
+diff --git a/include/window.h b/include/window.h
+index 1e4e9bf..e13598b 100644
+--- a/include/window.h
++++ b/include/window.h
+@@ -267,4 +267,6 @@ extern _X_EXPORT void EnableMapUnmapEvents(
+     WindowPtr /* pWin */ );
+ 
+ extern _X_EXPORT void SetRootClip(ScreenPtr pScreen, Bool enable);
++extern _X_EXPORT void PrintWindowTree(void);
++
+ #endif /* WINDOW_H */

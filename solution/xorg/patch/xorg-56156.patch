@@ -1,0 +1,588 @@
+diff --git a/xkb/xkbUtils.c b/xkb/xkbUtils.c
+index cc9aaa7..c23cd77 100644
+--- a/xkb/xkbUtils.c
++++ b/xkb/xkbUtils.c
+@@ -181,7 +181,9 @@ XkbSetActionKeyMods(XkbDescPtr xkb,XkbAction *act,unsigned mods)
+ register unsigned	tmp;
+ 
+     switch (act->type) {
+-	case XkbSA_SetMods: case XkbSA_LatchMods: case XkbSA_LockMods:
++    case XkbSA_SetMods:
++    case XkbSA_LatchMods:
++    case XkbSA_LockMods:
+ 	    if (act->mods.flags&XkbSA_UseModMapMods)
+ 		act->mods.real_mods= act->mods.mask= mods;
+ 	    if ((tmp= XkbModActionVMods(&act->mods))!=0)
+@@ -215,9 +217,7 @@ register unsigned mask;
+ void
+ XkbUpdateKeyTypesFromCore(	DeviceIntPtr	pXDev,
+                                 KeySymsPtr      pCore,
+-				KeyCode	 	first,
+-				CARD8	 	num,
+-				XkbChangesPtr	changes)
++                          KeyCode first, CARD8 num, XkbChangesPtr changes)
+ {
+ XkbDescPtr		xkb;
+ unsigned		key,nG,explicit;
+@@ -240,14 +240,15 @@ XkbMapChangesPtr	mc;
+         types[XkbGroup2Index]= XkbKeyKeyTypeIndex(xkb,key,XkbGroup2Index);
+         types[XkbGroup3Index]= XkbKeyKeyTypeIndex(xkb,key,XkbGroup3Index);
+         types[XkbGroup4Index]= XkbKeyKeyTypeIndex(xkb,key,XkbGroup4Index);
+-        nG= XkbKeyTypesForCoreSymbols(xkb,pCore->mapWidth,syms,explicit,types,
+-									tsyms);
++        nG = XkbKeyTypesForCoreSymbols(xkb, pCore->mapWidth, syms, explicit,
++                                       types, tsyms);
+ 	XkbChangeTypesOfKey(xkb,key,nG,XkbAllGroupsMask,types,mc);
+ 	memcpy((char *)XkbKeySymsPtr(xkb,key),(char *)tsyms,
+ 					XkbKeyNumSyms(xkb,key)*sizeof(KeySym));
+     }
+     if (changes->map.changed&XkbKeySymsMask) {
+ 	CARD8 oldLast,newLast;
++
+ 	oldLast = changes->map.first_key_sym+changes->map.num_key_syms-1;
+ 	newLast = first+num-1;
+ 
+@@ -267,9 +268,7 @@ XkbMapChangesPtr	mc;
+ 
+ void
+ XkbUpdateDescActions(	XkbDescPtr		xkb,
+-			KeyCode		 	first,
+-			CARD8		 	num,
+-			XkbChangesPtr	 	changes)
++                     KeyCode first, CARD8 num, XkbChangesPtr changes)
+ {
+ register unsigned	key;
+ 
+@@ -307,6 +306,7 @@ register unsigned	key;
+ 
+     if (changes->map.changed&XkbKeyActionsMask) {
+ 	CARD8 oldLast,newLast;
++
+ 	oldLast= changes->map.first_key_act+changes->map.num_key_acts-1;
+ 	newLast = first+num-1;
+ 
+@@ -329,8 +329,7 @@ XkbUpdateActions(	DeviceIntPtr	 	pXDev,
+ 			KeyCode		 	first,
+ 			CARD8		 	num,
+ 			XkbChangesPtr	 	changes,
+-			unsigned *	 	needChecksRtrn,
+-			XkbEventCausePtr	cause)
++                 unsigned *needChecksRtrn, XkbEventCausePtr cause)
+ {
+ XkbSrvInfoPtr		xkbi;
+ XkbDescPtr		xkb;
+@@ -379,12 +378,14 @@ int			maxNumberOfGroups;
+ 	if (XkbKeycodeInRange(xkb,key)) {
+ 	    int	nGroups;
+ 	    int	w;
++
+ 	    nGroups= XkbKeyNumGroups(xkb,key);
+ 	    tmp= 0;
+ 	    if (nGroups>0) {
+ 		if ((w=XkbKeyGroupWidth(xkb,key,XkbGroup1Index))<=2)
+ 		     tmp+= 2;
+-		else tmp+= w + 2;
++                else
++                    tmp += w + 2;
+                 /* remember highest G1 width */
+                 if (w > maxGroup1Width)
+                     maxGroup1Width = w;
+@@ -393,8 +394,10 @@ int			maxNumberOfGroups;
+                 if (tmp <= 2) {
+ 		     if ((w=XkbKeyGroupWidth(xkb,key,XkbGroup2Index))<2)
+ 		          tmp+= 2;
+-		     else tmp+= w;
+-                } else {
++                    else
++                        tmp += w;
++                }
++                else {
+                      if ((w=XkbKeyGroupWidth(xkb,key,XkbGroup2Index))>2)
+                           tmp+= w - 2;
+                 }
+@@ -447,8 +450,10 @@ int			maxNumberOfGroups;
+         nOut= 2;
+         if (nGroups>0) {
+             groupWidth= XkbKeyGroupWidth(xkb,key,XkbGroup1Index);
+-            if (groupWidth>0)   pCore[0]= pXKB[0];
+-            if (groupWidth>1)   pCore[1]= pXKB[1];
++            if (groupWidth > 0)
++                pCore[0] = pXKB[0];
++            if (groupWidth > 1)
++                pCore[1] = pXKB[1];
+             for (n=2;n<groupWidth;n++)
+                 pCore[2+n]= pXKB[n];
+             if (groupWidth>2)
+@@ -459,8 +464,7 @@ int			maxNumberOfGroups;
+            A 1-group key with ABCDE on a 2 group keyboard must be
+ 	   duplicated across all groups as ABABCDECDE.
+ 	 */
+-	if (nGroups == 1)
+-	{
++        if (nGroups == 1) {
+ 	    int idx, j;
+ 
+ 	    groupWidth = XkbKeyGroupWidth(xkb, key, XkbGroup1Index);
+@@ -474,8 +478,7 @@ int			maxNumberOfGroups;
+ 	    /* ABABCDE... -> ABABCDECDE */
+ 	    idx = 2 + groupWidth;
+ 	    while (groupWidth > 2 && idx < syms->mapWidth &&
+-		   idx < groupWidth * 2)
+-	    {
++                   idx < groupWidth * 2) {
+ 		pCore[idx] = pCore[idx - groupWidth + 2];
+ 		idx++;
+ 	    }
+@@ -492,8 +495,10 @@ int			maxNumberOfGroups;
+ 	nOut+= 2;
+ 	if (nGroups>1) {
+ 	    groupWidth= XkbKeyGroupWidth(xkb,key,XkbGroup2Index);
+-	    if (groupWidth>0)	pCore[2]= pXKB[0];
+-	    if (groupWidth>1)	pCore[3]= pXKB[1];
++            if (groupWidth > 0)
++                pCore[2] = pXKB[0];
++            if (groupWidth > 1)
++                pCore[3] = pXKB[1];
+ 	    for (n=2;n<groupWidth;n++) {
+ 		pCore[nOut+(n-2)]= pXKB[n];
+ 	    }
+@@ -503,6 +508,7 @@ int			maxNumberOfGroups;
+ 	pXKB+= XkbKeyGroupsWidth(xkb,key);
+ 	for (n=XkbGroup3Index;n<nGroups;n++) {
+ 	    register int s;
++
+ 	    groupWidth= XkbKeyGroupWidth(xkb,key,n);
+ 	    for (s=0;s<groupWidth;s++) {
+ 		pCore[nOut++]= pXKB[s];
+@@ -521,11 +527,14 @@ XkbSetRepeatKeys(DeviceIntPtr pXDev,int key,int onoff)
+ 	xkbControlsNotify	cn;
+ 	XkbControlsPtr		ctrls = pXDev->key->xkbInfo->desc->ctrls;
+ 	XkbControlsRec 		old;
++
+ 	old = *ctrls;
+ 
+ 	if (key== -1) {	/* global autorepeat setting changed */
+-	    if (onoff)	ctrls->enabled_ctrls |= XkbRepeatKeysMask;
+-	    else	ctrls->enabled_ctrls &= ~XkbRepeatKeysMask;
++            if (onoff)
++                ctrls->enabled_ctrls |= XkbRepeatKeysMask;
++            else
++                ctrls->enabled_ctrls &= ~XkbRepeatKeysMask;
+ 	}
+ 	else if (pXDev->kbdfeed) {
+ 	    ctrls->per_key_repeat[key/8] = 
+@@ -606,20 +615,24 @@ int		changed;
+ 
+     changed=(old->group!=new->group?XkbGroupStateMask:0);
+     changed|=(old->base_group!=new->base_group?XkbGroupBaseMask:0);
+-    changed|=(old->latched_group!=new->latched_group?XkbGroupLatchMask:0);
++    changed |=
++        (old->latched_group != new->latched_group ? XkbGroupLatchMask : 0);
+     changed|=(old->locked_group!=new->locked_group?XkbGroupLockMask:0);
+     changed|=(old->mods!=new->mods?XkbModifierStateMask:0);
+     changed|=(old->base_mods!=new->base_mods?XkbModifierBaseMask:0);
+-    changed|=(old->latched_mods!=new->latched_mods?XkbModifierLatchMask:0);
++    changed |=
++        (old->latched_mods != new->latched_mods ? XkbModifierLatchMask : 0);
+     changed|=(old->locked_mods!=new->locked_mods?XkbModifierLockMask:0);
+-    changed|=(old->compat_state!=new->compat_state?XkbCompatStateMask:0);
++    changed |=
++        (old->compat_state != new->compat_state ? XkbCompatStateMask : 0);
+     changed|=(old->grab_mods!=new->grab_mods?XkbGrabModsMask:0);
+     if (old->compat_grab_mods!=new->compat_grab_mods)
+ 	changed|= XkbCompatGrabModsMask;
+     changed|=(old->lookup_mods!=new->lookup_mods?XkbLookupModsMask:0);
+     if (old->compat_lookup_mods!=new->compat_lookup_mods)
+ 	changed|= XkbCompatLookupModsMask;
+-    changed|=(old->ptr_buttons!=new->ptr_buttons?XkbPointerButtonMask:0);
++    changed |=
++        (old->ptr_buttons != new->ptr_buttons ? XkbPointerButtonMask : 0);
+     return changed;
+ }
+ 
+@@ -657,10 +670,12 @@ unsigned	act;
+ 	    }
+ 	    else if (act==XkbRedirectIntoRange) {
+ 		int newGroup;
++
+ 		newGroup= XkbOutOfRangeGroupNumber(ctrls->groups_wrap);
+ 		if (newGroup>=ctrls->num_groups)
+ 		     group= XkbGroup1Index;
+-		else group= newGroup;
++                else
++                    group = newGroup;
+ 	    }
+ 	    else {
+ 		group+= ctrls->num_groups;
+@@ -673,10 +688,12 @@ unsigned	act;
+ 	}
+ 	else if (act==XkbRedirectIntoRange) {
+ 	    int newGroup;
++
+ 	    newGroup= XkbOutOfRangeGroupNumber(ctrls->groups_wrap);
+ 	    if (newGroup>=ctrls->num_groups)
+ 		 group= XkbGroup1Index;
+-	    else group= newGroup;
++            else
++                group = newGroup;
+ 	}
+ 	else {
+ 	    group%= ctrls->num_groups;
+@@ -701,7 +718,6 @@ unsigned char	grp;
+     state->grab_mods|= 
+ 	((state->base_mods|state->latched_mods)&ctrls->ignore_lock.mask);
+ 
+-
+     grp= state->locked_group;
+     if (grp>=ctrls->num_groups)
+ 	state->locked_group= XkbAdjustGroup(XkbCharToInt(grp),ctrls);
+@@ -709,7 +725,8 @@ unsigned char	grp;
+     grp= state->locked_group+state->base_group+state->latched_group;
+     if (grp>=ctrls->num_groups)
+ 	 state->group= XkbAdjustGroup(XkbCharToInt(grp),ctrls);
+-    else state->group= grp;
++    else
++        state->group = grp;
+     XkbComputeCompatState(xkbi);
+     return;
+ }
+@@ -719,11 +736,11 @@ unsigned char	grp;
+ void
+ XkbCheckSecondaryEffects(	XkbSrvInfoPtr		xkbi,
+ 				unsigned		which,
+-				XkbChangesPtr 		changes,
+-				XkbEventCausePtr	cause)
++                         XkbChangesPtr changes, XkbEventCausePtr cause)
+ {
+     if (which&XkbStateNotifyMask) {
+ 	XkbStateRec old;
++
+ 	old= xkbi->state;
+ 	changes->state_changes|= XkbStateChangedFlags(&old,&xkbi->state);
+ 	XkbComputeDerivedState(xkbi);
+@@ -740,8 +757,7 @@ Bool
+ XkbEnableDisableControls(	XkbSrvInfoPtr		xkbi,
+ 				unsigned long		change,
+ 				unsigned long		newValues,
+-				XkbChangesPtr		changes,
+-				XkbEventCausePtr	cause)
++                         XkbChangesPtr changes, XkbEventCausePtr cause)
+ {
+ XkbControlsPtr		ctrls;
+ unsigned 		old;
+@@ -755,6 +771,7 @@ XkbSrvLedInfoPtr	sli;
+ 	return FALSE;
+     if (cause!=NULL) {
+ 	xkbControlsNotify cn;
++
+ 	cn.numGroups= ctrls->num_groups;
+ 	cn.changedControls= XkbControlsEnabledMask;
+ 	cn.enabledControls= ctrls->enabled_ctrls;
+@@ -774,7 +791,8 @@ XkbSrvLedInfoPtr	sli;
+ 	changes->ctrls.enabled_ctrls_changes^= (ctrls->enabled_ctrls^old);
+ 	if (changes->ctrls.enabled_ctrls_changes)
+ 	     changes->ctrls.changed_ctrls|= XkbControlsEnabledMask;
+-	else changes->ctrls.changed_ctrls&= ~XkbControlsEnabledMask;
++        else
++            changes->ctrls.changed_ctrls &= ~XkbControlsEnabledMask;
+     }
+     sli= XkbFindSrvLedInfo(xkbi->device,XkbDfltXIClass,XkbDfltXIId,0);
+     XkbUpdateIndicators(xkbi->device,sli->usesControls,TRUE,changes,cause);
+@@ -1067,8 +1085,7 @@ _XkbCopyClientMap(XkbDescPtr src, XkbDescPtr dst)
+                         }
+                         else if (!dtype->preserve || !dtype->map_count ||
+                                  i >= dst->map->num_types) {
+-                            tmp = malloc(stype->map_count *
+-                                         sizeof(XkbModsRec));
++                            tmp = malloc(stype->map_count * sizeof(XkbModsRec));
+                             if (!tmp)
+                                 return FALSE;
+                             dtype->preserve = tmp;
+@@ -1402,8 +1419,8 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+              * the source, run through and free all the excess ones
+              * first. */
+             if (src->geom->num_properties < dst->geom->sz_properties) {
+-                for (i = src->geom->num_properties, dprop = dst->geom->properties + i;
+-                     i < dst->geom->num_properties;
++                for (i = src->geom->num_properties, dprop =
++                     dst->geom->properties + i; i < dst->geom->num_properties;
+                      i++, dprop++) {
+                     free(dprop->name);
+                     free(dprop->value);
+@@ -1411,8 +1428,10 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             }
+ 
+             /* Reallocate and clear all new items if the buffer grows. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->properties, dst->geom->sz_properties, src->geom->num_properties,
+-                                sizeof(XkbPropertyRec), XKB_GEOM_CLEAR_EXCESS))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->properties, dst->geom->sz_properties,
++                 src->geom->num_properties, sizeof(XkbPropertyRec),
++                 XKB_GEOM_CLEAR_EXCESS))
+                 return FALSE;
+             /* We don't set num_properties as we need it to try and avoid
+              * too much reallocing. */
+@@ -1421,8 +1440,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             for (i = 0,
+                   sprop = src->geom->properties,
+                   dprop = dst->geom->properties;
+-                 i < src->geom->num_properties;
+-                 i++, sprop++, dprop++) {
++                 i < src->geom->num_properties; i++, sprop++, dprop++) {
+                 if (i < dst->geom->num_properties) {
+                     if (strlen(sprop->name) != strlen(dprop->name)) {
+                         tmp = realloc(dprop->name, strlen(sprop->name) + 1);
+@@ -1451,8 +1469,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         else {
+             if (dst->geom->sz_properties) {
+                 for (i = 0, dprop = dst->geom->properties;
+-                     i < dst->geom->num_properties;
+-                     i++, dprop++) {
++                     i < dst->geom->num_properties; i++, dprop++) {
+                     free(dprop->name);
+                     free(dprop->value);
+                 }
+@@ -1468,23 +1485,23 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         if (src->geom->num_colors) {
+             if (src->geom->num_colors < dst->geom->sz_colors) {
+                 for (i = src->geom->num_colors, dcolor = dst->geom->colors + i;
+-                     i < dst->geom->num_colors;
+-                     i++, dcolor++) {
++                     i < dst->geom->num_colors; i++, dcolor++) {
+                     free(dcolor->spec);
+                 }
+             }
+ 
+             /* Reallocate and clear all new items if the buffer grows. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->colors, dst->geom->sz_colors, src->geom->num_colors,
+-                                sizeof(XkbColorRec), XKB_GEOM_CLEAR_EXCESS))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->colors, dst->geom->sz_colors,
++                 src->geom->num_colors, sizeof(XkbColorRec),
++                 XKB_GEOM_CLEAR_EXCESS))
+                 return FALSE;
+             dst->geom->sz_colors = src->geom->num_colors;
+ 
+             for (i = 0,
+                   scolor = src->geom->colors,
+                   dcolor = dst->geom->colors;
+-                 i < src->geom->num_colors;
+-                 i++, scolor++, dcolor++) {
++                 i < src->geom->num_colors; i++, scolor++, dcolor++) {
+                 if (i < dst->geom->num_colors) {
+                     if (strlen(scolor->spec) != strlen(dcolor->spec)) {
+                         tmp = realloc(dcolor->spec, strlen(scolor->spec) + 1);
+@@ -1505,8 +1522,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         else {
+             if (dst->geom->sz_colors) {
+                 for (i = 0, dcolor = dst->geom->colors;
+-                     i < dst->geom->num_colors;
+-                     i++, dcolor++) {
++                     i < dst->geom->num_colors; i++, dcolor++) {
+                     free(dcolor->spec);
+                 }
+                 free(dst->geom->colors);
+@@ -1521,11 +1537,9 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         /* shapes break down into outlines, which break down into points. */
+         if (dst->geom->num_shapes) {
+             for (i = 0, dshape = dst->geom->shapes;
+-                 i < dst->geom->num_shapes;
+-                 i++, dshape++) {
++                 i < dst->geom->num_shapes; i++, dshape++) {
+                 for (j = 0, doutline = dshape->outlines;
+-                     j < dshape->num_outlines;
+-                     j++, doutline++) {
++                     j < dshape->num_outlines; j++, doutline++) {
+                     if (doutline->sz_points)
+                         free(doutline->points);
+                 }
+@@ -1542,13 +1556,14 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+         if (src->geom->num_shapes) {
+             /* Reallocate and clear all items. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->shapes, dst->geom->sz_shapes, src->geom->num_shapes,
+-                                sizeof(XkbShapeRec), XKB_GEOM_CLEAR_ALL))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->shapes, dst->geom->sz_shapes,
++                 src->geom->num_shapes, sizeof(XkbShapeRec),
++                 XKB_GEOM_CLEAR_ALL))
+                 return FALSE;
+ 
+             for (i = 0, sshape = src->geom->shapes, dshape = dst->geom->shapes;
+-                 i < src->geom->num_shapes;
+-                 i++, sshape++, dshape++) {
++                 i < src->geom->num_shapes; i++, sshape++, dshape++) {
+                 if (sshape->num_outlines) {
+                     tmp = calloc(sshape->num_outlines, sizeof(XkbOutlineRec));
+                     if (!tmp)
+@@ -1591,7 +1606,8 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+                     if (approx_idx < dshape->num_outlines) {
+                             dshape->approx = dshape->outlines + approx_idx;
+-                    } else {
++                    }
++                    else {
+                             LogMessage(X_WARNING, "XKB: approx outline "
+                                             "index is out of range\n");
+                     }
+@@ -1605,7 +1621,8 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+                     if (primary_idx < dshape->num_outlines) {
+                             dshape->primary = dshape->outlines + primary_idx;
+-                    } else {
++                    }
++                    else {
+                             LogMessage(X_WARNING, "XKB: primary outline "
+                                             "index is out of range\n");
+                     }
+@@ -1629,11 +1646,9 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+          * down into keys. */
+         if (dst->geom->num_sections) {
+             for (i = 0, dsection = dst->geom->sections;
+-                 i < dst->geom->num_sections;
+-                 i++, dsection++) {
++                 i < dst->geom->num_sections; i++, dsection++) {
+                 for (j = 0, drow = dsection->rows;
+-                     j < dsection->num_rows;
+-                     j++, drow++) {
++                     j < dsection->num_rows; j++, drow++) {
+                     if (drow->num_keys)
+                         free(drow->keys);
+                 }
+@@ -1643,8 +1658,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+                 /* cut and waste from geom/doodad below. */
+                 for (j = 0, ddoodad = dsection->doodads;
+-                     j < dsection->num_doodads;
+-                     j++, ddoodad++) {
++                     j < dsection->num_doodads; j++, ddoodad++) {
+                     if (ddoodad->any.type == XkbTextDoodad) {
+                         free(ddoodad->text.text);
+                         ddoodad->text.text = NULL;
+@@ -1665,8 +1679,10 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+         if (src->geom->num_sections) {
+             /* Reallocate and clear all items. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->sections, dst->geom->sz_sections, src->geom->num_sections,
+-                                sizeof(XkbSectionRec), XKB_GEOM_CLEAR_ALL))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->sections, dst->geom->sz_sections,
++                 src->geom->num_sections, sizeof(XkbSectionRec),
++                 XKB_GEOM_CLEAR_ALL))
+                 return FALSE;
+             dst->geom->num_sections = src->geom->num_sections;
+             dst->geom->sz_sections = src->geom->num_sections;
+@@ -1674,8 +1690,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             for (i = 0,
+                   ssection = src->geom->sections,
+                   dsection = dst->geom->sections;
+-                 i < src->geom->num_sections;
+-                 i++, ssection++, dsection++) {
++                 i < src->geom->num_sections; i++, ssection++, dsection++) {
+                 *dsection = *ssection;
+                 if (ssection->num_rows) {
+                     tmp = calloc(ssection->num_rows, sizeof(XkbRowRec));
+@@ -1687,8 +1702,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+                 dsection->sz_rows = ssection->num_rows;
+ 
+                 for (j = 0, srow = ssection->rows, drow = dsection->rows;
+-                     j < ssection->num_rows;
+-                     j++, srow++, drow++) {
++                     j < ssection->num_rows; j++, srow++, drow++) {
+                     if (srow->num_keys) {
+                         tmp = malloc(srow->num_keys * sizeof(XkbKeyRec));
+                         if (!tmp)
+@@ -1719,16 +1733,13 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+                 for (k = 0,
+                       sdoodad = ssection->doodads,
+                       ddoodad = dsection->doodads;
+-                     k < ssection->num_doodads;
+-                     k++, sdoodad++, ddoodad++) {
++                     k < ssection->num_doodads; k++, sdoodad++, ddoodad++) {
+                     memcpy(ddoodad , sdoodad, sizeof(XkbDoodadRec));
+                     if (sdoodad->any.type == XkbTextDoodad) {
+                         if (sdoodad->text.text)
+-                            ddoodad->text.text =
+-                             strdup(sdoodad->text.text);
++                            ddoodad->text.text = strdup(sdoodad->text.text);
+                         if (sdoodad->text.font)
+-                            ddoodad->text.font =
+-                             strdup(sdoodad->text.font);
++                            ddoodad->text.font = strdup(sdoodad->text.font);
+                     }
+                     else if (sdoodad->any.type == XkbLogoDoodad) {
+                         if (sdoodad->logo.logo_name)
+@@ -1756,8 +1767,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             for (i = src->geom->num_doodads,
+                   ddoodad = dst->geom->doodads +
+                              src->geom->num_doodads;
+-                 i < dst->geom->num_doodads;
+-                 i++, ddoodad++) {
++                 i < dst->geom->num_doodads; i++, ddoodad++) {
+                  if (ddoodad->any.type == XkbTextDoodad) {
+                      free(ddoodad->text.text);
+                      ddoodad->text.text = NULL;
+@@ -1774,8 +1784,10 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+ 
+         if (src->geom->num_doodads) {
+             /* Reallocate and clear all items. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->doodads, dst->geom->sz_doodads, src->geom->num_doodads,
+-                                sizeof(XkbDoodadRec), XKB_GEOM_CLEAR_ALL))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->doodads, dst->geom->sz_doodads,
++                 src->geom->num_doodads, sizeof(XkbDoodadRec),
++                 XKB_GEOM_CLEAR_ALL))
+                 return FALSE;
+ 
+             dst->geom->sz_doodads = src->geom->num_doodads;
+@@ -1783,8 +1795,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             for (i = 0,
+                   sdoodad = src->geom->doodads,
+                   ddoodad = dst->geom->doodads;
+-                 i < src->geom->num_doodads;
+-                 i++, sdoodad++, ddoodad++) {
++                 i < src->geom->num_doodads; i++, sdoodad++, ddoodad++) {
+                 memcpy(ddoodad , sdoodad, sizeof(XkbDoodadRec));
+                 if (sdoodad->any.type == XkbTextDoodad) {
+                     if (sdoodad->text.text)
+@@ -1816,8 +1827,10 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+             /* Reallocate but don't clear any items. There is no need
+              * to clear anything because data is immediately copied
+              * over the whole memory area with memcpy. */
+-            if (!XkbGeomRealloc((void **)&dst->geom->key_aliases, dst->geom->sz_key_aliases, src->geom->num_key_aliases,
+-                                2 * XkbKeyNameLength, XKB_GEOM_CLEAR_NONE))
++            if (!XkbGeomRealloc
++                ((void **) &dst->geom->key_aliases, dst->geom->sz_key_aliases,
++                 src->geom->num_key_aliases, 2 * XkbKeyNameLength,
++                 XKB_GEOM_CLEAR_NONE))
+                 return FALSE;
+ 
+             dst->geom->sz_key_aliases = src->geom->num_key_aliases;
+@@ -1868,8 +1881,7 @@ _XkbCopyGeom(XkbDescPtr src, XkbDescPtr dst)
+         dst->geom->width_mm = src->geom->width_mm;
+         dst->geom->height_mm = src->geom->height_mm;
+     }
+-    else
+-    {
++    else {
+         if (dst->geom) {
+             /* I LOVE THE DIFFERENT CALL SIGNATURE.  REALLY, I DO. */
+             XkbFreeGeometry(dst->geom, XkbGeomAllMask, TRUE);
+@@ -2024,6 +2036,7 @@ XkbGetEffectiveGroup(XkbSrvInfoPtr xkbi, XkbStatePtr xkbState, CARD8 keycode)
+     if (XkbKeyNumGroups(xkb,keycode) > 1U) {
+         if (effectiveGroup >= XkbKeyNumGroups(xkb,keycode)) {
+             unsigned int gi = XkbKeyGroupInfo(xkb,keycode);
++
+             switch (XkbOutOfRangeGroupAction(gi)) {
+                 default:
+                 case XkbWrapIntoRange:
+@@ -2040,7 +2053,8 @@ XkbGetEffectiveGroup(XkbSrvInfoPtr xkbi, XkbStatePtr xkbState, CARD8 keycode)
+             }
+         }
+     }
+-    else effectiveGroup = XkbGroup1Index;
++    else
++        effectiveGroup = XkbGroup1Index;
+ 
+     return effectiveGroup;
+ }

@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 3dd41cb..f9acf90 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -78,6 +78,8 @@
+ #include "quartzKeyboard.h"
+ #include "quartz.h"
+ 
++#include "X11Application.h"
++
+ aslclient aslc;
+ 
+ void
+@@ -636,7 +638,7 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
+ void
+ OsVendorFatalError(const char *f, va_list args)
+ {
+-    ErrorF("   OsVendorFatalError\n");
++    X11ApplicationFatalError(f, args);
+ }
+ 
+ /*

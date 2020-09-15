@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/vbe/vbeModes.c b/hw/xfree86/vbe/vbeModes.c
+index 1a4d240..3f2cae5 100644
+--- a/hw/xfree86/vbe/vbeModes.c
++++ b/hw/xfree86/vbe/vbeModes.c
+@@ -402,7 +402,7 @@ VBESetModeParameters(ScrnInfoPtr pScrn, vbeInfoPtr pVbe)
+ 	    xf86DrvMsg(pScrn->scrnIndex, X_INFO,
+ 		       "Attempting to use %dHz refresh for mode \"%s\" (%x)\n",
+ 		       (int)pMode->VRefresh, pMode->name, data->mode);
+-	    data->block = xcalloc(sizeof(VbeCRTCInfoBlock), 1);
++	    data->block = calloc(sizeof(VbeCRTCInfoBlock), 1);
+ 	    data->block->HorizontalTotal = best->HTotal;
+ 	    data->block->HorizontalSyncStart = best->HSyncStart;
+ 	    data->block->HorizontalSyncEnd = best->HSyncEnd;

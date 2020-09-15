@@ -1,0 +1,19 @@
+diff --git a/hw/dmx/glxProxy/g_disptab.c b/hw/dmx/glxProxy/g_disptab.c
+index 3f0a6e7..46177c4 100644
+--- a/hw/dmx/glxProxy/g_disptab.c
++++ b/hw/dmx/glxProxy/g_disptab.c
+@@ -577,8 +577,7 @@ __GLXdispatchRenderProcPtr __glXSwapRenderTable[] = {
+ 	__glXDispSwap_MultiTexCoord4svARB,
+ };
+ 
+-__GLXRenderSwapInfo __glXSwapRenderTable_EXT[] =
+-{
++__GLXRenderSwapInfo __glXSwapRenderTable_EXT[] = {
+    {4, 4, NULL}, /* X_GLrop_BlendColorEXT */
+    {4, 1, NULL}, /* X_GLrop_BlendEquationEXT */
+    {4, 2, NULL}, /* X_GLrop_PolygonOffsetEXT */
+@@ -609,4 +608,3 @@ __GLXRenderSwapInfo __glXSwapRenderTable_EXT[] =
+    {4, 0, __glXDispSwap_CopyTexSubImage3D}, /* X_GLrop_CopyTexSubImage3DEXT */
+ 
+ };
+-

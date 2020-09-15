@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86cmap.h b/hw/xfree86/common/xf86cmap.h
+index f15844e..649f078 100644
+--- a/hw/xfree86/common/xf86cmap.h
++++ b/hw/xfree86/common/xf86cmap.h
+@@ -45,6 +45,10 @@ extern _X_EXPORT Bool xf86HandleColormaps(
+     unsigned int flags
+ );
+ 
++extern _X_EXPORT Bool xf86ColormapAllocatePrivates(
++    ScrnInfoPtr pScrn
++);
++
+ extern _X_EXPORT int
+ xf86ChangeGamma(
+    ScreenPtr pScreen,

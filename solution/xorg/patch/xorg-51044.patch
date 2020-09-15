@@ -1,0 +1,16 @@
+diff --git a/render/glyphstr.h b/render/glyphstr.h
+index 6c1a837..cc9f284 100644
+--- a/render/glyphstr.h
++++ b/render/glyphstr.h
+@@ -71,10 +71,9 @@ typedef struct _GlyphHash {
+ 
+ typedef struct _GlyphSet {
+     CARD32	    refcnt;
+-    PictFormatPtr   format;
+     int		    fdepth;
++    PictFormatPtr   format;
+     GlyphHashRec    hash;
+-    int             maxPrivate;
+     PrivateRec      *devPrivates;
+ } GlyphSetRec, *GlyphSetPtr;
+ 

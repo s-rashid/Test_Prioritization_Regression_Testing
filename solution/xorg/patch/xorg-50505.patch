@@ -1,0 +1,30 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 90e0c67..0172ace 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -125,7 +125,6 @@ xf86AddInputDriver(InputDriverPtr driver, pointer module, int flags)
+ 				xnfalloc(sizeof(InputDriverRec));
+     *xf86InputDriverList[xf86NumInputDrivers - 1] = *driver;
+     xf86InputDriverList[xf86NumInputDrivers - 1]->module = module;
+-    xf86InputDriverList[xf86NumInputDrivers - 1]->refCount = 0;
+ }
+ 
+ void
+@@ -284,7 +283,6 @@ xf86AllocateInput(InputDriverPtr drv, int flags)
+ 	return NULL;
+ 
+     new->drv = drv;
+-    drv->refCount++;
+     new->module = DuplicateModule(drv->module, NULL);
+ 
+     for (prev = &xf86InputDevs; *prev; prev = &(*prev)->next)
+@@ -320,9 +318,6 @@ xf86DeleteInput(InputInfoPtr pInp, int flags)
+     if (pInp->module)
+ 	UnloadModule(pInp->module);
+ 
+-    if (pInp->drv)
+-	pInp->drv->refCount--;
+-
+     /* This should *really* be handled in drv->UnInit(dev) call instead, but
+      * if the driver forgets about it make sure we free it or at least crash
+      * with flying colors */

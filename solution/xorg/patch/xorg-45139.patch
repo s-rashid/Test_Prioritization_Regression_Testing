@@ -1,0 +1,12 @@
+diff --git a/xkb/xkbInit.c b/xkb/xkbInit.c
+index e707f7a..86a7a11 100644
+--- a/xkb/xkbInit.c
++++ b/xkb/xkbInit.c
+@@ -522,6 +522,7 @@ InitKeyboardDeviceStruct(DeviceIntPtr dev, XkbRMLVOSet *rmlvo,
+         ErrorF("XKB: Failed to allocate key class\n");
+         return False;
+     }
++    dev->key->sourceid = dev->id;
+ 
+     dev->kbdfeed = xcalloc(1, sizeof(*dev->kbdfeed));
+     if (!dev->kbdfeed) {

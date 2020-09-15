@@ -1,0 +1,13 @@
+diff --git a/render/miindex.c b/render/miindex.c
+index c42a15b..5e2e06c 100644
+--- a/render/miindex.c
++++ b/render/miindex.c
+@@ -276,7 +276,7 @@ miInitIndexed (ScreenPtr	pScreen,
+     /*
+      * Build mapping from pixel value to ARGB
+      */
+-    QueryColors (pColormap, num, pixels, rgb);
++    QueryColors (pColormap, num, pixels, rgb, serverClient);
+     for (i = 0; i < num; i++)
+     {
+ 	p = pixels[i];

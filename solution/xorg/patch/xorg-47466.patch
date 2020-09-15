@@ -1,0 +1,21 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index 8bd8c25..b327aa1 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -623,16 +623,6 @@ KdRingBell (KdKeyboardInfo      *ki,
+             int                 pitch,
+             int                 duration);
+ 
+-extern KdPointerDriver	LinuxMouseDriver;
+-extern KdPointerDriver	LinuxEvdevMouseDriver;
+-extern KdPointerDriver	Ps2MouseDriver;
+-extern KdPointerDriver	BusMouseDriver;
+-extern KdPointerDriver	MsMouseDriver;
+-extern KdPointerDriver	TsDriver;
+-extern KdKeyboardDriver	LinuxKeyboardDriver;
+-extern KdKeyboardDriver LinuxEvdevKeyboardDriver;
+-extern KdOsFuncs	LinuxFuncs;
+-
+ extern KdPointerDriver	VxWorksMouseDriver;
+ extern KdKeyboardDriver	VxWorksKeyboardDriver;
+ extern KdOsFuncs	VxWorksFuncs;

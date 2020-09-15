@@ -1,0 +1,14 @@
+diff --git a/fb/fbgc.c b/fb/fbgc.c
+index 2568698..45e981b 100644
+--- a/fb/fbgc.c
++++ b/fb/fbgc.c
+@@ -199,9 +199,6 @@ fbValidateGC(GCPtr pGC, unsigned long changes, DrawablePtr pDrawable)
+     FbGCPrivPtr	pPriv = fbGetGCPrivate(pGC);
+     FbBits	mask;
+ 
+-    pGC->lastWinOrg.x = pDrawable->x;
+-    pGC->lastWinOrg.y = pDrawable->y;
+-
+     /*
+      * if the client clip is different or moved OR the subwindowMode has
+      * changed OR the window's clip has changed since the last validation

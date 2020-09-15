@@ -1,0 +1,15 @@
+diff --git a/xfixes/cursor.c b/xfixes/cursor.c
+index 01eb70d..ecbed40 100644
+--- a/xfixes/cursor.c
++++ b/xfixes/cursor.c
+@@ -196,8 +196,8 @@ CursorCloseScreen (int index, ScreenPtr pScreen)
+ {
+     CursorScreenPtr	cs = GetCursorScreen (pScreen);
+     Bool		ret;
+-    CloseScreenProcPtr	close_proc;
+-    DisplayCursorProcPtr display_proc;
++    _X_UNUSED CloseScreenProcPtr	close_proc;
++    _X_UNUSED DisplayCursorProcPtr	display_proc;
+     ConstrainCursorHarderProcPtr constrain_proc;
+ 
+     Unwrap (cs, pScreen, CloseScreen, close_proc);

@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/os-support/bsd/ppc_video.c b/hw/xfree86/os-support/bsd/ppc_video.c
+index aeaf183..920a002 100644
+--- a/hw/xfree86/os-support/bsd/ppc_video.c
++++ b/hw/xfree86/os-support/bsd/ppc_video.c
+@@ -45,9 +45,7 @@
+ /* Video Memory Mapping section                                            */
+ /***************************************************************************/
+ 
+-#ifndef __OpenBSD__
+-#define DEV_MEM "/dev/mem"
+-#else
++#ifdef __OpenBSD__
+ #define DEV_MEM "/dev/xf86"
+ #endif
+ 

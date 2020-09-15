@@ -1,0 +1,14 @@
+diff --git a/dix/colormap.c b/dix/colormap.c
+index d702b02..bf97941 100644
+--- a/dix/colormap.c
++++ b/dix/colormap.c
+@@ -2705,6 +2705,9 @@ static void _colormap_find_resource(pointer value, XID id,
+     ColormapPtr cmap = value;
+     int j;
+ 
++    if (pScreen != cmap->pScreen)
++	return;
++
+     j = cmap->pVisual - pScreen->visuals;
+     cmap->pVisual = &visuals[j];
+ }

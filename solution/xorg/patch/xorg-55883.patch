@@ -1,0 +1,35 @@
+diff --git a/hw/xwin/winregistry.c b/hw/xwin/winregistry.c
+index 3571b14..d33f8c3 100644
+--- a/hw/xwin/winregistry.c
++++ b/hw/xwin/winregistry.c
+@@ -34,8 +34,7 @@
+ #include "win.h"
+ 
+ /* Prototypes */
+-DWORD
+-winGetRegistryDWORD (HKEY hkey, char *pszRegistryKey);
++DWORD winGetRegistryDWORD(HKEY hkey, char *pszRegistryKey);
+ 
+ DWORD
+ winGetRegistryDWORD (HKEY hkey, char *pszRegistryKey)
+@@ -48,17 +47,12 @@ winGetRegistryDWORD (HKEY hkey, char *pszRegistryKey)
+ 		  0,
+ 		  '\0',
+ 		  REG_OPTION_NON_VOLATILE,
+-		  KEY_READ,
+-		  NULL,
+-		  &hkResult,
+-		  &dwDisposition);
++                   KEY_READ, NULL, &hkResult, &dwDisposition);
+ 
+-  if (dwDisposition == REG_CREATED_NEW_KEY)
+-    {
++    if (dwDisposition == REG_CREATED_NEW_KEY) {
+       ErrorF ("winGetRegistryDWORD - Created new key: %s\n", pszRegistryKey);
+     }
+-  else if (dwDisposition == REG_OPENED_EXISTING_KEY)
+-    {
++    else if (dwDisposition == REG_OPENED_EXISTING_KEY) {
+       ErrorF ("winGetRegistryDWORD - Opened existing key: %s\n",
+ 	      pszRegistryKey);
+     }

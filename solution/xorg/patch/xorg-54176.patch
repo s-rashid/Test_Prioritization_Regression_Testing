@@ -1,0 +1,11 @@
+diff --git a/include/dixgrabs.h b/include/dixgrabs.h
+index 65ff45d..ea88770 100644
+--- a/include/dixgrabs.h
++++ b/include/dixgrabs.h
+@@ -64,4 +64,6 @@ extern _X_EXPORT int AddPassiveGrabToList(
+ extern _X_EXPORT Bool DeletePassiveGrabFromList(
+ 	GrabPtr /* pMinuendGrab */);
+ 
++extern Bool GrabIsPointerGrab(GrabPtr grab);
++extern Bool GrabIsKeyboardGrab(GrabPtr grab);
+ #endif /* DIXGRABS_H */

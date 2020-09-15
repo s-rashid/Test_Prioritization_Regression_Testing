@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxpixmap.c b/hw/dmx/dmxpixmap.c
+index 6622403..c8b064b 100644
+--- a/hw/dmx/dmxpixmap.c
++++ b/hw/dmx/dmxpixmap.c
+@@ -175,7 +175,7 @@ Bool dmxDestroyPixmap(PixmapPtr pPixmap)
+ 	}
+     }
+     dixFreePrivates(pPixmap->devPrivates);
+-    xfree(pPixmap);
++    free(pPixmap);
+ 
+ #if 0
+     if (pScreen->DestroyPixmap)

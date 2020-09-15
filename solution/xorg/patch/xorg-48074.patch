@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxclient.h b/hw/dmx/dmxclient.h
+index 147d14e..c45f71f 100644
+--- a/hw/dmx/dmxclient.h
++++ b/hw/dmx/dmxclient.h
+@@ -86,10 +86,8 @@ typedef XID           KeySym64;
+ 
+ #include <X11/extensions/shape.h>
+ 
+-#ifdef RENDER
+ #include <X11/extensions/Xrender.h>
+ #undef PictFormatType
+-#endif
+ 
+ #include <X11/extensions/XKB.h>
+ #include "xkbstr.h"

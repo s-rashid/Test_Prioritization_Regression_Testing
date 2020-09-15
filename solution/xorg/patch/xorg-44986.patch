@@ -1,0 +1,32 @@
+diff --git a/hw/xfree86/loader/loader.c b/hw/xfree86/loader/loader.c
+index 1803d0e..47c8c2e 100644
+--- a/hw/xfree86/loader/loader.c
++++ b/hw/xfree86/loader/loader.c
+@@ -159,27 +159,6 @@ LoaderInit(void)
+ #endif
+ }
+ 
+-/* These four are just ABI stubs */
+-void
+-LoaderRefSymbols(const char *sym0, ...)
+-{
+-}
+-
+-void
+-LoaderRefSymLists(const char **list0, ...)
+-{
+-}
+-
+-void
+-LoaderReqSymLists(const char **list0, ...)
+-{
+-}
+-
+-void
+-LoaderReqSymbols(const char *sym0, ...)
+-{
+-}
+-
+ /* Public Interface to the loader. */
+ 
+ int

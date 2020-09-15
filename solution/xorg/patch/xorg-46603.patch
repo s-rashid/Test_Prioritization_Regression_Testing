@@ -1,0 +1,14 @@
+diff --git a/miext/rootless/rootlessWindow.h b/miext/rootless/rootlessWindow.h
+index 2d2555e..ca104a4 100644
+--- a/miext/rootless/rootlessWindow.h
++++ b/miext/rootless/rootlessWindow.h
+@@ -52,7 +52,9 @@ void RootlessResizeWindow(WindowPtr pWin, int x, int y,
+ 			  unsigned int w, unsigned int h, WindowPtr pSib);
+ void RootlessReparentWindow(WindowPtr pWin, WindowPtr pPriorParent);
+ void RootlessChangeBorderWidth(WindowPtr pWin, unsigned int width);
++#ifdef __APPLE__
+ void RootlessNativeWindowMoved (WindowPtr pWin);
+ void RootlessNativeWindowStateChanged (WindowPtr pWin, unsigned int state); 
++#endif
+ 
+ #endif

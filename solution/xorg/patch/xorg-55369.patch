@@ -1,0 +1,81 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostvideo.h b/hw/kdrive/ephyr/ephyrhostvideo.h
+index 05ee38a..0d31772 100644
+--- a/hw/kdrive/ephyr/ephyrhostvideo.h
++++ b/hw/kdrive/ephyr/ephyrhostvideo.h
+@@ -98,8 +98,8 @@ void ephyrHostFree (void *a_pointer) ;
+ Bool ephyrHostXVQueryAdaptors (EphyrHostXVAdaptorArray **a_adaptors) ;
+ void ephyrHostXVAdaptorArrayDelete (EphyrHostXVAdaptorArray *a_adaptors) ;
+ int ephyrHostXVAdaptorArrayGetSize (const EphyrHostXVAdaptorArray *a_this) ;
+-EphyrHostXVAdaptor* ephyrHostXVAdaptorArrayAt (const EphyrHostXVAdaptorArray *a_this,
+-                                               int a_index) ;
++EphyrHostXVAdaptor *ephyrHostXVAdaptorArrayAt(const EphyrHostXVAdaptorArray *
++                                              a_this, int a_index);
+ 
+ /*
+  * host adaptor
+@@ -108,8 +108,7 @@ EphyrHostXVAdaptor* ephyrHostXVAdaptorArrayAt (const EphyrHostXVAdaptorArray *a_
+ char ephyrHostXVAdaptorGetType (const EphyrHostXVAdaptor *a_this) ;
+ const char* ephyrHostXVAdaptorGetName (const EphyrHostXVAdaptor *a_this) ;
+ EphyrHostVideoFormat* ephyrHostXVAdaptorGetVideoFormats
+-                                                (const EphyrHostXVAdaptor *a_this,
+-                                                 int *a_nb_formats) ;
++    (const EphyrHostXVAdaptor * a_this, int *a_nb_formats);
+ int ephyrHostXVAdaptorGetNbPorts (const EphyrHostXVAdaptor *a_this) ;
+ int ephyrHostXVAdaptorGetFirstPortID (const EphyrHostXVAdaptor *a_this) ;
+ 
+@@ -142,6 +141,7 @@ Bool ephyrHostXVQueryPortAttributes (int a_port_id,
+                                      int *a_num_attributes) ;
+ 
+ void ephyrHostAttributesDelete (EphyrHostAttribute *a_attributes) ;
++
+ /*
+  * image format
+  */
+@@ -152,12 +152,9 @@ Bool ephyrHostXVQueryImageFormats (int a_port_id,
+ /*
+  * Port Attribute Get/Set
+  */
+-Bool ephyrHostXVSetPortAttribute (int a_port_id,
+-                                  int a_atom,
+-                                  int a_attr_value) ;
+-Bool ephyrHostXVGetPortAttribute (int a_port_id,
+-                                  int a_atom,
+-                                  int *a_attr_value) ;
++Bool ephyrHostXVSetPortAttribute(int a_port_id, int a_atom, int a_attr_value);
++Bool ephyrHostXVGetPortAttribute(int a_port_id, int a_atom, int *a_attr_value);
++
+ /*
+  *size query
+  */
+@@ -175,14 +172,12 @@ Bool ephyrHostXVQueryImageAttributes (int a_port_id,
+                                       unsigned short *a_width,
+                                       unsigned short *a_height,
+                                       int *a_image_size,
+-                                      int *a_pitches,
+-                                      int *a_offsets) ;
++                                     int *a_pitches, int *a_offsets);
+ /*
+  * atom
+  */
+ Bool ephyrHostGetAtom (const char* a_name,
+-                       Bool a_create_if_not_exists,
+-                       int *a_atom) ;
++                      Bool a_create_if_not_exists, int *a_atom);
+ char* ephyrHostGetAtomName (int a_atom) ;
+ 
+ /*
+@@ -203,8 +198,7 @@ Bool ephyrHostXVPutImage (int a_screen_num,
+                           int a_image_width,
+                           int a_image_height,
+                           unsigned char *a_buf,
+-                          EphyrHostBox *a_clip_rects,
+-                          int a_clip_rect_nums) ;
++                         EphyrHostBox * a_clip_rects, int a_clip_rect_nums);
+ 
+ /*
+  * Putvideo/PutStill/GetVideo
+@@ -235,4 +229,3 @@ Bool ephyrHostXVGetStill (int a_screen_num,
+ Bool ephyrHostXVStopVideo (int a_screen_num, int a_port_id) ;
+ 
+ #endif /*__EPHYRHOSTVIDEO_H__*/
+-

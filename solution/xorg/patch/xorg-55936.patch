@@ -1,0 +1,18 @@
+diff --git a/include/opaque.h b/include/opaque.h
+index 5c70717..9ca408a 100644
+--- a/include/opaque.h
++++ b/include/opaque.h
+@@ -56,6 +56,7 @@ extern _X_EXPORT Bool disableBackingStore;
+ extern _X_EXPORT Bool enableBackingStore;
+ extern _X_EXPORT Bool PartialNetwork;
+ extern _X_EXPORT Bool RunFromSigStopParent;
++
+ #ifdef RLIMIT_DATA
+ extern _X_EXPORT int limitDataSpace;
+ #endif
+@@ -73,5 +74,4 @@ extern _X_EXPORT Bool bgNoneRoot;
+ 
+ extern _X_EXPORT Bool CoreDump;
+ 
+-
+ #endif /* OPAQUE_H */

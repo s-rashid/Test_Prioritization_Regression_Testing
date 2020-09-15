@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/loader/loader.c b/hw/xfree86/loader/loader.c
+index 159b611..b72b8b8 100644
+--- a/hw/xfree86/loader/loader.c
++++ b/hw/xfree86/loader/loader.c
+@@ -189,12 +189,13 @@ LoaderGetABIVersion(const char *abiclass)
+         const char *name;
+         int version;
+     } classes[] = {
+-        { ABI_CLASS_ANSIC,     LoaderVersionInfo.ansicVersion },
+-        { ABI_CLASS_VIDEODRV,  LoaderVersionInfo.videodrvVersion },
+-        { ABI_CLASS_XINPUT,    LoaderVersionInfo.xinputVersion },
+-        { ABI_CLASS_EXTENSION, LoaderVersionInfo.extensionVersion },
+-        { ABI_CLASS_FONT,      LoaderVersionInfo.fontVersion },
+-        { NULL,                0 }
++        {
++        ABI_CLASS_ANSIC, LoaderVersionInfo.ansicVersion}, {
++        ABI_CLASS_VIDEODRV, LoaderVersionInfo.videodrvVersion}, {
++        ABI_CLASS_XINPUT, LoaderVersionInfo.xinputVersion}, {
++        ABI_CLASS_EXTENSION, LoaderVersionInfo.extensionVersion}, {
++        ABI_CLASS_FONT, LoaderVersionInfo.fontVersion}, {
++        NULL, 0}
+     };
+     int i;
+ 

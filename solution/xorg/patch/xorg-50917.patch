@@ -1,0 +1,14 @@
+diff --git a/glx/single2.c b/glx/single2.c
+index f93ce6e..07b89a8 100644
+--- a/glx/single2.c
++++ b/glx/single2.c
+@@ -346,9 +346,7 @@ int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap)
+ 				      cl->GLClientextensions);
+ 	buf = __glXcombine_strings(buf1,
+ 				      cx->pGlxScreen->GLextensions);
+-	if (buf1 != NULL) {
+ 	    free(buf1);
+-	}
+ 	string = buf;
+     }
+     else if ( name == GL_VERSION ) {

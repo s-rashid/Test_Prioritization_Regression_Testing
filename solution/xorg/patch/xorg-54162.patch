@@ -1,0 +1,31 @@
+diff --git a/test/xi2/protocol-eventconvert.c b/test/xi2/protocol-eventconvert.c
+index dce1c50..e2037f9 100644
+--- a/test/xi2/protocol-eventconvert.c
++++ b/test/xi2/protocol-eventconvert.c
+@@ -59,7 +59,7 @@ static void test_values_XIRawEvent(RawDeviceEvent *in, xXIRawEvent *out,
+ 
+     assert(out->type == GenericEvent);
+     assert(out->extension == 0); /* IReqCode defaults to 0 */
+-    assert(out->evtype == GetXI2Type((InternalEvent*)in));
++    assert(out->evtype == GetXI2Type(in->type));
+     assert(out->time == in->time);
+     assert(out->detail == in->detail.button);
+     assert(out->deviceid == in->deviceid);
+@@ -305,7 +305,7 @@ static void test_values_XIDeviceEvent(DeviceEvent *in, xXIDeviceEvent *out,
+     }
+ 
+     assert(out->extension == 0); /* IReqCode defaults to 0 */
+-    assert(out->evtype == GetXI2Type((InternalEvent*)in));
++    assert(out->evtype == GetXI2Type(in->type));
+     assert(out->time == in->time);
+     assert(out->detail == in->detail.button);
+     assert(out->length >= 12);
+@@ -662,7 +662,7 @@ static void test_values_XIDeviceChangedEvent(DeviceChangedEvent *in,
+ 
+     assert(out->type == GenericEvent);
+     assert(out->extension == 0); /* IReqCode defaults to 0 */
+-    assert(out->evtype == GetXI2Type((InternalEvent*)in));
++    assert(out->evtype == GetXI2Type(in->type));
+     assert(out->time == in->time);
+     assert(out->deviceid == in->deviceid);
+     assert(out->sourceid == in->sourceid);

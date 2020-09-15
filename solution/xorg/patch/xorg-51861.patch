@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxsingle.c b/hw/dmx/glxProxy/glxsingle.c
+index cc7b408..33cc612 100644
+--- a/hw/dmx/glxProxy/glxsingle.c
++++ b/hw/dmx/glxProxy/glxsingle.c
+@@ -215,7 +215,7 @@ int __glXForwardPipe0WithReply( __GLXclientState *cl, GLbyte *pc )
+    xGLXSingleReply be_reply;
+     __GLXcontext *glxc;
+    int buf_size;
+-   char *be_buf;
++   char *be_buf = NULL;
+    int   be_buf_size;
+    DMXScreenInfo *dmxScreen;
+    Display *dpy;

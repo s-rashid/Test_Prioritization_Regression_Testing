@@ -1,0 +1,19 @@
+diff --git a/hw/dmx/glxProxy/glxcmdsswap.c b/hw/dmx/glxProxy/glxcmdsswap.c
+index 2294059..f28a79d 100644
+--- a/hw/dmx/glxProxy/glxcmdsswap.c
++++ b/hw/dmx/glxProxy/glxcmdsswap.c
+@@ -35,11 +35,14 @@
+ #include <pixmapstr.h>
+ #include <windowstr.h>
+ #include "unpack.h"
++#include "glxcmds.h"
+ #include "glxext.h"
+ #include "glxvendor.h"
+ 
+ extern int glxIsExtensionSupported( char *ext );
+ 
++int __glXSwapGetFBConfigsSGIX(__GLXclientState *cl, GLbyte *pc);
++
+ /************************************************************************/
+ 
+ /*

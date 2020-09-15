@@ -1,0 +1,37 @@
+diff --git a/mi/mibitblt.c b/mi/mibitblt.c
+index 8448483..98857e8 100644
+--- a/mi/mibitblt.c
++++ b/mi/mibitblt.c
+@@ -150,11 +150,8 @@ miCopyArea(DrawablePtr  pSrcDrawable,
+     ordering = malloc(numRects * sizeof(unsigned int));
+     if(!pptFirst || !pwidthFirst || !ordering)
+     {
+-       if (ordering)
+ 	   free(ordering);
+-       if (pwidthFirst)
+            free(pwidthFirst);
+-       if (pptFirst)
+            free(pptFirst);
+        return NULL;
+     }
+@@ -433,8 +430,8 @@ miOpqStipDrawable(DrawablePtr pDraw, GCPtr pGC, RegionPtr prgnSrc,
+     pwidth = pwidthFirst = malloc(h * sizeof(int));
+     if(!pptFirst || !pwidthFirst)
+     {
+-	if (pwidthFirst) free(pwidthFirst);
+-	if (pptFirst) free(pptFirst);
++	free(pwidthFirst);
++	free(pptFirst);
+ 	FreeScratchGC(pGCT);
+ 	return;
+     }
+@@ -801,9 +798,7 @@ miPutImage( DrawablePtr pDraw, GCPtr pGC, int depth,
+         pwidth = pwidthFirst = malloc(h * sizeof(int));
+ 	if(!pptFirst || !pwidthFirst)
+         {
+-	   if (pwidthFirst)
+                free(pwidthFirst);
+-           if (pptFirst)
+                free(pptFirst);
+            return;
+         }

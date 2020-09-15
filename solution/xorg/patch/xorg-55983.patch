@@ -1,0 +1,193 @@
+diff --git a/mi/mifpolycon.c b/mi/mifpolycon.c
+index e48686a..b133731 100644
+--- a/mi/mifpolycon.c
++++ b/mi/mifpolycon.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -71,14 +70,10 @@ static int GetFPolyYBounds(SppPointPtr pts, int n, double yFtrans,
+  *	interpolation involved because of the subpixel postioning.
+  */
+ void
+-miFillSppPoly(
+-    DrawablePtr		dst,
+-    GCPtr		pgc,
+-    int			count,          /* number of points */
++miFillSppPoly(DrawablePtr dst, GCPtr pgc, int count,    /* number of points */
+     SppPointPtr		ptsIn,          /* the points */
+     int			xTrans, int yTrans,	/* Translate each point by this */
+-    double		xFtrans,
+-    double		yFtrans                 /* translate before conversion
++              double xFtrans, double yFtrans    /* translate before conversion
+ 						   by this amount.  This provides
+ 						   a mechanism to match rounding
+ 						   errors with any shape that must
+@@ -92,21 +87,15 @@ miFillSppPoly(
+           		dy,             /* delta y */
+     			i;              /* loop counter */
+     int			y,              /* current scanline */
+-    			j,
+-    			imin,           /* index of vertex with smallest y */
++     j, imin,                   /* index of vertex with smallest y */
+     			ymin,           /* y-extents of polygon */
+-    			ymax,
+-    			*width,
+-    			*FirstWidth,    /* output buffer */
++     ymax, *width, *FirstWidth, /* output buffer */
+     	 		*Marked;	/* set if this vertex has been used */
+     int			left, right,	/* indices to first endpoints */
+-    			nextleft,
+-                 	nextright;	/* indices to second endpoints */
+-    DDXPointPtr 	ptsOut,
+-    			FirstPoint;	/* output buffer */
++     nextleft, nextright;       /* indices to second endpoints */
++    DDXPointPtr ptsOut, FirstPoint;     /* output buffer */
+ 
+-    if (pgc->miTranslate)
+-    {
++    if (pgc->miTranslate) {
+ 	xTrans += dst->x;
+ 	yTrans += dst->y;
+     }
+@@ -120,8 +109,7 @@ miFillSppPoly(
+     width = FirstWidth = malloc(sizeof(int) * y);
+     Marked = malloc(sizeof(int) * count);
+ 
+-    if(!ptsOut || !width || !Marked)
+-    {
++    if (!ptsOut || !width || !Marked) {
+ 	free(Marked);
+ 	free(width);
+ 	free(ptsOut);
+@@ -137,13 +125,11 @@ miFillSppPoly(
+     /*
+      *  loop through all edges of the polygon
+      */
+-    do
+-    {
++    do {
+         /* add a left edge if we need to */
+         if ((y > (ptsIn[nextleft].y + yFtrans) ||
+  	     ISEQUAL(y, ptsIn[nextleft].y + yFtrans)) &&
+-	     Marked[nextleft] != 1)
+-	{
++            Marked[nextleft] != 1) {
+ 	    Marked[nextleft]++;
+             left = nextleft++;
+ 
+@@ -153,8 +139,7 @@ miFillSppPoly(
+ 
+             /* now compute the starting point and slope */
+ 	    dy = ptsIn[nextleft].y - ptsIn[left].y;
+-	    if (dy != 0.0)
+-	    { 
++            if (dy != 0.0) {
+ 		ml = (ptsIn[nextleft].x - ptsIn[left].x) / dy;
+ 		dy = y - (ptsIn[left].y + yFtrans);
+ 		xl = (ptsIn[left].x + xFtrans) + ml * max(dy, 0); 
+@@ -164,8 +149,7 @@ miFillSppPoly(
+         /* add a right edge if we need to */
+         if ((y > ptsIn[nextright].y + yFtrans) ||
+  	     (ISEQUAL(y, ptsIn[nextright].y + yFtrans)
+-	     && Marked[nextright] != 1))
+-	{
++             && Marked[nextright] != 1)) {
+ 	    Marked[nextright]++;
+             right = nextright--;
+ 
+@@ -175,25 +159,21 @@ miFillSppPoly(
+ 
+             /* now compute the starting point and slope */
+ 	    dy = ptsIn[nextright].y - ptsIn[right].y;
+-	    if (dy != 0.0) 
+-	    { 
++            if (dy != 0.0) {
+ 		mr = (ptsIn[nextright].x - ptsIn[right].x) / dy;
+ 		dy = y - (ptsIn[right].y + yFtrans); 
+ 		xr = (ptsIn[right].x + xFtrans) + mr * max(dy, 0);
+ 	    }
+         }
+ 
+-
+         /*
+          *  generate scans to fill while we still have
+          *  a right edge as well as a left edge.
+          */
+         i = (min(ptsIn[nextleft].y, ptsIn[nextright].y) + yFtrans) - y;
+ 
+-	if (i < EPSILON)
+-	{
+-	    if(Marked[nextleft] && Marked[nextright])
+-	    {
++        if (i < EPSILON) {
++            if (Marked[nextleft] && Marked[nextright]) {
+ 	        /* Arrgh, we're trapped! (no more points) 
+ 	         * Out, we've got to get out of here before this decadence saps
+ 	         * our will completely! */
+@@ -201,14 +181,12 @@ miFillSppPoly(
+ 	    }
+ 	    continue;
+ 	}
+-	else
+-	{
++        else {
+ 		j = (int) i;
+ 		if(!j)
+ 		    j++;
+ 	}
+-        while (j > 0) 
+-        {
++        while (j > 0) {
+ 	    int cxl, cxr;
+ 
+             ptsOut->y = (y) + yTrans;
+@@ -216,13 +194,11 @@ miFillSppPoly(
+ 	    cxl = ICEIL(xl);
+ 	    cxr = ICEIL(xr);
+             /* reverse the edges if necessary */
+-            if (xl < xr) 
+-            {
++            if (xl < xr) {
+                 *(width++) = cxr - cxl;
+                 (ptsOut++)->x = cxl + xTrans;
+             }
+-            else 
+-            {
++            else {
+                 *(width++) = cxl - cxr;
+                 (ptsOut++)->x = cxr + xTrans;
+             }
+@@ -243,17 +219,11 @@ miFillSppPoly(
+     free(FirstPoint);
+ }
+ 
+-
+ /* Find the index of the point with the smallest y.also return the
+  * smallest and largest y */
+ static
+ int
+-GetFPolyYBounds(
+-    SppPointPtr			pts,
+-    int 			n,
+-    double			yFtrans,
+-    int 			*by,
+-    int				*ty)
++GetFPolyYBounds(SppPointPtr pts, int n, double yFtrans, int *by, int *ty)
+ {
+     SppPointPtr			ptMin;
+     double 			ymin, ymax;
+@@ -263,8 +233,7 @@ GetFPolyYBounds(
+     ymin = ymax = (pts++)->y;
+ 
+     while (--n > 0) {
+-        if (pts->y < ymin)
+-	{
++        if (pts->y < ymin) {
+             ptMin = pts;
+             ymin = pts->y;
+         }

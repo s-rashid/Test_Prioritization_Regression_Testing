@@ -1,0 +1,11 @@
+diff --git a/hw/dmx/dmxsync.h b/hw/dmx/dmxsync.h
+index b80f54a..d67ae09 100644
+--- a/hw/dmx/dmxsync.h
++++ b/hw/dmx/dmxsync.h
+@@ -39,5 +39,5 @@
+ 
+ extern void dmxSyncActivate(const char *interval);
+ extern void dmxSyncInit(void);
+-extern void dmxSync(DMXScreenInfo *dmxScreen, Bool now);
++extern void dmxSync(DMXScreenInfo * dmxScreen, Bool now);
+ #endif

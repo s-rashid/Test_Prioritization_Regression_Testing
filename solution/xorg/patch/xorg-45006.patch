@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxcmdsswap.c b/hw/dmx/glxProxy/glxcmdsswap.c
+index 702479f..b3720f6 100644
+--- a/hw/dmx/glxProxy/glxcmdsswap.c
++++ b/hw/dmx/glxProxy/glxcmdsswap.c
+@@ -28,7 +28,6 @@
+  * Silicon Graphics, Inc.
+  */
+ 
+-#define FONT_PCF
+ #include "glxserver.h"
+ #include "glxutil.h"
+ #include <GL/glxtokens.h>

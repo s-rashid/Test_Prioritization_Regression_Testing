@@ -1,0 +1,24 @@
+diff --git a/Xi/getdctl.c b/Xi/getdctl.c
+index 6090b81..4d66a4d 100644
+--- a/Xi/getdctl.c
++++ b/Xi/getdctl.c
+@@ -115,7 +115,8 @@ CopySwapDeviceResolution(ClientPtr client, ValuatorClassPtr v, char *buf,
+     }
+ }
+ 
+-static void CopySwapDeviceCore (ClientPtr client, DeviceIntPtr dev, char *buf)
++static void
++CopySwapDeviceCore(ClientPtr client, DeviceIntPtr dev, char *buf)
+ {
+     xDeviceCoreState *c = (xDeviceCoreState *) buf;
+ 
+@@ -130,7 +131,8 @@ static void CopySwapDeviceCore (ClientPtr client, DeviceIntPtr dev, char *buf)
+     }
+ }
+ 
+-static void CopySwapDeviceEnable (ClientPtr client, DeviceIntPtr dev, char *buf)
++static void
++CopySwapDeviceEnable(ClientPtr client, DeviceIntPtr dev, char *buf)
+ {
+     xDeviceEnableState *e = (xDeviceEnableState *) buf;
+ 

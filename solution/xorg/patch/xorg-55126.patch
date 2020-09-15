@@ -1,0 +1,45 @@
+diff --git a/fb/fbcmap_mi.c b/fb/fbcmap_mi.c
+index 227da31..7b6a2c6 100644
+--- a/fb/fbcmap_mi.c
++++ b/fb/fbcmap_mi.c
+@@ -27,7 +27,6 @@
+  * XFree86Server being defined.
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -56,9 +55,7 @@ fbUninstallColormap(ColormapPtr pmap)
+ 
+ void
+ fbResolveColor(unsigned short   *pred,
+-	       unsigned short   *pgreen,
+-	       unsigned short   *pblue,
+-	       VisualPtr	pVisual)
++               unsigned short *pgreen, unsigned short *pblue, VisualPtr pVisual)
+ {
+     miResolveColor(pred, pgreen, pblue, pVisual);
+ }
+@@ -71,9 +68,7 @@ fbInitializeColormap(ColormapPtr pmap)
+ 
+ int
+ fbExpandDirectColors (ColormapPtr   pmap,
+-		      int	    ndef,
+-		      xColorItem    *indefs,
+-		      xColorItem    *outdefs)
++                     int ndef, xColorItem * indefs, xColorItem * outdefs)
+ {
+     return miExpandDirectColors(pmap, ndef, indefs, outdefs);
+ }
+@@ -115,9 +110,7 @@ fbInitVisuals (VisualPtr    *visualp,
+ 	       int	    *nvisualp,
+ 	       int	    *ndepthp,
+ 	       int	    *rootDepthp,
+-	       VisualID	    *defaultVisp,
+-	       unsigned long	sizes,
+-	       int	    bitsPerRGB)
++              VisualID * defaultVisp, unsigned long sizes, int bitsPerRGB)
+ {
+     return miInitVisuals(visualp, depthp, nvisualp, ndepthp, rootDepthp,
+ 			 defaultVisp, sizes, bitsPerRGB, -1);

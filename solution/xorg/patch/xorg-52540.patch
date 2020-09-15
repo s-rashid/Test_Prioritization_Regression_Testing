@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprEvent.c b/hw/xquartz/xpr/xprEvent.c
+index 342b54c..cc86c47 100644
+--- a/hw/xquartz/xpr/xprEvent.c
++++ b/hw/xquartz/xpr/xprEvent.c
+@@ -57,8 +57,6 @@
+ #include "xprEvent.h"
+ 
+ Bool QuartzModeEventHandler(int screenNum, XQuartzEvent *e, DeviceIntPtr dev) {
+-    TA_SERVER();
+-    
+     switch(e->subtype) {
+         case kXquartzWindowState:
+             DEBUG_LOG("kXquartzWindowState\n");

@@ -1,0 +1,18 @@
+diff --git a/hw/vfb/InitOutput.c b/hw/vfb/InitOutput.c
+index e109734..53f82f9 100644
+--- a/hw/vfb/InitOutput.c
++++ b/hw/vfb/InitOutput.c
+@@ -875,13 +875,6 @@ vfbScreenInit(int index, ScreenPtr pScreen, int argc, char **argv)
+ 
+     if (!ret) return FALSE;
+ 
+-    miInitializeBackingStore(pScreen);
+-
+-    /*
+-     * Circumvent the backing store that was just initialised.  This amounts
+-     * to a truely bizarre way of initialising SaveDoomedAreas and friends.
+-     */
+-
+     pScreen->InstallColormap = vfbInstallColormap;
+     pScreen->UninstallColormap = vfbUninstallColormap;
+     pScreen->ListInstalledColormaps = vfbListInstalledColormaps;

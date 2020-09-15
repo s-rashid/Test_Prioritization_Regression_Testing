@@ -1,0 +1,49 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 8709994..eb68f7f 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -455,12 +455,6 @@ xf86EnableAccess(ScrnInfoPtr pScrn)
+     return;
+ }
+ 
+-void
+-xf86SetCurrentAccess(Bool Enable, ScrnInfoPtr pScrn)
+-{
+-  return;
+-}
+-
+ /*
+  * xf86EnterServerState() -- set state the server is in.
+  */
+@@ -497,9 +491,6 @@ xf86EnterServerState(xf86State state)
+     else
+ 	DebugF("Entering OPERATING state\n");
+ 
+-    /* When servicing a dumb framebuffer we don't need to do anything */
+-    if (doFramebufferMode) return;
+-
+     return;
+ }
+ 
+@@ -529,12 +520,6 @@ xf86PostProbe(void)
+ }
+ 
+ void
+-xf86PostPreInit(void)
+-{
+-  if (doFramebufferMode) return;
+-}
+-
+-void
+ xf86PostScreenInit(void)
+ {
+     int i;
+@@ -594,8 +579,6 @@ xf86FindPrimaryDevice(void)
+     }
+ }
+ 
+-/* Multihead accel sharing accessor functions and entity Private handling */
+-
+ int
+ xf86GetLastScrnFlag(int entityIndex)
+ {

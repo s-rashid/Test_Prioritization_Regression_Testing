@@ -1,0 +1,13 @@
+diff --git a/mi/midispcur.c b/mi/midispcur.c
+index 7b3ce29..3fb7e02 100644
+--- a/mi/midispcur.c
++++ b/mi/midispcur.c
+@@ -51,7 +51,7 @@ in this Software without prior written authorization from The Open Group.
+ # include   "picturestr.h"
+ #endif
+ 
+-# include "inputstr.h" /* for MAX_DEVICES */
++# include "inputstr.h"
+ 
+ /* per-screen private data */
+ static int miDCScreenKeyIndex;

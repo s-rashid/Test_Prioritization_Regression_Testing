@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winclipboardthread.c b/hw/xwin/winclipboardthread.c
+index 908dfce..4cffa80 100644
+--- a/hw/xwin/winclipboardthread.c
++++ b/hw/xwin/winclipboardthread.c
+@@ -236,6 +236,8 @@ winClipboardProc (void *pvNotUsed)
+       pthread_exit (NULL);
+     }
+ 
++  XStoreName(pDisplay, iWindow, "xwinclip");
++
+   /* Select event types to watch */
+   if (XSelectInput (pDisplay,
+ 		    iWindow,

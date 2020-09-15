@@ -1,0 +1,24 @@
+diff --git a/hw/dmx/config/vdltodmx.c b/hw/dmx/config/vdltodmx.c
+index 69563f1..007416b 100644
+--- a/hw/dmx/config/vdltodmx.c
++++ b/hw/dmx/config/vdltodmx.c
+@@ -36,7 +36,8 @@
+ #include "dmxprint.h"
+ #include "dmxcompat.h"
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     DMXConfigEntryPtr entry;
+     FILE              *str;
+@@ -47,7 +48,8 @@ int main(int argc, char **argv)
+     }
+     if (argc == 2) {
+         str = stdout;
+-    } else if (!(str = fopen(argv[2], "w"))) {
++    }
++    else if (!(str = fopen(argv[2], "w"))) {
+         fprintf(stderr, "Cannot open %s for write\n", argv[2]);
+         return 2;
+     }

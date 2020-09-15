@@ -1,0 +1,13 @@
+diff --git a/config/dbus.c b/config/dbus.c
+index 72a0a05..511908a 100644
+--- a/config/dbus.c
++++ b/config/dbus.c
+@@ -226,7 +226,7 @@ remove_device(DBusMessage *message, DBusMessage *reply, DBusError *error)
+      * already been removed. */
+     OsBlockSignals();
+     ProcessInputEvents();
+-    DeleteInputDeviceRequest(dev);
++    DeleteInputDeviceRequest(dev, 0);
+     OsReleaseSignals();
+ 
+     ret = Success;

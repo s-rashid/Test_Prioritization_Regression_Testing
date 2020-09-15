@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwinXinput.c b/hw/xquartz/darwinXinput.c
+index 8af9fc7..43aea61 100644
+--- a/hw/xquartz/darwinXinput.c
++++ b/hw/xquartz/darwinXinput.c
+@@ -230,7 +230,8 @@ ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
+  *
+  */
+ int
+-NewInputDeviceRequest(InputOption *options, DeviceIntPtr *pdev)
++NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
++                      DeviceIntPtr *pdev)
+ {
+   DEBUG_LOG("NewInputDeviceRequest(%p, %p)\n", options, pdev);
+   return BadValue;

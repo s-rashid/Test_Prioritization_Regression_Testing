@@ -1,0 +1,14 @@
+diff --git a/xkb/xkbtext.c b/xkb/xkbtext.c
+index 9f49d59..1ba10a1 100644
+--- a/xkb/xkbtext.c
++++ b/xkb/xkbtext.c
+@@ -81,8 +81,7 @@ char	*rtrn,*tmp;
+ 	if (len>BUFFER_SIZE)
+ 	    len= BUFFER_SIZE-2;
+ 	rtrn= tbGetBuffer(len);
+-	strncpy(rtrn,atmstr,len);
+-	rtrn[len]= '\0';
++	strlcpy(rtrn,atmstr,len);
+     }
+     else {
+ 	rtrn= tbGetBuffer(1);

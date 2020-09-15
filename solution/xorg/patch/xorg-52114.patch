@@ -1,0 +1,12 @@
+diff --git a/mi/mipointer.h b/mi/mipointer.h
+index 3c86110..539096e 100644
+--- a/mi/mipointer.h
++++ b/mi/mipointer.h
+@@ -133,6 +133,7 @@ extern _X_EXPORT void miPointerGetPosition(
+  * x and y are modified in-place. */
+ extern _X_EXPORT void miPointerSetPosition(
+     DeviceIntPtr pDev,
++    int mode,
+     int *x,
+     int *y);
+ 

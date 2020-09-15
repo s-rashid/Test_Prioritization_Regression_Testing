@@ -1,0 +1,12 @@
+diff --git a/include/dix.h b/include/dix.h
+index 34661f3..8e35d2c 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -339,6 +339,7 @@ extern _X_EXPORT void NoticeEventTime(InternalEvent *ev);
+ extern void EnqueueEvent(
+     InternalEvent * /* ev */,
+     DeviceIntPtr  /* device */);
++extern void PlayReleasedEvents(void);
+ 
+ extern void ActivatePointerGrab(
+     DeviceIntPtr /* mouse */,

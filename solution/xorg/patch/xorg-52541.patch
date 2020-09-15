@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 7faed01..22ef8da 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -49,7 +49,7 @@ from The Open Group.
+ #endif
+ #ifdef RELOCATE_PROJECTROOT
+ #include <shlobj.h>
+-typedef HRESULT (*SHGETFOLDERPATHPROC)(
++typedef WINAPI HRESULT (*SHGETFOLDERPATHPROC)(
+     HWND hwndOwner,
+     int nFolder,
+     HANDLE hToken,

@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/common/xf86pciBus.c b/hw/xfree86/common/xf86pciBus.c
+index 9a9ae40..27e238a 100644
+--- a/hw/xfree86/common/xf86pciBus.c
++++ b/hw/xfree86/common/xf86pciBus.c
+@@ -371,6 +371,12 @@ xf86PciProbe(void)
+ 	    xf86PciVideoInfo[num - 1] = info;
+ 
+ 	    pci_device_probe(info);
++#ifdef HAVE_PCI_DEVICE_IS_BOOT_VGA
++	    if (pci_device_is_boot_vga(info)) {
++                primaryBus.type = BUS_PCI;
++                primaryBus.id.pci = info;
++            }
++#endif
+ 	    info->user_data = 0;
+ 	}
+     }

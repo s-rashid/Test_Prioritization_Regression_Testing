@@ -1,0 +1,28 @@
+diff --git a/Xi/setmmap.c b/Xi/setmmap.c
+index cbe5dc8..dc6d828 100644
+--- a/Xi/setmmap.c
++++ b/Xi/setmmap.c
+@@ -73,10 +73,8 @@ SOFTWARE.
+ int
+ SProcXSetDeviceModifierMapping(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xSetDeviceModifierMappingReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     return (ProcXSetDeviceModifierMapping(client));
+ }
+ 
+@@ -140,9 +138,7 @@ void
+ SRepXSetDeviceModifierMapping(ClientPtr client, int size,
+ 			      xSetDeviceModifierMappingReply * rep)
+ {
+-    char n;
+-
+-    swaps(&rep->sequenceNumber, n);
+-    swapl(&rep->length, n);
++    swaps(&rep->sequenceNumber);
++    swapl(&rep->length);
+     WriteToClient(client, size, (char *)rep);
+ }

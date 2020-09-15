@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Privstr.h b/hw/xfree86/common/xf86Privstr.h
+index feab5c1..79bc8a0 100644
+--- a/hw/xfree86/common/xf86Privstr.h
++++ b/hw/xfree86/common/xf86Privstr.h
+@@ -57,7 +57,6 @@ typedef enum {
+ typedef struct {
+     int			consoleFd;
+     int			vtno;
+-    Bool		vtSysreq;
+ 
+     /* event handler part */
+     int			lastEventTime;

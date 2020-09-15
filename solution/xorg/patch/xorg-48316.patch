@@ -1,0 +1,16 @@
+diff --git a/os/log.c b/os/log.c
+index ff78545..0781659 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -402,9 +402,8 @@ LogMessage(MessageType type, const char *format, ...)
+     va_end(ap);
+ }
+ 
+-#ifdef __GNUC__
+-void AbortServer(void) __attribute__((noreturn));
+-#endif
++void
++AbortServer(void) X_NORETURN;
+ 
+ void
+ AbortServer(void)

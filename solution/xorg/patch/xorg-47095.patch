@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 56ab266..1cc1526 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -2140,7 +2140,7 @@ xf86GetAllowMouseOpenFail(void)
+ Bool
+ xf86IsPc98(void)
+ {
+-#ifdef __i386__
++#if SUPPORT_PC98
+     return xf86Info.pc98;
+ #else
+     return FALSE;

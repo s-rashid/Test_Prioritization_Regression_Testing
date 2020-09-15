@@ -1,0 +1,32 @@
+diff --git a/hw/kdrive/src/kshadow.c b/hw/kdrive/src/kshadow.c
+index 63bb87b..828ea19 100644
+--- a/hw/kdrive/src/kshadow.c
++++ b/hw/kdrive/src/kshadow.c
+@@ -51,8 +51,7 @@ KdShadowFbAlloc (KdScreenInfo *screen, Bool rotate)
+ void
+ KdShadowFbFree (KdScreenInfo *screen)
+ {
+-    if (screen->fb.shadow)
+-    {
++    if (screen->fb.shadow) {
+ 	free(screen->fb.frameBuffer);
+ 	screen->fb.frameBuffer = 0;
+ 	screen->fb.shadow = FALSE;
+@@ -60,14 +59,14 @@ KdShadowFbFree (KdScreenInfo *screen)
+ }
+ 
+ Bool
+-KdShadowSet (ScreenPtr pScreen, int randr, ShadowUpdateProc update, ShadowWindowProc window)
++KdShadowSet(ScreenPtr pScreen, int randr, ShadowUpdateProc update,
++            ShadowWindowProc window)
+ {
+     KdScreenPriv(pScreen);
+     KdScreenInfo *screen = pScreenPriv->screen;
+ 
+     shadowRemove (pScreen, pScreen->GetScreenPixmap(pScreen));
+-    if(screen->fb.shadow)
+-    {
++    if (screen->fb.shadow) {
+ 	return shadowAdd (pScreen, pScreen->GetScreenPixmap(pScreen),
+ 			  update, window, randr, 0);
+     }

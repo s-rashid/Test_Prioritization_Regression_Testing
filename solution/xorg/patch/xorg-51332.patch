@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 4ee8336..b9006ab 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -684,6 +684,7 @@ xf86AddInput(InputDriverPtr drv, InputInfoPtr pInfo)
+     pInfo->next = NULL;
+ 
+     xf86CollectInputOptions(pInfo, (const char**)drv->default_options);
++    xf86OptionListReport(pInfo->options);
+     xf86ProcessCommonOptions(pInfo, pInfo->options);
+ }
+ 

@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/os-support/shared/pm_noop.c b/hw/xfree86/os-support/shared/pm_noop.c
+index bfac4b1..1d6f078 100644
+--- a/hw/xfree86/os-support/shared/pm_noop.c
++++ b/hw/xfree86/os-support/shared/pm_noop.c
+@@ -43,5 +43,3 @@ xf86OSPMOpen(void)
+ {
+ 	return NULL;
+ }
+-
+-

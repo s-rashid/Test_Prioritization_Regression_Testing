@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/common/xf86str.h b/hw/xfree86/common/xf86str.h
+index a65237a..0493dc5 100644
+--- a/hw/xfree86/common/xf86str.h
++++ b/hw/xfree86/common/xf86str.h
+@@ -581,13 +581,6 @@ typedef struct _entityInfo {
+     DriverPtr driver;
+ } EntityInfoRec, *EntityInfoPtr;
+ 
+-/* server states */
+-
+-typedef enum {
+-    SETUP,
+-    OPERATING
+-} xf86State;
+-
+ /* DGA */
+ 
+ typedef struct {

@@ -1,0 +1,13 @@
+diff --git a/Xext/panoramiXprocs.c b/Xext/panoramiXprocs.c
+index b744e4d..67b4030 100644
+--- a/Xext/panoramiXprocs.c
++++ b/Xext/panoramiXprocs.c
+@@ -557,7 +557,7 @@ int PanoramiXGetGeometry(ClientPtr client)
+ 	rep.width = root->pixWidth;
+ 	rep.height = root->pixHeight;
+     } else 
+-    if ((pDraw->type == UNDRAWABLE_WINDOW) || (pDraw->type == DRAWABLE_WINDOW))
++    if (WindowDrawable(pDraw->type))
+     {
+         WindowPtr pWin = (WindowPtr)pDraw;
+ 	rep.x = pWin->origin.x - wBorderWidth (pWin);

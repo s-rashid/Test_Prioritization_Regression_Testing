@@ -1,0 +1,57 @@
+diff --git a/Xext/xselinuxint.h b/Xext/xselinuxint.h
+index 011a103..57f8b73 100644
+--- a/Xext/xselinuxint.h
++++ b/Xext/xselinuxint.h
+@@ -63,10 +63,13 @@ typedef struct {
+  */
+ 
+ extern DevPrivateKeyRec subjectKeyRec;
++
+ #define subjectKey (&subjectKeyRec)
+ extern DevPrivateKeyRec objectKeyRec;
++
+ #define objectKey (&objectKeyRec)
+ extern DevPrivateKeyRec dataKeyRec;
++
+ #define dataKey (&dataKeyRec)
+ 
+ /*
+@@ -77,25 +80,26 @@ int
+ SELinuxAtomToSID(Atom atom, int prop, SELinuxObjectRec **obj_rtn);
+ 
+ int
++
+ SELinuxSelectionToSID(Atom selection, SELinuxSubjectRec *subj,
+ 		      security_id_t *sid_rtn, int *poly_rtn);
+ 
+ int
++
+ SELinuxPropertyToSID(Atom property, SELinuxSubjectRec *subj,
+ 		     security_id_t *sid_rtn, int *poly_rtn);
+ 
+ int
++
+ SELinuxEventToSID(unsigned type, security_id_t sid_of_window,
+ 		  SELinuxObjectRec *sid_return);
+ 
+ int
+ SELinuxExtensionToSID(const char *name, security_id_t *sid_rtn);
+ 
+-security_class_t
+-SELinuxTypeToClass(RESTYPE type);
++security_class_t SELinuxTypeToClass(RESTYPE type);
+ 
+-security_context_t
+-SELinuxDefaultClientLabel(void);
++security_context_t SELinuxDefaultClientLabel(void);
+ 
+ void
+ SELinuxLabelInit(void);
+@@ -113,7 +117,6 @@ SELinuxFlaskInit(void);
+ void
+ SELinuxFlaskReset(void);
+ 
+-
+ /*
+  * Private Flask definitions
+  */

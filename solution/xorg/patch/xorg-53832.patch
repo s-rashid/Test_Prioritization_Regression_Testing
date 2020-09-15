@@ -1,0 +1,14 @@
+diff --git a/xkb/ddxLoad.c b/xkb/ddxLoad.c
+index e102035..219d39c 100644
+--- a/xkb/ddxLoad.c
++++ b/xkb/ddxLoad.c
+@@ -267,6 +267,9 @@ XkbDDXCompileKeymapByNames(	XkbDescPtr		xkb,
+ 		nameRtrn[nameRtrnLen-1]= '\0';
+ 	    }
+             free(buf);
++#ifdef WIN32
++	    unlink(tmpname);
++#endif
+ 	    return TRUE;
+ 	}
+ 	else

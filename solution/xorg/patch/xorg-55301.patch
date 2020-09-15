@@ -1,0 +1,89 @@
+diff --git a/hw/dmx/glxProxy/glxserver.h b/hw/dmx/glxProxy/glxserver.h
+index 03e95b8..ad94966 100644
+--- a/hw/dmx/glxProxy/glxserver.h
++++ b/hw/dmx/glxProxy/glxserver.h
+@@ -41,7 +41,6 @@
+ #include <resource.h>
+ #include <scrnintstr.h>
+ 
+-
+ #define GL_GLEXT_PROTOTYPES /* we want prototypes */
+ #include <GL/gl.h>
+ #include <GL/glxproto.h>
+@@ -52,7 +51,6 @@
+ #include "glxcontext.h"
+ #include "glxerror.h"
+ 
+-
+ #define GLX_SERVER_MAJOR_VERSION 1
+ #define GLX_SERVER_MINOR_VERSION 3
+ 
+@@ -84,7 +82,8 @@ extern GLint __glXNumActiveScreens;
+ ** The last context used (from the server's persective) is cached.
+ */
+ extern __GLXcontext *__glXLastContext;
+-extern __GLXcontext *__glXForceCurrent(__GLXclientState*, GLXContextTag, int*);
++extern __GLXcontext *__glXForceCurrent(__GLXclientState *, GLXContextTag,
++                                       int *);
+ 
+ /************************************************************************/
+ 
+@@ -194,13 +193,11 @@ extern RESTYPE __glXPbufferRes;
+ ** Prototypes.
+ */
+ 
+-
+ extern char *__glXcombine_strings(const char *, const char *);
+ 
+ extern void __glXDisp_DrawArrays(GLbyte*);
+ extern void __glXDispSwap_DrawArrays(GLbyte*);
+ 
+-
+ /*
+ ** Routines for sending swapped replies.
+ */
+@@ -208,23 +205,26 @@ extern void __glXDispSwap_DrawArrays(GLbyte*);
+ extern void __glXSwapMakeCurrentReply(ClientPtr client,  
+                                       xGLXMakeCurrentReadSGIReply *reply);
+ 
+-extern void __glXSwapIsDirectReply(ClientPtr client,
+-				   xGLXIsDirectReply *reply);
++extern void __glXSwapIsDirectReply(ClientPtr client, xGLXIsDirectReply * reply);
+ extern void __glXSwapQueryVersionReply(ClientPtr client,
+ 				       xGLXQueryVersionReply *reply);
+ extern void __glXSwapQueryContextInfoEXTReply(ClientPtr client,
+-					      xGLXQueryContextInfoEXTReply *reply,
+-					      int *buf);
++                                              xGLXQueryContextInfoEXTReply *
++                                              reply, int *buf);
+ extern void glxSwapQueryExtensionsStringReply(ClientPtr client,
+-				xGLXQueryExtensionsStringReply *reply, char *buf);
++                                              xGLXQueryExtensionsStringReply *
++                                              reply, char *buf);
+ extern void glxSwapQueryServerStringReply(ClientPtr client,
+-				xGLXQueryServerStringReply *reply, char *buf);
++                                          xGLXQueryServerStringReply * reply,
++                                          char *buf);
+ extern void __glXSwapQueryContextReply(ClientPtr client,
+                                 xGLXQueryContextReply *reply, int *buf);
+ extern void __glXSwapGetDrawableAttributesReply(ClientPtr client,
+-                             xGLXGetDrawableAttributesReply *reply, int *buf);
++                                                xGLXGetDrawableAttributesReply *
++                                                reply, int *buf);
+ extern void __glXSwapQueryMaxSwapBarriersSGIXReply(ClientPtr client,
+-				   xGLXQueryMaxSwapBarriersSGIXReply *reply);
++                                                   xGLXQueryMaxSwapBarriersSGIXReply
++                                                   * reply);
+ 
+ /*
+  * Routines for computing the size of variably-sized rendering commands.
+@@ -236,8 +236,7 @@ extern int __glXImageSize(GLenum format, GLenum type, GLsizei w, GLsizei h,
+ extern int __glXImage3DSize(GLenum format, GLenum type,
+ 			    GLsizei w, GLsizei h, GLsizei d,
+ 			    GLint imageHeight, GLint rowLength,
+-			    GLint skipImages, GLint skipRows,
+-			    GLint alignment);
++                            GLint skipImages, GLint skipRows, GLint alignment);
+ 
+ extern int __glXCallListsReqSize(GLbyte *pc, Bool swap);
+ extern int __glXBitmapReqSize(GLbyte *pc, Bool swap);

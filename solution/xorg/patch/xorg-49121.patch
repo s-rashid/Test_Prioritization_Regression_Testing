@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winwin32rootlesswindow.c b/hw/xwin/winwin32rootlesswindow.c
+index 3a49ead..214e895 100755
+--- a/hw/xwin/winwin32rootlesswindow.c
++++ b/hw/xwin/winwin32rootlesswindow.c
+@@ -407,7 +407,7 @@ void
+ winMWExtWMRestackWindows (ScreenPtr pScreen)
+ {
+   winScreenPriv(pScreen);
+-  WindowPtr pRoot = WindowTable[pScreen->myNum];
++  WindowPtr pRoot = pScreen->root;
+   WindowPtr pWin = NULL;
+   WindowPtr pWinPrev = NULL;
+   win32RootlessWindowPtr pRLWin = NULL;

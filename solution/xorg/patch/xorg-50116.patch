@@ -1,0 +1,14 @@
+diff --git a/miext/rootless/rootlessCommon.c b/miext/rootless/rootlessCommon.c
+index 82fe0b9..f91cfb4 100644
+--- a/miext/rootless/rootlessCommon.c
++++ b/miext/rootless/rootlessCommon.c
+@@ -92,6 +92,9 @@ IsFramedWindow(WindowPtr pWin)
+ {
+     WindowPtr top;
+ 
++    if (!dixPrivateKeyRegistered(&rootlessWindowPrivateKeyRec))
++        return FALSE;
++
+     if (!pWin->realized)
+         return FALSE;
+     top = TopLevelParent(pWin);

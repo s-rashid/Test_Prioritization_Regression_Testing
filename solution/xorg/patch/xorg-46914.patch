@@ -1,0 +1,13 @@
+diff --git a/Xi/xiproperty.c b/Xi/xiproperty.c
+index 4821857..ecb326e 100644
+--- a/Xi/xiproperty.c
++++ b/Xi/xiproperty.c
+@@ -630,6 +630,8 @@ XIDeleteAllDeviceProperties (DeviceIntPtr device)
+         xfree(curr_handler);
+         curr_handler = next_handler;
+     }
++
++    device->properties.handlers = NULL;
+ }
+ 
+ 

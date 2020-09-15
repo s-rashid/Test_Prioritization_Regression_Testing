@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/src/kinfo.c b/hw/kdrive/src/kinfo.c
+index cb64613..4551fd7 100644
+--- a/hw/kdrive/src/kinfo.c
++++ b/hw/kdrive/src/kinfo.c
+@@ -166,6 +166,12 @@ KdFreeKeyboard(KdKeyboardInfo *ki)
+         xfree(ki->name);
+     if (ki->path)
+         xfree(ki->path);
++    if (ki->xkbRules)
++        xfree(ki->xkbRules);
++    if (ki->xkbModel)
++        xfree(ki->xkbModel);
++    if (ki->xkbLayout)
++        xfree(ki->xkbLayout);
+     ki->next = NULL;
+     xfree(ki);
+ }

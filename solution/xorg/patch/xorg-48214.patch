@@ -1,0 +1,20 @@
+diff --git a/render/glyph.c b/render/glyph.c
+index f0f3b19..6b81118 100644
+--- a/render/glyph.c
++++ b/render/glyph.c
+@@ -113,15 +113,6 @@ GlyphUninit (ScreenPtr pScreen)
+ 	    }
+ 	}
+     }
+-
+-    for (fdepth = 0; fdepth < GlyphFormatNum; fdepth++)
+-    {
+-	if (!globalGlyphs[fdepth].hashSet)
+-	    continue;
+-	
+-	for (i = 0; i < globalGlyphs[fdepth].hashSet->size; i++)
+-	    glyph = globalGlyphs[fdepth].table[i].glyph;    
+-    }
+ }
+ 
+ GlyphHashSetPtr

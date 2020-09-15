@@ -1,0 +1,35 @@
+diff --git a/dix/events.c b/dix/events.c
+index 35b446b..4847db0 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3788,14 +3788,13 @@ CheckPassiveGrabsOnWindow(
+         }
+ 
+         if (!activate)
+-        {
+-            return grab;
+-        }
++            break;
+         else if (!GetXIType(event) && !GetCoreType(event))
+         {
+             ErrorF("Event type %d in CheckPassiveGrabsOnWindow is neither"
+                    " XI 1.x nor core\n", event->any.type);
+-            return NULL;
++            grab = NULL;
++            break;
+         }
+ 
+         /* The only consumers of corestate are Xi 1.x and core events, which
+@@ -3861,9 +3860,10 @@ CheckPassiveGrabsOnWindow(
+         }
+ 
+         free(xE);
+-        return grab;
++        break;
+     }
+-    return NULL;
++
++    return grab;
+ #undef CORE_MATCH
+ #undef XI_MATCH
+ #undef XI2_MATCH

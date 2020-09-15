@@ -1,0 +1,31 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhw.c b/hw/xfree86/fbdevhw/fbdevhw.c
+index f50d562..a5b59e7 100644
+--- a/hw/xfree86/fbdevhw/fbdevhw.c
++++ b/hw/xfree86/fbdevhw/fbdevhw.c
+@@ -21,8 +21,6 @@
+ 
+ #define PAGE_MASK               (~(getpagesize() - 1))
+ 
+-static MODULESETUPPROTO(fbdevhwSetup);
+-
+ static XF86ModuleVersionInfo fbdevHWVersRec =
+ {
+ 	"fbdevhw",
+@@ -39,16 +37,10 @@ static XF86ModuleVersionInfo fbdevHWVersRec =
+ 
+ _X_EXPORT XF86ModuleData fbdevhwModuleData = {
+     &fbdevHWVersRec,
+-    fbdevhwSetup,
++    NULL,
+     NULL
+ };
+ 
+-static pointer
+-fbdevhwSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+-{
+-    return (pointer)1;
+-}
+-
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <sys/mman.h>

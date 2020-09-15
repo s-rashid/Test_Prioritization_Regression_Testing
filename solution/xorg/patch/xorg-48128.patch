@@ -1,0 +1,17 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index b1acd3e..072c691 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -1451,6 +1451,12 @@ Bool
+ winInitCursor (ScreenPtr pScreen);
+ 
+ /*
++ * winprocarg.c
++ */
++void
++winInitializeScreens(int maxscreens);
++
++/*
+  * END DDX and DIX Function Prototypes
+  */
+ 

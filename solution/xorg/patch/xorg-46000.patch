@@ -1,0 +1,14 @@
+diff --git a/Xi/xichangecursor.c b/Xi/xichangecursor.c
+index dc33d70..ea5bdeb 100644
+--- a/Xi/xichangecursor.c
++++ b/Xi/xichangecursor.c
+@@ -78,6 +78,9 @@ int ProcXIChangeCursor(ClientPtr client)
+     if (rc != Success)
+         return rc;
+ 
++    if (!IsMaster(pDev) || !IsPointerDevice(pDev))
++        return BadDevice;
++
+     if (stuff->win != None)
+     {
+         rc = dixLookupWindow(&pWin, stuff->win, client, DixSetAttrAccess);

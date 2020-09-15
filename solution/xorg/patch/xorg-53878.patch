@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/bus/Pci.h b/hw/xfree86/os-support/bus/Pci.h
+index 88560ec..5709bd8 100644
+--- a/hw/xfree86/os-support/bus/Pci.h
++++ b/hw/xfree86/os-support/bus/Pci.h
+@@ -108,7 +108,6 @@
+ #define _PCI_H 1
+ 
+ #include "xf86Pci.h"
+-#include "xf86PciInfo.h"
+ 
+ /*
+  * Global Definitions

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index dc35c7c..5ce4dbb 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -91,8 +91,6 @@ extern _X_EXPORT  int xf86NumScreens;
+ extern _X_EXPORT  const char *xf86VisualNames[];
+ extern _X_EXPORT  int xf86Verbose;                 /* verbosity level */
+ extern _X_EXPORT  int xf86LogVerbose;		/* log file verbosity level */
+-extern _X_EXPORT  Bool xf86ProbeOnly;
+-extern _X_EXPORT  Bool xf86DoProbe;
+ extern _X_EXPORT  Bool xorgHWAccess;
+ 
+ extern _X_EXPORT  RootWinPropPtr *xf86RegisteredPropertiesTable;

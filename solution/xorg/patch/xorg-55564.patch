@@ -1,0 +1,11 @@
+diff --git a/hw/xfree86/os-support/bus/nobus.c b/hw/xfree86/os-support/bus/nobus.c
+index ad23f52..dca58fe 100644
+--- a/hw/xfree86/os-support/bus/nobus.c
++++ b/hw/xfree86/os-support/bus/nobus.c
+@@ -1 +1,5 @@
+-static void __noop_to_appease_ar__() { return; }
++static void
++__noop_to_appease_ar__()
++{
++    return;
++}

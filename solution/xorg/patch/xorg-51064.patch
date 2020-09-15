@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Screen.c b/hw/xnest/Screen.c
+index 0a6cab6..d0c7fc8 100644
+--- a/hw/xnest/Screen.c
++++ b/hw/xnest/Screen.c
+@@ -239,8 +239,6 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+ 	       defaultVisual, /* root visual */
+ 	       numVisuals, visuals);
+ 
+-/*  miInitializeBackingStore(pScreen); */
+-
+   pScreen->defColormap = (Colormap) FakeClientID(0);
+   pScreen->minInstalledCmaps = MINCMAPS;
+   pScreen->maxInstalledCmaps = MAXCMAPS;

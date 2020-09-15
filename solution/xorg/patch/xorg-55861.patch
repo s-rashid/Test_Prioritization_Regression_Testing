@@ -1,0 +1,84 @@
+diff --git a/hw/xwin/winmisc.c b/hw/xwin/winmisc.c
+index 8e66981..10f9732 100644
+--- a/hw/xwin/winmisc.c
++++ b/hw/xwin/winmisc.c
+@@ -48,7 +48,6 @@ winQueryBestSizeNativeGDI (int class, unsigned short *pWidth,
+ }
+ #endif
+ 
+-
+ /*
+  * Count the number of one bits in a color mask.
+  */
+@@ -58,8 +57,7 @@ winCountBits (DWORD dw)
+ {
+   DWORD		dwBits = 0;
+ 
+-  while (dw)
+-    {
++    while (dw) {
+       dwBits += (dw & 1);
+       dw >>= 1;
+     }
+@@ -67,7 +65,6 @@ winCountBits (DWORD dw)
+   return dwBits;
+ }
+ 
+-
+ /*
+  * Modify the screen pixmap to point to the new framebuffer address
+  */
+@@ -89,16 +86,14 @@ winUpdateFBPointer (ScreenPtr pScreen, void *pbits)
+ 				       BitsPerPixel (pScreen->rootDepth),
+ 				       PixmapBytePad (pScreenInfo->dwStride,
+ 						      pScreenInfo->dwBPP),
+-				       pScreenInfo->pfb))
+-    {
+-      FatalError ("winUpdateFramebufferPointer - Failed modifying "\
++                                         pScreenInfo->pfb)) {
++        FatalError("winUpdateFramebufferPointer - Failed modifying "
+ 		  "screen pixmap\n");
+     }
+ 
+   return TRUE;
+ }
+ 
+-
+ #ifdef XWIN_NATIVEGDI
+ /*
+  * Paint the window background with the specified color
+@@ -113,30 +108,26 @@ winPaintBackground (HWND hwnd, COLORREF colorref)
+ 
+   /* Create an hdc */
+   hdc = GetDC (hwnd);
+-  if (hdc == NULL)
+-    {
++    if (hdc == NULL) {
+       printf ("gdiWindowProc - GetDC failed\n");
+       exit (1);
+     }
+ 
+   /* Create and select blue brush */
+   hbrush = CreateSolidBrush (colorref);
+-  if (hbrush == NULL)
+-    {
++    if (hbrush == NULL) {
+       printf ("gdiWindowProc - CreateSolidBrush failed\n");
+       exit (1);
+     }
+ 
+   /* Get window extents */
+-  if (GetClientRect (hwnd, &rect) == FALSE)
+-    {
++    if (GetClientRect(hwnd, &rect) == FALSE) {
+       printf ("gdiWindowProc - GetClientRect failed\n");
+       exit (1);
+     }
+ 
+   /* Fill window with blue brush */
+-  if (FillRect (hdc, &rect, hbrush) == 0)
+-    {
++    if (FillRect(hdc, &rect, hbrush) == 0) {
+       printf ("gdiWindowProc - FillRect failed\n");
+       exit (1);
+     }

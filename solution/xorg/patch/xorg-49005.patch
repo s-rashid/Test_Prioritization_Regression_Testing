@@ -1,0 +1,19 @@
+diff --git a/miext/rootless/rootlessWindow.c b/miext/rootless/rootlessWindow.c
+index ce088c7..4d541f4 100644
+--- a/miext/rootless/rootlessWindow.c
++++ b/miext/rootless/rootlessWindow.c
+@@ -288,12 +288,12 @@ static void RootlessReshapeFrame(WindowPtr pWin)
+  *  shaped when the window is framed.
+  */
+ void
+-RootlessSetShape(WindowPtr pWin)
++RootlessSetShape(WindowPtr pWin, int kind)
+ {
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+ 
+     SCREEN_UNWRAP(pScreen, SetShape);
+-    pScreen->SetShape(pWin);
++    pScreen->SetShape(pWin, kind);
+     SCREEN_WRAP(pScreen, SetShape);
+ 
+     RootlessReshapeFrame(pWin);

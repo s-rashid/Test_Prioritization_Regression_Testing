@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winwin32rootlesswindow.c b/hw/xwin/winwin32rootlesswindow.c
+index 214e895..fbff838 100644
+--- a/hw/xwin/winwin32rootlesswindow.c
++++ b/hw/xwin/winwin32rootlesswindow.c
+@@ -202,6 +202,7 @@ winMWExtWMDecorateWindow (HWND hwnd, LPARAM lParam)
+   /* Check if the Windows window property for our X window pointer is valid */
+   if ((pRLWinPriv = (win32RootlessWindowPtr)GetProp (hwnd, WIN_WINDOW_PROP)) != NULL)
+     {
++      if (pRLWinPriv != NULL && pRLWinPriv->pFrame != NULL && pRLWinPriv->pFrame->win != NULL)
+       pScreen				= pRLWinPriv->pFrame->win->drawable.pScreen;
+       if (pScreen) pScreenPriv		= winGetScreenPriv(pScreen);
+       if (pScreenPriv) pScreenInfo	= pScreenPriv->pScreenInfo;

@@ -1,0 +1,13 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 37f9856..f9d8dc8 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -1156,7 +1156,7 @@ void
+ AssignTypeAndName(DeviceIntPtr dev, Atom type, char *name)
+ {
+     dev->xinput_type = type;
+-    dev->name = (char *)xalloc(strlen(name) + 1);
++    dev->name = (char *)malloc(strlen(name) + 1);
+     strcpy(dev->name, name);
+ }
+ 

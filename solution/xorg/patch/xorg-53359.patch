@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/os-support/shared/posix_tty.c b/hw/xfree86/os-support/shared/posix_tty.c
+index fb83860..cc12a31 100644
+--- a/hw/xfree86/os-support/shared/posix_tty.c
++++ b/hw/xfree86/os-support/shared/posix_tty.c
+@@ -112,7 +112,7 @@ GetBaud (int baudrate)
+ }
+ 
+ int
+-xf86OpenSerial (pointer options)
++xf86OpenSerial (XF86OptionPtr options)
+ {
+ 	struct termios t;
+ 	int fd, i;
+@@ -185,7 +185,7 @@ xf86OpenSerial (pointer options)
+ }
+ 
+ int
+-xf86SetSerial (int fd, pointer options)
++xf86SetSerial (int fd, XF86OptionPtr options)
+ {
+ 	struct termios t;
+ 	int val;

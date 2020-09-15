@@ -1,0 +1,11 @@
+diff --git a/xfixes/xfixes.c b/xfixes/xfixes.c
+index 49ed5a0..2f64a04 100644
+--- a/xfixes/xfixes.c
++++ b/xfixes/xfixes.c
+@@ -259,5 +259,6 @@ XFixesExtensionInit(void)
+ 	    (EventSwapPtr) SXFixesSelectionNotifyEvent;
+ 	EventSwapVector[XFixesEventBase + XFixesCursorNotify] =
+ 	    (EventSwapPtr) SXFixesCursorNotifyEvent;
++	SetResourceTypeErrorValue(RegionResType, XFixesErrorBase + BadRegion);
+     }
+ }

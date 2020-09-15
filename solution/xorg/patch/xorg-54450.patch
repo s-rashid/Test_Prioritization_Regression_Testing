@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_init.c b/hw/xfree86/os-support/linux/lnx_init.c
+index 5f3e3a9..2176985 100644
+--- a/hw/xfree86/os-support/linux/lnx_init.c
++++ b/hw/xfree86/os-support/linux/lnx_init.c
+@@ -212,11 +212,21 @@ xf86OpenConsole(void)
+             tcgetattr(xf86Info.consoleFd, &tty_attr);
+ 	    SYSCALL(ioctl(xf86Info.consoleFd, KDGKBMODE, &tty_mode));
+ 
++#ifdef K_OFF
++	    /* disable kernel special keys and buffering */
++	    SYSCALL(ret = ioctl(xf86Info.consoleFd, KDSKBMODE, K_OFF));
++	    if (ret < 0)
++#endif
++	    {
+ 	    SYSCALL(ret = ioctl(xf86Info.consoleFd, KDSKBMODE, K_RAW));
+ 	    if (ret < 0)
+ 		FatalError("xf86OpenConsole: KDSKBMODE K_RAW failed %s\n",
+ 			strerror(errno));
+ 
++		/* need to keep the buffer clean, else the kernel gets angry */
++		xf86SetConsoleHandler(drain_console, NULL);
++	    }
++
+             nTty = tty_attr;
+             nTty.c_iflag = (IGNPAR | IGNBRK) & (~PARMRK) & (~ISTRIP);
+             nTty.c_oflag = 0;
+@@ -228,9 +238,6 @@ xf86OpenConsole(void)
+             cfsetospeed(&nTty, 9600);
+             tcsetattr(xf86Info.consoleFd, TCSANOW, &nTty);
+ 
+-            /* need to keep the buffer clean, else the kernel gets angry */
+-	    xf86SetConsoleHandler(drain_console, NULL);
+-
+ 	    /* we really should have a InitOSInputDevices() function instead
+ 	     * of Init?$#*&Device(). So I just place it here */
+         }

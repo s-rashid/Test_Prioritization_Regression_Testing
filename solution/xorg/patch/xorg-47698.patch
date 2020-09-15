@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/dmxinput.c b/hw/dmx/dmxinput.c
+index c099349..568bb88 100644
+--- a/hw/dmx/dmxinput.c
++++ b/hw/dmx/dmxinput.c
+@@ -75,6 +75,10 @@ void InitInput(int argc, char **argv)
+     mieqInit();
+ }
+ 
++void CloseInput(void)
++{
++}
++
+ /** Called from dix/dispatch.c in Dispatch() whenever input events
+  * require processing.  All the work is done in the lower level
+  * routines. */

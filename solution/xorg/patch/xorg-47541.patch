@@ -1,0 +1,17 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index b427c60..c309465 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -275,10 +275,10 @@ typedef struct
+ 	device->public.realInputProc = oldprocs->realInputProc; \
+ 	device->unwrapProc = oldprocs->unwrapProc;
+ 
+-extern _X_EXPORT DevPrivateKey xkbDevicePrivateKey;
++extern DevPrivateKey xkbDevicePrivateKey;
+ #define XKBDEVICEINFO(dev) ((xkbDeviceInfoPtr)dixLookupPrivate(&(dev)->devPrivates, xkbDevicePrivateKey))
+ 
+-extern _X_EXPORT void xkbUnwrapProc(DeviceIntPtr, DeviceHandleProc, pointer);
++extern void xkbUnwrapProc(DeviceIntPtr, DeviceHandleProc, pointer);
+ 
+ /***====================================================================***/
+ 

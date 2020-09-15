@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index 8c69859..e0b1809 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -125,10 +125,8 @@ extern _X_EXPORT const DisplayModeRec xf86DefaultModes[];
+ extern _X_EXPORT const int xf86NumDefaultModes;
+ 
+ /* xf86Configure.c */
+-extern _X_EXPORT void DoConfigure(void);
+-
+-/* xf86ShowOpts.c */
+-extern _X_EXPORT void DoShowOptions(void);
++extern _X_EXPORT void DoConfigure(void) _X_NORETURN;
++extern _X_EXPORT void DoShowOptions(void) _X_NORETURN;
+ 
+ /* xf86Events.c */
+ 

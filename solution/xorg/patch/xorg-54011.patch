@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/config/dmxcompat.c b/hw/dmx/config/dmxcompat.c
+index 98c52eb..1c72084 100644
+--- a/hw/dmx/config/dmxcompat.c
++++ b/hw/dmx/config/dmxcompat.c
+@@ -42,6 +42,7 @@
+ #include <dmx-config.h>
+ #endif
+ 
++#include "os.h"
+ #include "dmxconfig.h"
+ #include "dmxparse.h"
+ #include "dmxcompat.h"

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ddc/interpret_edid.c b/hw/xfree86/ddc/interpret_edid.c
+index d63e25d..acb7efa 100644
+--- a/hw/xfree86/ddc/interpret_edid.c
++++ b/hw/xfree86/ddc/interpret_edid.c
+@@ -183,7 +183,7 @@ xf86InterpretEDID(int scrnIndex, Uchar *block)
+     handle_edid_quirks(m);
+     encode_aspect_ratio(m);
+ 
+-    return (m);
++    return m;
+ 
+  error:
+     free(m);

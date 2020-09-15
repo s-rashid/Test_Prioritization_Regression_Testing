@@ -1,0 +1,15 @@
+diff --git a/fb/fbseg.c b/fb/fbseg.c
+index 80dd480..28a9cf0 100644
+--- a/fb/fbseg.c
++++ b/fb/fbseg.c
+@@ -250,7 +250,9 @@ fbSetFg (DrawablePtr	pDrawable,
+ {
+     if (fg != pGC->fgPixel)
+     {
+-	dixChangeGC (NullClient, pGC, GCForeground, &fg, NULL);
++	ChangeGCVal val;
++	val.val = fg;
++	dixChangeGC (NullClient, pGC, GCForeground, NULL, &val);
+ 	ValidateGC (pDrawable, pGC);
+     }
+ }

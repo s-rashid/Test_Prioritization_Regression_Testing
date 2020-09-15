@@ -1,0 +1,35 @@
+diff --git a/include/Xprintf.h b/include/Xprintf.h
+index 5177122..414fd46 100644
+--- a/include/Xprintf.h
++++ b/include/Xprintf.h
+@@ -48,18 +48,18 @@
+  * argument.   The return value is the size of the allocated buffer, or -1
+  * on failure.
+  */
+-extern _X_EXPORT int Xasprintf (char **ret,
+-				const char * _X_RESTRICT_KYWD fmt,
+-				...) _X_ATTRIBUTE_PRINTF(2,3);
+-extern _X_EXPORT int Xvasprintf (char **ret,
+-				 const char * _X_RESTRICT_KYWD fmt,
+-				 va_list va) _X_ATTRIBUTE_PRINTF(2,0);
+-extern _X_EXPORT int XNFasprintf (char **ret,
+-				  const char * _X_RESTRICT_KYWD fmt,
+-				  ...) _X_ATTRIBUTE_PRINTF(2,3);
+-extern _X_EXPORT int XNFvasprintf (char **ret,
+-				   const char * _X_RESTRICT_KYWD fmt,
+-				   va_list va) _X_ATTRIBUTE_PRINTF(2,0);
++extern _X_EXPORT int
++Xasprintf(char **ret, const char *_X_RESTRICT_KYWD fmt, ...)
++_X_ATTRIBUTE_PRINTF(2, 3);
++extern _X_EXPORT int
++Xvasprintf(char **ret, const char *_X_RESTRICT_KYWD fmt, va_list va)
++_X_ATTRIBUTE_PRINTF(2, 0);
++extern _X_EXPORT int
++XNFasprintf(char **ret, const char *_X_RESTRICT_KYWD fmt, ...)
++_X_ATTRIBUTE_PRINTF(2, 3);
++extern _X_EXPORT int
++XNFvasprintf(char **ret, const char *_X_RESTRICT_KYWD fmt, va_list va)
++_X_ATTRIBUTE_PRINTF(2, 0);
+ 
+ #if !defined(HAVE_ASPRINTF) && !defined(HAVE_VASPRINTF)
+ # define asprintf  Xasprintf

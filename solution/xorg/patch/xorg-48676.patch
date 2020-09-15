@@ -1,0 +1,13 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 4848c1b..e3b44fc 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -311,7 +311,7 @@ int generate_modkeymap(ClientPtr client, DeviceIntPtr dev,
+         }
+     }
+ 
+-    modkeymap = xcalloc(max_keys_per_mod * 8, sizeof(KeyCode));
++    modkeymap = calloc(max_keys_per_mod * 8, sizeof(KeyCode));
+     if (!modkeymap)
+         return BadAlloc;
+ 

@@ -1,0 +1,14 @@
+diff --git a/dix/grabs.c b/dix/grabs.c
+index da014df..701470c 100644
+--- a/dix/grabs.c
++++ b/dix/grabs.c
+@@ -266,6 +266,9 @@ CreateGrab(
+ void
+ FreeGrab(GrabPtr pGrab)
+ {
++    if (pGrab->grabtype == XI2 && pGrab->type == XI_TouchBegin)
++        TouchListenerGone(pGrab->resource);
++
+     free(pGrab->modifiersDetail.pMask);
+     free(pGrab->detail.pMask);
+ 

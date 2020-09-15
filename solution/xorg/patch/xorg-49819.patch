@@ -1,0 +1,15 @@
+diff --git a/record/record.c b/record/record.c
+index 46231c9..82d5f9f 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -167,8 +167,8 @@ typedef struct {
+     ProcFunctionPtr recordVector[256]; 
+ } RecordClientPrivateRec, *RecordClientPrivatePtr;
+ 
+-static int RecordClientPrivateKeyIndex;
+-static DevPrivateKey RecordClientPrivateKey = &RecordClientPrivateKeyIndex;
++static DevPrivateKeyRec RecordClientPrivateKeyRec;
++#define RecordClientPrivateKey (&RecordClientPrivateKeyRec)
+ 
+ /*  RecordClientPrivatePtr RecordClientPrivate(ClientPtr)
+  *  gets the client private of the given client.  Syntactic sugar.

@@ -1,0 +1,14 @@
+diff --git a/record/record.c b/record/record.c
+index 4117a5a..06006f7 100644
+--- a/record/record.c
++++ b/record/record.c
+@@ -2895,6 +2895,9 @@ RecordExtensionInit(void)
+     if (!RTContext)
+ 	return;
+ 
++    if (!dixRegisterPrivateKey(RecordClientPrivateKey, PRIVATE_CLIENT, 0))
++        return;
++
+     ppAllContexts = NULL;
+     numContexts = numEnabledContexts = numEnabledRCAPs = 0;
+ 

@@ -1,0 +1,34 @@
+diff --git a/hw/xnest/Font.c b/hw/xnest/Font.c
+index f1ccd7e..1e95588 100644
+--- a/hw/xnest/Font.c
++++ b/hw/xnest/Font.c
+@@ -56,23 +56,25 @@ xnestRealizeFont(ScreenPtr pScreen, FontPtr pFont)
+       break;
+     }
+ 
+-  if (!value_atom) return False;
++    if (!value_atom)
++        return False;
+ 
+   name = NameForAtom(value_atom);
+ 
+-  if (!name) return False;
++    if (!name)
++        return False;
+ 
+   priv = (pointer)malloc(sizeof(xnestPrivFont));
+   FontSetPrivate(pFont, xnestFontPrivateIndex, priv);
+   
+   xnestFontPriv(pFont)->font_struct = XLoadQueryFont(xnestDisplay, name);
+ 
+-  if (!xnestFontStruct(pFont)) return False;
++    if (!xnestFontStruct(pFont))
++        return False;
+ 						     
+   return True;
+ }
+ 
+-
+ Bool
+ xnestUnrealizeFont(ScreenPtr pScreen, FontPtr pFont)
+ {

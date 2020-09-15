@@ -1,0 +1,23 @@
+diff --git a/include/gc.h b/include/gc.h
+index 3fa953d..63eecbd 100644
+--- a/include/gc.h
++++ b/include/gc.h
+@@ -93,11 +93,16 @@ typedef union {
+     pointer ptr;
+ } ChangeGCVal, *ChangeGCValPtr;
+ 
+-extern _X_EXPORT int dixChangeGC(
++extern int ChangeGCXIDs(
++    ClientPtr /*client*/,
++    GCPtr /*pGC*/,
++    BITS32 /*mask*/,
++    CARD32 * /*pval*/);
++
++extern _X_EXPORT int ChangeGC(
+     ClientPtr /*client*/,
+     GCPtr /*pGC*/,
+     BITS32 /*mask*/,
+-    CARD32 * /*pval*/,
+     ChangeGCValPtr /*pCGCV*/);
+ 
+ extern _X_EXPORT GCPtr CreateGC(

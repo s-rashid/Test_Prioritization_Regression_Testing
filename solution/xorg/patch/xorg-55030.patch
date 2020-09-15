@@ -1,0 +1,14 @@
+diff --git a/Xi/xipassivegrab.h b/Xi/xipassivegrab.h
+index 079e7c6..c790bb7 100644
+--- a/Xi/xipassivegrab.h
++++ b/Xi/xipassivegrab.h
+@@ -32,7 +32,8 @@
+ 
+ int SProcXIPassiveUngrabDevice(ClientPtr client);
+ int ProcXIPassiveUngrabDevice(ClientPtr client);
+-void SRepXIPassiveGrabDevice(ClientPtr client, int size, xXIPassiveGrabDeviceReply * rep);
++void SRepXIPassiveGrabDevice(ClientPtr client, int size,
++                             xXIPassiveGrabDeviceReply * rep);
+ int ProcXIPassiveGrabDevice(ClientPtr client);
+ int SProcXIPassiveGrabDevice(ClientPtr client);
+ 

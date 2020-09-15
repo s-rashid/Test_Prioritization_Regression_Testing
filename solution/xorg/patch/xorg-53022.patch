@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/ephyr/os.c b/hw/kdrive/ephyr/os.c
+index 4bf6e88..e4dc678 100644
+--- a/hw/kdrive/ephyr/os.c
++++ b/hw/kdrive/ephyr/os.c
+@@ -2,7 +2,7 @@
+  * Xephyr - A kdrive X server thats runs in a host X window.
+  *          Authored by Matthew Allum <mallum@o-hand.com>
+  * 
+- * Copyright © 2004 Nokia 
++ * Copyright Â© 2004 Nokia 
+  *
+  * Permission to use, copy, modify, distribute, and sell this software and its
+  * documentation for any purpose is hereby granted without fee, provided that

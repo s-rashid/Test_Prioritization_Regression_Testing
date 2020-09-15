@@ -1,0 +1,13 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index 861d0dd..f58488d 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -80,7 +80,7 @@ extern _X_EXPORT void InitValuatorAxisStruct(
+ 	int                    /* min_res */,
+ 	int                    /* max_res */);
+ 
+-extern _X_EXPORT void DeviceFocusEvent(
++extern void DeviceFocusEvent(
+ 	DeviceIntPtr           /* dev */,
+ 	int                    /* type */,
+ 	int                    /* mode */,

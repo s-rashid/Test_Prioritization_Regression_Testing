@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winpolyline.c b/hw/xwin/winpolyline.c
+index db9dd34..8b7e106 100644
+--- a/hw/xwin/winpolyline.c
++++ b/hw/xwin/winpolyline.c
+@@ -36,13 +36,9 @@
+ /* See Porting Layer Definition - p. 50 */
+ void
+ winPolyLineNativeGDI (DrawablePtr	pDrawable,
+-		      GCPtr		pGC,
+-		      int		mode,
+-		      int		npt,
+-		      DDXPointPtr	ppt)
+-{
+-  switch (pGC->lineStyle)
++                     GCPtr pGC, int mode, int npt, DDXPointPtr ppt)
+     {
++    switch (pGC->lineStyle) {
+     case LineSolid:
+       if (pGC->lineWidth == 0)
+ 	return miZeroLine (pDrawable, pGC, mode, npt, ppt);

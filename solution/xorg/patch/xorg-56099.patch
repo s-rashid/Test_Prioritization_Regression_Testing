@@ -1,0 +1,14 @@
+diff --git a/render/mitri.c b/render/mitri.c
+index b322a7c..922f22a 100644
+--- a/render/mitri.c
++++ b/render/mitri.c
+@@ -42,8 +42,7 @@ miPointFixedBounds (int npoint, xPointFixed *points, BoxPtr bounds)
+     bounds->y2 = xFixedToInt (xFixedCeil (points->y));
+     points++;
+     npoint--;
+-    while (npoint-- > 0)
+-    {
++    while (npoint-- > 0) {
+ 	INT16	x1 = xFixedToInt (points->x);
+ 	INT16	x2 = xFixedToInt (xFixedCeil (points->x));
+ 	INT16	y1 = xFixedToInt (points->y);

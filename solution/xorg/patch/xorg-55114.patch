@@ -1,0 +1,363 @@
+diff --git a/exa/exa_priv.h b/exa/exa_priv.h
+index 70de4bd..bde78c3 100644
+--- a/exa/exa_priv.h
++++ b/exa/exa_priv.h
+@@ -169,7 +169,8 @@ typedef struct {
+     GlyphsProcPtr                SavedGlyphs;
+     TrapezoidsProcPtr            SavedTrapezoids;
+     AddTrapsProcPtr		 SavedAddTraps;
+-    void (*do_migration) (ExaMigrationPtr pixmaps, int npixmaps, Bool can_accel);
++    void (*do_migration) (ExaMigrationPtr pixmaps, int npixmaps,
++                          Bool can_accel);
+     Bool (*pixmap_has_gpu_copy) (PixmapPtr pPixmap);
+     void (*do_move_in_pixmap) (PixmapPtr pPixmap);
+     void (*do_move_out_pixmap) (PixmapPtr pPixmap);
+@@ -222,10 +223,13 @@ typedef struct {
+ #endif
+ 
+ extern DevPrivateKeyRec exaScreenPrivateKeyRec;
++
+ #define exaScreenPrivateKey (&exaScreenPrivateKeyRec)
+ extern DevPrivateKeyRec exaPixmapPrivateKeyRec;
++
+ #define exaPixmapPrivateKey (&exaPixmapPrivateKeyRec)
+ extern DevPrivateKeyRec exaGCPrivateKeyRec;
++
+ #define exaGCPrivateKey (&exaGCPrivateKeyRec)
+ 
+ #define ExaGetScreenPriv(s) ((ExaScreenPrivPtr)dixGetPrivate(&(s)->devPrivates, exaScreenPrivateKey))
+@@ -361,88 +365,96 @@ void
+ exaFinishAccessGC(GCPtr pGC);
+ 
+ void
++
+ ExaCheckFillSpans  (DrawablePtr pDrawable, GCPtr pGC, int nspans,
+ 		   DDXPointPtr ppt, int *pwidth, int fSorted);
+ 
+ void
++
+ ExaCheckSetSpans (DrawablePtr pDrawable, GCPtr pGC, char *psrc,
+ 		 DDXPointPtr ppt, int *pwidth, int nspans, int fSorted);
+ 
+ void
++
+ ExaCheckPutImage (DrawablePtr pDrawable, GCPtr pGC, int depth,
+ 		 int x, int y, int w, int h, int leftPad, int format,
+ 		 char *bits);
+ 
+ void
++
+ ExaCheckCopyNtoN (DrawablePtr pSrc, DrawablePtr pDst,  GCPtr pGC,
+ 	     BoxPtr	pbox, int nbox, int dx, int dy, Bool	reverse, 
+ 	     Bool upsidedown, Pixel bitplane, void *closure);
+ 
+ RegionPtr
++
+ ExaCheckCopyArea (DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC,
+ 		 int srcx, int srcy, int w, int h, int dstx, int dsty);
+ 
+ RegionPtr
++
+ ExaCheckCopyPlane (DrawablePtr pSrc, DrawablePtr pDst, GCPtr pGC,
+ 		  int srcx, int srcy, int w, int h, int dstx, int dsty,
+ 		  unsigned long bitPlane);
+ 
+ void
++
+ ExaCheckPolyPoint (DrawablePtr pDrawable, GCPtr pGC, int mode, int npt,
+ 		  DDXPointPtr pptInit);
+ 
+ void
++
+ ExaCheckPolylines (DrawablePtr pDrawable, GCPtr pGC,
+ 		  int mode, int npt, DDXPointPtr ppt);
+ 
+ void
++
+ ExaCheckPolySegment (DrawablePtr pDrawable, GCPtr pGC,
+ 		    int nsegInit, xSegment *pSegInit);
+ 
+ void
+-ExaCheckPolyArc (DrawablePtr pDrawable, GCPtr pGC,
+-		int narcs, xArc *pArcs);
++ ExaCheckPolyArc(DrawablePtr pDrawable, GCPtr pGC, int narcs, xArc * pArcs);
+ 
+ void
++
+ ExaCheckPolyFillRect (DrawablePtr pDrawable, GCPtr pGC,
+ 		     int nrect, xRectangle *prect);
+ 
+ void
++
+ ExaCheckImageGlyphBlt (DrawablePtr pDrawable, GCPtr pGC,
+ 		      int x, int y, unsigned int nglyph,
+ 		      CharInfoPtr *ppci, pointer pglyphBase);
+ 
+ void
++
+ ExaCheckPolyGlyphBlt (DrawablePtr pDrawable, GCPtr pGC,
+ 		     int x, int y, unsigned int nglyph,
+ 		     CharInfoPtr *ppci, pointer pglyphBase);
+ 
+ void
++
+ ExaCheckPushPixels (GCPtr pGC, PixmapPtr pBitmap,
+-		   DrawablePtr pDrawable,
+-		   int w, int h, int x, int y);
++                   DrawablePtr pDrawable, int w, int h, int x, int y);
+ 
+ void
+ ExaCheckCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc);
+ 
+ void
++
+ ExaCheckGetImage(DrawablePtr pDrawable, int x, int y, int w, int h,
+ 		unsigned int format, unsigned long planeMask, char *d);
+ 
+ void
++
+ ExaCheckGetSpans (DrawablePtr pDrawable,
+ 		 int wMax,
+-		 DDXPointPtr ppt,
+-		 int *pwidth,
+-		 int nspans,
+-		 char *pdstStart);
++                 DDXPointPtr ppt, int *pwidth, int nspans, char *pdstStart);
+ 
+ void
++
+ ExaCheckAddTraps (PicturePtr	pPicture,
+-		  INT16		x_off,
+-		  INT16		y_off,
+-		  int		ntrap,
+-		  xTrap		*traps);
++                 INT16 x_off, INT16 y_off, int ntrap, xTrap * traps);
+ 
+ /* exa_accel.c */
+ 
+@@ -453,37 +465,39 @@ exaGCReadsDestination(DrawablePtr pDrawable, unsigned long planemask,
+ {
+     return ((alu != GXcopy && alu != GXclear && alu != GXset &&
+ 	     alu != GXcopyInverted) || fillStyle == FillStippled ||
+-	    clientClipType != CT_NONE || !EXA_PM_IS_SOLID(pDrawable, planemask));
++            clientClipType != CT_NONE ||
++            !EXA_PM_IS_SOLID(pDrawable, planemask));
+ }
+ 
+ void
+ exaCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc);
+ 
+ Bool
++
+ exaFillRegionTiled (DrawablePtr	pDrawable, RegionPtr pRegion, PixmapPtr pTile,
+ 		    DDXPointPtr pPatOrg, CARD32 planemask, CARD32 alu,
+ 		    unsigned int clientClipType);
+ 
+ void
++
+ exaGetImage (DrawablePtr pDrawable, int x, int y, int w, int h,
+ 	     unsigned int format, unsigned long planeMask, char *d);
+ 
+ RegionPtr
++
+ exaCopyArea(DrawablePtr pSrcDrawable, DrawablePtr pDstDrawable, GCPtr pGC,
+ 	    int srcx, int srcy, int width, int height, int dstx, int dsty);
+ 
+ Bool
++
+ exaHWCopyNtoN (DrawablePtr    pSrcDrawable,
+ 	     DrawablePtr    pDstDrawable,
+ 	     GCPtr	    pGC,
+ 	     BoxPtr	    pbox,
+-	     int	    nbox,
+-	     int	    dx,
+-	     int	    dy,
+-	     Bool	    reverse,
+-	     Bool	    upsidedown);
++              int nbox, int dx, int dy, Bool reverse, Bool upsidedown);
+ 
+ void
++
+ exaCopyNtoN (DrawablePtr    pSrcDrawable,
+ 	     DrawablePtr    pDstDrawable,
+ 	     GCPtr	    pGC,
+@@ -491,14 +505,12 @@ exaCopyNtoN (DrawablePtr    pSrcDrawable,
+ 	     int	    nbox,
+ 	     int	    dx,
+ 	     int	    dy,
+-	     Bool	    reverse,
+-	     Bool	    upsidedown,
+-	     Pixel	    bitplane,
+-	     void	    *closure);
++            Bool reverse, Bool upsidedown, Pixel bitplane, void *closure);
+ 
+ extern const GCOps exaOps;
+ 
+ void
++
+ ExaCheckComposite (CARD8      op,
+ 		  PicturePtr pSrc,
+ 		  PicturePtr pMask,
+@@ -507,21 +519,16 @@ ExaCheckComposite (CARD8      op,
+ 		  INT16      ySrc,
+ 		  INT16      xMask,
+ 		  INT16      yMask,
+-		  INT16      xDst,
+-		  INT16      yDst,
+-		  CARD16     width,
+-		  CARD16     height);
++                  INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
+ 
+ void
++
+ ExaCheckGlyphs (CARD8	      op,
+ 		PicturePtr    pSrc,
+ 		PicturePtr    pDst,
+ 		PictFormatPtr maskFormat,
+ 		INT16	      xSrc,
+-		INT16	      ySrc,
+-		int	      nlist,
+-		GlyphListPtr  list,
+-		GlyphPtr      *glyphs);
++               INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs);
+ 
+ /* exa_offscreen.c */
+ void
+@@ -530,8 +537,7 @@ ExaOffscreenSwapOut (ScreenPtr pScreen);
+ void
+ ExaOffscreenSwapIn (ScreenPtr pScreen);
+ 
+-ExaOffscreenArea*
+-ExaOffscreenDefragment (ScreenPtr pScreen);
++ExaOffscreenArea *ExaOffscreenDefragment(ScreenPtr pScreen);
+ 
+ Bool
+ exaOffscreenInit(ScreenPtr pScreen);
+@@ -556,6 +562,7 @@ void
+ exaPixmapDirty(PixmapPtr pPix, int x1, int y1, int x2, int y2);
+ 
+ void
++
+ exaGetDrawableDeltas (DrawablePtr pDrawable, PixmapPtr pPixmap,
+ 		      int *xp, int *yp);
+ 
+@@ -569,10 +576,12 @@ PixmapPtr
+ exaGetDrawablePixmap(DrawablePtr pDrawable);
+ 
+ void
++
+ exaSetFbPitch(ExaScreenPrivPtr pExaScr, ExaPixmapPrivPtr pExaPixmap,
+               int w, int h, int bpp);
+ 
+ void
++
+ exaSetAccelBlock(ExaScreenPrivPtr pExaScr, ExaPixmapPrivPtr pExaPixmap,
+                  int w, int h, int bpp);
+ 
+@@ -586,12 +595,15 @@ extern const GCFuncs exaGCFuncs;
+ 
+ /* exa_classic.c */
+ PixmapPtr
++
+ exaCreatePixmap_classic(ScreenPtr pScreen, int w, int h, int depth,
+ 		unsigned usage_hint);
+ 
+ Bool
+-exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height, int depth,
+-		      int bitsPerPixel, int devKind, pointer pPixData);
++
++exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height,
++                              int depth, int bitsPerPixel, int devKind,
++                              pointer pPixData);
+ 
+ Bool
+ exaDestroyPixmap_classic (PixmapPtr pPixmap);
+@@ -601,12 +613,15 @@ exaPixmapHasGpuCopy_classic(PixmapPtr pPixmap);
+ 
+ /* exa_driver.c */
+ PixmapPtr
++
+ exaCreatePixmap_driver(ScreenPtr pScreen, int w, int h, int depth,
+ 		unsigned usage_hint);
+ 
+ Bool
+-exaModifyPixmapHeader_driver(PixmapPtr pPixmap, int width, int height, int depth,
+-		      int bitsPerPixel, int devKind, pointer pPixData);
++
++exaModifyPixmapHeader_driver(PixmapPtr pPixmap, int width, int height,
++                             int depth, int bitsPerPixel, int devKind,
++                             pointer pPixData);
+ 
+ Bool
+ exaDestroyPixmap_driver (PixmapPtr pPixmap);
+@@ -616,10 +631,12 @@ exaPixmapHasGpuCopy_driver(PixmapPtr pPixmap);
+ 
+ /* exa_mixed.c */
+ PixmapPtr
++
+ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+ 		unsigned usage_hint);
+ 
+ Bool
++
+ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+ 		      int bitsPerPixel, int devKind, pointer pPixData);
+ 
+@@ -650,6 +667,7 @@ Bool
+ exaOpReadsDestination (CARD8 op);
+ 
+ void
++
+ exaComposite(CARD8	op,
+ 	     PicturePtr pSrc,
+ 	     PicturePtr pMask,
+@@ -657,26 +675,23 @@ exaComposite(CARD8	op,
+ 	     INT16	xSrc,
+ 	     INT16	ySrc,
+ 	     INT16	xMask,
+-	     INT16	yMask,
+-	     INT16	xDst,
+-	     INT16	yDst,
+-	     CARD16	width,
+-	     CARD16	height);
++             INT16 yMask, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
+ 
+ void
++
+ exaCompositeRects(CARD8	              op,
+ 		  PicturePtr	      Src,
+ 		  PicturePtr	      pMask,
+-		  PicturePtr	      pDst,
+-		  int                 nrect,
+-		  ExaCompositeRectPtr rects);
++                  PicturePtr pDst, int nrect, ExaCompositeRectPtr rects);
+ 
+ void
++
+ exaTrapezoids (CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+                PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc,
+                int ntrap, xTrapezoid *traps);
+ 
+ void
++
+ exaTriangles (CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+ 	      PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc,
+ 	      int ntri, xTriangle *tris);
+@@ -689,15 +704,13 @@ void
+ exaGlyphsFini (ScreenPtr pScreen);
+ 
+ void
++
+ exaGlyphs (CARD8	op,
+ 	  PicturePtr	pSrc,
+ 	  PicturePtr	pDst,
+ 	  PictFormatPtr	maskFormat,
+ 	  INT16		xSrc,
+-	  INT16		ySrc,
+-	  int		nlist,
+-	  GlyphListPtr	list,
+-	  GlyphPtr	*glyphs);
++          INT16 ySrc, int nlist, GlyphListPtr list, GlyphPtr * glyphs);
+ 
+ /* exa_migration_classic.c */
+ void

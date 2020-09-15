@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/X11Controller.h b/hw/xquartz/X11Controller.h
+index 5b38a11..170bccc 100644
+--- a/hw/xquartz/X11Controller.h
++++ b/hw/xquartz/X11Controller.h
+@@ -40,7 +40,9 @@
+ #include "xpr/x-list.h"
+ 
+ #ifdef XQUARTZ_SPARKLE
++#define BOOL OSX_BOOL
+ #include <Sparkle/SUUpdater.h>
++#undef BOOL
+ #endif
+ 
+ @interface X11Controller : NSObject

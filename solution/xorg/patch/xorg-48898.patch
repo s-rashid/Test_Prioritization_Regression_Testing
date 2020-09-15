@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxvisuals.c b/hw/dmx/glxProxy/glxvisuals.c
+index 898c6be..58151b7 100644
+--- a/hw/dmx/glxProxy/glxvisuals.c
++++ b/hw/dmx/glxProxy/glxvisuals.c
+@@ -532,7 +532,7 @@ Bool glxInitVisuals(int *nvisualp, VisualPtr *visualp,
+ 
+     /* Free the private list created by DDX HW driver */
+     if (visualPrivates)
+-        xfree(visualPrivates);
++        free(visualPrivates);
+     visualPrivates = NULL;
+ 
+     return TRUE;

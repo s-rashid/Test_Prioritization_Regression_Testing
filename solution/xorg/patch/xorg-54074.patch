@@ -1,0 +1,22 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index a2c807b..b43f9bb 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -409,7 +409,7 @@ static int
+ ProcIDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+-    if (stuff->data > ARRAY_SIZE(ProcIVector) || !ProcIVector[stuff->data])
++    if (stuff->data >= ARRAY_SIZE(ProcIVector) || !ProcIVector[stuff->data])
+         return BadRequest;
+ 
+     return (*ProcIVector[stuff->data])(client);
+@@ -428,7 +428,7 @@ static int
+ SProcIDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+-    if (stuff->data > ARRAY_SIZE(SProcIVector) || !SProcIVector[stuff->data])
++    if (stuff->data >= ARRAY_SIZE(SProcIVector) || !SProcIVector[stuff->data])
+         return BadRequest;
+ 
+     return (*SProcIVector[stuff->data])(client);

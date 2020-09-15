@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index e9f7f2f..8229227 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -618,6 +618,7 @@ MergeInputClasses(IDevPtr idev, InputAttributes *attrs)
+                     "InputClass configuration");
+             return BadAlloc;
+         }
++        mergedopts = xf86ReplaceStrOption(mergedopts, "driver", idev->driver);
+     }
+     idev->commonOptions = xf86optionListMerge(idev->commonOptions, mergedopts);
+ 

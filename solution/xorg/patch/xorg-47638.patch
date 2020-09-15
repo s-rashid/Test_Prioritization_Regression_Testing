@@ -1,0 +1,13 @@
+diff --git a/xkb/ddxBeep.c b/xkb/ddxBeep.c
+index 10a7317..6f74cb5 100644
+--- a/xkb/ddxBeep.c
++++ b/xkb/ddxBeep.c
+@@ -89,7 +89,7 @@ static  char 	doesPitch = 1;
+ #define	STICKY_UNLOCK	"AX_StickyUnlock"
+ #define	BOUNCE_REJECT	"AX_BounceKeyReject"
+ 
+-#define	MAKE_ATOM(a)	MakeAtom(a,sizeof(a)-1,True)
++#define	MAKE_ATOM(a)	MakeAtom(a,sizeof(a)-1,TRUE)
+ 
+ static void
+ _XkbDDXBeepInitAtoms(void)

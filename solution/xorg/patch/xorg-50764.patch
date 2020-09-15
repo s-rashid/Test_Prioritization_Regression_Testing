@@ -1,0 +1,15 @@
+diff --git a/os/log.c b/os/log.c
+index 3435da6..d18f9b3 100644
+--- a/os/log.c
++++ b/os/log.c
+@@ -305,10 +305,7 @@ LogVWrite(int verb, const char *f, va_list args)
+ 	    if (len > bufferUnused) {
+ 		bufferSize += 1024;
+ 		bufferUnused += 1024;
+-		if (saveBuffer)
+ 		    saveBuffer = realloc(saveBuffer, bufferSize);
+-		else
+-		    saveBuffer = malloc(bufferSize);
+ 		if (!saveBuffer)
+ 		    FatalError("realloc() failed while saving log messages\n");
+ 	    }

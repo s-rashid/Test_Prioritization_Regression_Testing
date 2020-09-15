@@ -1,0 +1,12 @@
+diff --git a/glx/glxcmds.c b/glx/glxcmds.c
+index 30c25a9..ba4c123 100644
+--- a/glx/glxcmds.c
++++ b/glx/glxcmds.c
+@@ -50,7 +50,6 @@
+ #include "indirect_dispatch.h"
+ #include "indirect_table.h"
+ #include "indirect_util.h"
+-#include "protocol-versions.h"
+ 
+ static int
+ validGlxScreen(ClientPtr client, int screen, __GLXscreen **pGlxScreen, int *err)

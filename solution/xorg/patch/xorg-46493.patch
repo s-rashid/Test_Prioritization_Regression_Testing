@@ -1,0 +1,14 @@
+diff --git a/mi/mieq.c b/mi/mieq.c
+index 4c6c3bd..9b6d0c9 100644
+--- a/mi/mieq.c
++++ b/mi/mieq.c
+@@ -323,7 +323,8 @@ CopyGetMasterEvent(DeviceIntPtr sdev,
+ 
+     CHECKEVENT(original);
+ 
+-    if (!sdev->u.master)
++    /* ET_XQuartz has sdev == NULL */
++    if (!sdev || !sdev->u.master)
+         return NULL;
+ 
+     switch(original->any.type)

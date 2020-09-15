@@ -1,0 +1,24 @@
+diff --git a/miext/damage/damage.c b/miext/damage/damage.c
+index 21cbb78..d0e0fe4 100644
+--- a/miext/damage/damage.c
++++ b/miext/damage/damage.c
+@@ -898,7 +898,8 @@ damageCopyArea(DrawablePtr   pSrc,
+ 	pSrc->type == DRAWABLE_WINDOW &&
+ 	((WindowPtr)pSrc)->viewable)
+     {
+-	(*pSrc->pScreen->SourceValidate) (pSrc, srcx, srcy, width, height);
++	(*pSrc->pScreen->SourceValidate) (pSrc, srcx, srcy, width, height,
++					  pGC->subWindowMode);
+     }
+     
+     if (checkGCDamage (pDst, pGC))
+@@ -944,7 +945,8 @@ damageCopyPlane(DrawablePtr	pSrc,
+ 	pSrc->type == DRAWABLE_WINDOW &&
+ 	((WindowPtr)pSrc)->viewable)
+     {
+-        (*pSrc->pScreen->SourceValidate) (pSrc, srcx, srcy, width, height);
++	(*pSrc->pScreen->SourceValidate) (pSrc, srcx, srcy, width, height,
++					  pGC->subWindowMode);
+     }
+ 
+     if (checkGCDamage (pDst, pGC))

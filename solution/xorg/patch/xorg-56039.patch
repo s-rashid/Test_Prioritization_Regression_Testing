@@ -1,0 +1,56 @@
+diff --git a/miext/shadow/shpacked.c b/miext/shadow/shpacked.c
+index c37dca1..d2b2e5e 100644
+--- a/miext/shadow/shpacked.c
++++ b/miext/shadow/shpacked.c
+@@ -41,8 +41,7 @@
+ #include    "fb.h"
+ 
+ void
+-shadowUpdatePacked (ScreenPtr	    pScreen,
+-		    shadowBufPtr    pBuf)
++shadowUpdatePacked(ScreenPtr pScreen, shadowBufPtr pBuf)
+ {
+     RegionPtr	damage = shadowDamage (pBuf);
+     PixmapPtr	pShadow = pBuf->pPixmap;
+@@ -58,9 +57,9 @@ shadowUpdatePacked (ScreenPtr	    pScreen,
+     FbBits	*winBase = NULL, *win;
+     CARD32      winSize;
+ 
+-    fbGetDrawable (&pShadow->drawable, shaBase, shaStride, shaBpp, shaXoff, shaYoff);
+-    while (nbox--)
+-    {
++    fbGetDrawable(&pShadow->drawable, shaBase, shaStride, shaBpp, shaXoff,
++                  shaYoff);
++    while (nbox--) {
+ 	x = pbox->x1 * shaBpp;
+ 	y = pbox->y1;
+ 	w = (pbox->x2 - pbox->x1) * shaBpp;
+@@ -72,8 +71,7 @@ shadowUpdatePacked (ScreenPtr	    pScreen,
+ 	x &= FB_MASK;
+ 	w = (w + x + FB_MASK) >> FB_SHIFT;
+ 	
+-	while (h--)
+-	{
++        while (h--) {
+ 	    winSize = 0;
+ 	    scrBase = 0;
+ 	    width = w;
+@@ -82,8 +80,7 @@ shadowUpdatePacked (ScreenPtr	    pScreen,
+ 	    while (width) {
+ 		/* how much remains in this window */
+ 		i = scrBase + winSize - scr;
+-		if (i <= 0 || scr < scrBase)
+-		{
++                if (i <= 0 || scr < scrBase) {
+ 		    winBase = (FbBits *) (*pBuf->window) (pScreen,
+ 							  y,
+ 							  scr * sizeof (FbBits),
+@@ -113,6 +110,7 @@ shadowUpdatePacked (ScreenPtr	    pScreen,
+ }
+ 
+ shadowUpdateProc
+-shadowUpdatePackedWeak(void) {
++shadowUpdatePackedWeak(void)
++{
+     return shadowUpdatePacked;
+ }

@@ -1,0 +1,20 @@
+diff --git a/include/optionstr.h b/include/optionstr.h
+new file mode 100644
+index 0000000..a71d245
+--- /dev/null
++++ b/include/optionstr.h
+@@ -0,0 +1,14 @@
++#ifndef OPTIONSTR_H_
++#define OPTIONSTR_H_
++#include "list.h"
++
++
++struct _InputOption {
++    GenericListRec list;
++    char *opt_name;
++    char *opt_val;
++    int opt_used;
++    char *opt_comment;
++};
++
++#endif /* INPUTSTRUCT_H */

@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winclipboardthread.c b/hw/xwin/winclipboardthread.c
+index e5b2dc1..a380903 100644
+--- a/hw/xwin/winclipboardthread.c
++++ b/hw/xwin/winclipboardthread.c
+@@ -119,8 +119,7 @@ winClipboardProc (void *pvNotUsed)
+   /* See if X supports the current locale */
+   if (XSupportsLocale () == False)
+     {
+-      ErrorF ("winClipboardProc - Locale not supported by X.  Exiting.\n");
+-      pthread_exit (NULL);
++      ErrorF ("winClipboardProc - Warning: Locale not supported by X.\n");
+     }
+ 
+   /* Set jump point for Error exits */

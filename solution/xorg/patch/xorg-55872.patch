@@ -1,0 +1,637 @@
+diff --git a/hw/xwin/winmultiwindowwindow.c b/hw/xwin/winmultiwindowwindow.c
+index aabde6b..0093fcb 100644
+--- a/hw/xwin/winmultiwindowwindow.c
++++ b/hw/xwin/winmultiwindowwindow.c
+@@ -56,13 +56,13 @@ static void
+ winFindWindow (pointer value, XID id, pointer cdata);
+ 
+ static
+-void winInitMultiWindowClass(void)
++    void
++winInitMultiWindowClass(void)
+ {
+   static wATOM atomXWinClass=0;
+   WNDCLASSEX wcx;
+ 
+-  if (atomXWinClass==0)
+-  {
++    if (atomXWinClass == 0) {
+     /* Setup our window class */
+     wcx.cbSize=sizeof(WNDCLASSEX);
+     wcx.style = CS_HREDRAW | CS_VREDRAW | (g_fNativeGl ? CS_OWNDC : 0);
+@@ -94,6 +94,7 @@ winCreateWindowMultiWindow (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -117,7 +118,6 @@ winCreateWindowMultiWindow (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /*
+  * DestroyWindow - See Porting Layer Definition - p. 37
+  */
+@@ -127,6 +127,7 @@ winDestroyWindowMultiWindow (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -147,7 +148,6 @@ winDestroyWindowMultiWindow (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /*
+  * PositionWindow - See Porting Layer Definition - p. 37
+  *
+@@ -162,12 +162,14 @@ winPositionWindowMultiWindow (WindowPtr pWin, int x, int y)
+   Bool			fResult = TRUE;
+   int		        iX, iY, iWidth, iHeight;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+   HWND hWnd = pWinPriv->hWnd;
+   RECT rcNew;
+   RECT rcOld;
++
+ #if CYGMULTIWINDOW_DEBUG
+   RECT rcClient;
+   RECT *lpRc;
+@@ -184,13 +186,11 @@ winPositionWindowMultiWindow (WindowPtr pWin, int x, int y)
+   WIN_WRAP(PositionWindow, winPositionWindowMultiWindow);
+   
+ #if CYGWINDOWING_DEBUG
+-  ErrorF ("winPositionWindowMultiWindow: (x, y) = (%d, %d)\n",
+-	  x, y);
++    ErrorF("winPositionWindowMultiWindow: (x, y) = (%d, %d)\n", x, y);
+ #endif
+ 
+   /* Bail out if the Windows window handle is bad */
+-  if (!hWnd)
+-    {
++    if (!hWnd) {
+ #if CYGWINDOWING_DEBUG
+       ErrorF ("\timmediately return since hWnd is NULL\n");
+ #endif
+@@ -245,8 +245,7 @@ winPositionWindowMultiWindow (WindowPtr pWin, int x, int y)
+ #endif
+ 
+   /* Check if the old rectangle and new rectangle are the same */
+-  if (!EqualRect (&rcNew, &rcOld))
+-    {
++    if (!EqualRect(&rcNew, &rcOld)) {
+ #if CYGMULTIWINDOW_DEBUG
+       ErrorF ("winPositionWindowMultiWindow - Need to move\n");
+ #endif
+@@ -258,11 +257,9 @@ winPositionWindowMultiWindow (WindowPtr pWin, int x, int y)
+       /* Change the position and dimensions of the Windows window */
+       MoveWindow (hWnd,
+ 		  rcNew.left, rcNew.top,
+-		  rcNew.right - rcNew.left, rcNew.bottom - rcNew.top,
+-		  TRUE);
++                   rcNew.right - rcNew.left, rcNew.bottom - rcNew.top, TRUE);
+     }
+-  else
+-    {
++    else {
+ #if CYGMULTIWINDOW_DEBUG
+       ErrorF ("winPositionWindowMultiWindow - Not need to move\n");
+ #endif
+@@ -271,7 +268,6 @@ winPositionWindowMultiWindow (WindowPtr pWin, int x, int y)
+   return fResult;
+ }
+ 
+-
+ /*
+  * ChangeWindowAttributes - See Porting Layer Definition - p. 37
+  */
+@@ -281,6 +277,7 @@ winChangeWindowAttributesMultiWindow (WindowPtr pWin, unsigned long mask)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGMULTIWINDOW_DEBUG
+@@ -298,7 +295,6 @@ winChangeWindowAttributesMultiWindow (WindowPtr pWin, unsigned long mask)
+   return fResult;
+ }
+ 
+-
+ /*
+  * UnmapWindow - See Porting Layer Definition - p. 37
+  * Also referred to as UnrealizeWindow
+@@ -309,6 +305,7 @@ winUnmapWindowMultiWindow (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -329,7 +326,6 @@ winUnmapWindowMultiWindow (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /*
+  * MapWindow - See Porting Layer Definition - p. 37
+  * Also referred to as RealizeWindow
+@@ -340,6 +336,7 @@ winMapWindowMultiWindow (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -364,7 +361,6 @@ winMapWindowMultiWindow (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /*
+  * ReparentWindow - See Porting Layer Definition - p. 42
+  */
+@@ -373,10 +369,13 @@ void
+ winReparentWindowMultiWindow (WindowPtr pWin, WindowPtr pPriorParent)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+-  winDebug("winReparentMultiWindow - pWin:%08x XID:0x%x, reparent from pWin:%08x XID:0x%x to pWin:%08x XID:0x%x\n",
+-           pWin, pWin->drawable.id, pPriorParent, pPriorParent->drawable.id, pWin->parent, pWin->parent->drawable.id);
++    winDebug
++        ("winReparentMultiWindow - pWin:%08x XID:0x%x, reparent from pWin:%08x XID:0x%x to pWin:%08x XID:0x%x\n",
++         pWin, pWin->drawable.id, pPriorParent, pPriorParent->drawable.id,
++         pWin->parent, pWin->parent->drawable.id);
+ 
+   WIN_UNWRAP(ReparentWindow);
+   if (pScreen->ReparentWindow) 
+@@ -387,7 +386,6 @@ winReparentWindowMultiWindow (WindowPtr pWin, WindowPtr pPriorParent)
+   winUpdateWindowsWindow (pWin);
+ }
+ 
+-
+ /*
+  * RestackWindow - Shuffle the z-order of a window
+  */
+@@ -402,6 +400,7 @@ winRestackWindowMultiWindow (WindowPtr pWin, WindowPtr pOldNextSib)
+   HWND                  hWnd = NULL;
+ #endif
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGMULTIWINDOW_DEBUG || CYGWINDOWING_DEBUG
+@@ -432,26 +431,21 @@ winRestackWindowMultiWindow (WindowPtr pWin, WindowPtr pOldNextSib)
+    * Look for a sibling window with
+    * valid privates and window handle
+    */
+-  while (pPrevWin
+-	 && !winGetWindowPriv(pPrevWin)
++    while (pPrevWin && !winGetWindowPriv(pPrevWin)
+ 	 && !winGetWindowPriv(pPrevWin)->hWnd)
+     pPrevWin = pPrevWin->prevSib;
+       
+   /* Check if we found a valid sibling */
+-  if (pPrevWin)
+-    {
++    if (pPrevWin) {
+       /* Valid sibling - get handle to insert window after */
+       hInsertAfter = winGetWindowPriv(pPrevWin)->hWnd;
+       uFlags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE;
+   
+       hWnd = GetNextWindow (pWinPriv->hWnd, GW_HWNDPREV);
+ 
+-      do
+-	{
+-	  if (GetProp (hWnd, WIN_WINDOW_PROP))
+-	    {
+-	      if (hWnd == winGetWindowPriv(pPrevWin)->hWnd)
+-		{
++        do {
++            if (GetProp(hWnd, WIN_WINDOW_PROP)) {
++                if (hWnd == winGetWindowPriv(pPrevWin)->hWnd) {
+ 		  uFlags |= SWP_NOZORDER;
+ 		}
+ 	      break;
+@@ -460,23 +454,17 @@ winRestackWindowMultiWindow (WindowPtr pWin, WindowPtr pOldNextSib)
+ 	}
+       while (hWnd);
+     }
+-  else
+-    {
++    else {
+       /* No valid sibling - make this window the top window */
+       hInsertAfter = HWND_TOP;
+       uFlags = SWP_NOMOVE | SWP_NOSIZE;
+     }
+       
+   /* Perform the restacking operation in Windows */
+-  SetWindowPos (pWinPriv->hWnd,
+-		hInsertAfter,
+-		0, 0,
+-		0, 0,
+-		uFlags);
++    SetWindowPos(pWinPriv->hWnd, hInsertAfter, 0, 0, 0, 0, uFlags);
+ #endif
+ }
+ 
+-
+ /*
+  * winCreateWindowsWindow - Create a Windows window associated with an X window
+  */
+@@ -489,6 +477,7 @@ winCreateWindowsWindow (WindowPtr pWin)
+   int			iHeight;
+   HWND			hWnd;
+   HWND			hFore = NULL;
++
+   winWindowPriv(pWin);
+   HICON			hIcon;
+   HICON			hIconSmall;
+@@ -500,7 +489,8 @@ winCreateWindowsWindow (WindowPtr pWin)
+ 
+   winInitMultiWindowClass();
+ 
+-  winDebug("winCreateWindowsTopLevelWindow - pWin:%08x XID:0x%x \n", pWin, pWin->drawable.id);
++    winDebug("winCreateWindowsTopLevelWindow - pWin:%08x XID:0x%x \n", pWin,
++             pWin->drawable.id);
+ 
+   iX = pWin->drawable.x + GetSystemMetrics (SM_XVIRTUALSCREEN);
+   iY = pWin->drawable.y + GetSystemMetrics (SM_YVIRTUALSCREEN);
+@@ -510,33 +500,32 @@ winCreateWindowsWindow (WindowPtr pWin)
+ 
+   /* If it's an InputOutput window, and so is going to end up being made visible,
+      make sure the window actually ends up somewhere where it will be visible */
+-  if (pWin->drawable.class != InputOnly)
+-    {
+-      if ((iX < GetSystemMetrics (SM_XVIRTUALSCREEN)) || (iX > GetSystemMetrics (SM_CXVIRTUALSCREEN)))
++    if (pWin->drawable.class != InputOnly) {
++        if ((iX < GetSystemMetrics(SM_XVIRTUALSCREEN)) ||
++            (iX > GetSystemMetrics(SM_CXVIRTUALSCREEN)))
+         iX = CW_USEDEFAULT;
+ 
+-      if ((iY < GetSystemMetrics (SM_YVIRTUALSCREEN)) || (iY > GetSystemMetrics (SM_CYVIRTUALSCREEN)))
++        if ((iY < GetSystemMetrics(SM_YVIRTUALSCREEN)) ||
++            (iY > GetSystemMetrics(SM_CYVIRTUALSCREEN)))
+         iY = CW_USEDEFAULT;
+     }
+ 
+-  winDebug("winCreateWindowsWindow - %dx%d @ %dx%d\n", iWidth, iHeight, iX, iY);
++    winDebug("winCreateWindowsWindow - %dx%d @ %dx%d\n", iWidth, iHeight, iX,
++             iY);
+ 
+-  if (winMultiWindowGetTransientFor (pWin, &pDaddy))
+-    {
+-      if (pDaddy)
+-      {
++    if (winMultiWindowGetTransientFor(pWin, &pDaddy)) {
++        if (pDaddy) {
+         hFore = GetForegroundWindow();
+-        if (hFore && (pDaddy != (WindowPtr)GetProp(hFore, WIN_WID_PROP))) hFore = NULL;
++            if (hFore && (pDaddy != (WindowPtr) GetProp(hFore, WIN_WID_PROP)))
++                hFore = NULL;
+       }
+     }
+-  else
+-    {
++    else {
+       /* Default positions if none specified */
+       if (!winMultiWindowGetWMNormalHints(pWin, &hints))
+         hints.flags = 0;
+       if (!(hints.flags & (USPosition|PPosition)) &&
+-          !pWin->overrideRedirect)
+-      {
++            !pWin->overrideRedirect) {
+         iX = CW_USEDEFAULT;
+         iY = CW_USEDEFAULT;
+       }
+@@ -556,12 +545,15 @@ winCreateWindowsWindow (WindowPtr pWin)
+   rc.bottom = rc.top + iHeight;
+   rc.right = rc.left + iWidth;
+   AdjustWindowRectEx(&rc, dwStyle, FALSE, dwExStyle);
+-  if (iY != CW_USEDEFAULT) iY = rc.top;
+-  if (iX != CW_USEDEFAULT) iX = rc.left;
++    if (iY != CW_USEDEFAULT)
++        iY = rc.top;
++    if (iX != CW_USEDEFAULT)
++        iX = rc.left;
+   iHeight = rc.bottom - rc.top;
+   iWidth = rc.right - rc.left;
+ 
+-  winDebug("winCreateWindowsWindow - %dx%d @ %dx%d\n", iWidth, iHeight, iX, iY);
++    winDebug("winCreateWindowsWindow - %dx%d @ %dx%d\n", iWidth, iHeight, iX,
++             iY);
+ 
+   /* Create the window */
+   hWnd = CreateWindowExA (dwExStyle,		/* Extended styles */
+@@ -576,8 +568,7 @@ winCreateWindowsWindow (WindowPtr pWin)
+ 			  (HMENU) NULL,		/* No menu */
+ 			  GetModuleHandle (NULL), /* Instance handle */
+ 			  pWin);		/* ScreenPrivates */
+-  if (hWnd == NULL)
+-    {
++    if (hWnd == NULL) {
+       ErrorF ("winCreateWindowsWindow - CreateWindowExA () failed: %d\n",
+ 	      (int) GetLastError ());
+     }
+@@ -585,13 +576,17 @@ winCreateWindowsWindow (WindowPtr pWin)
+ 
+   /* Set application or .XWinrc defined Icons */
+   winSelectIcons(pWin, &hIcon, &hIconSmall);
+-  if (hIcon) SendMessage (hWnd, WM_SETICON, ICON_BIG, (LPARAM) hIcon);
+-  if (hIconSmall) SendMessage (hWnd, WM_SETICON, ICON_SMALL, (LPARAM) hIconSmall);
++    if (hIcon)
++        SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM) hIcon);
++    if (hIconSmall)
++        SendMessage(hWnd, WM_SETICON, ICON_SMALL, (LPARAM) hIconSmall);
+  
+   /* Change style back to popup, already placed... */
+-  SetWindowLongPtr(hWnd, GWL_STYLE, WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
++    SetWindowLongPtr(hWnd, GWL_STYLE,
++                     WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+   SetWindowPos (hWnd, 0, 0, 0, 0, 0,
+-		SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
++                 SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE |
++                 SWP_NOACTIVATE);
+ 
+   /* Adjust the X window to match the window placement we actually got... */
+   winAdjustXWindow (pWin, hWnd);
+@@ -611,8 +606,8 @@ winCreateWindowsWindow (WindowPtr pWin)
+   (*pScreenPriv->pwinFinishCreateWindowsWindow) (pWin);
+ }
+ 
+-
+ Bool winInDestroyWindowsWindow = FALSE;
++
+ /*
+  * winDestroyWindowsWindow - Destroy a Windows window associated
+  * with an X window
+@@ -621,12 +616,14 @@ static void
+ winDestroyWindowsWindow (WindowPtr pWin)
+ {
+   MSG			msg;
++
+   winWindowPriv(pWin);
+   BOOL			oldstate = winInDestroyWindowsWindow;
+   HICON hIcon;
+   HICON hIconSm;
+ 
+-  winDebug("winDestroyWindowsWindow - pWin:%08x XID:0x%x \n", pWin, pWin->drawable.id);
++    winDebug("winDestroyWindowsWindow - pWin:%08x XID:0x%x \n", pWin,
++             pWin->drawable.id);
+ 
+   /* Bail out if the Windows window handle is invalid */
+   if (pWinPriv->hWnd == NULL)
+@@ -654,10 +651,8 @@ winDestroyWindowsWindow (WindowPtr pWin)
+ #endif
+ 
+   /* Process all messages on our queue */
+-  while (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
+-    {
+-      if (g_hDlgDepthChange == 0 || !IsDialogMessage (g_hDlgDepthChange, &msg))
+-	{
++    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
++        if (g_hDlgDepthChange == 0 || !IsDialogMessage(g_hDlgDepthChange, &msg)) {
+ 	  DispatchMessage (&msg);
+ 	}
+     }
+@@ -667,7 +662,6 @@ winDestroyWindowsWindow (WindowPtr pWin)
+   winDebug("winDestroyWindowsWindow - done\n");
+ }
+ 
+-
+ /*
+  * winUpdateWindowsWindow - Redisplay/redraw a Windows window
+  * associated with an X window
+@@ -684,13 +678,9 @@ winUpdateWindowsWindow (WindowPtr pWin)
+ #endif
+ 
+   /* Check if the Windows window's parents have been destroyed */
+-  if (pWin->parent != NULL
+-      && pWin->parent->parent == NULL
+-      && pWin->mapped)
+-    {
++    if (pWin->parent != NULL && pWin->parent->parent == NULL && pWin->mapped) {
+       /* Create the Windows window if it has been destroyed */
+-      if (hWnd == NULL)
+-	{
++        if (hWnd == NULL) {
+ 	  winCreateWindowsWindow (pWin);
+ 	  assert (pWinPriv->hWnd != NULL);
+ 	}
+@@ -702,8 +692,7 @@ winUpdateWindowsWindow (WindowPtr pWin)
+       /* Send first paint message */
+       UpdateWindow (pWinPriv->hWnd);
+     }
+-  else if (hWnd != NULL)
+-    {
++    else if (hWnd != NULL) {
+       /* Destroy the Windows window if its parents are destroyed */
+       winDestroyWindowsWindow (pWin);
+       assert (pWinPriv->hWnd == NULL);
+@@ -714,7 +703,6 @@ winUpdateWindowsWindow (WindowPtr pWin)
+ #endif
+ }
+ 
+-
+ /*
+  * winGetWindowID - 
+  */
+@@ -735,7 +723,6 @@ winGetWindowID (WindowPtr pWin)
+   return wi.id;
+ }
+ 
+-
+ /*
+  * winFindWindow - 
+  */
+@@ -745,13 +732,11 @@ winFindWindow (pointer value, XID id, pointer cdata)
+ {
+   WindowIDPairPtr	wi = (WindowIDPairPtr)cdata;
+ 
+-  if (value == wi->value)
+-    {
++    if (value == wi->value) {
+       wi->id = id;
+     }
+ }
+ 
+-
+ /*
+  * winReorderWindowsMultiWindow - 
+  */
+@@ -771,8 +756,7 @@ winReorderWindowsMultiWindow (void)
+   winTrace ("winReorderWindowsMultiWindow\n");
+ #endif
+ 
+-  if (fRestacking)
+-    {
++    if (fRestacking) {
+       /* It is a recusive call so immediately exit */
+ #if CYGWINDOWING_DEBUG
+       ErrorF ("winReorderWindowsMultiWindow - "
+@@ -784,27 +768,22 @@ winReorderWindowsMultiWindow (void)
+ 
+   /* Loop through top level Window windows, descending in Z order */
+   for ( hwnd = GetTopWindow (NULL);
+-	hwnd;
+-	hwnd = GetNextWindow (hwnd, GW_HWNDNEXT) )
+-    {
++         hwnd; hwnd = GetNextWindow(hwnd, GW_HWNDNEXT)) {
+       /* Don't take care of other Cygwin/X process's windows */
+       GetWindowThreadProcessId (hwnd, &dwWindowProcessID);
+ 
+       if ( GetProp (hwnd, WIN_WINDOW_PROP)
+ 	   && (dwWindowProcessID == dwCurrentProcessID)
+-	   && !IsIconic (hwnd) ) /* ignore minimized windows */
+-	{
++            && !IsIconic(hwnd)) {       /* ignore minimized windows */
+ 	  pWinSib = pWin;
+ 	  pWin = GetProp (hwnd, WIN_WINDOW_PROP);
+ 	      
+-	  if (!pWinSib)
+-	    { /* 1st window - raise to the top */
++            if (!pWinSib) {     /* 1st window - raise to the top */
+ 	      vlist[0] = Above;
+ 		  
+ 	      ConfigureWindow (pWin, CWStackMode, vlist, wClient(pWin));
+ 	    }
+-	  else
+-	    { /* 2nd or deeper windows - just below the previous one */
++            else {              /* 2nd or deeper windows - just below the previous one */
+ 	      vlist[0] = winGetWindowID (pWinSib);
+ 	      vlist[1] = Below;
+ 
+@@ -817,7 +796,6 @@ winReorderWindowsMultiWindow (void)
+   fRestacking = FALSE;
+ }
+ 
+-
+ /*
+  * winMinimizeWindow - Minimize in response to WM_CHANGE_STATE
+  */
+@@ -827,6 +805,7 @@ winMinimizeWindow (Window id)
+ {
+   WindowPtr		pWin;
+   winPrivWinPtr	pWinPriv;
++
+ #ifdef XWIN_MULTIWINDOWEXTWM
+   win32RootlessWindowPtr pRLWinPriv;
+ #endif
+@@ -839,21 +818,23 @@ winMinimizeWindow (Window id)
+   ErrorF ("winMinimizeWindow\n");
+ #endif
+ 
+-  dixLookupResourceByType((pointer) &pWin, id, RT_WINDOW, NullClient, DixUnknownAccess);
+-  if (!pWin) 
+-  { 
++    dixLookupResourceByType((pointer) &pWin, id, RT_WINDOW, NullClient,
++                            DixUnknownAccess);
++    if (!pWin) {
+       ErrorF("%s: NULL pWin. Leaving\n", __FUNCTION__); 
+       return; 
+   }
+ 
+   pScreen = pWin->drawable.pScreen;
+-  if (pScreen) pScreenPriv = winGetScreenPriv(pScreen);
+-  if (pScreenPriv) pScreenInfo = pScreenPriv->pScreenInfo;
++    if (pScreen)
++        pScreenPriv = winGetScreenPriv(pScreen);
++    if (pScreenPriv)
++        pScreenInfo = pScreenPriv->pScreenInfo;
+ 
+ #ifdef XWIN_MULTIWINDOWEXTWM
+-  if (pScreenPriv && pScreenInfo->fInternalWM)
+-    {
+-      pRLWinPriv  = (win32RootlessWindowPtr) RootlessFrameForWindow (pWin, FALSE);
++    if (pScreenPriv && pScreenInfo->fInternalWM) {
++        pRLWinPriv =
++            (win32RootlessWindowPtr) RootlessFrameForWindow(pWin, FALSE);
+       hWnd = pRLWinPriv->hWnd;
+     }
+   else
+@@ -868,15 +849,14 @@ winMinimizeWindow (Window id)
+   ShowWindow (hWnd, SW_MINIMIZE);
+ }
+ 
+-
+ /*
+  * CopyWindow - See Porting Layer Definition - p. 39
+  */
+ void
+-winCopyWindowMultiWindow (WindowPtr pWin, DDXPointRec oldpt,
+-			  RegionPtr oldRegion)
++winCopyWindowMultiWindow(WindowPtr pWin, DDXPointRec oldpt, RegionPtr oldRegion)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGWINDOWING_DEBUG
+@@ -887,7 +867,6 @@ winCopyWindowMultiWindow (WindowPtr pWin, DDXPointRec oldpt,
+   WIN_WRAP(CopyWindow, winCopyWindowMultiWindow);
+ }
+ 
+-
+ /*
+  * MoveWindow - See Porting Layer Definition - p. 42
+  */
+@@ -896,6 +875,7 @@ winMoveWindowMultiWindow (WindowPtr pWin, int x, int y,
+ 			  WindowPtr pSib, VTKind kind)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGWINDOWING_DEBUG
+@@ -907,7 +887,6 @@ winMoveWindowMultiWindow (WindowPtr pWin, int x, int y,
+   WIN_WRAP(MoveWindow, winMoveWindowMultiWindow);
+ }
+ 
+-
+ /*
+  * ResizeWindow - See Porting Layer Definition - p. 42
+  */
+@@ -916,6 +895,7 @@ winResizeWindowMultiWindow (WindowPtr pWin, int x, int y, unsigned int w,
+ 			    unsigned int h, WindowPtr pSib)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGWINDOWING_DEBUG
+@@ -926,7 +906,6 @@ winResizeWindowMultiWindow (WindowPtr pWin, int x, int y, unsigned int w,
+   WIN_WRAP(ResizeWindow, winResizeWindowMultiWindow);
+ }
+ 
+-
+ /*
+  * winAdjustXWindow
+  *
+@@ -954,8 +933,7 @@ winAdjustXWindow (WindowPtr pWin, HWND hwnd)
+   ErrorF ("winAdjustXWindow\n");
+ #endif
+ 
+-  if (IsIconic (hwnd))
+-    {
++    if (IsIconic(hwnd)) {
+ #if CYGWINDOWING_DEBUG
+       ErrorF ("\timmediately return because the window is iconized\n");
+ #endif
+@@ -1031,4 +1009,3 @@ winAdjustXWindow (WindowPtr pWin, HWND hwnd)
+ #undef WIDTH
+ #undef HEIGHT
+ }
+-

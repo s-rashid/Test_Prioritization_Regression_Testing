@@ -1,0 +1,78 @@
+diff --git a/hw/xfree86/fbdevhw/fbdevhwstub.c b/hw/xfree86/fbdevhw/fbdevhwstub.c
+index 191a6d3..6e0a470 100644
+--- a/hw/xfree86/fbdevhw/fbdevhwstub.c
++++ b/hw/xfree86/fbdevhw/fbdevhwstub.c
+@@ -8,7 +8,6 @@
+ 
+ /* Stubs for the static server on platforms that don't support fbdev */
+ 
+-
+ Bool
+ fbdevHWGetRec(ScrnInfoPtr pScrn)
+ {
+@@ -20,7 +19,6 @@ fbdevHWFreeRec(ScrnInfoPtr pScrn)
+ {
+ }
+ 
+-
+ Bool
+ fbdevHWProbe(struct pci_device *pPci, char *device, char **namep)
+ {
+@@ -172,25 +170,49 @@ fbdevHWSaveScreen(ScreenPtr pScreen, int mode)
+ }
+ 
+ xf86SwitchModeProc *
+-fbdevHWSwitchModeWeak(void) { return fbdevHWSwitchMode; }
++fbdevHWSwitchModeWeak(void)
++{
++    return fbdevHWSwitchMode;
++}
+ 
+ xf86AdjustFrameProc *
+-fbdevHWAdjustFrameWeak(void) { return fbdevHWAdjustFrame; }
++fbdevHWAdjustFrameWeak(void)
++{
++    return fbdevHWAdjustFrame;
++}
+ 
+ xf86EnterVTProc *
+-fbdevHWEnterVTWeak(void) { return fbdevHWEnterVT; }
++fbdevHWEnterVTWeak(void)
++{
++    return fbdevHWEnterVT;
++}
+ 
+ xf86LeaveVTProc *
+-fbdevHWLeaveVTWeak(void) { return fbdevHWLeaveVT; }
++fbdevHWLeaveVTWeak(void)
++{
++    return fbdevHWLeaveVT;
++}
+ 
+ xf86ValidModeProc *
+-fbdevHWValidModeWeak(void) { return fbdevHWValidMode; }
++fbdevHWValidModeWeak(void)
++{
++    return fbdevHWValidMode;
++}
+ 
+ xf86DPMSSetProc *
+-fbdevHWDPMSSetWeak(void) { return fbdevHWDPMSSet; }
++fbdevHWDPMSSetWeak(void)
++{
++    return fbdevHWDPMSSet;
++}
+ 
+ xf86LoadPaletteProc *
+-fbdevHWLoadPaletteWeak(void) { return fbdevHWLoadPalette; }
++fbdevHWLoadPaletteWeak(void)
++{
++    return fbdevHWLoadPalette;
++}
+ 
+ SaveScreenProcPtr
+-fbdevHWSaveScreenWeak(void) { return fbdevHWSaveScreen; }
++fbdevHWSaveScreenWeak(void)
++{
++    return fbdevHWSaveScreen;
++}

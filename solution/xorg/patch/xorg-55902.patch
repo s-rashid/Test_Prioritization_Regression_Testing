@@ -1,0 +1,30 @@
+diff --git a/include/XIstubs.h b/include/XIstubs.h
+index 6ab82df..b7ea4d1 100644
+--- a/include/XIstubs.h
++++ b/include/XIstubs.h
+@@ -27,22 +27,19 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #define XI_STUBS_H 1
+ 
+ extern _X_EXPORT int
+-SetDeviceMode (
+-	ClientPtr              /* client */,
++ SetDeviceMode(ClientPtr /* client */ ,
+ 	DeviceIntPtr           /* dev */,
+ 	int                    /* mode */);
+ 
+ extern _X_EXPORT int
+-SetDeviceValuators (
+-	ClientPtr              /* client */,
++ SetDeviceValuators(ClientPtr /* client */ ,
+ 	DeviceIntPtr           /* dev */,
+ 	int *                  /* valuators */,
+ 	int                    /* first_valuator */,
+ 	int                    /* num_valuators */);
+ 
+ extern _X_EXPORT int
+-ChangeDeviceControl (
+-	ClientPtr             /* client */,
++ ChangeDeviceControl(ClientPtr /* client */ ,
+ 	DeviceIntPtr          /* dev */,
+ 	xDeviceCtl *          /* control */);
+ 

@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/common/xf86VGAarbiter.c b/hw/xfree86/common/xf86VGAarbiter.c
+index 7b4aa34..f8a2882 100644
+--- a/hw/xfree86/common/xf86VGAarbiter.c
++++ b/hw/xfree86/common/xf86VGAarbiter.c
+@@ -31,6 +31,8 @@
+ #include "xorg-config.h"
+ 
+ #include "xf86VGAarbiter.h"
++
++#ifdef HAVE_PCI_DEVICE_VGAARB_INIT
+ #include "xf86VGAarbiterPriv.h"
+ #include "xf86Bus.h"
+ #include "pciaccess.h"
+@@ -44,8 +46,6 @@
+ #define DPRINT(x)
+ #endif
+ 
+-#ifdef HAVE_PCI_DEVICE_VGAARB_INIT
+-
+ static GCFuncs VGAarbiterGCFuncs = {
+     VGAarbiterValidateGC, VGAarbiterChangeGC, VGAarbiterCopyGC,
+     VGAarbiterDestroyGC, VGAarbiterChangeClip, VGAarbiterDestroyClip,

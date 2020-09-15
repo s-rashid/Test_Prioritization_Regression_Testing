@@ -1,0 +1,13 @@
+diff --git a/Xi/ungrdevb.c b/Xi/ungrdevb.c
+index 6280248..0ba395c 100644
+--- a/Xi/ungrdevb.c
++++ b/Xi/ungrdevb.c
+@@ -134,7 +134,7 @@ ProcXUngrabDeviceButton(ClientPtr client)
+     temporaryGrab->device = dev;
+     temporaryGrab->window = pWin;
+     temporaryGrab->type = DeviceButtonPress;
+-    temporaryGrab->grabtype = GRABTYPE_XI;
++    temporaryGrab->grabtype = XI;
+     temporaryGrab->modifierDevice = mdev;
+     temporaryGrab->modifiersDetail.exact = stuff->modifiers;
+     temporaryGrab->modifiersDetail.pMask = NULL;

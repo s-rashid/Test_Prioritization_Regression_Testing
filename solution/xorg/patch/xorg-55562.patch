@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/bus/Pci.h b/hw/xfree86/os-support/bus/Pci.h
+index 5709bd8..776bb63 100644
+--- a/hw/xfree86/os-support/bus/Pci.h
++++ b/hw/xfree86/os-support/bus/Pci.h
+@@ -95,7 +95,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /*
+  * This file has the private Pci definitions.  The public ones are imported
+  * from xf86Pci.h.  Drivers should not use this file.

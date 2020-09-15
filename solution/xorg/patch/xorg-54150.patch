@@ -1,0 +1,16 @@
+diff --git a/include/dix.h b/include/dix.h
+index cfbfa1f..9b9dc4b 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -400,6 +400,11 @@ extern int DeliverDeviceEvents(
+     WindowPtr /* stopAt */,
+     DeviceIntPtr /* dev */);
+ 
++extern int DeliverOneGrabbedEvent(
++    InternalEvent* /* event*/,
++    DeviceIntPtr /* dev */,
++    enum InputLevel /* level */);
++
+ extern void InitializeSprite(
+     DeviceIntPtr /* pDev */,
+     WindowPtr    /* pWin */);

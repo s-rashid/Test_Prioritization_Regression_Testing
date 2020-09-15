@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 5cda970..b1acd3e 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -183,10 +183,8 @@
+ #include "fb.h"
+ #include "rootless.h"
+ 
+-#ifdef RENDER
+ #include "mipict.h"
+ #include "picturestr.h"
+-#endif
+ 
+ #ifdef RANDR
+ #include "randrstr.h"

@@ -1,0 +1,15 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index c5fb700..4b7b07e 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -56,9 +56,7 @@ Equipment Corporation.
+ #include "picturestr.h"
+ #endif
+ #include "modinit.h"
+-
+-#define SERVER_PANORAMIX_MAJOR_VERSION	1
+-#define SERVER_PANORAMIX_MINOR_VERSION	1
++#include "protocol-versions.h"
+ 
+ #ifdef GLXPROXY
+ extern VisualPtr glxMatchVisual(ScreenPtr pScreen,

@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/xaa/xaalocal.h b/hw/xfree86/xaa/xaalocal.h
+index a9a70da..0780fb1 100644
+--- a/hw/xfree86/xaa/xaalocal.h
++++ b/hw/xfree86/xaa/xaalocal.h
+@@ -2,6 +2,10 @@
+ #ifndef _XAALOCAL_H
+ #define _XAALOCAL_H
+ 
++#ifdef HAVE_XORG_CONFIG_H
++#include <xorg-config.h>
++#endif
++
+ /* This file is very unorganized ! */
+ 
+ 

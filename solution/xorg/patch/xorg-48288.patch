@@ -1,0 +1,12 @@
+diff --git a/damageext/damageextint.h b/damageext/damageextint.h
+index 45c5ff9..d40ba3e 100644
+--- a/damageext/damageextint.h
++++ b/damageext/damageextint.h
+@@ -55,6 +55,7 @@ typedef struct _DamageExt {
+     DamageReportLevel	level;
+     ClientPtr		pClient;
+     XID			id;
++    XID			drawable;
+ } DamageExtRec, *DamageExtPtr;
+ 
+ #define VERIFY_DAMAGEEXT(pDamageExt, rid, client, mode) { \

@@ -1,0 +1,15 @@
+diff --git a/mi/mibstore.c b/mi/mibstore.c
+index 262b494..827b9b2 100644
+--- a/mi/mibstore.c
++++ b/mi/mibstore.c
+@@ -40,10 +40,4 @@
+ void
+ miInitializeBackingStore (ScreenPtr pScreen)
+ {
+-    pScreen->SaveDoomedAreas = NULL;
+-    pScreen->RestoreAreas = NULL;
+-    pScreen->ExposeCopy = NULL;
+-    pScreen->TranslateBackingStore = NULL;
+-    pScreen->ClearBackingStore = NULL;
+-    pScreen->DrawGuarantee = NULL;
+ }

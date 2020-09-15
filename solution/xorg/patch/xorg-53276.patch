@@ -1,0 +1,13 @@
+diff --git a/mi/mi.h b/mi/mi.h
+index c186940..24d1af9 100644
+--- a/mi/mi.h
++++ b/mi/mi.h
+@@ -206,7 +206,7 @@ extern _X_EXPORT void mieqEnqueue(
+ extern _X_EXPORT void mieqSwitchScreen(
+     DeviceIntPtr /* pDev */,
+     ScreenPtr /*pScreen*/,
+-    Bool /*fromDIX*/
++    Bool /*set_dequeue_screen*/
+ );
+ 
+ extern _X_EXPORT void mieqProcessDeviceEvent(

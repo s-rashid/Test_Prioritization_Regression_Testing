@@ -1,0 +1,35 @@
+diff --git a/Xext/bigreq.c b/Xext/bigreq.c
+index ce3734e..a540bcb 100644
+--- a/Xext/bigreq.c
++++ b/Xext/bigreq.c
+@@ -40,18 +40,8 @@ from The Open Group.
+ #include "opaque.h"
+ #include "modinit.h"
+ 
+-static DISPATCH_PROC(ProcBigReqDispatch);
+-
+ void BigReqExtensionInit(INITARGS);
+ 
+-void
+-BigReqExtensionInit(INITARGS)
+-{
+-    AddExtension(XBigReqExtensionName, 0, 0,
+-		 ProcBigReqDispatch, ProcBigReqDispatch,
+-		 NULL, StandardMinorOpcode);
+-}
+-
+ static int
+ ProcBigReqDispatch (ClientPtr client)
+ {
+@@ -78,3 +68,11 @@ ProcBigReqDispatch (ClientPtr client)
+     WriteToClient(client, sizeof(xBigReqEnableReply), (char *)&rep);
+     return Success;
+ }
++
++void
++BigReqExtensionInit(INITARGS)
++{
++    AddExtension(XBigReqExtensionName, 0, 0,
++		 ProcBigReqDispatch, ProcBigReqDispatch,
++		 NULL, StandardMinorOpcode);
++}

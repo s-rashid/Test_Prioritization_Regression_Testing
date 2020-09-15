@@ -1,0 +1,12 @@
+diff --git a/glx/extension_string.h b/glx/extension_string.h
+index 98e91bc..912534a 100644
+--- a/glx/extension_string.h
++++ b/glx/extension_string.h
+@@ -50,6 +50,7 @@ enum {
+    SGIX_fbconfig_bit,
+    SGIX_pbuffer_bit,
+    SGIX_visual_select_group_bit,
++   INTEL_swap_event_bit,
+    __NUM_GLX_EXTS,
+ };
+ 

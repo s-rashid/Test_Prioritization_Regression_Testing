@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/common/xf86pciBus.h b/hw/xfree86/common/xf86pciBus.h
+index 1cbfa38..ec9a164 100644
+--- a/hw/xfree86/common/xf86pciBus.h
++++ b/hw/xfree86/common/xf86pciBus.h
+@@ -48,9 +48,6 @@ typedef struct {
+ 
+ typedef struct {
+     pciArg arg;
+-    xf86AccessRec ioAccess;
+-    xf86AccessRec io_memAccess;
+-    xf86AccessRec memAccess;
+     pciSave save;
+     pciSave restore;
+     Bool ctrl;
+@@ -69,6 +66,5 @@ void PciStateEnter(void);
+ void PciBusStateEnter(void);
+ void PciStateLeave(void);
+ void PciBusStateLeave(void);
+-void pciConvertRange2Host(int entityIndex, resRange *pRange);
+ 
+ #endif /* _XF86_PCI_BUS_H */

@@ -1,0 +1,31 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 4cab20c..cea17ee 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -792,9 +792,6 @@ InitOutput(ScreenInfo *pScreenInfo, int argc, char **argv)
+     xf86OSPMClose = xf86OSPMOpen();
+ #endif
+ 
+-    /* Initialise the resource broker */
+-    xf86ResourceBrokerInit();
+-
+     /* Load all modules specified explicitly in the config file */
+     if ((modulelist = xf86ModulelistFromConfig(&optionlist))) {
+       xf86LoadModules(modulelist, optionlist);
+@@ -1371,16 +1368,12 @@ ddxGiveUp(void)
+     xf86OSPMClose = NULL;
+ #endif
+ 
+-    xf86AccessLeaveState();
+-
+     for (i = 0; i < xf86NumScreens; i++) {
+ 	/*
+ 	 * zero all access functions to
+ 	 * trap calls when switched away.
+ 	 */
+ 	xf86Screens[i]->vtSema = FALSE;
+-	xf86Screens[i]->access = NULL;
+-	xf86Screens[i]->busAccess = NULL;
+     }
+ 
+ #ifdef XFreeXDGA

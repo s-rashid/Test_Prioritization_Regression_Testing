@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/ramdac/xf86Cursor.h b/hw/xfree86/ramdac/xf86Cursor.h
+index 3f3618b..5658e7b 100644
+--- a/hw/xfree86/ramdac/xf86Cursor.h
++++ b/hw/xfree86/ramdac/xf86Cursor.h
+@@ -25,7 +25,8 @@ typedef struct _xf86CursorInfoRec {
+ 
+ } xf86CursorInfoRec, *xf86CursorInfoPtr;
+ 
+-extern _X_EXPORT Bool xf86InitCursor(ScreenPtr pScreen, xf86CursorInfoPtr infoPtr);
++extern _X_EXPORT Bool xf86InitCursor(ScreenPtr pScreen,
++                                     xf86CursorInfoPtr infoPtr);
+ extern _X_EXPORT xf86CursorInfoPtr xf86CreateCursorInfoRec(void);
+ extern _X_EXPORT void xf86DestroyCursorInfoRec(xf86CursorInfoPtr);
+ extern _X_EXPORT void xf86ForceHWCursor (ScreenPtr pScreen, Bool on);

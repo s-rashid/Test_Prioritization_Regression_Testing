@@ -1,0 +1,16 @@
+diff --git a/Xi/closedev.c b/Xi/closedev.c
+index 1064be6..54ada55 100644
+--- a/Xi/closedev.c
++++ b/Xi/closedev.c
+@@ -73,10 +73,8 @@ SOFTWARE.
+ int
+ SProcXCloseDevice(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xCloseDeviceReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xCloseDeviceReq);
+     return (ProcXCloseDevice(client));
+ }

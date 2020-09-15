@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Xinput.h b/hw/xfree86/common/xf86Xinput.h
+index 955d2aa..7d3f3e2 100644
+--- a/hw/xfree86/common/xf86Xinput.h
++++ b/hw/xfree86/common/xf86Xinput.h
+@@ -71,10 +71,6 @@
+ 		return;								\
+ 	}
+ 
+-/* Stupid API backwards-compatibility. */
+-#define TS_Raw 60
+-#define TS_Scaled 61
+-
+ /* This holds the input driver entry and module information. */
+ typedef struct _InputDriverRec {
+     int			    driverVersion;

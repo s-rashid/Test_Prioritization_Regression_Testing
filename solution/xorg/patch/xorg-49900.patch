@@ -1,0 +1,15 @@
+diff --git a/xkb/xkbInit.c b/xkb/xkbInit.c
+index bd58243..fbf8f14 100644
+--- a/xkb/xkbInit.c
++++ b/xkb/xkbInit.c
+@@ -635,10 +635,8 @@ unwind_key:
+ void
+ XkbFreeInfo(XkbSrvInfoPtr xkbi)
+ {
+-    if (xkbi->radioGroups) {
+ 	free(xkbi->radioGroups);
+ 	xkbi->radioGroups= NULL;
+-    }
+     if (xkbi->mouseKeyTimer) {
+ 	TimerFree(xkbi->mouseKeyTimer);
+ 	xkbi->mouseKeyTimer= NULL;

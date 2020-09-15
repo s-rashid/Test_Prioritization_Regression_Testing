@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/mach-startup/bundle-main.c b/hw/xquartz/mach-startup/bundle-main.c
+index 7531a0e..e887c46 100644
+--- a/hw/xquartz/mach-startup/bundle-main.c
++++ b/hw/xquartz/mach-startup/bundle-main.c
+@@ -449,7 +449,7 @@ static void ensure_path(const char *dir) {
+     }
+ }
+ 
+-static void setup_env() {
++static void setup_env(void) {
+     char *temp;
+     const char *pds = NULL;
+     const char *disp = getenv("DISPLAY");

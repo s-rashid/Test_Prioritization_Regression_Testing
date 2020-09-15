@@ -1,0 +1,14 @@
+diff --git a/test/xi2/protocol-eventconvert.c b/test/xi2/protocol-eventconvert.c
+index 66686cb..f20a10a 100644
+--- a/test/xi2/protocol-eventconvert.c
++++ b/test/xi2/protocol-eventconvert.c
+@@ -736,6 +736,9 @@ static void test_values_XIDeviceChangedEvent(DeviceChangedEvent *in,
+ 
+                 }
+                 break;
++            default:
++                g_error("Invalid class type.\n");
++                break;
+         }
+ 
+         ptr += any->length * 4;

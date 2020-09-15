@@ -1,0 +1,72 @@
+diff --git a/randr/rrxinerama.c b/randr/rrxinerama.c
+index 6d45190..aa8a61e 100644
+--- a/randr/rrxinerama.c
++++ b/randr/rrxinerama.c
+@@ -125,8 +125,7 @@ ProcRRXineramaGetState(ClientPtr client)
+ 
+     pScreen = pWin->drawable.pScreen;
+     pScrPriv = rrGetScrPriv(pScreen);
+-    if (pScrPriv)
+-    {
++    if (pScrPriv) {
+ 	/* XXX do we need more than this? */
+ 	active = TRUE;
+     }
+@@ -157,8 +156,7 @@ RRXineramaScreenCount (ScreenPtr pScreen)
+     int	i, n;
+     
+     n = 0;
+-    if (rrGetScrPriv (pScreen))
+-    {
++    if (rrGetScrPriv(pScreen)) {
+ 	rrScrPriv(pScreen);
+ 	for (i = 0; i < pScrPriv->numCrtcs; i++)
+ 	    if (RRXineramaCrtcActive (pScrPriv->crtcs[i]))
+@@ -262,8 +260,7 @@ RRXineramaWriteCrtc(ClientPtr client, RRCrtcPtr crtc)
+ {
+     xXineramaScreenInfo scratch;
+ 
+-    if (RRXineramaCrtcActive (crtc))
+-    {
++    if (RRXineramaCrtcActive(crtc)) {
+ 	ScreenPtr pScreen = crtc->pScreen;
+ 	rrScrPrivPtr pScrPriv = rrGetScrPriv(pScreen);
+ 	BoxRec panned_area;
+@@ -271,13 +268,16 @@ RRXineramaWriteCrtc(ClientPtr client, RRCrtcPtr crtc)
+ 	/* Check to see if crtc is panned and return the full area when applicable. */
+ 	if (pScrPriv && pScrPriv->rrGetPanning &&
+ 	    pScrPriv->rrGetPanning (pScreen, crtc, &panned_area, NULL, NULL) &&
+-	    (panned_area.x2 > panned_area.x1) && (panned_area.y2 > panned_area.y1)) {
++            (panned_area.x2 > panned_area.x1) &&
++            (panned_area.y2 > panned_area.y1)) {
+ 	    scratch.x_org  = panned_area.x1;
+ 	    scratch.y_org  = panned_area.y1;
+ 	    scratch.width  = panned_area.x2  - panned_area.x1;
+ 	    scratch.height = panned_area.y2  - panned_area.y1;
+-	} else {
++        }
++        else {
+ 	    int width, height;
++
+ 	    RRCrtcGetScanoutSize (crtc, &width, &height);
+ 	    scratch.x_org  = crtc->x;
+ 	    scratch.y_org  = crtc->y;
+@@ -328,8 +328,7 @@ ProcRRXineramaQueryScreens(ClientPtr client)
+ 
+ 	for(i = 0; i < pScrPriv->numCrtcs; i++) {
+ 	    if (has_primary &&
+-		pScrPriv->primaryOutput->crtc == pScrPriv->crtcs[i])
+-	    {
++                pScrPriv->primaryOutput->crtc == pScrPriv->crtcs[i]) {
+ 		has_primary = 0;
+ 		continue;
+ 	    }
+@@ -460,7 +459,5 @@ RRXineramaExtensionInit(void)
+ 
+     (void) AddExtension(PANORAMIX_PROTOCOL_NAME, 0,0,
+ 			ProcRRXineramaDispatch,
+-			SProcRRXineramaDispatch,
+-			NULL,
+-			StandardMinorOpcode);
++                        SProcRRXineramaDispatch, NULL, StandardMinorOpcode);
+ }

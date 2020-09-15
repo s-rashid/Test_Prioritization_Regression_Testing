@@ -1,0 +1,19 @@
+diff --git a/hw/dmx/dmx_glxvisuals.h b/hw/dmx/dmx_glxvisuals.h
+index 477e923..54c3b44 100644
+--- a/hw/dmx/dmx_glxvisuals.h
++++ b/hw/dmx/dmx_glxvisuals.h
+@@ -40,12 +40,10 @@ typedef struct {
+ } dmxGlxVisualPrivate;
+ 
+ __GLXvisualConfig *GetGLXVisualConfigs(Display *dpy,
+-				       int screen,
+-				       int *nconfigs);
++                                       int screen, int *nconfigs);
+ 
+ __GLXFBConfig *GetGLXFBConfigs(Display *dpy,
+-			       int glxMajorOpcode,
+-			       int *nconfigs);
++                               int glxMajorOpcode, int *nconfigs);
+ 
+ __GLXvisualConfig *GetGLXVisualConfigsFromFBConfigs(__GLXFBConfig *fbconfigs, 
+ 						    int nfbconfigs, 

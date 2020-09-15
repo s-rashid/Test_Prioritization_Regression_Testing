@@ -1,0 +1,13 @@
+diff --git a/Xi/chgprop.c b/Xi/chgprop.c
+index 3497987..84fb51d 100644
+--- a/Xi/chgprop.c
++++ b/Xi/chgprop.c
+@@ -116,7 +116,7 @@ ProcXChangeDeviceDontPropagateList(ClientPtr client)
+         return BadMode;
+     }
+ 
+-    if ((rc = CreateMaskFromList(client, (XEventClass *) & stuff[1],
++    if ((rc = CreateMaskFromList(client, (XEventClass *) &stuff[1],
+                                  stuff->count, tmp, NULL,
+                                  X_ChangeDeviceDontPropagateList)) != Success)
+         return rc;

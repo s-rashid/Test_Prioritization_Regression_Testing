@@ -1,0 +1,100 @@
+diff --git a/Xi/xiwarppointer.c b/Xi/xiwarppointer.c
+index 11ab241..3f051f7 100644
+--- a/Xi/xiwarppointer.c
++++ b/Xi/xiwarppointer.c
+@@ -45,7 +45,6 @@
+ #include "exglobals.h"
+ #include "mipointer.h" /* for miPointerUpdateSprite */
+ 
+-
+ #include "xiwarppointer.h"
+ /***********************************************************************
+  *
+@@ -89,24 +88,20 @@ ProcXIWarpPointer(ClientPtr client)
+ 
+     rc = dixLookupDevice(&pDev, stuff->deviceid, client, DixWriteAccess);
+ 
+-    if (rc != Success)
+-    {
++    if (rc != Success) {
+         client->errorValue = stuff->deviceid;
+         return rc;
+     }
+ 
+     if ((!IsMaster(pDev) && !IsFloating(pDev)) ||
+-        (IsMaster(pDev) && !IsPointerDevice(pDev)))
+-    {
++        (IsMaster(pDev) && !IsPointerDevice(pDev))) {
+         client->errorValue = stuff->deviceid;
+         return BadDevice;
+     }
+ 
+-    if (stuff->dst_win != None)
+-    {
++    if (stuff->dst_win != None) {
+         rc = dixLookupWindow(&dest, stuff->dst_win, client, DixGetAttrAccess);
+-        if (rc != Success)
+-        {
++        if (rc != Success) {
+             client->errorValue = stuff->dst_win;
+             return rc;
+         }
+@@ -121,14 +116,12 @@ ProcXIWarpPointer(ClientPtr client)
+     dst_x = stuff->dst_x / (double)(1 << 16);
+     dst_y = stuff->dst_y / (double)(1 << 16);
+ 
+-    if (stuff->src_win != None)
+-    {
++    if (stuff->src_win != None) {
+         int winX, winY;
+         WindowPtr src;
+ 
+         rc = dixLookupWindow(&src, stuff->src_win, client, DixGetAttrAccess);
+-        if (rc != Success)
+-        {
++        if (rc != Success) {
+             client->errorValue = stuff->src_win;
+             return rc;
+         }
+@@ -146,12 +139,12 @@ ProcXIWarpPointer(ClientPtr client)
+             return Success;
+     }
+ 
+-    if (dest)
+-    {
++    if (dest) {
+         x = dest->drawable.x;
+         y = dest->drawable.y;
+         newScreen = dest->drawable.pScreen;
+-    } else
++    }
++    else
+         newScreen = pSprite->hotPhys.pScreen;
+ 
+     x += dst_x;
+@@ -167,8 +160,7 @@ ProcXIWarpPointer(ClientPtr client)
+     else if (y > newScreen->height)
+         y = newScreen->height - 1;
+ 
+-    if (newScreen == pSprite->hotPhys.pScreen)
+-    {
++    if (newScreen == pSprite->hotPhys.pScreen) {
+         if (x < pSprite->physLimits.x1)
+             x = pSprite->physLimits.x1;
+         else if (x >= pSprite->physLimits.x2)
+@@ -182,8 +174,8 @@ ProcXIWarpPointer(ClientPtr client)
+         if (pSprite->hotShape)
+             ConfineToShape(pDev, pSprite->hotShape, &x, &y);
+         (*newScreen->SetCursorPosition)(pDev, newScreen, x, y, TRUE);
+-    } else if (!PointerConfinedToScreen(pDev))
+-    {
++    }
++    else if (!PointerConfinedToScreen(pDev)) {
+         NewCurrentScreen(pDev, newScreen, x, y);
+     }
+ 
+@@ -196,4 +188,3 @@ ProcXIWarpPointer(ClientPtr client)
+        here though. */
+     return Success;
+ }
+-

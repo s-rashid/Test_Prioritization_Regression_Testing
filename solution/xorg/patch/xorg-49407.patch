@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxbackend.c b/hw/dmx/input/dmxbackend.c
+index 55615cf..e917a5c 100644
+--- a/hw/dmx/input/dmxbackend.c
++++ b/hw/dmx/input/dmxbackend.c
+@@ -114,7 +114,7 @@ pointer dmxBackendCreatePrivate(DeviceIntPtr pDevice)
+  * #dmxBackendCreatePrivate. */
+ void dmxBackendDestroyPrivate(pointer private)
+ {
+-    if (private) free(private);
++    free(private);
+ }
+ 
+ static void *dmxBackendTestScreen(DMXScreenInfo *dmxScreen, void *closure)

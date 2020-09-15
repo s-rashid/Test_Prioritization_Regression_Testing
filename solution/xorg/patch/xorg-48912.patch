@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxmotion.c b/hw/dmx/input/dmxmotion.c
+index 73580a2..a86b62e 100644
+--- a/hw/dmx/input/dmxmotion.c
++++ b/hw/dmx/input/dmxmotion.c
+@@ -108,7 +108,7 @@ void dmxPointerPutMotionEvent(DeviceIntPtr pDevice,
+     int           i;
+ 
+     if (!dmxLocal->history) {
+-        dmxLocal->history   = xalloc(sizeof(*dmxLocal->history)
++        dmxLocal->history   = malloc(sizeof(*dmxLocal->history)
+                                      * (numAxes + 1)
+                                      * DMX_MOTION_SIZE);
+         dmxLocal->head      = 0;

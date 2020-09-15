@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/ephyr/ephyrdriext.h b/hw/kdrive/ephyr/ephyrdriext.h
+index 01c9421..5808576 100644
+--- a/hw/kdrive/ephyr/ephyrdriext.h
++++ b/hw/kdrive/ephyr/ephyrdriext.h
+@@ -35,8 +35,6 @@ typedef struct {
+ 
+ Bool ephyrDRIExtensionInit (ScreenPtr a_screen) ;
+ 
+-Bool findWindowPairFromRemote (int a_remote,
+-			       EphyrWindowPair **a_pair);
++Bool findWindowPairFromRemote(int a_remote, EphyrWindowPair ** a_pair);
+ 
+ #endif /*__EPHYRDRIEXT_H__*/
+-

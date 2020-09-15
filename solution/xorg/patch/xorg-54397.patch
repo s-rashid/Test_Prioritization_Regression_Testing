@@ -1,0 +1,22 @@
+diff --git a/hw/kdrive/linux/ps2.c b/hw/kdrive/linux/ps2.c
+index 465b963..b62d769 100644
+--- a/hw/kdrive/linux/ps2.c
++++ b/hw/kdrive/linux/ps2.c
+@@ -159,7 +159,7 @@ Ps2Enable (KdPointerInfo *pi)
+         return BadAlloc;
+     }
+ 
+-    pi->driverPrivate = (void *)fd;
++    pi->driverPrivate = (void *)(intptr_t)fd;
+ 
+     return Success;
+ }
+@@ -168,7 +168,7 @@ Ps2Enable (KdPointerInfo *pi)
+ static void
+ Ps2Disable (KdPointerInfo *pi)
+ {
+-    KdUnregisterFd (pi, (int)pi->driverPrivate, TRUE);
++    KdUnregisterFd (pi, (int)(intptr_t)pi->driverPrivate, TRUE);
+ }
+ 
+ static void

@@ -1,0 +1,107 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 86db811..841e805 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ********************************************************/
+ 
+-
+ #ifndef INPUTSTRUCT_H
+ #define INPUTSTRUCT_H
+ 
+@@ -427,7 +425,6 @@ typedef struct _LedFeedbackClassRec {
+     struct _XkbSrvLedInfo *xkb_sli;
+ } LedFeedbackClassRec;
+ 
+-
+ typedef struct _ClassesRec {
+     KeyClassPtr		key;
+     ValuatorClassPtr	valuator;
+@@ -443,18 +440,15 @@ typedef struct _ClassesRec {
+     LedFeedbackPtr	leds;
+ } ClassesRec;
+ 
+-
+ /* Device properties */
+-typedef struct _XIPropertyValue
+-{
++typedef struct _XIPropertyValue {
+     Atom                type;           /* ignored by server */
+     short               format;         /* format of data for swapping - 8,16,32 */
+     long                size;           /* size of data in (format/8) bytes */
+     pointer             data;           /* private to client */
+ } XIPropertyValueRec;
+ 
+-typedef struct _XIProperty
+-{
++typedef struct _XIProperty {
+     struct _XIProperty   *next;
+     Atom                  propertyName;
+     BOOL                  deletable;    /* clients can delete this prop? */
+@@ -464,19 +458,13 @@ typedef struct _XIProperty
+ typedef XIPropertyRec      *XIPropertyPtr;
+ typedef XIPropertyValueRec *XIPropertyValuePtr;
+ 
+-
+-typedef struct _XIPropertyHandler
+-{
++typedef struct _XIPropertyHandler {
+     struct _XIPropertyHandler* next;
+     long id;
+     int (*SetProperty) (DeviceIntPtr dev,
+-                        Atom property,
+-                        XIPropertyValuePtr prop,
+-                        BOOL checkonly);
+-    int (*GetProperty) (DeviceIntPtr dev,
+-                        Atom property);
+-    int (*DeleteProperty) (DeviceIntPtr dev,
+-                           Atom property);
++                        Atom property, XIPropertyValuePtr prop, BOOL checkonly);
++    int (*GetProperty) (DeviceIntPtr dev, Atom property);
++    int (*DeleteProperty) (DeviceIntPtr dev, Atom property);
+ } XIPropertyHandler, *XIPropertyHandlerPtr;
+ 
+ /* states for devices */
+@@ -491,7 +479,6 @@ typedef struct _XIPropertyHandler
+ #define FROZEN_WITH_EVENT	6
+ #define THAW_OTHERS		7
+ 
+-
+ typedef struct _GrabInfoRec {
+     TimeStamp	    grabTime;
+     Bool            fromPassiveGrab;    /* true if from passive grab */
+@@ -499,13 +486,11 @@ typedef struct _GrabInfoRec {
+     GrabPtr         activeGrab;
+     GrabPtr         grab;
+     CARD8           activatingKey;
+-    void	    (*ActivateGrab) (
+-                    DeviceIntPtr /*device*/,
++    void (*ActivateGrab) (DeviceIntPtr /*device */ ,
+                     GrabPtr /*grab*/,
+                     TimeStamp /*time*/,
+                     Bool /*autoGrab*/);
+-    void	    (*DeactivateGrab)(
+-                    DeviceIntPtr /*device*/);
++    void (*DeactivateGrab) (DeviceIntPtr /*device */ );
+     struct {
+ 	Bool		frozen;
+ 	int		state;
+@@ -664,7 +649,8 @@ extern EventSyncInfoRec syncEvents;
+  * Given a sprite, returns the window at the bottom of the trace (i.e. the
+  * furthest window from the root).
+  */
+-static inline WindowPtr DeepestSpriteWin(SpritePtr sprite)
++static inline WindowPtr
++DeepestSpriteWin(SpritePtr sprite)
+ {
+     assert(sprite->spriteTraceGood > 0);
+     return sprite->spriteTrace[sprite->spriteTraceGood - 1];

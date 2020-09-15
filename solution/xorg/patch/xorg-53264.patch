@@ -1,0 +1,13 @@
+diff --git a/config/udev.c b/config/udev.c
+index fc6ee5d..b11c81d 100644
+--- a/config/udev.c
++++ b/config/udev.c
+@@ -126,7 +126,7 @@ device_added(struct udev_device *udev_device)
+                 == -1)
+                 attrs.usb_id = NULL;
+             else
+-                LOG_PROPERTY(path, "PRODUCT", product);
++                LOG_PROPERTY(ppath, "PRODUCT", product);
+         }
+     }
+     if (!name)

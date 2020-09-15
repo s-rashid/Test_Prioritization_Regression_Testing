@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/os-support/bus/Pci.c b/hw/xfree86/os-support/bus/Pci.c
+index f1dbfc2..0362a00 100644
+--- a/hw/xfree86/os-support/bus/Pci.c
++++ b/hw/xfree86/os-support/bus/Pci.c
+@@ -126,12 +126,6 @@
+ 
+ #include "Pci.h"
+ 
+-PCITAG
+-pciTag(int busnum, int devnum, int funcnum)
+-{
+-	return(PCI_MAKE_TAG(busnum,devnum,funcnum));
+-}
+-
+ Bool
+ xf86scanpci(void)
+ {

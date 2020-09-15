@@ -1,0 +1,22 @@
+diff --git a/randr/randrstr.h b/randr/randrstr.h
+index 7ea6080..d8dd37d 100644
+--- a/randr/randrstr.h
++++ b/randr/randrstr.h
+@@ -297,6 +297,7 @@ typedef struct _rrScrPriv {
+     int			    rate;
+     int			    size;
+ #endif
++    Bool                   discontiguous;
+ } rrScrPrivRec, *rrScrPrivPtr;
+ 
+ extern _X_EXPORT DevPrivateKeyRec rrPrivKeyRec;
+@@ -700,6 +701,9 @@ ProcRRGetPanning (ClientPtr client);
+ int
+ ProcRRSetPanning (ClientPtr client);
+ 
++void
++RRConstrainCursorHarder (DeviceIntPtr, ScreenPtr, int, int *, int *);
++
+ /* rrdispatch.c */
+ extern _X_EXPORT Bool
+ RRClientKnowsRates (ClientPtr	pClient);

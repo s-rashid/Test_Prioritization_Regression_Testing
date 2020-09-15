@@ -1,0 +1,21 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 6a79073..7486827 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -1520,14 +1520,12 @@ int
+ ProcGetModifierMapping(ClientPtr client)
+ {
+     xGetModifierMappingReply rep;
+-    int ret, max_keys_per_mod = 0;
++    int max_keys_per_mod = 0;
+     KeyCode *modkeymap = NULL;
+     REQUEST_SIZE_MATCH(xReq);
+ 
+-    ret = generate_modkeymap(client, PickKeyboard(client), &modkeymap,
++    generate_modkeymap(client, PickKeyboard(client), &modkeymap,
+                              &max_keys_per_mod);
+-    if (ret != Success)
+-        return ret;
+ 
+     memset(&rep, 0, sizeof(xGetModifierMappingReply));
+     rep.type = X_Reply;

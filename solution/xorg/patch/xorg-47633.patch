@@ -1,0 +1,28 @@
+diff --git a/config/udev.c b/config/udev.c
+index 3ef0d7f..432ab85 100644
+--- a/config/udev.c
++++ b/config/udev.c
+@@ -84,6 +84,7 @@ device_added(struct udev_device *udev_device)
+     add_option(&options, "path", path);
+     add_option(&options, "device", path);
+     attrs.device = path;
++    attrs.tags = xstrtokenize(udev_device_get_property_value(udev_device, "ID_INPUT.tags"), ",");
+ 
+     config_info = Xprintf("udev:%s", syspath);
+     if (!config_info)
+@@ -150,6 +151,15 @@ device_added(struct udev_device *udev_device)
+         xfree(tmpo);
+     }
+ 
++    if (attrs.tags) {
++        char **tag = attrs.tags;
++        while (*tag) {
++            xfree(*tag);
++            tag++;
++        }
++        xfree(attrs.tags);
++    }
++
+     return;
+ }
+ 

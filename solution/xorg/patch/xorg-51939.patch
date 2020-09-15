@@ -1,0 +1,20 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 8547b16..443e8b0 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -24,6 +24,7 @@ SOFTWARE.
+ #ifndef DIXSTRUCT_H
+ #define DIXSTRUCT_H
+ 
++#include "client.h"
+ #include "dix.h"
+ #include "resource.h"
+ #include "cursor.h"
+@@ -121,6 +122,7 @@ typedef struct _Client {
+     long    smart_check_tick;
+     
+     DeviceIntPtr clientPtr;
++    ClientIdPtr  clientIds;
+ }           ClientRec;
+ 
+ /*

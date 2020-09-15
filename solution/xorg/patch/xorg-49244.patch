@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/int10/helper_exec.c b/hw/xfree86/int10/helper_exec.c
+index 6ba647f..8f47afe 100644
+--- a/hw/xfree86/int10/helper_exec.c
++++ b/hw/xfree86/int10/helper_exec.c
+@@ -711,7 +711,7 @@ xf86Int10SaveRestoreBIOSVars(xf86Int10InfoPtr pInt, Bool save)
+ 	if (pInt->BIOSScratch) {
+ 	    for (i = 0; i < BIOS_SCRATCH_LEN; i++)
+ 		*(base + i) = *(pInt->BIOSScratch + i); 
+-	    xfree(pInt->BIOSScratch);
++	    free(pInt->BIOSScratch);
+ 	    pInt->BIOSScratch = NULL;
+ 	}
+     }

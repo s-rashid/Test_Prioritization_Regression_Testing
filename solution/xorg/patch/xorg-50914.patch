@@ -1,0 +1,15 @@
+diff --git a/os/strlcpy.c b/os/strlcpy.c
+index e8e1b02..2e55b2e 100644
+--- a/os/strlcpy.c
++++ b/os/strlcpy.c
+@@ -14,8 +14,8 @@
+  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-#ifdef HAVE_XORG_CONFIG_H
+-#include <xorg-config.h>
++#ifdef HAVE_DIX_CONFIG_H
++#include <dix-config.h>
+ #endif
+ 
+ #include <sys/types.h>

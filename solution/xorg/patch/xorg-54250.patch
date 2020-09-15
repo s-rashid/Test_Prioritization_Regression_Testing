@@ -1,0 +1,14 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index 9626076..3323073 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -67,6 +67,9 @@ enum EventType {
+     ET_RawButtonPress,
+     ET_RawButtonRelease,
+     ET_RawMotion,
++    ET_RawTouchBegin,
++    ET_RawTouchUpdate,
++    ET_RawTouchEnd,
+     ET_XQuartz,
+     ET_Internal = 0xFF /* First byte */
+ };

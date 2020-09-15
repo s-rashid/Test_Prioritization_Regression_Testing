@@ -1,0 +1,13 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 7c92f64..5847e63 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -321,6 +321,8 @@ extern _X_EXPORT int XkbProcessArguments(
+     int				/* i */
+ );
+ 
++extern _X_EXPORT Bool   XkbInitPrivates(void);
++
+ extern _X_EXPORT void	XkbSetExtension(DeviceIntPtr device, ProcessInputProc proc);
+ 
+ extern _X_EXPORT void	XkbFreeCompatMap(

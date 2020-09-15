@@ -1,0 +1,15 @@
+diff --git a/Xext/mbuf.c b/Xext/mbuf.c
+index 1f24974..af31221 100644
+--- a/Xext/mbuf.c
++++ b/Xext/mbuf.c
+@@ -467,7 +467,9 @@ MultibufferExtensionInit()
+      * create the resource types
+      */
+     MultibufferDrawableResType =
+-	CreateNewResourceType(MultibufferDrawableDelete)|RC_DRAWABLE;
++	CreateNewResourceType(MultibufferDrawableDelete);
++    if (MultiBufferDrawableResType)
++	MultibufferDrawableResType |= RC_DRAWABLE;
+     MultibufferResType = CreateNewResourceType(MultibufferDelete);
+     MultibuffersResType = CreateNewResourceType(MultibuffersDelete);
+     OtherClientResType = CreateNewResourceType(OtherClientDelete);

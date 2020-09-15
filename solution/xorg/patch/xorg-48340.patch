@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/src/kxv.c b/hw/kdrive/src/kxv.c
+index 56f101f..bf6600a 100644
+--- a/hw/kdrive/src/kxv.c
++++ b/hw/kdrive/src/kxv.c
+@@ -1892,7 +1892,7 @@ KXVPaintRegion (DrawablePtr pDraw, RegionPtr pRgn, Pixel fg)
+ 
+     val[0] = fg;
+     val[1] = IncludeInferiors;
+-    ChangeGC (pGC, GCForeground|GCSubwindowMode, val);
++    dixChangeGC (NullClient, pGC, GCForeground|GCSubwindowMode, val, NULL);
+ 
+     ValidateGC (pDraw, pGC);
+ 

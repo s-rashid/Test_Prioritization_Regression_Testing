@@ -1,0 +1,12 @@
+diff --git a/glx/glxscreens.c b/glx/glxscreens.c
+index 674e2c6..58d8ee0 100644
+--- a/glx/glxscreens.c
++++ b/glx/glxscreens.c
+@@ -181,6 +181,7 @@ static char GLXServerExtensions[] =
+ 			"GLX_SGIX_fbconfig "
+ 			"GLX_SGIX_pbuffer "
+ 			"GLX_MESA_copy_sub_buffer "
++                        "GLX_INTEL_swap_event"
+ 			;
+ 
+ /*

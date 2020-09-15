@@ -1,0 +1,31 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 63a41d6..fdcbac5 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -1272,7 +1272,7 @@ ProcScreenSaverSetAttributes (ClientPtr client)
+ 					       XRT_PIXMAP, client,
+ 					       DixReadAccess);
+ 	      if (status != Success)
+-		  return (status == BadValue) ? BadPixmap : status;
++		  return status;
+           }
+        }
+ 
+@@ -1284,7 +1284,7 @@ ProcScreenSaverSetAttributes (ClientPtr client)
+ 					       XRT_PIXMAP, client,
+ 					       DixReadAccess);
+ 	      if (status != Success)
+-		  return (status == BadValue) ? BadPixmap : status;
++		  return status;
+           }
+        }
+ 
+@@ -1296,7 +1296,7 @@ ProcScreenSaverSetAttributes (ClientPtr client)
+ 						XRT_COLORMAP, client,
+ 						DixReadAccess);
+ 	       if (status != Success)
+-		   return (status == BadValue) ? BadColor : status;
++		   return status;
+            }
+        }
+ 

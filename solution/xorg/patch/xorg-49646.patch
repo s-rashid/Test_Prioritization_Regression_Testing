@@ -1,0 +1,100 @@
+diff --git a/randr/rrcrtc.c b/randr/rrcrtc.c
+index 987f772..f5fe765 100644
+--- a/randr/rrcrtc.c
++++ b/randr/rrcrtc.c
+@@ -190,7 +190,6 @@ RRCrtcNotify (RRCrtcPtr	    crtc,
+ 	}
+ 	else
+ 	{
+-	    if (crtc->outputs)
+ 		free(crtc->outputs);
+ 	    newoutputs = NULL;
+ 	}
+@@ -440,7 +439,6 @@ RRCrtcDestroyResource (pointer value, XID pid)
+ 	    }
+ 	}
+     }
+-    if (crtc->gammaRed)
+ 	free(crtc->gammaRed);
+     if (crtc->mode)
+ 	RRModeDestroy (crtc->mode);
+@@ -563,7 +561,6 @@ RRCrtcGammaSetSize (RRCrtcPtr	crtc,
+     }
+     else
+ 	gamma = NULL;
+-    if (crtc->gammaRed)
+ 	free(crtc->gammaRed);
+     crtc->gammaRed = gamma;
+     crtc->gammaGreen = gamma + size;
+@@ -805,7 +802,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 				     RROutputType, client, DixSetAttrAccess);
+ 	if (rc != Success)
+ 	{
+-	    if (outputs)
+ 		free(outputs);
+ 	    return rc;
+ 	}
+@@ -815,7 +811,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 		break;
+ 	if (j == outputs[i]->numCrtcs)
+ 	{
+-	    if (outputs)
+ 		free(outputs);
+ 	    return BadMatch;
+ 	}
+@@ -830,7 +825,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	}
+ 	if (j == outputs[i]->numModes + outputs[i]->numUserModes)
+ 	{
+-	    if (outputs)
+ 		free(outputs);
+ 	    return BadMatch;
+ 	}
+@@ -850,7 +844,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	    }
+ 	    if (k == outputs[i]->numClones)
+ 	    {
+-		if (outputs)
+ 		    free(outputs);
+ 		return BadMatch;
+ 	    }
+@@ -900,7 +893,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	 * Invalid rotation
+ 	 */
+ 	client->errorValue = stuff->rotation;
+-	if (outputs)
+ 	    free(outputs);
+ 	return BadValue;
+     }
+@@ -913,7 +905,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	     * requested rotation or reflection not supported by screen
+ 	     */
+ 	    client->errorValue = stuff->rotation;
+-	    if (outputs)
+ 		free(outputs);
+ 	    return BadMatch;
+ 	}
+@@ -943,7 +934,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	    if (stuff->x + source_width > pScreen->width)
+ 	    {
+ 		client->errorValue = stuff->x;
+-		if (outputs)
+ 		    free(outputs);
+ 		return BadValue;
+ 	    }
+@@ -951,7 +941,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+ 	    if (stuff->y + source_height > pScreen->height)
+ 	    {
+ 		client->errorValue = stuff->y;
+-		if (outputs)
+ 		    free(outputs);
+ 		return BadValue;
+ 	    }
+@@ -979,7 +968,6 @@ ProcRRSetCrtcConfig (ClientPtr client)
+     pScrPriv->lastSetTime = time;
+     
+ sendReply:
+-    if (outputs)
+ 	free(outputs);
+     
+     rep.type = X_Reply;

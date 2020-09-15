@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index d554a7f..8450706 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3418,7 +3418,7 @@ CheckPassiveGrabsOnWindow(
+     {
+ 	DeviceIntPtr	gdev;
+ 	XkbSrvInfoPtr	xkbi = NULL;
+-	Mask		mask;
++	Mask		mask = 0;
+ 
+ 	gdev= grab->modifierDevice;
+         if (grab->grabtype == GRABTYPE_CORE)

@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 1b1358c..f197def 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -653,7 +653,6 @@ extern DeviceIntPtr             g_pwinKeyboard;
+  * Extern declares for dynamically loaded libraries and function pointers
+  */
+ 
+-extern HMODULE			g_hmodDirectDraw;
+ extern FARPROC			g_fpDirectDrawCreate;
+ extern FARPROC			g_fpDirectDrawCreateClipper;
+ 
+@@ -859,6 +858,9 @@ winSetEngine (ScreenPtr pScreen);
+ Bool
+ winGetDDProcAddresses (void);
+ 
++void
++winReleaseDDProcAddresses(void);
++
+ 
+ /*
+  * winerror.c

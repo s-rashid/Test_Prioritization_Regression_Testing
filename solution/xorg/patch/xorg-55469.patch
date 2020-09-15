@@ -1,0 +1,115 @@
+diff --git a/hw/xfree86/dixmods/extmod/modinit.c b/hw/xfree86/dixmods/extmod/modinit.c
+index a415e5f..ca15ee0 100644
+--- a/hw/xfree86/dixmods/extmod/modinit.c
++++ b/hw/xfree86/dixmods/extmod/modinit.c
+@@ -44,8 +44,7 @@ static ExtensionModule extensionModules[] = {
+ 	SELINUX_EXTENSION_NAME,
+ 	&noSELinuxExtension,
+ 	NULL,
+-	NULL
+-    },
++     NULL},
+ #endif
+ #ifdef SCREENSAVER
+     {
+@@ -53,8 +52,7 @@ static ExtensionModule extensionModules[] = {
+ 	ScreenSaverName,
+ 	&noScreenSaverExtension,
+ 	NULL,
+-	NULL
+-    },
++     NULL},
+ #endif
+ #ifdef XF86VIDMODE
+     {
+@@ -62,8 +60,7 @@ static ExtensionModule extensionModules[] = {
+ 	XF86VIDMODENAME,
+ 	&noXFree86VidModeExtension,
+ 	NULL,
+-	NULL
+-    },
++     NULL},
+ #endif
+ #ifdef XFreeXDGA
+     {
+@@ -71,8 +68,7 @@ static ExtensionModule extensionModules[] = {
+ 	XF86DGANAME,
+ 	&noXFree86DGAExtension,
+ 	XFree86DGARegister,
+-	NULL
+-    },
++     NULL},
+ #endif
+ #ifdef DPMSExtension
+     {
+@@ -80,8 +76,7 @@ static ExtensionModule extensionModules[] = {
+ 	DPMSExtensionName,
+ 	&noDPMSExtension,
+ 	NULL,
+-	NULL
+-    },
++     NULL},
+ #endif
+ #ifdef XV
+     {
+@@ -89,15 +84,13 @@ static ExtensionModule extensionModules[] = {
+ 	XvName,
+ 	&noXvExtension,
+ 	XvRegister,
+-	NULL
+-    },
++     NULL},
+     {
+         XvMCExtensionInit,
+         XvMCName,
+         &noXvExtension,
+         NULL,
+-        NULL
+-    },
++     NULL},
+ #endif
+ #ifdef RES
+     {
+@@ -105,20 +98,17 @@ static ExtensionModule extensionModules[] = {
+         XRES_NAME, 
+         &noResExtension,
+         NULL,
+-        NULL
+-    },
++     NULL},
+ #endif
+     {				/* DON'T delete this entry ! */
+ 	NULL,
+ 	NULL,
+ 	NULL,
+ 	NULL,
+-	NULL
+-    }
++     NULL}
+ };
+ 
+-static XF86ModuleVersionInfo VersRec =
+-{
++static XF86ModuleVersionInfo VersRec = {
+ 	"extmod",
+ 	MODULEVENDORSTRING,
+ 	MODINFOSTRING1,
+@@ -146,8 +136,10 @@ extmodSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     for (i = 0; extensionModules[i].name != NULL; i++) {
+ 	if (opts) {
+ 	    char *s;
++
+ 	    if (asprintf(&s, "omit%s", extensionModules[i].name) != -1) {
+ 		pointer o;
++
+ 		o = xf86FindOption(opts, s);
+ 		free(s);
+ 		if (o) {
+@@ -160,6 +152,7 @@ extmodSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+ #ifdef XSELINUX
+ 	if (! strcmp(SELINUX_EXTENSION_NAME, extensionModules[i].name)) {
+ 	    pointer o;
++
+ 	    selinuxEnforcingState = SELINUX_MODE_DEFAULT;
+ 
+ 	    if ((o = xf86FindOption(opts, "SELinux mode disabled"))) {

@@ -1,0 +1,12 @@
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index 8c75301..c020444 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -806,6 +806,7 @@ ProcessInputProc backupproc;
+     /* never actually used uninitialised, but gcc isn't smart enough
+      * to work that out. */
+     memset(&old, 0, sizeof(old));
++    memset(&ev, 0, sizeof(ev));
+ 
+     if ((filter->keycode!=0)&&(filter->keycode!=keycode))
+ 	return 1;

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/vgahw/vgaHW.c b/hw/xfree86/vgahw/vgaHW.c
+index 3ae2dfa..b6832c3 100644
+--- a/hw/xfree86/vgahw/vgaHW.c
++++ b/hw/xfree86/vgahw/vgaHW.c
+@@ -1479,7 +1479,6 @@ vgaHWGetHWRecPrivate(void)
+ static void
+ vgaHWFreeRegs(vgaRegPtr regp)
+ {
+-    if (regp->CRTC)
+         free(regp->CRTC);
+ 
+     regp->CRTC =

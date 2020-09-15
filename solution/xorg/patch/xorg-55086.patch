@@ -1,0 +1,101 @@
+diff --git a/dix/glyphcurs.c b/dix/glyphcurs.c
+index fa2aeca..9004cb1 100644
+--- a/dix/glyphcurs.c
++++ b/dix/glyphcurs.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ************************************************************************/
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -61,7 +59,6 @@ SOFTWARE.
+ #include "opaque.h"
+ #include "servermd.h"
+ 
+-
+ /*
+     get the bits out of the font in a portable way.  to avoid
+ dealing with padding and such-like, we draw the glyph into
+@@ -74,7 +71,8 @@ cursor metrics.
+ */
+ 
+ int
+-ServerBitsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm, unsigned char **ppbits)
++ServerBitsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm,
++                    unsigned char **ppbits)
+ {
+     ScreenPtr pScreen;
+     GCPtr pGC;
+@@ -99,8 +97,7 @@ ServerBitsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm, unsigned cha
+ 					       cm->height, 1,
+ 					       CREATE_PIXMAP_USAGE_SCRATCH);
+     pGC = GetScratchGC(1, pScreen);
+-    if (!ppix || !pGC)
+-    {
++    if (!ppix || !pGC) {
+ 	if (ppix)
+ 	    (*pScreen->DestroyPixmap)(ppix);
+ 	if (pGC)
+@@ -136,7 +133,6 @@ ServerBitsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm, unsigned cha
+     return Success;
+ }
+ 
+-
+ Bool
+ CursorMetricsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm)
+ {
+@@ -148,13 +144,11 @@ CursorMetricsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm)
+     chs[0] = ch >> 8;
+     chs[1] = ch;
+     encoding = (FONTLASTROW(pfont) == 0) ? Linear16Bit : TwoD16Bit;
+-    if (encoding == Linear16Bit)
+-    {
++    if (encoding == Linear16Bit) {
+ 	if (ch < pfont->info.firstCol || pfont->info.lastCol < ch)
+ 	    return FALSE;
+     }
+-    else
+-    {
++    else {
+ 	if (chs[0] < pfont->info.firstRow || pfont->info.lastRow < chs[0])
+ 	    return FALSE;
+ 	if (chs[1] < pfont->info.firstCol || pfont->info.lastCol < chs[1])
+@@ -165,24 +159,20 @@ CursorMetricsFromGlyph(FontPtr pfont, unsigned ch, CursorMetricPtr cm)
+ 	return FALSE;
+     cm->width = pci->metrics.rightSideBearing - pci->metrics.leftSideBearing;
+     cm->height = pci->metrics.descent + pci->metrics.ascent;
+-    if (pci->metrics.leftSideBearing > 0)
+-    {
++    if (pci->metrics.leftSideBearing > 0) {
+ 	cm->width += pci->metrics.leftSideBearing;
+ 	cm->xhot = 0;
+     }
+-    else
+-    {
++    else {
+ 	cm->xhot = -pci->metrics.leftSideBearing;
+ 	if (pci->metrics.rightSideBearing < 0)
+ 	    cm->width -= pci->metrics.rightSideBearing;
+     }
+-    if (pci->metrics.ascent < 0)
+-    {
++    if (pci->metrics.ascent < 0) {
+ 	cm->height -= pci->metrics.ascent;
+ 	cm->yhot = 0;
+     }
+-    else
+-    {
++    else {
+ 	cm->yhot = pci->metrics.ascent;
+ 	if (pci->metrics.descent < 0)
+ 	    cm->height -= pci->metrics.descent;

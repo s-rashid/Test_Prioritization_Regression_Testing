@@ -1,0 +1,20 @@
+diff --git a/xkb/xkbgeom.h b/xkb/xkbgeom.h
+index 173affe..fe4da38 100644
+--- a/xkb/xkbgeom.h
++++ b/xkb/xkbgeom.h
+@@ -311,8 +311,6 @@ typedef struct _XkbGeometrySizes {
+ 	unsigned short	num_key_aliases;
+ } XkbGeometrySizesRec,*XkbGeometrySizesPtr;
+ 
+-_XFUNCPROTOBEGIN
+-
+ extern	XkbPropertyPtr
+ XkbAddGeomProperty(
+     XkbGeometryPtr	/* geom */,
+@@ -630,6 +628,4 @@ XkbFindOverlayForKey(
+ 	char *			/* under */
+ );
+ 
+-_XFUNCPROTOEND
+-
+ #endif /* _XKBGEOM_H_ */

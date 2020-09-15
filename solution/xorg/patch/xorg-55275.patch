@@ -1,0 +1,180 @@
+diff --git a/hw/dmx/examples/dmxwininfo.c b/hw/dmx/examples/dmxwininfo.c
+index 3d027d5..9b1ce76 100644
+--- a/hw/dmx/examples/dmxwininfo.c
++++ b/hw/dmx/examples/dmxwininfo.c
+@@ -43,11 +43,11 @@
+ 
+ static const char *FontName = "fixed";
+ 
+-
+ static void
+ EventLoop(Display *dpy, Window win, GC gc)
+ {
+    XEvent ev;
++
+    while (1) {
+       XNextEvent( dpy, &ev );
+       switch (ev.type) {
+@@ -64,12 +64,10 @@ EventLoop(Display *dpy, Window win, GC gc)
+             const char *msg = "DMX window info:";
+ 
+             DMXGetScreenCount(dpy, &numScreens);
+-            winInfo
+-                = (DMXWindowAttributes *)
++            winInfo = (DMXWindowAttributes *)
+                 malloc(numScreens * sizeof(DMXWindowAttributes));
+             assert(winInfo);
+-            if (!DMXGetWindowAttributes(dpy, win, &count,
+-                                        numScreens, winInfo)) {
++            if (!DMXGetWindowAttributes(dpy, win, &count, numScreens, winInfo)) {
+                printf("Could not get window information for 0x%08lx\n",
+                       (long unsigned)win);
+             }
+@@ -79,6 +77,7 @@ EventLoop(Display *dpy, Window win, GC gc)
+             y += 20;
+             for (i = 0; i < count; i++) {
+                char str[500];
++
+                snprintf(str, sizeof(str),
+                        "screen %d:  pos: %dx%d+%d+%d  visible: %dx%d+%d+%d",
+                        winInfo[i].screen,
+@@ -147,13 +146,11 @@ main(int argc, char *argv[])
+    attr.event_mask = StructureNotifyMask | ExposureMask;
+    attrMask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
+ 
+-   win = XCreateWindow(dpy, root,
+-                       500, 500, 600, 400,  /* x, y, w, h */
++    win = XCreateWindow(dpy, root, 500, 500, 600, 400,  /* x, y, w, h */
+                        0, /* border_width */
+                        visInfo->depth, InputOutput,
+ 		       visInfo->visual, attrMask, &attr);
+ 
+-
+    if (!win) {
+       fprintf(stderr, "Unable to create window!\n");
+       XCloseDisplay(dpy);
+@@ -182,7 +179,8 @@ main(int argc, char *argv[])
+ 
+ #if 00
+ 
+-static void make_window( char *title, int color_flag )
++static void
++make_window(char *title, int color_flag)
+ {
+    int x = 10, y = 10, width = 400, height = 300;
+    Display *dpy;
+@@ -200,7 +198,6 @@ static void make_window( char *title, int color_flag )
+    XMesaVisual visual;
+    XMesaBuffer buffer;
+ 
+-
+    /*
+     * Do the usual X things to make a window.
+     */
+@@ -297,8 +294,7 @@ static void make_window( char *title, int color_flag )
+    /* Create the window */
+    win = XCreateWindow( dpy, root, x,y, width, height, 0,
+ 			    visinfo->depth, InputOutput,
+-			    visinfo->visual,
+-			    attr_flags, &attr);
++                        visinfo->visual, attr_flags, &attr);
+    if (!win) {
+       printf("Couldn't open window!\n");
+       exit(1);
+@@ -315,14 +311,11 @@ static void make_window( char *title, int color_flag )
+       }
+    }
+ 
+-
+    /*
+     * Now do the special Mesa/Xlib stuff!
+     */
+ 
+-   visual = XMesaCreateVisual( dpy, visinfo,
+-                              (GLboolean) color_flag,
+-                               GL_FALSE,  /* alpha_flag */
++    visual = XMesaCreateVisual(dpy, visinfo, (GLboolean) color_flag, GL_FALSE,  /* alpha_flag */
+                                GL_FALSE,  /* db_flag */
+                                GL_FALSE,  /* stereo flag */
+                                GL_FALSE,  /* ximage_flag */
+@@ -339,8 +332,7 @@ static void make_window( char *title, int color_flag )
+    }
+ 
+    /* Create a Mesa rendering context */
+-   context = XMesaCreateContext( visual,
+-                                 NULL       /* share_list */
++    context = XMesaCreateContext(visual, NULL   /* share_list */
+                                );
+    if (!context) {
+       printf("Couldn't create Mesa/X context!\n");
+@@ -353,15 +345,13 @@ static void make_window( char *title, int color_flag )
+       exit(1);
+    }
+ 
+-
+    XMesaMakeCurrent( context, buffer );
+ 
+    /* Ready to render! */
+ }
+ 
+-
+-
+-static void draw_cube( void )
++static void
++draw_cube(void)
+ {
+    /* X faces */
+    glIndexi( Red );
+@@ -415,10 +405,8 @@ static void draw_cube( void )
+    glEnd();
+ }
+ 
+-
+-
+-
+-static void display_loop( void )
++static void
++display_loop(void)
+ {
+    GLfloat xrot, yrot, zrot;
+ 
+@@ -459,28 +447,23 @@ static void display_loop( void )
+ 
+ }
+ 
+-
+-
+-
+-int main( int argc, char *argv[] )
++int
++main(int argc, char *argv[])
+ {
+    int mode = 0;
+ 
+-   if (argc >= 2)
+-   {
++    if (argc >= 2) {
+         if (strcmp(argv[1],"-ci")==0)
+            mode = 0;
+         else if (strcmp(argv[1],"-rgb")==0)
+            mode = 1;
+-        else
+-        {
++        else {
+            printf("Bad flag: %s\n", argv[1]);
+            printf("Specify -ci for 8-bit color index or -rgb for RGB mode\n");
+            exit(1);
+         }
+    }
+-   else
+-   {
++    else {
+         printf("Specify -ci for 8-bit color index or -rgb for RGB mode\n");
+         printf("Defaulting to  8-bit color index\n");
+    }
+@@ -491,5 +474,4 @@ int main( int argc, char *argv[] )
+    return 0;
+ }
+ 
+-
+ #endif

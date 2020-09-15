@@ -1,0 +1,28 @@
+diff --git a/mi/mifillarc.h b/mi/mifillarc.h
+index 1158754..1478d18 100644
+--- a/mi/mifillarc.h
++++ b/mi/mifillarc.h
+@@ -24,7 +24,6 @@ in this Software without prior written authorization from The Open Group.
+ 
+ ********************************************************/
+ 
+-
+ #ifndef __MIFILLARC_H__
+ #define __MIFILLARC_H__
+ 
+@@ -176,13 +175,11 @@ typedef struct _miArcSlice {
+ #define miFillInArcLower(slw) (((iny + dy) != 0) && \
+ 			       ((slw > 1) || (ine != inxk)))
+ 
+-extern _X_EXPORT void miFillArcSetup(
+-    xArc * /*arc*/,
++extern _X_EXPORT void miFillArcSetup(xArc * /*arc */ ,
+     miFillArcRec * /*info*/
+ );
+ 
+-extern _X_EXPORT void miFillArcSliceSetup(
+-    xArc * /*arc*/,
++extern _X_EXPORT void miFillArcSliceSetup(xArc * /*arc */ ,
+     miArcSliceRec * /*slice*/,
+     GCPtr /*pGC*/
+ );

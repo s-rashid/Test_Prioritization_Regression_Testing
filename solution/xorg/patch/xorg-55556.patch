@@ -1,0 +1,58 @@
+diff --git a/hw/xfree86/os-support/bsd/bsd_kqueue_apm.c b/hw/xfree86/os-support/bsd/bsd_kqueue_apm.c
+index 053619e..10251f3 100644
+--- a/hw/xfree86/os-support/bsd/bsd_kqueue_apm.c
++++ b/hw/xfree86/os-support/bsd/bsd_kqueue_apm.c
+@@ -54,19 +54,21 @@ static struct {
+     u_int apmBsd;
+     pmEvent xf86;
+ } bsdToXF86Array [] = {
+-    { APM_STANDBY_REQ, XF86_APM_SYS_STANDBY },
+-    { APM_SUSPEND_REQ, XF86_APM_SYS_SUSPEND },
+-    { APM_NORMAL_RESUME, XF86_APM_NORMAL_RESUME },
+-    { APM_CRIT_RESUME, XF86_APM_CRITICAL_RESUME },
+-    { APM_BATTERY_LOW, XF86_APM_LOW_BATTERY },
+-    { APM_POWER_CHANGE, XF86_APM_POWER_STATUS_CHANGE },
+-    { APM_UPDATE_TIME, XF86_APM_UPDATE_TIME },
+-    { APM_CRIT_SUSPEND_REQ, XF86_APM_CRITICAL_SUSPEND },
+-    { APM_USER_STANDBY_REQ, XF86_APM_USER_STANDBY },
+-    { APM_USER_SUSPEND_REQ, XF86_APM_USER_SUSPEND },
+-    { APM_SYS_STANDBY_RESUME, XF86_APM_STANDBY_RESUME },
++    {
++    APM_STANDBY_REQ, XF86_APM_SYS_STANDBY}, {
++    APM_SUSPEND_REQ, XF86_APM_SYS_SUSPEND}, {
++    APM_NORMAL_RESUME, XF86_APM_NORMAL_RESUME}, {
++    APM_CRIT_RESUME, XF86_APM_CRITICAL_RESUME}, {
++    APM_BATTERY_LOW, XF86_APM_LOW_BATTERY}, {
++    APM_POWER_CHANGE, XF86_APM_POWER_STATUS_CHANGE}, {
++    APM_UPDATE_TIME, XF86_APM_UPDATE_TIME}, {
++    APM_CRIT_SUSPEND_REQ, XF86_APM_CRITICAL_SUSPEND}, {
++    APM_USER_STANDBY_REQ, XF86_APM_USER_STANDBY}, {
++    APM_USER_SUSPEND_REQ, XF86_APM_USER_SUSPEND}, {
++    APM_SYS_STANDBY_RESUME, XF86_APM_STANDBY_RESUME},
+ #ifdef APM_CAPABILITY_CHANGE
+-    { APM_CAPABILITY_CHANGE, XF86_APM_CAPABILITY_CHANGED },
++    {
++    APM_CAPABILITY_CHANGE, XF86_APM_CAPABILITY_CHANGED},
+ #endif
+ };
+ 
+@@ -100,7 +102,8 @@ bsdPMGetEventFromOS(int kq, pmEvent *events, int num)
+ 	if (result == 0 || APM_EVENT_TYPE(ev.data) == APM_NOEVENT) {
+ 	    /* no event */
+ 	    break;
+-	} else if (result < 0) {
++        }
++        else if (result < 0) {
+ 	    xf86Msg(X_WARNING, "bsdPMGetEventFromOS: kevent returns"
+ 		    " %s\n", strerror(errno));
+ 	    break;
+@@ -169,8 +172,7 @@ xf86OSPMOpen(void)
+ 	close(devFd);
+ 	return NULL;
+     }
+-    EV_SET(&ev, devFd, EVFILT_READ, EV_ADD | EV_ENABLE | EV_CLEAR,
+-	   0, 0, NULL);
++    EV_SET(&ev, devFd, EVFILT_READ, EV_ADD | EV_ENABLE | EV_CLEAR, 0, 0, NULL);
+     if (kevent(kq, &ev, 1, NULL, 0, NULL) < 0) {
+ 	close(devFd);
+ 	return NULL;

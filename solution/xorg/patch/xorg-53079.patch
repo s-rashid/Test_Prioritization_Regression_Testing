@@ -1,0 +1,11 @@
+diff --git a/hw/kdrive/src/kcmap.c b/hw/kdrive/src/kcmap.c
+index 9bfdd78..6e0fc14 100644
+--- a/hw/kdrive/src/kcmap.c
++++ b/hw/kdrive/src/kcmap.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 1999 Keith Packard
++ * Copyright Â© 1999 Keith Packard
+  *
+  * Permission to use, copy, modify, distribute, and sell this software and its
+  * documentation for any purpose is hereby granted without fee, provided that

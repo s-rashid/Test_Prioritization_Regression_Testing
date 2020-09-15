@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 8acf267..112e76c 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -42,6 +42,7 @@
+ #include "scrnintstr.h"
+ #include "pixmapstr.h"
+ #include "extnsionst.h"
++#include "registry.h"
+ #include "xf86drm.h"
+ #include "xfixes.h"
+ #include "dri2.h"
+@@ -421,6 +422,8 @@ DRI2ExtensionInit(void)
+     if (!dri2DrawableRes)
+ 	return;
+ 
++    RegisterResourceName(dri2DrawableRes, "DRI2Drawable");
++
+     dri2Extension = AddExtension(DRI2_NAME,
+ 				 DRI2NumberEvents,
+ 				 DRI2NumberErrors,

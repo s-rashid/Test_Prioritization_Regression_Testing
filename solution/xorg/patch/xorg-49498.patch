@@ -1,0 +1,13 @@
+diff --git a/Xi/opendev.c b/Xi/opendev.c
+index 3844d25..e4c02d3 100644
+--- a/Xi/opendev.c
++++ b/Xi/opendev.c
+@@ -154,7 +154,7 @@ ProcXOpenDevice(ClientPtr client)
+     rep.num_classes = j;
+     WriteReplyToClient(client, sizeof(xOpenDeviceReply), &rep);
+     WriteToClient(client, j * sizeof(xInputClassInfo), (char *)evbase);
+-    return (Success);
++    return Success;
+ }
+ 
+ /***********************************************************************

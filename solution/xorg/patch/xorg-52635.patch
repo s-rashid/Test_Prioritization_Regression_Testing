@@ -1,0 +1,15 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index 673207c..049688c 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -68,10 +68,6 @@ enum EventType {
+     ET_Internal = 0xFF /* First byte */
+ };
+ 
+-#define CHECKEVENT(ev) if (ev && ((InternalEvent*)(ev))->any.header != 0xFF) \
+-                          FatalError("Wrong event type %d.\n", \
+-                                     ((InternalEvent*)(ev))->any.header);
+-
+ /**
+  * Used for ALL input device events internal in the server until
+  * copied into the matching protocol event.

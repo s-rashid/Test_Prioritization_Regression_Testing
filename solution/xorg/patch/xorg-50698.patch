@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/parser/xf86tokens.h b/hw/xfree86/parser/xf86tokens.h
+index c16a8f5..ec04e4c 100644
+--- a/hw/xfree86/parser/xf86tokens.h
++++ b/hw/xfree86/parser/xf86tokens.h
+@@ -273,7 +273,6 @@ typedef enum {
+ 
+     /* DRI Tokens */
+     GROUP,
+-    BUFFERS,
+ 
+     /* InputClass Tokens */
+     MATCH_PRODUCT,

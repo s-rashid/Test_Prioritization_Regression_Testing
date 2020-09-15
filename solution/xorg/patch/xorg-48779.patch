@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/os-support/bus/Pci.h b/hw/xfree86/os-support/bus/Pci.h
+index b52a6cf..70c831f 100644
+--- a/hw/xfree86/os-support/bus/Pci.h
++++ b/hw/xfree86/os-support/bus/Pci.h
+@@ -121,9 +121,6 @@
+ #define PCI_DOM_MASK 0x0ffu
+ #endif
+ 
+-#define DEVID(vendor, device) \
+-    ((CARD32)((PCI_##device << 16) | PCI_##vendor))
+-
+ #ifndef PCI_DOM_MASK
+ # define PCI_DOM_MASK 0x0ffu
+ #endif
+@@ -143,9 +140,6 @@
+ #define PCI_DEV_FROM_TAG(tag)  (((tag) & 0x0000f800u) >> 11)
+ #define PCI_FUNC_FROM_TAG(tag) (((tag) & 0x00000700u) >> 8)
+ 
+-#define PCI_DFN_FROM_TAG(tag)  (((tag) & 0x0000ff00u) >> 8)
+-#define PCI_BDEV_FROM_TAG(tag) ((tag) & 0x00fff800u)
+-
+ #define PCI_DOM_FROM_BUS(bus)  (((bus) >> 8) & (PCI_DOM_MASK))
+ #define PCI_BUS_NO_DOMAIN(bus) ((bus) & 0xffu)
+ #define PCI_TAG_NO_DOMAIN(tag) ((tag) & 0x00ffff00u)

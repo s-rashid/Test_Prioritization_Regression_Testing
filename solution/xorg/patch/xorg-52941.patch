@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index bf7ebb9..af3bcae 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -1185,6 +1185,7 @@ void
+ DRI2CloseScreen(ScreenPtr pScreen)
+ {
+     DRI2ScreenPtr ds = DRI2GetScreen(pScreen);
++    pScreen->ConfigNotify = ds->ConfigNotify;
+ 
+     free(ds->driverNames);
+     free(ds);

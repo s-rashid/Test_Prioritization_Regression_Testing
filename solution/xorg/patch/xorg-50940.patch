@@ -1,0 +1,15 @@
+diff --git a/xkb/XKBMAlloc.c b/xkb/XKBMAlloc.c
+index e85a8af..2681ba3 100644
+--- a/xkb/XKBMAlloc.c
++++ b/xkb/XKBMAlloc.c
+@@ -292,10 +292,8 @@ KeyCode		matchingKeys[XkbMaxKeyCount],nMatchingKeys;
+     }
+     type= &xkb->map->types[type_ndx];
+     if (map_count==0) {
+-	if (type->map!=NULL)
+ 	    free(type->map);
+ 	type->map= NULL;
+-	if (type->preserve!=NULL)
+ 	    free(type->preserve);
+ 	type->preserve= NULL;
+ 	type->map_count= 0;

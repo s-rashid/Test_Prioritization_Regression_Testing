@@ -1,0 +1,603 @@
+diff --git a/fb/fbseg.c b/fb/fbseg.c
+index 5a458fe..0e4e0a9 100644
+--- a/fb/fbseg.c
++++ b/fb/fbseg.c
+@@ -39,13 +39,7 @@ fbBresSolid (DrawablePtr    pDrawable,
+ 	     int	    dashOffset,
+ 	     int	    signdx,
+ 	     int	    signdy,
+-	     int	    axis,
+-	     int	    x1,
+-	     int	    y1,
+-	     int	    e,
+-	     int	    e1,
+-	     int	    e3,
+-	     int	    len)
++            int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     FbStip	*dst;
+     FbStride	dstStride;
+@@ -68,23 +62,19 @@ fbBresSolid (DrawablePtr    pDrawable,
+ 	mask0 = FbStipRight (mask0, FB_STIP_UNIT - dstBpp);
+     if (signdy < 0)
+ 	dstStride = -dstStride;
+-    if (axis == X_AXIS)
+-    {
++    if (axis == X_AXIS) {
+ 	bits = 0;
+-	while (len--)
+-	{
++        while (len--) {
+ 	    bits |= mask;
+ 	    mask = fbBresShiftMask(mask,signdx,dstBpp);
+-	    if (!mask)
+-	    {
++            if (!mask) {
+ 		WRITE(dst, FbDoMaskRRop (READ(dst), and, xor, bits));
+ 		bits = 0;
+ 		dst += signdx;
+ 		mask = mask0;
+ 	    }
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		WRITE(dst, FbDoMaskRRop (READ(dst), and, xor, bits));
+ 		bits = 0;
+ 		dst += dstStride;
+@@ -94,19 +84,15 @@ fbBresSolid (DrawablePtr    pDrawable,
+ 	if (bits)
+ 	    WRITE(dst, FbDoMaskRRop (READ(dst), and, xor, bits));
+     }
+-    else
+-    {
+-	while (len--)
+-	{
++    else {
++        while (len--) {
+ 	    WRITE(dst, FbDoMaskRRop (READ(dst), and, xor, mask));
+ 	    dst += dstStride;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		mask = fbBresShiftMask(mask,signdx,dstBpp);
+-		if (!mask)
+-		{
++                if (!mask) {
+ 		    dst += signdx;
+ 		    mask = mask0;
+ 		}
+@@ -122,14 +108,7 @@ fbBresDash (DrawablePtr	pDrawable,
+ 	    GCPtr	pGC,
+ 	    int		dashOffset,
+ 	    int		signdx,
+-	    int		signdy,
+-	    int		axis,
+-	    int		x1,
+-	    int		y1,
+-	    int		e,
+-	    int		e1,
+-	    int		e3,
+-	    int		len)
++           int signdy, int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     FbStip	*dst;
+     FbStride	dstStride;
+@@ -141,6 +120,7 @@ fbBresDash (DrawablePtr	pDrawable,
+     FbStip	bgand = (FbStip) pPriv->bgand;
+     FbStip	bgxor = (FbStip) pPriv->bgxor;
+     FbStip	mask, mask0;
++
+     FbDashDeclare;
+     int		dashlen;
+     Bool	even;
+@@ -161,37 +141,30 @@ fbBresDash (DrawablePtr	pDrawable,
+ 	mask0 = FbStipRight (mask0, FB_STIP_UNIT - dstBpp);
+     if (signdy < 0)
+ 	dstStride = -dstStride;
+-    while (len--)
+-    {
++    while (len--) {
+ 	if (even)
+ 	    WRITE(dst, FbDoMaskRRop (READ(dst), and, xor, mask));
+ 	else if (doOdd)
+ 	    WRITE(dst, FbDoMaskRRop (READ(dst), bgand, bgxor, mask));
+-	if (axis == X_AXIS)
+-	{
++        if (axis == X_AXIS) {
+ 	    mask = fbBresShiftMask(mask,signdx,dstBpp);
+-	    if (!mask)
+-	    {
++            if (!mask) {
+ 		dst += signdx;
+ 		mask = mask0;
+ 	    }
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		dst += dstStride;
+ 		e += e3;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    dst += dstStride;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		mask = fbBresShiftMask(mask,signdx,dstBpp);
+-		if (!mask)
+-		{
++                if (!mask) {
+ 		    dst += signdx;
+ 		    mask = mask0;
+ 		}
+@@ -208,34 +181,22 @@ fbBresFill (DrawablePtr	pDrawable,
+ 	    GCPtr	pGC,
+ 	    int		dashOffset,
+ 	    int		signdx,
+-	    int		signdy,
+-	    int		axis,
+-	    int		x1,
+-	    int		y1,
+-	    int		e,
+-	    int		e1,
+-	    int		e3,
+-	    int		len)
+-{
+-    while (len--)
++           int signdy, int axis, int x1, int y1, int e, int e1, int e3, int len)
+     {
++    while (len--) {
+ 	fbFill (pDrawable, pGC, x1, y1, 1, 1);
+-	if (axis == X_AXIS)
+-	{
++        if (axis == X_AXIS) {
+ 	    x1 += signdx;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		y1 += signdy;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    y1 += signdy;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		x1 += signdx;
+ 	    }
+@@ -244,13 +205,11 @@ fbBresFill (DrawablePtr	pDrawable,
+ }
+ 
+ static void
+-fbSetFg (DrawablePtr	pDrawable,
+-	 GCPtr		pGC,
+-	 Pixel		fg)
+-{
+-    if (fg != pGC->fgPixel)
++fbSetFg(DrawablePtr pDrawable, GCPtr pGC, Pixel fg)
+     {
++    if (fg != pGC->fgPixel) {
+ 	ChangeGCVal val;
++
+ 	val.val = fg;
+ 	ChangeGC (NullClient, pGC, GCForeground, &val);
+ 	ValidateGC (pDrawable, pGC);
+@@ -263,15 +222,10 @@ fbBresFillDash (DrawablePtr pDrawable,
+ 		int	    dashOffset,
+ 		int	    signdx,
+ 		int	    signdy,
+-		int	    axis,
+-		int	    x1,
+-		int	    y1,
+-		int	    e,
+-		int	    e1,
+-		int	    e3,
+-		int	    len)
++               int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate (pGC);
++
+     FbDashDeclare;
+     int		dashlen;
+     Bool	even;
+@@ -291,12 +245,9 @@ fbBresFillDash (DrawablePtr pDrawable,
+     /* compute current dash position */
+     FbDashInit (pGC, pPriv, dashOffset, dashlen, even);
+     
+-    while (len--)
+-    {
+-	if (even || doOdd)
+-	{
+-	    if (doBg)
+-	    {
++    while (len--) {
++        if (even || doOdd) {
++            if (doBg) {
+ 		if (even)
+ 		    fbSetFg (pDrawable, pGC, fg);
+ 		else
+@@ -304,22 +255,18 @@ fbBresFillDash (DrawablePtr pDrawable,
+ 	    }
+ 	    fbFill (pDrawable, pGC, x1, y1, 1, 1);
+ 	}
+-	if (axis == X_AXIS)
+-	{
++        if (axis == X_AXIS) {
+ 	    x1 += signdx;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		y1 += signdy;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    y1 += signdy;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		x1 += signdx;
+ 	    }
+@@ -336,13 +283,7 @@ fbBresSolid24RRop (DrawablePtr  pDrawable,
+ 		   int		dashOffset,
+ 		   int		signdx,
+ 		   int		signdy,
+-		   int		axis,
+-		   int		x1,
+-		   int		y1,
+-		   int		e,
+-		   int		e1,
+-		   int		e3,
+-		   int		len)
++                  int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     FbStip	*dst;
+     FbStride	dstStride;
+@@ -364,16 +305,14 @@ fbBresSolid24RRop (DrawablePtr  pDrawable,
+     if (signdy < 0)
+ 	dstStride = -dstStride;
+     signdx *= 24;
+-    while (len--)
+-    {
++    while (len--) {
+ 	d = dst + (x1 >> FB_STIP_SHIFT);
+ 	x = x1 & FB_STIP_MASK;
+ 	rot = FbFirst24Rot (x);
+ 	andT = FbRot24Stip(and,rot);
+ 	xorT = FbRot24Stip(xor,rot);
+ 	FbMaskStip (x, 24, leftMask, nl, rightMask);
+-	if (leftMask)
+-	{
++        if (leftMask) {
+ 	    WRITE(d, FbDoMaskRRop (READ(d), andT, xorT, leftMask));
+ 	    d++;
+ 	    andT = FbNext24Stip (andT);
+@@ -381,22 +320,18 @@ fbBresSolid24RRop (DrawablePtr  pDrawable,
+ 	}
+ 	if (rightMask)
+ 	    WRITE(d, FbDoMaskRRop (READ(d), andT, xorT, rightMask));
+-	if (axis == X_AXIS)
+-	{
++        if (axis == X_AXIS) {
+ 	    x1 += signdx;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		dst += dstStride;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    dst += dstStride;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		x1 += signdx;
+ 	    }
+@@ -412,13 +347,7 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+ 		  int		dashOffset,
+ 		  int		signdx,
+ 		  int		signdy,
+-		  int		axis,
+-		  int		x1,
+-		  int		y1,
+-		  int		e,
+-		  int		e1,
+-		  int		e3,
+-		  int		len)
++                 int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     FbStip	*dst;
+     FbStride	dstStride;
+@@ -435,6 +364,7 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+     FbStip	*d;
+     int		x;
+     int		rot;
++
+     FbDashDeclare;
+     int		dashlen;
+     Bool	even;
+@@ -451,17 +381,13 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+     if (signdy < 0)
+ 	dstStride = -dstStride;
+     signdx *= 24;
+-    while (len--)
+-    {
+-	if (even || doOdd)
+-	{
+-	    if (even)
+-	    {
++    while (len--) {
++        if (even || doOdd) {
++            if (even) {
+ 		andT = fgand;
+ 		xorT = fgxor;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		andT = bgand;
+ 		xorT = bgxor;
+ 	    }
+@@ -471,8 +397,7 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+ 	    andT = FbRot24Stip (andT, rot);
+ 	    xorT = FbRot24Stip (xorT, rot);
+ 	    FbMaskStip (x, 24, leftMask, nl, rightMask);
+-	    if (leftMask)
+-	    {
++            if (leftMask) {
+ 		WRITE(d, FbDoMaskRRop (READ(d), andT, xorT, leftMask));
+ 		d++;
+ 		andT = FbNext24Stip (andT);
+@@ -481,22 +406,18 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+ 	    if (rightMask)
+ 		WRITE(d, FbDoMaskRRop (READ(d), andT, xorT, rightMask));
+ 	}
+-	if (axis == X_AXIS)
+-	{
++        if (axis == X_AXIS) {
+ 	    x1 += signdx;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		dst += dstStride;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    dst += dstStride;
+ 	    e += e1;
+-	    if (e >= 0)
+-	    {
++            if (e >= 0) {
+ 		e += e3;
+ 		x1 += signdx;
+ 	    }
+@@ -514,48 +435,57 @@ fbBresDash24RRop (DrawablePtr	pDrawable,
+  */
+ 
+ FbBres *
+-fbSelectBres (DrawablePtr   pDrawable,
+-	      GCPtr	    pGC)
++fbSelectBres(DrawablePtr pDrawable, GCPtr pGC)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate(pGC);
+     int		dstBpp = pDrawable->bitsPerPixel;
+     FbBres *	bres;
+     
+-    if (pGC->lineStyle == LineSolid)
+-    {
++    if (pGC->lineStyle == LineSolid) {
+ 	bres = fbBresFill;
+-	if (pGC->fillStyle == FillSolid)
+-	{
++        if (pGC->fillStyle == FillSolid) {
+ 	    bres = fbBresSolid;
+ 	    if (dstBpp == 24)
+ 		bres = fbBresSolid24RRop;
+-	    if (pPriv->and == 0)
+-	    {
++            if (pPriv->and == 0) {
+ 		switch (dstBpp) {
+-		case 8:	bres = fbBresSolid8; break;
+-		case 16: bres = fbBresSolid16; break;
+-		case 24: bres = fbBresSolid24; break;
+-		case 32: bres = fbBresSolid32; break;
++                case 8:
++                    bres = fbBresSolid8;
++                    break;
++                case 16:
++                    bres = fbBresSolid16;
++                    break;
++                case 24:
++                    bres = fbBresSolid24;
++                    break;
++                case 32:
++                    bres = fbBresSolid32;
++                    break;
+ 		}
+ 	    }
+ 	}
+     }
+-    else
+-    {
++    else {
+ 	bres = fbBresFillDash;
+-	if (pGC->fillStyle == FillSolid)
+-	{
++        if (pGC->fillStyle == FillSolid) {
+ 	    bres = fbBresDash;
+ 	    if (dstBpp == 24)
+ 		bres = fbBresDash24RRop;
+ 	    if (pPriv->and == 0 && 
+-		(pGC->lineStyle == LineOnOffDash || pPriv->bgand == 0))
+-	    {
++                (pGC->lineStyle == LineOnOffDash || pPriv->bgand == 0)) {
+ 		switch (dstBpp) {
+-		case 8:	bres = fbBresDash8; break;
+-		case 16: bres = fbBresDash16; break;
+-		case 24: bres = fbBresDash24; break;
+-		case 32: bres = fbBresDash32; break;
++                case 8:
++                    bres = fbBresDash8;
++                    break;
++                case 16:
++                    bres = fbBresDash16;
++                    break;
++                case 24:
++                    bres = fbBresDash24;
++                    break;
++                case 32:
++                    bres = fbBresDash32;
++                    break;
+ 		}
+ 	    }
+ 	}
+@@ -568,14 +498,7 @@ fbBres (DrawablePtr	pDrawable,
+ 	GCPtr		pGC,
+ 	int		dashOffset,
+ 	int		signdx,
+-	int		signdy,
+-	int		axis,
+-	int		x1,
+-	int		y1,
+-	int		e,
+-	int		e1,
+-	int		e3,
+-	int		len)
++       int signdy, int axis, int x1, int y1, int e, int e1, int e3, int len)
+ {
+     (*fbSelectBres (pDrawable, pGC)) (pDrawable, pGC, dashOffset,
+ 				      signdx, signdy, axis, x1, y1,
+@@ -585,12 +508,7 @@ fbBres (DrawablePtr	pDrawable,
+ void
+ fbSegment (DrawablePtr	pDrawable,
+ 	   GCPtr	pGC,
+-	   int		x1,
+-	   int		y1,
+-	   int		x2,
+-	   int		y2,
+-	   Bool		drawLast,
+-	   int		*dashOffset)
++          int x1, int y1, int x2, int y2, Bool drawLast, int *dashOffset)
+ {
+     FbBres *	bres;
+     RegionPtr	pClip = fbGetCompositeClip(pGC);
+@@ -615,19 +533,16 @@ fbSegment (DrawablePtr	pDrawable,
+     
+     bres = fbSelectBres (pDrawable, pGC);
+     
+-    CalcLineDeltas(x1, y1, x2, y2, adx, ady, signdx, signdy,
+-		   1, 1, octant);
++    CalcLineDeltas(x1, y1, x2, y2, adx, ady, signdx, signdy, 1, 1, octant);
+ 
+-    if (adx > ady)
+-    {
++    if (adx > ady) {
+ 	axis = X_AXIS;
+ 	e1 = ady << 1;
+ 	e2 = e1 - (adx << 1);
+ 	e = e1 - adx;
+ 	len = adx;
+     }
+-    else
+-    {
++    else {
+ 	axis = Y_AXIS;
+ 	e1 = adx << 1;
+ 	e2 = e1 - (ady << 1);
+@@ -652,25 +567,20 @@ fbSegment (DrawablePtr	pDrawable,
+ 	len++;
+     dashoff = *dashOffset;
+     *dashOffset = dashoff + len;
+-    while(nBox--)
+-    {
++    while (nBox--) {
+ 	oc1 = 0;
+ 	oc2 = 0;
+ 	OUTCODES(oc1, x1, y1, pBox);
+ 	OUTCODES(oc2, x2, y2, pBox);
+-	if ((oc1 | oc2) == 0)
+-	{
++        if ((oc1 | oc2) == 0) {
+ 	    (*bres) (pDrawable, pGC, dashoff,
+-		     signdx, signdy, axis, x1, y1,
+-		     e, e1, e3, len);
++                     signdx, signdy, axis, x1, y1, e, e1, e3, len);
+ 	    break;
+ 	}
+-	else if (oc1 & oc2)
+-	{
++        else if (oc1 & oc2) {
+ 	    pBox++;
+ 	}
+-	else
+-	{
++        else {
+ 	    int new_x1 = x1, new_y1 = y1, new_x2 = x2, new_y2 = y2;
+ 	    int clip1 = 0, clip2 = 0;
+ 	    int clipdx, clipdy;
+@@ -680,8 +590,7 @@ fbSegment (DrawablePtr	pDrawable,
+ 			       pBox->y2-1,
+ 			       &new_x1, &new_y1, &new_x2, &new_y2,
+ 			       adx, ady, &clip1, &clip2,
+-			       octant, bias, oc1, oc2) == -1)
+-	    {
++                               octant, bias, oc1, oc2) == -1) {
+ 		pBox++;
+ 		continue;
+ 	    }
+@@ -692,22 +601,18 @@ fbSegment (DrawablePtr	pDrawable,
+ 		len = abs(new_y2 - new_y1);
+ 	    if (clip2 != 0 || drawLast)
+ 		len++;
+-	    if (len)
+-	    {
++            if (len) {
+ 		/* unwind bresenham error term to first point */
+ 		doff = dashoff;
+ 		err = e;
+-		if (clip1)
+-		{
++                if (clip1) {
+ 		    clipdx = abs(new_x1 - x1);
+ 		    clipdy = abs(new_y1 - y1);
+-		    if (axis == X_AXIS)
+-		    {
++                    if (axis == X_AXIS) {
+ 			doff += clipdx;
+ 			err  += e3 * clipdy + e1 * clipdx;
+ 		    }
+-		    else
+-		    {
++                    else {
+ 			doff += clipdy;
+ 			err  += e3 * clipdx + e1 * clipdy;
+ 		    }

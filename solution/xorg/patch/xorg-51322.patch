@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/dri/dri.c b/hw/xfree86/dri/dri.c
+index fe99a2d..1d83630 100644
+--- a/hw/xfree86/dri/dri.c
++++ b/hw/xfree86/dri/dri.c
+@@ -2426,13 +2426,10 @@ DRICreatePCIBusID(const struct pci_device * dev)
+ {
+     char *busID;
+ 
+-    busID = malloc(20);
+-    if (busID == NULL)
++    if (asprintf(&busID, "pci:%04x:%02x:%02x.%d",
++		 dev->domain, dev->bus, dev->dev, dev->func) == -1)
+ 	return NULL;
+ 
+-    snprintf(busID, 20, "pci:%04x:%02x:%02x.%d", dev->domain, dev->bus,
+-	dev->dev, dev->func);
+-
+     return busID;
+ }
+ 

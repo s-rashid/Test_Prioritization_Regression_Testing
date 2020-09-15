@@ -1,0 +1,17 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 87e97d4..c03a82d 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -367,12 +367,6 @@ xprAddScreen(int index, ScreenPtr pScreen)
+ static Bool
+ xprSetupScreen(int index, ScreenPtr pScreen)
+ {
+-    // Initialize accelerated rootless drawing
+-    // Note that this must be done before DamageSetup().
+-
+-    // These are crashing ugly... better to be stable and not crash for now.
+-    //RootlessAccelInit(pScreen);
+-
+ #ifdef DAMAGE
+     // The Damage extension needs to wrap underneath the
+     // generic rootless layer, so do it now.

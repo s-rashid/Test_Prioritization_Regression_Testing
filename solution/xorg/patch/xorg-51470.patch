@@ -1,0 +1,13 @@
+diff --git a/composite/compalloc.c b/composite/compalloc.c
+index 86a6f8e..b2e3f71 100644
+--- a/composite/compalloc.c
++++ b/composite/compalloc.c
+@@ -47,7 +47,7 @@
+ 
+ #include "compint.h"
+ 
+-static void
++void
+ compScreenUpdate (ScreenPtr pScreen)
+ {
+     compCheckTree (pScreen);

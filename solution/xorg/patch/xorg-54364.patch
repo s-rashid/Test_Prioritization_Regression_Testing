@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/parser/Extensions.c b/hw/xfree86/parser/Extensions.c
+index 4003b52..662f526 100644
+--- a/hw/xfree86/parser/Extensions.c
++++ b/hw/xfree86/parser/Extensions.c
+@@ -62,7 +62,7 @@ xf86parseExtensionsSection (void)
+ 		ptr->ext_option_lst = xf86parseOption(ptr->ext_option_lst);
+ 		break;
+ 	    case EOF_TOKEN:
+-		Error (UNEXPECTED_EOF_MSG, NULL);
++		Error (UNEXPECTED_EOF_MSG);
+ 		break;
+ 	    case COMMENT:
+ 		ptr->extensions_comment =

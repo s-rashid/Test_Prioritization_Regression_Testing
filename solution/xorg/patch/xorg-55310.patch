@@ -1,0 +1,46 @@
+diff --git a/hw/dmx/glxProxy/glxvisuals.c b/hw/dmx/glxProxy/glxvisuals.c
+index 8a2e557..3fca04f 100644
+--- a/hw/dmx/glxProxy/glxvisuals.c
++++ b/hw/dmx/glxProxy/glxvisuals.c
+@@ -35,7 +35,8 @@
+ #include "glxserver.h"
+ #include "glxvisuals.h"
+ 
+-int glxVisualsMatch( __GLXvisualConfig *v1, __GLXvisualConfig *v2 )
++int
++glxVisualsMatch(__GLXvisualConfig * v1, __GLXvisualConfig * v2)
+ {
+       if ( (v1->class == v2->class) &&
+            (v1->rgba == v2->rgba) &&
+@@ -77,7 +78,9 @@ int glxVisualsMatch( __GLXvisualConfig *v1, __GLXvisualConfig *v2 )
+ 
+ }
+ 
+-VisualID glxMatchGLXVisualInConfigList( __GLXvisualConfig *pGlxVisual, __GLXvisualConfig *configs, int nconfigs )
++VisualID
++glxMatchGLXVisualInConfigList(__GLXvisualConfig * pGlxVisual,
++                              __GLXvisualConfig * configs, int nconfigs)
+ {
+     int i;
+ 
+@@ -93,7 +96,9 @@ VisualID glxMatchGLXVisualInConfigList( __GLXvisualConfig *pGlxVisual, __GLXvisu
+     return 0;
+ }
+ 
+-VisualID glxMatchVisualInConfigList( ScreenPtr pScreen, VisualPtr pVisual, __GLXvisualConfig *configs, int nconfigs )
++VisualID
++glxMatchVisualInConfigList(ScreenPtr pScreen, VisualPtr pVisual,
++                           __GLXvisualConfig * configs, int nconfigs)
+ {
+     __GLXscreenInfo *pGlxScreen;
+     __GLXvisualConfig *pGlxVisual;
+@@ -122,7 +127,8 @@ VisualID glxMatchVisualInConfigList( ScreenPtr pScreen, VisualPtr pVisual, __GLX
+     return( glxMatchGLXVisualInConfigList(pGlxVisual, configs, nconfigs) );
+ }
+ 
+-VisualPtr glxMatchVisual( ScreenPtr pScreen, VisualPtr pVisual, ScreenPtr pMatchScreen )
++VisualPtr
++glxMatchVisual(ScreenPtr pScreen, VisualPtr pVisual, ScreenPtr pMatchScreen)
+ {
+     __GLXscreenInfo *pGlxScreen2;
+     int j;

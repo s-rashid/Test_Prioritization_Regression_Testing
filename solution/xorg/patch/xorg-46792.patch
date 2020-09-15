@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winmouse.c b/hw/xwin/winmouse.c
+index 99eb6b8..342f20d 100644
+--- a/hw/xwin/winmouse.c
++++ b/hw/xwin/winmouse.c
+@@ -381,7 +381,7 @@ void winEnqueueMotion(int x, int y)
+ 
+   GetEventList(&events);
+   nevents = GetPointerEvents(events, g_pwinPointer, MotionNotify, 0,
+-			     POINTER_ABSOLUTE, 0, 2, valuators);
++			     POINTER_ABSOLUTE | POINTER_SCREEN, 0, 2, valuators);
+ 
+   for (i = 0; i < nevents; i++)
+     mieqEnqueue(g_pwinPointer, events[i].event);

@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/winpixmap.c b/hw/xwin/winpixmap.c
+index 050c71a..8bd8e34 100644
+--- a/hw/xwin/winpixmap.c
++++ b/hw/xwin/winpixmap.c
+@@ -163,11 +163,8 @@ winDestroyPixmapNativeGDI (PixmapPtr pPixmap)
+   if (pPixmapPriv->hBitmap) DeleteObject (pPixmapPriv->hBitmap);
+   
+   /* Free the bitmap info header memory */
+-  if (pPixmapPriv->pbmih != NULL)
+-    {
+       free (pPixmapPriv->pbmih);
+       pPixmapPriv->pbmih = NULL;
+-    }
+ 
+   /* Free the pixmap memory */
+   free (pPixmap);

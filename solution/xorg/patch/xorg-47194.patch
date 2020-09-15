@@ -1,0 +1,30 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index 044e8ef..462796e 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -24,7 +24,6 @@
+ #include <dix-config.h>
+ #endif
+ 
+-#include "registry.h"
+ #include "damageextint.h"
+ #include "protocol-versions.h"
+ 
+@@ -498,15 +497,13 @@ DamageExtensionInit(void)
+     for (s = 0; s < screenInfo.numScreens; s++)
+ 	DamageSetup (screenInfo.screens[s]);
+ 
+-    DamageExtType = CreateNewResourceType (FreeDamageExt);
++    DamageExtType = CreateNewResourceType (FreeDamageExt, "DamageExt");
+     if (!DamageExtType)
+ 	return;
+-    RegisterResourceName(DamageExtType, "DamageExt");
+ 
+-    DamageExtWinType = CreateNewResourceType (FreeDamageExtWin);
++    DamageExtWinType = CreateNewResourceType (FreeDamageExtWin, "DamageExtWin");
+     if (!DamageExtWinType)
+ 	return;
+-    RegisterResourceName(DamageExtWinType, "DamageExtWin");
+ 
+     if (!dixRequestPrivate(DamageClientPrivateKey, sizeof (DamageClientRec)))
+ 	return;

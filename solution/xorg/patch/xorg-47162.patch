@@ -1,0 +1,26 @@
+diff --git a/Xext/xvdisp.c b/Xext/xvdisp.c
+index e674dfd..b6fc34f 100644
+--- a/Xext/xvdisp.c
++++ b/Xext/xvdisp.c
+@@ -36,7 +36,6 @@ SOFTWARE.
+ #include "gcstruct.h"
+ #include "dixstruct.h"
+ #include "resource.h"
+-#include "registry.h"
+ #include "opaque.h"
+ 
+ #include <X11/extensions/Xv.h>
+@@ -1864,12 +1863,10 @@ void XineramifyXv(void)
+    XvAdaptorPtr MatchingAdaptors[MAXSCREENS];
+    int i, j, k, l;
+ 
+-   XvXRTPort = CreateNewResourceType(XineramaDeleteResource);
++   XvXRTPort = CreateNewResourceType(XineramaDeleteResource, "XvXRTPort");
+ 
+    if (!xvsp0 || !XvXRTPort) return;
+ 
+-   RegisterResourceName(XvXRTPort, "XvXRTPort");
+-
+    for(i = 0; i < xvsp0->nAdaptors; i++) {
+       refAdapt = xvsp0->pAdaptors + i;
+ 

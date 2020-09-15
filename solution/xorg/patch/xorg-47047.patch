@@ -1,0 +1,16 @@
+diff --git a/fb/fb.h b/fb/fb.h
+index ed21f9e..02d6c03 100644
+--- a/fb/fb.h
++++ b/fb/fb.h
+@@ -2083,7 +2083,10 @@ fbFillRegionSolid (DrawablePtr	pDrawable,
+ 
+ extern _X_EXPORT pixman_image_t *
+ image_from_pict (PicturePtr pict,
+-		 Bool       has_clip);
++		 Bool		has_clip,
++		 int		*xoff,
++		 int		*yoff);
++
+ extern _X_EXPORT void free_pixman_pict (PicturePtr, pixman_image_t *);
+ 
+ #endif /* _FB_H_ */

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/parser/xf86tokens.h b/hw/xfree86/parser/xf86tokens.h
+index abcafcf..a985606 100644
+--- a/hw/xfree86/parser/xf86tokens.h
++++ b/hw/xfree86/parser/xf86tokens.h
+@@ -207,8 +207,6 @@ typedef enum {
+     XKBLAYOUT,
+     XKBVARIANT,
+     XKBOPTIONS,
+-    /* The next two have become ServerFlags options */
+-    VTSYSREQ,
+     /* Obsolete keyboard tokens */
+     SERVERNUM,
+     LEFTALT,

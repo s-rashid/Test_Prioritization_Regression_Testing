@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winwndproc.c b/hw/xwin/winwndproc.c
+index d72a5f1..5e84510 100644
+--- a/hw/xwin/winwndproc.c
++++ b/hw/xwin/winwndproc.c
+@@ -717,6 +717,10 @@ winWindowProc (HWND hwnd, UINT message,
+       if (s_pScreenPriv == NULL || s_pScreenInfo->fIgnoreInput)
+ 	break;
+ 
++      /* We can't do anything without g_pwinPointer */
++      if (g_pwinPointer == NULL)
++        break;
++
+       /* Has the mouse pointer crossed screens? */
+       if (s_pScreen != miPointerGetScreen(g_pwinPointer))
+ 	miPointerSetScreen (g_pwinPointer, s_pScreenInfo->dwScreen,

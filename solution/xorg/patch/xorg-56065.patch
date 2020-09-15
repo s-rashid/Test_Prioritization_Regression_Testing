@@ -1,0 +1,29 @@
+diff --git a/os/strndup.c b/os/strndup.c
+index bf8e982..b604b9b 100644
+--- a/os/strndup.c
++++ b/os/strndup.c
+@@ -35,15 +35,15 @@
+ char *
+ strndup(const char *str, size_t n)
+ {
+-	size_t len;
+-	char *copy;
++    size_t len;
++    char *copy;
+ 
+-	for (len = 0; len < n && str[len]; len++)
+-		continue;
++    for (len = 0; len < n && str[len]; len++)
++        continue;
+ 
+-	if ((copy = malloc(len + 1)) == NULL)
+-		return (NULL);
+-	memcpy(copy, str, len);
+-	copy[len] = '\0';
+-	return (copy);
++    if ((copy = malloc(len + 1)) == NULL)
++        return (NULL);
++    memcpy(copy, str, len);
++    copy[len] = '\0';
++    return (copy);
+ }

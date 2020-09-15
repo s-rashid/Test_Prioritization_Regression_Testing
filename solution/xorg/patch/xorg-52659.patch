@@ -1,0 +1,13 @@
+diff --git a/include/dix.h b/include/dix.h
+index fb9be43..9a111e8 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -415,7 +415,7 @@ extern void DeliverFocusedEvent(
+     InternalEvent* /* event */,
+     WindowPtr /* window */);
+ 
+-extern void DeliverGrabbedEvent(
++extern int DeliverGrabbedEvent(
+     InternalEvent* /* event */,
+     DeviceIntPtr /* thisDev */,
+     Bool /* deactivateGrab */);

@@ -1,0 +1,13 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 5b1a698..9610427 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -53,7 +53,7 @@ typedef void (*ReplySwapPtr) (
+ extern _X_EXPORT void ReplyNotSwappd (
+ 		ClientPtr	/* pClient */,
+ 		int		/* size */,
+-		void *		/* pbuf */);
++		void *		/* pbuf */) _X_NORETURN;
+ 
+ typedef enum {ClientStateInitial,
+ 	      ClientStateAuthenticating,

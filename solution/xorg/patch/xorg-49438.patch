@@ -1,0 +1,11 @@
+diff --git a/hw/dmx/input/usb-common.c b/hw/dmx/input/usb-common.c
+index 95c00b8..25479ae 100644
+--- a/hw/dmx/input/usb-common.c
++++ b/hw/dmx/input/usb-common.c
+@@ -377,5 +377,5 @@ pointer usbCreatePrivate(DeviceIntPtr pDevice)
+ /** Destroy a private structure. */
+ void usbDestroyPrivate(pointer priv)
+ {
+-    if (priv) free(priv);
++    free(priv);
+ }

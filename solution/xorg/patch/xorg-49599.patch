@@ -1,0 +1,36 @@
+diff --git a/hw/xwin/winprefs.c b/hw/xwin/winprefs.c
+index 93901ca..1996ef0 100644
+--- a/hw/xwin/winprefs.c
++++ b/hw/xwin/winprefs.c
+@@ -672,7 +672,6 @@ winOverrideIcon (unsigned long longWin)
+       {
+ 	free (res_name);
+ 	free (res_class);
+-	if (wmName)
+ 	  free (wmName);
+ 
+ 	if (pref.icon[i].hicon)
+@@ -691,7 +690,6 @@ winOverrideIcon (unsigned long longWin)
+   /* Didn't find the icon, fail gracefully */
+   free (res_name);
+   free (res_class);
+-  if (wmName)
+     free (wmName);
+ 
+   return 0;
+@@ -849,7 +847,6 @@ winOverrideStyle (unsigned long longpWin)
+       {
+ 	free (res_name);
+ 	free (res_class);
+-	if (wmName)
+ 	  free (wmName);
+ 
+ 	if (pref.style[i].type)
+@@ -860,7 +857,6 @@ winOverrideStyle (unsigned long longpWin)
+   /* Didn't find the style, fail gracefully */
+   free (res_name);
+   free (res_class);
+-  if (wmName)
+     free (wmName);
+ 
+   return STYLE_NONE;

@@ -1,0 +1,23 @@
+diff --git a/os/utils.c b/os/utils.c
+index 00abd63..3718b17 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -482,7 +482,6 @@ void UseMsg(void)
+     ErrorF("-c                     turns off key-click\n");
+     ErrorF("c #                    key-click volume (0-100)\n");
+     ErrorF("-cc int                default color visual class\n");
+-    ErrorF("-cursor                enable the cursor (default)\n");
+     ErrorF("-nocursor              disable the cursor\n");
+     ErrorF("-core                  generate core dump on fatal error\n");
+     ErrorF("-dpi int               screen resolution in dots per inch\n");
+@@ -666,10 +665,6 @@ ProcessCommandLine(int argc, char *argv[])
+         {
+             EnableCursor = FALSE;
+         }
+-        else if ( strcmp( argv[i], "-cursor") == 0)
+-        {
+-            EnableCursor = TRUE;
+-        }
+         else if ( strcmp( argv[i], "-dpi") == 0)
+ 	{
+ 	    if(++i < argc)

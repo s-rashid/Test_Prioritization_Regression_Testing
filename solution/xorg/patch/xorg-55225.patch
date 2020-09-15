@@ -1,0 +1,74 @@
+diff --git a/hw/dmx/dmx_glxvisuals.c b/hw/dmx/dmx_glxvisuals.c
+index f0050c2..9fcc0e5 100644
+--- a/hw/dmx/dmx_glxvisuals.c
++++ b/hw/dmx/dmx_glxvisuals.c
+@@ -40,7 +40,8 @@
+ 
+ #include "dmx_glxvisuals.h"
+ 
+-__GLXvisualConfig *GetGLXVisualConfigs(Display *dpy, int screen, int *nconfigs)
++__GLXvisualConfig *
++GetGLXVisualConfigs(Display * dpy, int screen, int *nconfigs)
+ {
+     xGLXGetVisualConfigsReq *req;
+     xGLXGetVisualConfigsReply reply;
+@@ -231,8 +232,8 @@ __GLXvisualConfig *GetGLXVisualConfigs(Display *dpy, int screen, int *nconfigs)
+     return configs;
+ }
+ 
+-
+-__GLXFBConfig *GetGLXFBConfigs(Display *dpy, int glxMajorOpcode, int *nconfigs)
++__GLXFBConfig *
++GetGLXFBConfigs(Display * dpy, int glxMajorOpcode, int *nconfigs)
+ {
+     xGLXGetFBConfigsReq *req;
+     xGLXGetFBConfigsReply reply;
+@@ -443,8 +444,7 @@ __GLXFBConfig *GetGLXFBConfigs(Display *dpy, int glxMajorOpcode, int *nconfigs)
+ 
+ 	config->haveAccumBuffer =
+ 	    config->accumRedBits > 0 ||
+-	    config->accumGreenBits > 0 ||
+-	    config->accumBlueBits > 0;
++            config->accumGreenBits > 0 || config->accumBlueBits > 0;
+ 	    /* Can't have alpha without color */
+ 
+ 	config->haveDepthBuffer = config->depthBits > 0;
+@@ -494,13 +494,14 @@ __GLXFBConfig *GetGLXFBConfigs(Display *dpy, int glxMajorOpcode, int *nconfigs)
+ __GLXvisualConfig *
+ GetGLXVisualConfigsFromFBConfigs(__GLXFBConfig *fbconfigs, int nfbconfigs, 
+                                  XVisualInfo *visuals, int nvisuals,
+-				 __GLXvisualConfig *glxConfigs, int nGlxConfigs,
+-                                 int *nconfigs)
++                                 __GLXvisualConfig * glxConfigs,
++                                 int nGlxConfigs, int *nconfigs)
+ {
+     __GLXvisualConfig *configs = NULL;
+     int i;
+     
+-    if (!fbconfigs || !nfbconfigs || !nconfigs) return NULL;
++    if (!fbconfigs || !nfbconfigs || !nconfigs)
++        return NULL;
+     *nconfigs = 0;
+ 
+     /* Allocate memory for our config structure */
+@@ -525,12 +526,12 @@ GetGLXVisualConfigsFromFBConfigs(__GLXFBConfig *fbconfigs, int nfbconfigs,
+ 		break;
+ 	     }
+ 	  }
+-	  if (!vinfo) continue;
++            if (!vinfo)
++                continue;
+ 
+ 	  /* skip 16 bit colormap visuals */
+ 	  if (vinfo->depth == 16 &&
+-              vinfo->class != TrueColor &&
+-              vinfo->class != DirectColor ) {
++                vinfo->class != TrueColor && vinfo->class != DirectColor) {
+ 	     continue;
+ 	  }
+ 
+@@ -598,4 +599,3 @@ GetGLXVisualConfigsFromFBConfigs(__GLXFBConfig *fbconfigs, int nfbconfigs,
+ 
+     return configs;
+ }
+-

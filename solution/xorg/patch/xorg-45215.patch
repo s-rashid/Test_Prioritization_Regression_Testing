@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 543d11c..11f4cf1 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -218,7 +218,7 @@ xf86PrintBanner(void)
+ #if defined(BUILDERSTRING)
+   ErrorF("%s \n",BUILDERSTRING);
+ #endif
+-  ErrorF("Current version of pixman: %s\n", PIXMAN_VERSION_STRING);
++  ErrorF("Current version of pixman: %s\n", pixman_version_string());
+   ErrorF("\tBefore reporting problems, check "__VENDORDWEBSUPPORT__"\n"
+ 	 "\tto make sure that you have the latest version.\n");
+ }

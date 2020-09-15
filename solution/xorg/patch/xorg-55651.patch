@@ -1,0 +1,202 @@
+diff --git a/hw/xfree86/vbe/vbe.c b/hw/xfree86/vbe/vbe.c
+index 6ecca68..bbb60e3 100644
+--- a/hw/xfree86/vbe/vbe.c
++++ b/hw/xfree86/vbe/vbe.c
+@@ -56,7 +56,8 @@ VBEExtendedInit(xf86Int10InfoPtr pInt, int entityIndex, int Flags)
+     vbeInfoPtr vip = NULL;
+     int screen;
+ 
+-    if (!pScrn) return NULL;
++    if (!pScrn)
++        return NULL;
+     screen = pScrn->scrnIndex;
+     
+     if (!pInt) {
+@@ -71,7 +72,8 @@ VBEExtendedInit(xf86Int10InfoPtr pInt, int entityIndex, int Flags)
+     }
+     
+     page = xf86Int10AllocPages(pInt,1,&RealOff);
+-    if (!page) goto error;
++    if (!page)
++        goto error;
+     vbe = (vbeControllerInfoPtr) page;    
+     memcpy(vbe->VbeSignature,vbeVersionString,4);
+ 
+@@ -126,13 +128,19 @@ VBEExtendedInit(xf86Int10InfoPtr pInt, int entityIndex, int Flags)
+ 		    VERSION(vbe->OemSoftwareRev));
+ 	if (vbe->OemVendorNamePtr)
+ 	    xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE OEM Vendor: %s\n",
+-		    (CARD8*)xf86int10Addr(pInt,L_ADD(vbe->OemVendorNamePtr)));
++                           (CARD8 *) xf86int10Addr(pInt,
++                                                   L_ADD(vbe->
++                                                         OemVendorNamePtr)));
+ 	if (vbe->OemProductNamePtr)
+ 	    xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE OEM Product: %s\n",
+-		    (CARD8*)xf86int10Addr(pInt,L_ADD(vbe->OemProductNamePtr)));
++                           (CARD8 *) xf86int10Addr(pInt,
++                                                   L_ADD(vbe->
++                                                         OemProductNamePtr)));
+ 	if (vbe->OemProductRevPtr)
+ 	    xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE OEM Product Rev: %s\n",
+-		    (CARD8*)xf86int10Addr(pInt,L_ADD(vbe->OemProductRevPtr)));
++                           (CARD8 *) xf86int10Addr(pInt,
++                                                   L_ADD(vbe->
++                                                         OemProductRevPtr)));
+     }
+     vip = (vbeInfoPtr)xnfalloc(sizeof(vbeInfoRec));
+     vip->version = B_O16(vbe->VbeVersion);
+@@ -223,7 +231,8 @@ vbeProbeDDC(vbeInfoPtr pVbe)
+     	    xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE DDC Screen blanked" 
+     			"for data transfer\n"); 
+     	    pVbe->ddc_blank = TRUE;
+-    	}  else
++        }
++        else
+     	    pVbe->ddc_blank = FALSE;
+ 	    
+   	xf86DrvMsgVerb(screen,X_INFO,3,
+@@ -256,7 +265,8 @@ vbeReadEDID(vbeInfoPtr pVbe)
+     int screen = pVbe->pInt10->scrnIndex;
+     OptionInfoPtr options;
+ 
+-    if (!page) return NULL;
++    if (!page)
++        return NULL;
+ 
+     options = xnfalloc(sizeof(VBEOptions));
+     (void)memcpy(options, VBEOptions, sizeof(VBEOptions));
+@@ -264,9 +274,11 @@ vbeReadEDID(vbeInfoPtr pVbe)
+     xf86GetOptValBool(options, VBEOPT_NOVBE, &novbe);
+     xf86GetOptValBool(options, VBEOPT_NODDC, &noddc);
+     free(options);
+-    if (novbe || noddc) return NULL;
++    if (novbe || noddc)
++        return NULL;
+     
+-    if (!vbeProbeDDC(pVbe)) goto error;
++    if (!vbeProbeDDC(pVbe))
++        goto error;
+ 
+     memset(page,0,sizeof(vbeInfoPtr));
+     strcpy(page,vbeVersionString);
+@@ -311,7 +323,8 @@ vbeDoEDID(vbeInfoPtr pVbe, pointer pDDCModule)
+     pointer       pModule;
+     unsigned char *DDC_data = NULL;
+     
+-    if (!pVbe) return NULL;
++    if (!pVbe)
++        return NULL;
+     if (pVbe->version < 0x200)
+ 	return NULL;
+ 
+@@ -464,7 +477,8 @@ VBESetVBEMode(vbeInfoPtr pVbe, int mode, VbeCRTCInfoBlock *block)
+ 	memcpy(pVbe->memory, block, sizeof(VbeCRTCInfoBlock));
+ 	pVbe->pInt10->es = SEG_ADDR(pVbe->real_mode_base);
+ 	pVbe->pInt10->di = SEG_OFF(pVbe->real_mode_base);
+-    } else
++    }
++    else
+ 	pVbe->pInt10->bx &= ~(1 << 11);
+ 
+     xf86ExecX86int10(pVbe->pInt10);
+@@ -560,7 +574,6 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction function,
+ 	BX = Number of 64-byte blocks to hold the state buffer
+ 	(All other registers are preserved)
+ 
+-
+     Input:
+ 	AH    := 4Fh	Super VGA support
+ 	AL    := 04h	Save/restore Super VGA video state
+@@ -572,7 +585,6 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction function,
+ 	AX    := Status
+ 	(All other registers are preserved)
+ 
+-
+     Input:
+ 	AH    := 4Fh	Super VGA support
+ 	AL    := 04h	Save/restore Super VGA video state
+@@ -587,8 +599,8 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction function,
+ 
+     if ((pVbe->version & 0xff00) > 0x100) {
+         int screen = pVbe->pInt10->scrnIndex;
+-        if (function == MODE_QUERY ||
+-	    (function == MODE_SAVE && !*memory)) {
++
++        if (function == MODE_QUERY || (function == MODE_SAVE && !*memory)) {
+ 	    /* Query amount of memory to save state */
+ 
+ 	    pVbe->pInt10->num = 0x10;
+@@ -601,6 +613,7 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction function,
+ 
+ 	    if (function == MODE_SAVE) {
+ 	        int npages = (R16(pVbe->pInt10->bx) * 64) / 4096 + 1;
++
+ 		if ((*memory = xf86Int10AllocPages(pVbe->pInt10, npages,
+ 						   real_mode_pages)) == NULL) {
+ 		    xf86DrvMsg(screen, X_ERROR,
+@@ -614,7 +627,8 @@ VBESaveRestore(vbeInfoPtr pVbe, vbeSaveRestoreFunction function,
+ 	/* Save/Restore Super VGA state */
+ 	if (function != MODE_QUERY) {
+ 	    
+-	    if (!*memory) return FALSE;
++            if (!*memory)
++                return FALSE;
+ 	    pVbe->pInt10->num = 0x10;
+ 	    pVbe->pInt10->ax = 0x4f04;
+ 	    switch (function) {
+@@ -792,7 +806,6 @@ VBESetGetPaletteData(vbeInfoPtr pVbe, Bool set, int first, int num,
+     Output:
+ 	AX    := VBE Return Status
+ 
+-
+     Input:
+     (32-bit)
+ 	BL     := 00h Set Palette Data
+@@ -872,6 +885,7 @@ VBEBuildVbeModeList(vbeInfoPtr pVbe, VbeInfoBlock *vbe)
+     vbeModeInfoPtr ModeList = NULL;
+ 
+     int i = 0;
++
+     while (vbe->VideoModePtr[i] != 0xffff) {
+ 	vbeModeInfoPtr m;
+ 	VbeModeInfoBlock *mode;
+@@ -906,8 +920,7 @@ VBECalcVbeModeIndex(vbeModeInfoPtr m, DisplayModePtr mode, int bpp)
+ {
+     while (m) {
+ 	if (bpp == m->bpp 
+-	    && mode->HDisplay == m->width 
+-	    && mode->VDisplay == m->height)
++            && mode->HDisplay == m->width && mode->VDisplay == m->height)
+ 	    return m->n;
+ 	m = m->next;
+     }
+@@ -1041,7 +1054,8 @@ VBEInterpretPanelID(int scrnIndex, struct vbePanelID *data)
+     pScrn->monitor->nVrefresh = 1;
+     pScrn->monitor->vrefresh[0].lo = 56.0;
+     pScrn->monitor->vrefresh[0].hi =
+-	(float)mode->Clock*1000.0 / (float)mode->HTotal / (float)mode->VTotal;
++        (float) mode->Clock * 1000.0 / (float) mode->HTotal /
++        (float) mode->VTotal;
+ 
+     if (pScrn->monitor->vrefresh[0].hi < 59.47)
+ 	pScrn->monitor->vrefresh[0].hi = 59.47;
+@@ -1074,7 +1088,8 @@ VBEReadPanelID(vbeInfoPtr pVbe)
+ 
+     switch (pVbe->pInt10->ax & 0xff00) {
+     case 0x0:
+-	xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE PanelID read successfully\n");
++        xf86DrvMsgVerb(screen, X_INFO, 3,
++                       "VESA VBE PanelID read successfully\n");
+ 	tmp = xnfalloc(32); 
+ 	memcpy(tmp, page, 32); 
+ 	break;
+@@ -1082,7 +1097,8 @@ VBEReadPanelID(vbeInfoPtr pVbe)
+ 	xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE PanelID read failed\n");       
+ 	break;
+     default:
+-	xf86DrvMsgVerb(screen,X_INFO,3,"VESA VBE PanelID unknown failure %i\n",
++        xf86DrvMsgVerb(screen, X_INFO, 3,
++                       "VESA VBE PanelID unknown failure %i\n",
+ 		       pVbe->pInt10->ax & 0xff00);
+ 	break;
+     }

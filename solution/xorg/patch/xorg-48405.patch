@@ -1,0 +1,11 @@
+diff --git a/Xext/bigreq.c b/Xext/bigreq.c
+index f9f15ed..ce3734e 100644
+--- a/Xext/bigreq.c
++++ b/Xext/bigreq.c
+@@ -76,5 +76,5 @@ ProcBigReqDispatch (ClientPtr client)
+ 	swapl(&rep.max_request_size, n);
+     }
+     WriteToClient(client, sizeof(xBigReqEnableReply), (char *)&rep);
+-    return(client->noClientException);
++    return Success;
+ }

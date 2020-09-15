@@ -1,0 +1,347 @@
+diff --git a/composite/compalloc.c b/composite/compalloc.c
+index 9857a92..15a6cd2 100644
+--- a/composite/compalloc.c
++++ b/composite/compalloc.c
+@@ -55,10 +55,7 @@ compScreenUpdate (ScreenPtr pScreen)
+ }
+ 
+ static void
+-compBlockHandler (int	    i,
+-		  pointer   blockData,
+-		  pointer   pTimeout,
+-		  pointer   pReadmask)
++compBlockHandler(int i, pointer blockData, pointer pTimeout, pointer pReadmask)
+ {
+     ScreenPtr	    pScreen = screenInfo.screens[i];
+     CompScreenPtr   cs = GetCompScreen (pScreen);
+@@ -105,8 +102,7 @@ compDestroyDamage (DamagePtr pDamage, void *closure)
+ }
+ 
+ static Bool
+-compMarkWindows(WindowPtr pWin,
+-		WindowPtr *ppLayerWin)
++compMarkWindows(WindowPtr pWin, WindowPtr *ppLayerWin)
+ {
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+     WindowPtr pLayerWin = pWin;
+@@ -173,22 +169,17 @@ compRedirectWindow (ClientPtr pClient, WindowPtr pWin, int update)
+     /*
+      * Now make sure there's a per-window structure to hang this from
+      */
+-    if (!cw)
+-    {
++    if (!cw) {
+ 	cw = malloc(sizeof (CompWindowRec));
+-	if (!cw)
+-	{
++        if (!cw) {
+ 	    free(ccw);
+ 	    return BadAlloc;
+ 	}
+ 	cw->damage = DamageCreate (compReportDamage,
+ 				   compDestroyDamage,
+ 				   DamageReportNonEmpty,
+-				   FALSE,
+-				   pWin->drawable.pScreen,
+-				   pWin);
+-	if (!cw->damage)
+-	{
++                                  FALSE, pWin->drawable.pScreen, pWin);
++        if (!cw->damage) {
+ 	    free(ccw);
+ 	    free(cw);
+ 	    return BadAlloc;
+@@ -210,13 +201,11 @@ compRedirectWindow (ClientPtr pClient, WindowPtr pWin, int update)
+     cw->clients = ccw;
+     if (!AddResource (ccw->id, CompositeClientWindowType, pWin))
+ 	return BadAlloc;
+-    if (ccw->update == CompositeRedirectManual)
+-    {
++    if (ccw->update == CompositeRedirectManual) {
+ 	if (!anyMarked)
+ 	    anyMarked = compMarkWindows (pWin, &pLayerWin);
+ 
+-	if (cw->damageRegistered)
+-	{
++        if (cw->damageRegistered) {
+ 	    DamageUnregister (&pWin->drawable, cw->damage);
+ 	    cw->damageRegistered = FALSE;
+ 	}
+@@ -227,8 +216,7 @@ compRedirectWindow (ClientPtr pClient, WindowPtr pWin, int update)
+ 	    anyMarked = compMarkWindows (pWin, &pLayerWin);
+     }
+ 
+-    if (!compCheckRedirect (pWin))
+-    {
++    if (!compCheckRedirect(pWin)) {
+ 	FreeResource (ccw->id, RT_NONE);
+ 	return BadAlloc;
+     }
+@@ -255,13 +243,12 @@ compRestoreWindow (WindowPtr pWin, PixmapPtr pPixmap)
+ 
+ 	if (pGC) {
+ 	    ChangeGCVal val;
++
+ 	    val.val = IncludeInferiors;
+ 	    ChangeGC (NullClient, pGC, GCSubwindowMode, &val);
+ 	    ValidateGC(&pWin->drawable, pGC);
+ 	    (*pGC->ops->CopyArea) (&pPixmap->drawable,
+-				   &pWin->drawable,
+-				   pGC,
+-				   x, y, w, h, 0, 0);
++                                   &pWin->drawable, pGC, x, y, w, h, 0, 0);
+ 	    FreeScratchGC (pGC);
+ 	}
+     }
+@@ -283,10 +270,8 @@ compFreeClientWindow (WindowPtr pWin, XID id)
+ 
+     if (!cw)
+ 	return;
+-    for (prev = &cw->clients; (ccw = *prev); prev = &ccw->next)
+-    {
+-	if (ccw->id == id)
+-	{
++    for (prev = &cw->clients; (ccw = *prev); prev = &ccw->next) {
++        if (ccw->id == id) {
+ 	    *prev = ccw->next;
+ 	    if (ccw->update == CompositeRedirectManual)
+ 		cw->update = CompositeRedirectAutomatic;
+@@ -294,8 +279,7 @@ compFreeClientWindow (WindowPtr pWin, XID id)
+ 	    break;
+ 	}
+     }
+-    if (!cw->clients)
+-    {
++    if (!cw->clients) {
+ 	anyMarked = compMarkWindows (pWin, &pLayerWin);
+     
+ 	if (pWin->redirectDraw != RedirectDrawNone) {
+@@ -312,8 +296,7 @@ compFreeClientWindow (WindowPtr pWin, XID id)
+ 	free(cw);
+     }
+     else if (cw->update == CompositeRedirectAutomatic &&
+-	     !cw->damageRegistered && pWin->redirectDraw != RedirectDrawNone)
+-    {
++             !cw->damageRegistered && pWin->redirectDraw != RedirectDrawNone) {
+ 	anyMarked = compMarkWindows (pWin, &pLayerWin);
+ 
+ 	DamageRegister (&pWin->drawable, cw->damage);
+@@ -345,8 +328,7 @@ compUnredirectWindow (ClientPtr pClient, WindowPtr pWin, int update)
+ 	return BadValue;
+ 
+     for (ccw = cw->clients; ccw; ccw = ccw->next)
+-	if (ccw->update == update && CLIENT_ID(ccw->id) == pClient->index)
+-	{
++        if (ccw->update == update && CLIENT_ID(ccw->id) == pClient->index) {
+ 	    FreeResource (ccw->id, RT_NONE);
+ 	    return Success;
+ 	}
+@@ -384,11 +366,9 @@ compRedirectSubwindows (ClientPtr pClient, WindowPtr pWin, int update)
+     /*
+      * Now make sure there's a per-window structure to hang this from
+      */
+-    if (!csw)
+-    {
++    if (!csw) {
+ 	csw = malloc(sizeof (CompSubwindowsRec));
+-	if (!csw)
+-	{
++        if (!csw) {
+ 	    free(ccw);
+ 	    return BadAlloc;
+ 	}
+@@ -399,15 +379,13 @@ compRedirectSubwindows (ClientPtr pClient, WindowPtr pWin, int update)
+     /*
+      * Redirect all existing windows
+      */
+-    for (pChild = pWin->lastChild; pChild; pChild = pChild->prevSib)
+-    {
++    for (pChild = pWin->lastChild; pChild; pChild = pChild->prevSib) {
+ 	int ret = compRedirectWindow (pClient, pChild, update);
+-	if (ret != Success)
+-	{
++
++        if (ret != Success) {
+ 	    for (pChild = pChild->nextSib; pChild; pChild = pChild->nextSib)
+ 		(void) compUnredirectWindow (pClient, pChild, update);
+-	    if (!csw->clients)
+-	    {
++            if (!csw->clients) {
+ 		free(csw);
+ 		dixSetPrivate(&pWin->devPrivates, CompSubwindowsPrivateKey, 0);
+ 	    }
+@@ -422,8 +400,7 @@ compRedirectSubwindows (ClientPtr pClient, WindowPtr pWin, int update)
+     csw->clients = ccw;
+     if (!AddResource (ccw->id, CompositeClientSubwindowsType, pWin))
+ 	return BadAlloc;
+-    if (ccw->update == CompositeRedirectManual)
+-    {
++    if (ccw->update == CompositeRedirectManual) {
+ 	csw->update = CompositeRedirectManual;
+ 	/* 
+ 	 * tell damage extension that damage events for this client are
+@@ -448,15 +425,12 @@ compFreeClientSubwindows (WindowPtr pWin, XID id)
+ 
+     if (!csw)
+ 	return;
+-    for (prev = &csw->clients; (ccw = *prev); prev = &ccw->next)
+-    {
+-	if (ccw->id == id)
+-	{
++    for (prev = &csw->clients; (ccw = *prev); prev = &ccw->next) {
++        if (ccw->id == id) {
+ 	    ClientPtr	pClient = clients[CLIENT_ID(id)];
+ 	    
+ 	    *prev = ccw->next;
+-	    if (ccw->update == CompositeRedirectManual)
+-	    {
++            if (ccw->update == CompositeRedirectManual) {
+ 		/* 
+ 		 * tell damage extension that damage events for this client are
+ 		 * critical output
+@@ -465,7 +439,8 @@ compFreeClientSubwindows (WindowPtr pWin, XID id)
+ 		csw->update = CompositeRedirectAutomatic;
+ 		pWin->inhibitBGPaint = FALSE;
+ 		if (pWin->mapped)
+-		    (*pWin->drawable.pScreen->ClearToBackground)(pWin, 0, 0, 0, 0, TRUE);
++                    (*pWin->drawable.pScreen->ClearToBackground) (pWin, 0, 0, 0,
++                                                                  0, TRUE);
+ 	    }
+ 
+ 	    /*
+@@ -482,8 +457,7 @@ compFreeClientSubwindows (WindowPtr pWin, XID id)
+     /*
+      * Check if all of the per-client records are gone
+      */
+-    if (!csw->clients)
+-    {
++    if (!csw->clients) {
+ 	dixSetPrivate(&pWin->devPrivates, CompSubwindowsPrivateKey, NULL);
+ 	free(csw);
+     }
+@@ -502,8 +476,7 @@ compUnredirectSubwindows (ClientPtr pClient, WindowPtr pWin, int update)
+     if (!csw)
+ 	return BadValue;
+     for (ccw = csw->clients; ccw; ccw = ccw->next)
+-	if (ccw->update == update && CLIENT_ID(ccw->id) == pClient->index)
+-	{
++        if (ccw->update == update && CLIENT_ID(ccw->id) == pClient->index) {
+ 	    FreeResource (ccw->id, RT_NONE);
+ 	    return Success;
+ 	}
+@@ -522,10 +495,10 @@ compRedirectOneSubwindow (WindowPtr pParent, WindowPtr pWin)
+ 
+     if (!csw)
+ 	return Success;
+-    for (ccw = csw->clients; ccw; ccw = ccw->next)
+-    {
++    for (ccw = csw->clients; ccw; ccw = ccw->next) {
+ 	int ret = compRedirectWindow (clients[CLIENT_ID(ccw->id)],
+ 				      pWin, ccw->update);
++
+ 	if (ret != Success)
+ 	    return ret;
+     }
+@@ -544,10 +517,10 @@ compUnredirectOneSubwindow (WindowPtr pParent, WindowPtr pWin)
+ 
+     if (!csw)
+ 	return Success;
+-    for (ccw = csw->clients; ccw; ccw = ccw->next)
+-    {
++    for (ccw = csw->clients; ccw; ccw = ccw->next) {
+ 	int ret = compUnredirectWindow (clients[CLIENT_ID(ccw->id)],
+ 					pWin, ccw->update);
++
+ 	if (ret != Success)
+ 	    return ret;
+     }
+@@ -570,13 +543,12 @@ compNewPixmap (WindowPtr pWin, int x, int y, int w, int h)
+     pPixmap->screen_x = x;
+     pPixmap->screen_y = y;
+ 
+-    if (pParent->drawable.depth == pWin->drawable.depth)
+-    {
++    if (pParent->drawable.depth == pWin->drawable.depth) {
+ 	GCPtr	pGC = GetScratchGC (pWin->drawable.depth, pScreen);
+ 	
+-	if (pGC)
+-	{
++        if (pGC) {
+ 	    ChangeGCVal val;
++
+ 	    val.val = IncludeInferiors;
+ 	    ChangeGC (NullClient, pGC, GCSubwindowMode, &val);
+ 	    ValidateGC(&pPixmap->drawable, pGC);
+@@ -584,13 +556,11 @@ compNewPixmap (WindowPtr pWin, int x, int y, int w, int h)
+ 				   &pPixmap->drawable,
+ 				   pGC,
+ 				   x - pParent->drawable.x,
+-				   y - pParent->drawable.y,
+-				   w, h, 0, 0);
++                                   y - pParent->drawable.y, w, h, 0, 0);
+ 	    FreeScratchGC (pGC);
+ 	}
+     }
+-    else
+-    {
++    else {
+ 	PictFormatPtr	pSrcFormat = compWindowFormat (pParent);
+ 	PictFormatPtr	pDstFormat = compWindowFormat (pWin);
+ 	XID		inferiors = IncludeInferiors;
+@@ -609,15 +579,13 @@ compNewPixmap (WindowPtr pWin, int x, int y, int w, int h)
+ 						     0, 0,
+ 						     serverClient, &error);
+ 
+-	if (pSrcPicture && pDstPicture)
+-	{
++        if (pSrcPicture && pDstPicture) {
+ 	    CompositePicture (PictOpSrc,
+ 			      pSrcPicture,
+ 			      NULL,
+ 			      pDstPicture,
+ 			      x - pParent->drawable.x,
+-			      y - pParent->drawable.y,
+-			      0, 0, 0, 0, w, h);
++                             y - pParent->drawable.y, 0, 0, 0, 0, w, h);
+ 	}
+ 	if (pSrcPicture)
+ 	    FreePicture (pSrcPicture, 0);
+@@ -649,8 +617,7 @@ compAllocPixmap (WindowPtr pWin)
+     cw->oldx = COMP_ORIGIN_INVALID;
+     cw->oldy = COMP_ORIGIN_INVALID;
+     cw->damageRegistered = FALSE;
+-    if (cw->update == CompositeRedirectAutomatic)
+-    {
++    if (cw->update == CompositeRedirectAutomatic) {
+ 	DamageRegister (&pWin->drawable, cw->damage);
+ 	cw->damageRegistered = TRUE;
+     }
+@@ -671,8 +638,7 @@ compSetParentPixmap (WindowPtr pWin)
+     PixmapPtr	    pParentPixmap;
+     CompWindowPtr   cw = GetCompWindow (pWin);
+ 
+-    if (cw->damageRegistered)
+-    {
++    if (cw->damageRegistered) {
+ 	DamageUnregister (&pWin->drawable, cw->damage);
+ 	cw->damageRegistered = FALSE;
+ 	DamageEmpty (cw->damage);
+@@ -712,16 +678,14 @@ compReallocPixmap (WindowPtr pWin, int draw_x, int draw_y,
+     pix_y = draw_y - bw;
+     pix_w = w + (bw << 1);
+     pix_h = h + (bw << 1);
+-    if (pix_w != pOld->drawable.width || pix_h != pOld->drawable.height)
+-    {
++    if (pix_w != pOld->drawable.width || pix_h != pOld->drawable.height) {
+ 	pNew = compNewPixmap (pWin, pix_x, pix_y, pix_w, pix_h);
+ 	if (!pNew)
+ 	    return FALSE;
+ 	cw->pOldPixmap = pOld;
+ 	compSetPixmap (pWin, pNew);
+     }
+-    else
+-    {
++    else {
+ 	pNew = pOld;
+ 	cw->pOldPixmap = 0;
+     }

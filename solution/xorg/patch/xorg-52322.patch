@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index 7a23253..114bdc3 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -1459,8 +1459,9 @@ configInputDevices(XF86ConfLayoutPtr layout, serverLayoutPtr servlayoutp)
+     while (irp) {
+ 	indp[count] = xf86AllocateInput();
+ 	if (!configInput(indp[count], irp->iref_inputdev, X_CONFIG)) {
+-	    while(count--)
++	    do {
+ 		free(indp[count]);
++	    } while(count--);
+ 	    free(indp);
+ 	    return FALSE;
+ 	}

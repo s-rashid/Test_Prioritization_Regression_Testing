@@ -1,0 +1,28 @@
+diff --git a/exa/exa.c b/exa/exa.c
+index 608c81f..8d488b3 100644
+--- a/exa/exa.c
++++ b/exa/exa.c
+@@ -616,6 +616,10 @@ ExaDoPrepareAccess(DrawablePtr pDrawable, int index)
+ void
+ exaPrepareAccessReg(DrawablePtr pDrawable, int index, RegionPtr pReg)
+ {
++    PixmapPtr pPixmap = exaGetDrawablePixmap (pDrawable);
++    ExaPixmapPriv(pPixmap);
++
++    if (pExaPixmap->pDamage) {
+     ExaMigrationRec pixmaps[1];
+ 
+     if (index == EXA_PREPARE_DEST || index == EXA_PREPARE_AUX_DEST) {
+@@ -625,10 +629,11 @@ exaPrepareAccessReg(DrawablePtr pDrawable, int index, RegionPtr pReg)
+ 	pixmaps[0].as_dst = FALSE;
+ 	pixmaps[0].as_src = TRUE;
+     }
+-    pixmaps[0].pPix = exaGetDrawablePixmap (pDrawable);
++	pixmaps[0].pPix = pPixmap;
+     pixmaps[0].pReg = pReg;
+ 
+     exaDoMigration(pixmaps, 1, FALSE);
++    }
+ 
+     ExaDoPrepareAccess(pDrawable, index);
+ }

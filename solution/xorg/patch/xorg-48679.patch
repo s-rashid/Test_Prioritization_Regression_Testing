@@ -1,0 +1,13 @@
+diff --git a/xfixes/xfixes.c b/xfixes/xfixes.c
+index 5163dc1..49ed5a0 100644
+--- a/xfixes/xfixes.c
++++ b/xfixes/xfixes.c
+@@ -92,7 +92,7 @@ ProcXFixesQueryVersion(ClientPtr client)
+ 	swapl(&rep.minorVersion, n);
+     }
+     WriteToClient(client, sizeof(xXFixesQueryVersionReply), (char *)&rep);
+-    return(client->noClientException);
++    return Success;
+ }
+ 
+ /* Major version controls available requests */

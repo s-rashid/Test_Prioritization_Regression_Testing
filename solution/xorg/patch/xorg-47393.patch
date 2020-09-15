@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fbdev/fbdev.h b/hw/kdrive/fbdev/fbdev.h
+index 2125ec8..3da8e47 100644
+--- a/hw/kdrive/fbdev/fbdev.h
++++ b/hw/kdrive/fbdev/fbdev.h
+@@ -46,7 +46,6 @@ typedef struct _fbdevPriv {
+ typedef struct _fbdevScrPriv {
+     Rotation			randr;
+     Bool			shadow;
+-    PixmapPtr			pShadow;
+ } FbdevScrPriv;
+ 
+ extern KdCardFuncs  fbdevFuncs;

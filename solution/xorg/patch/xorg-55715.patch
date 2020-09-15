@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/xaa/xaacexp.h b/hw/xfree86/xaa/xaacexp.h
+index 56bcda6..6fde54c 100644
+--- a/hw/xfree86/xaa/xaacexp.h
++++ b/hw/xfree86/xaa/xaacexp.h
+@@ -1,5 +1,4 @@
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif

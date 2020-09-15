@@ -1,0 +1,54 @@
+diff --git a/hw/xfree86/os-support/misc/SlowBcopy.c b/hw/xfree86/os-support/misc/SlowBcopy.c
+index 182a3e6..0021b55 100644
+--- a/hw/xfree86/os-support/misc/SlowBcopy.c
++++ b/hw/xfree86/os-support/misc/SlowBcopy.c
+@@ -59,10 +59,16 @@ xf86SlowBcopy(unsigned char *src, unsigned char *dst, int len)
+ 
+ #ifdef linux
+ 
++unsigned long _bus_base(void);
++
++#define useSparse() (!_bus_base())
++
+ #define SPARSE (7)
+ 
+ #else
+ 
++#define useSparse() 0
++
+ #define SPARSE 0
+ 
+ #endif
+@@ -70,6 +76,8 @@ xf86SlowBcopy(unsigned char *src, unsigned char *dst, int len)
+ void
+ xf86SlowBCopyFromBus(unsigned char *src, unsigned char *dst, int count)
+ {
++	if (useSparse())
++	{
+     unsigned long addr;
+     long result;
+ 
+@@ -83,10 +91,15 @@ xf86SlowBCopyFromBus(unsigned char *src, unsigned char *dst, int count)
+ 	outb(0x80, 0x00);
+     }
+ }
++	else
++		xf86SlowBcopy(src, dst, count);
++}
+   
+ void
+ xf86SlowBCopyToBus(unsigned char *src, unsigned char *dst, int count)
+ {
++	if (useSparse())
++	{
+     unsigned long addr;
+ 
+     addr = (unsigned long) dst;
+@@ -98,4 +111,7 @@ xf86SlowBCopyToBus(unsigned char *src, unsigned char *dst, int count)
+ 	outb(0x80, 0x00);
+     }
+ }
++	else
++		xf86SlowBcopy(src, dst, count);
++}
+ #endif

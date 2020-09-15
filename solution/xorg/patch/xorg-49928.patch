@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/parser/Configint.h b/hw/xfree86/parser/Configint.h
+index 03509b3..dda020e 100644
+--- a/hw/xfree86/parser/Configint.h
++++ b/hw/xfree86/parser/Configint.h
+@@ -105,7 +105,7 @@ if( (ptr=calloc(1,sizeof(typerec))) == NULL ) { return; }
+ if ((ptr->f=func) == NULL)\
+ {\
+ 	CLEANUP (ptr);\
+-	return (NULL);\
++	return NULL;\
+ }
+ 
+ #define HANDLE_LIST(field,func,type)\
+@@ -114,7 +114,7 @@ type p = func ();\
+ if (p == NULL)\
+ {\
+ 	CLEANUP (ptr);\
+-	return (NULL);\
++	return NULL;\
+ }\
+ else\
+ {\

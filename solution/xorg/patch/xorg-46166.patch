@@ -1,0 +1,15 @@
+diff --git a/Xi/xisetdevfocus.h b/Xi/xisetdevfocus.h
+index eb584eb..2c3243d 100644
+--- a/Xi/xisetdevfocus.h
++++ b/Xi/xisetdevfocus.h
+@@ -23,6 +23,10 @@
+  * Author: Peter Hutterer
+  */
+ 
++#ifdef HAVE_DIX_CONFIG_H
++#include <dix-config.h>
++#endif
++
+ #ifndef XISETDEVFOCUS_H
+ #define XISETDEVFOCUS_H 1
+ 

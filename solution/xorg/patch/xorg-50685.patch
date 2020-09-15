@@ -1,0 +1,12 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index ec9749e..dfab791 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -218,6 +218,7 @@ typedef struct _AxisInfo {
+     int		min_value;
+     int		max_value;
+     Atom	label;
++    CARD8	mode;
+ } AxisInfo, *AxisInfoPtr;
+ 
+ typedef struct _ValuatorAccelerationRec {

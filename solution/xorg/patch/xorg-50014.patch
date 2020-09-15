@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/xaa/xaaNonTEText.c b/hw/xfree86/xaa/xaaNonTEText.c
+index a7fcf7a..7bfddcb 100644
+--- a/hw/xfree86/xaa/xaaNonTEText.c
++++ b/hw/xfree86/xaa/xaaNonTEText.c
+@@ -82,7 +82,7 @@ XAAPolyText8NonTEColorExpansion(
+  		infoRec->CharInfo);
+     }
+ 
+-    return (x + width);
++    return x + width;
+ }
+ 
+ 
+@@ -112,7 +112,7 @@ XAAPolyText16NonTEColorExpansion(
+ 		infoRec->CharInfo);
+     }
+ 
+-    return (x + width);
++    return x + width;
+ }
+ 
+ 

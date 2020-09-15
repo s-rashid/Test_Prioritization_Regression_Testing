@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/wingetsp.c b/hw/xwin/wingetsp.c
+index db914c9..8220812 100644
+--- a/hw/xwin/wingetsp.c
++++ b/hw/xwin/wingetsp.c
+@@ -177,10 +177,6 @@ winGetSpansNativeGDI (DrawablePtr	pDrawable,
+       DeleteDC (hdcMem);
+       break;
+ 
+-    case UNDRAWABLE_WINDOW:
+-      FatalError ("winGetSpans - UNDRAWABLE_WINDOW\n");
+-      break;
+-
+     default:
+       FatalError ("winGetSpans - Unknown drawable type\n");
+       break;

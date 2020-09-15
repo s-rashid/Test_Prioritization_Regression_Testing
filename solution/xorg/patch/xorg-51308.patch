@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/X11Application.h b/hw/xquartz/X11Application.h
+index 4621284..b3ad19b 100644
+--- a/hw/xquartz/X11Application.h
++++ b/hw/xquartz/X11Application.h
+@@ -77,7 +77,6 @@ void X11ApplicationMain(int argc, char **argv, char **envp);
+ 
+ #define PREFS_APPSMENU              "apps_menu"
+ #define PREFS_FAKEBUTTONS           "enable_fake_buttons"
+-#define PREFS_SYSBEEP               "enable_system_beep"
+ #define PREFS_KEYEQUIVS             "enable_key_equivalents"
+ #define PREFS_FULLSCREEN_HOTKEYS    "fullscreen_hotkeys"
+ #define PREFS_FULLSCREEN_MENU       "fullscreen_menu"

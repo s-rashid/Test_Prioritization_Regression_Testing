@@ -1,0 +1,774 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 18d5e46..159153c 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -26,7 +26,6 @@ in this Software without prior written authorization from the X Consortium.
+  * Author:  Keith Packard, MIT X Consortium
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -62,35 +61,28 @@ in this Software without prior written authorization from the X Consortium.
+ 
+ static int ScreenSaverEventBase = 0;
+ 
+-
+-static Bool ScreenSaverHandle (
+-	ScreenPtr /* pScreen */,
++static Bool ScreenSaverHandle(ScreenPtr /* pScreen */ ,
+ 	int /* xstate */,
+ 	Bool /* force */
+ 	);
+ 
+ static Bool
+-CreateSaverWindow (
+-	ScreenPtr /* pScreen */
++ CreateSaverWindow(ScreenPtr    /* pScreen */
+ 	);
+ 
+ static Bool
+-DestroySaverWindow (
+-	ScreenPtr /* pScreen */
++ DestroySaverWindow(ScreenPtr   /* pScreen */
+ 	);
+ 
+ static void
+-UninstallSaverColormap (
+-	ScreenPtr /* pScreen */
++ UninstallSaverColormap(ScreenPtr       /* pScreen */
+ 	);
+ 
+ static void
+-CheckScreenPrivate (
+-	ScreenPtr /* pScreen */
++ CheckScreenPrivate(ScreenPtr   /* pScreen */
+ 	);
+ 
+-static void SScreenSaverNotifyEvent (
+-	xScreenSaverNotifyEvent * /* from */,
++static void SScreenSaverNotifyEvent(xScreenSaverNotifyEvent * /* from */ ,
+ 	xScreenSaverNotifyEvent * /* to */
+ 	);
+ 
+@@ -107,16 +99,14 @@ static ScreenSaverSuspensionPtr suspendingClients = NULL;
+  * the client disconnects. count is the number of times the client has
+  * requested the screensaver be suspended.
+  */
+-typedef struct _ScreenSaverSuspension
+-{
++typedef struct _ScreenSaverSuspension {
+     ScreenSaverSuspensionPtr  next;
+     ClientPtr                 pClient;
+     XID                       clientResource;
+     int                       count;
+ } ScreenSaverSuspensionRec;
+ 
+-static int ScreenSaverFreeSuspend(
+-    pointer /*value */,
++static int ScreenSaverFreeSuspend(pointer /*value */ ,
+     XID /* id */
+ );
+ 
+@@ -140,19 +130,16 @@ typedef struct _ScreenSaverEvent {
+     CARD32		mask;
+ } ScreenSaverEventRec;
+ 
+-static int ScreenSaverFreeEvents(
+-    pointer /* value */,
++static int ScreenSaverFreeEvents(pointer /* value */ ,
+     XID /* id */
+ );
+ 
+-static Bool setEventMask (
+-    ScreenPtr /* pScreen */,
++static Bool setEventMask(ScreenPtr /* pScreen */ ,
+     ClientPtr /* client */,
+     unsigned long /* mask */
+ );
+ 
+-static unsigned long getEventMask (
+-    ScreenPtr /* pScreen */,
++static unsigned long getEventMask(ScreenPtr /* pScreen */ ,
+     ClientPtr /* client */
+ );
+ 
+@@ -180,22 +167,18 @@ typedef struct _ScreenSaverAttr {
+     unsigned long   *values;
+ } ScreenSaverAttrRec, *ScreenSaverAttrPtr;
+ 
+-static int ScreenSaverFreeAttr (
+-    pointer /* value */,
++static int ScreenSaverFreeAttr(pointer /* value */ ,
+     XID /* id */
+ );
+ 
+-static void FreeAttrs (
+-    ScreenSaverAttrPtr	/* pAttr */
++static void FreeAttrs(ScreenSaverAttrPtr        /* pAttr */
+ );
+ 
+-static void FreeScreenAttr (
+-    ScreenSaverAttrPtr	/* pAttr */
++static void FreeScreenAttr(ScreenSaverAttrPtr   /* pAttr */
+ );
+ 
+ static void
+-SendScreenSaverNotify (
+-    ScreenPtr /* pScreen */,
++ SendScreenSaverNotify(ScreenPtr /* pScreen */ ,
+     int /* state */,
+     Bool /* forced */
+ );
+@@ -207,12 +190,11 @@ typedef struct _ScreenSaverScreenPrivate {
+     Colormap		    installedMap;
+ } ScreenSaverScreenPrivateRec, *ScreenSaverScreenPrivatePtr;
+ 
+-static ScreenSaverScreenPrivatePtr
+-MakeScreenPrivate (
+-	ScreenPtr /* pScreen */
++static ScreenSaverScreenPrivatePtr MakeScreenPrivate(ScreenPtr  /* pScreen */
+ 	);
+ 
+ static DevPrivateKeyRec ScreenPrivateKeyRec;
++
+ #define ScreenPrivateKey (&ScreenPrivateKeyRec)
+ 
+ #define GetScreenPrivate(s) ((ScreenSaverScreenPrivatePtr) \
+@@ -231,8 +213,7 @@ CheckScreenPrivate (ScreenPtr pScreen)
+     if (!pPriv)
+ 	return;
+     if (!pPriv->attr && !pPriv->events &&
+-	!pPriv->hasWindow && pPriv->installedMap == None)
+-    {
++        !pPriv->hasWindow && pPriv->installedMap == None) {
+ 	free(pPriv);
+ 	SetScreenPrivate (pScreen, NULL);
+ 	pScreen->screensaver.ExternalScreenSaver = NULL;
+@@ -280,8 +261,7 @@ setEventMask (ScreenPtr pScreen, ClientPtr client, unsigned long mask)
+ 
+     if (getEventMask (pScreen, client) == mask)
+ 	return TRUE;
+-    if (!pPriv)
+-    {
++    if (!pPriv) {
+ 	pPriv = MakeScreenPrivate (pScreen);
+ 	if (!pPriv)
+ 	    return FALSE;
+@@ -289,20 +269,16 @@ setEventMask (ScreenPtr pScreen, ClientPtr client, unsigned long mask)
+     for (pPrev = &pPriv->events; (pEv = *pPrev) != 0; pPrev = &pEv->next)
+ 	if (pEv->client == client)
+ 	    break;
+-    if (mask == 0)
+-    {
++    if (mask == 0) {
+ 	FreeResource (pEv->resource, SaverEventType);
+ 	*pPrev = pEv->next;
+ 	free(pEv);
+ 	CheckScreenPrivate (pScreen);
+     }
+-    else
+-    {
+-    	if (!pEv) 
+-    	{
++    else {
++        if (!pEv) {
+ 	    pEv = New (ScreenSaverEventRec);
+-	    if (!pEv) 
+-	    {
++            if (!pEv) {
+ 		CheckScreenPrivate (pScreen);
+ 	    	return FALSE;
+ 	    }
+@@ -346,6 +322,7 @@ ScreenSaverFreeEvents (pointer value, XID id)
+ {
+     ScreenSaverEventPtr	pOld = (ScreenSaverEventPtr)value;
+     ScreenPtr pScreen = pOld->screen;
++
+     SetupScreen (pScreen);
+     ScreenSaverEventPtr	pEv, *pPrev;
+ 
+@@ -367,6 +344,7 @@ ScreenSaverFreeAttr (pointer value, XID id)
+ {
+     ScreenSaverAttrPtr	pOldAttr = (ScreenSaverAttrPtr)value;
+     ScreenPtr	pScreen = pOldAttr->screen;
++
+     SetupScreen (pScreen);
+ 
+     if (!pPriv)
+@@ -375,8 +353,7 @@ ScreenSaverFreeAttr (pointer value, XID id)
+ 	return TRUE;
+     FreeScreenAttr (pOldAttr);
+     pPriv->attr = NULL;
+-    if (pPriv->hasWindow)
+-    {
++    if (pPriv->hasWindow) {
+ 	dixSaveScreens (serverClient, SCREEN_SAVER_FORCER, ScreenSaverReset);
+ 	dixSaveScreens (serverClient, SCREEN_SAVER_FORCER, ScreenSaverActive);
+     }
+@@ -391,10 +368,8 @@ ScreenSaverFreeSuspend (pointer value, XID id)
+     ScreenSaverSuspensionPtr *prev, this;
+ 
+     /* Unlink and free the suspension record for the client */
+-    for (prev = &suspendingClients; (this = *prev); prev = &this->next)
+-    {
+-	if (this == data)
+-	{
++    for (prev = &suspendingClients; (this = *prev); prev = &this->next) {
++        if (this == data) {
+ 	    *prev = this->next;
+ 	    free(this);
+ 	    break;
+@@ -402,8 +377,7 @@ ScreenSaverFreeSuspend (pointer value, XID id)
+     }
+ 
+     /* Reenable the screensaver if this was the last client suspending it. */
+-    if (screenSaverSuspended && suspendingClients == NULL)
+-    {
++    if (screenSaverSuspended && suspendingClients == NULL) {
+ 	screenSaverSuspended = FALSE;
+ 
+ 	/* The screensaver could be active, since suspending it (by design)
+@@ -446,8 +420,7 @@ SendScreenSaverNotify (ScreenPtr pScreen, int state, Bool forced)
+ 	kind = ScreenSaverBlanked;
+     else
+ 	kind = ScreenSaverInternal;
+-    for (pEv = pPriv->events; pEv; pEv = pEv->next)
+-    {
++    for (pEv = pPriv->events; pEv; pEv = pEv->next) {
+ 	if (!(pEv->mask & mask))
+ 	    continue;
+ 	ev.type = ScreenSaverNotify + ScreenSaverEventBase;
+@@ -482,8 +455,7 @@ UninstallSaverColormap (ScreenPtr pScreen)
+     ColormapPtr			pCmap;
+     int rc;
+ 
+-    if (pPriv && pPriv->installedMap != None)
+-    {
++    if (pPriv && pPriv->installedMap != None) {
+ 	rc = dixLookupResourceByType((pointer *)&pCmap, pPriv->installedMap,
+ 				     RT_COLORMAP, serverClient,
+ 				     DixUninstallAccess);
+@@ -510,12 +482,10 @@ CreateSaverWindow (ScreenPtr pScreen)
+     ColormapPtr			pCmap;
+ 
+     pSaver = &pScreen->screensaver;
+-    if (pSaver->pWindow)
+-    {
++    if (pSaver->pWindow) {
+ 	pSaver->pWindow = NullWindow;
+ 	FreeResource (pSaver->wid, RT_NONE);
+-	if (pPriv)
+-	{
++        if (pPriv) {
+ 	    UninstallSaverColormap (pScreen);
+ 	    pPriv->hasWindow = FALSE;
+ 	    CheckScreenPrivate (pScreen);
+@@ -534,8 +504,7 @@ CreateSaverWindow (ScreenPtr pScreen)
+ 			 pAttr->x, pAttr->y, pAttr->width, pAttr->height,
+ 			 pAttr->borderWidth, pAttr->class, 
+ 			 pAttr->mask, (XID *)pAttr->values, 
+-			 pAttr->depth, serverClient, pAttr->visual, 
+-			 &result);
++                        pAttr->depth, serverClient, pAttr->visual, &result);
+     if (!pWin)
+ 	return FALSE;
+ 
+@@ -543,25 +512,21 @@ CreateSaverWindow (ScreenPtr pScreen)
+ 	return FALSE;
+ 
+     mask = 0;
+-    if (pAttr->pBackgroundPixmap)
+-    {
++    if (pAttr->pBackgroundPixmap) {
+ 	pWin->backgroundState = BackgroundPixmap;
+ 	pWin->background.pixmap = pAttr->pBackgroundPixmap;
+ 	pAttr->pBackgroundPixmap->refcnt++;
+ 	mask |= CWBackPixmap;
+     }
+-    if (pAttr->pBorderPixmap)
+-    {
++    if (pAttr->pBorderPixmap) {
+ 	pWin->borderIsPixel = FALSE;
+ 	pWin->border.pixmap = pAttr->pBorderPixmap;
+ 	pAttr->pBorderPixmap->refcnt++;
+ 	mask |= CWBorderPixmap;
+     }
+-    if (pAttr->pCursor)
+-    {
++    if (pAttr->pCursor) {
+ 	if (!pWin->optional)
+-	    if (!MakeWindowOptional (pWin))
+-	    {
++            if (!MakeWindowOptional(pWin)) {
+     	    	FreeResource (pWin->drawable.id, RT_NONE);
+     	    	return FALSE;
+ 	    }
+@@ -623,8 +588,7 @@ DestroySaverWindow (ScreenPtr pScreen)
+ 	return FALSE;
+ 
+     pSaver = &pScreen->screensaver;
+-    if (pSaver->pWindow)
+-    {
++    if (pSaver->pWindow) {
+ 	pSaver->pWindow = NullWindow;
+ 	FreeResource (pSaver->wid, RT_NONE);
+     }
+@@ -641,8 +605,7 @@ ScreenSaverHandle (ScreenPtr pScreen, int xstate, Bool force)
+     Bool			ret = FALSE;
+     ScreenSaverScreenPrivatePtr	pPriv;
+ 
+-    switch (xstate)
+-    {
++    switch (xstate) {
+     case SCREEN_SAVER_ON:	
+ 	state = ScreenSaverOn;
+ 	ret = CreateSaverWindow (pScreen);
+@@ -669,6 +632,7 @@ static int
+ ProcScreenSaverQueryVersion (ClientPtr client)
+ {
+     xScreenSaverQueryVersionReply	rep;
++
+     REQUEST_SIZE_MATCH (xScreenSaverQueryVersionReq);
+     rep.type = X_Reply;
+     rep.length = 0;
+@@ -714,26 +678,22 @@ ProcScreenSaverQueryInfo (ClientPtr client)
+     rep.length = 0;
+     rep.sequenceNumber = client->sequence;
+     rep.window = pSaver->wid;
+-    if (screenIsSaved != SCREEN_SAVER_OFF)
+-    {
++    if (screenIsSaved != SCREEN_SAVER_OFF) {
+ 	rep.state = ScreenSaverOn;
+ 	if (ScreenSaverTime)
+ 	    rep.tilOrSince = lastInput - ScreenSaverTime;
+ 	else
+ 	    rep.tilOrSince = 0;
+     }
+-    else
+-    {
+-	if (ScreenSaverTime)
+-	{
++    else {
++        if (ScreenSaverTime) {
+ 	    rep.state = ScreenSaverOff;
+ 	    if (ScreenSaverTime < lastInput)
+ 		rep.tilOrSince = 0;
+ 	    else
+ 		rep.tilOrSince = ScreenSaverTime - lastInput;
+ 	}
+-	else
+-	{
++        else {
+ 	    rep.state = ScreenSaverDisabled;
+ 	    rep.tilOrSince = 0;
+ 	}
+@@ -746,8 +706,7 @@ ProcScreenSaverQueryInfo (ClientPtr client)
+ 	rep.kind = ScreenSaverBlanked;
+     else
+ 	rep.kind = ScreenSaverInternal;
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swapl(&rep.window);
+@@ -823,13 +782,11 @@ ScreenSaverSetAttributes (ClientPtr client)
+     len = stuff->length -  bytes_to_int32(sizeof(xScreenSaverSetAttributesReq));
+     if (Ones(stuff->mask) != len)
+         return BadLength;
+-    if (!stuff->width || !stuff->height)
+-    {
++    if (!stuff->width || !stuff->height) {
+ 	client->errorValue = 0;
+         return BadValue;
+     }
+-    switch (class = stuff->c_class) 
+-    {
++    switch (class = stuff->c_class) {
+     case CopyFromParent:
+     case InputOnly:
+     case InputOutput:
+@@ -847,8 +804,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+     if (class == CopyFromParent)
+ 	class = pParent->drawable.class;
+ 
+-    if ((class != InputOutput) && (class != InputOnly))
+-    {
++    if ((class != InputOutput) && (class != InputOnly)) {
+ 	client->errorValue = class;
+ 	return BadValue;
+     }
+@@ -868,18 +824,13 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	visual = ancwopt->visual;
+ 
+     /* Find out if the depth and visual are acceptable for this Screen */
+-    if ((visual != ancwopt->visual) || (depth != pParent->drawable.depth))
+-    {
++    if ((visual != ancwopt->visual) || (depth != pParent->drawable.depth)) {
+ 	fOK = FALSE;
+-	for(idepth = 0; idepth < pScreen->numDepths; idepth++)
+-	{
++        for (idepth = 0; idepth < pScreen->numDepths; idepth++) {
+ 	    pDepth = (DepthPtr) &pScreen->allowedDepths[idepth];
+-	    if ((depth == pDepth->depth) || (depth == 0))
+-	    {
+-		for (ivisual = 0; ivisual < pDepth->numVids; ivisual++)
+-		{
+-		    if (visual == pDepth->vids[ivisual])
+-		    {
++            if ((depth == pDepth->depth) || (depth == 0)) {
++                for (ivisual = 0; ivisual < pDepth->numVids; ivisual++) {
++                    if (visual == pDepth->vids[ivisual]) {
+ 			fOK = TRUE;
+ 			break;
+ 		    }
+@@ -891,43 +842,36 @@ ScreenSaverSetAttributes (ClientPtr client)
+     }
+ 
+     if (((stuff->mask & (CWBorderPixmap | CWBorderPixel)) == 0) &&
+-	(class != InputOnly) &&
+-	(depth != pParent->drawable.depth))
+-    {
++        (class != InputOnly) && (depth != pParent->drawable.depth)) {
+         return BadMatch;
+     }
+ 
+     if (((stuff->mask & CWColormap) == 0) &&
+ 	(class != InputOnly) &&
+-	((visual != ancwopt->visual) || (ancwopt->colormap == None)))
+-    {
++        ((visual != ancwopt->visual) || (ancwopt->colormap == None))) {
+ 	return BadMatch;
+     }
+ 
+     /* end of errors from CreateWindow */
+ 
+     pPriv = GetScreenPrivate (pScreen);
+-    if (pPriv && pPriv->attr)
+-    {
++    if (pPriv && pPriv->attr) {
+ 	if (pPriv->attr->client != client)
+ 	    return BadAccess;
+     }
+-    if (!pPriv)
+-    {
++    if (!pPriv) {
+ 	pPriv = MakeScreenPrivate (pScreen);
+ 	if (!pPriv)
+ 	    return FALSE;
+     }
+     pAttr = New (ScreenSaverAttrRec);
+-    if (!pAttr)
+-    {
++    if (!pAttr) {
+ 	ret = BadAlloc;
+ 	goto bail;
+     }
+     /* over allocate for override redirect */
+     pAttr->values = values = malloc((len + 1) * sizeof (unsigned long));
+-    if (!values)
+-    {
++    if (!values) {
+ 	ret = BadAlloc;
+ 	goto bail;
+     }
+@@ -955,32 +899,26 @@ ScreenSaverSetAttributes (ClientPtr client)
+     while (tmask) {
+ 	imask = lowbit (tmask);
+ 	tmask &= ~imask;
+-	switch (imask)
+-        {
++        switch (imask) {
+ 	case CWBackPixmap:
+ 	    pixID = (Pixmap )*pVlist;
+-	    if (pixID == None)
+-	    {
++            if (pixID == None) {
+ 		*values++ = None;
+ 	    }
+-	    else if (pixID == ParentRelative)
+-	    {
+-		if (depth != pParent->drawable.depth)
+-		{
++            else if (pixID == ParentRelative) {
++                if (depth != pParent->drawable.depth) {
+ 		    ret = BadMatch;
+ 		    goto PatchUp;
+ 		}
+ 		*values++ = ParentRelative;
+ 	    }
+-            else
+-	    {	
+-		ret = dixLookupResourceByType((pointer *)&pPixmap, pixID, RT_PIXMAP,
+-					client, DixReadAccess);
+-		if (ret == Success)
+-		{
++            else {
++                ret =
++                    dixLookupResourceByType((pointer *) &pPixmap, pixID,
++                                            RT_PIXMAP, client, DixReadAccess);
++                if (ret == Success) {
+                     if  ((pPixmap->drawable.depth != depth) ||
+-			 (pPixmap->drawable.pScreen != pScreen))
+-		    {
++                        (pPixmap->drawable.pScreen != pScreen)) {
+                         ret = BadMatch;
+ 			goto PatchUp;
+ 		    }
+@@ -988,8 +926,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 		    pPixmap->refcnt++;
+ 		    pAttr->mask &= ~CWBackPixmap;
+ 		}
+-	        else
+-		{
++                else {
+ 		    client->errorValue = pixID;
+ 		    goto PatchUp;
+ 		}
+@@ -1000,24 +937,20 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    break;
+ 	case CWBorderPixmap:
+ 	    pixID = (Pixmap ) *pVlist;
+-	    if (pixID == CopyFromParent)
+-	    {
+-		if (depth != pParent->drawable.depth)
+-		{
++            if (pixID == CopyFromParent) {
++                if (depth != pParent->drawable.depth) {
+ 		    ret = BadMatch;
+ 		    goto PatchUp;
+ 		}
+ 		*values++ = CopyFromParent;
+ 	    }
+-	    else
+-	    {	
+-		ret = dixLookupResourceByType((pointer *)&pPixmap, pixID, RT_PIXMAP,
+-					client, DixReadAccess);
+-		if (ret == Success)
+-		{
++            else {
++                ret =
++                    dixLookupResourceByType((pointer *) &pPixmap, pixID,
++                                            RT_PIXMAP, client, DixReadAccess);
++                if (ret == Success) {
+                     if  ((pPixmap->drawable.depth != depth) ||
+-			 (pPixmap->drawable.pScreen != pScreen))
+-		    {
++                        (pPixmap->drawable.pScreen != pScreen)) {
+ 			ret = BadMatch;
+ 			goto PatchUp;
+ 		    }
+@@ -1025,8 +958,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 		    pPixmap->refcnt++;
+ 		    pAttr->mask &= ~CWBorderPixmap;
+ 		}
+-    	        else
+-		{
++                else {
+ 		    client->errorValue = pixID;
+ 		    goto PatchUp;
+ 		}
+@@ -1037,8 +969,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+             break;
+ 	case CWBitGravity:
+ 	    val = (CARD8 )*pVlist;
+-	    if (val > StaticGravity)
+-	    {
++            if (val > StaticGravity) {
+ 		ret = BadValue;
+ 		client->errorValue = val;
+ 		goto PatchUp;
+@@ -1047,8 +978,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    break;
+ 	case CWWinGravity:
+ 	    val = (CARD8 )*pVlist;
+-	    if (val > StaticGravity)
+-	    {
++            if (val > StaticGravity) {
+ 		ret = BadValue;
+ 		client->errorValue = val;
+ 		goto PatchUp;
+@@ -1057,8 +987,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    break;
+ 	case CWBackingStore:
+ 	    val = (CARD8 )*pVlist;
+-	    if ((val != NotUseful) && (val != WhenMapped) && (val != Always))
+-	    {
++            if ((val != NotUseful) && (val != WhenMapped) && (val != Always)) {
+ 		ret = BadValue;
+ 		client->errorValue = val;
+ 		goto PatchUp;
+@@ -1073,8 +1002,7 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    break;
+ 	case CWSaveUnder:
+ 	    val = (BOOL) *pVlist;
+-	    if ((val != xTrue) && (val != xFalse))
+-	    {
++            if ((val != xTrue) && (val != xFalse)) {
+ 		ret = BadValue;
+ 		client->errorValue = val;
+ 		goto PatchUp;
+@@ -1090,11 +1018,9 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	case CWOverrideRedirect:
+ 	    if (!(stuff->mask & CWOverrideRedirect))
+ 		pVlist--;
+-	    else
+-	    {
++            else {
+ 	    	val = (BOOL ) *pVlist;
+-	    	if ((val != xTrue) && (val != xFalse))
+-	    	{
++                if ((val != xTrue) && (val != xFalse)) {
+ 		    ret = BadValue;
+ 		    client->errorValue = val;
+ 		    goto PatchUp;
+@@ -1106,13 +1032,11 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    cmap = (Colormap) *pVlist;
+ 	    ret = dixLookupResourceByType((pointer *)&pCmap, cmap, RT_COLORMAP,
+ 				    client, DixUseAccess);
+-	    if (ret != Success)
+-	    {
++            if (ret != Success) {
+ 		client->errorValue = cmap;
+ 		goto PatchUp;
+ 	    }
+-	    if (pCmap->pVisual->vid != visual || pCmap->pScreen != pScreen)
+-	    {
++            if (pCmap->pVisual->vid != visual || pCmap->pScreen != pScreen) {
+ 		ret = BadMatch;
+ 		goto PatchUp;
+ 	    }
+@@ -1121,16 +1045,13 @@ ScreenSaverSetAttributes (ClientPtr client)
+ 	    break;
+ 	case CWCursor:
+ 	    cursorID = (Cursor ) *pVlist;
+-	    if ( cursorID == None)
+-	    {
++            if (cursorID == None) {
+ 		*values++ = None;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		ret = dixLookupResourceByType((pointer *)&pCursor, cursorID,
+ 					RT_CURSOR, client, DixUseAccess);
+-	    	if (ret != Success)
+-	    	{
++                if (ret != Success) {
+ 		    client->errorValue = cursorID;
+ 		    goto PatchUp;
+ 	    	}
+@@ -1157,7 +1078,8 @@ PatchUp:
+     FreeAttrs (pAttr);
+ bail:
+     CheckScreenPrivate (pScreen);
+-    if (pAttr) free(pAttr->values);
++    if (pAttr)
++        free(pAttr->values);
+     free(pAttr);
+     return ret;
+ }
+@@ -1176,8 +1098,7 @@ ScreenSaverUnsetAttributes (ClientPtr client)
+     if (rc != Success)
+ 	return rc;
+     pPriv = GetScreenPrivate (pDraw->pScreen);
+-    if (pPriv && pPriv->attr && pPriv->attr->client == client)
+-    {
++    if (pPriv && pPriv->attr && pPriv->attr->client == client) {
+ 	FreeResource (pPriv->attr->resource, AttrType);
+     	FreeScreenAttr (pPriv->attr);
+ 	pPriv->attr = NULL;
+@@ -1207,7 +1128,9 @@ ProcScreenSaverSetAttributes (ClientPtr client)
+        if (status != Success)
+            return (status == BadValue) ? BadDrawable : status;
+ 
+-       len = stuff->length -  bytes_to_int32(sizeof(xScreenSaverSetAttributesReq));
++        len =
++            stuff->length -
++            bytes_to_int32(sizeof(xScreenSaverSetAttributesReq));
+        if (Ones(stuff->mask) != len)
+            return BadLength;
+ 
+@@ -1310,8 +1233,7 @@ ProcScreenSaverSuspend (ClientPtr client)
+ 	if (this->pClient == client)
+ 	    break;
+ 
+-    if (this)
+-    {
++    if (this) {
+ 	if (stuff->suspend == TRUE)
+ 	   this->count++;
+ 	else if (--this->count == 0)
+@@ -1340,15 +1262,13 @@ ProcScreenSaverSuspend (ClientPtr client)
+     this->count          = 1;
+     this->clientResource = FakeClientID (client->index);
+ 
+-    if (!AddResource (this->clientResource, SuspendType, (pointer) this))
+-    {
++    if (!AddResource(this->clientResource, SuspendType, (pointer) this)) {
+ 	free(this);
+ 	return BadAlloc;
+     }
+ 
+     *prev = this;
+-    if (!screenSaverSuspended)
+-    {
++    if (!screenSaverSuspended) {
+ 	screenSaverSuspended = TRUE;
+ 	FreeScreenSaverTimer();
+     }
+@@ -1361,9 +1281,7 @@ static int (*NormalVector[]) (ClientPtr /* client */) = {
+     ProcScreenSaverQueryInfo,
+     ProcScreenSaverSelectInput,
+     ProcScreenSaverSetAttributes,
+-    ProcScreenSaverUnsetAttributes,
+-    ProcScreenSaverSuspend,
+-};
++        ProcScreenSaverUnsetAttributes, ProcScreenSaverSuspend,};
+ 
+ #define NUM_REQUESTS	((sizeof NormalVector) / (sizeof NormalVector[0]))
+ 
+@@ -1450,9 +1368,7 @@ static int (*SwappedVector[]) (ClientPtr /* client */) = {
+     SProcScreenSaverQueryInfo,
+     SProcScreenSaverSelectInput,
+     SProcScreenSaverSetAttributes,
+-    SProcScreenSaverUnsetAttributes,
+-    SProcScreenSaverSuspend,
+-};
++        SProcScreenSaverUnsetAttributes, SProcScreenSaverSuspend,};
+ 
+ static int
+ SProcScreenSaverDispatch (ClientPtr client)
+@@ -1475,22 +1391,20 @@ ScreenSaverExtensionInit(INITARGS)
+ 	return;
+ 
+     AttrType = CreateNewResourceType(ScreenSaverFreeAttr, "SaverAttr");
+-    SaverEventType = CreateNewResourceType(ScreenSaverFreeEvents,
+-					   "SaverEvent");
+-    SuspendType = CreateNewResourceType(ScreenSaverFreeSuspend,
+-					"SaverSuspend");
++    SaverEventType = CreateNewResourceType(ScreenSaverFreeEvents, "SaverEvent");
++    SuspendType = CreateNewResourceType(ScreenSaverFreeSuspend, "SaverSuspend");
+ 
+-    for (i = 0; i < screenInfo.numScreens; i++)
+-    {
++    for (i = 0; i < screenInfo.numScreens; i++) {
+ 	pScreen = screenInfo.screens[i];
+ 	SetScreenPrivate (pScreen, NULL);
+     }
+     if (AttrType && SaverEventType && SuspendType &&
+ 	(extEntry = AddExtension(ScreenSaverName, ScreenSaverNumberEvents, 0,
+-				 ProcScreenSaverDispatch, SProcScreenSaverDispatch,
+-				 NULL, StandardMinorOpcode)))
+-    {
++                                 ProcScreenSaverDispatch,
++                                 SProcScreenSaverDispatch, NULL,
++                                 StandardMinorOpcode))) {
+ 	ScreenSaverEventBase = extEntry->eventBase;
+-	EventSwapVector[ScreenSaverEventBase] = (EventSwapPtr) SScreenSaverNotifyEvent;
++        EventSwapVector[ScreenSaverEventBase] =
++            (EventSwapPtr) SScreenSaverNotifyEvent;
+     }
+ }

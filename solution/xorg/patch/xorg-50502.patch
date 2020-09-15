@@ -1,0 +1,17 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index 8f0ddd9..f7dde6e 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -80,12 +80,6 @@ static void XF86BigfontResetProc(
+     ExtensionEntry *	/* extEntry */
+     );
+ 
+-static DISPATCH_PROC(ProcXF86BigfontDispatch);
+-static DISPATCH_PROC(ProcXF86BigfontQueryVersion);
+-static DISPATCH_PROC(ProcXF86BigfontQueryFont);
+-static DISPATCH_PROC(SProcXF86BigfontDispatch);
+-static DISPATCH_PROC(SProcXF86BigfontQueryVersion);
+-static DISPATCH_PROC(SProcXF86BigfontQueryFont);
+ 
+ #ifdef HAS_SHM
+ 

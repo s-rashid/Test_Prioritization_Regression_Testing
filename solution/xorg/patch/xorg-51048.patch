@@ -1,0 +1,15 @@
+diff --git a/mi/mi.h b/mi/mi.h
+index 57837c4..c186940 100644
+--- a/mi/mi.h
++++ b/mi/mi.h
+@@ -456,10 +456,6 @@ extern _X_EXPORT Bool miScreenInit(
+     VisualPtr /*visuals*/
+ );
+ 
+-extern _X_EXPORT DevPrivateKey miAllocateGCPrivateIndex(
+-    void
+-);
+-
+ /* mivaltree.c */
+ 
+ extern _X_EXPORT int miShapedWindowIn(

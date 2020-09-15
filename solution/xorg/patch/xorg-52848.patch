@@ -1,0 +1,13 @@
+diff --git a/test/xi2/protocol-common.c b/test/xi2/protocol-common.c
+index 6ffc697..4234533 100644
+--- a/test/xi2/protocol-common.c
++++ b/test/xi2/protocol-common.c
+@@ -121,7 +121,7 @@ ClientRec init_client(int len, void *data)
+ 
+ void init_window(WindowPtr window, WindowPtr parent, int id)
+ {
+-    memset(window, 0, sizeof(window));
++    memset(window, 0, sizeof(*window));
+ 
+     window->drawable.id = id;
+     if (parent)

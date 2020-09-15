@@ -1,0 +1,13 @@
+diff --git a/fb/fb.h b/fb/fb.h
+index e2222a5..7ab4adf 100644
+--- a/fb/fb.h
++++ b/fb/fb.h
+@@ -739,7 +739,7 @@ typedef struct {
+  */
+ 
+ #define fbWindowEnabled(pWin) \
+-    REGION_NOTEMPTY((pWin)->drawable.pScreen, \
++    RegionNotEmpty(\
+ 		    &(pWin)->drawable.pScreen->root->borderClip)
+ 
+ #define fbDrawableEnabled(pDrawable) \

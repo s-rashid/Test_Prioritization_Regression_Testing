@@ -1,0 +1,15 @@
+diff --git a/Xi/xiproperty.c b/Xi/xiproperty.c
+index 8bb1962..b4d939f 100644
+--- a/Xi/xiproperty.c
++++ b/Xi/xiproperty.c
+@@ -177,7 +177,9 @@ static struct dev_properties
+     {0, BTN_LABEL_PROP_BTN_TOOL_TRIPLETAP},
+ 
+     {0, BTN_LABEL_PROP_BTN_GEAR_DOWN},
+-    {0, BTN_LABEL_PROP_BTN_GEAR_UP}
++    {0, BTN_LABEL_PROP_BTN_GEAR_UP},
++
++    {0, XI_PROP_TRANSFORM}
+ };
+ 
+ static long XIPropHandlerID = 1;

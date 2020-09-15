@@ -1,0 +1,12 @@
+diff --git a/Xext/securitysrv.h b/Xext/securitysrv.h
+index 3d3894a..8904242 100644
+--- a/Xext/securitysrv.h
++++ b/Xext/securitysrv.h
+@@ -51,7 +51,6 @@ from The Open Group.
+ # undef NEED_UNDEF_Display
+ #endif
+ 
+-
+ #include "input.h"    /* for DeviceIntPtr */
+ #include "property.h" /* for PropertyPtr */
+ #include "pixmap.h"   /* for DrawablePtr */

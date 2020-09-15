@@ -1,0 +1,13 @@
+diff --git a/os/osdep.h b/os/osdep.h
+index 72bd7d7..71a7e44 100644
+--- a/os/osdep.h
++++ b/os/osdep.h
+@@ -137,7 +137,7 @@ typedef void (*AuthInitFunc) (AuthInitArgs);
+ #define AuthAddCArgs unsigned short data_length, const char *data, XID id
+ typedef int (*AuthAddCFunc) (AuthAddCArgs);
+ 
+-#define AuthCheckArgs unsigned short data_length, const char *data, ClientPtr client, char **reason
++#define AuthCheckArgs unsigned short data_length, const char *data, ClientPtr client, const char **reason
+ typedef XID (*AuthCheckFunc) (AuthCheckArgs);
+ 
+ #define AuthFromIDArgs XID id, unsigned short *data_lenp, char **datap

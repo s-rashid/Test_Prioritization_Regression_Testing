@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 445549a..5ed3e74 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -266,7 +266,7 @@ ddxGiveUp (void)
+       g_fpDirectDrawCreateClipper = NULL;
+     }
+ 
+-  /* Unload our TrackMouseEvent funtion pointer */
++  /* Unload our TrackMouseEvent function pointer */
+   if (g_hmodCommonControls != NULL)
+     {
+       FreeLibrary (g_hmodCommonControls);
+@@ -437,7 +437,7 @@ winFixupPaths (void)
+             int needs_sep = TRUE; 
+             int comment_block = FALSE;
+ 
+-            /* get defautl fontpath */
++            /* get default fontpath */
+             char *fontpath = strdup(defaultFontPath);
+             size_t size = strlen(fontpath);
+ 

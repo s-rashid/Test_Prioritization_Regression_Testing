@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86cmap.c b/hw/xfree86/common/xf86cmap.c
+index a627b53..7e73bb8 100644
+--- a/hw/xfree86/common/xf86cmap.c
++++ b/hw/xfree86/common/xf86cmap.c
+@@ -211,8 +211,8 @@ Bool xf86HandleColormaps(
+     ComputeGamma(pScreenPriv);
+ 
+     /* get the default map */
+-
+-    pDefMap = (ColormapPtr) LookupIDByType(pScreen->defColormap, RT_COLORMAP);
++    dixLookupResourceByType((pointer *)&pDefMap, pScreen->defColormap,
++			    RT_COLORMAP, serverClient, DixInstallAccess);
+     
+     if(!CMapAllocateColormapPrivate(pDefMap)) {
+         CMapUnwrapScreen(pScreen);

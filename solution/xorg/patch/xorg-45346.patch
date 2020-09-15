@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index e000f29..8fac981 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -1172,6 +1172,8 @@ InitButtonClassDeviceStruct(DeviceIntPtr dev, int numButtons, Atom* labels,
+     butc->sourceid = dev->id;
+     for (i = 1; i <= numButtons; i++)
+ 	butc->map[i] = map[i];
++    for (i = numButtons + 1; i < MAP_LENGTH; i++)
++        butc->map[i] = i;
+     memcpy(butc->labels, labels, numButtons * sizeof(Atom));
+     dev->button = butc;
+     return TRUE;

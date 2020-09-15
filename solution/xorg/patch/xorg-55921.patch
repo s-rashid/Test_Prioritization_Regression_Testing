@@ -1,0 +1,54 @@
+diff --git a/include/eventstr.h b/include/eventstr.h
+index e4410a7..dd6fbef 100644
+--- a/include/eventstr.h
++++ b/include/eventstr.h
+@@ -82,8 +82,7 @@ enum EventType {
+  * Note: We only use the device id because the DeviceIntPtr may become invalid while
+  * the event is in the EQ.
+  */
+-struct _DeviceEvent
+-{
++struct _DeviceEvent {
+     unsigned char header; /**< Always ET_Internal */
+     enum EventType type;  /**< One of EventType */
+     int length;           /**< Length in bytes */
+@@ -129,8 +128,7 @@ struct _DeviceEvent
+  * has accepted or rejected a touch, or a grab/event selection in the delivery
+  * chain has been removed.
+  */
+-struct _TouchOwnershipEvent
+-{
++struct _TouchOwnershipEvent {
+     unsigned char header; /**< Always ET_Internal */
+     enum EventType type;  /**< One of EventType */
+     int length;           /**< Length in bytes */
+@@ -155,8 +153,7 @@ struct _TouchOwnershipEvent
+ /**
+  * Sent whenever a device's capabilities have changed.
+  */
+-struct _DeviceChangedEvent
+-{
++struct _DeviceChangedEvent {
+     unsigned char header; /**< Always ET_Internal */
+     enum EventType type;  /**< ET_DeviceChanged */
+     int length;           /**< Length in bytes */
+@@ -193,8 +190,7 @@ struct _DeviceChangedEvent
+ /**
+  * DGAEvent, used by DGA to intercept and emulate input events.
+  */
+-struct _DGAEvent
+-{
++struct _DGAEvent {
+     unsigned char header; /**<  Always ET_Internal */
+     enum EventType type;  /**<  ET_DGAEvent */
+     int length;           /**<  Length in bytes */
+@@ -212,8 +208,7 @@ struct _DGAEvent
+ /**
+  * Raw event, contains the data as posted by the device.
+  */
+-struct _RawDeviceEvent
+-{
++struct _RawDeviceEvent {
+     unsigned char header; /**<  Always ET_Internal */
+     enum EventType type;  /**<  ET_Raw */
+     int length;           /**<  Length in bytes */

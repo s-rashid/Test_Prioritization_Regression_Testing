@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index bce5aae..3b7828a 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -253,7 +253,7 @@ configureInputSection (void)
+ 	int fd;
+ #ifdef WSCONS_SUPPORT
+ 	fd = open("/dev/wsmouse", 0);
+-	if (fd > 0) {
++	if (fd >= 0) {
+ 	    DFLT_MOUSE_DEV = "/dev/wsmouse";
+ 	    DFLT_MOUSE_PROTO = "wsmouse";
+ 	    close(fd);

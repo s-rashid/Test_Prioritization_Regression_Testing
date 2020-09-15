@@ -1,0 +1,1903 @@
+diff --git a/hw/xfree86/xaa/xaaPCache.c b/hw/xfree86/xaa/xaaPCache.c
+index 86ac1cd..02c0cd4 100644
+--- a/hw/xfree86/xaa/xaaPCache.c
++++ b/hw/xfree86/xaa/xaaPCache.c
+@@ -31,8 +31,8 @@
+ #define MAX_512		16
+ 
+ static int CacheInitIndex = -1;
+-#define CACHEINIT(p) ((p)->privates[CacheInitIndex].val)
+ 	
++#define CACHEINIT(p) ((p)->privates[CacheInitIndex].val)
+ 
+ typedef struct _CacheLink {
+    int x;
+@@ -42,7 +42,6 @@ typedef struct _CacheLink {
+    struct _CacheLink *next;
+ } CacheLink, *CacheLinkPtr;
+ 
+-
+ static void
+ TransferList(CacheLinkPtr list, XAACacheInfoPtr array, int num)
+ {
+@@ -58,8 +57,6 @@ TransferList(CacheLinkPtr list, XAACacheInfoPtr array, int num)
+   }
+ }
+ 
+-
+-
+ static CacheLinkPtr 
+ Enlist(CacheLinkPtr link, int x, int y, int w, int h)
+ {
+@@ -67,15 +64,16 @@ Enlist(CacheLinkPtr link, int x, int y, int w, int h)
+ 
+     newLink = malloc(sizeof(CacheLink));
+     newLink->next = link;
+-    newLink->x = x; newLink->y = y;
+-    newLink->w = w; newLink->h = h;	
++    newLink->x = x;
++    newLink->y = y;
++    newLink->w = w;
++    newLink->h = h;
+     return newLink;
+ }
+ 
+-
+-
+ static CacheLinkPtr
+-Delist(CacheLinkPtr link) {
++Delist(CacheLinkPtr link)
++{
+     CacheLinkPtr ret = NULL;
+ 
+     if(link) {
+@@ -85,10 +83,9 @@ Delist(CacheLinkPtr link) {
+     return ret;
+ }
+ 
+-
+-
+ static void
+-FreeList(CacheLinkPtr link) {
++FreeList(CacheLinkPtr link)
++{
+     CacheLinkPtr tmp;
+ 
+     while(link) {
+@@ -98,8 +95,6 @@ FreeList(CacheLinkPtr link) {
+     }
+ }
+ 
+-
+-
+ static CacheLinkPtr
+ QuadLinks(CacheLinkPtr big, CacheLinkPtr little) 
+ {
+@@ -122,7 +117,6 @@ QuadLinks(CacheLinkPtr big, CacheLinkPtr little)
+     return little;
+ }
+ 
+-
+ static void
+ SubdivideList(CacheLinkPtr *large, CacheLinkPtr *small)
+ {
+@@ -142,7 +136,8 @@ SubdivideList(CacheLinkPtr *large, CacheLinkPtr *small)
+ static void
+ FreePixmapCachePrivate(XAAPixmapCachePrivatePtr pPriv)
+ {
+-    if(!pPriv) return;
++    if (!pPriv)
++        return;
+ 
+     free(pPriv->Info512);
+     free(pPriv->Info256);
+@@ -160,19 +155,15 @@ XAAClosePixmapCache(ScreenPtr pScreen)
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+   
+    if(infoRec->PixmapCachePrivate)
+-	FreePixmapCachePrivate(
+-		(XAAPixmapCachePrivatePtr)infoRec->PixmapCachePrivate);
++        FreePixmapCachePrivate((XAAPixmapCachePrivatePtr) infoRec->
++                               PixmapCachePrivate);
+ 
+    infoRec->PixmapCachePrivate = NULL;
+ }
+ 
+-
+-
+ static CacheLinkPtr
+-ThinOutPartials(
+-   CacheLinkPtr ListPartial, 
+-   int *num, int *maxw, int *maxh
+-) { 
++ThinOutPartials(CacheLinkPtr ListPartial, int *num, int *maxw, int *maxh)
++{
+ /* This guy's job is to get at least 4 big slots out of a list of fragments */
+ 
+    CacheLinkPtr List64, List32, List16, List8, pCur, next, ListKeepers;
+@@ -191,21 +182,26 @@ ThinOutPartials(
+    while(pCur) {
+ 	next = pCur->next;
+ 	if((pCur->w >= 64) && (pCur->h >= 64)) {
+-	    pCur->next = List64; List64 = pCur;
++            pCur->next = List64;
++            List64 = pCur;
+ 	    Num64++;
+-	} else
+-	if((pCur->w >= 32) && (pCur->h >= 32)) {
+-	    pCur->next = List32; List32 = pCur;
++        }
++        else if ((pCur->w >= 32) && (pCur->h >= 32)) {
++            pCur->next = List32;
++            List32 = pCur;
+ 	    Num32++;
+-	} else
+-	if((pCur->w >= 16) && (pCur->h >= 16)) {
+-	    pCur->next = List16; List16 = pCur;
++        }
++        else if ((pCur->w >= 16) && (pCur->h >= 16)) {
++            pCur->next = List16;
++            List16 = pCur;
+ 	    Num16++;
+-	} else
+-	if((pCur->w >= 8) && (pCur->h >= 8)) {
+-	    pCur->next = List8; List8 = pCur;
++        }
++        else if ((pCur->w >= 8) && (pCur->h >= 8)) {
++            pCur->next = List8;
++            List8 = pCur;
+ 	    Num8++;
+-	} else {
++        }
++        else {
+ 	   free(pCur);
+ 	}
+ 
+@@ -217,37 +213,44 @@ ThinOutPartials(
+ 	cut it in fourths to make smaller slots. */
+ 
+    if(Num64 >= 4) {
+-	ListKeepers = List64; List64 = NULL;
++        ListKeepers = List64;
++        List64 = NULL;
+ 	NumKeepers = Num64;
+ 	goto GOT_EM;
+-   } else if(Num64) {
++    }
++    else if (Num64) {
+ 	List32 = QuadLinks(List64, List32);
+ 	Num32 += Num64 * 4;
+ 	Num64 = 0;
+    }
+  
+    if(Num32 >= 4) {
+-	ListKeepers = List32; List32 = NULL;
++        ListKeepers = List32;
++        List32 = NULL;
+ 	NumKeepers = Num32;
+ 	goto GOT_EM;
+-   } else if(Num32) {
++    }
++    else if (Num32) {
+ 	List16 = QuadLinks(List32, List16);
+ 	Num16 += Num32 * 4;
+ 	Num32 = 0;
+    }
+ 
+    if(Num16 >= 4) {
+-	ListKeepers = List16; List16 = NULL;
++        ListKeepers = List16;
++        List16 = NULL;
+ 	NumKeepers = Num16;
+ 	goto GOT_EM;
+-   } else if(Num16) {
++    }
++    else if (Num16) {
+ 	List8 = QuadLinks(List16, List8);
+ 	Num8 += Num16 * 4;
+ 	Num16 = 0;
+    }
+ 
+    if(Num8 >= 4) {
+-	ListKeepers = List8; List8 = NULL;
++        ListKeepers = List8;
++        List8 = NULL;
+ 	NumKeepers = Num8;
+ 	goto GOT_EM;
+    } 
+@@ -256,21 +259,27 @@ GOT_EM:
+ 
+    /* Free the ones we aren't using */
+ 	
+-   if(List64) FreeList(List64);
+-   if(List32) FreeList(List32);
+-   if(List16) FreeList(List16);
+-   if(List8) FreeList(List8);
+-
++    if (List64)
++        FreeList(List64);
++    if (List32)
++        FreeList(List32);
++    if (List16)
++        FreeList(List16);
++    if (List8)
++        FreeList(List8);
+   
+    /* Enlarge the slots if we can */
+ 
+    if(ListKeepers) {
+ 	CacheLinkPtr pLink = ListKeepers;
++
+ 	w = h = 128;
+ 	
+ 	while(pLink) {
+-	   if(pLink->w < w) w = pLink->w;
+-	   if(pLink->h < h) h = pLink->h;
++            if (pLink->w < w)
++                w = pLink->w;
++            if (pLink->h < h)
++                h = pLink->h;
+ 	   pLink = pLink->next;
+ 	}
+    } 
+@@ -282,15 +291,14 @@ GOT_EM:
+ }
+ 
+ static void
+-ConvertColorToMono(
+-   CacheLinkPtr *ColorList, 
++ConvertColorToMono(CacheLinkPtr * ColorList,
+    int ColorW, int ColorH,
+-   CacheLinkPtr *MonoList, 
+-   int MonoW, int MonoH
+-){
++                   CacheLinkPtr * MonoList, int MonoW, int MonoH)
++{
+    int x, y, w;
+ 
+-   x = (*ColorList)->x; y = (*ColorList)->y;
++    x = (*ColorList)->x;
++    y = (*ColorList)->y;
+    *ColorList = Delist(*ColorList);
+   
+    while(ColorH) {
+@@ -301,13 +309,11 @@ ConvertColorToMono(
+ }
+ 
+ static void
+-ConvertAllPartialsTo8x8(
+-   int *NumMono, int *NumColor,
++ConvertAllPartialsTo8x8(int *NumMono, int *NumColor,
+    CacheLinkPtr ListPartial,
+    CacheLinkPtr *ListMono,
+-   CacheLinkPtr *ListColor,
+-   XAAInfoRecPtr infoRec 
+-){
++                        CacheLinkPtr * ListColor, XAAInfoRecPtr infoRec)
++{
+ /* This guy extracts as many 8x8 slots as it can out of fragments */
+ 
+    int ColorH = infoRec->CacheHeightColor8x8Pattern;
+@@ -322,8 +328,10 @@ ConvertAllPartialsTo8x8(
+ 
+    if(DoColor && DoMono) { 
+ 	/* we assume color patterns take more space than color ones */
+-	if(MonoH > ColorH) ColorH = MonoH;
+-	if(MonoW > ColorW) ColorW = MonoW;
++        if (MonoH > ColorH)
++            ColorH = MonoH;
++        if (MonoW > ColorW)
++            ColorW = MonoW;
+    }
+ 
+    /* Break up the area into as many Color and Mono slots as we can */
+@@ -338,8 +346,8 @@ ConvertAllPartialsTo8x8(
+ 	   while(Height >= ColorH) {		
+ 		Height -= ColorH;
+ 		for(w = 0; w <= (Width - ColorW); w += ColorW) {
+-		    ColorList = Enlist(
+-			ColorList, x + w, y + Height, ColorW, ColorH);
++                    ColorList =
++                        Enlist(ColorList, x + w, y + Height, ColorW, ColorH);
+ 		    (*NumColor)++;
+ 		}
+ 	   }
+@@ -349,8 +357,8 @@ ConvertAllPartialsTo8x8(
+ 	   while(Height >= MonoH) {		
+ 		Height -= MonoH;
+ 		for(w = 0; w <= (Width - MonoW); w += MonoW) {
+-		    MonoList = Enlist(
+-			MonoList, x + w, y + Height, MonoW, MonoH);
++                    MonoList =
++                        Enlist(MonoList, x + w, y + Height, MonoW, MonoH);
+ 		    (*NumMono)++;
+ 		}
+ 	   }
+@@ -359,13 +367,11 @@ ConvertAllPartialsTo8x8(
+ 	pLink = pLink->next;
+    }
+ 
+-
+    *ListMono = MonoList;
+    *ListColor = ColorList;
+    FreeList(ListPartial);
+ }
+ 
+-
+ static CacheLinkPtr
+ ExtractOneThatFits(CacheLinkPtr *initList, int w, int h)
+ {
+@@ -391,16 +397,13 @@ ExtractOneThatFits(CacheLinkPtr *initList, int w, int h)
+      return list;     
+ }
+ 
+-
+ static CacheLinkPtr
+-ConvertSomePartialsTo8x8(
+-   int *NumMono, int *NumColor, int *NumPartial,
++ConvertSomePartialsTo8x8(int *NumMono, int *NumColor, int *NumPartial,
+    CacheLinkPtr ListPartial,
+    CacheLinkPtr *ListMono,
+    CacheLinkPtr *ListColor,
+-   int *maxw, int *maxh,
+-   XAAInfoRecPtr infoRec 
+-){
++                         int *maxw, int *maxh, XAAInfoRecPtr infoRec)
++{
+ /* This guy tries to get 4 of each type of 8x8 slot requested out of
+    a list of fragments all while trying to retain some big fragments
+    for the cache blits */
+@@ -419,12 +422,15 @@ ConvertSomePartialsTo8x8(
+ 
+    if(DoColor && DoMono) { 
+ 	/* we assume color patterns take more space than color ones */
+-	if(MonoH > ColorH) ColorH = MonoH;
+-	if(MonoW > ColorW) ColorW = MonoW;
++        if (MonoH > ColorH)
++            ColorH = MonoH;
++        if (MonoW > ColorW)
++            ColorW = MonoW;
+ 	MonosPerColor = (ColorH/MonoH) * (ColorW/MonoW);
+    }
+ 
+-   List64 = List32 = List16 = List8 = ListKeepers = MonoList = ColorList = NULL;
++    List64 = List32 = List16 = List8 = ListKeepers = MonoList = ColorList =
++        NULL;
+    Num64 = Num32 = Num16 = Num8 = NumKeepers = 0;
+    Width = Height = 0;
+ 
+@@ -435,28 +441,34 @@ ConvertSomePartialsTo8x8(
+    while(pCur) {
+ 	next = pCur->next;
+ 	if((pCur->w >= 64) && (pCur->h >= 64)) {
+-	    pCur->next = List64; List64 = pCur;
++            pCur->next = List64;
++            List64 = pCur;
+ 	    Num64++;
+-	} else
+-	if((pCur->w >= 32) && (pCur->h >= 32)) {
+-	    pCur->next = List32; List32 = pCur;
++        }
++        else if ((pCur->w >= 32) && (pCur->h >= 32)) {
++            pCur->next = List32;
++            List32 = pCur;
+ 	    Num32++;
+-	} else
+-	if((pCur->w >= 16) && (pCur->h >= 16)) {
+-	    pCur->next = List16; List16 = pCur;
++        }
++        else if ((pCur->w >= 16) && (pCur->h >= 16)) {
++            pCur->next = List16;
++            List16 = pCur;
+ 	    Num16++;
+-	} else
+-	if((pCur->w >= 8) && (pCur->h >= 8)) {
+-	    pCur->next = List8; List8 = pCur;
++        }
++        else if ((pCur->w >= 8) && (pCur->h >= 8)) {
++            pCur->next = List8;
++            List8 = pCur;
+ 	    Num8++;
+-	} else {
++        }
++        else {
+ 	   h = pCur->h;
+ 	   if(DoColor && (pCur->w >= ColorW) && (h >= ColorH)) {
+ 		while(h >= ColorH) {
+ 		    h -= ColorH;
+ 		    for(w = 0; w <= (pCur->w - ColorW); w += ColorW) {
+ 			ColorList = Enlist( ColorList,
+-			    pCur->x + w, pCur->y + h, ColorW, ColorH);
++                                           pCur->x + w, pCur->y + h, ColorW,
++                                           ColorH);
+ 			(*NumColor)++;
+ 		    }	
+ 		}
+@@ -466,7 +478,8 @@ ConvertSomePartialsTo8x8(
+ 		    h -= MonoH;
+ 		    for(w = 0; w <= (pCur->w - MonoW); w += MonoW) {
+ 			MonoList = Enlist( MonoList,
+-			    pCur->x + w, pCur->y + h, MonoW, MonoH);
++                                          pCur->x + w, pCur->y + h, MonoW,
++                                          MonoH);
+ 			(*NumMono)++;
+ 		    }	
+ 		}
+@@ -481,6 +494,7 @@ ConvertSomePartialsTo8x8(
+ 
+    if(DoColor) {
+ 	CacheLinkPtr theOne;
++
+ 	while(*NumColor < 4) {
+ 	    theOne = NULL;
+ 	    if(Num8) {
+@@ -500,8 +514,8 @@ ConvertSomePartialsTo8x8(
+ 			Num64--;
+ 	    }
+ 
+-	    if(!theOne) break;
+-
++            if (!theOne)
++                break;
+ 		
+ 	    ConvertAllPartialsTo8x8(NumMono, NumColor, theOne, 
+ 			&MonoList, &ColorList, infoRec);
+@@ -510,7 +524,8 @@ ConvertSomePartialsTo8x8(
+ 		while(*NumColor && (*NumMono < 4)) {
+ 	    	     ConvertColorToMono(&ColorList, ColorW, ColorH,
+ 				&MonoList, MonoW, MonoH);
+-		      (*NumColor)--; *NumMono += MonosPerColor;
++                    (*NumColor)--;
++                    *NumMono += MonosPerColor;
+ 		}
+ 	    }
+ 	}
+@@ -518,6 +533,7 @@ ConvertSomePartialsTo8x8(
+ 
+    if(DoMono) {
+ 	CacheLinkPtr theOne;
++
+ 	while(*NumMono < 4) {
+ 	    theOne = NULL;
+ 	    if(Num8) {
+@@ -537,7 +553,8 @@ ConvertSomePartialsTo8x8(
+ 			Num64--;
+ 	    }
+ 
+-	    if(!theOne) break;
++            if (!theOne)
++                break;
+ 		
+ 	    ConvertAllPartialsTo8x8(NumMono, NumColor, theOne, 
+ 			&MonoList, &ColorList, infoRec);
+@@ -549,37 +566,44 @@ ConvertSomePartialsTo8x8(
+ 	cut it in fourths to make smaller slots. */
+ 
+    if(Num64 >= 4) {
+-	ListKeepers = List64; List64 = NULL;
++        ListKeepers = List64;
++        List64 = NULL;
+ 	NumKeepers = Num64;
+ 	goto GOT_EM;
+-   } else if(Num64) {
++    }
++    else if (Num64) {
+ 	List32 = QuadLinks(List64, List32);
+ 	Num32 += Num64 * 4;
+ 	Num64 = 0;
+    }
+  
+    if(Num32 >= 4) {
+-	ListKeepers = List32; List32 = NULL;
++        ListKeepers = List32;
++        List32 = NULL;
+ 	NumKeepers = Num32;
+ 	goto GOT_EM;
+-   } else if(Num32) {
++    }
++    else if (Num32) {
+ 	List16 = QuadLinks(List32, List16);
+ 	Num16 += Num32 * 4;
+ 	Num32 = 0;
+    }
+ 
+    if(Num16 >= 4) {
+-	ListKeepers = List16; List16 = NULL;
++        ListKeepers = List16;
++        List16 = NULL;
+ 	NumKeepers = Num16;
+ 	goto GOT_EM;
+-   } else if(Num16) {
++    }
++    else if (Num16) {
+ 	List8 = QuadLinks(List16, List8);
+ 	Num8 += Num16 * 4;
+ 	Num16 = 0;
+    }
+ 
+    if(Num8 >= 4) {
+-	ListKeepers = List8; List8 = NULL;
++        ListKeepers = List8;
++        List8 = NULL;
+ 	NumKeepers = Num8;
+ 	goto GOT_EM;
+    } 
+@@ -601,16 +625,18 @@ GOT_EM:
+ 	ConvertAllPartialsTo8x8(NumMono, NumColor, List8, 
+ 			&MonoList, &ColorList, infoRec);
+ 
+- 
+    /* Enlarge the slots if we can */
+ 
+    if(ListKeepers) {
+ 	CacheLinkPtr pLink = ListKeepers;
++
+ 	Width = Height = 128;
+ 	
+ 	while(pLink) {
+-	   if(pLink->w < Width) Width = pLink->w;
+-	   if(pLink->h < Height) Height = pLink->h;
++            if (pLink->w < Width)
++                Width = pLink->w;
++            if (pLink->h < Height)
++                Height = pLink->h;
+ 	   pLink = pLink->next;
+ 	}
+    } 
+@@ -623,13 +649,9 @@ GOT_EM:
+    return ListKeepers;
+ }
+ 
+-
+ void
+-XAAInitPixmapCache(	
+-    ScreenPtr pScreen, 
+-    RegionPtr areas,
+-    pointer data
+-) {
++XAAInitPixmapCache(ScreenPtr pScreen, RegionPtr areas, pointer data)
++{
+    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    XAAInfoRecPtr infoRec = (XAAInfoRecPtr)data;
+    XAAPixmapCachePrivatePtr pCachePriv;
+@@ -647,7 +669,6 @@ XAAInitPixmapCache(
+    infoRec->MaxCacheableStippleWidth = 0;
+    infoRec->UsingPixmapCache = FALSE;
+ 
+-
+    if(!nBox || !pBox || !(infoRec->Flags & PIXMAP_CACHE))
+ 	return;
+ 
+@@ -657,15 +678,16 @@ XAAInitPixmapCache(
+ 
+    /* free the old private data if it exists */
+    if(infoRec->PixmapCachePrivate) {
+-	FreePixmapCachePrivate(
+-		(XAAPixmapCachePrivatePtr)infoRec->PixmapCachePrivate);
++        FreePixmapCachePrivate((XAAPixmapCachePrivatePtr) infoRec->
++                               PixmapCachePrivate);
+ 	infoRec->PixmapCachePrivate = NULL;
+    }
+ 
+    Num512 = Num256 = Num128 = NumPartial = NumMono = NumColor = 0;
+    List512 = List256 = List128 = ListPartial = ListMono = ListColor = NULL;
+    granularity = infoRec->CachePixelGranularity;
+-   if(granularity <= 1) granularity = 0;
++    if (granularity <= 1)
++        granularity = 0;
+ 
+    /* go through the boxes and break it into as many pieces as we can fit */
+ 
+@@ -673,10 +695,15 @@ XAAInitPixmapCache(
+ 	x = pBox->x1;
+ 	if(granularity) {
+ 	    int tmp = x % granularity;
+-	    if(tmp) x += (granularity - tmp);
++
++            if (tmp)
++                x += (granularity - tmp);
+ 	}
+ 	width = pBox->x2 - x;
+-        if(width <= 0) {pBox++; continue;}
++        if (width <= 0) {
++            pBox++;
++            continue;
++        }
+ 
+ 	y = pBox->y1;
+         height = pBox->y2 - y;
+@@ -700,6 +727,7 @@ XAAInitPixmapCache(
+ 	    }
+ 	    if(w < width) {
+ 		int d = width - w;
++
+ 		ListPartial = Enlist(ListPartial, x + w, y + h, d, 128);
+ 		ListPartial = Enlist(ListPartial, x + w, y + h + 128, d, 128);
+ 		ListPartial = Enlist(ListPartial, x + w, y + h + 256, d, 128);
+@@ -719,6 +747,7 @@ XAAInitPixmapCache(
+ 	    }
+ 	    if(w < width) {
+ 		int d = width - w;
++
+ 		ListPartial = Enlist(ListPartial, x + w, y + h, d, 128);
+ 		ListPartial = Enlist(ListPartial, x + w, y + h + 128, d, 128);
+ 		NumPartial += 2;
+@@ -730,13 +759,13 @@ XAAInitPixmapCache(
+ 		Num128++;
+ 	    }
+ 	    if(w < width) {
+-		ListPartial = Enlist(
+-			ListPartial, x + w, y + h, width - w, 128);
++                ListPartial = Enlist(ListPartial, x + w, y + h, width - w, 128);
+ 		NumPartial++;
+             }
+         }
+         if(h < height) {
+ 	    int d = height - h;
++
+ 	    for(w = 0; w <= (width - 128); w += 128) {
+ 		ListPartial = Enlist(ListPartial, x + w, y + h, 128, d);
+ 		NumPartial++;
+@@ -749,7 +778,6 @@ XAAInitPixmapCache(
+ 	pBox++;
+    }
+ 
+-
+ /* 
+    by this point we've carved the space into as many 512x512, 256x256
+ 	and 128x128 blocks as we could fit.  We will then break larger
+@@ -778,53 +806,72 @@ XAAInitPixmapCache(
+     ntotal = Num128 + (Num256<<2) + (Num512<<4);   
+ 	
+     Target512 = ntotal >> 5;
+-    if(Target512 < 4) Target512 = 0;
+-    if(!Target512) Target256 = ntotal >> 3;
+-    else Target256 = ntotal >> 4;
+-    if(Target256 < 4) Target256 = 0;
++    if (Target512 < 4)
++        Target512 = 0;
++    if (!Target512)
++        Target256 = ntotal >> 3;
++    else
++        Target256 = ntotal >> 4;
++    if (Target256 < 4)
++        Target256 = 0;
+ 
+     if(Num512 && Num256 < 4) {
+ 	while(Num512 && Num256 < Target256) {
+ 	   SubdivideList(&List512, &List256);
+-	   Num256 += 4; Num512--;
++            Num256 += 4;
++            Num512--;
+ 	}
+     }
+ 
+     if(!Num512) { /* no room */
+-    } else if((Num512 < 4) || (!Target512)) {
++    }
++    else if ((Num512 < 4) || (!Target512)) {
+ 	while(Num512) {
+ 	   SubdivideList(&List512, &List256);
+-	   Num256 += 4; Num512--;
++            Num256 += 4;
++            Num512--;
++        }
+ 	}
+-    } else if((Num512 > MAX_512) || (Num512 > Target512)){
++    else if ((Num512 > MAX_512) || (Num512 > Target512)) {
+ 	while(Num512 > MAX_512) {
+ 	   SubdivideList(&List512, &List256);
+-	   Num256 += 4; Num512--;
++            Num256 += 4;
++            Num512--;
+ 	}
+ 	while(Num512 > Target512) {
+ 	    if(Num256 < MAX_256) {
+ 		SubdivideList(&List512, &List256);
+-		Num256 += 4; Num512--;
+-	    } else break;
++                Num256 += 4;
++                Num512--;
++            }
++            else
++                break;
+ 	}
+     }
+ 
+     if(!Num256) { /* no room */
+-    } else if((Num256 < 4) || (!Target256)) {
++    }
++    else if ((Num256 < 4) || (!Target256)) {
+ 	while(Num256) {
+ 	   SubdivideList(&List256, &List128);
+-	   Num128 += 4; Num256--;
++            Num128 += 4;
++            Num256--;
++        }
+ 	}
+-    } else if((Num256 > MAX_256) || (Num256 > Target256)) {
++    else if ((Num256 > MAX_256) || (Num256 > Target256)) {
+ 	while(Num256 > MAX_256) {
+ 	   SubdivideList(&List256, &List128);
+-	   Num128 += 4; Num256--;
++            Num128 += 4;
++            Num256--;
+ 	}
+ 	while(Num256 > Target256) {
+ 	    if(Num128 < MAX_128) {
+ 		SubdivideList(&List256, &List128);
+-		Num128 += 4; Num256--;
+-	    } else break;
++                Num128 += 4;
++                Num256--;
++            }
++            else
++                break;
+ 	}
+     } 
+ 
+@@ -842,7 +889,8 @@ XAAInitPixmapCache(
+ 	   ListPartial = List128;
+ 	   if((List128 = next))
+ 		next = List128->next;
+-	   NumPartial++; Num128--;
++            NumPartial++;
++            Num128--;
+ 	}
+     }
+ 
+@@ -857,14 +905,18 @@ XAAInitPixmapCache(
+ 	if(NumPartial) {
+ 	    if(Num128) { /* don't bother with partials */
+ 		FreeList(ListPartial);	
+-		NumPartial = 0; ListPartial = NULL;
+-	    } else {
++                NumPartial = 0;
++                ListPartial = NULL;
++            }
++            else {
+ 	   /* We have no big slots.  Weed out the unusable partials */
+ 		ListPartial = ThinOutPartials(ListPartial, &NumPartial,
+-			&MaxPartialWidth, &MaxPartialHeight);
++                                              &MaxPartialWidth,
++                                              &MaxPartialHeight);
++            }
+ 	    }
+ 	}
+-    } else {
++    else {
+ 	int MonosPerColor = 1;
+ 	int ColorH = infoRec->CacheHeightColor8x8Pattern;
+ 	int ColorW = infoRec->CacheWidthColor8x8Pattern;
+@@ -873,21 +925,27 @@ XAAInitPixmapCache(
+ 	Bool DoColor = (infoRec->PixmapCacheFlags & CACHE_COLOR_8x8);
+ 	Bool DoMono  = (infoRec->PixmapCacheFlags & CACHE_MONO_8x8);
+ 
+-	if(DoColor) infoRec->CanDoColor8x8 = FALSE;
+-	if(DoMono) infoRec->CanDoMono8x8 = FALSE;
++        if (DoColor)
++            infoRec->CanDoColor8x8 = FALSE;
++        if (DoMono)
++            infoRec->CanDoMono8x8 = FALSE;
+ 	
+ 	if(DoColor && DoMono) { 
+ 	    /* we assume color patterns take more space than color ones */
+-	    if(MonoH > ColorH) ColorH = MonoH;
+-	    if(MonoW > ColorW) ColorW = MonoW;
++            if (MonoH > ColorH)
++                ColorH = MonoH;
++            if (MonoW > ColorW)
++                ColorW = MonoW;
+ 	    MonosPerColor = (ColorH/MonoH) * (ColorW/MonoW);
+ 	}
+ 
+ 	if(Num128) {
+ 	    if(NumPartial) { /* use all for 8x8 slots */
+ 		ConvertAllPartialsTo8x8(&NumMono, &NumColor, 
+-			ListPartial, &ListMono, &ListColor, infoRec);
+-		NumPartial = 0; ListPartial = NULL;
++                                        ListPartial, &ListMono, &ListColor,
++                                        infoRec);
++                NumPartial = 0;
++                ListPartial = NULL;
+ 	    } 
+ 
+ 		/* Get some 8x8 slots from the 128 slots */
+@@ -903,14 +961,16 @@ XAAInitPixmapCache(
+ 		ConvertAllPartialsTo8x8(&NumMono, &NumColor, 
+ 				tmp, &ListMono, &ListColor, infoRec);
+ 	    }
+-	} else if(NumPartial) {
++        }
++        else if (NumPartial) {
+ 	/* We have share partials between 8x8 slots and tiles. */
+ 	    ListPartial = ConvertSomePartialsTo8x8(&NumMono, &NumColor, 	
+-			&NumPartial, ListPartial, &ListMono, &ListColor, 
+-			&MaxPartialWidth, &MaxPartialHeight, infoRec);
++                                                   &NumPartial, ListPartial,
++                                                   &ListMono, &ListColor,
++                                                   &MaxPartialWidth,
++                                                   &MaxPartialHeight, infoRec);
+         }
+ 
+-	
+ 	if(DoMono && DoColor) {
+ 	    if(NumColor && ((NumColor > MAX_COLOR) || (NumColor < 4))) {
+ 		int max = (NumColor > MAX_COLOR) ? MAX_COLOR : 0;
+@@ -918,7 +978,8 @@ XAAInitPixmapCache(
+ 		while(NumColor > max) {
+ 		    ConvertColorToMono(&ListColor, ColorW, ColorH,
+ 					&ListMono, MonoW, MonoH);
+-		    NumColor--; NumMono += MonosPerColor;
++                    NumColor--;
++                    NumMono += MonosPerColor;
+ 		}
+ 	    }
+ 
+@@ -926,7 +987,8 @@ XAAInitPixmapCache(
+ 	    while((NumColor > 4) && (NumMono < MAX_MONO)) {
+ 	        ConvertColorToMono(&ListColor, ColorW, ColorH,
+ 				&ListMono, MonoW, MonoH);
+-	        NumColor--; NumMono += MonosPerColor;
++                NumColor--;
++                NumMono += MonosPerColor;
+ 	    }
+ 	}
+ 
+@@ -948,15 +1010,20 @@ XAAInitPixmapCache(
+ 	}
+     }
+ 
+-
+     pCachePriv = calloc(1,sizeof(XAAPixmapCachePrivate));
+     if(!pCachePriv) {
+-	if(Num512) FreeList(List512);
+-	if(Num256) FreeList(List256);
+-	if(Num128) FreeList(List128);
+-	if(NumPartial) FreeList(ListPartial);
+-	if(NumColor) FreeList(ListColor);
+-	if(NumMono) FreeList(ListMono);
++        if (Num512)
++            FreeList(List512);
++        if (Num256)
++            FreeList(List256);
++        if (Num128)
++            FreeList(List128);
++        if (NumPartial)
++            FreeList(ListPartial);
++        if (NumColor)
++            FreeList(ListColor);
++        if (NumMono)
++            FreeList(ListMono);
+ 	return;
+     }
+ 
+@@ -964,29 +1031,36 @@ XAAInitPixmapCache(
+ 
+     if(Num512) {
+ 	pCachePriv->Info512 = calloc(Num512,sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->Info512) Num512 = 0;
+-	if(Num512) TransferList(List512, pCachePriv->Info512, Num512);
++        if (!pCachePriv->Info512)
++            Num512 = 0;
++        if (Num512)
++            TransferList(List512, pCachePriv->Info512, Num512);
+ 	FreeList(List512);
+     	pCachePriv->Num512x512 = Num512;
+     }
+     if(Num256) {
+ 	pCachePriv->Info256 = calloc(Num256, sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->Info256) Num256 = 0;
+-	if(Num256) TransferList(List256, pCachePriv->Info256, Num256);
++        if (!pCachePriv->Info256)
++            Num256 = 0;
++        if (Num256)
++            TransferList(List256, pCachePriv->Info256, Num256);
+ 	FreeList(List256);
+     	pCachePriv->Num256x256 = Num256;
+     }
+     if(Num128) {
+ 	pCachePriv->Info128 = calloc(Num128, sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->Info128) Num128 = 0;
+-	if(Num128) TransferList(List128, pCachePriv->Info128, Num128);
++        if (!pCachePriv->Info128)
++            Num128 = 0;
++        if (Num128)
++            TransferList(List128, pCachePriv->Info128, Num128);
+ 	FreeList(List128);
+     	pCachePriv->Num128x128 = Num128;
+     }
+ 
+     if(NumPartial) {
+ 	pCachePriv->InfoPartial = calloc(NumPartial, sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->InfoPartial) NumPartial = 0;
++        if (!pCachePriv->InfoPartial)
++            NumPartial = 0;
+ 	if(NumPartial) 
+ 	    TransferList(ListPartial, pCachePriv->InfoPartial, NumPartial);
+ 	FreeList(ListPartial);
+@@ -995,21 +1069,24 @@ XAAInitPixmapCache(
+ 
+     if(NumColor) {
+ 	pCachePriv->InfoColor = calloc(NumColor, sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->InfoColor) NumColor = 0;
+-	if(NumColor) TransferList(ListColor, pCachePriv->InfoColor, NumColor);
++        if (!pCachePriv->InfoColor)
++            NumColor = 0;
++        if (NumColor)
++            TransferList(ListColor, pCachePriv->InfoColor, NumColor);
+ 	FreeList(ListColor);
+     	pCachePriv->NumColor = NumColor;
+     }
+ 
+     if(NumMono) {
+ 	pCachePriv->InfoMono = calloc(NumMono, sizeof(XAACacheInfoRec));
+-	if(!pCachePriv->InfoMono) NumMono = 0;
+-	if(NumMono) TransferList(ListMono, pCachePriv->InfoMono, NumMono);
++        if (!pCachePriv->InfoMono)
++            NumMono = 0;
++        if (NumMono)
++            TransferList(ListMono, pCachePriv->InfoMono, NumMono);
+ 	FreeList(ListMono);
+     	pCachePriv->NumMono = NumMono;
+     }
+ 
+-
+     if(NumPartial) {
+ 	infoRec->MaxCacheableTileWidth = MaxPartialWidth;
+ 	infoRec->MaxCacheableTileHeight = MaxPartialHeight;
+@@ -1021,7 +1098,6 @@ XAAInitPixmapCache(
+     if(Num512) 
+ 	infoRec->MaxCacheableTileWidth = infoRec->MaxCacheableTileHeight = 512;
+ 
+-     
+     infoRec->MaxCacheableStippleHeight = infoRec->MaxCacheableTileHeight;
+     infoRec->MaxCacheableStippleWidth = 
+ 		infoRec->MaxCacheableTileWidth * pScrn->bitsPerPixel;
+@@ -1060,17 +1136,24 @@ XAAInitPixmapCache(
+ 	if(NumPartial) 
+ 	   xf86ErrorF("\t\t%i %ix%i slots\n", 
+ 		NumPartial, MaxPartialWidth, MaxPartialHeight);
+-	if(Num128) xf86ErrorF("\t\t%i 128x128 slots\n", Num128);
+-	if(Num256) xf86ErrorF("\t\t%i 256x256 slots\n", Num256);
+-	if(Num512) xf86ErrorF("\t\t%i 512x512 slots\n", Num512);
+-	if(NumColor) xf86ErrorF("\t\t%i 8x8 color pattern slots\n", NumColor);
+-	if(NumMono) xf86ErrorF("\t\t%i 8x8 color expansion slots\n", NumMono);
++        if (Num128)
++            xf86ErrorF("\t\t%i 128x128 slots\n", Num128);
++        if (Num256)
++            xf86ErrorF("\t\t%i 256x256 slots\n", Num256);
++        if (Num512)
++            xf86ErrorF("\t\t%i 512x512 slots\n", Num512);
++        if (NumColor)
++            xf86ErrorF("\t\t%i 8x8 color pattern slots\n", NumColor);
++        if (NumMono)
++            xf86ErrorF("\t\t%i 8x8 color expansion slots\n", NumMono);
+     } 
+ 
+     if(!(NumPartial | Num128 | Num256 | Num512 | NumColor | NumMono)) {
+ 	if(!CACHEINIT(pScrn))
+ 	   xf86ErrorF("\t\tNot enough video memory for pixmap cache\n");
+-    } else infoRec->UsingPixmapCache = TRUE;
++    }
++    else
++        infoRec->UsingPixmapCache = TRUE;
+ 
+     CACHEINIT(pScrn) = 1;
+ }
+@@ -1152,29 +1235,43 @@ XAACheckStippleReducibility(PixmapPtr pPixmap)
+ 	    	(IntPtr[4] != IntPtr[12]) || (IntPtr[5] != IntPtr[13]) ||
+ 	    	(IntPtr[6] != IntPtr[14]) || (IntPtr[7] != IntPtr[15]))
+ 		return FALSE;
+-	case 8: break;
+-	case 1:	bits[1] = bits[0];
+-	case 2: bits[2] = bits[0];	bits[3] = bits[1];
+-	case 4: bits[4] = bits[0];	bits[5] = bits[1];
+-		bits[6] = bits[2];	bits[7] = bits[3];
++    case 8:
++        break;
++    case 1:
++        bits[1] = bits[0];
++    case 2:
++        bits[2] = bits[0];
++        bits[3] = bits[1];
++    case 4:
++        bits[4] = bits[0];
++        bits[5] = bits[1];
++        bits[6] = bits[2];
++        bits[7] = bits[3];
+ 	     	break;
+     }
+ 	
+     pPriv->flags |= REDUCIBLE_TO_8x8;
+ 
+-    pPriv->pattern0 = bits[0] | SHIFT_L(bits[1],8) | SHIFT_L(bits[2],16) | SHIFT_L(bits[3],24);
+-    pPriv->pattern1 = bits[4] | SHIFT_L(bits[5],8) | SHIFT_L(bits[6],16) | SHIFT_L(bits[7],24);
++    pPriv->pattern0 =
++        bits[0] | SHIFT_L(bits[1], 8) | SHIFT_L(bits[2], 16) | SHIFT_L(bits[3],
++                                                                       24);
++    pPriv->pattern1 =
++        bits[4] | SHIFT_L(bits[5], 8) | SHIFT_L(bits[6], 16) | SHIFT_L(bits[7],
++                                                                       24);
+  
+     if(w < 8) {
+ 	pPriv->pattern0 &= StippleMasks[w - 1];
+ 	pPriv->pattern1 &= StippleMasks[w - 1];
+ 
+ 	switch(w) {
+-	case 1: pPriv->pattern0 |= SHIFT_L(pPriv->pattern0,1);
++        case 1:
++            pPriv->pattern0 |= SHIFT_L(pPriv->pattern0, 1);
+ 		pPriv->pattern1 |= SHIFT_L(pPriv->pattern1,1);
+-	case 2:	pPriv->pattern0 |= SHIFT_L(pPriv->pattern0,2);
++        case 2:
++            pPriv->pattern0 |= SHIFT_L(pPriv->pattern0, 2);
+ 		pPriv->pattern1 |= SHIFT_L(pPriv->pattern1,2);
+-	case 4:	pPriv->pattern0 |= SHIFT_L(pPriv->pattern0,4);
++        case 4:
++            pPriv->pattern0 |= SHIFT_L(pPriv->pattern0, 4);
+ 		pPriv->pattern1 |= SHIFT_L(pPriv->pattern1,4);
+ 	}
+     }
+@@ -1184,11 +1281,9 @@ XAACheckStippleReducibility(PixmapPtr pPixmap)
+ 	pPriv->pattern1 = SWAP_BITS_IN_BYTES(pPriv->pattern1);
+     }
+ 
+-
+     return TRUE;
+ }
+ 
+-
+ Bool
+ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+ {
+@@ -1208,7 +1303,6 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+     dwords = ((w * pPixmap->drawable.bitsPerPixel) + 31) >> 5;
+     i = (h > 8) ? 8 : h;
+ 
+-
+     if(w > 8) {
+ 	IntPtr = (CARD32*)pPixmap->devPrivate.ptr;
+ 	switch(pPixmap->drawable.bitsPerPixel) {
+@@ -1244,14 +1338,15 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+ 		IntPtr += pitch;
+ 	     }
+ 	     break;
+-	default:  return FALSE;
++        default:
++            return FALSE;
+ 	}
+ 
+     }
+ 
+-
+     if(h == 32) {
+ 	CARD32 *IntPtr2, *IntPtr3, *IntPtr4;
++
+  	i = 8;
+ 	IntPtr = (CARD32*)pPixmap->devPrivate.ptr;
+     	IntPtr2 = IntPtr + (pitch << 3);
+@@ -1267,8 +1362,10 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+ 	    IntPtr3 += pitch;
+ 	    IntPtr4 += pitch;
+ 	}
+-    } else if (h == 16) {
++    }
++    else if (h == 16) {
+         CARD32 *IntPtr2;
++
+ 	i = 8;
+ 	IntPtr = (CARD32*)pPixmap->devPrivate.ptr;
+    	IntPtr2 = IntPtr + (pitch << 3);
+@@ -1294,35 +1391,48 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+ 
+ 	if(pPixmap->drawable.bitsPerPixel == 8) {
+ 	    unsigned char *srcp = pPixmap->devPrivate.ptr;
++
+ 	    fg = srcp[0];
+ 	    pitch = pPixmap->devKind;
+ 	    for(y = 0; y < i; y++) {
+ 		bits[y] = 0;
+ 		for(x = 0; x < j; x++) {
+ 		   if(srcp[x] != fg) {
+-			if(bg == -1) bg = srcp[x];
+-			else if(bg != srcp[x]) return TRUE;
+-		   } else bits[y] |= 1 << x;
++                        if (bg == -1)
++                            bg = srcp[x];
++                        else if (bg != srcp[x])
++                            return TRUE;
++                    }
++                    else
++                        bits[y] |= 1 << x;
+ 		}
+ 		srcp += pitch;
+ 	    }
+-	} else if(pPixmap->drawable.bitsPerPixel == 16) {
++        }
++        else if (pPixmap->drawable.bitsPerPixel == 16) {
+ 	    unsigned short *srcp = (unsigned short*)pPixmap->devPrivate.ptr;
++
+ 	    fg = srcp[0];
+ 	    pitch = pPixmap->devKind >> 1;
+ 	    for(y = 0; y < i; y++) {
+ 		bits[y] = 0;
+ 		for(x = 0; x < j; x++) {
+ 		   if(srcp[x] != fg) {
+-			if(bg == -1) bg = srcp[x];
+-			else if(bg != srcp[x]) return TRUE;
+-		   } else bits[y] |= 1 << x;
++                        if (bg == -1)
++                            bg = srcp[x];
++                        else if (bg != srcp[x])
++                            return TRUE;
++                    }
++                    else
++                        bits[y] |= 1 << x;
+ 		}
+ 		srcp += pitch;
+ 	    }
+-	} else if(pPixmap->drawable.bitsPerPixel == 24) {
++        }
++        else if (pPixmap->drawable.bitsPerPixel == 24) {
+ 	    CARD32 val;
+ 	    unsigned char *srcp = pPixmap->devPrivate.ptr;
++
+ 	    fg = *((CARD32*)srcp) & 0x00FFFFFF;
+ 	    pitch = pPixmap->devKind;
+ 	    j *= 3;
+@@ -1331,38 +1441,56 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+ 		for(x = 0; x < j; x+=3) {
+ 		   val = *((CARD32*)(srcp+x)) & 0x00FFFFFF;
+ 		   if(val != fg) {
+-			if(bg == -1) bg = val;
++                        if (bg == -1)
++                            bg = val;
+ 			else if(bg != val) 
+ 				return TRUE;
+-		   } else bits[y] |= 1 << (x/3);
++                    }
++                    else
++                        bits[y] |= 1 << (x / 3);
+ 		}
+ 		srcp += pitch;
+ 	    }
+-	} else if(pPixmap->drawable.bitsPerPixel == 32) {
++        }
++        else if (pPixmap->drawable.bitsPerPixel == 32) {
+ 	    IntPtr = (CARD32*)pPixmap->devPrivate.ptr;
+ 	    fg = IntPtr[0];
+ 	    for(y = 0; y < i; y++) {
+ 		bits[y] = 0;
+ 		for(x = 0; x < j; x++) {
+ 		   if(IntPtr[x] != fg) {
+-			if(bg == -1) bg = IntPtr[x];
+-			else if(bg != IntPtr[x]) return TRUE;
+-		   } else bits[y] |= 1 << x;
++                        if (bg == -1)
++                            bg = IntPtr[x];
++                        else if (bg != IntPtr[x])
++                            return TRUE;
++                    }
++                    else
++                        bits[y] |= 1 << x;
+ 		}
+ 		IntPtr += pitch;
+ 	    }
+-	} else return TRUE;
++        }
++        else
++            return TRUE;
+ 
+         pPriv->fg = fg;
+-	if(bg == -1) pPriv->bg = fg;
+-        else pPriv->bg = bg;
++        if (bg == -1)
++            pPriv->bg = fg;
++        else
++            pPriv->bg = bg;
+    
+    	if(h < 8) {
+ 	   switch(h) {
+-		case 1:	bits[1] = bits[0];
+-		case 2: bits[2] = bits[0];	bits[3] = bits[1];
+-		case 4: bits[4] = bits[0];	bits[5] = bits[1];
+-			bits[6] = bits[2];	bits[7] = bits[3];
++            case 1:
++                bits[1] = bits[0];
++            case 2:
++                bits[2] = bits[0];
++                bits[3] = bits[1];
++            case 4:
++                bits[4] = bits[0];
++                bits[5] = bits[1];
++                bits[6] = bits[2];
++                bits[7] = bits[3];
+ 			break;
+ 	   }
+     	}
+@@ -1374,11 +1502,14 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+  
+ 	if(w < 8) {
+ 	   switch(w) {
+-	   case 1: 	pPriv->pattern0 |= (pPriv->pattern0 << 1);
++            case 1:
++                pPriv->pattern0 |= (pPriv->pattern0 << 1);
+ 			pPriv->pattern1 |= (pPriv->pattern1 << 1);
+-	   case 2:	pPriv->pattern0 |= (pPriv->pattern0 << 2);
++            case 2:
++                pPriv->pattern0 |= (pPriv->pattern0 << 2);
+ 			pPriv->pattern1 |= (pPriv->pattern1 << 2);
+-	   case 4:	pPriv->pattern0 |= (pPriv->pattern0 << 4);
++            case 4:
++                pPriv->pattern0 |= (pPriv->pattern0 << 4);
+ 			pPriv->pattern1 |= (pPriv->pattern1 << 4);
+ 	   }
+ 	}
+@@ -1394,35 +1525,36 @@ XAACheckTileReducibility(PixmapPtr pPixmap, Bool checkMono)
+     return TRUE;
+ }
+ 
+-
+-void XAATileCache(
+-   ScrnInfoPtr pScrn, 
+-   XAACacheInfoPtr pCache,
+-   int w, int h
+-) {
++void
++XAATileCache(ScrnInfoPtr pScrn, XAACacheInfoPtr pCache, int w, int h)
++{
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+    (*infoRec->SetupForScreenToScreenCopy)(pScrn, 1, 1, GXcopy, ~0, -1);
+ 
+    while((w << 1) <= pCache->w) {
+ 	(*infoRec->SubsequentScreenToScreenCopy)(pScrn, pCache->x, pCache->y,
+-		pCache->x + w, pCache->y, w, h);
++                                                  pCache->x + w, pCache->y, w,
++                                                  h);
+ 	w <<= 1;
+    }
+    if(w != pCache->w) {
+ 	(*infoRec->SubsequentScreenToScreenCopy)(pScrn, pCache->x, pCache->y,
+-		pCache->x + w, pCache->y, pCache->w - w, h);
++                                                  pCache->x + w, pCache->y,
++                                                  pCache->w - w, h);
+ 	w = pCache->w;
+    }
+ 
+    while((h << 1) <= pCache->h) {
+ 	(*infoRec->SubsequentScreenToScreenCopy)(pScrn, pCache->x, pCache->y,
+-		pCache->x, pCache->y + h, w, h);
++                                                  pCache->x, pCache->y + h, w,
++                                                  h);
+ 	h <<= 1;
+    }
+    if(h != pCache->h) {
+ 	(*infoRec->SubsequentScreenToScreenCopy)(pScrn, pCache->x, pCache->y,
+-		pCache->x, pCache->y + h, w, pCache->h - h);
++                                                  pCache->x, pCache->y + h, w,
++                                                  pCache->h - h);
+    }
+    SET_SYNC_FLAG(infoRec);
+ }
+@@ -1445,20 +1577,24 @@ XAACacheTile(ScrnInfoPtr pScrn, PixmapPtr pPix)
+ 	    cacheRoot = pCachePriv->Info128; 
+ 	    max = pCachePriv->Num128x128;
+ 	    current = &pCachePriv->Current128;
+-	} else {     
++        }
++        else {
+ 	    cacheRoot = pCachePriv->InfoPartial;
+ 	    max = pCachePriv->NumPartial;
+ 	    current = &pCachePriv->CurrentPartial;
+ 	}
+-   } else if(size <= 256) {
++    }
++    else if (size <= 256) {
+ 	cacheRoot = pCachePriv->Info256;      
+ 	max = pCachePriv->Num256x256;
+ 	current = &pCachePriv->Current256;
+-   } else if(size <= 512) {
++    }
++    else if (size <= 512) {
+ 	cacheRoot = pCachePriv->Info512;      
+ 	max = pCachePriv->Num512x512;
+ 	current = &pCachePriv->Current512;
+-   } else { /* something's wrong */ 
++    }
++    else {                      /* something's wrong */
+ 	ErrorF("Something's wrong in XAACacheTile()\n");
+ 	return pCachePriv->Info128; 
+    }
+@@ -1474,14 +1610,17 @@ XAACacheTile(ScrnInfoPtr pScrn, PixmapPtr pPix)
+    }
+ 
+    pCache = &cacheRoot[(*current)++];
+-   if(*current >= max) *current = 0;
++    if (*current >= max)
++        *current = 0;
+ 
+    pCache->serialNumber = pPix->drawable.serialNumber;
+    pCache->trans_color = pCache->bg = pCache->fg = -1;
+-   pCache->orig_w = w;  pCache->orig_h = h;
+-   (*infoRec->WritePixmapToCache)(
+-	pScrn, pCache->x, pCache->y, w, h, pPix->devPrivate.ptr,
+-	pPix->devKind, pPix->drawable.bitsPerPixel, pPix->drawable.depth);
++    pCache->orig_w = w;
++    pCache->orig_h = h;
++    (*infoRec->WritePixmapToCache) (pScrn, pCache->x, pCache->y, w, h,
++                                    pPix->devPrivate.ptr, pPix->devKind,
++                                    pPix->drawable.bitsPerPixel,
++                                    pPix->drawable.depth);
+    if(!(infoRec->PixmapCacheFlags & DO_NOT_TILE_COLOR_DATA) && 
+ 	((w != pCache->w) || (h != pCache->h)))
+ 	XAATileCache(pScrn, pCache, w, h);
+@@ -1508,20 +1647,24 @@ XAACacheMonoStipple(ScrnInfoPtr pScrn, PixmapPtr pPix)
+ 	    cacheRoot = pCachePriv->Info128; 
+ 	    max = pCachePriv->Num128x128;
+ 	    current = &pCachePriv->Current128;
+-	} else {     
++        }
++        else {
+ 	    cacheRoot = pCachePriv->InfoPartial;
+ 	    max = pCachePriv->NumPartial;
+ 	    current = &pCachePriv->CurrentPartial;
+ 	}
+-   } else if((h <= 256) && (w <= 256 * bpp)){
++    }
++    else if ((h <= 256) && (w <= 256 * bpp)) {
+ 	cacheRoot = pCachePriv->Info256;      
+ 	max = pCachePriv->Num256x256;
+ 	current = &pCachePriv->Current256;
+-   } else if((h <= 512) && (w <= 526 * bpp)){
++    }
++    else if ((h <= 512) && (w <= 526 * bpp)) {
+ 	cacheRoot = pCachePriv->Info512;      
+ 	max = pCachePriv->Num512x512;
+ 	current = &pCachePriv->Current512;
+-   } else { /* something's wrong */ 
++    }
++    else {                      /* something's wrong */
+ 	ErrorF("Something's wrong in XAACacheMonoStipple()\n");
+ 	return pCachePriv->Info128; 
+    }
+@@ -1538,23 +1681,30 @@ XAACacheMonoStipple(ScrnInfoPtr pScrn, PixmapPtr pPix)
+    }
+ 
+    pCache = &cacheRoot[(*current)++];
+-   if(*current >= max) *current = 0;
++    if (*current >= max)
++        *current = 0;
+ 
+    pCache->serialNumber = pPix->drawable.serialNumber;
+    pCache->trans_color = pCache->bg = pCache->fg = -1;
+-   pCache->orig_w = w;  pCache->orig_h = h;
++    pCache->orig_w = w;
++    pCache->orig_h = h;
+ 
+    if(w <= 32) {
+-        if(w & (w - 1))	funcNo = 1;
+-        else    	funcNo = 0;
+-   } else 		funcNo = 2;
++        if (w & (w - 1))
++            funcNo = 1;
++        else
++            funcNo = 0;
++    }
++    else
++        funcNo = 2;
+ 
+    pad = BitmapBytePad(pCache->w * bpp);
+    dwords = bytes_to_int32(pad);
+    dstPtr = data = (unsigned char*)malloc(pad * pCache->h);
+    srcPtr = (unsigned char*)pPix->devPrivate.ptr;
+ 
+-   if(infoRec->ScreenToScreenColorExpandFillFlags & BIT_ORDER_IN_BYTE_MSBFIRST)
++    if (infoRec->
++        ScreenToScreenColorExpandFillFlags & BIT_ORDER_IN_BYTE_MSBFIRST)
+ 	StippleFunc = XAAStippleScanlineFuncMSBFirst[funcNo];
+    else
+ 	StippleFunc = XAAStippleScanlineFuncLSBFirst[funcNo];
+@@ -1578,9 +1728,8 @@ XAACacheMonoStipple(ScrnInfoPtr pScrn, PixmapPtr pPix)
+    if(h < pCache->h)   
+ 	memcpy(data + (pad * h), data, pad * (pCache->h - h));
+ 
+-   (*infoRec->WritePixmapToCache)(
+-	pScrn, pCache->x, pCache->y, pCache->w, pCache->h, data,
+-	pad, bpp, pScrn->depth);
++    (*infoRec->WritePixmapToCache) (pScrn, pCache->x, pCache->y, pCache->w,
++                                    pCache->h, data, pad, bpp, pScrn->depth);
+ 
+    free(data);
+ 
+@@ -1604,20 +1753,24 @@ XAACachePlanarMonoStipple(ScrnInfoPtr pScrn, PixmapPtr pPix)
+ 	    cacheRoot = pCachePriv->Info128; 
+ 	    max = pCachePriv->Num128x128;
+ 	    current = &pCachePriv->Current128;
+-	} else {     
++        }
++        else {
+ 	    cacheRoot = pCachePriv->InfoPartial;
+ 	    max = pCachePriv->NumPartial;
+ 	    current = &pCachePriv->CurrentPartial;
+ 	}
+-   } else if((h <= 256) && (w <= 256)){
++    }
++    else if ((h <= 256) && (w <= 256)) {
+ 	cacheRoot = pCachePriv->Info256;      
+ 	max = pCachePriv->Num256x256;
+ 	current = &pCachePriv->Current256;
+-   } else if((h <= 512) && (w <= 526)){
++    }
++    else if ((h <= 512) && (w <= 526)) {
+ 	cacheRoot = pCachePriv->Info512;      
+ 	max = pCachePriv->Num512x512;
+ 	current = &pCachePriv->Current512;
+-   } else { /* something's wrong */ 
++    }
++    else {                      /* something's wrong */
+ 	ErrorF("Something's wrong in XAACachePlanarMonoStipple()\n");
+ 	return pCachePriv->Info128; 
+    }
+@@ -1634,16 +1787,18 @@ XAACachePlanarMonoStipple(ScrnInfoPtr pScrn, PixmapPtr pPix)
+    }
+ 
+    pCache = &cacheRoot[(*current)++];
+-   if(*current >= max) *current = 0;
++    if (*current >= max)
++        *current = 0;
+ 
+    pCache->serialNumber = pPix->drawable.serialNumber;
+    pCache->trans_color = pCache->bg = pCache->fg = -1;
+-   pCache->orig_w = w;  pCache->orig_h = h;
++    pCache->orig_w = w;
++    pCache->orig_h = h;
+ 
+    /* Plane 0 holds the stipple. Plane 1 holds the inverted stipple */
+    (*infoRec->WriteBitmapToCache)(pScrn, pCache->x, pCache->y, 
+-	pPix->drawable.width, pPix->drawable.height, pPix->devPrivate.ptr,
+-	pPix->devKind, 1, 2);
++                                    pPix->drawable.width, pPix->drawable.height,
++                                    pPix->devPrivate.ptr, pPix->devKind, 1, 2);
+    if(!(infoRec->PixmapCacheFlags & DO_NOT_TILE_MONO_DATA) && 
+ 	((w != pCache->w) || (h != pCache->h)))
+ 	XAATileCache(pScrn, pCache, w, h);
+@@ -1675,20 +1830,24 @@ XAACacheStipple(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 	    cacheRoot = pCachePriv->Info128; 
+ 	    max = pCachePriv->Num128x128;
+ 	    current = &pCachePriv->Current128;
+-	} else {     
++        }
++        else {
+ 	    cacheRoot = pCachePriv->InfoPartial;
+ 	    max = pCachePriv->NumPartial;
+ 	    current = &pCachePriv->CurrentPartial;
+ 	}
+-   } else if(size <= 256) {
++    }
++    else if (size <= 256) {
+ 	cacheRoot = pCachePriv->Info256;      
+ 	max = pCachePriv->Num256x256;
+ 	current = &pCachePriv->Current256;
+-   } else if(size <= 512) {
++    }
++    else if (size <= 512) {
+ 	cacheRoot = pCachePriv->Info512;      
+ 	max = pCachePriv->Num512x512;
+ 	current = &pCachePriv->Current512;
+-   } else { /* something's wrong */
++    }
++    else {                      /* something's wrong */
+ 	ErrorF("Something's wrong in XAACacheStipple()\n");
+ 	return pCachePriv->Info128; 
+    }
+@@ -1713,7 +1872,8 @@ XAACacheStipple(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 	}
+ 
+    pCache = &cacheRoot[(*current)++];
+-   if(*current >= max) *current = 0;
++    if (*current >= max)
++        *current = 0;
+ 
+    pCache->serialNumber = pPix->drawable.serialNumber;
+    pCache->fg = fg;
+@@ -1723,10 +1883,12 @@ XAACacheStipple(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 	pCache->trans_color = -1;
+    pCache->bg = bg;
+ 
+-   pCache->orig_w = w;  pCache->orig_h = h;
++    pCache->orig_w = w;
++    pCache->orig_h = h;
+    (*infoRec->WriteBitmapToCache)(pScrn, pCache->x, pCache->y, 
+-	pPix->drawable.width, pPix->drawable.height, pPix->devPrivate.ptr,
+-	pPix->devKind, fg, bg);
++                                    pPix->drawable.width, pPix->drawable.height,
++                                    pPix->devPrivate.ptr, pPix->devKind, fg,
++                                    bg);
+    if(!(infoRec->PixmapCacheFlags & DO_NOT_TILE_COLOR_DATA) && 
+ 	((w != pCache->w) || (h != pCache->h)))
+ 	XAATileCache(pScrn, pCache, w, h);
+@@ -1734,8 +1896,6 @@ XAACacheStipple(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+    return pCache;
+ }
+ 
+-
+-
+ XAACacheInfoPtr
+ XAACacheMono8x8Pattern(ScrnInfoPtr pScrn, int pat0, int pat1)
+ {
+@@ -1765,8 +1925,6 @@ XAACacheMono8x8Pattern(ScrnInfoPtr pScrn, int pat0, int pat1)
+    return pCache;
+ }
+ 
+-
+-
+ XAACacheInfoPtr
+ XAACacheColor8x8Pattern(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ {
+@@ -1790,12 +1948,14 @@ XAACacheColor8x8Pattern(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 
+ 	pCache->serialNumber = pPix->drawable.serialNumber;
+ 	pCache->trans_color = pCache->fg = pCache->bg = -1;
+-   } else {
++    }
++    else {
+ 	int pat0 = pixPriv->pattern0;
+ 	int pat1 = pixPriv->pattern1;
+ 
+ 	if(fg == -1) { /* it's a tile */
+-	   fg = pixPriv->fg; bg = pixPriv->bg;
++            fg = pixPriv->fg;
++            bg = pixPriv->bg;
+ 	}
+ 
+ 	if(bg == -1) { /* stipple */
+@@ -1807,7 +1967,8 @@ XAACacheColor8x8Pattern(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 		   return pCache;	
+ 		}
+ 	    }
+-	} else {  /* opaque stipple */
++        }
++        else {                  /* opaque stipple */
+ 	    for(i = 0; i < pCachePriv->NumColor; i++, pCache++) {
+ 		if(pCache->serialNumber &&
+ 		   (pCache->pat0 == pat0) && (pCache->pat1 == pat1) &&
+@@ -1826,8 +1987,10 @@ XAACacheColor8x8Pattern(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+ 	else
+ 	    pCache->trans_color = -1;
+ 
+-	pCache->pat0 = pat0; pCache->pat1 = pat1;
+-	pCache->fg = fg; pCache->bg = bg;
++        pCache->pat0 = pat0;
++        pCache->pat1 = pat1;
++        pCache->fg = fg;
++        pCache->bg = bg;
+ 	pCache->serialNumber = 1;
+    }
+ 
+@@ -1836,15 +1999,11 @@ XAACacheColor8x8Pattern(ScrnInfoPtr pScrn, PixmapPtr pPix, int fg, int bg)
+    return pCache;
+ }
+ 
+-
+ void
+-XAAWriteBitmapToCache(
+-   ScrnInfoPtr pScrn,
++XAAWriteBitmapToCache(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+-   unsigned char *src,
+-   int srcwidth,
+-   int fg, int bg
+-) {
++                      unsigned char *src, int srcwidth, int fg, int bg)
++{
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+    (*infoRec->WriteBitmap)(pScrn, x, y, w, h, src, srcwidth, 
+@@ -1852,13 +2011,10 @@ XAAWriteBitmapToCache(
+ }
+ 
+ void
+-XAAWriteBitmapToCacheLinear(
+-   ScrnInfoPtr pScrn,
++XAAWriteBitmapToCacheLinear(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+-   unsigned char *src,
+-   int srcwidth,
+-   int fg, int bg
+-){
++                            unsigned char *src, int srcwidth, int fg, int bg)
++{
+    ScreenPtr pScreen = pScrn->pScreen;
+    PixmapPtr pScreenPix, pDstPix;
+    ChangeGCVal gcvals[2];
+@@ -1888,31 +2044,23 @@ XAAWriteBitmapToCacheLinear(
+    FreeScratchPixmapHeader(pDstPix);
+ }
+ 
+-
+ void
+-XAAWritePixmapToCache(
+-   ScrnInfoPtr pScrn,
++XAAWritePixmapToCache(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+-   unsigned char *src,
+-   int srcwidth,
+-   int bpp, int depth
+-) {
++                      unsigned char *src, int srcwidth, int bpp, int depth)
++{
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+    (*infoRec->WritePixmap)(pScrn, x, y, w, h, src, srcwidth,
+ 				GXcopy, ~0, -1, bpp, depth);
+ }
+ 
+-
+-
+ void
+-XAAWritePixmapToCacheLinear(
+-   ScrnInfoPtr pScrn,
++XAAWritePixmapToCacheLinear(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+    unsigned char *src,
+-   int srcwidth,
+-   int bpp, int depth
+-){
++                            int srcwidth, int bpp, int depth)
++{
+    ScreenPtr pScreen = pScrn->pScreen;
+    PixmapPtr pScreenPix, pDstPix;
+    GCPtr pGC;
+@@ -1948,12 +2096,9 @@ XAAWritePixmapToCacheLinear(
+    FreeScratchPixmapHeader(pDstPix);
+ }
+ 
+-
+ void
+-XAAWriteMono8x8PatternToCache(
+-   ScrnInfoPtr pScrn, 
+-   XAACacheInfoPtr pCache
+-){
++XAAWriteMono8x8PatternToCache(ScrnInfoPtr pScrn, XAACacheInfoPtr pCache)
++{
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+    XAAPixmapCachePrivatePtr pCachePriv = 
+ 	(XAAPixmapCachePrivatePtr)infoRec->PixmapCachePrivate;
+@@ -1965,38 +2110,43 @@ XAAWriteMono8x8PatternToCache(
+    pad = BitmapBytePad(pCache->w * pScrn->bitsPerPixel);
+ 
+    data = (unsigned char*)malloc(pad * pCache->h);
+-   if(!data) return;
++    if (!data)
++        return;
+ 
+    if(infoRec->Mono8x8PatternFillFlags & HARDWARE_PATTERN_PROGRAMMED_ORIGIN) {
+ 	CARD32* ptr = (CARD32*)data;
+-	ptr[0] = pCache->pat0;  ptr[1] = pCache->pat1;
+-   } else {
++
++        ptr[0] = pCache->pat0;
++        ptr[1] = pCache->pat1;
++    }
++    else {
+ 	CARD32 *ptr;
+ 	DDXPointPtr pPoint = pCache->offsets;
+ 	int patx, paty, i;
+ 
+ 	for(i = 0; i < 64; i++, pPoint++) {
+-	     patx = pCache->pat0; paty = pCache->pat1;
++            patx = pCache->pat0;
++            paty = pCache->pat1;
+ 	     XAARotateMonoPattern(&patx, &paty, i & 0x07, i >> 3,
+ 				(infoRec->Mono8x8PatternFillFlags & 		
+ 				BIT_ORDER_IN_BYTE_MSBFIRST));
+ 	     ptr = (CARD32*)(data + (pad * pPoint->y) + (Bpp * pPoint->x));
+-	     ptr[0] = patx;  ptr[1] = paty;
++            ptr[0] = patx;
++            ptr[1] = paty;
+ 	}
+    }
+ 
+    (*infoRec->WritePixmapToCache)(pScrn, pCache->x, pCache->y, 
+-	pCache->w, pCache->h, data, pad, pScrn->bitsPerPixel, pScrn->depth);
++                                    pCache->w, pCache->h, data, pad,
++                                    pScrn->bitsPerPixel, pScrn->depth);
+ 
+    free(data);
+ }
+ 
+ void
+-XAAWriteColor8x8PatternToCache(
+-   ScrnInfoPtr pScrn, 
+-   PixmapPtr pPix, 
+-   XAACacheInfoPtr pCache
+-){
++XAAWriteColor8x8PatternToCache(ScrnInfoPtr pScrn,
++                               PixmapPtr pPix, XAACacheInfoPtr pCache)
++{
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+    XAAPixmapPtr pixPriv = XAA_GET_PIXMAP_PRIVATE(pPix);
+    XAAPixmapCachePrivatePtr pCachePriv = 
+@@ -2008,31 +2158,39 @@ XAAWriteColor8x8PatternToCache(
+ 
+    if(pixPriv->flags & REDUCIBLE_TO_2_COLOR) {
+ 	CARD32* ptr;
++
+ 	pad = BitmapBytePad(pCache->w);
+ 	data = (unsigned char*)malloc(pad * pCache->h);
+-	if(!data) return;
++        if (!data)
++            return;
+ 
+ 	if(infoRec->Color8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_PROGRAMMED_ORIGIN) {
+ 	     ptr = (CARD32*)data;
+-	     ptr[0] = pCache->pat0; ptr[1] = pCache->pat1;
+-	} else {
++            ptr[0] = pCache->pat0;
++            ptr[1] = pCache->pat1;
++        }
++        else {
+ 	   int patx, paty;
+ 	
+ 	   ptr = (CARD32*)data;
+-	   ptr[0] = ptr[2] = pCache->pat0;  ptr[1] = ptr[3] = pCache->pat1;
++            ptr[0] = ptr[2] = pCache->pat0;
++            ptr[1] = ptr[3] = pCache->pat1;
+ 	   for(i = 1; i < 8; i++) {
+-		patx = pCache->pat0; paty = pCache->pat1;
++                patx = pCache->pat0;
++                paty = pCache->pat1;
+ 		XAARotateMonoPattern(&patx, &paty, i, 0,
+ 				(infoRec->Mono8x8PatternFillFlags & 		
+ 				BIT_ORDER_IN_BYTE_MSBFIRST));
+ 		ptr = (CARD32*)(data + (pad * i));
+-		ptr[0] = ptr[2] = patx;  ptr[1] = ptr[3] = paty;
++                ptr[0] = ptr[2] = patx;
++                ptr[1] = ptr[3] = paty;
+ 	   }
+ 	}
+ 
+ 	(*infoRec->WriteBitmapToCache)(pScrn, pCache->x, pCache->y, 
+-		pCache->w, pCache->h, data, pad, pCache->fg, pCache->bg);
++                                        pCache->w, pCache->h, data, pad,
++                                        pCache->fg, pCache->bg);
+ 
+         free(data);
+ 	return;
+@@ -2044,7 +2202,8 @@ XAAWriteColor8x8PatternToCache(
+    pad = BitmapBytePad(pCache->w * pScrn->bitsPerPixel);
+ 
+    data = (unsigned char*)malloc(pad * pCache->h);
+-   if(!data) return;
++    if (!data)
++        return;
+ 
+    /* Write and expand horizontally. */
+    for (i = h, dstPtr = data, srcPtr = pPix->devPrivate.ptr; i--; 
+@@ -2059,7 +2218,8 @@ XAAWriteColor8x8PatternToCache(
+    nh = h;
+    /* Expand vertically. */
+    while (nh != 8) {
+-        memcpy(data + (nh*pScrn->bitsPerPixel), data, nh*pScrn->bitsPerPixel);
++        memcpy(data + (nh * pScrn->bitsPerPixel), data,
++               nh * pScrn->bitsPerPixel);
+         nh <<= 1;
+    }
+ 
+@@ -2073,20 +2233,20 @@ XAAWriteColor8x8PatternToCache(
+ 	   for(j = 0; j < 8; j++) {
+ 		memcpy(ptr + (j * 8) * Bpp, data + (j * 8 + i) * Bpp,
+ 			(8 - i) * Bpp);
+-		memcpy(ptr + (j * 8 + 8 - i) * Bpp, data + j * 8 * Bpp, i*Bpp);
++                memcpy(ptr + (j * 8 + 8 - i) * Bpp, data + j * 8 * Bpp,
++                       i * Bpp);
+ 	   }
+ 	   memcpy(ptr + (64 * Bpp), ptr, 64 * Bpp);
+ 	}
+    }
+ 
+    (*infoRec->WritePixmapToCache)(pScrn, pCache->x, pCache->y, 
+-	pCache->w, pCache->h, data, pad, pScrn->bitsPerPixel, pScrn->depth);
++                                    pCache->w, pCache->h, data, pad,
++                                    pScrn->bitsPerPixel, pScrn->depth);
+ 
+    free(data);
+ }
+ 
+-
+-
+ int
+ XAAStippledFillChooser(GCPtr pGC)
+ {
+@@ -2099,7 +2259,6 @@ XAAStippledFillChooser(GCPtr pGC)
+ 	XAACheckStippleReducibility(pPixmap);
+     }
+ 
+-
+     if(pPriv->flags & REDUCIBLE_TO_8x8) {
+ 	if(infoRec->CanDoMono8x8 && 
+ 	   !(infoRec->FillMono8x8PatternSpansFlags & NO_TRANSPARENCY) && 
+@@ -2140,7 +2299,6 @@ XAAStippledFillChooser(GCPtr pGC)
+ 	      return DO_CACHE_EXPAND;
+     }
+ 
+-
+     if(infoRec->UsingPixmapCache && 
+ 	!(infoRec->PixmapCacheFlags & DO_NOT_BLIT_STIPPLES) && 
+ 	infoRec->FillCacheBltSpans && 
+@@ -2171,7 +2329,6 @@ XAAStippledFillChooser(GCPtr pGC)
+     return 0;
+ }
+ 
+-
+ int
+ XAAOpaqueStippledFillChooser(GCPtr pGC)
+ {
+@@ -2245,8 +2402,6 @@ XAAOpaqueStippledFillChooser(GCPtr pGC)
+     return 0;
+ }
+ 
+-
+-
+ int
+ XAATiledFillChooser(GCPtr pGC)
+ {
+@@ -2310,7 +2465,6 @@ XAATiledFillChooser(GCPtr pGC)
+     return 0;
+ }
+ 
+-
+ static int RotateMasksX[8] = {
+    0xFFFFFFFF, 0x7F7F7F7F, 0x3F3F3F3F, 0x1F1F1F1F,
+    0x0F0F0F0F, 0x07070707, 0x03030303, 0x01010101
+@@ -2321,21 +2475,21 @@ static int RotateMasksY[4] = {
+ };
+ 
+ void
+-XAARotateMonoPattern(
+-    int *pat0, int *pat1,
+-    int xorg, int yorg,
+-    Bool msbfirst
+-){
++XAARotateMonoPattern(int *pat0, int *pat1, int xorg, int yorg, Bool msbfirst)
++{
+     int tmp, mask;    
+ 
+     if(xorg) {
+-	if(msbfirst) xorg = 8 - xorg;
++        if (msbfirst)
++            xorg = 8 - xorg;
+ 	mask = RotateMasksX[xorg];
+ 	*pat0 = ((*pat0 >> xorg) & mask) | ((*pat0 << (8 - xorg)) & ~mask);
+ 	*pat1 = ((*pat1 >> xorg) & mask) | ((*pat1 << (8 - xorg)) & ~mask);
+     } 
+     if(yorg >= 4) {
+-	tmp = *pat0; *pat0 = *pat1; *pat1 = tmp;
++        tmp = *pat0;
++        *pat0 = *pat1;
++        *pat1 = tmp;
+ 	yorg -= 4;
+     }
+     if(yorg) {
+@@ -2347,8 +2501,6 @@ XAARotateMonoPattern(
+     }
+ }
+ 
+-
+-
+ void
+ XAAInvalidatePixmapCache(ScreenPtr pScreen)
+ {
+@@ -2357,7 +2509,8 @@ XAAInvalidatePixmapCache(ScreenPtr pScreen)
+ 	(XAAPixmapCachePrivatePtr)infoRec->PixmapCachePrivate;
+    int i;
+ 
+-   if(!pCachePriv) return;
++    if (!pCachePriv)
++        return;
+ 
+    for(i = 0; i < pCachePriv->Num512x512; i++) 
+ 	(pCachePriv->Info512)[i].serialNumber = 0;

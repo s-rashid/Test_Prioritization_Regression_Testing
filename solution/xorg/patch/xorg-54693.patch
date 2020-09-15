@@ -1,0 +1,13 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 25379bb..8217e76 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -2599,7 +2599,7 @@ typedef struct {
+ static void
+ IdleTimeQueryValue(pointer pCounter, CARD64 * pValue_return)
+ {
+-    CARD32 idle = GetTimeInMillis() - lastDeviceEventTime.milliseconds;
++    CARD32 idle = GetTimeInMillis() - lastDeviceEventTime[XIAllDevices].milliseconds;
+ 
+     XSyncIntsToValue(pValue_return, idle, 0);
+ }

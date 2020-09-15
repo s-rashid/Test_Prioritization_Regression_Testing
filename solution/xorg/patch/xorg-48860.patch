@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index 9da4aba..5943e92 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -839,7 +839,6 @@ static void dmxInputScanForExtensions(DMXInputInfo *dmxInput, int doXI)
+     Display              *display;
+     int                  num;
+     int                  i, j;
+-    DMXLocalInputInfoPtr dmxLocal;
+     int                  (*handler)(Display *, char *, char *);
+ 
+     if (!(display = XOpenDisplay(dmxInput->name))) return;

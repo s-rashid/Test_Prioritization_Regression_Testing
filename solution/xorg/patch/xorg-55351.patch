@@ -1,0 +1,69 @@
+diff --git a/hw/dmx/input/usb-other.c b/hw/dmx/input/usb-other.c
+index d1074b8..f24f259 100644
+--- a/hw/dmx/input/usb-other.c
++++ b/hw/dmx/input/usb-other.c
+@@ -68,33 +68,36 @@
+ /*****************************************************************************/
+ 
+ /** Read the USB device using #usbRead. */
+-void othUSBRead(DevicePtr pDev,
++void
++othUSBRead(DevicePtr pDev,
+                 MOTIONPROC motion,
+-                ENQUEUEPROC enqueue,
+-                CHECKPROC checkspecial,
+-                BLOCK block)
++           ENQUEUEPROC enqueue, CHECKPROC checkspecial, BLOCK block)
+ {
+     usbRead(pDev, motion, enqueue, 0xffff, block);
+ }
+ 
+ /** Initialize \a pDev using #usbInit. */
+-void othUSBInit(DevicePtr pDev)
++void
++othUSBInit(DevicePtr pDev)
+ {
+     usbInit(pDev, usbOther);
+ }
+ 
+ /** Turn \a pDev on (i.e., take input from \a pDev). */
+-int othUSBOn(DevicePtr pDev)
++int
++othUSBOn(DevicePtr pDev)
+ {
+     GETPRIV;
+ 
+-    if (priv->fd < 0) othUSBInit(pDev);
++    if (priv->fd < 0)
++        othUSBInit(pDev);
+     return priv->fd;
+ }
+ 
+ /** Fill the \a info structure with information needed to initialize \a
+  * pDev. */ 
+-void othUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++othUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     GETPRIV;
+     int           i, j;
+@@ -124,7 +127,8 @@ void othUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+                     info->numRelAxes     = DMX_MAX_AXES - info->numAbsAxes - 1;
+                     dmxLog(dmxWarning, "Can only use %d relative axes\n",
+                            info->numRelAxes);
+-                } else
++                }
++                else
+                     info->numRelAxes     = priv->numRel;
+                 info->minval[0]          = 0;
+                 info->maxval[0]          = 0;
+@@ -138,7 +142,8 @@ void othUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+                     info->numAbsAxes     = DMX_MAX_AXES - info->numRelAxes - 1;
+                     dmxLog(dmxWarning, "Can only use %d absolute axes\n",
+                            info->numAbsAxes);
+-                } else
++                }
++                else
+                     info->numAbsAxes     = priv->numAbs;
+                 for (j = 0; j < info->numAbsAxes; j++) {
+                     ioctl(priv->fd, EVIOCGABS(j), absolute);

@@ -1,0 +1,13 @@
+diff --git a/test/xi2/protocol-xipassivegrabdevice.c b/test/xi2/protocol-xipassivegrabdevice.c
+index 89ffc3d..b405556 100644
+--- a/test/xi2/protocol-xipassivegrabdevice.c
++++ b/test/xi2/protocol-xipassivegrabdevice.c
+@@ -180,7 +180,7 @@ static void test_XIPassiveGrabDevice(void)
+     request->deviceid = XIAllMasterDevices;
+ 
+     printf("Testing invalid grab types\n");
+-    for (i = XIGrabtypeFocusIn + 1; i < 0xFF; i++)
++    for (i = XIGrabtypeTouchBegin + 1; i < 0xFF; i++)
+     {
+         request->grab_type = i;
+         request_XIPassiveGrabDevice(&client_request, request, BadValue, request->grab_type);

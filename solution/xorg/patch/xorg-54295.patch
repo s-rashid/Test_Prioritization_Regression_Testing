@@ -1,0 +1,19 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index 0186f53..bd16970 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -222,6 +222,14 @@ GrabWindow(
+ 	GrabMask*              /* eventMask */);
+ 
+ extern int
++GrabTouch(
++       ClientPtr              /* client */,
++       DeviceIntPtr           /* dev */,
++       DeviceIntPtr           /* mod_dev */,
++       GrabParameters*        /* param */,
++       GrabMask*              /* eventMask */);
++
++extern int
+ SelectForWindow(
+ 	DeviceIntPtr           /* dev */,
+ 	WindowPtr              /* pWin */,

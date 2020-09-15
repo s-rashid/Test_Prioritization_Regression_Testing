@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winmultiwindowicons.c b/hw/xwin/winmultiwindowicons.c
+index 1ca3f91..534f6fd 100644
+--- a/hw/xwin/winmultiwindowicons.c
++++ b/hw/xwin/winmultiwindowicons.c
+@@ -37,8 +37,6 @@
+ #include "winprefs.h"
+ 
+ #include "propertyst.h"
+-
+-#include "propertyst.h"
+ #include "windowstr.h"
+ 
+ 

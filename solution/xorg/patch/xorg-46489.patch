@@ -1,0 +1,14 @@
+diff --git a/include/events.h b/include/events.h
+index 9f6a94c..375173a 100644
+--- a/include/events.h
++++ b/include/events.h
+@@ -30,6 +30,9 @@ typedef struct _DeviceChangedEvent DeviceChangedEvent;
+ typedef struct _DGAEvent DGAEvent;
+ #endif
+ typedef struct _RawDeviceEvent RawDeviceEvent;
++#ifdef XQUARTZ
++typedef struct _XQuartzEvent XQuartzEvent;
++#endif
+ typedef union _InternalEvent InternalEvent;
+ 
+ #endif

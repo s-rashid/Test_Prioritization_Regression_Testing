@@ -1,0 +1,32 @@
+diff --git a/hw/xfree86/parser/Monitor.c b/hw/xfree86/parser/Monitor.c
+index 76c35ae..970406d 100644
+--- a/hw/xfree86/parser/Monitor.c
++++ b/hw/xfree86/parser/Monitor.c
+@@ -105,7 +105,6 @@ static xf86ConfigSymTabRec TimingTab[] =
+ 	{TT_HSKEW, "hskew"},
+ 	{TT_BCAST, "bcast"},
+ 	{TT_VSCAN, "vscan"},
+-	{TT_CUSTOM, "CUSTOM"},
+ 	{-1, ""},
+ };
+ 
+@@ -247,9 +246,6 @@ xf86parseModeLine (void)
+ 			ptr->ml_vscan = val.num;
+ 			ptr->ml_flags |= XF86CONF_VSCAN;
+ 			break;
+-		case TT_CUSTOM:
+-			ptr->ml_flags |= XF86CONF_CUSTOM;
+-			break;
+ 		case EOF_TOKEN:
+ 			Error (UNEXPECTED_EOF_MSG, NULL);
+ 			break;
+@@ -370,9 +366,6 @@ xf86parseVerboseMode (void)
+ 				case TT_DBLSCAN:
+ 					ptr->ml_flags |= XF86CONF_DBLSCAN;
+ 					break;
+-				case TT_CUSTOM:
+-					ptr->ml_flags |= XF86CONF_CUSTOM;
+-					break;
+ 				case EOF_TOKEN:
+ 					Error (UNEXPECTED_EOF_MSG, NULL);
+ 					break;

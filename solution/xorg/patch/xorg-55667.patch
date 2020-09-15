@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/x86emu/validate.c b/hw/xfree86/x86emu/validate.c
+index b8c4d12..4c36e1d 100644
+--- a/hw/xfree86/x86emu/validate.c
++++ b/hw/xfree86/x86emu/validate.c
+@@ -591,16 +591,19 @@
+         printk("passed\n");                                                 \
+ }
+ 
+-void printk(const char *fmt, ...)
++void
++printk(const char *fmt, ...)
+ {
+     va_list argptr;
++
+     va_start(argptr, fmt);
+     vfprintf(stdout, fmt, argptr);
+     fflush(stdout);
+     va_end(argptr);
+ }
+ 
+-char * print_flags(char *buf,ulong flags)
++char *
++print_flags(char *buf, ulong flags)
+ {
+     char *separator = "";
+ 
+@@ -640,7 +643,8 @@ char * print_flags(char *buf,ulong flags)
+     return buf;
+ }
+ 
+-int main(int argc)
++int
++main(int argc)
+ {
+     ulong   def_flags;
+     int trace = false;

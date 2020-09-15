@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/modes/xf86RandR12.c b/hw/xfree86/modes/xf86RandR12.c
+index cb20d1c..d5031a2 100644
+--- a/hw/xfree86/modes/xf86RandR12.c
++++ b/hw/xfree86/modes/xf86RandR12.c
+@@ -736,6 +736,8 @@ xf86RandR12ScreenSetSize (ScreenPtr	pScreen,
+     xf86SetViewport (pScreen, 0, 0);
+ 
+ finish:
++    update_desktop_dimensions();
++
+     if (pRoot && pScrn->vtSema)
+ 	(*pScrn->EnableDisableFBAccess) (pScreen->myNum, TRUE);
+ #if RANDR_12_INTERFACE

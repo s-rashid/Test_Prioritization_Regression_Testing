@@ -1,0 +1,38 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 2c51388..94da143 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -792,28 +792,19 @@ positionSprite(DeviceIntPtr dev, int mode,
+     int old_screenx, old_screeny;
+     double val, ret;
+ 
++    if (!dev->valuator || dev->valuator->numAxes < 2)
++        return;
++
+     /* scale x&y to screen */
+-    if (dev->valuator && dev->valuator->numAxes > 0) {
+         val = *x + x_frac;
+-        ret = rescaleValuatorAxis(val, dev->valuator->axes + 0, NULL,
+-                                  scr->width);
++    ret = rescaleValuatorAxis(val, dev->valuator->axes + 0, NULL, scr->width);
+         *screenx = trunc(ret);
+         *screenx_frac = ret - trunc(ret);
+-    } else {
+-        *screenx = dev->last.valuators[0];
+-        *screenx_frac = dev->last.remainder[0];
+-    }
+ 
+-    if (dev->valuator && dev->valuator->numAxes > 1) {
+         val = *y + y_frac;
+-        ret = rescaleValuatorAxis(val, dev->valuator->axes + 1, NULL,
+-                                  scr->height);
++    ret = rescaleValuatorAxis(val, dev->valuator->axes + 1, NULL, scr->height);
+         *screeny = trunc(ret);
+         *screeny_frac = ret - trunc(ret);
+-    } else {
+-        *screeny = dev->last.valuators[1];
+-        *screeny_frac = dev->last.remainder[1];
+-    }
+ 
+     /* Hit the left screen edge? */
+     if (*screenx <= 0 && *screenx_frac < 0.0f)

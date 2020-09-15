@@ -1,0 +1,34 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_bell.c b/hw/xfree86/os-support/solaris/sun_bell.c
+index b59835e..beb13d2 100644
+--- a/hw/xfree86/os-support/solaris/sun_bell.c
++++ b/hw/xfree86/os-support/solaris/sun_bell.c
+@@ -132,7 +132,8 @@ xf86OSRingBell(int loudness, int pitch, int duration)
+              */
+             iov[iovcnt].iov_base = (char *) silence;
+             iov[iovcnt++].iov_len = sizeof(silence);
+-        } else {
++        }
++        else {
+             iov[iovcnt].iov_base = (char *) samples;
+             iov[iovcnt++].iov_len = sizeof(samples);
+         }
+@@ -153,7 +154,8 @@ xf86OSRingBell(int loudness, int pitch, int duration)
+                         return;
+                     }
+                     i = iovcnt;
+-                } else {
++                }
++                else {
+                     i = ((sizeof(samples) * iovcnt) - written)
+                         / sizeof(samples);
+                 }
+@@ -169,7 +171,8 @@ xf86OSRingBell(int loudness, int pitch, int duration)
+                     iov[iovcnt].iov_base = ((char *) samples) + i;
+                     iov[iovcnt++].iov_len = sizeof(samples) - i;
+                 }
+-            } else {
++            }
++            else {
+                 iovcnt = 0;
+             }
+         }

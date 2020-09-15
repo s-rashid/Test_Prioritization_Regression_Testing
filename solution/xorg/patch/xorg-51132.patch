@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_agp.c b/hw/xfree86/os-support/solaris/sun_agp.c
+index 9db5d63..dd4b1e2 100644
+--- a/hw/xfree86/os-support/solaris/sun_agp.c
++++ b/hw/xfree86/os-support/solaris/sun_agp.c
+@@ -318,7 +318,7 @@ xf86EnableAGP(int screenNum, CARD32 mode)
+ 	if (ioctl(gartFd, AGPIOC_SETUP, &setup) != 0) {
+ 		xf86DrvMsg(screenNum, X_WARNING, "xf86EnableAGP: "
+ 		    "AGPIOC_SETUP with mode %x failed (%s)\n",
+-		    mode, strerror(errno));
++		    (unsigned int) mode, strerror(errno));
+ 		return FALSE;
+ 	}
+ 

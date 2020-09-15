@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxinput.c b/hw/dmx/dmxinput.c
+index d9118b6..c099349 100644
+--- a/hw/dmx/dmxinput.c
++++ b/hw/dmx/dmxinput.c
+@@ -103,7 +103,8 @@ void dmxUpdateWindowInfo(DMXUpdateType type, WindowPtr pWindow)
+ }
+ 
+ int
+-NewInputDeviceRequest (InputOption *options, DeviceIntPtr *pdev)
++NewInputDeviceRequest (InputOption *options, InputAttributes *attrs,
++                       DeviceIntPtr *pdev)
+ {
+     return BadRequest;
+ }

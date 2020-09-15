@@ -1,0 +1,13 @@
+diff --git a/Xext/syncsrv.h b/Xext/syncsrv.h
+index 2fa8687..d29c361 100644
+--- a/Xext/syncsrv.h
++++ b/Xext/syncsrv.h
+@@ -76,7 +76,7 @@ typedef void (*SyncSystemCounterBracketValues)(pointer counter,
+ 
+ typedef struct _SysCounterInfo {
+     SyncCounter *pCounter;
+-    const char *name;
++    char *name;
+     CARD64 resolution;
+     CARD64 bracket_greater;
+     CARD64 bracket_less;

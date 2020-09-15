@@ -1,0 +1,14 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 65fc75a..c084591 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -2249,7 +2249,8 @@ ChangeDeviceControl(register ClientPtr client, DeviceIntPtr pDev,
+ }
+ 
+ int
+-NewInputDeviceRequest(InputOption *options, DeviceIntPtr *pdev)
++NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
++                      DeviceIntPtr *pdev)
+ {
+     InputOption *option = NULL;
+     KdPointerInfo *pi = NULL;

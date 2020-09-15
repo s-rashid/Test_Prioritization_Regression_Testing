@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/config/dmxcompat.c b/hw/dmx/config/dmxcompat.c
+index b4190ff..98c52eb 100644
+--- a/hw/dmx/config/dmxcompat.c
++++ b/hw/dmx/config/dmxcompat.c
+@@ -94,8 +94,7 @@ static void dmxVDLDisplayEntry(const char *buf,
+     char       *end;
+ 
+     pt   = strchr(buf, ' ');
+-    strncpy(name, buf, pt-buf);
+-    name[pt-buf] = '\0';
++    strlcpy(name, buf, 1+pt-buf);
+     *len  = strlen(name);
+     
+     *x     = strtol(pt, &end, 10);

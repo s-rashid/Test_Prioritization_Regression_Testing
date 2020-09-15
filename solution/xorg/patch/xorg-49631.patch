@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/XNPixmap.h b/hw/xnest/XNPixmap.h
+index 6148275..aa671ed 100644
+--- a/hw/xnest/XNPixmap.h
++++ b/hw/xnest/XNPixmap.h
+@@ -15,7 +15,8 @@ is" without express or implied warranty.
+ #ifndef XNESTPIXMAP_H
+ #define XNESTPIXMAP_H
+ 
+-extern DevPrivateKey xnestPixmapPrivateKey;
++extern DevPrivateKeyRec xnestPixmapPrivateKeyRec;
++#define xnestPixmapPrivateKey (&xnestPixmapPrivateKeyRec)
+ 
+ typedef struct {
+   Pixmap pixmap;

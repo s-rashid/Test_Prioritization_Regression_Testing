@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/os-support/bsd/i386_video.c b/hw/xfree86/os-support/bsd/i386_video.c
+index d16e4a8..35e00fc 100644
+--- a/hw/xfree86/os-support/bsd/i386_video.c
++++ b/hw/xfree86/os-support/bsd/i386_video.c
+@@ -64,10 +64,6 @@
+ #define MAP_FLAGS (MAP_FILE | MAP_SHARED)
+ #endif
+ 
+-#ifndef MAP_FAILED
+-#define MAP_FAILED ((caddr_t)-1)
+-#endif
+-
+ #ifdef __OpenBSD__
+ #define SYSCTL_MSG "\tCheck that you have set 'machdep.allowaperture=1'\n"\
+ 		   "\tin /etc/sysctl.conf and reboot your machine\n" \

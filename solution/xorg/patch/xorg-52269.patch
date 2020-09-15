@@ -1,0 +1,18 @@
+diff --git a/glx/glxserver.h b/glx/glxserver.h
+index 1daf977..f10c8fe 100644
+--- a/glx/glxserver.h
++++ b/glx/glxserver.h
+@@ -158,13 +158,6 @@ struct __GLXclientStateRec {
+     GLbyte *largeCmdBuf;
+     GLint largeCmdBufSize;
+ 
+-    /*
+-    ** Keep a list of all the contexts that are current for this client's
+-    ** threads.
+-    */
+-    __GLXcontext **currentContexts;
+-    GLint numCurrentContexts;
+-
+     /* Back pointer to X client record */
+     ClientPtr client;
+ 

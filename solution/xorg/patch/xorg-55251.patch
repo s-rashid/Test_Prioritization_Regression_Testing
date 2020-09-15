@@ -1,0 +1,38 @@
+diff --git a/hw/dmx/dmxpict.h b/hw/dmx/dmxpict.h
+index a732991..6c37be9 100644
+--- a/hw/dmx/dmxpict.h
++++ b/hw/dmx/dmxpict.h
+@@ -48,13 +48,11 @@ typedef struct _dmxPictPriv {
+ 				 *   lazy window creation. */
+ } dmxPictPrivRec, *dmxPictPrivPtr;
+ 
+-
+ /** Glyph Set private structure */
+ typedef struct _dmxGlyphPriv {
+     GlyphSet  *glyphSets; /**< Glyph Set IDs from back-end server */
+ } dmxGlyphPrivRec, *dmxGlyphPrivPtr;
+ 
+-
+ extern void dmxInitRender(void);
+ extern void dmxResetRender(void);
+ 
+@@ -75,8 +73,7 @@ extern void dmxComposite(CARD8 op,
+ 			 PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
+ 			 INT16 xSrc, INT16 ySrc,
+ 			 INT16 xMask, INT16 yMask,
+-			 INT16 xDst, INT16 yDst,
+-			 CARD16 width, CARD16 height);
++                         INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
+ extern void dmxGlyphs(CARD8 op,
+ 		      PicturePtr pSrc, PicturePtr pDst,
+ 		      PictFormatPtr maskFormat,
+@@ -98,8 +95,7 @@ extern void dmxTrapezoids(CARD8 op,
+ extern void dmxTriangles(CARD8 op,
+ 			 PicturePtr pSrc, PicturePtr pDst,
+ 			 PictFormatPtr maskFormat,
+-			 INT16 xSrc, INT16 ySrc,
+-			 int ntri, xTriangle *tris);
++                         INT16 xSrc, INT16 ySrc, int ntri, xTriangle * tris);
+ 
+ extern int dmxBECreateGlyphSet(int idx, GlyphSetPtr glyphSet);
+ extern Bool dmxBEFreeGlyphSet(ScreenPtr pScreen, GlyphSetPtr glyphSet);

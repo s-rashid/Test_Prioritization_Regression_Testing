@@ -1,0 +1,13 @@
+diff --git a/fb/fbtrap.c b/fb/fbtrap.c
+index 612fae7..b5c5a61 100644
+--- a/fb/fbtrap.c
++++ b/fb/fbtrap.c
+@@ -111,6 +111,8 @@ fbShapes (CompositeShapesFunc	composite,
+     int src_xoff, src_yoff;
+     int dst_xoff, dst_yoff;
+ 
++    miCompositeSourceValidate (pSrc);
++
+     src = image_from_pict (pSrc, FALSE, &src_xoff, &src_yoff);
+     dst = image_from_pict (pDst, TRUE, &dst_xoff, &dst_yoff);
+ 

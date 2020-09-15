@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Events.c b/hw/xnest/Events.c
+index 277718b..194ec63 100644
+--- a/hw/xnest/Events.c
++++ b/hw/xnest/Events.c
+@@ -93,7 +93,7 @@ xnestCollectExposures(void)
+       Box.x2 = Box.x1 + X.xexpose.width;
+       Box.y2 = Box.y1 + X.xexpose.height;
+       
+-      REGION_INIT(pWin->drawable.pScreen, &Rgn, &Box, 1);
++      RegionInit(&Rgn, &Box, 1);
+       
+       miSendExposures(pWin, &Rgn, Box.x2, Box.y2);
+     }

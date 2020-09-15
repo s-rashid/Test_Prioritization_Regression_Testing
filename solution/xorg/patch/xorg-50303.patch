@@ -1,0 +1,20 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index 39bd739..c1ada5c 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -202,7 +202,6 @@ char	tmpname[PATH_MAX];
+     }
+     if (!in)
+     {
+-        if (buf != NULL)
+ 	    free(buf);
+ #ifdef WIN32
+ 	unlink(tmpname);
+@@ -266,7 +265,6 @@ char	tmpname[PATH_MAX];
+     fclose(in);
+     unlink(tmpname);
+ #endif
+-    if (buf != NULL)
+         free(buf);
+     return status;
+ }

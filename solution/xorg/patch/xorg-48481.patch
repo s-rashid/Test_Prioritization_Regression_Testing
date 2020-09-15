@@ -1,0 +1,31 @@
+diff --git a/Xext/xselinux_ext.c b/Xext/xselinux_ext.c
+index 4d55e15..93c1b59 100644
+--- a/Xext/xselinux_ext.c
++++ b/Xext/xselinux_ext.c
+@@ -78,7 +78,7 @@ ProcSELinuxQueryVersion(ClientPtr client)
+ 	swaps(&rep.server_minor, n);
+     }
+     WriteToClient(client, sizeof(rep), (char *)&rep);
+-    return (client->noClientException);
++    return Success;
+ }
+ 
+ static int
+@@ -109,7 +109,7 @@ SELinuxSendContextReply(ClientPtr client, security_id_t sid)
+     WriteToClient(client, sizeof(SELinuxGetContextReply), (char *)&rep);
+     WriteToClient(client, len, ctx);
+     freecon(ctx);
+-    return client->noClientException;
++    return Success;
+ }
+ 
+ static int
+@@ -390,7 +390,7 @@ SELinuxSendItemsToClient(ClientPtr client, SELinuxListItemRec *items,
+     WriteToClient(client, size * 4, (char *)buf);
+ 
+     /* Free stuff and return */
+-    rc = client->noClientException;
++    rc = Success;
+     free(buf);
+ out:
+     SELinuxFreeItems(items, count);

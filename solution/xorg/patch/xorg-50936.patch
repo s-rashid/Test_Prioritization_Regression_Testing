@@ -1,0 +1,12 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index a4c8e76..708860a 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -2592,6 +2592,6 @@ void valuator_set_mode(DeviceIntPtr dev, int axis, int mode)
+     else {
+         int i;
+         for (i = 0; i < dev->valuator->numAxes; i++)
+-            dev->valuator->axes[axis].mode = mode;
++            dev->valuator->axes[i].mode = mode;
+     }
+ }

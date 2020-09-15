@@ -1,0 +1,15 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index 5f1f870..2c5ec65 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -31,6 +31,10 @@
+ 
+ #include "capabilities.h"
+ 
++#define Cursor X_Cursor
++#include "os.h"
++#undef Cursor
++
+ static void handleBufferModes(struct glCapabilitiesConfig *c, GLint bufferModes) {
+     if(bufferModes & kCGLStereoscopicBit) {
+ 	c->stereo = true;

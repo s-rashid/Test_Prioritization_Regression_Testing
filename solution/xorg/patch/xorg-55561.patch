@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/bus/Pci.c b/hw/xfree86/os-support/bus/Pci.c
+index 0362a00..52d142f 100644
+--- a/hw/xfree86/os-support/bus/Pci.c
++++ b/hw/xfree86/os-support/bus/Pci.c
+@@ -129,7 +129,7 @@
+ Bool
+ xf86scanpci(void)
+ {
+-    Bool  success = FALSE;
++    Bool success = FALSE;
+ 
+     success = (pci_system_init() == 0);
+ 

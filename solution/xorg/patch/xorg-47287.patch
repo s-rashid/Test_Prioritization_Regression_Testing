@@ -1,0 +1,30 @@
+diff --git a/randr/randr.c b/randr/randr.c
+index 7d59a68..b63a7f2 100644
+--- a/randr/randr.c
++++ b/randr/randr.c
+@@ -29,8 +29,6 @@
+ #include <dix-config.h>
+ #endif
+ 
+-#include "registry.h"
+-
+ #include "randrstr.h"
+ 
+ /* From render.h */
+@@ -338,14 +336,12 @@ RRExtensionInit (void)
+     if (!AddCallback (&ClientStateCallback, RRClientCallback, 0))
+ 	return;
+ 
+-    RRClientType = CreateNewResourceType(RRFreeClient);
++    RRClientType = CreateNewResourceType(RRFreeClient, "RandRClient");
+     if (!RRClientType)
+ 	return;
+-    RegisterResourceName(RRClientType, "RandRClient");
+-    RREventType = CreateNewResourceType(RRFreeEvents);
++    RREventType = CreateNewResourceType(RRFreeEvents, "RandREvent");
+     if (!RREventType)
+ 	return;
+-    RegisterResourceName(RREventType, "RandREvent");
+     extEntry = AddExtension (RANDR_NAME, RRNumberEvents, RRNumberErrors,
+ 			     ProcRRDispatch, SProcRRDispatch,
+ 			     NULL, StandardMinorOpcode);

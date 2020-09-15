@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/config/xdmxconfig.c b/hw/dmx/config/xdmxconfig.c
+index 033b525..c67077a 100644
+--- a/hw/dmx/config/xdmxconfig.c
++++ b/hw/dmx/config/xdmxconfig.c
+@@ -142,7 +142,7 @@ static void dmxConfigGetDims(int *maxWidth, int *maxHeight)
+     DMXConfigEntryPtr e;
+     
+     *maxWidth = dmxConfigWallWidth  = 0;
+-    *maxWidth = dmxConfigWallHeight = 0;
++    *maxHeight = dmxConfigWallHeight = 0;
+     if (!dmxConfigCurrent) return;
+     
+     dmxConfigWallWidth  = dmxConfigCurrent->width;

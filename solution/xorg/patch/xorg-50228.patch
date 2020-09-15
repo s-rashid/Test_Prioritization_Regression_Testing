@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 4a6adbc..f924ec8 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -412,11 +412,6 @@ ChangeDeviceControl (ClientPtr client, DeviceIntPtr dev, xDeviceCtl *control)
+   }
+ }
+ 
+-void
+-AddOtherInputDevices(void)
+-{
+-}
+-
+ /*
+  * Get the operating system name from uname and store it statically to avoid
+  * repeating the system call each time MatchOS is checked.

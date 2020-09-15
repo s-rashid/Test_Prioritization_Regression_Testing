@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxdrawable.h b/hw/dmx/glxProxy/glxdrawable.h
+index 8f2d81e..0340896 100644
+--- a/hw/dmx/glxProxy/glxdrawable.h
++++ b/hw/dmx/glxProxy/glxdrawable.h
+@@ -53,7 +53,6 @@ typedef struct {
+     ScreenPtr pScreen;
+ } __glXWindow;
+ 
+-
+ typedef struct {
+     __GLXscreenInfo *pGlxScreen;
+     __GLXFBConfig *pFBConfig;

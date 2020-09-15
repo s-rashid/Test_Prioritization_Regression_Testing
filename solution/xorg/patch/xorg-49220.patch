@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winwindow.c b/hw/xwin/winwindow.c
+index bc0614d..783760f 100644
+--- a/hw/xwin/winwindow.c
++++ b/hw/xwin/winwindow.c
+@@ -564,7 +564,6 @@ void
+ winReshapeRootless (WindowPtr pWin)
+ {
+   int		nRects;
+-  /* ScreenPtr	pScreen = pWin->drawable.pScreen;*/
+   RegionRec	rrNewShape;
+   BoxPtr	pShape, pRects, pEnd;
+   HRGN		hRgn, hRgnRect;

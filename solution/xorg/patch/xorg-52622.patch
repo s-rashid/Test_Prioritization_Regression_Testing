@@ -1,0 +1,96 @@
+diff --git a/dix/events.c b/dix/events.c
+index 17194b1..895ab40 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3430,7 +3430,7 @@ CheckPassiveGrabsOnWindow(
+ 	DeviceIntPtr	gdev;
+ 	XkbSrvInfoPtr	xkbi = NULL;
+ 	xEvent *xE = NULL;
+-	xEvent core;
++        int count, rc;
+ 
+ 	gdev= grab->modifierDevice;
+         if (grab->grabtype == GRABTYPE_CORE)
+@@ -3478,12 +3478,10 @@ CheckPassiveGrabsOnWindow(
+                 match = CORE_MATCH;
+         }
+ 
+-        if (match && (!grab->confineTo ||
+-	     (grab->confineTo->realized &&
+-				BorderSizeNotEmpty(device, grab->confineTo))))
+-	{
+-            int rc, count = 0;
+-            xEvent *xE = NULL;
++        if (!match || (grab->confineTo &&
++                       (!grab->confineTo->realized ||
++                        !BorderSizeNotEmpty(device, grab->confineTo))))
++            continue;
+ 
+             grabinfo = &device->deviceGrab;
+             /* In some cases a passive core grab may exist, but the client
+@@ -3534,29 +3532,28 @@ CheckPassiveGrabsOnWindow(
+             }
+             else if (!GetXIType(event) && !GetCoreType(event))
+             {
+-                ErrorF("Event type %d in CheckPassiveGrabsOnWindow is"
+-                       " neither XI 1.x nor core\n", event->any.type);
++            ErrorF("Event type %d in CheckPassiveGrabsOnWindow is neither"
++                   " XI 1.x nor core\n", event->any.type);
+                 return NULL;
+             }
+ 
+-            /* The only consumers of corestate are Xi 1.x and core events,
+-             * which are guaranteed to come from DeviceEvents. */
++        /* The only consumers of corestate are Xi 1.x and core events, which
++         * are guaranteed to come from DeviceEvents. */
+             if (match & (XI_MATCH | CORE_MATCH))
+             {
+                 event->device_event.corestate &= 0x1f00;
+-                event->device_event.corestate |=
+-                    tempGrab.modifiersDetail.exact & (~0x1f00);
++            event->device_event.corestate |= tempGrab.modifiersDetail.exact &
++                                              (~0x1f00);
+             }
+ 
+             if (match & CORE_MATCH)
+             {
+-                rc = EventToCore((InternalEvent*)event, &xE, &count);
++            rc = EventToCore(event, &xE, &count);
+                 if (rc != Success)
+                 {
+                     if (rc != BadMatch)
+                         ErrorF("[dix] %s: core conversion failed in CPGFW "
+-                                "(%d, %d).\n", device->name, event->any.type,
+-                                rc);
++                            "(%d, %d).\n", device->name, event->any.type, rc);
+                     continue;
+                 }
+             } else if (match & XI2_MATCH)
+@@ -3566,8 +3563,7 @@ CheckPassiveGrabsOnWindow(
+                 {
+                     if (rc != BadMatch)
+                         ErrorF("[dix] %s: XI2 conversion failed in CPGFW "
+-                                "(%d, %d).\n", device->name, event->any.type,
+-                                rc);
++                            "(%d, %d).\n", device->name, event->any.type, rc);
+                     continue;
+                 }
+                 count = 1;
+@@ -3578,8 +3574,7 @@ CheckPassiveGrabsOnWindow(
+                 {
+                     if (rc != BadMatch)
+                         ErrorF("[dix] %s: XI conversion failed in CPGFW "
+-                                "(%d, %d).\n", device->name, event->any.type,
+-                                rc);
++                            "(%d, %d).\n", device->name, event->any.type, rc);
+                     continue;
+                 }
+             }
+@@ -3607,7 +3602,6 @@ CheckPassiveGrabsOnWindow(
+             free(xE);
+ 	    return grab;
+ 	}
+-    }
+     return NULL;
+ #undef CORE_MATCH
+ #undef XI_MATCH

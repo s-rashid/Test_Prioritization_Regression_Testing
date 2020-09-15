@@ -1,0 +1,30 @@
+diff --git a/hw/xfree86/parser/DRI.c b/hw/xfree86/parser/DRI.c
+index 77846da..e8d2625 100644
+--- a/hw/xfree86/parser/DRI.c
++++ b/hw/xfree86/parser/DRI.c
+@@ -37,8 +37,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec DRITab[] =
+-{
++static xf86ConfigSymTabRec DRITab[] = {
+     {ENDSECTION, "endsection"},
+     {GROUP,      "group"},
+     {MODE,       "mode"},
+@@ -51,13 +50,13 @@ XF86ConfDRIPtr
+ xf86parseDRISection (void)
+ {
+     int token;
++
+     parsePrologue (XF86ConfDRIPtr, XF86ConfDRIRec);
+ 
+     /* Zero is a valid value for this. */
+     ptr->dri_group = -1;
+     while ((token = xf86getToken (DRITab)) != ENDSECTION) {
+-	switch (token)
+-	    {
++        switch (token) {
+ 	    case GROUP:
+ 		if ((token = xf86getSubToken (&(ptr->dri_comment))) == STRING)
+ 		    ptr->dri_group_name = val.str;

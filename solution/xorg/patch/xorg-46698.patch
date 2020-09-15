@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86str.h b/hw/xfree86/common/xf86str.h
+index b9a2e06..7b0b758 100644
+--- a/hw/xfree86/common/xf86str.h
++++ b/hw/xfree86/common/xf86str.h
+@@ -299,6 +299,7 @@ typedef struct {
+ /* GET_REQUIRED_HW_INTERFACES */
+ #define HW_IO 1
+ #define HW_MMIO 2
++#define HW_SKIP_CONSOLE 4
+ #define NEED_IO_ENABLED(x) (x & HW_IO)
+ 
+ typedef CARD32 xorgHWFlags;

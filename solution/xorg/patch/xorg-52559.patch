@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winprefs.h b/hw/xwin/winprefs.h
+index 33b496d..ecd0a3f 100644
+--- a/hw/xwin/winprefs.h
++++ b/hw/xwin/winprefs.h
+@@ -180,7 +180,7 @@ HICON
+ winOverrideIcon (unsigned long longpWin);
+ 
+ unsigned long
+-winOverrideStyle (unsigned long longpWin);
++winOverrideStyle (char *res_name, char *res_class, char *wmName);
+ 
+ HICON
+ winTaskbarIcon(void);

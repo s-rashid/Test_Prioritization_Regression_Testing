@@ -1,0 +1,15 @@
+diff --git a/Xext/xselinux.h b/Xext/xselinux.h
+index 065ff8d..e4a2ec2 100644
+--- a/Xext/xselinux.h
++++ b/Xext/xselinux.h
+@@ -373,8 +373,8 @@ static struct security_class_mapping map[] = {
+     { "x_device",
+         { "read",		/* DixReadAccess */
+           "write",		/* DixWriteAccess */
+-          "",			/* DixDestroyAccess */
+-          "",			/* DixCreateAccess */
++          "destroy",		/* DixDestroyAccess */
++          "create",		/* DixCreateAccess */
+           "getattr",		/* DixGetAttrAccess */
+           "setattr",		/* DixSetAttrAccess */
+           "list_property",	/* DixListPropAccess */

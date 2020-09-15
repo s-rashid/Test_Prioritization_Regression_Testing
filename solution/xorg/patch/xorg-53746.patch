@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 64557aa..7c196e0 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -2360,7 +2360,7 @@ RecalculateMasterButtons(DeviceIntPtr slave)
+             event.keys.max_keycode = master->key->xkbInfo->desc->max_key_code;
+         }
+ 
+-        XISendDeviceChangedEvent(master, master, &event);
++        XISendDeviceChangedEvent(master, &event);
+     }
+ }
+ 

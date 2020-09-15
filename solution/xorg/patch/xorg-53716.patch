@@ -1,0 +1,18 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index d7560dc..63a2d2a 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -325,10 +325,9 @@ ProcRRCreateMode (ClientPtr client)
+     rep.mode = mode->mode.id;
+     if (client->swapped)
+     {
+-	int n;
+-    	swaps(&rep.sequenceNumber, n);
+-    	swapl(&rep.length, n);
+-	swapl(&rep.mode, n);
++	swaps(&rep.sequenceNumber);
++	swapl(&rep.length);
++	swapl(&rep.mode);
+     }
+     WriteToClient(client, sizeof(xRRCreateModeReply), (char *)&rep);
+     /* Drop out reference to this mode */

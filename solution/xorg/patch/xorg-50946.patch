@@ -1,0 +1,20 @@
+diff --git a/xkb/ddxLoad.c b/xkb/ddxLoad.c
+index 5e6ab87..cfc6198 100644
+--- a/xkb/ddxLoad.c
++++ b/xkb/ddxLoad.c
+@@ -267,7 +267,6 @@ XkbDDXCompileKeymapByNames(	XkbDescPtr		xkb,
+ 		strncpy(nameRtrn,keymap,nameRtrnLen);
+ 		nameRtrn[nameRtrnLen-1]= '\0';
+ 	    }
+-            if (buf != NULL)
+                 free(buf);
+ 	    return TRUE;
+ 	}
+@@ -287,7 +286,6 @@ XkbDDXCompileKeymapByNames(	XkbDescPtr		xkb,
+     }
+     if (nameRtrn)
+ 	nameRtrn[0]= '\0';
+-    if (buf != NULL)
+         free(buf);
+     return FALSE;
+ }

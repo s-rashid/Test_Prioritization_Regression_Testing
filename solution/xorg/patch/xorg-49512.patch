@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/modes/xf86DiDGA.c b/hw/xfree86/modes/xf86DiDGA.c
+index a4cf4f0..ca419ec 100644
+--- a/hw/xfree86/modes/xf86DiDGA.c
++++ b/hw/xfree86/modes/xf86DiDGA.c
+@@ -103,7 +103,6 @@ xf86_dga_get_modes (ScreenPtr pScreen)
+ 	if (display_mode == scrn->modes)
+ 	    break;
+     }
+-    if (xf86_config->dga_modes)
+ 	free(xf86_config->dga_modes);
+     xf86_config->dga_nmode = num;
+     xf86_config->dga_modes = modes;

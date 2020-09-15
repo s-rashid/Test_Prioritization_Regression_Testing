@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index be884ab..cda965d 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -503,12 +503,6 @@ KdInitInput(void);
+ void
+ KdCloseInput(void);
+ 
+-void
+-KdAddPointerDriver(KdPointerDriver *);
+-
+-void
+-KdAddKeyboardDriver(KdKeyboardDriver *);
+-
+ Bool
+ KdRegisterFd (int fd, void (*read) (int fd, void *closure), void *closure);
+ 

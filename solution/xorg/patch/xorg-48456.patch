@@ -1,0 +1,12 @@
+diff --git a/test/xi2/protocol-common.c b/test/xi2/protocol-common.c
+index d0e93f2..fd93e15 100644
+--- a/test/xi2/protocol-common.c
++++ b/test/xi2/protocol-common.c
+@@ -152,6 +152,7 @@ void init_simple(void)
+     screen.SetCursorPosition = set_cursor_pos;
+ 
+     dixResetPrivates();
++    InitAtoms();
+     XInputExtensionInit();
+     init_window(&root, NULL, ROOT_WINDOW_ID);
+     init_window(&window, &root, CLIENT_WINDOW_ID);

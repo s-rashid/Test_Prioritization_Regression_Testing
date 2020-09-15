@@ -1,0 +1,230 @@
+diff --git a/randr/rrtransform.c b/randr/rrtransform.c
+index e162049..f93181d 100644
+--- a/randr/rrtransform.c
++++ b/randr/rrtransform.c
+@@ -65,15 +65,11 @@ RRTransformEqual (RRTransformPtr a, RRTransformPtr b)
+ Bool
+ RRTransformSetFilter (RRTransformPtr	dst,
+ 		      PictFilterPtr	filter,
+-		      xFixed		*params,
+-		      int		nparams,
+-		      int		width,
+-		      int		height)
++                     xFixed * params, int nparams, int width, int height)
+ {
+     xFixed  *new_params;
+ 
+-    if (nparams)
+-    {
++    if (nparams) {
+ 	new_params = malloc(nparams * sizeof (xFixed));
+ 	if (!new_params)
+ 	    return FALSE;
+@@ -96,17 +92,16 @@ RRTransformCopy (RRTransformPtr dst, RRTransformPtr src)
+     if (src && pixman_transform_is_identity (&src->transform))
+ 	src = NULL;
+ 
+-    if (src)
+-    {
++    if (src) {
+ 	if (!RRTransformSetFilter (dst, src->filter,
+-				   src->params, src->nparams, src->width, src->height))
++                                  src->params, src->nparams, src->width,
++                                  src->height))
+ 	    return FALSE;
+ 	dst->transform = src->transform;
+ 	dst->f_transform = src->f_transform;
+ 	dst->f_inverse = src->f_inverse;
+     }
+-    else
+-    {
++    else {
+ 	if (!RRTransformSetFilter (dst, NULL, NULL, 0, 0, 0))
+ 	    return FALSE;
+ 	pixman_transform_init_identity (&dst->transform);
+@@ -148,7 +143,6 @@ RRTransformCompute (int			    x,
+ 		    int			    height,
+ 		    Rotation		    rotation,
+ 		    RRTransformPtr	    rr_transform,
+-
+ 		    PictTransformPtr	    transform,
+ 		    struct pixman_f_transform *f_transform,
+ 		    struct pixman_f_transform *f_inverse)
+@@ -157,16 +151,18 @@ RRTransformCompute (int			    x,
+     struct pixman_f_transform tf_transform, tf_inverse;
+     Bool		    overflow = FALSE;
+ 
+-    if (!transform) transform = &t_transform;
+-    if (!f_transform) f_transform = &tf_transform;
+-    if (!f_inverse) f_inverse = &tf_inverse;
++    if (!transform)
++        transform = &t_transform;
++    if (!f_transform)
++        f_transform = &tf_transform;
++    if (!f_inverse)
++        f_inverse = &tf_inverse;
+ 
+     pixman_transform_init_identity (transform);
+     pixman_transform_init_identity (&inverse);
+     pixman_f_transform_init_identity (f_transform);
+     pixman_f_transform_init_identity (f_inverse);
+-    if (rotation != RR_Rotate_0)
+-    {
++    if (rotation != RR_Rotate_0) {
+ 	double	f_rot_cos, f_rot_sin, f_rot_dx, f_rot_dy;
+ 	double	f_scale_x, f_scale_y, f_scale_dx, f_scale_dy;
+ 	xFixed	rot_cos, rot_sin, rot_dx, rot_dy;
+@@ -176,35 +172,52 @@ RRTransformCompute (int			    x,
+ 	switch (rotation & 0xf) {
+ 	default:
+ 	case RR_Rotate_0:
+-	    f_rot_cos = 1;	    f_rot_sin = 0;
+-	    f_rot_dx  = 0;	    f_rot_dy  = 0;
+-	    rot_cos = F ( 1);	    rot_sin = F ( 0);
+-	    rot_dx  = F ( 0);	    rot_dy  = F ( 0);
++            f_rot_cos = 1;
++            f_rot_sin = 0;
++            f_rot_dx = 0;
++            f_rot_dy = 0;
++            rot_cos = F(1);
++            rot_sin = F(0);
++            rot_dx = F(0);
++            rot_dy = F(0);
+ 	    break;
+ 	case RR_Rotate_90:
+-	    f_rot_cos = 0;	    f_rot_sin = 1;
+-	    f_rot_dx  = height;	    f_rot_dy  = 0;
+-	    rot_cos = F ( 0);	    rot_sin = F ( 1);
+-	    rot_dx =  F ( height);  rot_dy  = F (0);
++            f_rot_cos = 0;
++            f_rot_sin = 1;
++            f_rot_dx = height;
++            f_rot_dy = 0;
++            rot_cos = F(0);
++            rot_sin = F(1);
++            rot_dx = F(height);
++            rot_dy = F(0);
+ 	    break;
+ 	case RR_Rotate_180:
+-	    f_rot_cos = -1;	    f_rot_sin = 0;
+-	    f_rot_dx  = width;	    f_rot_dy  = height;
+-	    rot_cos = F (-1);	    rot_sin = F ( 0);
+-	    rot_dx  = F (width);   rot_dy  = F ( height);
++            f_rot_cos = -1;
++            f_rot_sin = 0;
++            f_rot_dx = width;
++            f_rot_dy = height;
++            rot_cos = F(-1);
++            rot_sin = F(0);
++            rot_dx = F(width);
++            rot_dy = F(height);
+ 	    break;
+ 	case RR_Rotate_270:
+-	    f_rot_cos = 0;	    f_rot_sin = -1;
+-	    f_rot_dx  = 0;	    f_rot_dy  = width;
+-	    rot_cos = F ( 0);	    rot_sin = F (-1);
+-	    rot_dx  = F ( 0);	    rot_dy  = F ( width);
++            f_rot_cos = 0;
++            f_rot_sin = -1;
++            f_rot_dx = 0;
++            f_rot_dy = width;
++            rot_cos = F(0);
++            rot_sin = F(-1);
++            rot_dx = F(0);
++            rot_dy = F(width);
+ 	    break;
+ 	}
+ 	
+ 	pixman_transform_rotate (transform, &inverse, rot_cos, rot_sin);
+ 	pixman_transform_translate (transform, &inverse, rot_dx, rot_dy);
+ 	pixman_f_transform_rotate (f_transform, f_inverse, f_rot_cos, f_rot_sin);
+-	pixman_f_transform_translate (f_transform, f_inverse, f_rot_dx, f_rot_dy);
++        pixman_f_transform_translate(f_transform, f_inverse, f_rot_dx,
++                                     f_rot_dy);
+ 
+ 	/* reflection */
+ 	f_scale_x = 1;
+@@ -215,26 +228,26 @@ RRTransformCompute (int			    x,
+ 	scale_dx = 0;
+ 	scale_y = F (1);
+ 	scale_dy = 0;
+-	if (rotation & RR_Reflect_X)
+-	{
++        if (rotation & RR_Reflect_X) {
+ 	    f_scale_x = -1;
+ 	    scale_x = F(-1);
+ 	    if (rotation & (RR_Rotate_0|RR_Rotate_180)) {
+ 		f_scale_dx = width;
+ 		scale_dx = F(width);
+-	    } else {
++            }
++            else {
+ 		f_scale_dx = height;
+ 		scale_dx = F(height);
+ 	    }
+ 	}
+-	if (rotation & RR_Reflect_Y)
+-	{
++        if (rotation & RR_Reflect_Y) {
+ 	    f_scale_y = -1;
+ 	    scale_y = F(-1);
+ 	    if (rotation & (RR_Rotate_0|RR_Rotate_180)) {
+ 		f_scale_dy = height;
+ 		scale_dy = F(height);
+-	    } else {
++            }
++            else {
+ 		f_scale_dy = width;
+ 		scale_dy = F(width);
+ 	    }
+@@ -243,37 +256,38 @@ RRTransformCompute (int			    x,
+ 	pixman_transform_scale (transform, &inverse, scale_x, scale_y);
+ 	pixman_f_transform_scale (f_transform, f_inverse, f_scale_x, f_scale_y);
+ 	pixman_transform_translate (transform, &inverse, scale_dx, scale_dy);
+-	pixman_f_transform_translate (f_transform, f_inverse, f_scale_dx, f_scale_dy);
++        pixman_f_transform_translate(f_transform, f_inverse, f_scale_dx,
++                                     f_scale_dy);
+     }
+     
+ #ifdef RANDR_12_INTERFACE
+-    if (rr_transform)
+-    {
+-        if (!pixman_transform_multiply (transform, &rr_transform->transform, transform))
++    if (rr_transform) {
++        if (!pixman_transform_multiply
++            (transform, &rr_transform->transform, transform))
+ 	    overflow = TRUE;
+-	pixman_f_transform_multiply (f_transform, &rr_transform->f_transform, f_transform);
+-	pixman_f_transform_multiply (f_inverse, f_inverse, &rr_transform->f_inverse);
++        pixman_f_transform_multiply(f_transform, &rr_transform->f_transform,
++                                    f_transform);
++        pixman_f_transform_multiply(f_inverse, f_inverse,
++                                    &rr_transform->f_inverse);
+     }
+ #endif
+     /*
+      * Compute the class of the resulting transform
+      */
+-    if (!overflow && pixman_transform_is_identity (transform))
+-    {
++    if (!overflow && pixman_transform_is_identity(transform)) {
+ 	pixman_transform_init_translate (transform, F ( x), F ( y));
+ 
+ 	pixman_f_transform_init_translate (f_transform,  x,  y);
+ 	pixman_f_transform_init_translate (f_inverse,   -x, -y);
+ 	return FALSE;
+     }
+-    else
+-    {
++    else {
+ 	pixman_f_transform_translate (f_transform, f_inverse, x, y);
+ 	if (!pixman_transform_translate (transform, &inverse, F(x), F(y)))
+ 	    overflow = TRUE;
+-	if (overflow)
+-	{
++        if (overflow) {
+ 	    struct pixman_f_transform f_scaled;
++
+ 	    f_scaled = *f_transform;
+ 	    RRTransformRescale(&f_scaled, 16384.0);
+ 	    pixman_transform_from_pixman_f_transform(transform, &f_scaled);

@@ -1,0 +1,32 @@
+diff --git a/Xi/selectev.c b/Xi/selectev.c
+index 4c2c2fe..2b93fbf 100644
+--- a/Xi/selectev.c
++++ b/Xi/selectev.c
+@@ -50,7 +50,6 @@ SOFTWARE.
+  *
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -128,8 +127,7 @@ SProcXSelectExtensionEvent(ClientPtr client)
+     REQUEST_AT_LEAST_SIZE(xSelectExtensionEventReq);
+     swapl(&stuff->window);
+     swaps(&stuff->count);
+-    REQUEST_FIXED_SIZE(xSelectExtensionEventReq,
+-                      stuff->count * sizeof(CARD32));
++    REQUEST_FIXED_SIZE(xSelectExtensionEventReq, stuff->count * sizeof(CARD32));
+     SwapLongs((CARD32 *) (&stuff[1]), stuff->count);
+ 
+     return (ProcXSelectExtensionEvent(client));
+@@ -152,7 +150,8 @@ ProcXSelectExtensionEvent(ClientPtr client)
+     REQUEST(xSelectExtensionEventReq);
+     REQUEST_AT_LEAST_SIZE(xSelectExtensionEventReq);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xSelectExtensionEventReq)) + stuff->count)
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xSelectExtensionEventReq)) + stuff->count)
+ 	return BadLength;
+ 
+     ret = dixLookupWindow(&pWin, stuff->window, client, DixReceiveAccess);

@@ -1,0 +1,294 @@
+diff --git a/hw/xfree86/os-support/bsd/i386_video.c b/hw/xfree86/os-support/bsd/i386_video.c
+index 35e00fc..569a4ec 100644
+--- a/hw/xfree86/os-support/bsd/i386_video.c
++++ b/hw/xfree86/os-support/bsd/i386_video.c
+@@ -114,22 +114,20 @@ checkDevMem(Bool warn)
+ 	    return;
+ 	devMemChecked = TRUE;
+ 
+-	if ((fd = open(DEV_MEM, O_RDWR)) >= 0)
+-	{
++    if ((fd = open(DEV_MEM, O_RDWR)) >= 0) {
+ 	    /* Try to map a page at the VGA address */
+ 	    base = mmap((caddr_t)0, 4096, PROT_READ | PROT_WRITE,
+ 				 MAP_FLAGS, fd, (off_t)0xA0000);
+ 	
+-	    if (base != MAP_FAILED)
+-	    {
++        if (base != MAP_FAILED) {
+ 		munmap((caddr_t)base, 4096);
+ 		devMemFd = fd;
+ 		useDevMem = TRUE;
+ 		return;
+-	    } else {
++        }
++        else {
+ 		/* This should not happen */
+-		if (warn)
+-		{
++            if (warn) {
+ 		    xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
+ 			    DEV_MEM, strerror(errno));
+ 		}
+@@ -138,8 +136,7 @@ checkDevMem(Bool warn)
+ 	    }
+ 	}
+ #ifndef HAS_APERTURE_DRV
+-	if (warn)
+-	{ 
++    if (warn) {
+ 	    xf86Msg(X_WARNING, "checkDevMem: failed to open %s (%s)\n",
+ 		    DEV_MEM, strerror(errno));
+ 	} 
+@@ -147,31 +144,29 @@ checkDevMem(Bool warn)
+ 	return;
+ #else
+ 	/* Failed to open /dev/mem, try the aperture driver */
+-	if ((fd = open(DEV_APERTURE, O_RDWR)) >= 0)
+-	{
++    if ((fd = open(DEV_APERTURE, O_RDWR)) >= 0) {
+ 	    /* Try to map a page at the VGA address */
+ 	    base = mmap((caddr_t)0, 4096, PROT_READ | PROT_WRITE,
+ 			     MAP_FLAGS, fd, (off_t)0xA0000);
+ 	
+-	    if (base != MAP_FAILED)
+-	    {
++        if (base != MAP_FAILED) {
+ 		munmap((caddr_t)base, 4096);
+ 		devMemFd = fd;
+ 		useDevMem = TRUE;
+ 		xf86Msg(X_INFO, "checkDevMem: using aperture driver %s\n",
+ 		        DEV_APERTURE);
+ 		return;
+-	    } else {
++        }
++        else {
+ 
+-		if (warn)
+-		{
++            if (warn) {
+ 		    xf86Msg(X_WARNING, "checkDevMem: failed to mmap %s (%s)\n",
+ 			    DEV_APERTURE, strerror(errno));
+ 		}
+ 	    }
+-	} else {
+-	    if (warn)
+-	    {
++    }
++    else {
++        if (warn) {
+ #ifndef __OpenBSD__
+ 		xf86Msg(X_WARNING, "checkDevMem: failed to open %s and %s\n"
+ 			"\t(%s)\n", DEV_MEM, DEV_APERTURE, strerror(errno));
+@@ -222,10 +217,8 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 
+ 	checkDevMem(FALSE);
+ 
+-	if (useDevMem)
+-	{
+-	    if (devMemFd < 0) 
+-	    {
++    if (useDevMem) {
++        if (devMemFd < 0) {
+ 		FatalError("xf86MapVidMem: failed to open %s (%s)",
+ 			   DEV_MEM, strerror(errno));
+ 	    }
+@@ -233,29 +226,23 @@ mapVidMem(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ 			(flags & VIDMEM_READONLY) ?
+ 			 PROT_READ : (PROT_READ | PROT_WRITE),
+ 			MAP_FLAGS, devMemFd, (off_t)Base);
+-	    if (base == MAP_FAILED)
+-	    {
++        if (base == MAP_FAILED) {
+ 		FatalError("%s: could not mmap %s [s=%lx,a=%lx] (%s)",
+-			   "xf86MapVidMem", DEV_MEM, Size, Base, 
+-			   strerror(errno));
++                       "xf86MapVidMem", DEV_MEM, Size, Base, strerror(errno));
+ 	    }
+ 	    return base;
+ 	}
+ 		
+ 	/* else, mmap /dev/vga */
+-	if ((unsigned long)Base < 0xA0000 || (unsigned long)Base >= 0xC0000)
+-	{
++    if ((unsigned long) Base < 0xA0000 || (unsigned long) Base >= 0xC0000) {
+ 		FatalError("%s: Address 0x%lx outside allowable range",
+ 			   "xf86MapVidMem", Base);
+ 	}
+ 	base = mmap(0, Size,
+ 		    (flags & VIDMEM_READONLY) ?
+ 		     PROT_READ : (PROT_READ | PROT_WRITE),
+-		    MAP_FLAGS, xf86Info.consoleFd,
+-		    (unsigned long)Base - 0xA0000
+-	    );
+-	if (base == MAP_FAILED)
+-	{
++                MAP_FLAGS, xf86Info.consoleFd, (unsigned long) Base - 0xA0000);
++    if (base == MAP_FAILED) {
+ 	    FatalError("xf86MapVidMem: Could not mmap /dev/vga (%s)",
+ 		       strerror(errno));
+ 	}
+@@ -291,8 +278,7 @@ xf86ReadBIOS(unsigned long Base, unsigned long Offset, unsigned char *Buf,
+ 	mlen = (Offset + Len + psize - 1) & ~(psize - 1);
+ 	ptr = (unsigned char *)mmap((caddr_t)0, mlen, PROT_READ,
+ 					MAP_SHARED, devMemFd, (off_t)Base);
+-	if ((long)ptr == -1)
+-	{
++    if ((long) ptr == -1) {
+ 		xf86Msg(X_WARNING, 
+ 			"xf86ReadBIOS: %s mmap[s=%x,a=%lx,o=%lx] failed (%s)\n",
+ 			DEV_MEM, Len, Base, Offset, strerror(errno));
+@@ -330,8 +316,7 @@ xf86EnableIO()
+ 	if (ExtendedEnabled)
+ 		return TRUE;
+ 
+-	if (i386_iopl(TRUE) < 0)
+-	{
++    if (i386_iopl(TRUE) < 0) {
+ #ifndef __OpenBSD__
+ 		xf86Msg(X_WARNING,"%s: Failed to set IOPL for extended I/O",
+ 			   "xf86EnableIO");
+@@ -373,8 +358,7 @@ xf86EnableIO()
+ 	if (ExtendedEnabled)
+ 		return TRUE;
+ 
+-	if (amd64_iopl(TRUE) < 0)
+-	{
++    if (amd64_iopl(TRUE) < 0) {
+ #ifndef __OpenBSD__
+ 		xf86Msg(X_WARNING,"%s: Failed to set IOPL for extended I/O",
+ 			   "xf86EnableIO");
+@@ -415,8 +399,7 @@ xf86EnableIO()
+ 	if (IoFd >= 0)
+ 		return TRUE;
+ 
+-	if ((IoFd = open("/dev/io", O_RDWR)) == -1)
+-	{
++    if ((IoFd = open("/dev/io", O_RDWR)) == -1) {
+ 		xf86Msg(X_WARNING,"xf86EnableIO: "
+ 				"Failed to open /dev/io for extended I/O");
+ 		return FALSE;
+@@ -444,13 +427,11 @@ xf86DisableIO()
+ void
+ xf86SetTVOut(int mode)
+ {    
+-    switch (xf86Info.consType)
+-    {
++    switch (xf86Info.consType) {
+ #ifdef PCCONS_SUPPORT
+ 	case PCCONS:{
+ 
+-	    if (ioctl (xf86Info.consoleFd, CONSOLE_X_TV_ON, &mode) < 0)
+-	    {
++        if (ioctl(xf86Info.consoleFd, CONSOLE_X_TV_ON, &mode) < 0) {
+ 		xf86Msg(X_WARNING,
+ 		    "xf86SetTVOut: Could not set console to TV output, %s\n",
+ 		    strerror(errno));
+@@ -469,13 +450,11 @@ xf86SetTVOut(int mode)
+ void
+ xf86SetRGBOut()
+ {    
+-    switch (xf86Info.consType)
+-    {
++    switch (xf86Info.consType) {
+ #ifdef PCCONS_SUPPORT
+ 	case PCCONS:{
+ 	    
+-	    if (ioctl (xf86Info.consoleFd, CONSOLE_X_TV_OFF, 0) < 0)
+-	    {
++        if (ioctl(xf86Info.consoleFd, CONSOLE_X_TV_OFF, 0) < 0) {
+ 		xf86Msg(X_WARNING,
+ 		    "xf86SetTVOut: Could not set console to RGB output, %s\n",
+ 		    strerror(errno));
+@@ -559,7 +538,8 @@ cleanMTRR()
+ 			if (mrd[i].mr_flags & MDF_FIXACTIVE) {
+ 				mro.mo_arg[0] = MEMRANGE_SET_UPDATE;
+ 				mrd[i].mr_flags = MDF_UNCACHEABLE;
+-			} else {
++            }
++            else {
+ 				mro.mo_arg[0] = MEMRANGE_SET_REMOVE;
+ 			}
+ 			mro.mo_desc = mrd + i;
+@@ -633,7 +613,8 @@ sortRangeList(RangePtr list)
+ 		if (minprev) {
+ 			minprev->next = minp->next;
+ 			rp1 = copy;
+-		} else {
++        }
++        else {
+ 			rp1 = minp->next;
+ 		}
+ 		minp->next = sorted;
+@@ -647,7 +628,8 @@ sortRangeList(RangePtr list)
+  */
+ 
+ static void
+-findRanges(unsigned long base, unsigned long size, RangePtr *ucp, RangePtr *wcp)
++findRanges(unsigned long base, unsigned long size, RangePtr * ucp,
++           RangePtr * wcp)
+ {
+ 	struct mem_range_desc *mrd;
+ 	int nmr, i;
+@@ -694,7 +676,8 @@ fullCoverage(unsigned long base, unsigned long size, RangePtr overlap)
+ 		if (rp1->mrd.mr_base > base) {
+ 			freeRangeList(sorted);
+ 			return FALSE;
+-		} else {
++        }
++        else {
+ 			base = rp1->mrd.mr_base + rp1->mrd.mr_len;
+ 		}
+ 		if (base >= end) {
+@@ -736,7 +719,8 @@ addWC(int screenNum, unsigned long base, unsigned long size, MessageType from)
+ 			   "Failed to set write-combining range "
+ 			   "(0x%lx,0x%lx)\n", base, size);
+ 		return NULL;
+-	} else {
++    }
++    else {
+ 		xf86DrvMsg(screenNum, from,
+ 			   "Write-combining range (0x%lx,0x%lx)\n", base, size);
+ 		retlist = xnfalloc(sizeof(RangeRec));
+@@ -780,10 +764,10 @@ delWC(int screenNum, unsigned long base, unsigned long size, MessageType from)
+ 			   "(0x%lx,0x%lx)\n", base, size);
+ 		/* XXX Should then remove all of the overlapping WC ranges */
+ 		return NULL;
+-	} else {
++    }
++    else {
+ 		xf86DrvMsg(screenNum, from,
+-			   "Removed Write-combining range (0x%lx,0x%lx)\n",
+-			   base, size);
++                   "Removed Write-combining range (0x%lx,0x%lx)\n", base, size);
+ 		retlist = xnfalloc(sizeof(RangeRec));
+ 		retlist->mrd = mrd;
+ 		retlist->wasWC = TRUE;
+@@ -821,7 +805,8 @@ undoWC(int screenNum, pointer list)
+ 			mro.mo_arg[0] = MEMRANGE_SET_UPDATE;
+ 			rp->mrd.mr_flags = MDF_WRITECOMBINE;
+ 			strcpy(rp->mrd.mr_owner, "unknown");
+-		} else {
++        }
++        else {
+ 			mro.mo_arg[0] = MEMRANGE_SET_REMOVE;
+ 		}
+ 		mro.mo_desc = &rp->mrd;
+@@ -833,7 +818,8 @@ undoWC(int screenNum, pointer list)
+ 				strcpy(rp->mrd.mr_owner, "unknown");
+ 				if (ioctl(devMemFd, MEMRANGE_SET, &mro))
+ 					failed = TRUE;
+-			} else
++            }
++            else
+ 				failed = TRUE;
+ 		}
+ 		if (failed) {
+@@ -848,7 +834,6 @@ undoWC(int screenNum, pointer list)
+ 
+ #endif /* HAS_MTRR_SUPPORT */
+ 
+-
+ #if defined(HAS_MTRR_BUILTIN) && defined(__NetBSD__)
+ static pointer
+ NetBSDsetWC(int screenNum, unsigned long base, unsigned long size, Bool enable,

@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/X11Application.h b/hw/xquartz/X11Application.h
+index c02073e..5e828a4 100644
+--- a/hw/xquartz/X11Application.h
++++ b/hw/xquartz/X11Application.h
+@@ -56,6 +56,7 @@
+ - (void) prefs_set_string:(NSString *)key value:(NSString *)value;
+ - (void) prefs_synchronize;
+ 
++- (X11Controller *) controller;
+ - (OSX_BOOL) x_active;
+ @end
+ 

@@ -1,0 +1,210 @@
+diff --git a/mi/mipushpxl.c b/mi/mipushpxl.c
+index 9f04298..9a78f40 100644
+--- a/mi/mipushpxl.c
++++ b/mi/mipushpxl.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -65,7 +64,6 @@ SOFTWARE.
+                         | ( ( ( x ) & (MiBits)0x00FF0000 ) >> 0x08 ) \
+                         | ( ( ( x ) & (MiBits)0xFF000000 ) >> 0x18 ) )
+ 
+-
+ #define PGSZB	4
+ #define PPW	(PGSZB<<3) /* assuming 8 bits per byte */
+ #define PGSZ	PPW
+@@ -105,22 +103,19 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+     Bool 	fInBox;
+     DDXPointRec	pt[NPT], ptThisLine;
+     int		width[NPT];
++
+ #if 1
+     MiBits	startmask;
++
+     if (screenInfo.bitmapBitOrder == IMAGE_BYTE_ORDER)
+       if (screenInfo.bitmapBitOrder == LSBFirst)
+-        startmask = (MiBits)(-1) ^
+-            LONG2CHARSSAMEORDER((MiBits)(-1) << 1);
++            startmask = (MiBits) (-1) ^ LONG2CHARSSAMEORDER((MiBits) (-1) << 1);
+       else
+-        startmask = (MiBits)(-1) ^
+-            LONG2CHARSSAMEORDER((MiBits)(-1) >> 1);
++            startmask = (MiBits) (-1) ^ LONG2CHARSSAMEORDER((MiBits) (-1) >> 1);
++    else if (screenInfo.bitmapBitOrder == LSBFirst)
++        startmask = (MiBits) (-1) ^ LONG2CHARSDIFFORDER((MiBits) (-1) << 1);
+     else
+-      if (screenInfo.bitmapBitOrder == LSBFirst)
+-        startmask = (MiBits)(-1) ^
+-            LONG2CHARSDIFFORDER((MiBits)(-1) << 1);
+-      else
+-        startmask = (MiBits)(-1) ^
+-            LONG2CHARSDIFFORDER((MiBits)(-1) >> 1);
++        startmask = (MiBits) (-1) ^ LONG2CHARSDIFFORDER((MiBits) (-1) >> 1);
+ #endif
+ 
+     pwLineStart = malloc(BitmapBytePad(dx));
+@@ -129,47 +124,38 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+     ipt = 0;
+     dxDivPPW = dx/PPW;
+ 
+-    for(h = 0, ptThisLine.x = 0, ptThisLine.y = 0; 
+-	h < dy; 
+-	h++, ptThisLine.y++)
+-    {
++    for (h = 0, ptThisLine.x = 0, ptThisLine.y = 0; h < dy; h++, ptThisLine.y++) {
+ 
+ 	(*pBitMap->drawable.pScreen->GetSpans)((DrawablePtr)pBitMap, dx,
+-			&ptThisLine, &dx, 1, (char *)pwLineStart);
++                                                &ptThisLine, &dx, 1,
++                                                (char *) pwLineStart);
+ 
+ 	pw = pwLineStart;
+ 	/* Process all words which are fully in the pixmap */
+ 	
+ 	fInBox = FALSE;
+ 	pwEnd = pwLineStart + dxDivPPW;
+-	while(pw  < pwEnd)
+-	{
++        while (pw < pwEnd) {
+ 	    w = *pw;
+ #if 1
+ 	    msk = startmask;
+ #else
+ 	    msk = (MiBits)(-1) ^ SCRRIGHT((MiBits)(-1), 1);
+ #endif
+-	    for(ib = 0; ib < PPW; ib++)
+-	    {
+-		if(w & msk)
+-		{
+-		    if(!fInBox)
+-		    {
++            for (ib = 0; ib < PPW; ib++) {
++                if (w & msk) {
++                    if (!fInBox) {
+ 			pt[ipt].x = ((pw - pwLineStart) << PWSH) + ib + xOrg;
+ 			pt[ipt].y = h + yOrg;
+ 			/* start new box */
+ 			fInBox = TRUE;
+ 		    }
+ 		}
+-		else
+-		{
+-		    if(fInBox)
+-		    {
++                else {
++                    if (fInBox) {
+ 			width[ipt] = ((pw - pwLineStart) << PWSH) + 
+ 				     ib + xOrg - pt[ipt].x;
+-			if (++ipt >= NPT)
+-			{
++                        if (++ipt >= NPT) {
+ 			    (*pGC->ops->FillSpans)(pDrawable, pGC, 
+ 					      NPT, pt, width, TRUE);
+ 			    ipt = 0;
+@@ -182,11 +168,12 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+     		/* This is not quite right, but it'll do for now */
+ 		if (screenInfo.bitmapBitOrder == IMAGE_BYTE_ORDER)
+ 		  if (screenInfo.bitmapBitOrder == LSBFirst)
+-		    msk = LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) << 1);
++                        msk =
++                            LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) << 1);
+ 		  else
+-		    msk = LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) >> 1);
+-		else
+-		  if (screenInfo.bitmapBitOrder == LSBFirst)
++                        msk =
++                            LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) >> 1);
++                else if (screenInfo.bitmapBitOrder == LSBFirst)
+ 		    msk = LONG2CHARSDIFFORDER(LONG2CHARSDIFFORDER(msk) << 1);
+ 		  else
+ 		    msk = LONG2CHARSDIFFORDER(LONG2CHARSDIFFORDER(msk) >> 1);
+@@ -197,8 +184,7 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+ 	    pw++;
+ 	}
+ 	ibEnd = dx & PIM;
+-	if(ibEnd)
+-	{
++        if (ibEnd) {
+ 	    /* Process final partial word on line */
+ 	    w = *pw;
+ #if 1
+@@ -206,27 +192,21 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+ #else
+ 	    msk = (MiBits)(-1) ^ SCRRIGHT((MiBits)(-1), 1);
+ #endif
+-	    for(ib = 0; ib < ibEnd; ib++)
+-	    {
+-		if(w & msk)
+-		{
+-		    if(!fInBox)
+-		    {
++            for (ib = 0; ib < ibEnd; ib++) {
++                if (w & msk) {
++                    if (!fInBox) {
+ 			/* start new box */
+ 			pt[ipt].x = ((pw - pwLineStart) << PWSH) + ib + xOrg;
+ 			pt[ipt].y = h + yOrg;
+ 			fInBox = TRUE;
+ 		    }
+ 		}
+-		else
+-		{
+-		    if(fInBox)
+-		    {
++                else {
++                    if (fInBox) {
+ 			/* end box */
+ 			width[ipt] = ((pw - pwLineStart) << PWSH) + 
+ 				     ib + xOrg - pt[ipt].x;
+-			if (++ipt >= NPT)
+-			{
++                        if (++ipt >= NPT) {
+ 			    (*pGC->ops->FillSpans)(pDrawable, 
+ 					      pGC, NPT, pt, width, TRUE);
+ 			    ipt = 0;
+@@ -238,11 +218,12 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+     		/* This is not quite right, but it'll do for now */
+ 		if (screenInfo.bitmapBitOrder == IMAGE_BYTE_ORDER)
+ 		  if (screenInfo.bitmapBitOrder == LSBFirst)
+-		    msk = LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) << 1);
++                        msk =
++                            LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) << 1);
+ 		  else
+-		    msk = LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) >> 1);
+-		else
+-		  if (screenInfo.bitmapBitOrder == LSBFirst)
++                        msk =
++                            LONG2CHARSSAMEORDER(LONG2CHARSSAMEORDER(msk) >> 1);
++                else if (screenInfo.bitmapBitOrder == LSBFirst)
+ 		    msk = LONG2CHARSDIFFORDER(LONG2CHARSDIFFORDER(msk) << 1);
+ 		  else
+ 		    msk = LONG2CHARSDIFFORDER(LONG2CHARSDIFFORDER(msk) >> 1);
+@@ -252,11 +233,9 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+ 	    }
+ 	}
+ 	/* If scanline ended with last bit set, end the box */
+-	if(fInBox)
+-	{
++        if (fInBox) {
+ 	    width[ipt] = dx + xOrg - pt[ipt].x;
+-	    if (++ipt >= NPT)
+-	    {
++            if (++ipt >= NPT) {
+ 		(*pGC->ops->FillSpans)(pDrawable, pGC, NPT, pt, width, TRUE);
+ 		ipt = 0;
+ 	    }
+@@ -264,8 +243,7 @@ miPushPixels(GCPtr pGC, PixmapPtr pBitMap, DrawablePtr pDrawable,
+     }
+     free(pwLineStart);
+     /* Flush any remaining spans */
+-    if (ipt)
+-    {
++    if (ipt) {
+ 	(*pGC->ops->FillSpans)(pDrawable, pGC, ipt, pt, width, TRUE);
+     }
+ }

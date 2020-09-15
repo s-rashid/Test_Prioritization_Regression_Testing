@@ -1,0 +1,13 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index f63df80..bd7c78d 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -283,7 +283,7 @@ typedef struct _ValuatorClassRec {
+     unsigned short	  numAxes;
+     double		  *axisVal; /* always absolute, but device-coord system */
+     ValuatorAccelerationRec	accelScheme;
+-} ValuatorClassRec, *ValuatorClassPtr;
++} ValuatorClassRec;
+ 
+ typedef struct _ButtonClassRec {
+     int			sourceid;

@@ -1,0 +1,672 @@
+diff --git a/hw/xfree86/xaa/xaaTEGlyph.c b/hw/xfree86/xaa/xaaTEGlyph.c
+index 510c387..2926c1d 100644
+--- a/hw/xfree86/xaa/xaaTEGlyph.c
++++ b/hw/xfree86/xaa/xaaTEGlyph.c
+@@ -1,5 +1,4 @@
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -30,23 +29,34 @@ static CARD32 *DrawTETextScanlineWidth18(CARD32 *base, unsigned int **glyphp,
+ static CARD32 *DrawTETextScanlineWidth24(CARD32 *base, unsigned int **glyphp,
+ 					int line, int width, int glyphwidth);
+ 
+-
+ #ifdef USEASSEMBLER
+ # ifdef FIXEDBASE
+ #  ifdef MSBFIRST
+ CARD32 *DrawTETextScanlineWidth6PMSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ CARD32 *DrawTETextScanlineWidth8PMSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ CARD32 *DrawTETextScanlineWidth9PMSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ #  else
+ CARD32 *DrawTETextScanlineWidth6PLSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ CARD32 *DrawTETextScanlineWidth8PLSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ CARD32 *DrawTETextScanlineWidth9PLSBFirstFixedBase(CARD32 *base,
+-		unsigned int **glyphp, int line, int width, int glyphwidth);
++                                                   unsigned int **glyphp,
++                                                   int line, int width,
++                                                   int glyphwidth);
+ #  endif
+ # else
+ #  ifdef MSBFIRST
+@@ -77,7 +87,6 @@ static CARD32 *DrawTETextScanlineWidth9(CARD32 *base, unsigned int **glyphp,
+ #define glyph_scanline_func EXPNAME(XAAGlyphScanlineFunc)
+ #define glyph_get_scanline_func EXPNAME(XAAGetGlyphScanlineFunc)
+ 
+-
+ GlyphScanlineFuncPtr glyph_scanline_func[32] = {
+    DrawTETextScanlineGeneric, DrawTETextScanlineGeneric,  
+    DrawTETextScanlineGeneric, DrawTETextScanlineGeneric,
+@@ -126,11 +135,12 @@ GlyphScanlineFuncPtr glyph_scanline_func[32] = {
+    DrawTETextScanlineGeneric, DrawTETextScanlineGeneric
+ };
+ 
+-GlyphScanlineFuncPtr *glyph_get_scanline_func(void) {
++GlyphScanlineFuncPtr *
++glyph_get_scanline_func(void)
++{
+    return glyph_scanline_func;
+ }
+ 
+-
+ /********************************************************************
+ 
+    Here we have TEGlyphRenders for a bunch of different color
+@@ -144,13 +154,12 @@ GlyphScanlineFuncPtr *glyph_get_scanline_func(void) {
+ 	A total of 4 versions */
+ 
+ void
+-EXPNAME(XAATEGlyphRenderer)(
+-    ScrnInfoPtr pScrn,
+-    int x, int y, int w, int h, int skipleft, int startline, 
+-    unsigned int **glyphs, int glyphWidth,
+-    int fg, int bg, int rop, unsigned planemask
+-)
+-{
++
++EXPNAME(XAATEGlyphRenderer) (ScrnInfoPtr pScrn,
++                             int x, int y, int w, int h, int skipleft,
++                             int startline, unsigned int **glyphs,
++                             int glyphWidth, int fg, int bg, int rop,
++                             unsigned planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     CARD32* base;
+     GlyphScanlineFuncPtr GlyphFunc = glyph_scanline_func[glyphWidth - 1];
+@@ -162,8 +171,8 @@ EXPNAME(XAATEGlyphRenderer)(
+ 	bg = -1;
+     }
+ 
+-    (*infoRec->SetupForCPUToScreenColorExpandFill)(
+-				pScrn, fg, bg, rop, planemask);
++    (*infoRec->SetupForCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                    planemask);
+ 
+     if(skipleft && 
+ 	 (!(infoRec->TEGlyphRendererFlags & LEFT_EDGE_CLIPPING) || 
+@@ -174,15 +183,17 @@ EXPNAME(XAATEGlyphRenderer)(
+ 	    int count = h, line = startline;
+             int width = glyphWidth - skipleft;
+ 
+-	    if(width > w) width = w;
++        if (width > w)
++            width = w;
+ 
+-            (*infoRec->SubsequentCPUToScreenColorExpandFill)(
+-						pScrn, x, y, width, h, 0);
++        (*infoRec->SubsequentCPUToScreenColorExpandFill) (pScrn, x, y, width, h,
++                                                          0);
+ 
+ 	    base = (CARD32*)infoRec->ColorExpandBase;
+ 
+ 	    while(count--) {
+ 		register CARD32 tmp = SHIFT_R(glyphs[0][line++],skipleft);
++
+ 		WRITE_BITS(tmp);
+ 	    }
+     
+@@ -192,7 +203,8 @@ EXPNAME(XAATEGlyphRenderer)(
+ 		base = (CARD32*)infoRec->ColorExpandBase;
+ 		base[0] = 0x00000000;
+ 	    }
+-	    if(!w) goto THE_END;
++        if (!w)
++            goto THE_END;
+ 	    glyphs++;
+             x += width;
+ 	    skipleft = 0;	/* nicely aligned again */
+@@ -202,8 +214,8 @@ EXPNAME(XAATEGlyphRenderer)(
+     x -= skipleft;
+     dwords = ((w + 31) >> 5) * h;
+ 
+-    (*infoRec->SubsequentCPUToScreenColorExpandFill)(
+-				pScrn, x, y, w, h, skipleft);
++    (*infoRec->SubsequentCPUToScreenColorExpandFill) (pScrn, x, y, w, h,
++                                                      skipleft);
+ 
+     base = (CARD32*)infoRec->ColorExpandBase;
+ 
+@@ -228,7 +240,8 @@ THE_END:
+ 
+     if(infoRec->TEGlyphRendererFlags & SYNC_AFTER_COLOR_EXPAND) 
+ 	(*infoRec->Sync)(pScrn);
+-    else SET_SYNC_FLAG(infoRec);
++    else
++        SET_SYNC_FLAG(infoRec);
+ }
+ 
+ /********************************************************************
+@@ -240,16 +253,16 @@ THE_END:
+ ********************************************************************/
+ 
+ void
+-EXPNAME(XAATEGlyphRenderer3)(
+-    ScrnInfoPtr pScrn,
+-    int x, int y, int w, int h, int skipleft, int startline, 
+-    unsigned int **glyphs, int glyphWidth,
+-    int fg, int bg, int rop, unsigned planemask
+-)
+-{
++
++EXPNAME(XAATEGlyphRenderer3) (ScrnInfoPtr pScrn,
++                              int x, int y, int w, int h, int skipleft,
++                              int startline, unsigned int **glyphs,
++                              int glyphWidth, int fg, int bg, int rop,
++                              unsigned planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     CARD32 *base, *mem;
+-    GlyphScanlineFuncPtr GlyphFunc = XAAGlyphScanlineFuncLSBFirst[glyphWidth - 1];
++    GlyphScanlineFuncPtr GlyphFunc =
++        XAAGlyphScanlineFuncLSBFirst[glyphWidth - 1];
+     int dwords = 0;
+ 
+     if((bg != -1) && 
+@@ -261,8 +274,8 @@ EXPNAME(XAATEGlyphRenderer3)(
+ 	bg = -1;
+     }
+ 
+-    (*infoRec->SetupForCPUToScreenColorExpandFill)(
+-					pScrn, fg, bg, rop, planemask);
++    (*infoRec->SetupForCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                    planemask);
+ 
+     if(skipleft) {
+ 	    /* draw the first character only */
+@@ -271,9 +284,10 @@ EXPNAME(XAATEGlyphRenderer3)(
+             int width = glyphWidth - skipleft;
+ 	    CARD32 bits;
+ 
+-	    if(width > w) width = w;
+-            (*infoRec->SubsequentCPUToScreenColorExpandFill)(
+-					pScrn, x, y, width, h, 0);
++        if (width > w)
++            width = w;
++        (*infoRec->SubsequentCPUToScreenColorExpandFill) (pScrn, x, y, width, h,
++                                                          0);
+ 
+ 	    base = (CARD32*)infoRec->ColorExpandBase;
+ 
+@@ -281,9 +295,11 @@ EXPNAME(XAATEGlyphRenderer3)(
+ 		bits = SHIFT_R(glyphs[0][line++],skipleft);
+ 	        if (width >= 22) {
+ 		    WRITE_BITS3(bits);
+-	        } else if (width >= 11) {
++            }
++            else if (width >= 11) {
+ 		    WRITE_BITS2(bits);
+-		} else {
++            }
++            else {
+ 		    WRITE_BITS1(bits);
+ 		}
+ 	    }
+@@ -294,7 +310,8 @@ EXPNAME(XAATEGlyphRenderer3)(
+ 		base = (CARD32*)infoRec->ColorExpandBase;
+ 		base[0] = 0x00000000;
+ 	    }
+-	    if(!w) goto THE_END;
++        if (!w)
++            goto THE_END;
+ 	    glyphs++;
+             x += width;
+ 	    skipleft = 0;	/* nicely aligned again */
+@@ -302,7 +319,8 @@ EXPNAME(XAATEGlyphRenderer3)(
+ 
+     dwords = ((3 * w + 31) >> 5) * h;
+     mem = (CARD32*)malloc(((w + 31) >> 3) * sizeof(char));
+-    if (!mem) return;
++    if (!mem)
++        return;
+ 
+     (*infoRec->SubsequentCPUToScreenColorExpandFill)(pScrn, x, y, w, h, 0);
+ 
+@@ -333,21 +351,20 @@ THE_END:
+ 
+     if(infoRec->TEGlyphRendererFlags & SYNC_AFTER_COLOR_EXPAND) 
+ 	(*infoRec->Sync)(pScrn);
+-    else SET_SYNC_FLAG(infoRec);
++    else
++        SET_SYNC_FLAG(infoRec);
+ }
+ 
+-
+ #ifndef FIXEDBASE
+ /*  Scanline version of above gets built for LSBFIRST and MSBFIRST */
+ 
+ void
+-EXPNAME(XAATEGlyphRendererScanline)(
+-    ScrnInfoPtr pScrn,
+-    int x, int y, int w, int h, int skipleft, int startline, 
+-    unsigned int **glyphs, int glyphWidth,
+-    int fg, int bg, int rop, unsigned planemask
+-)
+-{
++
++EXPNAME(XAATEGlyphRendererScanline) (ScrnInfoPtr pScrn,
++                                     int x, int y, int w, int h, int skipleft,
++                                     int startline, unsigned int **glyphs,
++                                     int glyphWidth, int fg, int bg, int rop,
++                                     unsigned planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     int bufferNo;
+     CARD32* base;
+@@ -359,8 +376,8 @@ EXPNAME(XAATEGlyphRendererScanline)(
+ 	bg = -1;
+     }
+ 
+-    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill)(
+-				pScrn, fg, bg, rop, planemask);
++    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                            planemask);
+ 
+     if(skipleft && 
+ 	(!(infoRec->TEGlyphRendererFlags & LEFT_EDGE_CLIPPING) || 
+@@ -371,15 +388,17 @@ EXPNAME(XAATEGlyphRendererScanline)(
+ 	int count = h, line = startline;
+ 	int width = glyphWidth - skipleft;
+ 
+-	if(width > w) width = w;
++        if (width > w)
++            width = w;
+ 
+-        (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(
+-					pScrn, x, y, width, h, 0);
++        (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, x, y,
++                                                                  width, h, 0);
+ 
+ 	bufferNo = 0;
+ 
+ 	while(count--) {	
+ 	    register CARD32 tmp = SHIFT_R(glyphs[0][line++],skipleft);
++
+ 	    base = (CARD32*)infoRec->ScanlineColorExpandBuffers[bufferNo];
+ 	    WRITE_BITS(tmp);
+ 	    (*infoRec->SubsequentColorExpandScanline)(pScrn, bufferNo++);
+@@ -388,7 +407,8 @@ EXPNAME(XAATEGlyphRendererScanline)(
+ 	}
+ 
+ 	w -= width;
+-	if(!w) goto THE_END;
++        if (!w)
++            goto THE_END;
+ 	glyphs++;
+ 	x += width;
+ 	skipleft = 0;	/* nicely aligned again */
+@@ -397,8 +417,8 @@ EXPNAME(XAATEGlyphRendererScanline)(
+     w += skipleft;
+     x -= skipleft;
+ 
+-    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(	
+-				pScrn, x, y, w, h, skipleft);
++    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, x, y, w, h,
++                                                              skipleft);
+ 
+     bufferNo = 0;
+ 
+@@ -416,17 +436,17 @@ THE_END:
+ }
+ 
+ void
+-EXPNAME(XAATEGlyphRendererScanline3)(
+-    ScrnInfoPtr pScrn,
+-    int x, int y, int w, int h, int skipleft, int startline, 
+-    unsigned int **glyphs, int glyphWidth,
+-    int fg, int bg, int rop, unsigned planemask
+-)
+-{
++
++EXPNAME(XAATEGlyphRendererScanline3) (ScrnInfoPtr pScrn,
++                                      int x, int y, int w, int h, int skipleft,
++                                      int startline, unsigned int **glyphs,
++                                      int glyphWidth, int fg, int bg, int rop,
++                                      unsigned planemask) {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     int bufferNo;
+     CARD32 *base, *mem;
+-    GlyphScanlineFuncPtr GlyphFunc = XAAGlyphScanlineFuncLSBFirst[glyphWidth - 1];
++    GlyphScanlineFuncPtr GlyphFunc =
++        XAAGlyphScanlineFuncLSBFirst[glyphWidth - 1];
+ 
+     if((bg != -1) && 
+ 	((infoRec->TEGlyphRendererFlags & TRANSPARENCY_ONLY) ||
+@@ -437,8 +457,8 @@ EXPNAME(XAATEGlyphRendererScanline3)(
+ 	bg = -1;
+     }
+ 
+-    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill)(
+-					pScrn, fg, bg, rop, planemask);
++    (*infoRec->SetupForScanlineCPUToScreenColorExpandFill) (pScrn, fg, bg, rop,
++                                                            planemask);
+ 
+     if(skipleft) {
+ 	/* draw the first character only */
+@@ -447,10 +467,11 @@ EXPNAME(XAATEGlyphRendererScanline3)(
+ 	int width = glyphWidth - skipleft;
+ 	CARD32 bits;
+ 	
+-	if(width > w) width = w;
++        if (width > w)
++            width = w;
+ 
+-        (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(
+-					pScrn, x, y, width, h, 0);
++        (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, x, y,
++                                                                  width, h, 0);
+ 
+ 	bufferNo = 0;
+ 
+@@ -459,9 +480,11 @@ EXPNAME(XAATEGlyphRendererScanline3)(
+ 	    bits = SHIFT_R(glyphs[0][line++],skipleft);
+ 	    if (width >= 22) {
+ 		WRITE_BITS3(bits);
+-	    } else if (width >= 11) {
++            }
++            else if (width >= 11) {
+ 		WRITE_BITS2(bits);
+-	    } else {
++            }
++            else {
+ 		WRITE_BITS1(bits);
+ 	    }
+ 	    (*infoRec->SubsequentColorExpandScanline)(pScrn, bufferNo++);
+@@ -470,7 +493,8 @@ EXPNAME(XAATEGlyphRendererScanline3)(
+ 	}
+ 
+ 	w -= width;
+-	if(!w) goto THE_END;
++        if (!w)
++            goto THE_END;
+ 	glyphs++;
+ 	x += width;
+ 	skipleft = 0;	/* nicely aligned again */
+@@ -479,10 +503,11 @@ EXPNAME(XAATEGlyphRendererScanline3)(
+     w += skipleft;
+     x -= skipleft;
+     mem = (CARD32*)malloc(((w + 31) >> 3) * sizeof(char));
+-    if (!mem) return;
++    if (!mem)
++        return;
+ 
+-   (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill)(	
+-				pScrn, x, y, w, h, skipleft);
++    (*infoRec->SubsequentScanlineCPUToScreenColorExpandFill) (pScrn, x, y, w, h,
++                                                              skipleft);
+ 
+     bufferNo = 0;
+ 
+@@ -504,21 +529,14 @@ THE_END:
+ 
+ #endif
+ 
+-
+-
+ /********************************************************************
+ 
+    TRIPLE_BITS_24BPP scanline rendering code.
+ 
+ ********************************************************************/
+ 
+-
+-
+ static CARD32*
+-DrawTextScanline3(
+-    CARD32 *base,
+-    CARD32 *mem,
+-    int width )
++DrawTextScanline3(CARD32 *base, CARD32 *mem, int width)
+ {
+ 
+     while(width > 32) {
+@@ -529,9 +547,11 @@ DrawTextScanline3(
+     if(width) {
+ 	if (width >= 22) {
+ 	    WRITE_BITS3(*mem);
+-	} else if (width >= 11) {
++        }
++        else if (width >= 11) {
+ 	    WRITE_BITS2(*mem);
+-	} else {
++        }
++        else {
+ 	    WRITE_BITS1(*mem);
+ 	}
+     }
+@@ -539,18 +559,14 @@ DrawTextScanline3(
+     return base;
+ }
+ 
+-
+ /********************************************************************
+ 
+    Generic TE scanline rendering code.
+ 
+ ********************************************************************/
+ 
+-
+-
+ static CARD32*
+-DrawTETextScanlineGeneric(
+-    CARD32 *base,
++DrawTETextScanlineGeneric(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+@@ -567,7 +583,8 @@ DrawTETextScanlineGeneric(
+ 	shift &= 31;
+ 	if(shift) 
+             bits = SHIFT_R((*glyphp)[line],(glyphwidth - shift));
+-	else bits = 0;
++        else
++            bits = 0;
+ 	width -= 32;
+     }
+ 
+@@ -585,23 +602,21 @@ DrawTETextScanlineGeneric(
+     return base;
+ }
+ 
+-
+ /********************************************************************
+ 
+    Loop unrolled TE font scanline rendering code
+ 
+ ********************************************************************/
+ 
+-
+ #ifndef USEASSEMBLER
+ static CARD32* 
+-DrawTETextScanlineWidth6(
+-    CARD32 *base,
++DrawTETextScanlineWidth6(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+ 	unsigned int bits;
++
+         bits =  glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],6);
+         bits |= SHIFT_L(glyphp[2][line],12);
+@@ -637,13 +652,13 @@ DrawTETextScanlineWidth6(
+ #endif
+ 
+ static CARD32*
+-DrawTETextScanlineWidth7(
+-    CARD32 *base,
++DrawTETextScanlineWidth7(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],7);
+         bits |= SHIFT_L(glyphp[2][line],14);
+@@ -705,16 +720,15 @@ DrawTETextScanlineWidth7(
+     return base;
+ }
+ 
+-
+ #ifndef USEASSEMBLER
+ static CARD32* 
+-DrawTETextScanlineWidth8(
+-    CARD32 *base,
++DrawTETextScanlineWidth8(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],8);
+         bits |= SHIFT_L(glyphp[2][line],16);
+@@ -739,13 +753,13 @@ DrawTETextScanlineWidth8(
+ 
+ #ifndef USEASSEMBLER
+ static CARD32* 
+-DrawTETextScanlineWidth9(
+-    CARD32 *base,
++DrawTETextScanlineWidth9(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],9);
+         bits |= SHIFT_L(glyphp[2][line],18);
+@@ -815,13 +829,13 @@ DrawTETextScanlineWidth9(
+ #endif
+ 
+ static CARD32* 
+-DrawTETextScanlineWidth10(
+-    CARD32 *base,
++DrawTETextScanlineWidth10(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],10);
+         bits |= SHIFT_L(glyphp[2][line],20);
+@@ -862,13 +876,13 @@ DrawTETextScanlineWidth10(
+ }
+ 
+ static CARD32* 
+-DrawTETextScanlineWidth12(
+-    CARD32 *base,
++DrawTETextScanlineWidth12(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],12);
+         bits |= SHIFT_L(glyphp[2][line],24);
+@@ -894,16 +908,14 @@ DrawTETextScanlineWidth12(
+     return base;
+ }
+ 
+-
+-
+ static CARD32* 
+-DrawTETextScanlineWidth14(
+-    CARD32 *base,
++DrawTETextScanlineWidth14(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],14);
+         bits |= SHIFT_L(glyphp[2][line],28);
+@@ -949,15 +961,14 @@ DrawTETextScanlineWidth14(
+     return base;
+ }
+ 
+-
+ static CARD32* 
+-DrawTETextScanlineWidth16(
+-    CARD32 *base,
++DrawTETextScanlineWidth16(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],16);
+         WRITE_IN_BITORDER(base, 0, bits);
+@@ -983,16 +994,14 @@ DrawTETextScanlineWidth16(
+     return base;
+ }
+ 
+-
+-
+ static CARD32* 
+-DrawTETextScanlineWidth18(
+-    CARD32 *base,
++DrawTETextScanlineWidth18(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],18);
+         WRITE_IN_BITORDER(base, 0, bits);
+@@ -1044,15 +1053,14 @@ DrawTETextScanlineWidth18(
+     return base;
+ }
+ 
+-
+ static CARD32* 
+-DrawTETextScanlineWidth24(
+-    CARD32 *base,
++DrawTETextScanlineWidth24(CARD32 *base,
+     unsigned int **glyphp,
+     int line, int width, int glyphwidth )
+ {
+     while (1) {
+         unsigned int bits;
++
+         bits = glyphp[0][line];
+         bits |= SHIFT_L(glyphp[1][line],24);
+         WRITE_IN_BITORDER(base, 0, bits);
+@@ -1073,5 +1081,3 @@ DrawTETextScanlineWidth24(
+     }
+     return base;
+ }
+-
+-

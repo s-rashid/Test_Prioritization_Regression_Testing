@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winkeybd.c b/hw/xwin/winkeybd.c
+index cf0dea2..8b6be02 100644
+--- a/hw/xwin/winkeybd.c
++++ b/hw/xwin/winkeybd.c
+@@ -472,7 +472,7 @@ winKeybdReleaseKeys (void)
+ void
+ winSendKeyEvent (DWORD dwKey, Bool fDown)
+ {
+-  EventListPtr events;
++  InternalEvent* events;
+ 
+   /*
+    * When alt-tabing between screens we can get phantom key up messages

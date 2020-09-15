@@ -1,0 +1,363 @@
+diff --git a/hw/dmx/glxProxy/glxswap.c b/hw/dmx/glxProxy/glxswap.c
+index 6d9b4fc..87a7486 100644
+--- a/hw/dmx/glxProxy/glxswap.c
++++ b/hw/dmx/glxProxy/glxswap.c
+@@ -48,9 +48,7 @@ typedef struct _SwapGroup *SwapGroupPtr;
+ static Bool SwapBarrierIsReadyToSwap(GLuint barrier);
+ static void SwapSwapBarrier(GLuint barrier);
+ static void UpdateSwapBarrierList(GLuint barrier,
+-				  SwapGroupPtr pOldSwap,
+-				  SwapGroupPtr pNewSwap);
+-
++                                  SwapGroupPtr pOldSwap, SwapGroupPtr pNewSwap);
+ 
+ /************************************************************************
+  *
+@@ -71,8 +69,8 @@ typedef struct _SwapGroup {
+     __GLXclientState *clState;
+ } SwapGroupRec;
+ 
+-
+-static void SwapSwapGroup(SwapGroupPtr pSwap)
++static void
++SwapSwapGroup(SwapGroupPtr pSwap)
+ {
+     SwapGroupPtr  pCur;
+ 
+@@ -95,7 +93,8 @@ static void SwapSwapGroup(SwapGroupPtr pSwap)
+     }
+ }
+ 
+-static Bool SwapGroupIsReadyToSwap(SwapGroupPtr pSwap)
++static Bool
++SwapGroupIsReadyToSwap(SwapGroupPtr pSwap)
+ {
+     Bool  isReady = TRUE;
+ 
+@@ -110,7 +109,8 @@ static Bool SwapGroupIsReadyToSwap(SwapGroupPtr pSwap)
+     return isReady;
+ }
+ 
+-static Bool SGSwapCleanup(ClientPtr client, pointer closure)
++static Bool
++SGSwapCleanup(ClientPtr client, pointer closure)
+ {
+     /* SwapGroupPtr  pSwap = (SwapGroupPtr)closure; */
+ 
+@@ -120,7 +120,8 @@ static Bool SGSwapCleanup(ClientPtr client, pointer closure)
+     return TRUE;
+ }
+ 
+-int SGSwapBuffers(__GLXclientState *cl, XID drawId, GLXContextTag tag,
++int
++SGSwapBuffers(__GLXclientState * cl, XID drawId, GLXContextTag tag,
+ 		  DrawablePtr pDraw)
+ {
+     WindowPtr      pWin     = (WindowPtr)pDraw;
+@@ -144,11 +145,13 @@ int SGSwapBuffers(__GLXclientState *cl, XID drawId, GLXContextTag tag,
+ 	 * to swap, so swap all the swap groups that are bound to this
+ 	 * group's swap barrier */
+ 	SwapSwapBarrier(pSwap->barrier);
+-    } else if (!pSwap->barrier && SwapGroupIsReadyToSwap(pSwap)) {
++    }
++    else if (!pSwap->barrier && SwapGroupIsReadyToSwap(pSwap)) {
+ 	/* Do the swap if the entire swap group is ready to swap and the
+ 	 * group is not bound to a swap barrier */
+ 	SwapSwapGroup(pSwap);
+-    } else {
++    }
++    else {
+ 	/* The swap group/barrier is not yet ready to swap, so put
+ 	 * client to sleep until the rest are ready to swap */
+ 	ClientSleep(cl->client, SGSwapCleanup, (pointer)pWin);
+@@ -158,7 +161,8 @@ int SGSwapBuffers(__GLXclientState *cl, XID drawId, GLXContextTag tag,
+     return Success;
+ }
+ 
+-static void SGWindowUnmapped(WindowPtr pWin)
++static void
++SGWindowUnmapped(WindowPtr pWin)
+ {
+     dmxWinPrivPtr  pWinPriv = DMX_GET_WINDOW_PRIV(pWin);
+     SwapGroupPtr   pSwap    = pWinPriv->swapGroup;
+@@ -168,23 +172,27 @@ static void SGWindowUnmapped(WindowPtr pWin)
+ 
+     if (pSwap->barrier && SwapBarrierIsReadyToSwap(pSwap->barrier)) {
+ 	SwapSwapBarrier(pSwap->barrier);
+-    } else if (!pSwap->barrier && SwapGroupIsReadyToSwap(pSwap)) {
++    }
++    else if (!pSwap->barrier && SwapGroupIsReadyToSwap(pSwap)) {
+ 	SwapSwapGroup(pSwap);
+     }
+ }
+ 
+-static void SGWindowDestroyed(WindowPtr pWin)
++static void
++SGWindowDestroyed(WindowPtr pWin)
+ {
+     JoinSwapGroupSGIX((DrawablePtr)pWin, NULL);
+ }
+ 
+-static SwapGroupPtr CreateSwapEntry(WindowPtr pWin)
++static SwapGroupPtr
++CreateSwapEntry(WindowPtr pWin)
+ {
+     SwapGroupPtr  pEntry;
+ 
+     /* Allocate new swap group */
+     pEntry = malloc(sizeof(*pEntry));
+-    if (!pEntry) return NULL;
++    if (!pEntry)
++        return NULL;
+ 
+     /* Initialize swap group */
+     pEntry->pWin     = pWin;
+@@ -201,7 +209,8 @@ static SwapGroupPtr CreateSwapEntry(WindowPtr pWin)
+     return pEntry;
+ }
+ 
+-static void FreeSwapEntry(SwapGroupPtr pEntry)
++static void
++FreeSwapEntry(SwapGroupPtr pEntry)
+ {
+     /* Since we have removed the drawable from its previous swap group
+      * and it won't be added to another swap group, the only thing that
+@@ -226,7 +235,8 @@ static void FreeSwapEntry(SwapGroupPtr pEntry)
+     free(pEntry);
+ }
+ 
+-int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
++int
++JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ {
+     if (pDraw->type == DRAWABLE_WINDOW) {
+ 	WindowPtr      pWin     = (WindowPtr)pDraw;
+@@ -256,7 +266,8 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ 	    /* Remove pDraw's swap group entry from swap group list */
+ 	    if (pPrev) {
+ 		pPrev->pNext = pOldSwap->pNext;
+-	    } else {
++            }
++            else {
+ 		/* pWin is at the head of the swap group list, so we
+ 		 * need to update all other members of this swap
+ 		 * group */
+@@ -293,8 +304,10 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ 
+ 	if (!pMember || pMember->type != DRAWABLE_WINDOW) {
+ 	    /* Free old swap group since it is no longer needed */
+-	    if (pOldSwap) FreeSwapEntry(pOldSwap);
+-	} else if (pDraw == pMember && pOldSwap) {
++            if (pOldSwap)
++                FreeSwapEntry(pOldSwap);
++        }
++        else if (pDraw == pMember && pOldSwap) {
+ 	    /* Special case where pDraw was previously created and we
+ 	     * are now just putting it to its own swap group */
+ 	    pWinPriv->swapGroup = pOldSwap;
+@@ -304,7 +317,8 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ 	    /* Check to see if pDraw is ready to swap */
+ 	    if (SwapGroupIsReadyToSwap(pOldSwap))
+ 		SwapSwapGroup(pOldSwap);
+-	} else if (pMember->type == DRAWABLE_WINDOW) {
++        }
++        else if (pMember->type == DRAWABLE_WINDOW) {
+ 	    WindowPtr      pMemberWin       = (WindowPtr)pMember;
+ 	    dmxWinPrivPtr  pMemberPriv      = DMX_GET_WINDOW_PRIV(pMemberWin);
+ 	    SwapGroupPtr   pMemberSwapGroup = pMemberPriv->swapGroup;
+@@ -317,7 +331,8 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ 		/* Create new swap group */
+ 		pMemberSwapGroup = CreateSwapEntry(pMemberWin);
+ 		if (!pMemberSwapGroup) {
+-		    if (pOldSwap) FreeSwapEntry(pOldSwap);
++                    if (pOldSwap)
++                        FreeSwapEntry(pOldSwap);
+ 		    return BadAlloc;
+ 		}
+ 
+@@ -352,8 +367,7 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+ 
+ 		/* Find last entry in pMember's swap group */
+ 		for (pEntry = pMemberSwapGroup;
+-		     pEntry->pNext;
+-		     pEntry = pEntry->pNext);
++                     pEntry->pNext; pEntry = pEntry->pNext);
+ 
+ 		/* Add pDraw's swap group entry to pMember's swap group list */
+ 		pEntry->pNext = pOldSwap;
+@@ -372,7 +386,6 @@ int JoinSwapGroupSGIX(DrawablePtr pDraw, DrawablePtr pMember)
+     return Success;
+ }
+ 
+-
+ /************************************************************************
+  *
+  * Swap Barriers
+@@ -389,7 +402,8 @@ typedef struct _SwapBarrier {
+ 
+ static SwapBarrierPtr SwapBarrierList[GLX_MAX_SWAP_BARRIERS+1];
+ 
+-void SwapBarrierInit(void)
++void
++SwapBarrierInit(void)
+ {
+     int  i;
+ 
+@@ -397,15 +411,15 @@ void SwapBarrierInit(void)
+ 	SwapBarrierList[i] = NULL;
+ }
+ 
+-void SwapBarrierReset(void)
++void
++SwapBarrierReset(void)
+ {
+     int  i;
+ 
+     for (i = 0; i <= GLX_MAX_SWAP_BARRIERS; i++) {
+ 	SwapBarrierPtr  pBarrier, pNextBarrier;
+-	for (pBarrier = SwapBarrierList[i];
+-	     pBarrier;
+-	     pBarrier = pNextBarrier) {
++
++        for (pBarrier = SwapBarrierList[i]; pBarrier; pBarrier = pNextBarrier) {
+ 	    pNextBarrier = pBarrier->pNext;
+ 	    free(pBarrier);
+ 	}
+@@ -413,17 +427,20 @@ void SwapBarrierReset(void)
+     }
+ }
+ 
+-int QueryMaxSwapBarriersSGIX(int screen)
++int
++QueryMaxSwapBarriersSGIX(int screen)
+ {
+     return GLX_MAX_SWAP_BARRIERS;
+ }
+ 
+-static Bool BindSwapGroupToBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
++static Bool
++BindSwapGroupToBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
+ {
+     SwapBarrierPtr  pBarrier;
+ 
+     pBarrier = malloc(sizeof(*pBarrier));
+-    if (!pBarrier) return FALSE;
++    if (!pBarrier)
++        return FALSE;
+ 
+     /* Add the swap group to barrier's list */
+     pBarrier->pSwap = pSwapGroup;
+@@ -433,7 +450,8 @@ static Bool BindSwapGroupToBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
+     return TRUE;
+ }
+ 
+-static Bool UnbindSwapGroupFromBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
++static Bool
++UnbindSwapGroupFromBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
+ {
+     SwapBarrierPtr  pBarrier, pPrevBarrier;
+ 
+@@ -441,11 +459,14 @@ static Bool UnbindSwapGroupFromBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
+     for (pBarrier = SwapBarrierList[barrier], pPrevBarrier = NULL;
+ 	 pBarrier && pBarrier->pSwap != pSwapGroup;
+ 	 pPrevBarrier = pBarrier, pBarrier = pBarrier->pNext);
+-    if (!pBarrier) return FALSE;
++    if (!pBarrier)
++        return FALSE;
+ 
+     /* Remove the swap group from barrier's list */
+-    if (pPrevBarrier) pPrevBarrier->pNext = pBarrier->pNext;
+-    else              SwapBarrierList[barrier] = pBarrier->pNext;
++    if (pPrevBarrier)
++        pPrevBarrier->pNext = pBarrier->pNext;
++    else
++        SwapBarrierList[barrier] = pBarrier->pNext;
+ 
+     /* Free memory */
+     free(pBarrier);
+@@ -453,9 +474,9 @@ static Bool UnbindSwapGroupFromBarrier(GLuint barrier, SwapGroupPtr pSwapGroup)
+     return TRUE;
+ }
+ 
+-static void UpdateSwapBarrierList(GLuint barrier,
+-				  SwapGroupPtr pOldSwap,
+-				  SwapGroupPtr pNewSwap)
++static void
++UpdateSwapBarrierList(GLuint barrier,
++                      SwapGroupPtr pOldSwap, SwapGroupPtr pNewSwap)
+ {
+     SwapBarrierPtr  pBarrier;
+ 
+@@ -469,8 +490,7 @@ static void UpdateSwapBarrierList(GLuint barrier,
+     /* Otherwise, find the old swap group in the barrier list and change
+      * it to the new swap group */
+     for (pBarrier = SwapBarrierList[barrier];
+-	 pBarrier;
+-	 pBarrier = pBarrier->pNext) {
++         pBarrier; pBarrier = pBarrier->pNext) {
+ 	if (pBarrier->pSwap == pOldSwap) {
+ 	    pBarrier->pSwap = pNewSwap;
+ 	    return;
+@@ -478,7 +498,8 @@ static void UpdateSwapBarrierList(GLuint barrier,
+     }
+ }
+ 
+-static Bool SwapBarrierIsReadyToSwap(GLuint barrier)
++static Bool
++SwapBarrierIsReadyToSwap(GLuint barrier)
+ {
+     SwapBarrierPtr  pBarrier;
+     Bool            isReady = TRUE;
+@@ -486,25 +507,25 @@ static Bool SwapBarrierIsReadyToSwap(GLuint barrier)
+     /* The swap barier is ready to swap when swap groups that are bound
+      * to barrier are ready to swap */
+     for (pBarrier = SwapBarrierList[barrier];
+-	 pBarrier;
+-	 pBarrier = pBarrier->pNext)
++         pBarrier; pBarrier = pBarrier->pNext)
+ 	isReady &= SwapGroupIsReadyToSwap(pBarrier->pSwap);
+ 
+     return isReady;
+ }
+ 
+-static void SwapSwapBarrier(GLuint barrier)
++static void
++SwapSwapBarrier(GLuint barrier)
+ {
+     SwapBarrierPtr  pBarrier;
+ 
+     /* Swap each group that is a member of this barrier */
+     for (pBarrier = SwapBarrierList[barrier];
+-	 pBarrier;
+-	 pBarrier = pBarrier->pNext)
++         pBarrier; pBarrier = pBarrier->pNext)
+ 	SwapSwapGroup(pBarrier->pSwap);
+ }
+ 
+-int BindSwapBarrierSGIX(DrawablePtr pDraw, int barrier)
++int
++BindSwapBarrierSGIX(DrawablePtr pDraw, int barrier)
+ {
+     /* FIXME: Check for errors when pDraw->type != DRAWABLE_WINDOW */
+ 
+@@ -517,14 +538,17 @@ int BindSwapBarrierSGIX(DrawablePtr pDraw, int barrier)
+ 	SwapGroupPtr    pSwapGroup = pWinPriv->swapGroup;
+ 	SwapGroupPtr    pCur;
+ 
+-	if (!pSwapGroup) return BadDrawable;
+-	if (barrier && pSwapGroup->barrier) return BadValue;
++        if (!pSwapGroup)
++            return BadDrawable;
++        if (barrier && pSwapGroup->barrier)
++            return BadValue;
+ 
+ 	/* Update the swap barrier list */
+ 	if (barrier) {
+ 	    if (!BindSwapGroupToBarrier(barrier, pSwapGroup))
+ 		return BadAlloc;
+-	} else {
++        }
++        else {
+ 	    if (!UnbindSwapGroupFromBarrier(pSwapGroup->barrier, pSwapGroup))
+ 		return BadDrawable;
+ 	}

@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 7fa4a8f..c14dd82 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -1305,6 +1305,12 @@ KdInitInput (void)
+     mieqInit();
+ }
+ 
++void
++KdCloseInput (void)
++{
++    mieqFini();
++}
++
+ /*
+  * Middle button emulation state machine
+  *

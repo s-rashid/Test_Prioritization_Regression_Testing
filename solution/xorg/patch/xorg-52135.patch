@@ -1,0 +1,18 @@
+diff --git a/render/mipict.h b/render/mipict.h
+index d149589..a70db24 100644
+--- a/render/mipict.h
++++ b/render/mipict.h
+@@ -81,11 +81,8 @@ miChangePictureFilter (PicturePtr pPicture,
+ 		       int	  nparams);
+ 
+ extern _X_EXPORT void
+-miCompositeSourceValidate (PicturePtr	pPicture,
+-			   INT16	x,
+-			   INT16	y,
+-			   CARD16	width,
+-			   CARD16	height);
++miCompositeSourceValidate (PicturePtr pPicture);
++
+ extern _X_EXPORT Bool
+ miComputeCompositeRegion (RegionPtr	pRegion,
+ 			  PicturePtr	pSrc,

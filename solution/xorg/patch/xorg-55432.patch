@@ -1,0 +1,78 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index 255407b..8d9cb55 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -46,6 +46,7 @@
+ extern _X_EXPORT const char *xf86ConfigFile;
+ extern _X_EXPORT const char *xf86ConfigDir;
+ extern _X_EXPORT  Bool xf86AllowMouseOpenFail;
++
+ #ifdef XF86VIDMODE
+ extern _X_EXPORT  Bool xf86VidModeDisabled;
+ extern _X_EXPORT  Bool xf86VidModeAllowNonLocal;
+@@ -56,6 +57,7 @@ extern _X_EXPORT  Bool xf86bsEnableFlag;
+ extern _X_EXPORT  Bool xf86bsDisableFlag;
+ extern _X_EXPORT  Bool xf86silkenMouseDisableFlag;
+ extern _X_EXPORT  Bool xf86xkbdirFlag;
++
+ #ifdef HAVE_ACPI
+ extern _X_EXPORT  Bool xf86acpiDisableFlag;
+ #endif
+@@ -125,29 +127,43 @@ extern _X_EXPORT const DisplayModeRec xf86DefaultModes[];
+ extern _X_EXPORT const int xf86NumDefaultModes;
+ 
+ /* xf86Configure.c */
+-extern _X_EXPORT void DoConfigure(void) _X_NORETURN;
+-extern _X_EXPORT void DoShowOptions(void) _X_NORETURN;
++extern _X_EXPORT void
++DoConfigure(void)
++    _X_NORETURN;
++extern _X_EXPORT void
++DoShowOptions(void)
++    _X_NORETURN;
+ 
+ /* xf86Events.c */
+ 
+-extern _X_EXPORT void xf86Wakeup(pointer blockData, int err, pointer pReadmask);
+-extern _X_HIDDEN int xf86SigWrapper(int signo);
+-extern _X_EXPORT void xf86HandlePMEvents(int fd, pointer data);
+-extern _X_EXPORT int (*xf86PMGetEventFromOs)(int fd,pmEvent *events,int num);
++extern _X_EXPORT void
++xf86Wakeup(pointer blockData, int err, pointer pReadmask);
++extern _X_HIDDEN int
++xf86SigWrapper(int signo);
++extern _X_EXPORT void
++xf86HandlePMEvents(int fd, pointer data);
++extern _X_EXPORT int (*xf86PMGetEventFromOs) (int fd, pmEvent * events,
++                                              int num);
+ extern _X_EXPORT pmWait (*xf86PMConfirmEventToOs)(int fd,pmEvent event);
+ 
+ /* xf86Helper.c */
+-extern _X_EXPORT void xf86LogInit(void);
+-extern _X_EXPORT void xf86CloseLog(enum ExitCode error);
++extern _X_EXPORT void
++xf86LogInit(void);
++extern _X_EXPORT void
++xf86CloseLog(enum ExitCode error);
+ 
+ /* xf86Init.c */
+-extern _X_EXPORT Bool xf86LoadModules(char **list, pointer *optlist);
+-extern _X_EXPORT int xf86SetVerbosity(int verb);
+-extern _X_EXPORT int xf86SetLogVerbosity(int verb);
+-extern _X_EXPORT Bool xf86CallDriverProbe( struct _DriverRec * drv, Bool detect_only );
+-extern _X_EXPORT Bool xf86PrivsElevated(void);
++extern _X_EXPORT Bool
++xf86LoadModules(char **list, pointer *optlist);
++extern _X_EXPORT int
++xf86SetVerbosity(int verb);
++extern _X_EXPORT int
++xf86SetLogVerbosity(int verb);
++extern _X_EXPORT Bool
++xf86CallDriverProbe(struct _DriverRec *drv, Bool detect_only);
++extern _X_EXPORT Bool
++xf86PrivsElevated(void);
+ 
+ #endif /* _NO_XF86_PROTOTYPES */
+ 
+-
+ #endif /* _XF86PRIV_H */

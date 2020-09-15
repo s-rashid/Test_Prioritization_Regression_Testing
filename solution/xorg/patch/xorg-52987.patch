@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/glxscreens.h b/hw/dmx/glxProxy/glxscreens.h
+index a57c387..da50bdc 100644
+--- a/hw/dmx/glxProxy/glxscreens.h
++++ b/hw/dmx/glxProxy/glxscreens.h
+@@ -43,7 +43,6 @@ typedef struct {
+     GLint *isGLXvis;
+ 
+     char *GLXvendor;
+-    char *GLXversion;
+     char *GLXextensions;
+ 
+ } __GLXscreenInfo;

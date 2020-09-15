@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Modes.h b/hw/xfree86/modes/xf86Modes.h
+index 908f59b..38927b1 100644
+--- a/hw/xfree86/modes/xf86Modes.h
++++ b/hw/xfree86/modes/xf86Modes.h
+@@ -95,6 +95,9 @@ extern _X_EXPORT void
+ xf86PruneInvalidModes(ScrnInfoPtr pScrn, DisplayModePtr *modeList,
+ 		      Bool verbose);
+ 
++extern _X_EXPORT DisplayModePtr
++xf86PruneDuplicateModes(DisplayModePtr modes);
++
+ extern _X_EXPORT void
+ xf86ValidateModesFlags(ScrnInfoPtr pScrn, DisplayModePtr modeList,
+ 		       int flags);

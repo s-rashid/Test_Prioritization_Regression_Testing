@@ -1,0 +1,110 @@
+diff --git a/hw/xfree86/xaa/xaaROP.c b/hw/xfree86/xaa/xaaROP.c
+index 155daa4..3b6ec93 100644
+--- a/hw/xfree86/xaa/xaaROP.c
++++ b/hw/xfree86/xaa/xaaROP.c
+@@ -13,9 +13,7 @@
+ #include "xaa.h"
+ #include "xaalocal.h"
+ 
+-
+-int XAACopyROP[16] =
+-{
++int XAACopyROP[16] = {
+    ROP_0,               /* GXclear */
+    ROP_DSa,             /* GXand */
+    ROP_SDna,            /* GXandReverse */
+@@ -34,8 +32,7 @@ int XAACopyROP[16] =
+    ROP_1                /* GXset */
+ };
+ 
+-int XAACopyROP_PM[16] =
+-{
++int XAACopyROP_PM[16] = {
+    ROP_0,		/* not used */
+    ROP_DSPnoa,
+    ROP_DPSnaon,
+@@ -54,9 +51,7 @@ int XAACopyROP_PM[16] =
+    ROP_1		/* not used */
+ };
+ 
+-
+-int XAAPatternROP[16]=
+-{
++int XAAPatternROP[16] = {
+    ROP_0,
+    ROP_DPa,
+    ROP_PDna,
+@@ -75,8 +70,7 @@ int XAAPatternROP[16]=
+    ROP_1
+ };
+ 
+-int XAAPatternROP_PM[16] =
+-{
++int XAAPatternROP_PM[16] = {
+    ROP_DPna,
+    ROP_DPSnoa,
+    ROP_DSPnaon,
+@@ -95,22 +89,26 @@ int XAAPatternROP_PM[16] =
+    ROP_DPo
+ };
+ 
+-int XAAGetCopyROP(int i)
++int
++XAAGetCopyROP(int i)
+ {
+     return XAACopyROP[i];
+ }
+ 
+-int XAAGetCopyROP_PM(int i)
++int
++XAAGetCopyROP_PM(int i)
+ {
+     return XAACopyROP_PM[i];
+ }
+ 
+-int XAAGetPatternROP(int i)
++int
++XAAGetPatternROP(int i)
+ {
+     return XAAPatternROP[i];
+ }
+ 
+-int XAAGetPatternROP_PM(int i)
++int
++XAAGetPatternROP_PM(int i)
+ {
+     return XAAPatternROP_PM[i];
+ }
+@@ -127,7 +125,8 @@ XAAHelpPatternROP(ScrnInfoPtr pScrn, int *fg, int *bg, int pm, int *rop)
+ 	if(!NO_SRC_ROP(*rop)) 
+ 	   ret |= ROP_PAT;
+ 	*rop = XAAPatternROP[*rop];
+-    } else {	
++    }
++    else {
+ 	switch(*rop) {
+ 	case GXnoop:
+ 	    break;
+@@ -149,7 +148,6 @@ XAAHelpPatternROP(ScrnInfoPtr pScrn, int *fg, int *bg, int pm, int *rop)
+     return ret;
+ }
+ 
+-
+ int
+ XAAHelpSolidROP(ScrnInfoPtr pScrn, int *fg, int pm, int *rop)
+ {
+@@ -162,7 +160,8 @@ XAAHelpSolidROP(ScrnInfoPtr pScrn, int *fg, int pm, int *rop)
+ 	if(!NO_SRC_ROP(*rop)) 
+ 	   ret |= ROP_PAT;
+ 	*rop = XAAPatternROP[*rop];
+-    } else {	
++    }
++    else {
+ 	switch(*rop) {
+ 	case GXnoop:
+ 	    break;
+@@ -181,4 +180,3 @@ XAAHelpSolidROP(ScrnInfoPtr pScrn, int *fg, int pm, int *rop)
+ 
+     return ret;
+ }
+-

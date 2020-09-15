@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/sdl/sdl.c b/hw/kdrive/sdl/sdl.c
+index a83c84a..df63fd1 100644
+--- a/hw/kdrive/sdl/sdl.c
++++ b/hw/kdrive/sdl/sdl.c
+@@ -240,6 +240,12 @@ void InitInput(int argc, char **argv)
+         KdInitInput();
+ }
+ 
++#ifdef DDXBEFORERESET
++void ddxBeforeReset(void)
++{
++}
++#endif
++
+ void ddxUseMsg(void)
+ {
+ 	KdUseMsg();

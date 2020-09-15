@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/input/usb-common.h b/hw/dmx/input/usb-common.h
+index 5ebfd1e..eea98af 100644
+--- a/hw/dmx/input/usb-common.h
++++ b/hw/dmx/input/usb-common.h
+@@ -48,8 +48,7 @@ extern void    usbDestroyPrivate(pointer priv);
+ extern void    usbRead(DevicePtr pDev,
+                        dmxMotionProcPtr motion,
+                        dmxEnqueueProcPtr enqueue,
+-                       int minButton,
+-                       DMXBlockType block);
++                    int minButton, DMXBlockType block);
+ extern void    usbInit(DevicePtr pDev, usbType type);
+ extern void    usbOff(DevicePtr pDev);
+ #endif

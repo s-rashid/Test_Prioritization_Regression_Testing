@@ -1,0 +1,16 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 9d4108e..7a15540 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -621,11 +621,4 @@ static inline WindowPtr DeepestSpriteWin(SpritePtr sprite)
+     return sprite->spriteTrace[sprite->spriteTraceGood - 1];
+ }
+ 
+-struct _InputOption {
+-    char                *key;
+-    char                *value;
+-    struct _InputOption *next;
+-};
+-
+-
+ #endif /* INPUTSTRUCT_H */

@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxlog.c b/hw/dmx/dmxlog.c
+index b56bb93..33aee59 100644
+--- a/hw/dmx/dmxlog.c
++++ b/hw/dmx/dmxlog.c
+@@ -110,9 +110,6 @@ VFatalError(const char *format, va_list args)
+ {
+     VErrorF(format, args);
+     ErrorF("\n");
+-#ifdef DDXOSFATALERROR
+-    OsVendorFatalError();
+-#endif
+     AbortServer();
+  /*NOTREACHED*/}
+ #endif

@@ -1,0 +1,13 @@
+diff --git a/mi/mipolypnt.c b/mi/mipolypnt.c
+index 3c6ed4e..5a0e523 100644
+--- a/mi/mipolypnt.c
++++ b/mi/mipolypnt.c
+@@ -73,7 +73,7 @@ miPolyPoint(
+     int			i;
+     xPoint 		*ppt;
+ 
+-    if(!(pwidthInit = xalloc(npt * sizeof(int))))
++    if(!(pwidthInit = malloc(npt * sizeof(int))))
+ 	return;
+ 
+     /* make pointlist origin relative */

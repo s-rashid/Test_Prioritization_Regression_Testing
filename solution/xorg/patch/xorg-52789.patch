@@ -1,0 +1,13 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index aeace6e..49e1758 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -574,7 +574,7 @@ void verify_internal_event(const InternalEvent *ev)
+ 
+         for (i = 0; i < sizeof(xEvent); i++, data++)
+         {
+-            ErrorF("%02hx ", *data);
++            ErrorF("%02hhx ", *data);
+ 
+             if ((i % 8) == 7)
+                 ErrorF("\n");

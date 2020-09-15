@@ -1,0 +1,15 @@
+diff --git a/dix/window.c b/dix/window.c
+index 8ccbf65..8f3ffa3 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -3015,9 +3015,8 @@ void
+ SendVisibilityNotify(WindowPtr pWin)
+ {
+     xEvent event;
+-#ifndef NO_XINERAMA_PORT
+     unsigned int visibility = pWin->visibility;
+-#endif
++
+     if (!MapUnmapEventsEnabled(pWin))
+         return;
+ #ifdef PANORAMIX

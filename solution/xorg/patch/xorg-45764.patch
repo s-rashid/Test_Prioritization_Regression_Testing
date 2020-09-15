@@ -1,0 +1,12 @@
+diff --git a/Xi/listdev.c b/Xi/listdev.c
+index 563fc07..98ef7aa 100644
+--- a/Xi/listdev.c
++++ b/Xi/listdev.c
+@@ -61,7 +61,6 @@ SOFTWARE.
+ #include <X11/extensions/XIproto.h>
+ #include "XIstubs.h"
+ #include "extnsionst.h"
+-#include "exglobals.h"	/* FIXME */
+ #include "exevents.h"
+ #include "xace.h"
+ #include "xkbsrv.h"

@@ -1,0 +1,13 @@
+diff --git a/glx/glxdriswrast.c b/glx/glxdriswrast.c
+index ac8fd47..54f4440 100644
+--- a/glx/glxdriswrast.c
++++ b/glx/glxdriswrast.c
+@@ -329,7 +329,7 @@ __glXDRIscreenCreateDrawable(ClientPtr client,
+     gcvals[0].val = GXcopy;
+     ChangeGC(NullClient, private->gc, GCFunction, gcvals);
+     gcvals[1].val = FALSE;
+-    ChangeGC(NullClient, private->gc, GCFunction | GCGraphicsExposures, gcvals);
++    ChangeGC(NullClient, private->swapgc, GCFunction | GCGraphicsExposures, gcvals);
+ 
+     private->driDrawable =
+ 	(*driScreen->swrast->createNewDrawable)(driScreen->driScreen,

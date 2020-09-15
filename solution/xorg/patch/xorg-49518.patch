@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaalocal.h b/hw/xfree86/xaa/xaalocal.h
+index 129c1d6..a9a70da 100644
+--- a/hw/xfree86/xaa/xaalocal.h
++++ b/hw/xfree86/xaa/xaalocal.h
+@@ -1709,7 +1709,7 @@ extern _X_EXPORT CARD32 XAAReverseBitOrder(CARD32 data);
+ 	    if(_pLink->pPix == pPix) { \
+ 		if(_prev) _prev->next = _pLink->next; \
+ 		else infoRec->OffscreenPixmaps = _pLink->next; \
+-		xfree(_pLink); \
++		free(_pLink); \
+ 		break; \
+ 	    } \
+ 	    _prev = _pLink; \

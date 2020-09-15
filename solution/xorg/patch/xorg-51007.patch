@@ -1,0 +1,15 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index f19c991..0d59290 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -1255,6 +1255,10 @@ GetProximityEvents(EventList *events, DeviceIntPtr pDev, int type, const Valuato
+             valuator_mask_unset(&mask, i);
+     }
+ 
++    /* FIXME: posting proximity events with relative valuators only results
++     * in an empty event, EventToXI() will fail to convert → no event sent
++     * to client. */
++
+     events = UpdateFromMaster(events, pDev, DEVCHANGE_POINTER_EVENT, &num_events);
+ 
+     event = (DeviceEvent *) events->event;

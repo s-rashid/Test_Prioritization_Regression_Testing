@@ -1,0 +1,16 @@
+diff --git a/hw/xquartz/keysym2ucs.h b/hw/xquartz/keysym2ucs.h
+index ec5b945..01af037 100644
+--- a/hw/xquartz/keysym2ucs.h
++++ b/hw/xquartz/keysym2ucs.h
+@@ -30,7 +30,9 @@
+ #ifndef KEYSYM2UCS_H
+ #define KEYSYM2UCS_H 1
+ 
+-extern long keysym2ucs(int keysym);
+-extern int ucs2keysym(long ucs);
++extern long
++keysym2ucs(int keysym);
++extern int
++ucs2keysym(long ucs);
+ 
+ #endif                          /* KEYSYM2UCS_H */

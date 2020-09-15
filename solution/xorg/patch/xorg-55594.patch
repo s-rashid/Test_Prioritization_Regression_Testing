@@ -1,0 +1,9 @@
+diff --git a/hw/xfree86/os-support/shared/xf86Axp.h b/hw/xfree86/os-support/shared/xf86Axp.h
+index 5e9d628..fded9d8 100644
+--- a/hw/xfree86/os-support/shared/xf86Axp.h
++++ b/hw/xfree86/os-support/shared/xf86Axp.h
+@@ -31,4 +31,3 @@ typedef struct {
+ extern axpParams xf86AXPParams[];
+ 
+ #endif
+-

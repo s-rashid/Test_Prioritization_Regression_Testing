@@ -1,0 +1,12 @@
+diff --git a/os/osdep.h b/os/osdep.h
+index 52d2ead..3f774c2 100644
+--- a/os/osdep.h
++++ b/os/osdep.h
+@@ -162,6 +162,7 @@ typedef struct _osComm {
+     XID	auth_id;		/* authorization id */
+     CARD32 conn_time;		/* timestamp if not established, else 0  */
+     struct _XtransConnInfo *trans_conn; /* transport connection object */
++    Bool local_client;
+ } OsCommRec, *OsCommPtr;
+ 
+ extern int FlushClient(

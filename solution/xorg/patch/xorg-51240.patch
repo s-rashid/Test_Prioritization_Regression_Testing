@@ -1,0 +1,12 @@
+diff --git a/include/os.h b/include/os.h
+index 566514d..d587f34 100644
+--- a/include/os.h
++++ b/include/os.h
+@@ -51,6 +51,7 @@ SOFTWARE.
+ 
+ #include "misc.h"
+ #include <stdarg.h>
++#include <string.h>
+ 
+ #define SCREEN_SAVER_ON   0
+ #define SCREEN_SAVER_OFF  1

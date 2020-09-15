@@ -1,0 +1,16 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index 1c4378a..31467e9 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -946,6 +946,11 @@ extern int XkbGetKeysym(
+         DeviceIntPtr            /* dev */,
+         DeviceEvent*            /* event*/);
+ 
++extern Bool XkbFilterEvents(
++        ClientPtr               /* pClient */,
++        int                     /* nEvents */,
++        xEvent*                 /* xE */);
++
+ #include "xkbfile.h"
+ #include "xkbrules.h"
+ 

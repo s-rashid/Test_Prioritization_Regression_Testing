@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/winmultiwindowshape.c b/hw/xwin/winmultiwindowshape.c
+index 9b4910b..6b7042e 100644
+--- a/hw/xwin/winmultiwindowshape.c
++++ b/hw/xwin/winmultiwindowshape.c
+@@ -119,10 +119,7 @@ winReshapeMultiWindow (WindowPtr pWin)
+ 
+   RegionNull(&rrNewShape);
+   RegionCopy(&rrNewShape, wBoundingShape(pWin));
+-  RegionTranslate(
+-		   &rrNewShape,
+-		   pWin->borderWidth,
+-                   pWin->borderWidth);
++  RegionTranslate(&rrNewShape, pWin->borderWidth, pWin->borderWidth);
+   
+   nRects = RegionNumRects(&rrNewShape);
+   pShape = RegionRects(&rrNewShape);

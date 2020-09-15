@@ -1,0 +1,15 @@
+diff --git a/dix/main.c b/dix/main.c
+index f023536..b500ad7 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -161,9 +161,7 @@ int main(int argc, char *argv[], char *envp[])
+ 	ScreenSaverBlanking = defaultScreenSaverBlanking;
+ 	ScreenSaverAllowExposures = defaultScreenSaverAllowExposures;
+ #ifdef DPMSExtension
+-	DPMSStandbyTime = DEFAULT_SCREEN_SAVER_TIME;
+-	DPMSSuspendTime = DEFAULT_SCREEN_SAVER_TIME;
+-	DPMSOffTime = DEFAULT_SCREEN_SAVER_TIME;
++	DPMSStandbyTime = DPMSSuspendTime = DPMSOffTime = ScreenSaverTime;
+ 	DPMSEnabled = TRUE;
+ 	DPMSPowerLevel = 0;
+ #endif

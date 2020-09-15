@@ -1,0 +1,15 @@
+diff --git a/miext/rootless/rootlessWindow.c b/miext/rootless/rootlessWindow.c
+index e78e2c8..55c7b96 100644
+--- a/miext/rootless/rootlessWindow.c
++++ b/miext/rootless/rootlessWindow.c
+@@ -1553,10 +1553,6 @@ RootlessDisableRoot (ScreenPtr pScreen)
+ 	return;
+            
+     RootlessDestroyFrame (pRoot, winRec);
+-    /* 
+-     * gstaplin: I fixed the usage of this DeleteProperty so that it would compile.
+-     * QUESTION: Where is this xa_native_window_id set?
+-     */
+     DeleteProperty (serverClient, pRoot, xa_native_window_id ());
+ }
+ 

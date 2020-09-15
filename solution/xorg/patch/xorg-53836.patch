@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winmultiwindowwndproc.c b/hw/xwin/winmultiwindowwndproc.c
+index fb1938b..3d23e97 100644
+--- a/hw/xwin/winmultiwindowwndproc.c
++++ b/hw/xwin/winmultiwindowwndproc.c
+@@ -549,8 +549,8 @@ winTopLevelWindowProc (HWND hwnd, UINT message,
+ 	  tme.hwndTrack = hwnd;
+ 
+ 	  /* Call the tracking function */
+-	  if (!(*g_fpTrackMouseEvent) (&tme))
+-	    ErrorF ("winTopLevelWindowProc - _TrackMouseEvent failed\n");
++	  if (!TrackMouseEvent(&tme))
++	    ErrorF ("winTopLevelWindowProc - TrackMouseEvent failed\n");
+ 
+ 	  /* Flag that we are tracking now */
+ 	  s_fTracking = TRUE;

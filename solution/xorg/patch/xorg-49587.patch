@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/winclipboardxevents.c b/hw/xwin/winclipboardxevents.c
+index ae8262e..edb6ac4 100644
+--- a/hw/xwin/winclipboardxevents.c
++++ b/hw/xwin/winclipboardxevents.c
+@@ -411,7 +411,6 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    xtpText.value = NULL;
+ 	    xtpText.nitems = 0;
+ 	  }
+-	  if (pszConvertData)
+ 	    free (pszConvertData);
+ 	  if (hGlobal && pszGlobalData)
+ 	    GlobalUnlock (hGlobal);
+@@ -773,9 +772,7 @@ winClipboardFlushXEvents (HWND hwnd,
+ 	    xtpText.value = NULL;
+ 	    xtpText.nitems = 0;
+ 	  }
+-	  if (pszConvertData)
+ 	    free (pszConvertData);
+-	  if (pwszUnicodeStr)
+ 	    free (pwszUnicodeStr);
+ 	  if (hGlobal && pszGlobalData)
+ 	    GlobalUnlock (hGlobal);

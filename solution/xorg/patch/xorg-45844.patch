@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxcursor.c b/hw/dmx/dmxcursor.c
+index 32934bb..e8a1845 100644
+--- a/hw/dmx/dmxcursor.c
++++ b/hw/dmx/dmxcursor.c
+@@ -90,6 +90,7 @@
+ #include "globals.h"
+ #include "cursorstr.h"
+ #include "dixevents.h"          /* For GetSpriteCursor() */
++#include "inputstr.h"           /* for inputInfo.pointer */
+ 
+ #if DMX_CURSOR_DEBUG
+ #define DMXDBG0(f)               dmxLog(dmxDebug,f)

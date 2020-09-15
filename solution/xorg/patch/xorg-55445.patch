@@ -1,0 +1,215 @@
+diff --git a/hw/xfree86/common/xf86fbman.h b/hw/xfree86/common/xf86fbman.h
+index 1b3c316..99bf991 100644
+--- a/hw/xfree86/common/xf86fbman.h
++++ b/hw/xfree86/common/xf86fbman.h
+@@ -29,11 +29,9 @@
+ #ifndef _XF86FBMAN_H
+ #define _XF86FBMAN_H
+ 
+-
+ #include "scrnintstr.h"
+ #include "regionstr.h"
+ 
+-
+ #define FAVOR_AREA_THEN_WIDTH		0
+ #define FAVOR_AREA_THEN_HEIGHT		1
+ #define FAVOR_WIDTH_THEN_AREA		2
+@@ -43,7 +41,6 @@
+ #define PRIORITY_NORMAL			1
+ #define PRIORITY_EXTREME		2
+ 
+-
+ typedef struct _FBArea {
+    ScreenPtr    pScreen;
+    BoxRec   	box;
+@@ -70,10 +67,8 @@ typedef void (*RemoveAreaCallbackProcPtr)(FBAreaPtr);
+ typedef void (*MoveLinearCallbackProcPtr)(FBLinearPtr, FBLinearPtr);
+ typedef void (*RemoveLinearCallbackProcPtr)(FBLinearPtr);
+ 
+-
+ typedef struct {
+-    FBAreaPtr (*AllocateOffscreenArea)(
+-		ScreenPtr pScreen, 
++    FBAreaPtr(*AllocateOffscreenArea) (ScreenPtr pScreen,
+ 		int w, int h,
+ 		int granularity,
+ 		MoveAreaCallbackProcPtr moveCB,
+@@ -81,146 +76,96 @@ typedef struct {
+ 		pointer privData);
+     void      (*FreeOffscreenArea)(FBAreaPtr area);
+     Bool      (*ResizeOffscreenArea)(FBAreaPtr area, int w, int h);
+-    Bool      (*QueryLargestOffscreenArea)(
+-		ScreenPtr pScreen,
++    Bool (*QueryLargestOffscreenArea) (ScreenPtr pScreen,
+ 		int *width, int *height,
+ 		int granularity,
+-		int preferences,
+-		int priority);
+-    Bool      (*RegisterFreeBoxCallback)( 
+-		ScreenPtr pScreen,  
++                                       int preferences, int priority);
++    Bool (*RegisterFreeBoxCallback) (ScreenPtr pScreen,
+ 		FreeBoxCallbackProcPtr FreeBoxCallback,
+ 		pointer devPriv);
+ /* linear functions */
+-    FBLinearPtr (*AllocateOffscreenLinear)(
+-		ScreenPtr pScreen, 
++     FBLinearPtr(*AllocateOffscreenLinear) (ScreenPtr pScreen,
+ 		int size,
+ 		int granularity,
+ 		MoveLinearCallbackProcPtr moveCB,
+-		RemoveLinearCallbackProcPtr removeCB,
+-		pointer privData);
++                                            RemoveLinearCallbackProcPtr
++                                            removeCB, pointer privData);
+     void      (*FreeOffscreenLinear)(FBLinearPtr area);
+     Bool      (*ResizeOffscreenLinear)(FBLinearPtr area, int size);
+-    Bool      (*QueryLargestOffscreenLinear)(
+-		ScreenPtr pScreen,
++    Bool (*QueryLargestOffscreenLinear) (ScreenPtr pScreen,
+ 		int *size,
+-		int granularity,
+-		int priority);
++                                         int granularity, int priority);
+     Bool      (*PurgeOffscreenAreas) (ScreenPtr);
+ } FBManagerFuncs, *FBManagerFuncsPtr;
+ 
+-
+-extern _X_EXPORT Bool xf86RegisterOffscreenManager(
+-    ScreenPtr pScreen, 
+-    FBManagerFuncsPtr funcs
+-);
++extern _X_EXPORT Bool xf86RegisterOffscreenManager(ScreenPtr pScreen,
++                                                   FBManagerFuncsPtr funcs);
+ 
+ extern _X_EXPORT Bool
+-xf86InitFBManagerRegion(
+-    ScreenPtr pScreen, 
+-    RegionPtr ScreenRegion
+-);
++ xf86InitFBManagerRegion(ScreenPtr pScreen, RegionPtr ScreenRegion);
+ 
+ extern _X_EXPORT Bool
+-xf86InitFBManagerArea(
+-    ScreenPtr pScreen,
+-    int PixalArea,
+-    int Verbosity
+-);
++ xf86InitFBManagerArea(ScreenPtr pScreen, int PixalArea, int Verbosity);
+ 
+ extern _X_EXPORT Bool
+-xf86InitFBManager(
+-    ScreenPtr pScreen, 
+-    BoxPtr FullBox
+-);
++ xf86InitFBManager(ScreenPtr pScreen, BoxPtr FullBox);
+ 
+ extern _X_EXPORT Bool
+-xf86InitFBManagerLinear(
+-    ScreenPtr pScreen, 
+-    int offset,
+-    int size
+-);
++ xf86InitFBManagerLinear(ScreenPtr pScreen, int offset, int size);
+ 
+ extern _X_EXPORT Bool
+-xf86FBManagerRunning(
+-    ScreenPtr pScreen
+-);
++ xf86FBManagerRunning(ScreenPtr pScreen);
+ 
+ extern _X_EXPORT FBAreaPtr
+-xf86AllocateOffscreenArea (
+-   ScreenPtr pScreen, 
++xf86AllocateOffscreenArea(ScreenPtr pScreen,
+    int w, int h,
+    int granularity,
+    MoveAreaCallbackProcPtr moveCB,
+-   RemoveAreaCallbackProcPtr removeCB,
+-   pointer privData
+-);
++                          RemoveAreaCallbackProcPtr removeCB, pointer privData);
+ 
+ extern _X_EXPORT FBAreaPtr
+-xf86AllocateLinearOffscreenArea (
+-   ScreenPtr pScreen, 
++xf86AllocateLinearOffscreenArea(ScreenPtr pScreen,
+    int length,
+    int granularity,
+    MoveAreaCallbackProcPtr moveCB,
+    RemoveAreaCallbackProcPtr removeCB,
+-   pointer privData
+-);
++                                pointer privData);
+ 
+ extern _X_EXPORT FBLinearPtr
+-xf86AllocateOffscreenLinear (
+-   ScreenPtr pScreen, 
++xf86AllocateOffscreenLinear(ScreenPtr pScreen,
+    int length,
+    int granularity,
+    MoveLinearCallbackProcPtr moveCB,
+    RemoveLinearCallbackProcPtr removeCB,
+-   pointer privData
+-);
++                            pointer privData);
+ 
+ extern _X_EXPORT void xf86FreeOffscreenArea(FBAreaPtr area);
+ extern _X_EXPORT void xf86FreeOffscreenLinear(FBLinearPtr area);
+ 
+ extern _X_EXPORT Bool
+-xf86ResizeOffscreenArea(
+-   FBAreaPtr resize,
+-   int w, int h
+-);
++ xf86ResizeOffscreenArea(FBAreaPtr resize, int w, int h);
+ 
+ extern _X_EXPORT Bool
+-xf86ResizeOffscreenLinear(
+-   FBLinearPtr resize,
+-   int size
+-);
+-
++ xf86ResizeOffscreenLinear(FBLinearPtr resize, int size);
+ 
+ extern _X_EXPORT Bool
+-xf86RegisterFreeBoxCallback(
+-    ScreenPtr pScreen,  
++
++xf86RegisterFreeBoxCallback(ScreenPtr pScreen,
+     FreeBoxCallbackProcPtr FreeBoxCallback,
+-    pointer devPriv
+-);
++                            pointer devPriv);
+ 
+ extern _X_EXPORT Bool
+-xf86PurgeUnlockedOffscreenAreas(
+-    ScreenPtr pScreen
+-);
+-
++ xf86PurgeUnlockedOffscreenAreas(ScreenPtr pScreen);
+ 
+ extern _X_EXPORT Bool
+-xf86QueryLargestOffscreenArea(
+-    ScreenPtr pScreen,
++
++xf86QueryLargestOffscreenArea(ScreenPtr pScreen,
+     int *width, int *height,
+-    int granularity,
+-    int preferences,
+-    int priority
+-);
++                              int granularity, int preferences, int priority);
+ 
+ extern _X_EXPORT Bool
+-xf86QueryLargestOffscreenLinear(
+-    ScreenPtr pScreen,
+-    int *size,
+-    int granularity,
+-    int priority
+-);
+ 
++xf86QueryLargestOffscreenLinear(ScreenPtr pScreen,
++                                int *size, int granularity, int priority);
+ 
+ #endif /* _XF86FBMAN_H */

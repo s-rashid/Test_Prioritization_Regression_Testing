@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 9ab8ed9..5cda970 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -196,7 +196,7 @@
+  * Windows headers
+  */
+ #include "winms.h"
+-#include "./winresource.h"
++#include "winresource.h"
+ 
+ 
+ /*

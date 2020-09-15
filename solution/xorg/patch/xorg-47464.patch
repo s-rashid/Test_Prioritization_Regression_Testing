@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/ephyr/ephyr.h b/hw/kdrive/ephyr/ephyr.h
+index cb5e4b5..41a82bf 100644
+--- a/hw/kdrive/ephyr/ephyr.h
++++ b/hw/kdrive/ephyr/ephyr.h
+@@ -116,10 +116,10 @@ void
+ ephyrCardFini (KdCardInfo *card);
+ 
+ void
+-ephyrGetColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++ephyrGetColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ void
+-ephyrPutColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++ephyrPutColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ Bool
+ ephyrMapFramebuffer (KdScreenInfo *screen);

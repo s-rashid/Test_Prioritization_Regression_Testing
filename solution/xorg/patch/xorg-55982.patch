@@ -1,0 +1,35 @@
+diff --git a/mi/mifpoly.h b/mi/mifpoly.h
+index cc779c9..f853fb4 100644
+--- a/mi/mifpoly.h
++++ b/mi/mifpoly.h
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -68,9 +67,11 @@ SOFTWARE.
+ #define SQSECANT 108.856472512142 /* 1/sin^2(11/2) - for 11o miter cutoff */
+ #define D2SECANT 5.21671526231167 /* 1/2*sin(11/2) - max extension per width */
+ 
+-static _X_INLINE int ICEIL(double x)
++static _X_INLINE int
++ICEIL(double x)
+ {
+     int _cTmp = x;
++
+     return ((x == _cTmp) || (x < 0.0)) ? _cTmp : _cTmp+1;
+ }
+ 
+@@ -88,8 +89,7 @@ typedef struct _SppArc {
+ 
+ /* mifpolycon.c */
+ 
+-extern _X_EXPORT void miFillSppPoly(
+-    DrawablePtr /*dst*/,
++extern _X_EXPORT void miFillSppPoly(DrawablePtr /*dst */ ,
+     GCPtr /*pgc*/,
+     int /*count*/,
+     SppPointPtr /*ptsIn*/,

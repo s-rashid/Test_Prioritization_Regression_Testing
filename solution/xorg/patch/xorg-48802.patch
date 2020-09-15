@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/Cursor.c b/hw/xnest/Cursor.c
+index 9ae2102..5491ee9 100644
+--- a/hw/xnest/Cursor.c
++++ b/hw/xnest/Cursor.c
+@@ -167,8 +167,7 @@ xnestDeviceCursorInitialize(DeviceIntPtr pDev, ScreenPtr pScreen)
+     pScreenPriv = (xnestCursorFuncPtr)
+             dixLookupPrivate(&pScreen->devPrivates, xnestCursorScreenKey);
+ 
+-    pScreenPriv->spriteFuncs->DeviceCursorInitialize(pDev, pScreen);
+-    return TRUE;
++    return pScreenPriv->spriteFuncs->DeviceCursorInitialize(pDev, pScreen);
+ }
+ 
+ void

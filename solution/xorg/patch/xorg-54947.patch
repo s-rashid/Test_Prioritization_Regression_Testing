@@ -1,0 +1,44 @@
+diff --git a/Xi/chgdctl.c b/Xi/chgdctl.c
+index ca697d9..e9975f3 100644
+--- a/Xi/chgdctl.c
++++ b/Xi/chgdctl.c
+@@ -132,7 +132,8 @@ ProcXChangeDeviceControl(ClientPtr client)
+     case DEVICE_RESOLUTION:
+ 	r = (xDeviceResolutionCtl *) & stuff[1];
+ 	if ((len < bytes_to_int32(sizeof(xDeviceResolutionCtl))) ||
+-	    (len != bytes_to_int32(sizeof(xDeviceResolutionCtl)) + r->num_valuators)) {
++            (len !=
++             bytes_to_int32(sizeof(xDeviceResolutionCtl)) + r->num_valuators)) {
+             ret = BadLength;
+             goto out;
+ 	}
+@@ -161,10 +162,12 @@ ProcXChangeDeviceControl(ClientPtr client)
+ 		(a++)->resolution = *resolution++;
+ 
+             ret = Success;
+-	} else if (status == DeviceBusy) {
++        }
++        else if (status == DeviceBusy) {
+ 	    rep.status = DeviceBusy;
+             ret = Success;
+-	} else {
++        }
++        else {
+             ret = BadMatch;
+ 	}
+ 	break;
+@@ -190,10 +193,12 @@ ProcXChangeDeviceControl(ClientPtr client)
+             else
+                 DisableDevice(dev, TRUE);
+             ret = Success;
+-        } else if (status == DeviceBusy) {
++        }
++        else if (status == DeviceBusy) {
+             rep.status = DeviceBusy;
+             ret = Success;
+-        } else {
++        }
++        else {
+             ret = BadMatch;
+         }
+ 

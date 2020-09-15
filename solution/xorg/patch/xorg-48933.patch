@@ -1,0 +1,13 @@
+diff --git a/xfixes/region.c b/xfixes/region.c
+index 7a71c78..b034ad0 100644
+--- a/xfixes/region.c
++++ b/xfixes/region.c
+@@ -733,7 +733,7 @@ ProcXFixesSetWindowShapeRegion (ClientPtr client)
+     if (*pDestRegion)
+ 	REGION_DESTROY(pScreen, *pDestRegion);
+     *pDestRegion = pRegion;
+-    (*pScreen->SetShape) (pWin);
++    (*pScreen->SetShape) (pWin, stuff->destKind);
+     SendShapeNotify (pWin, stuff->destKind);
+     return Success;
+ }

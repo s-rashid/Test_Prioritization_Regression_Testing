@@ -1,0 +1,16 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index b0652df..a9744e1 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -38,11 +38,6 @@
+ #include "dmxfont.h"
+ #include "dmxsync.h"
+ 
+-#undef Xmalloc
+-#undef Xcalloc
+-#undef Xrealloc
+-#undef Xfree
+-
+ #include "glxserver.h"
+ #include <GL/glxtokens.h>
+ #include "g_disptab.h"

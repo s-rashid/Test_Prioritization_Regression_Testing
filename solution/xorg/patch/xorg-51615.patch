@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winmonitors.h b/hw/xwin/winmonitors.h
+new file mode 100644
+index 0000000..180566b
+--- /dev/null
++++ b/hw/xwin/winmonitors.h
+@@ -0,0 +1,14 @@
++
++/* data returned for monitor information */
++struct GetMonitorInfoData {
++    int  requestedMonitor;
++    int  monitorNum;
++    Bool bUserSpecifiedMonitor;
++    Bool bMonitorSpecifiedExists;
++    int  monitorOffsetX;
++    int  monitorOffsetY;
++    int  monitorHeight;
++    int  monitorWidth;
++};
++
++Bool QueryMonitor(int index, struct GetMonitorInfoData *data);

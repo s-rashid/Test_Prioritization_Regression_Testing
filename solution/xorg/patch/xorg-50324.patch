@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index 82fb52a..c468c60 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -1095,7 +1095,7 @@ DGAProcessPointerEvent (ScreenPtr pScreen, DGAEvent *event, DeviceIntPtr mouse)
+     ev.header = ET_Internal;
+     ev.length = sizeof(ev);
+     ev.type = event->subtype;
+-    ev.corestate  = butc->state;
++    ev.corestate  = butc ? butc->state : 0;
+     if (master && master->key)
+         ev.corestate |= XkbStateFieldFromRec(&master->key->xkbInfo->state);
+ 

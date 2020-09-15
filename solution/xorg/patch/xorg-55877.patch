@@ -1,0 +1,128 @@
+diff --git a/hw/xwin/winpixmap.c b/hw/xwin/winpixmap.c
+index 8bd8e34..cb8ba91 100644
+--- a/hw/xwin/winpixmap.c
++++ b/hw/xwin/winpixmap.c
+@@ -34,7 +34,6 @@
+ #endif
+ #include "win.h"
+ 
+-
+ /*
+  * Local prototypes
+  */
+@@ -47,11 +46,11 @@ static void
+ winYRotatePixmapNativeGDI (PixmapPtr pPix, int rh);
+ 
+ static void
++
+ winCopyRotatePixmapNativeGDI (PixmapPtr psrcPix, PixmapPtr *ppdstPix,
+ 			      int xrot, int yrot);
+ #endif
+ 
+-
+ /* See Porting Layer Definition - p. 34 */
+ /* See mfb/mfbpixmap.c - mfbCreatePixmap() */
+ PixmapPtr
+@@ -64,8 +63,7 @@ winCreatePixmapNativeGDI (ScreenPtr pScreen,
+ 
+   /* Allocate pixmap memory */
+   pPixmap = AllocatePixmap (pScreen, 0);
+-  if (!pPixmap)
+-    {
++    if (!pPixmap) {
+       ErrorF ("winCreatePixmapNativeGDI () - Couldn't allocate a pixmap\n");
+       return NullPixmap;
+     }
+@@ -103,8 +101,7 @@ winCreatePixmapNativeGDI (ScreenPtr pScreen,
+   pPixmapPriv->dwScanlineBytes = PixmapBytePad (iWidth, iDepth);
+ 
+   /* Check for zero width or height pixmaps */
+-  if (iWidth == 0 || iHeight == 0)
+-    {
++    if (iWidth == 0 || iHeight == 0) {
+       /* Don't allocate a real pixmap, just set fields and return */
+       return pPixmap;
+     }
+@@ -112,10 +109,11 @@ winCreatePixmapNativeGDI (ScreenPtr pScreen,
+   /* Create a DIB for the pixmap */
+   pPixmapPriv->hBitmap = winCreateDIBNativeGDI (iWidth, iHeight, iDepth,
+ 						&pPixmapPriv->pbBits,
+-						(BITMAPINFO **) &pPixmapPriv->pbmih);
++                                                 (BITMAPINFO **) & pPixmapPriv->
++                                                 pbmih);
+ 
+ #if CYGDEBUG
+-  winDebug ("winCreatePixmap () - Created a pixmap %08x, %dx%dx%d, for " \
++    winDebug("winCreatePixmap () - Created a pixmap %08x, %dx%dx%d, for "
+ 	  "screen: %08x\n",
+ 	  pPixmapPriv->hBitmap, iWidth, iHeight, iDepth, pScreen);
+ #endif
+@@ -123,7 +121,6 @@ winCreatePixmapNativeGDI (ScreenPtr pScreen,
+   return pPixmap;
+ }
+ 
+-
+ /* 
+  * See Porting Layer Definition - p. 35
+  *
+@@ -140,8 +137,7 @@ winDestroyPixmapNativeGDI (PixmapPtr pPixmap)
+ #endif
+ 
+   /* Bail early if there is not a pixmap to destroy */
+-  if (pPixmap == NULL)
+-    {
++    if (pPixmap == NULL) {
+       ErrorF ("winDestroyPixmapNativeGDI () - No pixmap to destroy\n");
+       return TRUE;
+     }
+@@ -160,7 +156,8 @@ winDestroyPixmapNativeGDI (PixmapPtr pPixmap)
+     return TRUE;
+ 
+   /* Free GDI bitmap */
+-  if (pPixmapPriv->hBitmap) DeleteObject (pPixmapPriv->hBitmap);
++    if (pPixmapPriv->hBitmap)
++        DeleteObject(pPixmapPriv->hBitmap);
+   
+   /* Free the bitmap info header memory */
+   free(pPixmapPriv->pbmih);
+@@ -173,7 +170,6 @@ winDestroyPixmapNativeGDI (PixmapPtr pPixmap)
+   return TRUE;
+ }
+ 
+-
+ /* 
+  * Not used yet
+  */
+@@ -182,15 +178,12 @@ Bool
+ winModifyPixmapHeaderNativeGDI (PixmapPtr pPixmap,
+ 				int iWidth, int iHeight,
+ 				int iDepth,
+-				int iBitsPerPixel,
+-				int devKind,
+-				pointer pPixData)
++                               int iBitsPerPixel, int devKind, pointer pPixData)
+ {
+   FatalError ("winModifyPixmapHeaderNativeGDI ()\n");
+   return TRUE;
+ }
+ 
+-
+ #if 0
+ /* 
+  * Not used yet.
+@@ -204,7 +197,6 @@ winXRotatePixmapNativeGDI (PixmapPtr pPix, int rw)
+   /* fill in this function, look at CFB */
+ }
+ 
+-
+ /*
+  * Not used yet.
+  * See cfb/cfbpixmap.c
+@@ -216,7 +208,6 @@ winYRotatePixmapNativeGDI (PixmapPtr pPix, int rh)
+   /* fill in this function, look at CFB */
+ }
+ 
+-
+ /* 
+  * Not used yet.
+  * See cfb/cfbpixmap.c

@@ -1,0 +1,36 @@
+diff --git a/glx/glxscreens.h b/glx/glxscreens.h
+index 861e03c..93b4109 100644
+--- a/glx/glxscreens.h
++++ b/glx/glxscreens.h
+@@ -35,21 +35,6 @@
+  * Silicon Graphics, Inc.
+  */
+ 
+-typedef struct {
+-    void * (* queryHyperpipeNetworkFunc)(int, int *, int *);
+-    void * (* queryHyperpipeConfigFunc)(int, int, int *, int *);
+-    int    (* destroyHyperpipeConfigFunc)(int, int);
+-    void * (* hyperpipeConfigFunc)(int, int, int *, int *, void *);
+-} __GLXHyperpipeExtensionFuncs;
+-
+-typedef struct {
+-    int    (* bindSwapBarrierFunc)(int, XID, int);
+-    int    (* queryMaxSwapBarriersFunc)(int);
+-} __GLXSwapBarrierExtensionFuncs;
+-
+-void __glXHyperpipeInit(int screen, __GLXHyperpipeExtensionFuncs *funcs);
+-void __glXSwapBarrierInit(int screen, __GLXSwapBarrierExtensionFuncs *funcs);
+-
+ typedef struct __GLXconfig __GLXconfig;
+ struct __GLXconfig {
+     __GLXconfig *next;
+@@ -144,9 +129,6 @@ struct __GLXscreen {
+     int            (*swapInterval)  (__GLXdrawable *drawable,
+ 				     int interval);
+ 
+-    __GLXHyperpipeExtensionFuncs *hyperpipeFuncs;
+-    __GLXSwapBarrierExtensionFuncs *swapBarrierFuncs;
+-
+     ScreenPtr pScreen;
+ 
+     /* Linked list of valid fbconfigs for this screen. */

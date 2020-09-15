@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/int10/stub.c b/hw/xfree86/int10/stub.c
+index 58b6578..8fd0790 100644
+--- a/hw/xfree86/int10/stub.c
++++ b/hw/xfree86/int10/stub.c
+@@ -38,7 +38,7 @@ xf86FreeInt10(xf86Int10InfoPtr pInt)
+ }
+ 
+ void *
+-xf86Int10AllocPages(xf86Int10InfoPtr pInt,int num, int *off)
++xf86Int10AllocPages(xf86Int10InfoPtr pInt, int num, int *off)
+ {
+     *off = 0;
+     return NULL;

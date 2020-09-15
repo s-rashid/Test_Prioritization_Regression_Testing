@@ -1,0 +1,13 @@
+diff --git a/include/os.h b/include/os.h
+index dad1af7..453ab82 100644
+--- a/include/os.h
++++ b/include/os.h
+@@ -262,6 +262,8 @@ extern _X_EXPORT void OsBlockSignals (void);
+ 
+ extern _X_EXPORT void OsReleaseSignals (void);
+ 
++extern _X_EXPORT void OsAbort (void);
++
+ #if !defined(WIN32)
+ extern _X_EXPORT int System(char *);
+ extern _X_EXPORT pointer Popen(char *, char *);

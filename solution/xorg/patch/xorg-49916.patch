@@ -1,0 +1,12 @@
+diff --git a/glx/glxdri2.c b/glx/glxdri2.c
+index 177c73c..970a51a 100644
+--- a/glx/glxdri2.c
++++ b/glx/glxdri2.c
+@@ -435,6 +435,7 @@ __glXDRIinvalidateBuffers(DrawablePtr pDraw, void *priv)
+     __GLXDRIdrawable *private = priv;
+     __GLXDRIscreen *screen = private->screen;
+ 
++    if (screen->flush)
+     (*screen->flush->invalidate)(private->driDrawable);
+ #endif
+ }

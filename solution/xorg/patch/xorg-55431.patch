@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86PciInfo.h b/hw/xfree86/common/xf86PciInfo.h
+index e2d7862..d6450e2 100644
+--- a/hw/xfree86/common/xf86PciInfo.h
++++ b/hw/xfree86/common/xf86PciInfo.h
+@@ -101,7 +101,6 @@
+ #define PCI_VENDOR_INTEL		0x8086
+ #define PCI_VENDOR_ARK			0xEDD8
+ 
+-
+ /* Generic */
+ #define PCI_CHIP_VGA			0x0000
+ #define PCI_CHIP_8514			0x0001

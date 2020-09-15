@@ -1,0 +1,31 @@
+diff --git a/os/utils.c b/os/utils.c
+index cc942e9..8921d7c 100644
+--- a/os/utils.c
++++ b/os/utils.c
+@@ -1155,13 +1155,13 @@ SmartScheduleTimer (int sig)
+     SmartScheduleTime += SmartScheduleInterval;
+ }
+ 
+-Bool
++void
+ SmartScheduleInit (void)
+ {
+     struct sigaction	act;
+ 
+     if (SmartScheduleDisable)
+-	return TRUE;
++	return;
+     
+     memset((char *) &act, 0, sizeof(struct sigaction));
+ 
+@@ -1172,9 +1172,8 @@ SmartScheduleInit (void)
+     if (sigaction (SIGALRM, &act, 0) < 0)
+     {
+ 	perror ("sigaction for smart scheduler");
+-	return FALSE;
++	SmartScheduleDisable = TRUE;
+     }
+-    return TRUE;
+ }
+ 
+ #ifdef SIG_BLOCK

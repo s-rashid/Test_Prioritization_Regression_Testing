@@ -1,0 +1,12 @@
+diff --git a/glx/indirect_table.c b/glx/indirect_table.c
+index cb32026..01d1da3 100644
+--- a/glx/indirect_table.c
++++ b/glx/indirect_table.c
+@@ -30,7 +30,6 @@
+ #include "glxext.h"
+ #include "indirect_dispatch.h"
+ #include "indirect_reqsize.h"
+-#include "g_disptab.h"
+ #include "indirect_table.h"
+ 
+ /*****************************************************************/

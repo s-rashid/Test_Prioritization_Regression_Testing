@@ -1,0 +1,13 @@
+diff --git a/composite/compalloc.c b/composite/compalloc.c
+index 7a8019e..3694ab8 100644
+--- a/composite/compalloc.c
++++ b/composite/compalloc.c
+@@ -501,7 +501,7 @@ compNewPixmap (WindowPtr pWin, int x, int y, int w, int h)
+ 	    val.val = IncludeInferiors;
+ 	    
+ 	    ValidateGC(&pPixmap->drawable, pGC);
+-	    dixChangeGC (serverClient, pGC, GCSubwindowMode, NULL, &val);
++	    ChangeGC (serverClient, pGC, GCSubwindowMode, &val);
+ 	    (*pGC->ops->CopyArea) (&pParent->drawable,
+ 				   &pPixmap->drawable,
+ 				   pGC,

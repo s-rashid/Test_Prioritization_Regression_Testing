@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/os-support/xf86_OSproc.h b/hw/xfree86/os-support/xf86_OSproc.h
+index c1a1173..f0cb768 100644
+--- a/hw/xfree86/os-support/xf86_OSproc.h
++++ b/hw/xfree86/os-support/xf86_OSproc.h
+@@ -199,6 +199,7 @@ extern _X_EXPORT Bool xf86SIGIOSupported (void);
+ typedef void (*PMClose)(void);
+ extern _X_EXPORT void xf86OpenConsole(void);
+ extern _X_EXPORT void xf86CloseConsole(void);
++extern _X_HIDDEN Bool xf86VTActivate(int vtno);
+ extern _X_EXPORT Bool xf86VTSwitchPending(void);
+ extern _X_EXPORT Bool xf86VTSwitchAway(void);
+ extern _X_EXPORT Bool xf86VTSwitchTo(void);

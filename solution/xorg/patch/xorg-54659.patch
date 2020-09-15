@@ -1,0 +1,13 @@
+diff --git a/Xext/syncsrv.h b/Xext/syncsrv.h
+index f62b279..1e59ded 100644
+--- a/Xext/syncsrv.h
++++ b/Xext/syncsrv.h
+@@ -116,7 +116,7 @@ typedef union {
+     SyncAwait await;
+ } SyncAwaitUnion;
+ 
+-extern pointer SyncCreateSystemCounter(const char *name,
++extern SyncCounter* SyncCreateSystemCounter(const char *name,
+                                        CARD64 initial_value,
+                                        CARD64 resolution,
+                                        SyncCounterType counterType,

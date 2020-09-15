@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 8419064..8e07532 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -5356,7 +5356,7 @@ ProcUngrabKey(ClientPtr client)
+     tempGrab.window = pWin;
+     tempGrab.modifiersDetail.exact = stuff->modifiers;
+     tempGrab.modifiersDetail.pMask = NULL;
+-    tempGrab.modifierDevice = GetPairedDevice(keybd);
++    tempGrab.modifierDevice = keybd;
+     tempGrab.type = KeyPress;
+     tempGrab.grabtype = GRABTYPE_CORE;
+     tempGrab.detail.exact = stuff->key;

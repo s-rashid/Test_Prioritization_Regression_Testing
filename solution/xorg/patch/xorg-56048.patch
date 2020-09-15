@@ -1,0 +1,383 @@
+diff --git a/os/WaitFor.c b/os/WaitFor.c
+index 867cb04..4c3be34 100644
+--- a/os/WaitFor.c
++++ b/os/WaitFor.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ******************************************************************/
+ 
+-
+ /*****************************************************************
+  * OS Dependent input routines:
+  *
+@@ -100,10 +98,10 @@ mffs(fd_mask mask)
+ {
+     int i;
+ 
+-    if (!mask) return 0;
++    if (!mask)
++        return 0;
+     i = 1;
+-    while (!(mask & 1))
+-    {
++    while (!(mask & 1)) {
+ 	i++;
+ 	mask >>= 1;
+     }
+@@ -166,36 +164,29 @@ WaitForSomething(int *pClientsReady)
+ 
+     /* We need a while loop here to handle 
+        crashed connections and the screen saver timeout */
+-    while (1)
+-    {
++    while (1) {
+ 	/* deal with any blocked jobs */
+ 	if (workQueue)
+ 	    ProcessWorkQueue();
+-	if (XFD_ANYSET (&ClientsWithInput))
+-	{
+-	    if (!SmartScheduleDisable)
+-	    {
++        if (XFD_ANYSET(&ClientsWithInput)) {
++            if (!SmartScheduleDisable) {
+ 		someReady = TRUE;
+ 		waittime.tv_sec = 0;
+ 		waittime.tv_usec = 0;
+ 		wt = &waittime;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		XFD_COPYSET (&ClientsWithInput, &clientsReadable);
+ 		break;
+ 	    }
+ 	}
+-	if (someReady)
+-	{
++        if (someReady) {
+ 	    XFD_COPYSET(&AllSockets, &LastSelectMask);
+ 	    XFD_UNSET(&LastSelectMask, &ClientsWithInput);
+ 	}
+-	else
+-	{
++        else {
+         wt = NULL;
+-	if (timers)
+-        {
++            if (timers) {
+             now = GetTimeInMillis();
+ 	    timeout = timers->expires - now;
+             if (timeout > 0 && timeout > timers->delta + 250) {
+@@ -222,42 +213,34 @@ WaitForSomething(int *pClientsReady)
+ 	/* keep this check close to select() call to minimize race */
+ 	if (dispatchException)
+ 	    i = -1;
+-	else if (AnyClientsWriteBlocked)
+-	{
++        else if (AnyClientsWriteBlocked) {
+ 	    XFD_COPYSET(&ClientsWriteBlocked, &clientsWritable);
+ 	    i = Select (MaxClients, &LastSelectMask, &clientsWritable, NULL, wt);
+ 	}
+-	else 
+-	{
++        else {
+ 	    i = Select (MaxClients, &LastSelectMask, NULL, NULL, wt);
+ 	}
+ 	selecterr = GetErrno();
+ 	WakeupHandler(i, (pointer)&LastSelectMask);
+-	if (i <= 0) /* An error or timeout occurred */
+-	{
++        if (i <= 0) {           /* An error or timeout occurred */
+ 	    if (dispatchException)
+ 		return 0;
+-	    if (i < 0) 
+-	    {
+-		if (selecterr == EBADF)    /* Some client disconnected */
+-		{
++            if (i < 0) {
++                if (selecterr == EBADF) {       /* Some client disconnected */
+ 		    CheckConnections ();
+ 		    if (! XFD_ANYSET (&AllClients))
+ 			return 0;
+ 		}
+-		else if (selecterr == EINVAL)
+-		{
++                else if (selecterr == EINVAL) {
+ 		    FatalError("WaitForSomething(): select: %s\n",
+ 			strerror(selecterr));
+             }
+-		else if (selecterr != EINTR && selecterr != EAGAIN)
+-		{
++                else if (selecterr != EINTR && selecterr != EAGAIN) {
+ 		    ErrorF("WaitForSomething(): select: %s\n",
+ 			strerror(selecterr));
+ 		}
+ 	    }
+-	    else if (someReady)
+-	    {
++            else if (someReady) {
+ 		/*
+ 		 * If no-one else is home, bail quickly
+ 		 */
+@@ -268,9 +251,9 @@ WaitForSomething(int *pClientsReady)
+ 	    if (*checkForInput[0] != *checkForInput[1])
+ 		return 0;
+ 
+-	    if (timers)
+-	    {
++            if (timers) {
+                 int expired = 0;
++
+ 		now = GetTimeInMillis();
+ 		if ((int) (timers->expires - now) <= 0)
+ 		    expired = 1;
+@@ -282,14 +265,13 @@ WaitForSomething(int *pClientsReady)
+                     return 0;
+ 	    }
+ 	}
+-	else
+-	{
++        else {
+ 	    fd_set tmp_set;
+ 
+ 	    if (*checkForInput[0] == *checkForInput[1]) {
+-	        if (timers)
+-	        {
++                if (timers) {
+                     int expired = 0;
++
+ 		    now = GetTimeInMillis();
+ 		    if ((int) (timers->expires - now) <= 0)
+ 		        expired = 1;
+@@ -303,8 +285,7 @@ WaitForSomething(int *pClientsReady)
+ 	    }
+ 	    if (someReady)
+ 		XFD_ORSET(&LastSelectMask, &ClientsWithInput, &LastSelectMask);
+-	    if (AnyClientsWriteBlocked && XFD_ANYSET (&clientsWritable))
+-	    {
++            if (AnyClientsWriteBlocked && XFD_ANYSET(&clientsWritable)) {
+ 		NewOutputPending = TRUE;
+ 		XFD_ORSET(&OutputPending, &clientsWritable, &OutputPending);
+ 		XFD_UNSET(&ClientsWriteBlocked, &clientsWritable);
+@@ -328,26 +309,24 @@ WaitForSomething(int *pClientsReady)
+     }
+ 
+     nready = 0;
+-    if (XFD_ANYSET (&clientsReadable))
+-    {
++    if (XFD_ANYSET(&clientsReadable)) {
+ #ifndef WIN32
+-	for (i=0; i<howmany(XFD_SETSIZE, NFDBITS); i++)
+-	{
++        for (i = 0; i < howmany(XFD_SETSIZE, NFDBITS); i++) {
+ 	    int highest_priority = 0;
+ 
+-	    while (clientsReadable.fds_bits[i])
+-	    {
++            while (clientsReadable.fds_bits[i]) {
+ 	        int client_priority, client_index;
+ 
+ 		curclient = mffs (clientsReadable.fds_bits[i]) - 1;
+ 		client_index = /* raphael: modified */
+-			ConnectionTranslation[curclient + (i * (sizeof(fd_mask) * 8))];
++                    ConnectionTranslation[curclient +
++                                          (i * (sizeof(fd_mask) * 8))];
+ #else
+ 	int highest_priority = 0;
+ 	fd_set savedClientsReadable;
++
+ 	XFD_COPYSET(&clientsReadable, &savedClientsReadable);
+-	for (i = 0; i < XFD_SETCOUNT(&savedClientsReadable); i++)
+-	{
++        for (i = 0; i < XFD_SETCOUNT(&savedClientsReadable); i++) {
+ 	    int client_priority, client_index;
+ 
+ 	    curclient = XFD_FD(&savedClientsReadable, i);
+@@ -363,8 +342,7 @@ WaitForSomething(int *pClientsReady)
+ 		 *  other ways :)
+ 		 */
+ 		client_priority = clients[client_index]->priority;
+-		if (nready == 0 || client_priority > highest_priority)
+-		{
++            if (nready == 0 || client_priority > highest_priority) {
+ 		    /*  Either we found the first client, or we found
+ 		     *  a client whose priority is greater than all others
+ 		     *  that have been found so far.  Either way, we want 
+@@ -378,8 +356,7 @@ WaitForSomething(int *pClientsReady)
+ 		/*  the following if makes sure that multiple same-priority 
+ 		 *  clients get batched together
+ 		 */
+-		else if (client_priority == highest_priority)
+-		{
++            else if (client_priority == highest_priority) {
+ 		    pClientsReady[nready++] = client_index;
+ 		}
+ #ifndef WIN32
+@@ -435,18 +412,14 @@ TimerSet(OsTimerPtr timer, int flags, CARD32 millis,
+     register OsTimerPtr *prev;
+     CARD32 now = GetTimeInMillis();
+ 
+-    if (!timer)
+-    {
++    if (!timer) {
+ 	timer = malloc(sizeof(struct _OsTimerRec));
+ 	if (!timer)
+ 	    return NULL;
+     }
+-    else
+-    {
+-	for (prev = &timers; *prev; prev = &(*prev)->next)
+-	{
+-	    if (*prev == timer)
+-	    {
++    else {
++        for (prev = &timers; *prev; prev = &(*prev)->next) {
++            if (*prev == timer) {
+ 		*prev = timer->next;
+ 		if (flags & TimerForceOld)
+ 		    (void)(*timer->callback)(timer, now, timer->arg);
+@@ -466,8 +439,7 @@ TimerSet(OsTimerPtr timer, int flags, CARD32 millis,
+     timer->expires = millis;
+     timer->callback = func;
+     timer->arg = arg;
+-    if ((int) (millis - now) <= 0)
+-    {
++    if ((int) (millis - now) <= 0) {
+ 	timer->next = NULL;
+ 	millis = (*timer->callback)(timer, now, timer->arg);
+ 	if (!millis)
+@@ -475,8 +447,7 @@ TimerSet(OsTimerPtr timer, int flags, CARD32 millis,
+     }
+     for (prev = &timers;
+ 	 *prev && (int) ((*prev)->expires - millis) <= 0;
+-	 prev = &(*prev)->next)
+-        ;
++         prev = &(*prev)->next);
+     timer->next = *prev;
+     *prev = timer;
+     return timer;
+@@ -487,10 +458,8 @@ TimerForce(OsTimerPtr timer)
+ {
+     OsTimerPtr *prev;
+ 
+-    for (prev = &timers; *prev; prev = &(*prev)->next)
+-    {
+-	if (*prev == timer)
+-	{
++    for (prev = &timers; *prev; prev = &(*prev)->next) {
++        if (*prev == timer) {
+ 	    DoTimer(timer, GetTimeInMillis(), prev);
+ 	    return TRUE;
+ 	}
+@@ -498,7 +467,6 @@ TimerForce(OsTimerPtr timer)
+     return FALSE;
+ }
+ 
+-
+ void
+ TimerCancel(OsTimerPtr timer)
+ {
+@@ -506,10 +474,8 @@ TimerCancel(OsTimerPtr timer)
+ 
+     if (!timer)
+ 	return;
+-    for (prev = &timers; *prev; prev = &(*prev)->next)
+-    {
+-	if (*prev == timer)
+-	{
++    for (prev = &timers; *prev; prev = &(*prev)->next) {
++        if (*prev == timer) {
+ 	    *prev = timer->next;
+ 	    break;
+ 	}
+@@ -539,8 +505,7 @@ TimerInit(void)
+ {
+     OsTimerPtr timer;
+ 
+-    while ((timer = timers))
+-    {
++    while ((timer = timers)) {
+ 	timers = timer->next;
+ 	free(timer);
+     }
+@@ -563,8 +528,7 @@ NextDPMSTimeout(INT32 timeout)
+      * Return the amount of time remaining until we should set
+      * the next power level. Fallthroughs are intentional.
+      */
+-    switch (DPMSPowerLevel)
+-    {
++    switch (DPMSPowerLevel) {
+ 	case DPMSModeOn:
+ 	    DPMS_CHECK_TIMEOUT(DPMSStandbyTime)
+ 
+@@ -591,8 +555,7 @@ ScreenSaverTimeoutExpire(OsTimerPtr timer,CARD32 now,pointer arg)
+      * Check each mode lowest to highest, since a lower mode can
+      * have the same timeout as a higher one.
+      */
+-    if (DPMSEnabled)
+-    {
++    if (DPMSEnabled) {
+ 	DPMS_CHECK_MODE(DPMSModeOff,     DPMSOffTime)
+ 	DPMS_CHECK_MODE(DPMSModeSuspend, DPMSSuspendTime)
+ 	DPMS_CHECK_MODE(DPMSModeStandby, DPMSStandbyTime)
+@@ -611,8 +574,7 @@ ScreenSaverTimeoutExpire(OsTimerPtr timer,CARD32 now,pointer arg)
+     if (!ScreenSaverTime)
+ 	return nextTimeout;
+ 
+-    if (timeout < ScreenSaverTime)
+-    {
++    if (timeout < ScreenSaverTime) {
+ 	return nextTimeout > 0 ? 
+ 		min(ScreenSaverTime - timeout, nextTimeout) :
+ 		ScreenSaverTime - timeout;
+@@ -621,11 +583,9 @@ ScreenSaverTimeoutExpire(OsTimerPtr timer,CARD32 now,pointer arg)
+     ResetOsBuffers(); /* not ideal, but better than nothing */
+     dixSaveScreens(serverClient, SCREEN_SAVER_ON, ScreenSaverActive);
+ 
+-    if (ScreenSaverInterval > 0)
+-    {
++    if (ScreenSaverInterval > 0) {
+ 	nextTimeout = nextTimeout > 0 ? 
+-		min(ScreenSaverInterval, nextTimeout) :
+-		ScreenSaverInterval;
++            min(ScreenSaverInterval, nextTimeout) : ScreenSaverInterval;
+     }
+ 
+     return nextTimeout;
+@@ -648,8 +608,7 @@ SetScreenSaverTimer(void)
+     CARD32 timeout = 0;
+ 
+ #ifdef DPMSExtension
+-    if (DPMSEnabled)
+-    {
++    if (DPMSEnabled) {
+ 	/*
+ 	 * A higher DPMS level has a timeout that's either less
+ 	 * than or equal to that of a lower DPMS level.
+@@ -665,11 +624,8 @@ SetScreenSaverTimer(void)
+     }
+ #endif
+ 
+-    if (ScreenSaverTime > 0)
+-    {
+-	timeout = timeout > 0 ?
+-		min(ScreenSaverTime, timeout) :
+-		ScreenSaverTime;
++    if (ScreenSaverTime > 0) {
++        timeout = timeout > 0 ? min(ScreenSaverTime, timeout) : ScreenSaverTime;
+     }
+ 
+ #ifdef SCREENSAVER
+@@ -684,4 +640,3 @@ SetScreenSaverTimer(void)
+ 	FreeScreenSaverTimer();
+     }
+ }
+-

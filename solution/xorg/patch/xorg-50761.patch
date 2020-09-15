@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/wincursor.c b/hw/xwin/wincursor.c
+index 076d475..0ed1d13 100644
+--- a/hw/xwin/wincursor.c
++++ b/hw/xwin/wincursor.c
+@@ -41,8 +41,6 @@
+ #include <servermd.h>
+ #include "misc.h"
+ 
+-extern Bool	g_fSoftwareCursor;
+-
+ #define BRIGHTNESS(x) (x##Red * 0.299 + x##Green * 0.587 + x##Blue * 0.114)
+ 
+ #if 0

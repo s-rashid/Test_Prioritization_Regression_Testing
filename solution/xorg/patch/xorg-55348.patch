@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/usb-keyboard.h b/hw/dmx/input/usb-keyboard.h
+index 1f9614e..e14cca1 100644
+--- a/hw/dmx/input/usb-keyboard.h
++++ b/hw/dmx/input/usb-keyboard.h
+@@ -42,7 +42,6 @@ extern int     kbdUSBOn(DevicePtr pDev);
+ extern void    kbdUSBRead(DevicePtr pDev,
+                           dmxMotionProcPtr motion,
+                           dmxEnqueueProcPtr enqueue,
+-                          dmxCheckSpecialProcPtr checkspecial,
+-                          DMXBlockType block);
++                       dmxCheckSpecialProcPtr checkspecial, DMXBlockType block);
+ extern void    kbdUSBCtrl(DevicePtr pDev, KeybdCtrl *ctrl);
+ #endif

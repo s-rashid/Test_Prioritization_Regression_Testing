@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/applewm.c b/hw/xquartz/applewm.c
+index 1c77ad9..cd2bdf0 100644
+--- a/hw/xquartz/applewm.c
++++ b/hw/xquartz/applewm.c
+@@ -70,8 +70,6 @@ static AppleWMProcsPtr appleWMProcs;
+ 
+ static int WMErrorBase;
+ 
+-static DISPATCH_PROC(ProcAppleWMDispatch);
+-static DISPATCH_PROC(SProcAppleWMDispatch);
+ 
+ static unsigned char WMReqCode = 0;
+ static int WMEventBase = 0;

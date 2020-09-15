@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86str.h b/hw/xfree86/common/xf86str.h
+index c9b261d..4659661 100644
+--- a/hw/xfree86/common/xf86str.h
++++ b/hw/xfree86/common/xf86str.h
+@@ -405,7 +405,6 @@ typedef struct {
+    char *			identifier;
+    char *			driver;
+    pointer		 	commonOptions;
+-   pointer			extraOptions;
+    InputAttributes              *attrs;
+ } IDevRec, *IDevPtr;
+ 

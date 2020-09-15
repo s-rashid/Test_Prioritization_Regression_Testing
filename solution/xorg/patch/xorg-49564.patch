@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/xaa/xaaLineMisc.c b/hw/xfree86/xaa/xaaLineMisc.c
+index e017c22..ed3cd48 100644
+--- a/hw/xfree86/xaa/xaaLineMisc.c
++++ b/hw/xfree86/xaa/xaaLineMisc.c
+@@ -74,7 +74,6 @@ XAAComputeDash(GCPtr pGC)
+     int shift, value, direction;
+     Bool set;
+ 
+-    if(pGCPriv->DashPattern)
+ 	free(pGCPriv->DashPattern);
+ 
+     pGCPriv->DashPattern = NULL;

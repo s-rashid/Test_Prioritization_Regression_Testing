@@ -1,0 +1,12 @@
+diff --git a/dix/ffs.c b/dix/ffs.c
+index d0bd3e5..f0400cb 100644
+--- a/dix/ffs.c
++++ b/dix/ffs.c
+@@ -38,6 +38,7 @@ int
+ ffs(int i)
+ {
+     int j;
++
+     if (i == 0)
+         return 0;
+     for (j = 1; (i & 1) == 0; j++)

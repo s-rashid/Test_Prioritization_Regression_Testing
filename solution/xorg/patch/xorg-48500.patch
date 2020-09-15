@@ -1,0 +1,13 @@
+diff --git a/xfixes/region.c b/xfixes/region.c
+index 8ed7fa1..d5f583f 100644
+--- a/xfixes/region.c
++++ b/xfixes/region.c
+@@ -642,7 +642,7 @@ ProcXFixesSetGCClipRegion (ClientPtr client)
+     
+     vals[0].val = stuff->xOrigin;
+     vals[1].val = stuff->yOrigin;
+-    dixChangeGC (NullClient, pGC, GCClipXOrigin|GCClipYOrigin, NULL, vals);
++    ChangeGC (NullClient, pGC, GCClipXOrigin|GCClipYOrigin, vals);
+     (*pGC->funcs->ChangeClip)(pGC, pRegion ? CT_REGION : CT_NONE, (pointer)pRegion, 0);
+ 
+     return (client->noClientException);

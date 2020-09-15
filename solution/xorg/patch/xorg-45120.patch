@@ -1,0 +1,12 @@
+diff --git a/include/dix.h b/include/dix.h
+index df73519..c4a6394 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -487,7 +487,6 @@ extern _X_EXPORT void WindowsRestructured(void);
+ 
+ extern Bool SetClientPointer(
+         ClientPtr /* client */, 
+-        ClientPtr /* setter */, 
+         DeviceIntPtr /* device */);
+ 
+ extern _X_EXPORT DeviceIntPtr PickPointer(

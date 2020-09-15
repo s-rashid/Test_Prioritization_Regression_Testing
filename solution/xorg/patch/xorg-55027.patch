@@ -1,0 +1,43 @@
+diff --git a/Xi/xigrabdev.c b/Xi/xigrabdev.c
+index 2b30550..8d2cf0b 100644
+--- a/Xi/xigrabdev.c
++++ b/Xi/xigrabdev.c
+@@ -88,17 +88,15 @@ ProcXIGrabDevice(ClientPtr client)
+ 
+     mask_len = min(xi2mask_mask_size(mask.xi2mask), stuff->mask_len * 4);
+     /* FIXME: I think the old code was broken here */
+-    xi2mask_set_one_mask(mask.xi2mask, dev->id, (unsigned char*)&stuff[1], mask_len);
++    xi2mask_set_one_mask(mask.xi2mask, dev->id, (unsigned char *) &stuff[1],
++                         mask_len);
+ 
+     ret = GrabDevice(client, dev, stuff->grab_mode,
+                      stuff->paired_device_mode,
+                      stuff->grab_window,
+                      stuff->owner_events,
+                      stuff->time,
+-                     &mask,
+-                     XI2,
+-                     stuff->cursor,
+-                     None /* confineTo */,
++                     &mask, XI2, stuff->cursor, None /* confineTo */ ,
+                      &status);
+ 
+     xi2mask_free(&mask.xi2mask);
+@@ -112,7 +110,6 @@ ProcXIGrabDevice(ClientPtr client)
+     rep.sequenceNumber = client->sequence;
+     rep.status = status;
+ 
+-
+     WriteReplyToClient(client, sizeof(rep), &rep);
+     return ret;
+ }
+@@ -154,7 +151,8 @@ ProcXIUngrabDevice(ClientPtr client)
+     return Success;
+ }
+ 
+-void SRepXIGrabDevice(ClientPtr client, int size, xXIGrabDeviceReply * rep)
++void
++SRepXIGrabDevice(ClientPtr client, int size, xXIGrabDeviceReply * rep)
+ {
+     swaps(&rep->sequenceNumber);
+     swapl(&rep->length);

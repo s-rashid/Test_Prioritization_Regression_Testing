@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index 2c5ec65..fc7dd57 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -525,8 +525,7 @@ bool getGlCapabilities(struct glCapabilities *cap) {
+ 
+ 	    conf = malloc(sizeof(*conf));
+ 	    if(NULL == conf) {
+-            perror("malloc");
+-            OsAbort();
++                FatalError("Unable to allocate memory for OpenGL capabilities\n");
+ 	    }
+ 
+ 	    /* Copy the struct. */

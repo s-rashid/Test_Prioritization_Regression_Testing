@@ -1,0 +1,13 @@
+diff --git a/xkb/ddxPrivate.c b/xkb/ddxPrivate.c
+index f1c85f6..fcde3a1 100644
+--- a/xkb/ddxPrivate.c
++++ b/xkb/ddxPrivate.c
+@@ -8,7 +8,7 @@
+ #include <xkbsrv.h>
+ 
+ int
+-XkbDDXPrivate(DeviceIntPtr dev,KeyCode key,XkbAction *act)
++XkbDDXPrivate(DeviceIntPtr dev, KeyCode key, XkbAction *act)
+ {
+     return 0;
+ }

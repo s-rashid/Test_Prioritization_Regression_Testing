@@ -1,0 +1,15 @@
+diff --git a/dix/enterleave.c b/dix/enterleave.c
+index 2b8c7c5..89a82ab 100644
+--- a/dix/enterleave.c
++++ b/dix/enterleave.c
+@@ -1299,7 +1299,10 @@ DeviceFocusEvents(DeviceIntPtr dev,
+         for (i = 0; i < nscreens; i++)
+             DeviceFocusEvent(dev, XI_FocusIn, mode, in, screenInfo.screens[i]->root);
+         if (to == PointerRootWin)
++        {
+             DeviceFocusInEvents(dev, GetCurrentRootWindow(dev), sprite->win, mode, NotifyPointer);
++            DeviceFocusEvent(dev, XI_FocusIn, mode, NotifyPointer, sprite->win);
++        }
+     }
+     else
+     {

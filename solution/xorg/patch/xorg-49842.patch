@@ -1,0 +1,12 @@
+diff --git a/render/picture.h b/render/picture.h
+index 8bd38b9..e5f0d78 100644
+--- a/render/picture.h
++++ b/render/picture.h
+@@ -174,7 +174,6 @@ extern _X_EXPORT int PictureCmapPolicy;
+ extern _X_EXPORT int PictureParseCmapPolicy (const char *name);
+ 
+ extern _X_EXPORT int RenderErrBase;
+-extern _X_EXPORT DevPrivateKey RenderClientPrivateKey;
+ 
+ /* Fixed point updates from Carl Worth, USC, Information Sciences Institute */
+ 

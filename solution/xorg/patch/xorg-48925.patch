@@ -1,0 +1,43 @@
+diff --git a/mi/mioverlay.c b/mi/mioverlay.c
+index 2de7682..df43196 100644
+--- a/mi/mioverlay.c
++++ b/mi/mioverlay.c
+@@ -5,6 +5,7 @@
+ 
+ #include <X11/X.h>
+ #include "scrnintstr.h"
++#include <X11/extensions/shapeproto.h>
+ #include "validate.h"
+ #include "windowstr.h"
+ #include "mi.h"
+@@ -82,7 +83,7 @@ static void miOverlayResizeWindow(WindowPtr, int, int, unsigned int,
+ 					unsigned int, WindowPtr);
+ static void miOverlayClearToBackground(WindowPtr, int, int, int, int, Bool);
+ 
+-static void miOverlaySetShape(WindowPtr);
++static void miOverlaySetShape(WindowPtr, int);
+ static void miOverlayChangeBorderWidth(WindowPtr, unsigned int);
+ 
+ #define MIOVERLAY_GET_SCREEN_PRIVATE(pScreen) ((miOverlayScreenPtr) \
+@@ -1497,11 +1498,12 @@ miOverlayResizeWindow(
+ 
+ 
+ static void
+-miOverlaySetShape(WindowPtr pWin)
++miOverlaySetShape(WindowPtr pWin, int kind)
+ {
+     Bool	WasViewable = (Bool)(pWin->viewable);
+     ScreenPtr 	pScreen = pWin->drawable.pScreen;
+ 
++    if (kind != ShapeInput) {
+     if (WasViewable) {
+ 	(*pScreen->MarkOverlappedWindows)(pWin, pWin, NULL);
+ 
+@@ -1542,6 +1544,7 @@ miOverlaySetShape(WindowPtr pWin)
+ 	if (pScreen->PostValidateTree)
+ 	    (*pScreen->PostValidateTree)(pWin->parent, NullWindow, VTOther);
+     }
++    }
+     if (pWin->realized)
+ 	WindowsRestructured ();
+     CheckCursorConfinement(pWin);

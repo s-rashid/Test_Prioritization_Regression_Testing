@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/quartzRandR.h b/hw/xquartz/quartzRandR.h
+index fb0ce0c..996f90f 100644
+--- a/hw/xquartz/quartzRandR.h
++++ b/hw/xquartz/quartzRandR.h
+@@ -69,7 +69,6 @@ Bool QuartzRandRInit (ScreenPtr pScreen);
+ void QuartzRandRSetFakeRootless (void);
+ void QuartzRandRSetFakeFullscreen (BOOL state);
+ 
+-
+ /* Toggle fullscreen mode.  If "fake" fullscreen is the current mode,
+  * this will just show/hide the X11 windows.  If we are in a RandR fullscreen
+  * mode, this will toggles us to the default fake mode and hide windows if

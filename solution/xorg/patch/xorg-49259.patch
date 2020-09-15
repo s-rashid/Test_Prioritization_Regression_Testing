@@ -1,0 +1,37 @@
+diff --git a/mi/mivaltree.c b/mi/mivaltree.c
+index dc88c4d..7e0c22a 100644
+--- a/mi/mivaltree.c
++++ b/mi/mivaltree.c
+@@ -107,7 +107,7 @@ Equipment Corporation.
+  * Compute the visibility of a shaped window
+  */
+ int
+-miShapedWindowIn (ScreenPtr pScreen, RegionPtr universe, RegionPtr bounding,
++miShapedWindowIn (RegionPtr universe, RegionPtr bounding,
+                   BoxPtr rect, int x, int y)
+ {
+     BoxRec  	box;
+@@ -272,7 +272,7 @@ miComputeClips (
+ 
+ 		if ((pBounding = wBoundingShape (pParent)))
+ 		{
+-		    switch (miShapedWindowIn (pScreen, universe, pBounding,
++		    switch (miShapedWindowIn (universe, pBounding,
+ 					      &borderSize,
+ 					      pParent->drawable.x,
+  					      pParent->drawable.y))
+@@ -331,12 +331,10 @@ miComputeClips (
+ 		    }
+ 		    if (pChild->valdata)
+ 		    {
+-			RegionNull(
+-				    &pChild->valdata->after.borderExposed);
++			RegionNull(&pChild->valdata->after.borderExposed);
+ 			if (HasParentRelativeBorder(pChild))
+ 			{
+-			    RegionSubtract(
+-					 &pChild->valdata->after.borderExposed,
++			    RegionSubtract(&pChild->valdata->after.borderExposed,
+ 					 &pChild->borderClip,
+ 					 &pChild->winSize);
+ 			}

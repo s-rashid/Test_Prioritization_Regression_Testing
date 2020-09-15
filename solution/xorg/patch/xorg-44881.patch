@@ -1,0 +1,17 @@
+diff --git a/mi/micmap.c b/mi/micmap.c
+index 6318d67..1d26a52 100644
+--- a/mi/micmap.c
++++ b/mi/micmap.c
+@@ -87,8 +87,10 @@ miUninstallColormap(ColormapPtr pmap)
+     {
+ 	if (pmap->mid != pmap->pScreen->defColormap)
+ 	{
+-	    curpmap = (ColormapPtr) LookupIDByType(pmap->pScreen->defColormap,
+-						   RT_COLORMAP);
++	    dixLookupResourceByType((pointer *)&curpmap,
++				    pmap->pScreen->defColormap,
++				    RT_COLORMAP, serverClient,
++				    DixUseAccess);
+ 	    (*pmap->pScreen->InstallColormap)(curpmap);
+ 	}
+     }

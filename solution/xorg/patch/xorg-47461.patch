@@ -1,0 +1,15 @@
+diff --git a/hw/kdrive/fake/fakeinit.c b/hw/kdrive/fake/fakeinit.c
+index 0472a71..87c221d 100644
+--- a/hw/kdrive/fake/fakeinit.c
++++ b/hw/kdrive/fake/fakeinit.c
+@@ -28,9 +28,7 @@
+ void
+ InitCard (char *name)
+ {
+-    KdCardAttr	attr;
+-
+-    KdCardInfoAdd (&fakeFuncs, &attr, 0);
++    KdCardInfoAdd (&fakeFuncs, 0);
+ }
+ 
+ void

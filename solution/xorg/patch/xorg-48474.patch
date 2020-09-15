@@ -1,0 +1,15 @@
+diff --git a/Xi/getkmap.c b/Xi/getkmap.c
+index 78449e2..c38467b 100644
+--- a/Xi/getkmap.c
++++ b/Xi/getkmap.c
+@@ -133,8 +133,8 @@ ProcXGetDeviceKeyMapping(ClientPtr client)
+                              syms->mapWidth * stuff->count * sizeof(KeySym),
+                              &syms->map[syms->mapWidth * (stuff->firstKeyCode -
+                                                           syms->minKeyCode)]);
+-    xfree(syms->map);
+-    xfree(syms);
++    free(syms->map);
++    free(syms);
+ 
+     return Success;
+ }

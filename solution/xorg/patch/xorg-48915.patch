@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/lnx-keyboard.c b/hw/dmx/input/lnx-keyboard.c
+index 939a32f..050c80e 100644
+--- a/hw/dmx/input/lnx-keyboard.c
++++ b/hw/dmx/input/lnx-keyboard.c
+@@ -938,7 +938,7 @@ static void kbdLinuxGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+     int           i;
+ 
+ #if 00/*BP*/
+-    mapCopy = xalloc(sizeof(map));
++    mapCopy = malloc(sizeof(map));
+     memcpy(mapCopy, map, sizeof(map));
+ #else
+     ErrorF("kbdLinuxGetMap() is broken/no-op'd\n");

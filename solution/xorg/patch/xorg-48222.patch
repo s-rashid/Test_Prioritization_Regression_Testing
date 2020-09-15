@@ -1,0 +1,20 @@
+diff --git a/miext/cw/cw.h b/miext/cw/cw.h
+index ae65503..79051df 100644
+--- a/miext/cw/cw.h
++++ b/miext/cw/cw.h
+@@ -90,7 +90,6 @@ typedef struct {
+     GetWindowPixmapProcPtr	GetWindowPixmap;
+     SetWindowPixmapProcPtr	SetWindowPixmap;
+     
+-#ifdef RENDER
+     DestroyPictureProcPtr	DestroyPicture;
+     ChangePictureClipProcPtr	ChangePictureClip;
+     DestroyPictureClipProcPtr	DestroyPictureClip;
+@@ -107,7 +106,6 @@ typedef struct {
+     TriFanProcPtr		TriFan;
+ 
+     RasterizeTrapezoidProcPtr	RasterizeTrapezoid;
+-#endif
+ } cwScreenRec, *cwScreenPtr;
+ 
+ extern _X_EXPORT DevPrivateKey cwScreenKey;

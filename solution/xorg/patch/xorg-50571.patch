@@ -1,0 +1,17 @@
+diff --git a/hw/xwin/winclipboardwrappers.c b/hw/xwin/winclipboardwrappers.c
+index 658d050..bdacefb 100755
+--- a/hw/xwin/winclipboardwrappers.c
++++ b/hw/xwin/winclipboardwrappers.c
+@@ -52,9 +52,9 @@
+  * Local function prototypes
+  */
+ 
+-DISPATCH_PROC(winProcEstablishConnection);
+-DISPATCH_PROC(winProcQueryTree);
+-DISPATCH_PROC(winProcSetSelectionOwner);
++int winProcEstablishConnection(ClientPtr /* client */);
++int winProcQueryTree(ClientPtr /* client */);
++int winProcSetSelectionOwner(ClientPtr /* client */);
+ 
+ 
+ /*

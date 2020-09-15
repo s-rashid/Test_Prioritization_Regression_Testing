@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Priv.h b/hw/xfree86/common/xf86Priv.h
+index 5d91ab3..1fe3d7e 100644
+--- a/hw/xfree86/common/xf86Priv.h
++++ b/hw/xfree86/common/xf86Priv.h
+@@ -140,7 +140,7 @@ extern _X_EXPORT pmWait (*xf86PMConfirmEventToOs)(int fd,pmEvent event);
+ 
+ /* xf86Helper.c */
+ extern _X_EXPORT void xf86LogInit(void);
+-extern _X_EXPORT void xf86CloseLog(void);
++extern _X_EXPORT void xf86CloseLog(enum ExitCode error);
+ 
+ /* xf86Init.c */
+ extern _X_EXPORT Bool xf86LoadModules(char **list, pointer *optlist);

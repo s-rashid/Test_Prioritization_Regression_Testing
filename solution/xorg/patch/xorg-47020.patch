@@ -1,0 +1,16 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 98e879d..00ae29c 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -4300,7 +4300,10 @@ XkbWriteCountedString(char *wire,char *str,Bool swap)
+ {
+ CARD16	len,*pLen;
+ 
+-    len= (str?strlen(str):0);
++    if (!str)
++        return wire;
++
++    len= strlen(str);
+     pLen= (CARD16 *)wire;
+     *pLen= len;
+     if (swap) {

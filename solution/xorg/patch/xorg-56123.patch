@@ -1,0 +1,84 @@
+diff --git a/test/xi2/protocol-xiwarppointer.c b/test/xi2/protocol-xiwarppointer.c
+index 2b40f63..c279ac4 100644
+--- a/test/xi2/protocol-xiwarppointer.c
++++ b/test/xi2/protocol-xiwarppointer.c
+@@ -48,14 +48,14 @@ static int expected_y = SPRITE_Y;
+  * fake client window. If the requested ID is neither of those wanted,
+  * return whatever the real dixLookupWindow does.
+  */
+-int __wrap_dixLookupWindow(WindowPtr *win, XID id, ClientPtr client, Mask access)
+-{
+-    if (id == root.drawable.id)
++int
++__wrap_dixLookupWindow(WindowPtr *win, XID id, ClientPtr client, Mask access)
+     {
++    if (id == root.drawable.id) {
+         *win = &root;
+         return Success;
+-    } else if (id == window.drawable.id)
+-    {
++    }
++    else if (id == window.drawable.id) {
+         *win = &window;
+         return Success;
+     }
+@@ -66,7 +66,8 @@ int __wrap_dixLookupWindow(WindowPtr *win, XID id, ClientPtr client, Mask access
+ /**
+  * This function overrides the one in the screen rec.
+  */
+-static Bool ScreenSetCursorPosition(DeviceIntPtr dev, ScreenPtr screen,
++static Bool
++ScreenSetCursorPosition(DeviceIntPtr dev, ScreenPtr screen,
+                                     int x, int y, Bool generateEvent)
+ {
+     assert(x == expected_x);
+@@ -74,9 +75,8 @@ static Bool ScreenSetCursorPosition(DeviceIntPtr dev, ScreenPtr screen,
+     return TRUE;
+ }
+ 
+-
+-static void request_XIWarpPointer(ClientPtr client, xXIWarpPointerReq* req,
+-        int error)
++static void
++request_XIWarpPointer(ClientPtr client, xXIWarpPointerReq * req, int error)
+ {
+     int rc;
+ 
+@@ -89,7 +89,6 @@ static void request_XIWarpPointer(ClientPtr client, xXIWarpPointerReq* req,
+         assert(client->errorValue == req->dst_win ||
+                  client->errorValue == req->src_win);
+ 
+-
+     client->swapped = TRUE;
+ 
+     swapl(&req->src_win);
+@@ -114,7 +113,8 @@ static void request_XIWarpPointer(ClientPtr client, xXIWarpPointerReq* req,
+     client->swapped = FALSE;
+ }
+ 
+-static void test_XIWarpPointer(void)
++static void
++test_XIWarpPointer(void)
+ {
+     int i;
+     ClientRec client_request;
+@@ -147,8 +147,7 @@ static void test_XIWarpPointer(void)
+     request.deviceid = devices.mouse->id;
+     request_XIWarpPointer(&client_request, &request, Success);
+ 
+-    for (i = devices.kbd->id + 1; i <= 0xFFFF; i++)
+-    {
++    for (i = devices.kbd->id + 1; i <= 0xFFFF; i++) {
+         request.deviceid = i;
+         request_XIWarpPointer(&client_request, &request, BadDevice);
+     }
+@@ -200,7 +199,8 @@ static void test_XIWarpPointer(void)
+     /* FIXME: src_x/y checks */
+ }
+ 
+-int main(int argc, char** argv)
++int
++main(int argc, char **argv)
+ {
+     init_simple();
+     screen.SetCursorPosition = ScreenSetCursorPosition;

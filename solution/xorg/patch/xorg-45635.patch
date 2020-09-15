@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmultiwindowwindow.c b/hw/xwin/winmultiwindowwindow.c
+index f9ada7c..8b18aeb 100644
+--- a/hw/xwin/winmultiwindowwindow.c
++++ b/hw/xwin/winmultiwindowwindow.c
+@@ -76,6 +76,7 @@ winFindWindow (pointer value, XID id, pointer cdata);
+ 
+ #define SubStrSend(pWin,pParent) (StrSend(pWin) || SubSend(pParent))
+ 
++static
+ void winInitMultiWindowClass(void)
+ {
+   static wATOM atomXWinClass=0;

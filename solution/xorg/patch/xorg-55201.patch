@@ -1,0 +1,119 @@
+diff --git a/glx/single2swap.c b/glx/single2swap.c
+index e3afcab..e6bb585 100644
+--- a/glx/single2swap.c
++++ b/glx/single2swap.c
+@@ -42,10 +42,12 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-int __glXDispSwap_FeedbackBuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_FeedbackBuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     GLsizei size;
+     GLenum type;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLXcontext *cx;
+     int error;
+@@ -76,10 +78,12 @@ int __glXDispSwap_FeedbackBuffer(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDispSwap_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_SelectBuffer(__GLXclientState * cl, GLbyte * pc)
+ {
+     __GLXcontext *cx;
+     GLsizei size;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     int error;
+ 
+@@ -94,8 +98,7 @@ int __glXDispSwap_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
+     size = *(GLsizei *)(pc+0);
+     if (cx->selectBufSize < size) {
+ 	cx->selectBuf = (GLuint *) realloc(cx->selectBuf,
+-						(size_t) size 
+-						* __GLX_SIZE_CARD32);
++                                           (size_t) size * __GLX_SIZE_CARD32);
+ 	if (!cx->selectBuf) {
+ 	    cl->client->errorValue = size;
+ 	    return BadAlloc;
+@@ -107,7 +110,8 @@ int __glXDispSwap_SelectBuffer(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDispSwap_RenderMode(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_RenderMode(__GLXclientState * cl, GLbyte * pc)
+ {
+     ClientPtr client;
+     __GLXcontext *cx;
+@@ -115,6 +119,7 @@ int __glXDispSwap_RenderMode(__GLXclientState *cl, GLbyte *pc)
+     GLint nitems=0, retBytes=0, retval, newModeCheck;
+     GLubyte *retBuffer = NULL;
+     GLenum newMode;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+     __GLX_DECLARE_SWAP_ARRAY_VARIABLES;
+     int error;
+@@ -152,7 +157,8 @@ int __glXDispSwap_RenderMode(__GLXclientState *cl, GLbyte *pc)
+ 	if (retval < 0) {
+ 	    /* Overflow happened. Copy the entire buffer */
+ 	    nitems = cx->feedbackBufSize;
+-	} else {
++        }
++        else {
+ 	    nitems = retval;
+ 	}
+ 	retBytes = nitems * __GLX_SIZE_FLOAT32;
+@@ -164,7 +170,8 @@ int __glXDispSwap_RenderMode(__GLXclientState *cl, GLbyte *pc)
+ 	if (retval < 0) {
+ 	    /* Overflow happened.  Copy the entire buffer */
+ 	    nitems = cx->selectBufSize;
+-	} else {
++        }
++        else {
+ 	    GLuint *bp = cx->selectBuf;
+ 	    GLint i;
+ 
+@@ -216,10 +223,12 @@ int __glXDispSwap_RenderMode(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDispSwap_Flush(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_Flush(__GLXclientState * cl, GLbyte * pc)
+ {
+ 	__GLXcontext *cx;
+ 	int error;
++
+ 	__GLX_DECLARE_SWAP_VARIABLES;
+ 
+ 	__GLX_SWAP_INT(&((xGLXSingleReq *)pc)->contextTag);
+@@ -233,11 +242,13 @@ int __glXDispSwap_Flush(__GLXclientState *cl, GLbyte *pc)
+ 	return Success;
+ }
+ 
+-int __glXDispSwap_Finish(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_Finish(__GLXclientState * cl, GLbyte * pc)
+ {
+     __GLXcontext *cx;
+     ClientPtr client;
+     int error;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     __GLX_SWAP_INT(&((xGLXSingleReq *)pc)->contextTag);
+@@ -260,7 +271,8 @@ int __glXDispSwap_Finish(__GLXclientState *cl, GLbyte *pc)
+     return Success;
+ }
+ 
+-int __glXDispSwap_GetString(__GLXclientState *cl, GLbyte *pc)
++int
++__glXDispSwap_GetString(__GLXclientState * cl, GLbyte * pc)
+ {
+     return DoGetString(cl, pc, GL_TRUE);
+ }

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dri/dristruct.h b/hw/xfree86/dri/dristruct.h
+index fc929c2..a834bbf 100644
+--- a/hw/xfree86/dri/dristruct.h
++++ b/hw/xfree86/dri/dristruct.h
+@@ -62,7 +62,8 @@ struct _DRIContextPrivRec
+ };
+ 
+ #define DRI_SCREEN_PRIV(pScreen) ((DRIScreenPrivPtr) \
+-    dixLookupPrivate(&(pScreen)->devPrivates, DRIScreenPrivKey))
++    (dixPrivateKeyRegistered(DRIScreenPrivKey) ?			\
++     dixLookupPrivate(&(pScreen)->devPrivates, DRIScreenPrivKey) : NULL))
+ 
+ #define DRI_SCREEN_PRIV_FROM_INDEX(screenIndex) ((DRIScreenPrivPtr) \
+     dixLookupPrivate(&screenInfo.screens[screenIndex]->devPrivates, \

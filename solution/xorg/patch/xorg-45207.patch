@@ -1,0 +1,30 @@
+diff --git a/Xi/xisetdevfocus.c b/Xi/xisetdevfocus.c
+index cd1f6a6..32f7e59 100644
+--- a/Xi/xisetdevfocus.c
++++ b/Xi/xisetdevfocus.c
+@@ -75,12 +75,6 @@ ProcXISetFocus(ClientPtr client)
+     REQUEST(xXISetFocusReq);
+     REQUEST_AT_LEAST_SIZE(xXISetFocusReq);
+ 
+-    if (stuff->deviceid > 0xFF) /* FIXME */
+-    {
+-        client->errorValue = stuff->deviceid;
+-        return BadImplementation;
+-    }
+-
+     ret = dixLookupDevice(&dev, stuff->deviceid, client, DixSetFocusAccess);
+     if (ret != Success)
+ 	return ret;
+@@ -101,12 +95,6 @@ ProcXIGetFocus(ClientPtr client)
+     REQUEST(xXIGetFocusReq);
+     REQUEST_AT_LEAST_SIZE(xXIGetFocusReq);
+ 
+-    if (stuff->deviceid > 0xFF) /* FIXME */
+-    {
+-        client->errorValue = stuff->deviceid;
+-        return BadImplementation;
+-    }
+-
+     ret = dixLookupDevice(&dev, stuff->deviceid, client, DixGetFocusAccess);
+     if (ret != Success)
+ 	return ret;

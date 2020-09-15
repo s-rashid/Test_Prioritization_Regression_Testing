@@ -1,0 +1,9 @@
+diff --git a/hw/kdrive/fake/os.c b/hw/kdrive/fake/os.c
+index 76cd9e7..01bb37b 100644
+--- a/hw/kdrive/fake/os.c
++++ b/hw/kdrive/fake/os.c
+@@ -60,4 +60,3 @@ KdOsFuncs   FakeOsFuncs = {
+     FakeFini,
+     0
+ };
+-

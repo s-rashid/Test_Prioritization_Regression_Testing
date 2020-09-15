@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxinit.c b/hw/dmx/dmxinit.c
+index 7cd50da..0755532 100644
+--- a/hw/dmx/dmxinit.c
++++ b/hw/dmx/dmxinit.c
+@@ -404,7 +404,7 @@ Bool dmxGetVisualInfo(DMXScreenInfo *dmxScreen)
+         dmxLogVisual(dmxScreen, &dmxScreen->beVisuals[i],
+                      (i == dmxScreen->beDefVisualIndex));
+ 
+-    return (dmxScreen->beDefVisualIndex >= 0);
++    return dmxScreen->beDefVisualIndex >= 0;
+ }
+ 
+ void dmxGetColormaps(DMXScreenInfo *dmxScreen)

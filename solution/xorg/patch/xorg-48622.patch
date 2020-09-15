@@ -1,0 +1,12 @@
+diff --git a/randr/rrproperty.c b/randr/rrproperty.c
+index 3aab37a..5e37577 100644
+--- a/randr/rrproperty.c
++++ b/randr/rrproperty.c
+@@ -40,7 +40,6 @@ DeliverPropertyEvent(WindowPtr pWin, void *value)
+ 	if (!(pRREvent->mask & RROutputPropertyNotifyMask))
+ 	    continue;
+ 
+-	event->sequenceNumber = pRREvent->client->sequence;
+ 	event->window = pRREvent->window->drawable.id;
+ 	WriteEventsToClient(pRREvent->client, 1, (xEvent *)event);
+     }

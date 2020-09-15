@@ -1,0 +1,52 @@
+diff --git a/hw/kdrive/ephyr/hostx.c b/hw/kdrive/ephyr/hostx.c
+index f69db2b..46645d3 100644
+--- a/hw/kdrive/ephyr/hostx.c
++++ b/hw/kdrive/ephyr/hostx.c
+@@ -122,6 +122,7 @@ extern int            monitorResolution;
+ 
+ char           *ephyrResName = NULL;
+ int             ephyrResNameFromCmd = 0;
++char	       *ephyrTitle = NULL;
+ 
+ static void
+ hostx_set_fullscreen_hint(void);
+@@ -223,12 +224,16 @@ void
+ hostx_set_win_title (EphyrScreenInfo screen, char *extra_text)
+ {
+   struct EphyrHostScreen *host_screen = host_screen_from_screen_info (screen);
+-#define BUF_LEN 256
+-  char buf[BUF_LEN+1];
+ 
+   if (!host_screen)
+     return;
+ 
++    if (ephyrTitle) {
++      XStoreName(HostX.dpy, host_screen->win, ephyrTitle);
++    } else {
++#define BUF_LEN 256
++      char buf[BUF_LEN+1];
++
+   memset (buf, 0, BUF_LEN+1) ;
+   snprintf (buf, BUF_LEN, "Xephyr on %s.%d %s", 
+             HostX.server_dpy_name, 
+@@ -237,6 +242,7 @@ hostx_set_win_title (EphyrScreenInfo screen, char *extra_text)
+ 
+   XStoreName (HostX.dpy, host_screen->win, buf);
+ }
++}
+ 
+ int
+ hostx_want_host_cursor (void)
+@@ -319,6 +325,12 @@ hostx_use_resname (char *name, int fromcmd)
+   ephyrResNameFromCmd = fromcmd;
+ }
+ 
++void
++hostx_set_title (char *title)
++{
++  ephyrTitle = title;
++}
++
+ int
+ hostx_init (void)
+ {

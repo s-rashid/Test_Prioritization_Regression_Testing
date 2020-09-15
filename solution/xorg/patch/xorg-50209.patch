@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.h b/hw/xfree86/common/xf86Xinput.h
+index dab76c0..bb7a4aa 100644
+--- a/hw/xfree86/common/xf86Xinput.h
++++ b/hw/xfree86/common/xf86Xinput.h
+@@ -128,8 +128,6 @@ typedef struct _InputInfoRec {
+     int			    private_flags;
+     unsigned int	    first;
+     unsigned int	    last;
+-    int			    old_x;
+-    int			    old_y;
+     char *		    type_name;
+     IntegerFeedbackPtr	    always_core_feedback;
+     IDevPtr		    conf_idev;

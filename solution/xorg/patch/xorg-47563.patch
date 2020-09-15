@@ -1,0 +1,13 @@
+diff --git a/glx/glxdri2.c b/glx/glxdri2.c
+index 69fd39b..0f998de 100644
+--- a/glx/glxdri2.c
++++ b/glx/glxdri2.c
+@@ -174,7 +174,7 @@ __glXdriSwapEvent(ClientPtr client, void *data, int type, CARD64 ust,
+     __GLXdrawable *drawable = data;
+     xGLXBufferSwapComplete wire;
+ 
+-    if (!drawable->eventMask & GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK)
++    if (!(drawable->eventMask & GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK))
+ 	return;
+ 
+     wire.type = __glXEventBase + GLX_BufferSwapComplete;

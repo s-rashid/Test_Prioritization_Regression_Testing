@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartz.c b/hw/xquartz/quartz.c
+index 36d18eb..ac7fedd 100644
+--- a/hw/xquartz/quartz.c
++++ b/hw/xquartz/quartz.c
+@@ -276,7 +276,7 @@ void QuartzUpdateScreens(void) {
+     sy = dixScreenOrigins[pScreen->myNum].y + darwinMainScreenY;
+     
+     /* Adjust the root window. */
+-    pRoot = WindowTable[pScreen->myNum];
++    pRoot = pScreen->root;
+     AppleWMSetScreenOrigin(pRoot);
+     pScreen->ResizeWindow(pRoot, x - sx, y - sy, width, height, NULL);
+     miPaintWindow(pRoot, &pRoot->borderClip,  PW_BACKGROUND);

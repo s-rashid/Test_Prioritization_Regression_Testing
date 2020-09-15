@@ -1,0 +1,431 @@
+diff --git a/fb/fb24_32.c b/fb/fb24_32.c
+index 033fa46..5eb81e8 100644
+--- a/fb/fb24_32.c
++++ b/fb/fb24_32.c
+@@ -54,37 +54,25 @@
+ typedef void (*fb24_32BltFunc) (CARD8	    *srcLine,
+ 				FbStride    srcStride,
+ 				int	    srcX,
+-
+ 				CARD8	    *dstLine,
+ 				FbStride    dstStride,
+ 				int	    dstX,
+-
+-				int	    width, 
+-				int	    height,
+-
+-				int	    alu,
+-				FbBits	    pm);
++                                int width, int height, int alu, FbBits pm);
+ 
+ static void
+ fb24_32BltDown (CARD8	    *srcLine,
+ 		FbStride    srcStride,
+ 		int	    srcX,
+-
+ 		CARD8	    *dstLine,
+ 		FbStride    dstStride,
+-		int	    dstX,
+-
+-		int	    width, 
+-		int	    height,
+-
+-		int	    alu,
+-		FbBits	    pm)
++               int dstX, int width, int height, int alu, FbBits pm)
+ {
+     CARD32  *src;
+     CARD8   *dst;
+     int	    w;
+     Bool    destInvarient;
+     CARD32  pixel, dpixel;
++
+     FbDeclareMergeRop ();
+     
+     srcLine += srcX * 4;
+@@ -93,17 +81,14 @@ fb24_32BltDown (CARD8	    *srcLine,
+     FbInitializeMergeRop(alu, (pm | ~(FbBits) 0xffffff));
+     destInvarient = FbDestInvarientMergeRop();
+ 
+-    while (height--)
+-    {
++    while (height--) {
+ 	src = (CARD32 *) srcLine;
+ 	dst = dstLine;
+ 	srcLine += srcStride;
+ 	dstLine += dstStride;
+ 	w = width;
+-	if (destInvarient)
+-	{
+-	    while (((long) dst & 3) && w)
+-	    {
++        if (destInvarient) {
++            while (((long) dst & 3) && w) {
+ 		w--;
+ 		pixel = READ(src++);
+ 		pixel = FbDoDestInvarientMergeRop(pixel);
+@@ -111,9 +96,9 @@ fb24_32BltDown (CARD8	    *srcLine,
+ 		dst += 3;
+ 	    }
+ 	    /* Do four aligned pixels at a time */
+-	    while (w >= 4)
+-	    {
++            while (w >= 4) {
+ 		CARD32  s0, s1;
++
+ 		s0 = READ(src++);
+ 		s0 = FbDoDestInvarientMergeRop(s0);
+ 		s1 = READ(src++);
+@@ -126,32 +111,32 @@ fb24_32BltDown (CARD8	    *srcLine,
+ 		s0 = READ(src++);
+ 		s0 = FbDoDestInvarientMergeRop(s0);
+ #if BITMAP_BIT_ORDER == LSBFirst
+-		WRITE((CARD32 *)(dst+4), ((s1 & 0xffffff) >> 8) | (s0 << 16));
++                WRITE((CARD32 *) (dst + 4),
++                      ((s1 & 0xffffff) >> 8) | (s0 << 16));
+ #else
+-		WRITE((CARD32 *)(dst+4), (s1 << 16) | ((s0 & 0xffffff) >> 8));
++                WRITE((CARD32 *) (dst + 4),
++                      (s1 << 16) | ((s0 & 0xffffff) >> 8));
+ #endif
+ 		s1 = READ(src++);
+ 		s1 = FbDoDestInvarientMergeRop(s1);
+ #if BITMAP_BIT_ORDER == LSBFirst
+-		WRITE((CARD32 *)(dst+8), ((s0 & 0xffffff) >> 16) | (s1 << 8));
++                WRITE((CARD32 *) (dst + 8),
++                      ((s0 & 0xffffff) >> 16) | (s1 << 8));
+ #else
+ 		WRITE((CARD32 *)(dst+8), (s0 << 24) | (s1 & 0xffffff));
+ #endif
+ 		dst += 12;
+ 		w -= 4;
+ 	    }
+-	    while (w--)
+-	    {
++            while (w--) {
+ 		pixel = READ(src++);
+ 		pixel = FbDoDestInvarientMergeRop(pixel);
+ 		Put24 (dst, pixel);
+ 		dst += 3;
+ 	    }
+ 	}
+-	else
+-	{
+-	    while (w--)
+-	    {
++        else {
++            while (w--) {
+ 		pixel = READ(src++);
+ 		dpixel = Get24 (dst);
+ 		pixel = FbDoMergeRop(pixel, dpixel);
+@@ -166,22 +151,16 @@ static void
+ fb24_32BltUp (CARD8	    *srcLine,
+ 	      FbStride	    srcStride,
+ 	      int	    srcX,
+-
+ 	      CARD8	    *dstLine,
+ 	      FbStride	    dstStride,
+-	      int	    dstX,
+-
+-	      int	    width, 
+-	      int	    height,
+-
+-	      int	    alu,
+-	      FbBits	    pm)
++             int dstX, int width, int height, int alu, FbBits pm)
+ {
+     CARD8   *src;
+     CARD32  *dst;
+     int	    w;
+     Bool    destInvarient;
+     CARD32  pixel;
++
+     FbDeclareMergeRop ();
+     
+     FbInitializeMergeRop(alu, (pm | (~(FbBits) 0xffffff)));
+@@ -190,25 +169,21 @@ fb24_32BltUp (CARD8	    *srcLine,
+     srcLine += srcX * 3;
+     dstLine += dstX * 4;
+ 
+-    while (height--)
+-    {
++    while (height--) {
+ 	w = width;
+ 	src = srcLine;
+ 	dst = (CARD32 *) dstLine;
+ 	srcLine += srcStride;
+ 	dstLine += dstStride;
+-	if (destInvarient)
+-	{
+-	    while (((long) src & 3) && w)
+-	    {
++        if (destInvarient) {
++            while (((long) src & 3) && w) {
+ 		w--;
+ 		pixel = Get24(src);
+ 		src += 3;
+ 		WRITE(dst++, FbDoDestInvarientMergeRop(pixel));
+ 	    }
+ 	    /* Do four aligned pixels at a time */
+-	    while (w >= 4)
+-	    {
++            while (w >= 4) {
+ 		CARD32  s0, s1;
+ 
+ 		s0 = READ((CARD32 *)src);
+@@ -241,18 +216,15 @@ fb24_32BltUp (CARD8	    *srcLine,
+ 		src += 12;
+ 		w -= 4;
+ 	    }
+-	    while (w)
+-	    {
++            while (w) {
+ 		w--;
+ 		pixel = Get24(src);
+ 		src += 3;
+ 		WRITE(dst++, FbDoDestInvarientMergeRop(pixel));
+ 	    }
+ 	}
+-	else
+-	{
+-	    while (w--)
+-	    {
++        else {
++            while (w--) {
+ 		pixel = Get24(src);
+ 		src += 3;
+ 		WRITE(dst, FbDoMergeRop(pixel, READ(dst)));
+@@ -268,10 +240,7 @@ fb24_32BltUp (CARD8	    *srcLine,
+ void
+ fb24_32GetSpans(DrawablePtr	pDrawable, 
+ 		int		wMax, 
+-		DDXPointPtr	ppt, 
+-		int		*pwidth, 
+-		int		nspans, 
+-		char		*pchardstStart)
++                DDXPointPtr ppt, int *pwidth, int nspans, char *pchardstStart)
+ {
+     FbBits	    *srcBits;
+     CARD8	    *src;
+@@ -284,21 +253,11 @@ fb24_32GetSpans(DrawablePtr	pDrawable,
+     src = (CARD8 *) srcBits;
+     srcStride *= sizeof (FbBits);
+     
+-    while (nspans--)
+-    {
++    while (nspans--) {
+ 	dst = (CARD8 *) pchardstStart;
+ 	fb24_32BltUp (src + (ppt->y + srcYoff) * srcStride, srcStride,
+ 		      ppt->x + srcXoff,
+-	       
+-		      dst,
+-		      1,
+-		      0,
+-
+-		      *pwidth,
+-		      1,
+-
+-		      GXcopy,
+-		      FB_ALLONES);
++                     dst, 1, 0, *pwidth, 1, GXcopy, FB_ALLONES);
+ 	
+ 	pchardstStart += PixmapBytePad(*pwidth, pDrawable->depth);
+ 	ppt++;
+@@ -312,10 +271,7 @@ void
+ fb24_32SetSpans (DrawablePtr	    pDrawable,
+ 		 GCPtr		    pGC,
+ 		 char		    *src,
+-		 DDXPointPtr	    ppt,
+-		 int		    *pwidth,
+-		 int		    nspans,
+-		 int		    fSorted)
++                DDXPointPtr ppt, int *pwidth, int nspans, int fSorted)
+ {
+     FbGCPrivPtr	    pPriv = fbGetGCPrivate (pGC);
+     RegionPtr	    pClip = fbGetCompositeClip(pGC);
+@@ -331,18 +287,15 @@ fb24_32SetSpans (DrawablePtr	    pDrawable,
+     fbGetDrawable (pDrawable, dstBits, dstStride, dstBpp, dstXoff, dstYoff);
+     dst = (CARD8 *) dstBits;
+     dstStride *= sizeof (FbBits);
+-    while (nspans--)
+-    {
++    while (nspans--) {
+ 	d = dst + (ppt->y + dstYoff) * dstStride;
+ 	s = (CARD8 *) src;
+ 	n = RegionNumRects(pClip);
+ 	pbox = RegionRects (pClip);
+-	while (n--)
+-	{
++        while (n--) {
+ 	    if (pbox->y1 > ppt->y)
+ 		break;
+-	    if (pbox->y2 > ppt->y)
+-	    {
++            if (pbox->y2 > ppt->y) {
+ 		x1 = ppt->x;
+ 		x2 = x1 + *pwidth;
+ 		if (pbox->x1 > x1)
+@@ -356,11 +309,7 @@ fb24_32SetSpans (DrawablePtr	    pDrawable,
+ 				    d,
+ 				    dstStride,
+ 				    x1 + dstXoff,
+-
+-				    (x2 - x1),
+-				    1,
+-				    pGC->alu,
+-				    pPriv->pm);
++                                   (x2 - x1), 1, pGC->alu, pPriv->pm);
+ 	    }
+ 	}
+ 	src += PixmapBytePad (*pwidth, pDrawable->depth);
+@@ -380,11 +329,7 @@ fb24_32PutZImage (DrawablePtr	pDrawable,
+ 		  int		alu,
+ 		  FbBits	pm,
+ 		  int		x,
+-		  int		y,
+-		  int		width,
+-		  int		height,
+-		  CARD8		*src,
+-		  FbStride	srcStride)
++                 int y, int width, int height, CARD8 *src, FbStride srcStride)
+ {
+     FbBits	*dstBits;
+     CARD8	*dst;
+@@ -400,10 +345,7 @@ fb24_32PutZImage (DrawablePtr	pDrawable,
+     dst = (CARD8 *) dstBits;
+ 
+     for (nbox = RegionNumRects (pClip),
+-	 pbox = RegionRects(pClip);
+-	 nbox--;
+-	 pbox++)
+-    {
++         pbox = RegionRects(pClip); nbox--; pbox++) {
+ 	x1 = x;
+ 	y1 = y;
+ 	x2 = x + width;
+@@ -421,16 +363,8 @@ fb24_32PutZImage (DrawablePtr	pDrawable,
+ 	fb24_32BltDown (src + (y1 - y) * srcStride,
+ 			srcStride,
+ 			(x1 - x),
+-
+ 			dst + (y1 + dstYoff) * dstStride,
+-			dstStride,
+-			x1 + dstXoff,
+-
+-			(x2 - x1),
+-			(y2 - y1),
+-
+-			alu,
+-			pm);
++                       dstStride, x1 + dstXoff, (x2 - x1), (y2 - y1), alu, pm);
+     }
+ 
+     fbFinishAccess (pDrawable);
+@@ -441,10 +375,7 @@ fb24_32GetImage (DrawablePtr     pDrawable,
+ 		 int             x,
+ 		 int             y,
+ 		 int             w,
+-		 int             h,
+-		 unsigned int    format,
+-		 unsigned long   planeMask,
+-		 char            *d)
++                int h, unsigned int format, unsigned long planeMask, char *d)
+ {
+     FbBits	    *srcBits;
+     CARD8	    *src;
+@@ -466,8 +397,7 @@ fb24_32GetImage (DrawablePtr     pDrawable,
+     if (pm != FB_ALLONES)
+ 	memset (d, 0, dstStride * h);
+     fb24_32BltUp (src + (y + srcYoff) * srcStride, srcStride, x + srcXoff,
+-		  (CARD8 *) d, dstStride, 0,
+-		  w, h, GXcopy, pm);
++                 (CARD8 *) d, dstStride, 0, w, h, GXcopy, pm);
+ 
+     fbFinishAccess (pDrawable);
+ }
+@@ -480,10 +410,7 @@ fb24_32CopyMtoN (DrawablePtr pSrcDrawable,
+ 		 int         nbox,
+ 		 int         dx,
+ 		 int         dy,
+-		 Bool        reverse,
+-		 Bool        upsidedown,
+-		 Pixel       bitplane,
+-		 void        *closure)
++                Bool reverse, Bool upsidedown, Pixel bitplane, void *closure)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate(pGC);
+     FbBits	*srcBits;
+@@ -509,21 +436,15 @@ fb24_32CopyMtoN (DrawablePtr pSrcDrawable,
+     else
+ 	blt = fb24_32BltDown;
+     
+-    while (nbox--)
+-    {
++    while (nbox--) {
+ 	(*blt) (src + (pbox->y1 + dy + srcYoff) * srcStride,
+ 		srcStride,
+ 		(pbox->x1 + dx + srcXoff),
+-
+ 		dst + (pbox->y1 + dstYoff) * dstStride,
+ 		dstStride,
+ 		(pbox->x1 + dstXoff),
+-
+ 		(pbox->x2 - pbox->x1),
+-		(pbox->y2 - pbox->y1),
+-
+-		pGC->alu,
+-		pPriv->pm);
++                (pbox->y2 - pbox->y1), pGC->alu, pPriv->pm);
+ 	pbox++;
+     }
+ 
+@@ -561,16 +482,11 @@ fb24_32ReformatTile(PixmapPtr pOldTile, int bitsPerPixel)
+     (*blt) ((CARD8 *) old,
+ 	    oldStride * sizeof (FbBits),
+ 	    0,
+-
+ 	    (CARD8 *) new,
+ 	    newStride * sizeof (FbBits),
+ 	    0,
+-
+ 	    pOldTile->drawable.width,
+-	    pOldTile->drawable.height,
+-
+-	    GXcopy,
+-	    FB_ALLONES);
++            pOldTile->drawable.height, GXcopy, FB_ALLONES);
+ 
+     fbFinishAccess (&pOldTile->drawable);
+     fbFinishAccess (&pNewTile->drawable);
+@@ -597,6 +513,7 @@ fb24_32CreateScreenResources(ScreenPtr pScreen)
+     if((retval = miCreateScreenResources(pScreen))) {
+ 	/* fix the screen pixmap */
+ 	PixmapPtr pPix = (PixmapPtr)pScreen->devPrivate;
++
+ 	pPix->drawable.bitsPerPixel = 24;
+ 	pPix->devKind = pitch;
+     }
+@@ -609,9 +526,7 @@ fb24_32ModifyPixmapHeader (PixmapPtr   pPixmap,
+ 			   int         width,
+ 			   int         height,
+ 			   int         depth,
+-			   int         bitsPerPixel,
+-			   int         devKind,
+-			   pointer     pPixData)
++                          int bitsPerPixel, int devKind, pointer pPixData)
+ {
+     int	    bpp, w;
+ 
+@@ -620,10 +535,8 @@ fb24_32ModifyPixmapHeader (PixmapPtr   pPixmap,
+     bpp = bitsPerPixel;
+     if (bpp <= 0)
+ 	bpp = pPixmap->drawable.bitsPerPixel;
+-    if (bpp == 24)
+-    {
+-	if (devKind < 0)
+-	{
++    if (bpp == 24) {
++        if (devKind < 0) {
+ 	    w = width;
+ 	    if (w <= 0)
+ 		w = pPixmap->drawable.width;

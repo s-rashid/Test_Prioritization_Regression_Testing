@@ -1,0 +1,96 @@
+diff --git a/exa/exa_classic.c b/exa/exa_classic.c
+index 919b29d..1fa534b 100644
+--- a/exa/exa_classic.c
++++ b/exa/exa_classic.c
+@@ -60,6 +60,7 @@ exaCreatePixmap_classic(ScreenPtr pScreen, int w, int h, int depth,
+     ExaPixmapPrivPtr	pExaPixmap;
+     BoxRec box;
+     int bpp;
++
+     ExaScreenPriv(pScreen);
+ 
+     if (w > 32767 || h > 32767)
+@@ -134,8 +135,7 @@ exaCreatePixmap_classic(ScreenPtr pScreen, int w, int h, int depth,
+     RegionInit(&pExaPixmap->validSys, &box, 0);
+     RegionInit(&pExaPixmap->validFB, &box, 0);
+ 
+-    exaSetAccelBlock(pExaScr, pExaPixmap,
+-                     w, h, bpp);
++    exaSetAccelBlock(pExaScr, pExaPixmap, w, h, bpp);
+ 
+     /* During a fallback we must prepare access. */
+     if (pExaScr->fallback_counter)
+@@ -145,8 +145,9 @@ exaCreatePixmap_classic(ScreenPtr pScreen, int w, int h, int depth,
+ }
+ 
+ Bool
+-exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height, int depth,
+-		      int bitsPerPixel, int devKind, pointer pPixData)
++exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height,
++                              int depth, int bitsPerPixel, int devKind,
++                              pointer pPixData)
+ {
+     ScreenPtr pScreen;
+     ExaScreenPrivPtr pExaScr;
+@@ -182,11 +183,9 @@ exaModifyPixmapHeader_classic(PixmapPtr pPixmap, int width, int height, int dept
+ 	}
+ 
+         if (width > 0 && height > 0 && bitsPerPixel > 0) {
+-            exaSetFbPitch(pExaScr, pExaPixmap,
+-                          width, height, bitsPerPixel);
++            exaSetFbPitch(pExaScr, pExaPixmap, width, height, bitsPerPixel);
+ 
+-            exaSetAccelBlock(pExaScr, pExaPixmap,
+-                             width, height, bitsPerPixel);
++            exaSetAccelBlock(pExaScr, pExaPixmap, width, height, bitsPerPixel);
+         }
+ 
+ 	/* Pixmaps subject to ModifyPixmapHeader will be pinned to system or
+@@ -214,22 +213,20 @@ Bool
+ exaDestroyPixmap_classic (PixmapPtr pPixmap)
+ {
+     ScreenPtr	pScreen = pPixmap->drawable.pScreen;
++
+     ExaScreenPriv(pScreen);
+     Bool ret;
+ 
+-    if (pPixmap->refcnt == 1)
+-    {
++    if (pPixmap->refcnt == 1) {
+ 	ExaPixmapPriv (pPixmap);
+ 
+ 	exaDestroyPixmap(pPixmap);
+ 
+-	if (pExaPixmap->area)
+-	{
++        if (pExaPixmap->area) {
+ 	    DBG_PIXMAP(("-- 0x%p (0x%x) (%dx%d)\n",
+                         (void*)pPixmap->drawable.id,
+ 			 ExaGetPixmapPriv(pPixmap)->area->offset,
+-			 pPixmap->drawable.width,
+-			 pPixmap->drawable.height));
++                        pPixmap->drawable.width, pPixmap->drawable.height));
+ 	    /* Free the offscreen area */
+ 	    exaOffscreenFree (pPixmap->drawable.pScreen, pExaPixmap->area);
+ 	    pPixmap->devPrivate.ptr = pExaPixmap->sys_ptr;
+@@ -250,16 +247,19 @@ Bool
+ exaPixmapHasGpuCopy_classic(PixmapPtr pPixmap)
+ {
+     ScreenPtr pScreen = pPixmap->drawable.pScreen;
++
+     ExaScreenPriv(pScreen);
+     ExaPixmapPriv(pPixmap);
+     Bool ret;
+ 
+     if (pExaScr->info->PixmapIsOffscreen) {
+ 	void* old_ptr = pPixmap->devPrivate.ptr;
++
+ 	pPixmap->devPrivate.ptr = ExaGetPixmapAddress(pPixmap);
+ 	ret = pExaScr->info->PixmapIsOffscreen(pPixmap);
+ 	pPixmap->devPrivate.ptr = old_ptr;
+-    } else
++    }
++    else
+ 	ret = (pExaPixmap->use_gpu_copy && pExaPixmap->fb_ptr);
+ 
+     return ret;

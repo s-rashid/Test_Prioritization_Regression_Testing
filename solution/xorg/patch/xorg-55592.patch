@@ -1,0 +1,93 @@
+diff --git a/hw/xfree86/os-support/shared/vidmem.c b/hw/xfree86/os-support/shared/vidmem.c
+index 54f6c64..a7717d8 100644
+--- a/hw/xfree86/os-support/shared/vidmem.c
++++ b/hw/xfree86/os-support/shared/vidmem.c
+@@ -25,7 +25,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -78,8 +77,7 @@ getVidMapRec(int scrnIndex)
+ 	VidMapPtr vp;
+ 	ScrnInfoPtr pScrn;
+ 
+-	if ((scrnIndex < 0) ||
+-	    !(pScrn = xf86Screens[scrnIndex]))
++    if ((scrnIndex < 0) || !(pScrn = xf86Screens[scrnIndex]))
+ 		return &vidMapRec;
+ 
+ 	if (vidMapIndex < 0)
+@@ -111,8 +109,7 @@ findMapping(VidMapPtr vp, pointer vbase, unsigned long size)
+ 	int i;
+ 
+ 	for (i = 0; i < vp->numMappings; i++) {
+-		if (vp->mappings[i]->virtBase == vbase &&
+-		    vp->mappings[i]->size == size)
++        if (vp->mappings[i]->virtBase == vbase && vp->mappings[i]->size == size)
+ 			return vp->mappings[i];
+ 	}
+ 	return NULL;
+@@ -127,7 +124,8 @@ removeMapping(VidMapPtr vp, MappingPtr mp)
+ 		if (vp->mappings[i] == mp) {
+ 			found = 1;
+ 			free(vp->mappings[i]);
+-		} else if (found) {
++        }
++        else if (found) {
+ 			vp->mappings[i - 1] = vp->mappings[i];
+ 		}
+ 	}
+@@ -136,8 +134,8 @@ removeMapping(VidMapPtr vp, MappingPtr mp)
+ }
+ 
+ enum { OPTION_MTRR };
+-static const OptionInfoRec opts[] =
+-{
++
++static const OptionInfoRec opts[] = {
+ 	{ OPTION_MTRR, "mtrr", OPTV_BOOLEAN, {0}, FALSE },
+ 	{ -1, NULL, OPTV_NONE, {0}, FALSE }
+ };
+@@ -150,8 +148,7 @@ checkMtrrOption(VidMapPtr vp)
+ 
+ 		options = xnfalloc(sizeof(opts));
+ 		(void)memcpy(options, opts, sizeof(opts));
+-		xf86ProcessOptions(vp->pScrn->scrnIndex, vp->pScrn->options,
+-					options);
++        xf86ProcessOptions(vp->pScrn->scrnIndex, vp->pScrn->options, options);
+ 		if (xf86GetOptValBool(options, OPTION_MTRR, &vp->mtrrEnabled))
+ 			vp->mtrrFrom = X_CONFIG;
+ 		free(options);
+@@ -160,7 +157,8 @@ checkMtrrOption(VidMapPtr vp)
+ }
+ 
+ void
+-xf86MakeNewMapping(int ScreenNum, int Flags, unsigned long Base, unsigned long Size, pointer Vbase)
++xf86MakeNewMapping(int ScreenNum, int Flags, unsigned long Base,
++                   unsigned long Size, pointer Vbase)
+ {
+ 	VidMapPtr vp;
+ 	MappingPtr mp;
+@@ -214,12 +212,10 @@ xf86MapVidMem(int ScreenNum, int Flags, unsigned long Base, unsigned long Size)
+ 	if (vp->mtrrEnabled && vidMemInfo.setWC) {
+ 		if (Flags & (VIDMEM_MMIO | VIDMEM_MMIO_32BIT))
+ 			mp->mtrrInfo =
+-				vidMemInfo.setWC(ScreenNum, Base, Size, FALSE,
+-						 vp->mtrrFrom);
++                vidMemInfo.setWC(ScreenNum, Base, Size, FALSE, vp->mtrrFrom);
+ 		else if (Flags & VIDMEM_FRAMEBUFFER)
+ 			mp->mtrrInfo =
+-				vidMemInfo.setWC(ScreenNum, Base, Size, TRUE,
+-						 vp->mtrrFrom);
++                vidMemInfo.setWC(ScreenNum, Base, Size, TRUE, vp->mtrrFrom);
+ 	}
+ 	return vbase;
+ }
+@@ -287,4 +283,3 @@ xf86MapReadSideEffects(int ScreenNum, int Flags, pointer base,
+ 
+ 	vidMemInfo.readSideEffects(ScreenNum, base, Size);
+ }
+-

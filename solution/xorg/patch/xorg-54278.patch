@@ -1,0 +1,15 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index 0ab04f5..0186f53 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -245,6 +245,10 @@ InputClientGone(
+ 	WindowPtr              /* pWin */,
+ 	XID                    /* id */);
+ 
++extern void
++WindowGone(
++	WindowPtr              /* win */);
++
+ extern int
+ SendEvent (
+ 	ClientPtr              /* client */,

@@ -1,0 +1,35 @@
+diff --git a/mi/miwideline.h b/mi/miwideline.h
+index 41b8bb2..1665ebf 100644
+--- a/mi/miwideline.h
++++ b/mi/miwideline.h
+@@ -32,30 +32,6 @@ from The Open Group.
+ #include "mifpoly.h" /* for ICEIL */
+ 
+ /* 
+- * interface data to span-merging polygon filler
+- */
+-
+-typedef struct _SpanData {
+-    SpanGroup	fgGroup, bgGroup;
+-} SpanDataRec, *SpanDataPtr;
+-
+-#define AppendSpanGroup(pGC, pixel, spanPtr, spanData) { \
+-	SpanGroup   *group, *othergroup = NULL; \
+-	if (pixel == pGC->fgPixel) \
+-	{ \
+-	    group = &spanData->fgGroup; \
+-	    if (pGC->lineStyle == LineDoubleDash) \
+-		othergroup = &spanData->bgGroup; \
+-	} \
+-	else \
+-	{ \
+-	    group = &spanData->bgGroup; \
+-	    othergroup = &spanData->fgGroup; \
+-	} \
+-	miAppendSpans (group, othergroup, spanPtr); \
+-}
+-
+-/*
+  * Polygon edge description for integer wide-line routines
+  */
+ 

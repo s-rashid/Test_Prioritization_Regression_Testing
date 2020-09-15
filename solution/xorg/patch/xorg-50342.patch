@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86VGAarbiter.c b/hw/xfree86/common/xf86VGAarbiter.c
+index 4f46059..951a585 100644
+--- a/hw/xfree86/common/xf86VGAarbiter.c
++++ b/hw/xfree86/common/xf86VGAarbiter.c
+@@ -1123,7 +1123,7 @@ void xf86VGAarbiterLock(ScrnInfoPtr pScrn) {}
+ void xf86VGAarbiterUnlock(ScrnInfoPtr pScrn) {}
+ Bool xf86VGAarbiterAllowDRI(ScreenPtr pScreen) { return TRUE; }
+ void xf86VGAarbiterScrnInit(ScrnInfoPtr pScrn) {}
+-void xf86VGAarbiterDeviceDecodes(ScrnInfoPtr pScrn) {}
++void xf86VGAarbiterDeviceDecodes(ScrnInfoPtr pScrn, int rsrc) {}
+ Bool xf86VGAarbiterWrapFunctions(void) { return FALSE; }
+ 
+ #endif

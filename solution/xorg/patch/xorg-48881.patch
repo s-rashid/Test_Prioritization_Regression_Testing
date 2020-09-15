@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86pciBus.h b/hw/xfree86/common/xf86pciBus.h
+index f84a496..3f02b93 100644
+--- a/hw/xfree86/common/xf86pciBus.h
++++ b/hw/xfree86/common/xf86pciBus.h
+@@ -37,6 +37,6 @@ void xf86PciProbe(void);
+ Bool xf86PciAddMatchingDev(DriverPtr drvp);
+ Bool xf86PciProbeDev(DriverPtr drvp);
+ void xf86PciIsolateDevice(char *argument);
+-void xf86PciMatchDriver(char* matches[], int nmatches);
++int xf86PciMatchDriver(char* matches[], int nmatches);
+ 
+ #endif /* _XF86_PCI_BUS_H */

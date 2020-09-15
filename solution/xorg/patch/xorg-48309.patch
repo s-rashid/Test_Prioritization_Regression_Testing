@@ -1,0 +1,17 @@
+diff --git a/include/misc.h b/include/misc.h
+index c7add25..e4bdee4 100644
+--- a/include/misc.h
++++ b/include/misc.h
+@@ -106,6 +106,12 @@ typedef unsigned long ATOM;
+ #define X_DEPRECATED
+ #endif
+ 
++#if defined(__GNUC__) && (__GNUC__ > 2)
++#define X_NORETURN __attribute__((noreturn))
++#else
++#define X_NORETURN
++#endif
++
+ #ifndef _XTYPEDEF_CALLBACKLISTPTR
+ typedef struct _CallbackList *CallbackListPtr; /* also in dix.h */
+ #define _XTYPEDEF_CALLBACKLISTPTR

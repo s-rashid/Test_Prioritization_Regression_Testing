@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index c3ffc27..7feb48c 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -1275,7 +1275,7 @@ xf86PostKeyEventM(DeviceIntPtr	device,
+     DeviceIntPtr pointer;
+ 
+     /* Some pointers send key events, paired device is wrong then. */
+-    pointer = IsPointerDevice(device) ? device : GetPairedDevice(device);
++    pointer = GetMaster(device, POINTER_OR_FLOAT);
+     if (miPointerGetScreen(pointer)) {
+         int index = miPointerGetScreen(pointer)->myNum;
+ 

@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index 1d33bdd..c8c7f5f 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -65,7 +65,7 @@
+ 
+ /* RandR */
+ #define SERVER_RANDR_MAJOR_VERSION		1
+-#define SERVER_RANDR_MINOR_VERSION		3
++#define SERVER_RANDR_MINOR_VERSION		4
+ 
+ /* Record */
+ #define SERVER_RECORD_MAJOR_VERSION		1

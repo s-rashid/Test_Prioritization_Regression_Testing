@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index da17129..d7ea2e3 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -83,8 +83,6 @@ Bool            g_fNativeGl = FALSE;
+  * Global variables for dynamically loaded libraries and
+  * their function pointers
+  */
+-
+-HMODULE		g_hmodCommonControls = NULL;
+ FARPROC		g_fpTrackMouseEvent = (FARPROC) (void (*)(void))NoopDDA;
+ 
+ 

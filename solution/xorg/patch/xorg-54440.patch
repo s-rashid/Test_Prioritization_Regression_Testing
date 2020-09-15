@@ -1,0 +1,28 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 5544623..b91b41f 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -425,7 +425,9 @@ Dispatch(void)
+ 			client->minorOp = ext->MinorOpcode(client);
+ 		}
+ #ifdef XSERVER_DTRACE
+-		XSERVER_REQUEST_START(LookupMajorName(client->majorOp), client->majorOp,
++		if (XSERVER_REQUEST_START_ENABLED())
++		    XSERVER_REQUEST_START(LookupMajorName(client->majorOp),
++					  client->majorOp,
+ 			      ((xReq *)client->requestBuffer)->length,
+ 			      client->index, client->requestBuffer);
+ #endif
+@@ -438,8 +440,10 @@ Dispatch(void)
+ 		    XaceHookAuditEnd(client, result);
+ 		}
+ #ifdef XSERVER_DTRACE
+-		XSERVER_REQUEST_DONE(LookupMajorName(client->majorOp), client->majorOp,
+-			      client->sequence, client->index, result);
++		if (XSERVER_REQUEST_DONE_ENABLED())
++		    XSERVER_REQUEST_DONE(LookupMajorName(client->majorOp),
++					 client->majorOp, client->sequence,
++					 client->index, result);
+ #endif
+ 
+ 		if (client->noClientException != Success)

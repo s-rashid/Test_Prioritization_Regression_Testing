@@ -1,0 +1,22 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index 99b6711..bb5bae6 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -637,7 +637,7 @@ int AllocXTestDevice (ClientPtr client, char* name,
+ {
+     int retval;
+     int len = strlen(name);
+-    char *xtestname = xcalloc(len + 7, 1 );
++    char *xtestname = calloc(len + 7, 1 );
+     char dummy = 1;
+ 
+     strncpy( xtestname, name, len);
+@@ -660,7 +660,7 @@ int AllocXTestDevice (ClientPtr client, char* name,
+         XIRegisterPropertyHandler(*keybd, DeviceSetXTestProperty, NULL, NULL);
+     }
+ 
+-    xfree( xtestname );
++    free( xtestname );
+ 
+     return retval;
+ }

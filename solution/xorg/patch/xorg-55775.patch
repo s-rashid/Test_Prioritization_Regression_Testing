@@ -1,0 +1,499 @@
+diff --git a/hw/xquartz/mach-startup/bundle-main.c b/hw/xquartz/mach-startup/bundle-main.c
+index 94c6068..7a53803 100644
+--- a/hw/xquartz/mach-startup/bundle-main.c
++++ b/hw/xquartz/mach-startup/bundle-main.c
+@@ -69,8 +69,13 @@ void DarwinListenOnOpenFD(int fd);
+ extern aslclient aslc;
+ 
+ /* Ditto, from os/log.c */
+-extern void ErrorF(const char *f, ...) _X_ATTRIBUTE_PRINTF(1,2);
+-extern void FatalError(const char *f, ...) _X_ATTRIBUTE_PRINTF(1,2) _X_NORETURN;
++extern void
++ErrorF(const char *f, ...)
++_X_ATTRIBUTE_PRINTF(1, 2);
++extern void
++FatalError(const char *f, ...)
++_X_ATTRIBUTE_PRINTF(1, 2)
++    _X_NORETURN;
+ 
+ extern int noPanoramiXExtension;
+ 
+@@ -86,7 +91,9 @@ extern int noPanoramiXExtension;
+ #endif
+ 
+ static char __crashreporter_info_buff__[4096] = {0};
+-static const char *__crashreporter_info__ __attribute__((__used__)) = &__crashreporter_info_buff__[0];
++
++static const char *__crashreporter_info__ __attribute__ ((__used__)) =
++    &__crashreporter_info_buff__[0];
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+ // This is actually a toolchain requirement, but I'm not sure the correct check,
+ // but it should be fine to just only include it for Leopard and later.  This line
+@@ -94,7 +101,8 @@ static const char *__crashreporter_info__ __attribute__((__used__)) = &__crashre
+ asm (".desc ___crashreporter_info__, 0x10");
+ #endif
+ 
+-static const char *__crashreporter_info__base = "X.Org X Server " XSERVER_VERSION " Build Date: " BUILD_DATE;
++static const char *__crashreporter_info__base =
++    "X.Org X Server " XSERVER_VERSION " Build Date: " BUILD_DATE;
+ 
+ char *bundle_id_prefix = NULL;
+ static char *server_bootstrap_name = NULL;
+@@ -113,7 +121,9 @@ static char *pref_startx_script;
+ 
+ #ifndef HAVE_LIBDISPATCH
+ /*** Pthread Magics ***/
+-static pthread_t create_thread(void *(*func)(void *), void *arg) {
++static pthread_t
++create_thread(void *(*func) (void *), void *arg)
++{
+     pthread_attr_t attr;
+     pthread_t tid;
+ 	
+@@ -134,7 +144,9 @@ union MaxMsgSize {
+ 	union __ReplyUnion__mach_startup_subsystem rep; 
+ };
+ 
+-static mach_port_t checkin_or_register(char *bname) {
++static mach_port_t
++checkin_or_register(char *bname)
++{
+     kern_return_t kr;
+     mach_port_t mp;
+ 
+@@ -150,7 +162,8 @@ static mach_port_t checkin_or_register(char *bname) {
+         exit(EXIT_FAILURE);
+     }
+ 
+-    kr = mach_port_insert_right(mach_task_self(), mp, mp, MACH_MSG_TYPE_MAKE_SEND);
++    kr = mach_port_insert_right(mach_task_self(), mp, mp,
++                                MACH_MSG_TYPE_MAKE_SEND);
+     if (kr != KERN_SUCCESS) {
+         ErrorF("mach_port_insert_right(): %s\n", mach_error_string(kr));
+         exit(EXIT_FAILURE);
+@@ -174,7 +187,9 @@ static mach_port_t checkin_or_register(char *bname) {
+ }
+ 
+ /*** $DISPLAY handoff ***/
+-static int accept_fd_handoff(int connected_fd) {
++static int
++accept_fd_handoff(int connected_fd)
++{
+     int launchd_fd;
+     
+     char databuf[] = "display";
+@@ -209,7 +224,9 @@ static int accept_fd_handoff(int connected_fd) {
+     *((int*)CMSG_DATA(cmsg)) = -1;
+     
+     if(recvmsg(connected_fd, &msg, 0) < 0) {
+-        ErrorF("X11.app: Error receiving $DISPLAY file descriptor.  recvmsg() error: %s\n", strerror(errno));
++        ErrorF
++            ("X11.app: Error receiving $DISPLAY file descriptor.  recvmsg() error: %s\n",
++             strerror(errno));
+         return -1;
+     }
+     
+@@ -227,9 +244,13 @@ typedef struct {
+  * descriptor for the new connection to accept_fd_handoff()
+  */
+ #ifdef HAVE_LIBDISPATCH
+-static void socket_handoff(socket_handoff_t *handoff_data) {
++static void
++socket_handoff(socket_handoff_t * handoff_data)
++{
+ #else
+-static void *socket_handoff_thread(void *arg) {
++static void *
++socket_handoff_thread(void *arg)
++{
+     socket_handoff_t *handoff_data = (socket_handoff_t *)arg;
+ #endif
+ 
+@@ -242,14 +263,17 @@ static void *socket_handoff_thread(void *arg) {
+     while(launchd_fd == -1) {
+         connected_fd = accept(handoff_data->fd, NULL, NULL);
+         if(connected_fd == -1) {
+-            ErrorF("X11.app: Failed to accept incoming connection on socket (fd=%d): %s\n", handoff_data->fd, strerror(errno));
++            ErrorF
++                ("X11.app: Failed to accept incoming connection on socket (fd=%d): %s\n",
++                 handoff_data->fd, strerror(errno));
+             sleep(2);
+             continue;
+         }
+ 
+         launchd_fd = accept_fd_handoff(connected_fd);
+         if(launchd_fd == -1)
+-            ErrorF("X11.app: Error receiving $DISPLAY file descriptor, no descriptor received?  Waiting for another connection.\n");
++            ErrorF
++                ("X11.app: Error receiving $DISPLAY file descriptor, no descriptor received?  Waiting for another connection.\n");
+ 
+         close(connected_fd);
+     }
+@@ -258,7 +282,9 @@ static void *socket_handoff_thread(void *arg) {
+     unlink(handoff_data->filename);
+     free(handoff_data);
+         
+-    ErrorF("X11.app Handing off fd to server thread via DarwinListenOnOpenFD(%d)\n", launchd_fd);
++    ErrorF
++        ("X11.app Handing off fd to server thread via DarwinListenOnOpenFD(%d)\n",
++         launchd_fd);
+     DarwinListenOnOpenFD(launchd_fd);
+ 
+ #ifndef HAVE_LIBDISPATCH
+@@ -266,7 +292,9 @@ static void *socket_handoff_thread(void *arg) {
+ #endif
+ }
+ 
+-static int create_socket(char *filename_out) {
++static int
++create_socket(char *filename_out)
++{
+     struct sockaddr_un servaddr_un;
+     struct sockaddr *servaddr;
+     socklen_t servaddr_len;
+@@ -279,31 +307,38 @@ static int create_socket(char *filename_out) {
+         /* Setup servaddr_un */
+         memset (&servaddr_un, 0, sizeof (struct sockaddr_un));
+         servaddr_un.sun_family = AF_UNIX;
+-        strlcpy(servaddr_un.sun_path, filename_out, sizeof(servaddr_un.sun_path));
++        strlcpy(servaddr_un.sun_path, filename_out,
++                sizeof(servaddr_un.sun_path));
+         
+         servaddr = (struct sockaddr *) &servaddr_un;
+-        servaddr_len = sizeof(struct sockaddr_un) - sizeof(servaddr_un.sun_path) + strlen(filename_out);
++        servaddr_len =
++            sizeof(struct sockaddr_un) - sizeof(servaddr_un.sun_path) +
++            strlen(filename_out);
+         
+         ret_fd = socket(PF_UNIX, SOCK_STREAM, 0);
+         if(ret_fd == -1) {
+-            ErrorF("X11.app: Failed to create socket (try %d / %d): %s - %s\n", (int)try+1, (int)try_max, filename_out, strerror(errno));
++            ErrorF("X11.app: Failed to create socket (try %d / %d): %s - %s\n",
++                   (int) try + 1, (int) try_max, filename_out, strerror(errno));
+             continue;
+         }
+         
+         if(bind(ret_fd, servaddr, servaddr_len) != 0) {
+-            ErrorF("X11.app: Failed to bind socket: %d - %s\n", errno, strerror(errno));
++            ErrorF("X11.app: Failed to bind socket: %d - %s\n", errno,
++                   strerror(errno));
+             close(ret_fd);
+             return 0;
+         }
+         
+         if(listen(ret_fd, 10) != 0) {
+-            ErrorF("X11.app: Failed to listen to socket: %s - %d - %s\n", filename_out, errno, strerror(errno));
++            ErrorF("X11.app: Failed to listen to socket: %s - %d - %s\n",
++                   filename_out, errno, strerror(errno));
+             close(ret_fd);
+             return 0;
+         }
+         
+ #ifdef DEBUG
+-        ErrorF("X11.app: Listening on socket for fd handoff:  (%d) %s\n", ret_fd, filename_out);
++        ErrorF("X11.app: Listening on socket for fd handoff:  (%d) %s\n",
++               ret_fd, filename_out);
+ #endif
+         
+         return ret_fd;
+@@ -314,7 +349,9 @@ static int create_socket(char *filename_out) {
+ 
+ static int launchd_socket_handed_off = 0;
+ 
+-kern_return_t do_request_fd_handoff_socket(mach_port_t port, string_t filename) {
++kern_return_t
++do_request_fd_handoff_socket(mach_port_t port, string_t filename)
++{
+     socket_handoff_t *handoff_data;
+     
+     launchd_socket_handed_off = 1;
+@@ -334,30 +371,35 @@ kern_return_t do_request_fd_handoff_socket(mach_port_t port, string_t filename)
+     strlcpy(filename, handoff_data->filename, STRING_T_SIZE);
+ 
+ #ifdef HAVE_LIBDISPATCH
+-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+-        socket_handoff(handoff_data);
+-    });
++    dispatch_async(dispatch_get_global_queue
++                   (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
++                   socket_handoff(handoff_data);}
++    );
+ #else
+     create_thread(socket_handoff_thread, handoff_data);
+ #endif
+     
+ #ifdef DEBUG
+-    ErrorF("X11.app: Thread created for handoff.  Returning success to tell caller to connect and push the fd.\n");
++    ErrorF
++        ("X11.app: Thread created for handoff.  Returning success to tell caller to connect and push the fd.\n");
+ #endif
+ 
+     return KERN_SUCCESS;
+ }
+ 
+-kern_return_t do_request_pid(mach_port_t port, int *my_pid) {
++kern_return_t
++do_request_pid(mach_port_t port, int *my_pid)
++{
+     *my_pid = getpid();
+     return KERN_SUCCESS;
+ }
+ 
+ /*** Server Startup ***/
+-kern_return_t do_start_x11_server(mach_port_t port, string_array_t argv,
++kern_return_t
++do_start_x11_server(mach_port_t port, string_array_t argv,
+                                   mach_msg_type_number_t argvCnt,
+-                                  string_array_t envp,
+-                                  mach_msg_type_number_t envpCnt) {
++                    string_array_t envp, mach_msg_type_number_t envpCnt)
++{
+     /* And now back to char ** */
+     char **_argv = alloca((argvCnt + 1) * sizeof(char *));
+     char **_envp = alloca((envpCnt + 1) * sizeof(char *));
+@@ -393,7 +435,9 @@ kern_return_t do_start_x11_server(mach_port_t port, string_array_t argv,
+         return KERN_FAILURE;
+ }
+ 
+-static int startup_trigger(int argc, char **argv, char **envp) {
++static int
++startup_trigger(int argc, char **argv, char **envp)
++{
+     Display *display;
+     const char *s;
+     
+@@ -407,6 +451,7 @@ static int startup_trigger(int argc, char **argv, char **envp) {
+ 
+         /* We need to count envp */
+         int envpc;
++
+         for(envpc=0; envp[envpc]; envpc++);
+ 
+         /* We have fixed-size string lengths due to limitations in IPC,
+@@ -430,9 +475,11 @@ static int startup_trigger(int argc, char **argv, char **envp) {
+         kr = bootstrap_look_up(bootstrap_port, server_bootstrap_name, &mp);
+         if (kr != KERN_SUCCESS) {
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+-            ErrorF("bootstrap_look_up(%s): %s\n", server_bootstrap_name, bootstrap_strerror(kr));
++            ErrorF("bootstrap_look_up(%s): %s\n", server_bootstrap_name,
++                   bootstrap_strerror(kr));
+ #else
+-            ErrorF("bootstrap_look_up(%s): %ul\n", server_bootstrap_name, (unsigned long)kr);
++            ErrorF("bootstrap_look_up(%s): %ul\n", server_bootstrap_name,
++                   (unsigned long) kr);
+ #endif
+             exit(EXIT_FAILURE);
+         }
+@@ -461,30 +508,40 @@ static int startup_trigger(int argc, char **argv, char **envp) {
+ 
+     /* Start the server */
+     if((s = getenv("DISPLAY"))) {
+-        ErrorF("X11.app: Could not connect to server (DISPLAY=\"%s\", unsetting).  Starting X server.\n", s);
++        ErrorF
++            ("X11.app: Could not connect to server (DISPLAY=\"%s\", unsetting).  Starting X server.\n",
++             s);
+         unsetenv("DISPLAY");
+-    } else {
+-        ErrorF("X11.app: Could not connect to server (DISPLAY is not set).  Starting X server.\n");
++    }
++    else {
++        ErrorF
++            ("X11.app: Could not connect to server (DISPLAY is not set).  Starting X server.\n");
+     }
+     return execute(pref_startx_script);
+ }
+ 
+ /** Setup the environment we want our child processes to inherit */
+-static void ensure_path(const char *dir) {
++static void
++ensure_path(const char *dir)
++{
+     char buf[1024], *temp;
+     
+     /* Make sure /usr/X11/bin is in the $PATH */
+     temp = getenv("PATH");
+     if(temp == NULL || temp[0] == 0) {
+-        snprintf(buf, sizeof(buf), "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:%s", dir);
++        snprintf(buf, sizeof(buf),
++                 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:%s", dir);
+         setenv("PATH", buf, TRUE);
+-    } else if(strnstr(temp, X11BINDIR, sizeof(temp)) == NULL) {
++    }
++    else if (strnstr(temp, X11BINDIR, sizeof(temp)) == NULL) {
+         snprintf(buf, sizeof(buf), "%s:%s", temp, dir);
+         setenv("PATH", buf, TRUE);
+     }
+ }
+ 
+-static void setup_console_redirect(const char *bundle_id) {
++static void
++setup_console_redirect(const char *bundle_id)
++{
+     char *asl_sender;
+     char *asl_facility;
+ 
+@@ -505,7 +562,9 @@ static void setup_console_redirect(const char *bundle_id) {
+     xq_asl_capture_fd(aslc, NULL, ASL_LEVEL_NOTICE, STDERR_FILENO);
+ }
+ 
+-static void setup_env(void) {
++static void
++setup_env(void)
++{
+     char *temp;
+     const char *pds = NULL;
+     const char *disp = getenv("DISPLAY");
+@@ -515,8 +574,10 @@ static void setup_env(void) {
+      * quartz-wm and the Xquartz stub's MachIPC)
+      */
+     CFBundleRef bundle = CFBundleGetMainBundle();
++
+     if(bundle) {
+         CFStringRef pd = CFBundleGetIdentifier(bundle);
++
+         if(pd) {
+             pds = CFStringGetCStringPtr(pd, 0);
+         }
+@@ -548,6 +609,7 @@ static void setup_env(void) {
+     if(disp) {
+         /* s = basename(disp) */
+         const char *d, *s;
++
+ 	    for(s = NULL, d = disp; *d; d++) {
+             if(*d == '/')
+                 s = d + 1;
+@@ -555,11 +617,14 @@ static void setup_env(void) {
+ 
+         if(s && *s) {
+             if(strcmp(bundle_id_prefix, "org.x") == 0 && strcmp(s, ":0") == 0) {
+-                ErrorF("X11.app: Detected old style launchd DISPLAY, please update xinit.\n");
+-            } else {
++                ErrorF
++                    ("X11.app: Detected old style launchd DISPLAY, please update xinit.\n");
++            }
++            else {
+                 temp = (char *)malloc(sizeof(char) * len);
+                 if(!temp) {
+-                    ErrorF("X11.app: Memory allocation error creating space for socket name test.\n");
++                    ErrorF
++                        ("X11.app: Memory allocation error creating space for socket name test.\n");
+                     exit(1);
+                 }
+                 strlcpy(temp, bundle_id_prefix, len);
+@@ -567,14 +632,18 @@ static void setup_env(void) {
+             
+                 if(strcmp(temp, s) != 0) {
+                     /* If we don't have a match, unset it. */
+-                    ErrorF("X11.app: DISPLAY (\"%s\") does not match our id (\"%s\"), unsetting.\n", disp, bundle_id_prefix);
++                    ErrorF
++                        ("X11.app: DISPLAY (\"%s\") does not match our id (\"%s\"), unsetting.\n",
++                         disp, bundle_id_prefix);
+                     unsetenv("DISPLAY");
+                 }
+                 free(temp);
+             }
+-        } else {
++        }
++        else {
+             /* The DISPLAY environment variable is not formatted like a launchd socket, so reset. */
+-            ErrorF("X11.app: DISPLAY does not look like a launchd set variable, unsetting.\n");
++            ErrorF
++                ("X11.app: DISPLAY does not look like a launchd set variable, unsetting.\n");
+             unsetenv("DISPLAY");
+         }
+     }
+@@ -589,7 +658,9 @@ static void setup_env(void) {
+ }
+ 
+ /*** Main ***/
+-int main(int argc, char **argv, char **envp) {
++int
++main(int argc, char **argv, char **envp)
++{
+     Bool listenOnly = FALSE;
+     int i;
+     mach_msg_size_t mxmsgsz = sizeof(union MaxMsgSize) + MAX_TRAILER_SIZE;
+@@ -603,7 +674,8 @@ int main(int argc, char **argv, char **envp) {
+     noPanoramiXExtension = TRUE;
+ 
+     /* Setup the initial crasherporter info */
+-    strlcpy(__crashreporter_info_buff__, __crashreporter_info__base, sizeof(__crashreporter_info_buff__));
++    strlcpy(__crashreporter_info_buff__, __crashreporter_info__base,
++            sizeof(__crashreporter_info_buff__));
+     
+     ErrorF("X11.app: main(): argc=%d\n", argc);
+     for(i=0; i < argc; i++) {
+@@ -632,7 +704,8 @@ int main(int argc, char **argv, char **envp) {
+         pref_login_shell = command_from_prefs("login_shell", DEFAULT_SHELL);
+         assert(pref_login_shell);
+ 
+-        pref_startx_script = command_from_prefs("startx_script", DEFAULT_STARTX);
++        pref_startx_script =
++            command_from_prefs("startx_script", DEFAULT_STARTX);
+         assert(pref_startx_script);
+ 
+         /* Do the fork-twice trick to avoid having to reap zombies */
+@@ -687,7 +760,9 @@ int main(int argc, char **argv, char **envp) {
+     return EXIT_SUCCESS;
+ }
+ 
+-static int execute(const char *command) {
++static int
++execute(const char *command)
++{
+     const char *newargv[4];
+     const char **p;
+     
+@@ -706,7 +781,9 @@ static int execute(const char *command) {
+     return 1;
+ }
+ 
+-static char *command_from_prefs(const char *key, const char *default_value) {
++static char *
++command_from_prefs(const char *key, const char *default_value)
++{
+     char *command = NULL;
+     
+     CFStringRef cfKey;
+@@ -720,16 +797,20 @@ static char *command_from_prefs(const char *key, const char *default_value) {
+     if(!cfKey)
+         return NULL;
+ 
+-    PlistRef = CFPreferencesCopyAppValue(cfKey, kCFPreferencesCurrentApplication);
++    PlistRef =
++        CFPreferencesCopyAppValue(cfKey, kCFPreferencesCurrentApplication);
+     
+     if ((PlistRef == NULL) || (CFGetTypeID(PlistRef) != CFStringGetTypeID())) {
+-        CFStringRef cfDefaultValue = CFStringCreateWithCString(NULL, default_value, kCFStringEncodingASCII);
++        CFStringRef cfDefaultValue =
++            CFStringCreateWithCString(NULL, default_value,
++                                      kCFStringEncodingASCII);
+         int len = strlen(default_value) + 1;
+ 
+         if(!cfDefaultValue)
+             goto command_from_prefs_out;
+ 
+-        CFPreferencesSetAppValue(cfKey, cfDefaultValue, kCFPreferencesCurrentApplication);
++        CFPreferencesSetAppValue(cfKey, cfDefaultValue,
++                                 kCFPreferencesCurrentApplication);
+         CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
+         CFRelease(cfDefaultValue);
+         
+@@ -737,12 +818,15 @@ static char *command_from_prefs(const char *key, const char *default_value) {
+         if(!command)
+             goto command_from_prefs_out;
+         strcpy(command, default_value);
+-    } else {
++    }
++    else {
+         int len = CFStringGetLength((CFStringRef)PlistRef) + 1;
++
+         command = (char *)malloc(len * sizeof(char));
+         if(!command)
+             goto command_from_prefs_out;
+-        CFStringGetCString((CFStringRef)PlistRef, command, len,  kCFStringEncodingASCII);
++        CFStringGetCString((CFStringRef) PlistRef, command, len,
++                           kCFStringEncodingASCII);
+     }
+ 
+ command_from_prefs_out:

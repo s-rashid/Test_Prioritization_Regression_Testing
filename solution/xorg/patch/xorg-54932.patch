@@ -1,0 +1,397 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index 4b63a13..9de7856 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -76,11 +76,9 @@
+ #include <X11/extensions/xf86bigfproto.h>
+ #include "xf86bigfontsrv.h"
+ 
+-static void XF86BigfontResetProc(
+-    ExtensionEntry *	/* extEntry */
++static void XF86BigfontResetProc(ExtensionEntry *       /* extEntry */
+     );
+ 
+-
+ #ifdef HAS_SHM
+ 
+ /* A random signature, transmitted to the clients so they can verify that the
+@@ -100,8 +98,7 @@ static Bool badSysCall = FALSE;
+ #include <sys/signal.h>
+ 
+ static void
+-SigSysHandler(
+-     int signo)
++SigSysHandler(int signo)
+ {
+     badSysCall = TRUE;
+ }
+@@ -117,13 +114,11 @@ CheckForShmSyscall(void)
+ 
+     badSysCall = FALSE;
+     shmid = shmget(IPC_PRIVATE, 4096, IPC_CREAT);
+-    if (shmid != -1)
+-    {
++    if (shmid != -1) {
+         /* Successful allocation - clean up */
+ 	shmctl(shmid, IPC_RMID, NULL);
+     }
+-    else
+-    {
++    else {
+         /* Allocation failed */
+         badSysCall = TRUE;
+     }
+@@ -158,8 +153,7 @@ typedef struct _ShmDesc {
+ static ShmDescPtr ShmList = (ShmDescPtr) NULL;
+ 
+ static ShmDescPtr
+-shmalloc(
+-    unsigned int size)
++shmalloc(unsigned int size)
+ {
+     ShmDescPtr pDesc;
+     int shmid;
+@@ -206,7 +200,8 @@ shmalloc(
+ 
+     pDesc->shmid = shmid;
+     pDesc->attach_addr = addr;
+-    if (ShmList) ShmList->prev = &pDesc->next;
++    if (ShmList)
++        ShmList->prev = &pDesc->next;
+     pDesc->next = ShmList;
+     pDesc->prev = &ShmList;
+     ShmList = pDesc;
+@@ -215,15 +210,15 @@ shmalloc(
+ }
+ 
+ static void
+-shmdealloc(
+-    ShmDescPtr pDesc)
++shmdealloc(ShmDescPtr pDesc)
+ {
+ #ifndef EARLY_REMOVE
+     shmctl(pDesc->shmid, IPC_RMID, (void *) 0);
+ #endif
+     shmdt(pDesc->attach_addr);
+ 
+-    if (pDesc->next) pDesc->next->prev = pDesc->prev;
++    if (pDesc->next)
++        pDesc->next->prev = pDesc->prev;
+     *pDesc->prev = pDesc->next;
+     free(pDesc);
+ }
+@@ -232,8 +227,7 @@ shmdealloc(
+ 
+ /* Called when a font is closed. */
+ void
+-XF86BigfontFreeFontShm(
+-    FontPtr pFont)
++XF86BigfontFreeFontShm(FontPtr pFont)
+ {
+ #ifdef HAS_SHM
+     ShmDescPtr pDesc;
+@@ -262,8 +256,7 @@ XF86BigfontCleanup(void)
+ 
+ /* Called when a server generation dies. */
+ static void
+-XF86BigfontResetProc(
+-    ExtensionEntry* extEntry)
++XF86BigfontResetProc(ExtensionEntry * extEntry)
+ {
+     /* This function is normally called from CloseDownExtensions(), called
+      * from main(). It will be followed by a call to FreeAllResources(),
+@@ -276,12 +269,10 @@ XF86BigfontResetProc(
+     XF86BigfontCleanup();
+ }
+ 
+-
+ /* ========== Handling of extension specific requests ========== */
+ 
+ static int
+-ProcXF86BigfontQueryVersion(
+-    ClientPtr client)
++ProcXF86BigfontQueryVersion(ClientPtr client)
+ {
+     xXF86BigfontQueryVersionReply reply;
+ 
+@@ -307,6 +298,7 @@ ProcXF86BigfontQueryVersion(
+ 	; /* may add more bits here in future versions */
+     if (client->swapped) {
+ 	char tmp;
++
+ 	swaps(&reply.sequenceNumber);
+ 	swapl(&reply.length);
+ 	swaps(&reply.majorVersion);
+@@ -321,8 +313,7 @@ ProcXF86BigfontQueryVersion(
+ }
+ 
+ static void
+-swapCharInfo(
+-    xCharInfo *pCI)
++swapCharInfo(xCharInfo * pCI)
+ {
+     char tmp;
+ 
+@@ -342,16 +333,17 @@ swapCharInfo(
+ 	          (p->ascent << 11) + (p->descent << 6)) ^ p->attributes)
+ 
+ static int
+-ProcXF86BigfontQueryFont(
+-    ClientPtr client)
++ProcXF86BigfontQueryFont(ClientPtr client)
+ {
+     FontPtr pFont;
++
+     REQUEST(xXF86BigfontQueryFontReq);
+     CARD32 stuff_flags;
+     xCharInfo* pmax;
+     xCharInfo* pmin;
+     int nCharInfos;
+     int shmid;
++
+ #ifdef HAS_SHM
+     ShmDescPtr pDesc = NULL;
+ #else
+@@ -367,7 +359,8 @@ ProcXF86BigfontQueryFont(
+ #else
+     switch (client->req_len) {
+ 	case 2: /* client with version 1.0 libX11 */
+-	    stuff_flags = (LocalClient(client) && !client->swapped ? XF86Bigfont_FLAGS_Shm : 0);
++        stuff_flags = (LocalClient(client) &&
++                       !client->swapped ? XF86Bigfont_FLAGS_Shm : 0);
+ 	    break;
+ 	case 3: /* client with version 1.1 libX11 */
+ 	    stuff_flags = stuff->flags;
+@@ -376,7 +369,8 @@ ProcXF86BigfontQueryFont(
+ 	    return BadLength;
+     }
+ #endif
+-    if (dixLookupFontable(&pFont, stuff->id, client, DixGetAttrAccess) != Success)
++    if (dixLookupFontable(&pFont, stuff->id, client, DixGetAttrAccess) !=
++        Success)
+ 	return BadFont;    /* procotol spec says only error is BadFont */
+ 
+     pmax = FONTINKMAX(pFont);
+@@ -402,14 +396,16 @@ ProcXF86BigfontQueryFont(
+ 	    pCI = (xCharInfo *) pDesc->attach_addr;
+ 	    if (stuff_flags & XF86Bigfont_FLAGS_Shm)
+ 		shmid = pDesc->shmid;
+-	} else {
++        }
++        else {
+ 	    if (stuff_flags & XF86Bigfont_FLAGS_Shm && !badSysCall)
+ 		pDesc = shmalloc(nCharInfos * sizeof(xCharInfo)
+ 				 + sizeof(CARD32));
+ 	    if (pDesc) {
+ 		pCI = (xCharInfo *) pDesc->attach_addr;
+ 		shmid = pDesc->shmid;
+-	    } else {
++            }
++            else {
+ #endif
+ 		pCI = malloc(nCharInfos * sizeof(xCharInfo));
+ 		if (!pCI)
+@@ -423,18 +419,18 @@ ProcXF86BigfontQueryFont(
+ 		int ninfos = 0;
+ 		int ncols = pFont->info.lastCol - pFont->info.firstCol + 1;
+ 		int row;
++
+ 		for (row = pFont->info.firstRow;
+-		     row <= pFont->info.lastRow && ninfos < nCharInfos;
+-		     row++) {
++                     row <= pFont->info.lastRow && ninfos < nCharInfos; row++) {
+ 		    unsigned char chars[512];
+ 		    xCharInfo* tmpCharInfos[256];
+ 		    unsigned long count;
+ 		    int col;
+ 		    unsigned long i;
++
+ 		    i = 0;
+ 		    for (col = pFont->info.firstCol;
+-			 col <= pFont->info.lastCol;
+-			 col++) {
++                         col <= pFont->info.lastCol; col++) {
+ 			chars[i++] = row;
+ 			chars[i++] = col;
+ 		    }
+@@ -475,7 +471,8 @@ ProcXF86BigfontQueryFont(
+ 
+ 	    tmp = malloc((4*nCharInfos+1) * sizeof(CARD16));
+ 	    if (!tmp) {
+-		if (!pDesc) free(pCI);
++                if (!pDesc)
++                    free(pCI);
+ 		return BadAlloc;
+ 	    }
+ 	    pIndex2UniqIndex = tmp;
+@@ -499,9 +496,9 @@ ProcXF86BigfontQueryFont(
+ 	    for (NextIndex = 0; NextIndex < nCharInfos; NextIndex++) {
+ 		xCharInfo* p = &pCI[NextIndex];
+ 		CARD32 hashCode = hashCI(p) % hashModulus;
++
+ 		for (i = pHash2UniqIndex[hashCode];
+-		     i != (CARD16)(-1);
+-		     i = pUniqIndex2NextUniqIndex[i]) {
++                     i != (CARD16) (-1); i = pUniqIndex2NextUniqIndex[i]) {
+ 		    j = pUniqIndex2Index[i];
+ 		    if (pCI[j].leftSideBearing == p->leftSideBearing
+ 			&& pCI[j].rightSideBearing == p->rightSideBearing
+@@ -514,7 +511,8 @@ ProcXF86BigfontQueryFont(
+ 		if (i != (CARD16)(-1)) {
+ 		    /* Found *p at Index j, UniqIndex i */
+ 		    pIndex2UniqIndex[NextIndex] = i;
+-		} else {
++                }
++                else {
+ 		    /* Allocate a new entry in the Uniq table */
+ 		    if (hashModulus <= 2*NextUniqIndex
+ 			&& hashModulus < nCharInfos+1) {
+@@ -530,7 +528,8 @@ ProcXF86BigfontQueryFont(
+ 			    j = pUniqIndex2Index[i];
+ 			    p = &pCI[j];
+ 			    hashCode = hashCI(p) % hashModulus;
+-			    pUniqIndex2NextUniqIndex[i] = pHash2UniqIndex[hashCode];
++                            pUniqIndex2NextUniqIndex[i] =
++                                pHash2UniqIndex[hashCode];
+ 			    pHash2UniqIndex[hashCode] = i;
+ 			}
+ 			p = &pCI[NextIndex];
+@@ -550,8 +549,7 @@ ProcXF86BigfontQueryFont(
+ 
+     {
+ 	int nfontprops = pFont->info.nprops;
+-	int rlength =
+-	   sizeof(xXF86BigfontQueryFontReply)
++        int rlength = sizeof(xXF86BigfontQueryFontReply)
+ 	   + nfontprops * sizeof(xFontProp)
+ 	   + (nCharInfos > 0 && shmid == -1
+ 	      ? nUniqCharInfos * sizeof(xCharInfo)
+@@ -559,10 +557,13 @@ ProcXF86BigfontQueryFont(
+ 	      : 0);
+ 	xXF86BigfontQueryFontReply* reply = malloc(rlength);
+ 	char* p;
++
+ 	if (!reply) {
+ 	    if (nCharInfos > 0) {
+-		if (shmid == -1) free(pIndex2UniqIndex);
+-		if (!pDesc) free(pCI);
++                if (shmid == -1)
++                    free(pIndex2UniqIndex);
++                if (!pDesc)
++                    free(pCI);
+ 	    }
+ 	    return BadAlloc;
+ 	}
+@@ -587,6 +588,7 @@ ProcXF86BigfontQueryFont(
+ 	reply->shmsegoffset = 0;
+ 	if (client->swapped) {
+ 	    char tmp;
++
+ 	    swaps(&reply->sequenceNumber);
+ 	    swapl(&reply->length);
+ 	    swapCharInfo(&reply->minBounds);
+@@ -607,13 +609,14 @@ ProcXF86BigfontQueryFont(
+ 	    FontPropPtr pFP;
+ 	    xFontProp* prFP;
+ 	    int i;
++
+ 	    for (i = 0, pFP = pFont->info.props, prFP = (xFontProp *) p;
+-		 i < nfontprops;
+-		 i++, pFP++, prFP++) {
++                 i < nfontprops; i++, pFP++, prFP++) {
+ 		prFP->name = pFP->name;
+ 		prFP->value = pFP->value;
+ 		if (client->swapped) {
+ 		    char tmp;
++
+ 		    swapl(&prFP->name);
+ 		    swapl(&prFP->value);
+ 		}
+@@ -624,6 +627,7 @@ ProcXF86BigfontQueryFont(
+ 	    xCharInfo* pci;
+ 	    CARD16* ps;
+ 	    int i, j;
++
+ 	    pci = (xCharInfo*) p;
+ 	    for (i = 0; i < nUniqCharInfos; i++, pci++) {
+ 		*pci = pCI[pUniqIndex2Index[i]];
+@@ -635,6 +639,7 @@ ProcXF86BigfontQueryFont(
+ 		*ps = pIndex2UniqIndex[j];
+ 		if (client->swapped) {
+ 		    char tmp;
++
+ 		    swaps(ps);
+ 		}
+ 	    }
+@@ -642,16 +647,17 @@ ProcXF86BigfontQueryFont(
+ 	WriteToClient(client, rlength, (char *)reply);
+ 	free(reply);
+ 	if (nCharInfos > 0) {
+-	    if (shmid == -1) free(pIndex2UniqIndex);
+-	    if (!pDesc) free(pCI);
++            if (shmid == -1)
++                free(pIndex2UniqIndex);
++            if (!pDesc)
++                free(pCI);
+ 	}
+ 	return Success;
+     }
+ }
+ 
+ static int
+-ProcXF86BigfontDispatch(
+-    ClientPtr client)
++ProcXF86BigfontDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+ 
+@@ -666,8 +672,7 @@ ProcXF86BigfontDispatch(
+ }
+ 
+ static int
+-SProcXF86BigfontQueryVersion(
+-    ClientPtr client)
++SProcXF86BigfontQueryVersion(ClientPtr client)
+ {
+     REQUEST(xXF86BigfontQueryVersionReq);
+     char tmp;
+@@ -677,8 +682,7 @@ SProcXF86BigfontQueryVersion(
+ }
+ 
+ static int
+-SProcXF86BigfontQueryFont(
+-    ClientPtr client)
++SProcXF86BigfontQueryFont(ClientPtr client)
+ {
+     REQUEST(xXF86BigfontQueryFontReq);
+     char tmp;
+@@ -690,8 +694,7 @@ SProcXF86BigfontQueryFont(
+ }
+ 
+ static int
+-SProcXF86BigfontDispatch(
+-    ClientPtr client)
++SProcXF86BigfontDispatch(ClientPtr client)
+ {
+     REQUEST(xReq);
+ 
+@@ -713,8 +716,7 @@ XFree86BigfontExtensionInit(void)
+ 		     XF86BigfontNumberErrors,
+ 		     ProcXF86BigfontDispatch,
+ 		     SProcXF86BigfontDispatch,
+-		     XF86BigfontResetProc,
+-		     StandardMinorOpcode)) {
++                     XF86BigfontResetProc, StandardMinorOpcode)) {
+ #ifdef HAS_SHM
+ #ifdef MUST_CHECK_FOR_SHM_SYSCALL
+ 	/*
+@@ -724,7 +726,8 @@ XFree86BigfontExtensionInit(void)
+ 	 * when shared memory support is not functional.
+ 	 */
+ 	if (!CheckForShmSyscall()) {
+-	    ErrorF(XF86BIGFONTNAME " extension local-client optimization disabled due to lack of shared memory support in the kernel\n");
++            ErrorF(XF86BIGFONTNAME
++                   " extension local-client optimization disabled due to lack of shared memory support in the kernel\n");
+ 	    return;
+ 	}
+ #endif

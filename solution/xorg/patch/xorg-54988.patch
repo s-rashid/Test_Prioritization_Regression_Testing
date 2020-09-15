@@ -1,0 +1,32 @@
+diff --git a/Xi/grabdevk.c b/Xi/grabdevk.c
+index 61ab43a..b755182 100644
+--- a/Xi/grabdevk.c
++++ b/Xi/grabdevk.c
+@@ -105,7 +105,8 @@ ProcXGrabDeviceKey(ClientPtr client)
+     REQUEST(xGrabDeviceKeyReq);
+     REQUEST_AT_LEAST_SIZE(xGrabDeviceKeyReq);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xGrabDeviceKeyReq)) + stuff->event_count)
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xGrabDeviceKeyReq)) + stuff->event_count)
+ 	return BadLength;
+ 
+     ret = dixLookupDevice(&dev, stuff->grabbed_device, client, DixGrabAccess);
+@@ -119,7 +120,8 @@ ProcXGrabDeviceKey(ClientPtr client)
+ 	    return ret;
+ 	if (mdev->key == NULL)
+ 	    return BadMatch;
+-    } else {
++    }
++    else {
+ 	mdev = PickKeyboard(client);
+ 	ret = XaceHook(XACE_DEVICE_ACCESS, client, mdev, DixUseAccess);
+ 	if (ret != Success)
+@@ -133,7 +135,6 @@ ProcXGrabDeviceKey(ClientPtr client)
+ 				  X_GrabDeviceKey)) != Success)
+ 	return ret;
+ 
+-
+     memset(&param, 0, sizeof(param));
+     param.grabtype = XI;
+     param.ownerEvents = stuff->ownerEvents;

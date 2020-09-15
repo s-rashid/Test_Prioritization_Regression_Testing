@@ -1,0 +1,24 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 6329d28..92b95ed 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -842,6 +842,9 @@ CloseDevice(DeviceIntPtr dev)
+     if(dev->valuator && dev->valuator->accelScheme.AccelCleanupProc)
+ 	dev->valuator->accelScheme.AccelCleanupProc(dev);
+ 
++    while (dev->xkb_interest)
++	XkbRemoveResourceClient((DevicePtr)dev,dev->xkb_interest->resource);
++
+     xfree(dev->name);
+ 
+     classes = (ClassesPtr)&dev->key;
+@@ -853,9 +856,6 @@ CloseDevice(DeviceIntPtr dev)
+         FreeAllDeviceClasses(classes);
+     }
+ 
+-    while (dev->xkb_interest)
+-	XkbRemoveResourceClient((DevicePtr)dev,dev->xkb_interest->resource);
+-
+     if (DevHasCursor(dev) && dev->spriteInfo->sprite) {
+         xfree(dev->spriteInfo->sprite->spriteTrace);
+         xfree(dev->spriteInfo->sprite);

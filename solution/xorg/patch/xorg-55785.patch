@@ -1,0 +1,45 @@
+diff --git a/hw/xquartz/pbproxy/x-selection.h b/hw/xquartz/pbproxy/x-selection.h
+index d4a39e5..f5c6c9b 100644
+--- a/hw/xquartz/pbproxy/x-selection.h
++++ b/hw/xquartz/pbproxy/x-selection.h
+@@ -52,11 +52,8 @@ struct atom_list {
+         compound_text, atom_pair;
+ };
+ 
+-
+-@interface x_selection : NSObject
+-{
++ @interface x_selection:NSObject {
+ @private
+-
+     /* The unmapped window we use for fetching selections. */
+     Window _selection_window;
+ 
+@@ -74,6 +71,7 @@ struct atom_list {
+      * pending_copy is > 0 we do it again.
+      */
+     int pending_copy;
++
+     /* 
+      * This is used for the same purpose as pending_copy, but for the 
+      * CLIPBOARD.  It also prevents a race with INCR transfers.
+@@ -93,7 +91,10 @@ struct atom_list {
+ - (void) notify_event:(XSelectionEvent *)e;
+ - (void) property_event:(XPropertyEvent *)e;
+ - (void) xfixes_selection_notify:(XFixesSelectionNotifyEvent *)e;
+-- (void) handle_selection:(Atom)selection type:(Atom)type propdata:(struct propdata *)pdata;
++ -(void) handle_selection:(Atom)
++selection type:(Atom)
++type propdata:(struct propdata *) pdata;
++
+ - (void) claim_clipboard;
+ - (BOOL) set_clipboard_manager_status:(BOOL)value;
+ - (void) own_clipboard;
+@@ -103,7 +104,6 @@ struct atom_list {
+ - (BOOL) is_active;
+ - (void) send_none:(XSelectionRequestEvent *)e;
+ @end
+-
+ /* main.m */
+ extern x_selection *_selection_object;
+ 

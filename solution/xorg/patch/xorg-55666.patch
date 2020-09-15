@@ -1,0 +1,369 @@
+diff --git a/hw/xfree86/x86emu/sys.c b/hw/xfree86/x86emu/sys.c
+index f389767..c514dde 100644
+--- a/hw/xfree86/x86emu/sys.c
++++ b/hw/xfree86/x86emu/sys.c
+@@ -53,87 +53,117 @@
+ 
+ /* Define some packed structures to use with unaligned accesses */
+ 
+-struct __una_u64 { u64 x __attribute__((packed)); };
+-struct __una_u32 { u32 x __attribute__((packed)); };
+-struct __una_u16 { u16 x __attribute__((packed)); };
++struct __una_u64 {
++    u64 x __attribute__ ((packed));
++};
++struct __una_u32 {
++    u32 x __attribute__ ((packed));
++};
++struct __una_u16 {
++    u16 x __attribute__ ((packed));
++};
+ 
+ /* Elemental unaligned loads */
+ 
+-static __inline__ u64 ldq_u(u64 *p)
++static __inline__ u64
++ldq_u(u64 * p)
+ {
+ 	const struct __una_u64 *ptr = (const struct __una_u64 *) p;
++
+ 	return ptr->x;
+ }
+ 
+-static __inline__ u32 ldl_u(u32 *p)
++static __inline__ u32
++ldl_u(u32 * p)
+ {
+ 	const struct __una_u32 *ptr = (const struct __una_u32 *) p;
++
+ 	return ptr->x;
+ }
+ 
+-static __inline__ u16 ldw_u(u16 *p)
++static __inline__ u16
++ldw_u(u16 * p)
+ {
+ 	const struct __una_u16 *ptr = (const struct __una_u16 *) p;
++
+ 	return ptr->x;
+ }
+ 
+ /* Elemental unaligned stores */
+ 
+-static __inline__ void stq_u(u64 val, u64 *p)
++static __inline__ void
++stq_u(u64 val, u64 * p)
+ {
+ 	struct __una_u64 *ptr = (struct __una_u64 *) p;
++
+ 	ptr->x = val;
+ }
+ 
+-static __inline__ void stl_u(u32 val, u32 *p)
++static __inline__ void
++stl_u(u32 val, u32 * p)
+ {
+ 	struct __una_u32 *ptr = (struct __una_u32 *) p;
++
+ 	ptr->x = val;
+ }
+ 
+-static __inline__ void stw_u(u16 val, u16 *p)
++static __inline__ void
++stw_u(u16 val, u16 * p)
+ {
+ 	struct __una_u16 *ptr = (struct __una_u16 *) p;
++
+ 	ptr->x = val;
+ }
+ #  else /* !__GNUC__ */
+ 
+-static __inline__ u64 ldq_u(u64 *p)
++static __inline__ u64
++ldq_u(u64 * p)
+ {
+ 	u64 ret;
++
+ 	memmove(&ret, p, sizeof(*p));
+ 	return ret;
+ }
+ 
+-static __inline__ u32 ldl_u(u32 *p)
++static __inline__ u32
++ldl_u(u32 * p)
+ {
+ 	u32 ret;
++
+ 	memmove(&ret, p, sizeof(*p));
+ 	return ret;
+ }
+ 
+-static __inline__ u16 ldw_u(u16 *p)
++static __inline__ u16
++ldw_u(u16 * p)
+ {
+ 	u16 ret;
++
+ 	memmove(&ret, p, sizeof(*p));
+ 	return ret;
+ }
+ 
+-static __inline__ void stq_u(u64 val, u64 *p)
++static __inline__ void
++stq_u(u64 val, u64 * p)
+ {
+ 	u64 tmp = val;
++
+ 	memmove(p, &tmp, sizeof(*p));
+ }
+ 
+-static __inline__ void stl_u(u32 val, u32 *p)
++static __inline__ void
++stl_u(u32 val, u32 * p)
+ {
+ 	u32 tmp = val;
++
+ 	memmove(p, &tmp, sizeof(*p));
+ }
+ 
+-static __inline__ void stw_u(u16 val, u16 *p)
++static __inline__ void
++stw_u(u16 val, u16 * p)
+ {
+ 	u16 tmp = val;
++
+ 	memmove(p, &tmp, sizeof(*p));
+ }
+ 
+@@ -155,13 +185,14 @@ Byte value read from emulator memory.
+ REMARKS:
+ Reads a byte value from the emulator memory. 
+ ****************************************************************************/
+-u8 X86API rdb(
+-    u32 addr)
++u8 X86API
++rdb(u32 addr)
+ {
+ 	u8 val;
+ 
+ 	if (addr > M.mem_size - 1) {
+-		DB(printk("mem_read: address %#lx out of range!\n", addr);)
++        DB(printk("mem_read: address %#lx out of range!\n", addr);
++            )
+ 		HALT_SYS();
+ 		}
+ 	val = *(u8*)(M.mem_base + addr);
+@@ -180,13 +211,14 @@ Word value read from emulator memory.
+ REMARKS:
+ Reads a word value from the emulator memory.
+ ****************************************************************************/
+-u16 X86API rdw(
+-	u32 addr)
++u16 X86API
++rdw(u32 addr)
+ {
+ 	u16 val = 0;
+ 
+ 	if (addr > M.mem_size - 2) {
+-		DB(printk("mem_read: address %#lx out of range!\n", addr);)
++        DB(printk("mem_read: address %#lx out of range!\n", addr);
++            )
+ 		HALT_SYS();
+ 		}
+ #ifdef __BIG_ENDIAN__
+@@ -211,13 +243,14 @@ Long value read from emulator memory.
+ REMARKS:
+ Reads a long value from the emulator memory. 
+ ****************************************************************************/
+-u32 X86API rdl(
+-	u32 addr)
++u32 X86API
++rdl(u32 addr)
+ {
+ 	u32 val = 0;
+ 
+ 	if (addr > M.mem_size - 4) {
+-		DB(printk("mem_read: address %#lx out of range!\n", addr);)
++        DB(printk("mem_read: address %#lx out of range!\n", addr);
++            )
+ 		HALT_SYS();
+ 		}
+ #ifdef __BIG_ENDIAN__
+@@ -243,14 +276,14 @@ val		- Value to store
+ REMARKS:
+ Writes a byte value to emulator memory.
+ ****************************************************************************/
+-void X86API wrb(
+-	u32 addr,
+-	u8 val)
++void X86API
++wrb(u32 addr, u8 val)
+ {
+ DB(	if (DEBUG_MEM_TRACE())
+ 		printk("%#08x 1 <- %#x\n", addr, val);)
+     if (addr > M.mem_size - 1) {
+-		DB(printk("mem_write: address %#lx out of range!\n", addr);)
++            DB(printk("mem_write: address %#lx out of range!\n", addr);
++                )
+ 		HALT_SYS();
+ 		}
+ 	*(u8*)(M.mem_base + addr) = val;
+@@ -264,14 +297,14 @@ val		- Value to store
+ REMARKS:
+ Writes a word value to emulator memory.
+ ****************************************************************************/
+-void X86API wrw(
+-	u32 addr,
+-	u16 val)
++void X86API
++wrw(u32 addr, u16 val)
+ {
+ DB(	if (DEBUG_MEM_TRACE())
+ 		printk("%#08x 2 <- %#x\n", addr, val);)
+ 	if (addr > M.mem_size - 2) {
+-		DB(printk("mem_write: address %#lx out of range!\n", addr);)
++            DB(printk("mem_write: address %#lx out of range!\n", addr);
++                )
+ 		HALT_SYS();
+ 		}
+ #ifdef __BIG_ENDIAN__
+@@ -292,14 +325,14 @@ val		- Value to store
+ REMARKS:
+ Writes a long value to emulator memory. 
+ ****************************************************************************/
+-void X86API wrl(
+-	u32 addr,
+-	u32 val)
++void X86API
++wrl(u32 addr, u32 val)
+ {
+ DB(	if (DEBUG_MEM_TRACE())
+ 		printk("%#08x 4 <- %#x\n", addr, val);)
+ 	if (addr > M.mem_size - 4) {
+-		DB(printk("mem_write: address %#lx out of range!\n", addr);)
++            DB(printk("mem_write: address %#lx out of range!\n", addr);
++                )
+ 		HALT_SYS();
+ 		}
+ #ifdef __BIG_ENDIAN__
+@@ -322,8 +355,8 @@ RETURN:
+ REMARKS:
+ Default PIO byte read function. Doesn't perform real inb.
+ ****************************************************************************/
+-static u8 X86API p_inb(
+-	X86EMU_pioAddr addr)
++static u8 X86API
++p_inb(X86EMU_pioAddr addr)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("inb %#04x \n", addr);)
+@@ -338,8 +371,8 @@ RETURN:
+ REMARKS:
+ Default PIO word read function. Doesn't perform real inw.
+ ****************************************************************************/
+-static u16 X86API p_inw(
+-	X86EMU_pioAddr addr)
++static u16 X86API
++p_inw(X86EMU_pioAddr addr)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("inw %#04x \n", addr);)
+@@ -354,8 +387,8 @@ RETURN:
+ REMARKS:
+ Default PIO long read function. Doesn't perform real inl.
+ ****************************************************************************/
+-static u32 X86API p_inl(
+-	X86EMU_pioAddr addr)
++static u32 X86API
++p_inl(X86EMU_pioAddr addr)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("inl %#04x \n", addr);)
+@@ -369,9 +402,8 @@ val     - Value to store
+ REMARKS:
+ Default PIO byte write function. Doesn't perform real outb.
+ ****************************************************************************/
+-static void X86API p_outb(
+-	X86EMU_pioAddr addr,
+-	u8 val)
++static void X86API
++p_outb(X86EMU_pioAddr addr, u8 val)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("outb %#02x -> %#04x \n", val, addr);)
+@@ -385,9 +417,8 @@ val     - Value to store
+ REMARKS:
+ Default PIO word write function. Doesn't perform real outw.
+ ****************************************************************************/
+-static void X86API p_outw(
+-	X86EMU_pioAddr addr,
+-	u16 val)
++static void X86API
++p_outw(X86EMU_pioAddr addr, u16 val)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("outw %#04x -> %#04x \n", val, addr);)
+@@ -401,9 +432,8 @@ val     - Value to store
+ REMARKS:
+ Default PIO ;ong write function. Doesn't perform real outl.
+ ****************************************************************************/
+-static void X86API p_outl(
+-	X86EMU_pioAddr addr,
+-	u32 val)
++static void X86API
++p_outl(X86EMU_pioAddr addr, u32 val)
+ {
+ DB(	if (DEBUG_IO_TRACE())
+ 		printk("outl %#08x -> %#04x \n", val, addr);)
+@@ -418,6 +448,7 @@ u32 	(X86APIP sys_rdl)(u32 addr) 			            = rdl;
+ void 	(X86APIP sys_wrb)(u32 addr,u8 val) 		            = wrb;
+ void 	(X86APIP sys_wrw)(u32 addr,u16 val) 	            = wrw;
+ void 	(X86APIP sys_wrl)(u32 addr,u32 val) 	            = wrl;
++
+ u8  	(X86APIP sys_inb)(X86EMU_pioAddr addr)	            = p_inb;
+ u16 	(X86APIP sys_inw)(X86EMU_pioAddr addr)	            = p_inw;
+ u32 	(X86APIP sys_inl)(X86EMU_pioAddr addr)              = p_inl;
+@@ -436,8 +467,8 @@ This function is used to set the pointers to functions which access
+ memory space, allowing the user application to override these functions
+ and hook them out as necessary for their application.
+ ****************************************************************************/
+-void X86EMU_setupMemFuncs(
+-	X86EMU_memFuncs *funcs)
++void
++X86EMU_setupMemFuncs(X86EMU_memFuncs * funcs)
+ {
+     sys_rdb = funcs->rdb;
+     sys_rdw = funcs->rdw;
+@@ -456,8 +487,8 @@ This function is used to set the pointers to functions which access
+ I/O space, allowing the user application to override these functions
+ and hook them out as necessary for their application.
+ ****************************************************************************/
+-void X86EMU_setupPioFuncs(
+-	X86EMU_pioFuncs *funcs)
++void
++X86EMU_setupPioFuncs(X86EMU_pioFuncs * funcs)
+ {
+     sys_inb = funcs->inb;
+     sys_inw = funcs->inw;
+@@ -480,8 +511,8 @@ in the emulator via the interrupt vector table. This allows the application
+ to get control when the code being emulated executes specific software
+ interrupts.
+ ****************************************************************************/
+-void X86EMU_setupIntrFuncs(
+-	X86EMU_intrFuncs funcs[])
++void
++X86EMU_setupIntrFuncs(X86EMU_intrFuncs funcs[])
+ {
+     int i;
+     
+@@ -505,8 +536,8 @@ so that the code in the emulator will continue processing the software
+ interrupt as per normal. This essentially allows system code to actively
+ hook and handle certain software interrupts as necessary.
+ ****************************************************************************/
+-void X86EMU_prepareForInt(
+-	int num)
++void
++X86EMU_prepareForInt(int num)
+ {
+     push_word((u16)M.x86.R_FLG);
+     CLEAR_FLAG(F_IF);

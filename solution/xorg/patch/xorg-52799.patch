@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winmouse.c b/hw/xwin/winmouse.c
+index b1b0657..752334a 100644
+--- a/hw/xwin/winmouse.c
++++ b/hw/xwin/winmouse.c
+@@ -244,8 +244,8 @@ winMouseButtonsSendEvent (int iEventType, int iButton)
+ 		     POINTER_RELATIVE, &mask);
+ 
+ #if CYGDEBUG
+-  ErrorF("winMouseButtonsSendEvent: iEventType: %d, iButton: %d, nEvents %d\n",
+-          iEventType, iButton, nevents);
++  ErrorF("winMouseButtonsSendEvent: iEventType: %d, iButton: %d\n",
++          iEventType, iButton);
+ #endif
+ }
+ 

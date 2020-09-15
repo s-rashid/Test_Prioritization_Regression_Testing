@@ -1,0 +1,9 @@
+diff --git a/glx/glxext.h b/glx/glxext.h
+index 58cf054..7cd5cb4 100644
+--- a/glx/glxext.h
++++ b/glx/glxext.h
+@@ -48,4 +48,3 @@ extern const char GLServerVersion[];
+ extern int DoGetString(__GLXclientState *cl, GLbyte *pc, GLboolean need_swap);
+ 
+ #endif /* _glxext_h_ */
+-

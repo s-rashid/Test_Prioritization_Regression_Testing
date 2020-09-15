@@ -1,0 +1,14 @@
+diff --git a/os/access.c b/os/access.c
+index 8c5b50a..2a171fa 100644
+--- a/os/access.c
++++ b/os/access.c
+@@ -811,7 +811,8 @@ DefineSelf (int fd)
+ 		continue;
+ #endif
+ 	    if ((ifr->ifa_flags & IFF_BROADCAST) &&
+-		(ifr->ifa_flags & IFF_UP))
++		(ifr->ifa_flags & IFF_UP) &&
++                ifr->ifa_broadaddr)
+ 		broad_addr = *ifr->ifa_broadaddr;
+ 	    else
+ 		continue;

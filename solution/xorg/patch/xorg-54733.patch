@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Init.c b/hw/xnest/Init.c
+index 0909826..330b8ca 100644
+--- a/hw/xnest/Init.c
++++ b/hw/xnest/Init.c
+@@ -142,7 +142,7 @@ OsVendorInit(void)
+ }
+ 
+ void
+-OsVendorFatalError(void)
++OsVendorFatalError(const char *f, va_list args)
+ {
+     return;
+ }

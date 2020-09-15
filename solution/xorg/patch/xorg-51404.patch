@@ -1,0 +1,13 @@
+diff --git a/include/resource.h b/include/resource.h
+index 0c5a59d..080061f 100644
+--- a/include/resource.h
++++ b/include/resource.h
+@@ -121,6 +121,8 @@ typedef unsigned long RESTYPE;
+ 
+ #define BAD_RESOURCE 0xe0000000
+ 
++#define rClient(obj) (clients[CLIENT_ID((obj)->resource)])
++
+ /* Resource state callback */
+ extern _X_EXPORT CallbackListPtr ResourceStateCallback;
+ 

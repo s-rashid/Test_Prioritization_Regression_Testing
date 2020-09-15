@@ -1,0 +1,45 @@
+diff --git a/glx/glxdricommon.c b/glx/glxdricommon.c
+index 9149e0d..44d5a3e 100644
+--- a/glx/glxdricommon.c
++++ b/glx/glxdricommon.c
+@@ -51,7 +51,8 @@ getUST(int64_t *ust)
+     if (gettimeofday(&tv, NULL) == 0) {
+ 	ust[0] = (tv.tv_sec * 1000000) + tv.tv_usec;
+ 	return 0;
+-    } else {
++    }
++    else {
+ 	return -errno;
+     }
+ }
+@@ -65,7 +66,9 @@ const __DRIsystemTimeExtension systemTimeExtension = {
+ #define __ATTRIB(attrib, field) \
+     { attrib, offsetof(__GLXconfig, field) }
+ 
+-static const struct { unsigned int attrib, offset; } attribMap[] = {
++static const struct {
++    unsigned int attrib, offset;
++} attribMap[] = {
+     __ATTRIB(__DRI_ATTRIB_BUFFER_SIZE,			rgbBits),
+     __ATTRIB(__DRI_ATTRIB_LEVEL,			level),
+     __ATTRIB(__DRI_ATTRIB_RED_SIZE,			redBits),
+@@ -102,8 +105,7 @@ static const struct { unsigned int attrib, offset; } attribMap[] = {
+     __ATTRIB(__DRI_ATTRIB_BIND_TO_TEXTURE_RGB,		bindToTextureRgb),
+     __ATTRIB(__DRI_ATTRIB_BIND_TO_TEXTURE_RGBA,		bindToTextureRgba),
+     __ATTRIB(__DRI_ATTRIB_BIND_TO_MIPMAP_TEXTURE,	bindToMipmapTexture),
+-    __ATTRIB(__DRI_ATTRIB_YINVERTED,			yInverted),
+-};
++        __ATTRIB(__DRI_ATTRIB_YINVERTED, yInverted),};
+ 
+ #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
+ 
+@@ -157,7 +159,8 @@ createModeFromConfig(const __DRIcoreExtension *core,
+ 	    if (value & __DRI_ATTRIB_TEXTURE_2D_BIT)
+ 		config->config.bindToTextureTargets |= GLX_TEXTURE_2D_BIT_EXT;
+ 	    if (value & __DRI_ATTRIB_TEXTURE_RECTANGLE_BIT)
+-		config->config.bindToTextureTargets |= GLX_TEXTURE_RECTANGLE_BIT_EXT;
++                config->config.bindToTextureTargets |=
++                    GLX_TEXTURE_RECTANGLE_BIT_EXT;
+ 	    break;	
+ 	default:
+ 	    setScalar(&config->config, attrib, value);

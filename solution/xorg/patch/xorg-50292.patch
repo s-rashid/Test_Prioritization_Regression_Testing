@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/parser/Configint.h b/hw/xfree86/parser/Configint.h
+index c88ff46..82d7de4 100644
+--- a/hw/xfree86/parser/Configint.h
++++ b/hw/xfree86/parser/Configint.h
+@@ -98,9 +98,6 @@ LexRec, *LexPtr;
+ #define parsePrologue(typeptr,typerec) typeptr ptr; \
+ if( (ptr=calloc(1,sizeof(typerec))) == NULL ) { return NULL; }
+ 
+-#define parsePrologueVoid(typeptr,typerec) int token; typeptr ptr; \
+-if( (ptr=calloc(1,sizeof(typerec))) == NULL ) { return; }
+-
+ #define HANDLE_RETURN(f,func)\
+ if ((ptr->f=func) == NULL)\
+ {\

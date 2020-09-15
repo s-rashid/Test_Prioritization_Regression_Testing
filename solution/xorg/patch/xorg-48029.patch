@@ -1,0 +1,21 @@
+diff --git a/exa/exa_driver.c b/exa/exa_driver.c
+index dcf1a98..abe79ba 100644
+--- a/exa/exa_driver.c
++++ b/exa/exa_driver.c
+@@ -126,7 +126,7 @@ Bool
+ exaModifyPixmapHeader_driver(PixmapPtr pPixmap, int width, int height, int depth,
+ 		      int bitsPerPixel, int devKind, pointer pPixData)
+ {
+-    ScreenPtr pScreen = pPixmap->drawable.pScreen;
++    ScreenPtr pScreen;
+     ExaScreenPrivPtr pExaScr;
+     ExaPixmapPrivPtr pExaPixmap;
+     Bool ret;
+@@ -134,6 +134,7 @@ exaModifyPixmapHeader_driver(PixmapPtr pPixmap, int width, int height, int depth
+     if (!pPixmap)
+         return FALSE;
+ 
++    pScreen = pPixmap->drawable.pScreen;
+     pExaScr = ExaGetScreenPriv(pScreen);
+     pExaPixmap = ExaGetPixmapPriv(pPixmap);
+ 

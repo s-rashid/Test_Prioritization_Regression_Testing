@@ -1,0 +1,12 @@
+diff --git a/include/windowstr.h b/include/windowstr.h
+index 4a7a0f4..222de31 100644
+--- a/include/windowstr.h
++++ b/include/windowstr.h
+@@ -169,6 +169,7 @@ typedef struct _Window {
+ #endif
+ #ifdef COMPOSITE
+     unsigned		damagedDescendants:1;	/* some descendants are damaged */
++    unsigned		inhibitBGPaint:1;	/* paint the background? */
+ #endif
+ } WindowRec;
+ 

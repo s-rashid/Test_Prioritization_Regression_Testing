@@ -1,0 +1,24 @@
+diff --git a/dix/events.c b/dix/events.c
+index 20754f0..66fbe9a 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2083,7 +2083,7 @@ out:
+  * mask for this event.
+  */
+ static enum EventDeliveryState
+-DeliverEventToClients(DeviceIntPtr dev, WindowPtr win, xEvent *events,
++DeliverEventToWindowMask(DeviceIntPtr dev, WindowPtr win, xEvent *events,
+                       int count, Mask filter, GrabPtr grab,
+                       ClientPtr *client_return, Mask *mask_return)
+ {
+@@ -2192,8 +2192,8 @@ DeliverEventsToWindow(DeviceIntPtr pDev, WindowPtr pWin, xEvent
+     {
+         enum EventDeliveryState rc;
+ 
+-        rc = DeliverEventToClients(pDev, pWin, pEvents, count, filter, grab,
+-                                   &client, &deliveryMask);
++        rc = DeliverEventToWindowMask(pDev, pWin, pEvents, count, filter,
++                                      grab, &client, &deliveryMask);
+ 
+         switch(rc)
+         {

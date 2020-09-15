@@ -1,0 +1,14 @@
+diff --git a/hw/dmx/dmxgc.h b/hw/dmx/dmxgc.h
+index 2da3ba8..4ff3cd8 100644
+--- a/hw/dmx/dmxgc.h
++++ b/hw/dmx/dmxgc.h
+@@ -63,9 +63,6 @@ extern void dmxCopyClip(GCPtr pGCDst, GCPtr pGCSrc);
+ extern void dmxBECreateGC(ScreenPtr pScreen, GCPtr pGC);
+ extern Bool dmxBEFreeGC(GCPtr pGC);
+ 
+-/** Private index.  \see dmxgc.c \see dmxscrinit.c */
+-extern DevPrivateKey dmxGCPrivateKey;
+-
+ /** Get private. */
+ #define DMX_GET_GC_PRIV(_pGC)						\
+     (dmxGCPrivPtr)dixLookupPrivate(&(_pGC)->devPrivates, dmxGCPrivateKey)

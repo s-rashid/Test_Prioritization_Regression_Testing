@@ -1,0 +1,17 @@
+diff --git a/glx/glxcmds.c b/glx/glxcmds.c
+index d4ff7da..f5632d1 100644
+--- a/glx/glxcmds.c
++++ b/glx/glxcmds.c
+@@ -51,12 +51,6 @@
+ #include "indirect_table.h"
+ #include "indirect_util.h"
+ 
+-void
+-GlxSetRenderTables (struct _glapi_table *table)
+-{
+-    _glapi_set_dispatch (table);
+-}
+-
+ static int
+ validGlxScreen(ClientPtr client, int screen, __GLXscreen **pGlxScreen, int *err)
+ {

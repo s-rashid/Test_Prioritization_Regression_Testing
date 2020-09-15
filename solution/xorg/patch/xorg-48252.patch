@@ -1,0 +1,15 @@
+diff --git a/randr/randrstr.h b/randr/randrstr.h
+index 975fe33..b163a73 100644
+--- a/randr/randrstr.h
++++ b/randr/randrstr.h
+@@ -47,10 +47,8 @@
+ #include "rrtransform.h"
+ #include <X11/extensions/randr.h>
+ #include <X11/extensions/randrproto.h>
+-#ifdef RENDER
+ #include <X11/extensions/render.h> 	/* we share subpixel order information */
+ #include "picturestr.h"
+-#endif
+ #include <X11/Xfuncproto.h>
+ 
+ /* required for ABI compatibility for now */

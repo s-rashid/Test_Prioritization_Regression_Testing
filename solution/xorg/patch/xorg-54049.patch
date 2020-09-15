@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ramdac/TIPriv.h b/hw/xfree86/ramdac/TIPriv.h
+index 191c9b5..20e07f5 100644
+--- a/hw/xfree86/ramdac/TIPriv.h
++++ b/hw/xfree86/ramdac/TIPriv.h
+@@ -6,7 +6,7 @@
+ #include "TI.h"
+ 
+ typedef struct {
+-	char *DeviceName;
++	const char *DeviceName;
+ } xf86TIramdacInfo;
+ 
+ extern xf86TIramdacInfo TIramdacDeviceInfo[];

@@ -1,0 +1,14 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 6fc1eaf..63892aa 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -171,7 +171,8 @@ SecurityDeleteAuthorization(
+ {
+     SecurityAuthorizationPtr pAuth = (SecurityAuthorizationPtr)value;
+     unsigned short name_len, data_len;
+-    char *name, *data;
++    const char *name;
++    char *data;
+     int status;
+     int i;
+     OtherClientsPtr pEventClient;

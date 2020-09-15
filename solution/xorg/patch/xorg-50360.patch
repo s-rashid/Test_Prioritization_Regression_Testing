@@ -1,0 +1,11 @@
+diff --git a/hw/xfree86/shadowfb/shadow.c b/hw/xfree86/shadowfb/shadow.c
+index 344f1ab..0af53d1 100644
+--- a/hw/xfree86/shadowfb/shadow.c
++++ b/hw/xfree86/shadowfb/shadow.c
+@@ -1730,6 +1730,5 @@ GCOps ShadowGCOps = {
+     ShadowPolyText16, ShadowImageText8, 
+     ShadowImageText16, ShadowImageGlyphBlt, 
+     ShadowPolyGlyphBlt, ShadowPushPixels,
+-    {NULL}		/* devPrivate */
+ };
+ 

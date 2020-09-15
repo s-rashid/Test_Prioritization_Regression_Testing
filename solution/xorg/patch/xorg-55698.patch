@@ -1,0 +1,112 @@
+diff --git a/hw/xfree86/xaa/xaaLineMisc.c b/hw/xfree86/xaa/xaaLineMisc.c
+index ed3cd48..4379778 100644
+--- a/hw/xfree86/xaa/xaaLineMisc.c
++++ b/hw/xfree86/xaa/xaaLineMisc.c
+@@ -14,12 +14,9 @@
+ #include "xaa.h"
+ #include "xaalocal.h"
+    
+-
+ void
+-XAASolidHorVertLineAsRects(
+-   ScrnInfoPtr pScrn,
+-   int x, int y, int len, int dir
+-){
++XAASolidHorVertLineAsRects(ScrnInfoPtr pScrn, int x, int y, int len, int dir)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     if(dir == DEGREES_0) 
+@@ -28,12 +25,9 @@ XAASolidHorVertLineAsRects(
+ 	(*infoRec->SubsequentSolidFillRect)(pScrn, x, y, 1, len);
+ }
+    
+-
+ void
+-XAASolidHorVertLineAsTwoPoint(
+-   ScrnInfoPtr pScrn,
+-   int x, int y, int len, int dir
+-){
++XAASolidHorVertLineAsTwoPoint(ScrnInfoPtr pScrn, int x, int y, int len, int dir)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     len--;
+@@ -45,21 +39,19 @@ XAASolidHorVertLineAsTwoPoint(
+ }
+    
+ void
+-XAASolidHorVertLineAsBresenham(
+-   ScrnInfoPtr pScrn,
+-   int x, int y, int len, int dir
+-){
++XAASolidHorVertLineAsBresenham(ScrnInfoPtr pScrn,
++                               int x, int y, int len, int dir)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     if(dir == DEGREES_0) 
+-	(*infoRec->SubsequentSolidBresenhamLine)(
+-		pScrn, x, y, len << 1, 0, -len, len, 0);
++        (*infoRec->SubsequentSolidBresenhamLine) (pScrn, x, y, len << 1, 0,
++                                                  -len, len, 0);
+     else
+-	(*infoRec->SubsequentSolidBresenhamLine)(
+-		pScrn, x, y, len << 1, 0, -len, len, YMAJOR);
++        (*infoRec->SubsequentSolidBresenhamLine) (pScrn, x, y, len << 1, 0,
++                                                  -len, len, YMAJOR);
+ }
+ 
+-
+ void
+ XAAComputeDash(GCPtr pGC)
+ {
+@@ -93,7 +85,8 @@ XAAComputeDash(GCPtr pGC)
+ 	return;
+ 
+     pGCPriv->DashPattern = calloc((PatternLength + 31) >> 5, 4);
+-    if(!pGCPriv->DashPattern) return;
++    if (!pGCPriv->DashPattern)
++        return;
+     pGCPriv->DashLength = PatternLength;
+ 
+     if(infoRec->DashedLineFlags & (LINE_PATTERN_LSBFIRST_MSBJUSTIFIED |
+@@ -101,7 +94,8 @@ XAAComputeDash(GCPtr pGC)
+ 	direction = 1;
+ 	set = TRUE;
+ 	DashPtr = (unsigned char*)pGC->dash;
+-    } else {
++    }
++    else {
+ 	direction = -1;
+ 	set = FALSE;
+ 	DashPtr = (unsigned char*)pGC->dash + pGC->numInDashList - 1;
+@@ -124,18 +118,23 @@ CONCATENATE:
+ 	DashPtr += direction;
+ 	while(value) {
+ 	    if(value < (32 - shift)) {
+-		if(set) *ptr |= XAAShiftMasks[value] << shift;
++                if (set)
++                    *ptr |= XAAShiftMasks[value] << shift;
+ 		shift += value;
+ 		break;
+-	     } else {
+-		if(set) *ptr |= ~0L << shift;
++            }
++            else {
++                if (set)
++                    *ptr |= ~0L << shift;
+ 		value -= (32 - shift);
+ 		shift = 0;
+ 		ptr++;
+ 	     }
+ 	}
+-	if(set) set = FALSE;
+-	else set = TRUE;
++        if (set)
++            set = FALSE;
++        else
++            set = TRUE;
+     }
+ 
+     if(!EvenDash) {

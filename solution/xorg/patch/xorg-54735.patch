@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 29036fc..3dd41cb 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -634,7 +634,7 @@ InitOutput(ScreenInfo * pScreenInfo, int argc, char **argv)
+  * OsVendorFatalError
+  */
+ void
+-OsVendorFatalError(void)
++OsVendorFatalError(const char *f, va_list args)
+ {
+     ErrorF("   OsVendorFatalError\n");
+ }

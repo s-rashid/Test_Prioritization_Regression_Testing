@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/stub/stub_init.c b/hw/xfree86/os-support/stub/stub_init.c
+index 36fd2b8..629675d 100644
+--- a/hw/xfree86/os-support/stub/stub_init.c
++++ b/hw/xfree86/os-support/stub/stub_init.c
+@@ -17,7 +17,7 @@ xf86CloseConsole()
+ int
+ xf86ProcessArgument(int argc, char *argv[], int i)
+ {
+-	return 0;
++    return 0;
+ }
+ 
+ void

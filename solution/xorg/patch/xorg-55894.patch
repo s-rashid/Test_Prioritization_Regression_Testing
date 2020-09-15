@@ -1,0 +1,31 @@
+diff --git a/hw/xwin/winwakeup.c b/hw/xwin/winwakeup.c
+index b512b29..1d2bfed 100644
+--- a/hw/xwin/winwakeup.c
++++ b/hw/xwin/winwakeup.c
+@@ -39,22 +39,16 @@
+ /* See Porting Layer Definition - p. 7 */
+ void
+ winWakeupHandler (int nScreen,
+-		  pointer pWakeupData,
+-		  unsigned long ulResult,
+-		  pointer pReadmask)
++                 pointer pWakeupData, unsigned long ulResult, pointer pReadmask)
+ {
+   MSG			msg;
+ 
+   /* Process all messages on our queue */
+-  while (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
+-    {
++    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+       if ((g_hDlgDepthChange == 0
+ 	   || !IsDialogMessage (g_hDlgDepthChange, &msg))
+-	  && (g_hDlgExit == 0
+-	      || !IsDialogMessage (g_hDlgExit, &msg))
+-	  && (g_hDlgAbout == 0
+-	      || !IsDialogMessage (g_hDlgAbout, &msg)))
+-	{
++            && (g_hDlgExit == 0 || !IsDialogMessage(g_hDlgExit, &msg))
++            && (g_hDlgAbout == 0 || !IsDialogMessage(g_hDlgAbout, &msg))) {
+ 	  DispatchMessage (&msg);
+ 	}
+     }

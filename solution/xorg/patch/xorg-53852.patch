@@ -1,0 +1,16 @@
+diff --git a/Xext/xselinux_ext.c b/Xext/xselinux_ext.c
+index 56f2d1f..641368a 100644
+--- a/Xext/xselinux_ext.c
++++ b/Xext/xselinux_ext.c
+@@ -526,11 +526,6 @@ ProcSELinuxDispatch(ClientPtr client)
+ static int
+ SProcSELinuxQueryVersion(ClientPtr client)
+ {
+-    REQUEST(SELinuxQueryVersionReq);
+-
+-    REQUEST_SIZE_MATCH(SELinuxQueryVersionReq);
+-    swaps(&stuff->client_major);
+-    swaps(&stuff->client_minor);
+     return ProcSELinuxQueryVersion(client);
+ }
+ 

@@ -1,0 +1,15 @@
+diff --git a/mi/micmap.h b/mi/micmap.h
+index 8ad94b9..c67710c 100644
+--- a/mi/micmap.h
++++ b/mi/micmap.h
+@@ -9,8 +9,8 @@
+ #define SetInstalledmiColormap(s,c) \
+     (dixSetPrivate(&(s)->devPrivates, micmapScrPrivateKey, c))
+ 
+-extern _X_EXPORT DevPrivateKey micmapScrPrivateKey;
+-
++extern _X_EXPORT DevPrivateKeyRec micmapScrPrivateKeyRec;
++#define micmapScrPrivateKey (&micmapScrPrivateKeyRec)
+ 
+ typedef Bool (* miInitVisualsProcPtr)(VisualPtr *, DepthPtr *, int *, int *,
+ 					int *, VisualID *, unsigned long, int,

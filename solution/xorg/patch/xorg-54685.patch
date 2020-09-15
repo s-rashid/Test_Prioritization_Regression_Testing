@@ -1,0 +1,21 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index 3c6ac5b..25379bb 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -961,7 +961,7 @@ SyncCreateSystemCounter(const char *name,
+         }
+         pCounter->pSysCounterInfo = psci;
+         psci->pCounter = pCounter;
+-        psci->name = name;
++        psci->name = strdup(name);
+         psci->resolution = resolution;
+         psci->counterType = counterType;
+         psci->QueryValue = QueryValue;
+@@ -1115,6 +1115,7 @@ FreeCounter(void *env, XID id)
+     }
+     if (IsSystemCounter(pCounter)) {
+         xorg_list_del(&pCounter->pSysCounterInfo->entry);
++        free(pCounter->pSysCounterInfo->name);
+         free(pCounter->pSysCounterInfo->private);
+         free(pCounter->pSysCounterInfo);
+     }

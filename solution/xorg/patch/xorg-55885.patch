@@ -1,0 +1,18 @@
+diff --git a/hw/xwin/winrop.c b/hw/xwin/winrop.c
+index f481892..1f9ff73 100644
+--- a/hw/xwin/winrop.c
++++ b/hw/xwin/winrop.c
+@@ -75,12 +75,10 @@ int g_patternROP[16] = {0xFF0062, /* GXclear		- 0 */
+ 		 	0x000042  /* GXset		- 1 */
+ };
+ 
+-
+ void
+ ROP16 (HDC hdc, int rop)
+ {
+-  switch (rop)
+-    {
++    switch (rop) {
+     case GXclear:
+       SetROP2 (hdc, R2_BLACK);
+       break;

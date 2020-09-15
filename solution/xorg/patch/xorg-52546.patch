@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winmonitors.c b/hw/xwin/winmonitors.c
+index 63af803..a9d46f9 100644
+--- a/hw/xwin/winmonitors.c
++++ b/hw/xwin/winmonitors.c
+@@ -53,7 +53,7 @@ wBOOL CALLBACK getMonitorInfo(HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM _d
+   return TRUE;
+ }
+ 
+-typedef wBOOL (*ENUMDISPLAYMONITORSPROC)(HDC,LPCRECT,MONITORENUMPROC,LPARAM);
++typedef WINAPI wBOOL (*ENUMDISPLAYMONITORSPROC)(HDC,LPCRECT,MONITORENUMPROC,LPARAM);
+ ENUMDISPLAYMONITORSPROC _EnumDisplayMonitors;
+ 
+ wBOOL CALLBACK getMonitorInfo(HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM _data);

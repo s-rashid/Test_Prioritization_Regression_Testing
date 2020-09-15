@@ -1,0 +1,46 @@
+diff --git a/hw/xfree86/ddc/edid.h b/hw/xfree86/ddc/edid.h
+index cc4bd02..91565a2 100644
+--- a/hw/xfree86/ddc/edid.h
++++ b/hw/xfree86/ddc/edid.h
+@@ -96,7 +96,6 @@
+ # error "EDID1 length != 128!" 
+ #endif
+ 
+-
+ #define SECTION(x,y) (Uchar *)(x + y)
+ #define GET_ARRAY(y) ((Uchar *)(c + y))
+ #define GET(y) *(Uchar *)(c + y)
+@@ -146,7 +145,6 @@
+ #define _MSC(x) (x & 0x7)
+ #define MSC _MSC(GET(FEAT_S))
+ 
+-
+ /* color characteristics */
+ #define CC_L(x,y) ((x & (0x03 << y)) >> y)
+ #define CC_H(x) (x << 2)
+@@ -198,7 +196,6 @@
+ #define _NEXT_STD_TIMING(x)  (x = (x + STD_TIMING_INFO_LEN))
+ #define NEXT_STD_TIMING _NEXT_STD_TIMING(c)
+ 
+-
+ /* EDID Ver. >= 1.2 */
+ /**
+  * Returns true if the pointer is the start of a monitor descriptor block
+@@ -390,7 +387,6 @@
+ #define IS_RIGHT_ON_SYNC(x) IS_RIGHT_STEREO(x)
+ #define IS_LEFT_ON_SYNC(x) IS_LEFT_STEREO(x)
+ 
+-
+ typedef unsigned int Uint;
+ typedef unsigned char Uchar;
+ 
+@@ -623,8 +619,7 @@ struct cea_vendor_block {
+   };
+ };
+ 
+-struct cea_speaker_block
+-{
++struct cea_speaker_block {
+   Uchar FLR:1;
+   Uchar LFE:1;
+   Uchar FC:1;

@@ -1,0 +1,13 @@
+diff --git a/Xext/security.c b/Xext/security.c
+index 7eb95de..8673880 100644
+--- a/Xext/security.c
++++ b/Xext/security.c
+@@ -154,8 +154,6 @@ SecurityLookupRequestName(ClientPtr client)
+ }
+ 
+ 
+-#define rClient(obj) (clients[CLIENT_ID((obj)->resource)])
+-
+ /* SecurityDeleteAuthorization
+  *
+  * Arguments:

@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Globals.c b/hw/xfree86/common/xf86Globals.c
+index 93533ec..5370e4c 100644
+--- a/hw/xfree86/common/xf86Globals.c
++++ b/hw/xfree86/common/xf86Globals.c
+@@ -125,7 +125,7 @@ xf86InfoRec xf86Info = {
+     .log                        = LogNone,
+     .disableRandR               = FALSE,
+     .randRFrom                  = X_DEFAULT,
+-#if defined(CONFIG_HAL) || defined(CONFIG_UDEV)
++#if defined(CONFIG_HAL) || defined(CONFIG_UDEV) || defined(CONFIG_WSCONS)
+     .forceInputDevices          = FALSE,
+     .autoAddDevices             = TRUE,
+     .autoEnableDevices          = TRUE

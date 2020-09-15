@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/xprFrame.c b/hw/xquartz/xpr/xprFrame.c
+index 53dde7a..6dc2c87 100644
+--- a/hw/xquartz/xpr/xprFrame.c
++++ b/hw/xquartz/xpr/xprFrame.c
+@@ -576,7 +576,7 @@ xprHideWindows(Bool hide)
+     
+     for (screen = 0; screen < screenInfo.numScreens; screen++) {
+         RootlessFrameID prevWid = NULL;
+-        pRoot = WindowTable[screenInfo.screens[screen]->myNum];
++        pRoot = screenInfo.screens[screen]->root;
+ 
+         for (pWin = pRoot->firstChild; pWin; pWin = pWin->nextSib) {
+             RootlessWindowRec *winRec = WINREC(pWin);

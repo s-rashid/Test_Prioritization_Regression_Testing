@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/darwinEvents.h b/hw/xquartz/darwinEvents.h
+index bd29d51..aefb5c7 100644
+--- a/hw/xquartz/darwinEvents.h
++++ b/hw/xquartz/darwinEvents.h
+@@ -32,7 +32,7 @@
+ #define XQUARTZ_VALUATOR_LIMIT (1 << 16)
+ 
+ Bool DarwinEQInit(void);
+-Bool DarwinEQFini(void);
++void DarwinEQFini(void);
+ void DarwinEQEnqueue(const xEventPtr e);
+ void DarwinEQPointerPost(DeviceIntPtr pDev, xEventPtr e);
+ void DarwinEQSwitchScreen(ScreenPtr pScreen, Bool fromDIX);

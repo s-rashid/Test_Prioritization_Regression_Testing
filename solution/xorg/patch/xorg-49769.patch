@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86pciBus.c b/hw/xfree86/common/xf86pciBus.c
+index 184f221..1517951 100644
+--- a/hw/xfree86/common/xf86pciBus.c
++++ b/hw/xfree86/common/xf86pciBus.c
+@@ -465,7 +465,7 @@ xf86PciAddMatchingDev(DriverPtr drvp)
+ 
+     pci_iterator_destroy(iter);
+ 
+-    return (numFound != 0);
++    return numFound != 0;
+ }
+ 
+ Bool

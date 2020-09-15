@@ -1,0 +1,12 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index b74ee04..58d318f 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -493,6 +493,7 @@ typedef struct _SpriteInfoRec {
+ #define MASTER_POINTER          1
+ #define MASTER_KEYBOARD         2
+ #define SLAVE                   3
++#define MASTER_ATTACHED         4  /* special type for GetMaster */
+ 
+ typedef struct _DeviceIntRec {
+     DeviceRec	public;

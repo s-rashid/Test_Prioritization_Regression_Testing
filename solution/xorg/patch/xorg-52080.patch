@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index b8d8e7b..f1ba31e 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -938,6 +938,8 @@ CloseDevice(DeviceIntPtr dev)
+     }
+ 
+     free(dev->deviceGrab.sync.event);
++    free(dev->config_info);     /* Allocated in xf86ActivateDevice. */
++    dev->config_info = NULL;
+     dixFreeObjectWithPrivates(dev, PRIVATE_DEVICE);
+ }
+ 

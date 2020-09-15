@@ -1,0 +1,15 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index de72c88..ab8c3f9 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -311,10 +311,6 @@ EnableDevice(DeviceIntPtr dev, BOOL sendevent)
+         }
+     }
+ 
+-    /* Before actually enabling the device, we need to make sure the event
+-     * list's events have enough memory for a ClassesChangedEvent from the
+-     * device
+-     */
+     if ((*prev != dev) || !dev->inited ||
+ 	((ret = (*dev->deviceProc)(dev, DEVICE_ON)) != Success)) {
+         ErrorF("[dix] couldn't enable device %d\n", dev->id);

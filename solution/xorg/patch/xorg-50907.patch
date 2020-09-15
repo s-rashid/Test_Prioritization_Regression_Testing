@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/fake/fake.c b/hw/kdrive/fake/fake.c
+index b8306db..ba05234 100644
+--- a/hw/kdrive/fake/fake.c
++++ b/hw/kdrive/fake/fake.c
+@@ -215,11 +215,8 @@ fakeUnmapFramebuffer (KdScreenInfo *screen)
+ {
+     FakePriv		*priv = screen->card->driver;
+     KdShadowFbFree (screen);
+-    if (priv->base)
+-    {
+ 	free (priv->base);
+-	priv->base = 0;
+-    }
++    priv->base = NULL;
+     return TRUE;
+ }
+ 

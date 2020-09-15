@@ -1,0 +1,28 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 60003d5..304d503 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -157,7 +157,6 @@ xf86CrtcDestroy (xf86CrtcPtr crtc)
+ 	    xf86_config->num_crtc--;
+ 	    break;
+ 	}
+-    if (crtc->params)
+ 	free(crtc->params);
+     free(crtc->gamma_red);
+     free(crtc);
+@@ -382,7 +381,6 @@ done:
+ 	crtc->transformPresent = saved_transform_present;
+     }
+ 
+-    if (adjusted_mode->name)
+ 	    free(adjusted_mode->name);
+     free(adjusted_mode);
+ 
+@@ -482,7 +480,6 @@ xf86OutputSetMonitor (xf86OutputPtr output)
+     if (!output->name)
+ 	return;
+ 
+-    if (output->options)
+ 	free(output->options);
+ 
+     output->options = xnfalloc (sizeof (xf86OutputOptions));

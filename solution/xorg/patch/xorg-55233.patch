@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxcursor.h b/hw/dmx/dmxcursor.h
+index fc2e118..2b55b4e 100644
+--- a/hw/dmx/dmxcursor.h
++++ b/hw/dmx/dmxcursor.h
+@@ -48,6 +48,7 @@ typedef struct _dmxCursorPriv {
+ 
+ /** Cursor functions for mi layer. \see dmxcursor.c \see dmxscrinit.c */
+ extern miPointerScreenFuncRec dmxPointerCursorFuncs;
++
+ /** Sprite functions for mi layer. \see dmxcursor.c \see dmxscrinit.c */
+ extern miPointerSpriteFuncRec dmxPointerSpriteFuncs;
+ 

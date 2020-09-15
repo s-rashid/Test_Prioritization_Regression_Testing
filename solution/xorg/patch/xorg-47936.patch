@@ -1,0 +1,19 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 8b4c36f..2bdb733 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -831,6 +831,14 @@ DRI2DestroyDrawable(DrawablePtr pDraw)
+ }
+ 
+ Bool
++DRI2HasSwapControl(ScreenPtr pScreen)
++{
++    DRI2ScreenPtr ds = DRI2GetScreen(pScreen);
++
++    return (ds->ScheduleSwap && ds->GetMSC);
++}
++
++Bool
+ DRI2Connect(ScreenPtr pScreen, unsigned int driverType, int *fd,
+ 	    const char **driverName, const char **deviceName)
+ {

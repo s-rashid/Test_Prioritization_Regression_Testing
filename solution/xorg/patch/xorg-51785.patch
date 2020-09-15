@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index a1fda54..e664ce4 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -808,7 +808,7 @@ InitInput(int argc, char **argv)
+ 
+     GetEventList(&xf86Events);
+ 
+-    /* Call the PreInit function for each input device instance. */
++    /* Initialize all configured input devices */
+     for (pDev = xf86ConfigLayout.inputs; pDev && *pDev; pDev++) {
+         /* Replace obsolete keyboard driver with kbd */
+         if (!xf86NameCmp((*pDev)->driver, "keyboard")) {

@@ -1,0 +1,90 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index a67e35f..00b3668 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -53,19 +53,16 @@ typedef DRI2BufferRec DRI2Buffer2Rec, *DRI2Buffer2Ptr;
+ typedef void (*DRI2SwapEventPtr)(ClientPtr client, void *data, int type,
+ 				 CARD64 ust, CARD64 msc, CARD32 sbc);
+ 
+-
+ typedef DRI2BufferPtr	(*DRI2CreateBuffersProcPtr)(DrawablePtr pDraw,
+ 						    unsigned int *attachments,
+ 						    int count);
+ typedef void		(*DRI2DestroyBuffersProcPtr)(DrawablePtr pDraw,
+-						     DRI2BufferPtr buffers,
+-						     int count);
++                                           DRI2BufferPtr buffers, int count);
+ typedef void		(*DRI2CopyRegionProcPtr)(DrawablePtr pDraw,
+ 						 RegionPtr pRegion,
+ 						 DRI2BufferPtr pDestBuffer,
+ 						 DRI2BufferPtr pSrcBuffer);
+-typedef void		(*DRI2WaitProcPtr)(WindowPtr pWin,
+-					   unsigned int sequence);
++typedef void (*DRI2WaitProcPtr) (WindowPtr pWin, unsigned int sequence);
+ typedef int		(*DRI2AuthMagicProcPtr)(int fd, uint32_t magic);
+ 
+ /**
+@@ -102,8 +99,7 @@ typedef int		(*DRI2ScheduleSwapProcPtr)(ClientPtr client,
+ 						   CARD64 *target_msc,
+ 						   CARD64 divisor,
+ 						   CARD64 remainder,
+-						   DRI2SwapEventPtr func,
+-						   void *data);
++                                        DRI2SwapEventPtr func, void *data);
+ typedef DRI2BufferPtr	(*DRI2CreateBufferProcPtr)(DrawablePtr pDraw,
+ 						   unsigned int attachment,
+ 						   unsigned int format);
+@@ -162,12 +158,9 @@ typedef int		(*DRI2GetMSCProcPtr)(DrawablePtr pDraw, CARD64 *ust,
+ typedef int		(*DRI2ScheduleWaitMSCProcPtr)(ClientPtr client,
+ 						      DrawablePtr pDraw,
+ 						      CARD64 target_msc,
+-						      CARD64 divisor,
+-						      CARD64 remainder);
++                                           CARD64 divisor, CARD64 remainder);
+ 
+-typedef void		(*DRI2InvalidateProcPtr)(DrawablePtr pDraw,
+-						 void *data,
+-						 XID id);
++typedef void (*DRI2InvalidateProcPtr) (DrawablePtr pDraw, void *data, XID id);
+ 
+ /**
+  * DRI2 calls this hook when ever swap_limit is going to be changed. Default
+@@ -222,8 +215,7 @@ typedef struct {
+ 
+ extern _X_EXPORT int DRI2EventBase;
+ 
+-extern _X_EXPORT Bool DRI2ScreenInit(ScreenPtr	pScreen,
+-		    DRI2InfoPtr info);
++extern _X_EXPORT Bool DRI2ScreenInit(ScreenPtr pScreen, DRI2InfoPtr info);
+ 
+ extern _X_EXPORT void DRI2CloseScreen(ScreenPtr pScreen);
+ 
+@@ -249,13 +241,11 @@ extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffers(DrawablePtr pDraw,
+ 			     int *width,
+ 			     int *height,
+ 			     unsigned int *attachments,
+-			     int count,
+-			     int *out_count);
++                                               int count, int *out_count);
+ 
+ extern _X_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
+ 		   RegionPtr pRegion,
+-		   unsigned int dest,
+-		   unsigned int src);
++                                    unsigned int dest, unsigned int src);
+ 
+ /**
+  * Determine the major and minor version of the DRI2 extension.
+@@ -276,7 +266,11 @@ extern _X_EXPORT int DRI2CopyRegion(DrawablePtr pDraw,
+ extern _X_EXPORT void DRI2Version(int *major, int *minor);
+ 
+ extern _X_EXPORT DRI2BufferPtr *DRI2GetBuffersWithFormat(DrawablePtr pDraw,
+-	int *width, int *height, unsigned int *attachments, int count,
++                                                         int *width,
++                                                         int *height,
++                                                         unsigned int
++                                                         *attachments,
++                                                         int count,
+ 	int *out_count);
+ 
+ extern _X_EXPORT void DRI2SwapInterval(DrawablePtr pDrawable, int interval);

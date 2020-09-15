@@ -1,0 +1,13 @@
+diff --git a/dix/dixfonts.c b/dix/dixfonts.c
+index bd1ad30..d8f1529 100644
+--- a/dix/dixfonts.c
++++ b/dix/dixfonts.c
+@@ -667,7 +667,7 @@ doListFontsAndAliases(ClientPtr client, LFclosurePtr c)
+ 		    ((pointer) c->client, fpe, &name, &namelen, &tmpname,
+ 		     &resolvedlen, c->current.private);
+ 		if (err == Suspended) {
+-		    if (ClientIsAsleep(client))
++		    if (!ClientIsAsleep(client))
+ 			ClientSleep(client,
+ 				    (ClientSleepProcPtr)doListFontsAndAliases,
+ 				    c);

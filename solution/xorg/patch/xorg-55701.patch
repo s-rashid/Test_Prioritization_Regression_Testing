@@ -1,0 +1,54 @@
+diff --git a/hw/xfree86/xaa/xaaOffscreen.c b/hw/xfree86/xaa/xaaOffscreen.c
+index cd0d9a9..7d89fc1 100644
+--- a/hw/xfree86/xaa/xaaOffscreen.c
++++ b/hw/xfree86/xaa/xaaOffscreen.c
+@@ -42,8 +42,6 @@ XAAMoveOutOffscreenPixmaps(ScreenPtr pScreen)
+     }    
+ }
+ 
+-
+-
+ void
+ XAAMoveInOffscreenPixmaps(ScreenPtr pScreen)
+ {
+@@ -64,8 +62,10 @@ XAAMoveInOffscreenPixmaps(ScreenPtr pScreen)
+ 
+ 	data = pPix->devPrivate.ptr;
+ 	tmpPix = GetScratchPixmapHeader(pScreen, 
+-		pPix->drawable.width, pPix->drawable.height, 
+-		pPix->drawable.depth, pPix->drawable.bitsPerPixel, 
++                                        pPix->drawable.width,
++                                        pPix->drawable.height,
++                                        pPix->drawable.depth,
++                                        pPix->drawable.bitsPerPixel,
+ 		pPix->devKind, data);
+ 
+ 	pPriv->freeData = FALSE;
+@@ -88,7 +88,8 @@ XAAMoveInOffscreenPixmaps(ScreenPtr pScreen)
+ 	ValidateGC((DrawablePtr)pPix, pGC);
+ 
+ 	(*pGC->ops->CopyArea)((DrawablePtr)tmpPix, (DrawablePtr)pPix, pGC, 
+-		0, 0, pPix->drawable.width, pPix->drawable.height, 0, 0);	
++                               0, 0, pPix->drawable.width,
++                               pPix->drawable.height, 0, 0);
+ 
+ 	free(data);
+ 	tmpPix->devPrivate.ptr = NULL;
+@@ -102,7 +103,6 @@ XAAMoveInOffscreenPixmaps(ScreenPtr pScreen)
+     }    
+ }
+ 
+-
+ void
+ XAARemoveAreaCallback(FBAreaPtr area)
+ {
+@@ -136,7 +136,8 @@ XAAMoveOutOffscreenPixmap(PixmapPtr pPix)
+ 	FatalError("Out of memory\n");
+ 
+     tmpPix = GetScratchPixmapHeader(pScreen, width, height, 
+-		pPix->drawable.depth, bitsPerPixel, devKind, data);
++                                    pPix->drawable.depth, bitsPerPixel, devKind,
++                                    data);
+     if(!tmpPix) {
+ 	free(data);
+ 	FatalError("Out of memory\n");

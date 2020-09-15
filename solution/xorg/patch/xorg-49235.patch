@@ -1,0 +1,14 @@
+diff --git a/mi/micopy.c b/mi/micopy.c
+index 157e324..b1a7a08 100644
+--- a/mi/micopy.c
++++ b/mi/micopy.c
+@@ -209,8 +209,7 @@ miDoCopy (DrawablePtr	pSrcDrawable,
+ 	     * VT is inactive, make sure the region isn't empty
+ 	     */
+ 	    if (!((WindowPtr) pSrcDrawable)->parent &&
+-		RegionNotEmpty(
+-				 &((WindowPtr) pSrcDrawable)->borderClip))
++		RegionNotEmpty(&((WindowPtr) pSrcDrawable)->borderClip))
+ 	    {
+ 		/*
+ 		 * special case bitblt from root window in

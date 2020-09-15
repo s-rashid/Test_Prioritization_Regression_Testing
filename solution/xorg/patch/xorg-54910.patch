@@ -1,0 +1,12 @@
+diff --git a/Xext/geint.h b/Xext/geint.h
+index 3e2b8e1..f76d148 100644
+--- a/Xext/geint.h
++++ b/Xext/geint.h
+@@ -38,6 +38,7 @@
+ #include <X11/extensions/geproto.h>
+ 
+ extern _X_EXPORT DevPrivateKeyRec GEClientPrivateKeyRec;
++
+ #define GEClientPrivateKey (&GEClientPrivateKeyRec)
+ 
+ typedef struct _GEClientInfo {

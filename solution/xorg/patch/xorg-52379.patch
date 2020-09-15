@@ -1,0 +1,13 @@
+diff --git a/Xi/xipassivegrab.c b/Xi/xipassivegrab.c
+index 22f905e..5b4cc46 100644
+--- a/Xi/xipassivegrab.c
++++ b/Xi/xipassivegrab.c
+@@ -159,6 +159,8 @@ ProcXIPassiveGrabDevice(ClientPtr client)
+ 	return status;
+ 
+     status = CheckGrabValues(client, &param);
++    if (status != Success)
++        return status;
+ 
+     modifiers = (uint32_t*)&stuff[1] + stuff->mask_len;
+     modifiers_failed = calloc(stuff->num_modifiers, sizeof(xXIGrabModifierInfo));

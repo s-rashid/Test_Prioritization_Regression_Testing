@@ -1,0 +1,139 @@
+diff --git a/randr/rrdispatch.c b/randr/rrdispatch.c
+index 5a6a852..85cf037 100644
+--- a/randr/rrdispatch.c
++++ b/randr/rrdispatch.c
+@@ -47,12 +47,12 @@ ProcRRQueryVersion (ClientPtr client)
+     rep.sequenceNumber = client->sequence;
+ 
+     if (version_compare(stuff->majorVersion, stuff->minorVersion,
+-                        SERVER_RANDR_MAJOR_VERSION, SERVER_RANDR_MINOR_VERSION) < 0)
+-    {
++                        SERVER_RANDR_MAJOR_VERSION,
++                        SERVER_RANDR_MINOR_VERSION) < 0) {
+ 	rep.majorVersion = stuff->majorVersion;
+ 	rep.minorVersion = stuff->minorVersion;
+-    } else
+-    {
++    }
++    else {
+         rep.majorVersion = SERVER_RANDR_MAJOR_VERSION;
+         rep.minorVersion = SERVER_RANDR_MINOR_VERSION;
+     }
+@@ -90,22 +90,20 @@ ProcRRSelectInput (ClientPtr client)
+     if (stuff->enable & (RRScreenChangeNotifyMask|
+ 			 RRCrtcChangeNotifyMask|
+ 			 RROutputChangeNotifyMask|
+-			 RROutputPropertyNotifyMask)) 
+-    {
++                         RROutputPropertyNotifyMask)) {
+ 	ScreenPtr	pScreen = pWin->drawable.pScreen;
++
+ 	rrScrPriv	(pScreen);
+ 
+ 	pRREvent = NULL;
+-	if (pHead) 
+-	{
++        if (pHead) {
+ 	    /* check for existing entry. */
+ 	    for (pRREvent = *pHead; pRREvent; pRREvent = pRREvent->next)
+ 		if (pRREvent->client == client)
+ 		    break;
+ 	}
+ 
+-	if (!pRREvent)
+-	{
++        if (!pRREvent) {
+ 	    /* build the entry */
+ 	    pRREvent = (RREventPtr) malloc(sizeof (RREventRec));
+ 	    if (!pRREvent)
+@@ -128,12 +126,11 @@ ProcRRSelectInput (ClientPtr client)
+ 	     * the list may be arbitrarily rearranged which cannot be
+ 	     * done through the resource database.
+ 	     */
+-	    if (!pHead)
+-	    {
++            if (!pHead) {
+ 		pHead = (RREventPtr *) malloc(sizeof (RREventPtr));
+ 		if (!pHead ||
+-		    !AddResource (pWin->drawable.id, RREventType, (pointer)pHead))
+-		{
++                    !AddResource(pWin->drawable.id, RREventType,
++                                 (pointer) pHead)) {
+ 		    FreeResource (clientResource, RT_NONE);
+ 		    return BadAlloc;
+ 		}
+@@ -145,36 +142,30 @@ ProcRRSelectInput (ClientPtr client)
+ 	/*
+ 	 * Now see if the client needs an event
+ 	 */
+-	if (pScrPriv)
+-	{
++        if (pScrPriv) {
+ 	    pTimes = &((RRTimesPtr) (pRRClient + 1))[pScreen->myNum];
+ 	    if (CompareTimeStamps (pTimes->setTime, 
+ 				   pScrPriv->lastSetTime) != 0 ||
+ 		CompareTimeStamps (pTimes->configTime, 
+-				   pScrPriv->lastConfigTime) != 0)
+-	    {
+-		if (pRREvent->mask & RRScreenChangeNotifyMask)
+-		{
++                                  pScrPriv->lastConfigTime) != 0) {
++                if (pRREvent->mask & RRScreenChangeNotifyMask) {
+ 		    RRDeliverScreenEvent (client, pWin, pScreen);
+ 		}
+ 
+-		if (pRREvent->mask & RRCrtcChangeNotifyMask)
+-		{
++                if (pRREvent->mask & RRCrtcChangeNotifyMask) {
+ 		    int i;
+ 
+-		    for (i = 0; i < pScrPriv->numCrtcs; i++)
+-		    {
++                    for (i = 0; i < pScrPriv->numCrtcs; i++) {
+ 			RRDeliverCrtcEvent (client, pWin, pScrPriv->crtcs[i]);
+ 		    }
+ 		}
+ 
+-		if (pRREvent->mask & RROutputChangeNotifyMask)
+-		{
++                if (pRREvent->mask & RROutputChangeNotifyMask) {
+ 		    int i;
+ 
+-		    for (i = 0; i < pScrPriv->numOutputs; i++)
+-		    {
+-			RRDeliverOutputEvent (client, pWin, pScrPriv->outputs[i]);
++                    for (i = 0; i < pScrPriv->numOutputs; i++) {
++                        RRDeliverOutputEvent(client, pWin,
++                                             pScrPriv->outputs[i]);
+ 		    }
+ 		}
+ 
+@@ -185,11 +176,11 @@ ProcRRSelectInput (ClientPtr client)
+ 	    }
+ 	}
+     }
+-    else if (stuff->enable == 0) 
+-    {
++    else if (stuff->enable == 0) {
+ 	/* delete the interest */
+ 	if (pHead) {
+ 	    RREventPtr pNewRREvent = 0;
++
+ 	    for (pRREvent = *pHead; pRREvent; pRREvent = pRREvent->next) {
+ 		if (pRREvent->client == client)
+ 		    break;
+@@ -205,8 +196,7 @@ ProcRRSelectInput (ClientPtr client)
+ 	    }
+ 	}
+     }
+-    else 
+-    {
++    else {
+ 	client->errorValue = stuff->enable;
+ 	return BadValue;
+     }
+@@ -252,4 +242,3 @@ int (*ProcRandrVector[RRNumberRequests])(ClientPtr) = {
+     ProcRRSetOutputPrimary,	/* 30 */
+     ProcRRGetOutputPrimary,	/* 31 */
+ };
+-

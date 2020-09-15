@@ -1,0 +1,43 @@
+diff --git a/include/xkbrules.h b/include/xkbrules.h
+index 0f3f934..d217318 100644
+--- a/include/xkbrules.h
++++ b/include/xkbrules.h
+@@ -89,19 +89,16 @@ _XFUNCPROTOBEGIN
+ /* Seems preferable to dragging xkbstr.h in. */
+ struct _XkbComponentNames;
+ 
+-extern _X_EXPORT Bool	XkbRF_GetComponents(
+-    XkbRF_RulesPtr		/* rules */,
++extern _X_EXPORT Bool XkbRF_GetComponents(XkbRF_RulesPtr /* rules */ ,
+     XkbRF_VarDefsPtr		/* var_defs */,
+     struct _XkbComponentNames *	/* names */
+ );
+ 
+-extern _X_EXPORT Bool	XkbRF_LoadRules(
+-    FILE *		/* file */,
++extern _X_EXPORT Bool XkbRF_LoadRules(FILE * /* file */ ,
+     XkbRF_RulesPtr	/* rules */
+ );
+ 
+-extern _X_EXPORT Bool XkbRF_LoadRulesByName(
+-    char *		/* base */,
++extern _X_EXPORT Bool XkbRF_LoadRulesByName(char * /* base */ ,
+     char *		/* locale */,
+     XkbRF_RulesPtr	/* rules */
+ );
+@@ -110,8 +107,7 @@ extern _X_EXPORT Bool XkbRF_LoadRulesByName(
+ 
+ extern _X_EXPORT XkbRF_RulesPtr XkbRF_Create(void);
+ 
+-extern _X_EXPORT void XkbRF_Free(
+-    XkbRF_RulesPtr	/* rules */,
++extern _X_EXPORT void XkbRF_Free(XkbRF_RulesPtr /* rules */ ,
+     Bool		/* freeRules */
+ );
+ 
+@@ -121,5 +117,4 @@ extern _X_EXPORT void XkbRF_Free(
+ #define	_XKB_RF_NAMES_PROP_MAXLEN	1024
+ 
+ _XFUNCPROTOEND
+-
+ #endif /* _XKBRULES_H_ */

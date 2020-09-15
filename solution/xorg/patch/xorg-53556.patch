@@ -1,0 +1,13 @@
+diff --git a/mi/mipointer.h b/mi/mipointer.h
+index c4265f9..35428df 100644
+--- a/mi/mipointer.h
++++ b/mi/mipointer.h
+@@ -131,7 +131,7 @@ extern _X_EXPORT void miPointerGetPosition(
+ 
+ /* Moves the cursor to the specified position.  May clip the co-ordinates:
+  * x and y are modified in-place. */
+-extern _X_EXPORT void miPointerSetPosition(
++extern _X_EXPORT ScreenPtr miPointerSetPosition(
+     DeviceIntPtr pDev,
+     int mode,
+     int *x,

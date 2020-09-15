@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/winmultiwindowwm.c b/hw/xwin/winmultiwindowwm.c
+index ea9dfca..194dbf6 100644
+--- a/hw/xwin/winmultiwindowwm.c
++++ b/hw/xwin/winmultiwindowwm.c
+@@ -1359,7 +1359,9 @@ winMultiWindowXMsgProcErrorHandler (Display *pDisplay, XErrorEvent *pErr)
+ 		 pErr->error_code,
+ 		 pszErrorMsg,
+ 		 sizeof (pszErrorMsg));
++#if CYGMULTIWINDOW_DEBUG
+   ErrorF ("winMultiWindowXMsgProcErrorHandler - ERROR: %s\n", pszErrorMsg);
++#endif
+   
+   return 0;
+ }

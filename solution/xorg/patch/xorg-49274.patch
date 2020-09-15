@@ -1,0 +1,14 @@
+diff --git a/config/dbus.c b/config/dbus.c
+index 72a0a05..4888f62 100644
+--- a/config/dbus.c
++++ b/config/dbus.c
+@@ -184,9 +184,7 @@ unwind:
+     while (options) {
+         tmpo = options;
+         options = options->next;
+-        if (tmpo->key)
+             free(tmpo->key);
+-        if (tmpo->value)
+             free(tmpo->value);
+         free(tmpo);
+     }

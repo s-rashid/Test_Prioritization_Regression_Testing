@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/os-support/bus/bsd_pci.c b/hw/xfree86/os-support/bus/bsd_pci.c
+index f51d5c0..7a5dbbb 100644
+--- a/hw/xfree86/os-support/bus/bsd_pci.c
++++ b/hw/xfree86/os-support/bus/bsd_pci.c
+@@ -48,13 +48,6 @@
+ 
+ #include "pciaccess.h"
+ 
+-pointer
+-xf86MapDomainMemory(int ScreenNum, int Flags, struct pci_device *dev,
+-		    ADDRESS Base, unsigned long Size)
+-{
+-    return xf86MapVidMem(ScreenNum, Flags, Base, Size);
+-}
+-
+ void
+ osPciInit(void)
+ {

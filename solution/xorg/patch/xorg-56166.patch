@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dri2/dri2.h b/hw/xfree86/dri2/dri2.h
+index 9c93209..a67e35f 100644
+--- a/hw/xfree86/dri2/dri2.h
++++ b/hw/xfree86/dri2/dri2.h
+@@ -166,7 +166,8 @@ typedef int		(*DRI2ScheduleWaitMSCProcPtr)(ClientPtr client,
+ 						      CARD64 remainder);
+ 
+ typedef void		(*DRI2InvalidateProcPtr)(DrawablePtr pDraw,
+-						 void *data);
++						 void *data,
++						 XID id);
+ 
+ /**
+  * DRI2 calls this hook when ever swap_limit is going to be changed. Default

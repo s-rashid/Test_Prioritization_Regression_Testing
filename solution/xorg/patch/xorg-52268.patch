@@ -1,0 +1,33 @@
+diff --git a/glx/glxext.c b/glx/glxext.c
+index e083c6c..db767f7 100644
+--- a/glx/glxext.c
++++ b/glx/glxext.c
+@@ -50,7 +50,6 @@
+ ** from the server's perspective.
+ */
+ __GLXcontext *__glXLastContext;
+-__GLXcontext *__glXContextList;
+ 
+ /*
+ ** X resources.
+@@ -67,11 +66,6 @@ static DevPrivateKeyRec glxClientPrivateKeyRec;
+ #define glxClientPrivateKey (&glxClientPrivateKeyRec)
+ 
+ /*
+-** Client that called into GLX dispatch.
+-*/
+-ClientPtr __pGlxClient;
+-
+-/*
+ ** Forward declarations.
+ */
+ static int __glXDispatch(ClientPtr);
+@@ -547,8 +541,6 @@ static int __glXDispatch(ClientPtr client)
+ 	GLboolean rendering = opcode <= X_GLXRenderLarge;
+ 	__glXleaveServer(rendering);
+ 
+-	__pGlxClient = client;
+-
+ 	retval = (*proc)(cl, (GLbyte *) stuff);
+ 
+ 	__glXenterServer(rendering);

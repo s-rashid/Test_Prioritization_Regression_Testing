@@ -1,0 +1,17 @@
+diff --git a/mi/mieq.c b/mi/mieq.c
+index 5bdf971..6c46eb9 100644
+--- a/mi/mieq.c
++++ b/mi/mieq.c
+@@ -514,6 +514,12 @@ mieqProcessDeviceEvent(DeviceIntPtr dev,
+             if (!handler)
+                 mieqMoveToNewScreen(dev, screen, &event->device_event);
+             break;
++        case ET_TouchBegin:
++        case ET_TouchUpdate:
++        case ET_TouchEnd:
++            if (!handler && (event->device_event.flags & TOUCH_POINTER_EMULATED))
++                mieqMoveToNewScreen(dev, screen, &event->device_event);
++            break;
+         default:
+             break;
+     }

@@ -1,0 +1,20 @@
+diff --git a/include/xserver-properties.h b/include/xserver-properties.h
+index 18b54ba..85f2ce5 100644
+--- a/include/xserver-properties.h
++++ b/include/xserver-properties.h
+@@ -20,7 +20,6 @@
+  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+-
+ /* Properties managed by the server. */
+ 
+ #ifndef _XSERVER_PROPERTIES_H_
+@@ -63,7 +62,6 @@
+ /* FLOAT, format 32 */
+ #define ACCEL_PROP_VELOCITY_SCALING "Device Accel Velocity Scaling"
+ 
+-
+ /* Axis labels */
+ #define AXIS_LABEL_PROP "Axis Labels"
+ 

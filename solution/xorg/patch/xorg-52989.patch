@@ -1,0 +1,12 @@
+diff --git a/exa/exa_unaccel.c b/exa/exa_unaccel.c
+index df416d5..219f903 100644
+--- a/exa/exa_unaccel.c
++++ b/exa/exa_unaccel.c
+@@ -1,6 +1,6 @@
+ /*
+  *
+- * Copyright © 1999 Keith Packard
++ * Copyright Â© 1999 Keith Packard
+  *
+  * Permission to use, copy, modify, distribute, and sell this software and its
+  * documentation for any purpose is hereby granted without fee, provided that

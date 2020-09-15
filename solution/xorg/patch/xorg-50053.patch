@@ -1,0 +1,39 @@
+diff --git a/hw/xfree86/common/xf86VGAarbiter.c b/hw/xfree86/common/xf86VGAarbiter.c
+index a58d21a..05cf245 100644
+--- a/hw/xfree86/common/xf86VGAarbiter.c
++++ b/hw/xfree86/common/xf86VGAarbiter.c
+@@ -523,12 +523,16 @@ static Bool
+ VGAarbiterEnterVT(int index, int flags)
+ {
+     Bool val;
++    ScrnInfoPtr pScrn = xf86Screens[index];
+     ScreenPtr pScreen = screenInfo.screens[index];
+     VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+         &pScreen->devPrivates, VGAarbiterScreenKey);
+ 
+     VGAGet();
+-    val = (*pScreenPriv->EnterVT)(index, flags);
++    pScrn->EnterVT = pScreenPriv->EnterVT;
++    val = (*pScrn->EnterVT)(index, flags);
++    pScreenPriv->EnterVT = pScrn->EnterVT;
++    pScrn->EnterVT = VGAarbiterEnterVT;
+     VGAPut();
+     return val;
+ }
+@@ -536,12 +540,16 @@ VGAarbiterEnterVT(int index, int flags)
+ static void
+ VGAarbiterLeaveVT(int index, int flags)
+ {
++    ScrnInfoPtr pScrn = xf86Screens[index];
+     ScreenPtr pScreen = screenInfo.screens[index];
+     VGAarbiterScreenPtr pScreenPriv = (VGAarbiterScreenPtr)dixLookupPrivate(
+         &pScreen->devPrivates, VGAarbiterScreenKey);
+ 
+     VGAGet();
++    pScrn->LeaveVT = pScreenPriv->LeaveVT;
+     (*pScreenPriv->LeaveVT)(index, flags);
++    pScreenPriv->LeaveVT = pScrn->LeaveVT;
++    pScrn->LeaveVT = VGAarbiterLeaveVT;
+     VGAPut();
+ }
+ 

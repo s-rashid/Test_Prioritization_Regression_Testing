@@ -1,0 +1,33 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 048dff6..5544623 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -3578,12 +3578,14 @@ ProcInitialConnection(ClientPtr client)
+     REQUEST(xReq);
+     xConnClientPrefix *prefix;
+     int whichbyte = 1;
++    char order;
+ 
+     prefix = (xConnClientPrefix *)((char *)stuff + sz_xReq);
+-    if ((prefix->byteOrder != 'l') && (prefix->byteOrder != 'B'))
++    order = prefix->byteOrder;
++    if (order != 'l' && order != 'B' && order != 'r' && order != 'R')
+ 	return client->noClientException = -1;
+-    if (((*(char *) &whichbyte) && (prefix->byteOrder == 'B')) ||
+-	(!(*(char *) &whichbyte) && (prefix->byteOrder == 'l')))
++    if (((*(char *) &whichbyte) && (order == 'B' || order == 'R')) ||
++	(!(*(char *) &whichbyte) && (order == 'l' || order == 'r')))
+     {
+ 	client->swapped = TRUE;
+ 	SwapConnClientPrefix(prefix);
+@@ -3595,6 +3597,10 @@ ProcInitialConnection(ClientPtr client)
+     {
+ 	swaps(&stuff->length);
+     }
++    if (order == 'r' || order == 'R')
++    {
++	client->local = FALSE;
++    }
+     ResetCurrentRequest(client);
+     return Success;
+ }

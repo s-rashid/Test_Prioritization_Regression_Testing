@@ -1,0 +1,12 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 546ccb4..82df7eb 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -757,6 +757,7 @@ static void SDeviceEvent(xXIDeviceEvent *from, xXIDeviceEvent *to)
+     swapl(&to->mods.latched_mods, n);
+     swapl(&to->mods.locked_mods, n);
+     swapl(&to->mods.effective_mods, n);
++    swapl(&to->flags, n);
+ 
+     ptr = (char*)(&to[1]);
+     ptr += from->buttons_len * 4;

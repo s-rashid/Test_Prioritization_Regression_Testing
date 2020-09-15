@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fake/fake.c b/hw/kdrive/fake/fake.c
+index 1cf0f2e..b8306db 100644
+--- a/hw/kdrive/fake/fake.c
++++ b/hw/kdrive/fake/fake.c
+@@ -168,7 +168,6 @@ fakeMapFramebuffer (KdScreenInfo *screen)
+     KdSetPointerMatrix (&m);
+     
+     priv->bytes_per_line = ((screen->width * screen->fb.bitsPerPixel + 31) >> 5) << 2;
+-    if (priv->base)
+ 	free (priv->base);
+     priv->base = malloc (priv->bytes_per_line * screen->height);
+     

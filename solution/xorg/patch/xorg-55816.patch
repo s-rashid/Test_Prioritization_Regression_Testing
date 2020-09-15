@@ -1,0 +1,21 @@
+diff --git a/hw/xquartz/xpr/xprEvent.c b/hw/xquartz/xpr/xprEvent.c
+index 4e7ece6..7f4b077 100644
+--- a/hw/xquartz/xpr/xprEvent.c
++++ b/hw/xquartz/xpr/xprEvent.c
+@@ -55,12 +55,13 @@
+ #include "rootlessWindow.h"
+ #include "xprEvent.h"
+ 
+-Bool QuartzModeEventHandler(int screenNum, XQuartzEvent *e, DeviceIntPtr dev) {
++Bool
++QuartzModeEventHandler(int screenNum, XQuartzEvent * e, DeviceIntPtr dev)
++{
+     switch(e->subtype) {
+         case kXquartzWindowState:
+             DEBUG_LOG("kXquartzWindowState\n");
+-            RootlessNativeWindowStateChanged(xprGetXWindow(e->data[0]),
+-                                             e->data[1]);
++        RootlessNativeWindowStateChanged(xprGetXWindow(e->data[0]), e->data[1]);
+             return TRUE;
+             
+         case kXquartzWindowMoved:

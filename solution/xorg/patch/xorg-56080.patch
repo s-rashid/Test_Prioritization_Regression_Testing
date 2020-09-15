@@ -1,0 +1,362 @@
+diff --git a/randr/rrproperty.c b/randr/rrproperty.c
+index d0a9020..75948fc 100644
+--- a/randr/rrproperty.c
++++ b/randr/rrproperty.c
+@@ -35,8 +35,7 @@ DeliverPropertyEvent(WindowPtr pWin, void *value)
+     if (!pHead)
+ 	return WT_WALKCHILDREN;
+ 
+-    for (pRREvent = *pHead; pRREvent; pRREvent = pRREvent->next)
+-    {
++    for (pRREvent = *pHead; pRREvent; pRREvent = pRREvent->next) {
+ 	if (!(pRREvent->mask & RROutputPropertyNotifyMask))
+ 	    continue;
+ 
+@@ -47,7 +46,8 @@ DeliverPropertyEvent(WindowPtr pWin, void *value)
+     return WT_WALKCHILDREN;
+ }
+ 
+-static void RRDeliverPropertyEvent(ScreenPtr pScreen, xEvent *event)
++static void
++RRDeliverPropertyEvent(ScreenPtr pScreen, xEvent *event)
+ {
+     if (!(dispatchException & (DE_RESET | DE_TERMINATE)))
+ 	WalkTree(pScreen, DeliverPropertyEvent, event);
+@@ -66,6 +66,7 @@ static void
+ RRDeleteProperty(RROutputRec *output, RRPropertyRec *prop)
+ {
+     xRROutputPropertyNotifyEvent event;
++
+     event.type = RREventBase + RRNotify;
+     event.subCode = RRNotify_OutputProperty;
+     event.output = output->id;
+@@ -150,8 +151,7 @@ RRChangeOutputProperty (RROutputPtr output, Atom property, Atom type,
+ 
+     /* first see if property already exists */
+     prop = RRQueryOutputProperty (output, property);
+-    if (!prop)   /* just add to list */
+-    {
++    if (!prop) {                /* just add to list */
+ 	prop = RRCreateOutputProperty (property);
+ 	if (!prop)
+ 	    return BadAlloc;
+@@ -178,14 +178,12 @@ RRChangeOutputProperty (RROutputPtr output, Atom property, Atom type,
+     else
+ 	total_len = prop_value->size + len;
+ 
+-    if (mode == PropModeReplace || len > 0)
+-    {
++    if (mode == PropModeReplace || len > 0) {
+ 	pointer	    new_data = NULL, old_data = NULL;
+ 
+ 	total_size = total_len * size_in_bytes;
+ 	new_value.data = (pointer)malloc(total_size);
+-	if (!new_value.data && total_size)
+-	{
++        if (!new_value.data && total_size) {
+ 	    if (add)
+ 		RRDestroyOutputProperty (prop);
+ 	    return BadAlloc;
+@@ -218,8 +216,7 @@ RRChangeOutputProperty (RROutputPtr output, Atom property, Atom type,
+ 
+ 	if (pending && pScrPriv->rrOutputSetProperty &&
+ 	    !pScrPriv->rrOutputSetProperty(output->pScreen, output,
+-					   prop->propertyName, &new_value))
+-	{
++                                           prop->propertyName, &new_value)) {
+ 	    free(new_value.data);
+ 	    return BadValue;
+ 	}
+@@ -227,13 +224,11 @@ RRChangeOutputProperty (RROutputPtr output, Atom property, Atom type,
+ 	*prop_value = new_value;
+     }
+ 
+-    else if (len == 0)
+-    {
++    else if (len == 0) {
+ 	/* do nothing */
+     }
+ 
+-    if (add)
+-    {
++    if (add) {
+ 	prop->next = output->properties;
+ 	output->properties = prop;
+     }
+@@ -241,8 +236,7 @@ RRChangeOutputProperty (RROutputPtr output, Atom property, Atom type,
+     if (pending && prop->is_pending)
+ 	output->pendingProperties = TRUE;
+ 
+-    if (sendevent)
+-    {
++    if (sendevent) {
+ 	event.type = RREventBase + RRNotify;
+ 	event.subCode = RRNotify_OutputProperty;
+ 	event.output = output->id;
+@@ -266,8 +260,7 @@ RRPostPendingProperties (RROutputPtr output)
+ 	return TRUE;
+     
+     output->pendingProperties = FALSE;
+-    for (property = output->properties; property; property = property->next)
+-    {
++    for (property = output->properties; property; property = property->next) {
+ 	/* Skip non-pending properties */
+ 	if (!property->is_pending)
+ 	    continue;
+@@ -289,8 +282,7 @@ RRPostPendingProperties (RROutputPtr output)
+ 	if (RRChangeOutputProperty (output, property->propertyName,
+ 				    pending_value->type, pending_value->format,
+ 				    PropModeReplace, pending_value->size,
+-				    pending_value->data, TRUE,
+-				    FALSE) != Success)
++                                   pending_value->data, TRUE, FALSE) != Success)
+ 	    ret = FALSE;
+     }
+     return ret;
+@@ -337,13 +329,13 @@ RRConfigureOutputProperty (RROutputPtr output, Atom property,
+     Bool	    add = FALSE;
+     INT32	    *new_values;
+ 
+-    if (!prop)
+-    {
++    if (!prop) {
+         prop = RRCreateOutputProperty (property);
+ 	if (!prop)
+ 	    return BadAlloc;
+ 	add = TRUE;
+-    } else if (prop->immutable && !immutable)
++    }
++    else if (prop->immutable && !immutable)
+ 	return BadAccess;
+     
+     /*
+@@ -362,8 +354,7 @@ RRConfigureOutputProperty (RROutputPtr output, Atom property,
+      * Property moving from pending to non-pending
+      * loses any pending values
+      */
+-    if (prop->is_pending && !pending)
+-    {
++    if (prop->is_pending && !pending) {
+ 	free(prop->pending.data);
+ 	RRInitOutputPropertyValue (&prop->pending);
+     }
+@@ -407,8 +398,7 @@ ProcRRListOutputProperties (ClientPtr client)
+     rep.length = bytes_to_int32(numProps * sizeof(Atom));
+     rep.sequenceNumber = client->sequence;
+     rep.nAtoms = numProps;
+-    if (client->swapped) 
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swaps(&rep.nAtoms);
+@@ -418,8 +408,7 @@ ProcRRListOutputProperties (ClientPtr client)
+ 	*temppAtoms++ = prop->propertyName;
+ 
+     WriteToClient(client, sizeof(xRRListOutputPropertiesReply), (char*)&rep);
+-    if (numProps)
+-    {
++    if (numProps) {
+         client->pSwapReplyFunc = (ReplySwapPtr)Swap32Write;
+         WriteSwappedDataToClient(client, numProps * sizeof(Atom), pAtoms);
+         free(pAtoms);
+@@ -455,14 +444,12 @@ ProcRRQueryOutputProperty (ClientPtr client)
+     rep.pending = prop->is_pending;
+     rep.range = prop->range;
+     rep.immutable = prop->immutable;
+-    if (client->swapped) 
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+     }
+     WriteToClient (client, sizeof (xRRQueryOutputPropertyReply), (char*)&rep);
+-    if (prop->num_valid)
+-    {
++    if (prop->num_valid) {
+         memcpy(extra, prop->valid_values, prop->num_valid * sizeof(INT32));
+         client->pSwapReplyFunc = (ReplySwapPtr)Swap32Write;
+         WriteSwappedDataToClient(client, prop->num_valid * sizeof(INT32),
+@@ -483,10 +470,10 @@ ProcRRConfigureOutputProperty (ClientPtr client)
+ 
+     VERIFY_RR_OUTPUT(stuff->output, output, DixReadAccess);
+     
+-    num_valid = stuff->length - bytes_to_int32(sizeof (xRRConfigureOutputPropertyReq));
+-    return RRConfigureOutputProperty (output, stuff->property,
+-				      stuff->pending, stuff->range,
+-				      FALSE, num_valid, 
++    num_valid =
++        stuff->length - bytes_to_int32(sizeof(xRRConfigureOutputPropertyReq));
++    return RRConfigureOutputProperty(output, stuff->property, stuff->pending,
++                                     stuff->range, FALSE, num_valid,
+ 				      (INT32 *) (stuff + 1));
+ }
+ 
+@@ -506,13 +493,11 @@ ProcRRChangeOutputProperty (ClientPtr client)
+     format = stuff->format;
+     mode = stuff->mode;
+     if ((mode != PropModeReplace) && (mode != PropModeAppend) &&
+-	(mode != PropModePrepend))
+-    {
++        (mode != PropModePrepend)) {
+ 	client->errorValue = mode;
+ 	return BadValue;
+     }
+-    if ((format != 8) && (format != 16) && (format != 32))
+-    {
++    if ((format != 8) && (format != 16) && (format != 32)) {
+ 	client->errorValue = format;
+         return BadValue;
+     }
+@@ -525,20 +510,19 @@ ProcRRChangeOutputProperty (ClientPtr client)
+ 
+     VERIFY_RR_OUTPUT(stuff->output, output, DixReadAccess);
+     
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }
+-    if (!ValidAtom(stuff->type))
+-    {
++    if (!ValidAtom(stuff->type)) {
+ 	client->errorValue = stuff->type;
+ 	return BadAtom;
+     }
+ 
+     err = RRChangeOutputProperty(output, stuff->property,
+ 				 stuff->type, (int)format,
+-				 (int)mode, len, (pointer)&stuff[1], TRUE, TRUE);
++                                 (int) mode, len, (pointer) &stuff[1], TRUE,
++                                 TRUE);
+     if (err != Success)
+ 	return err;
+     else
+@@ -556,21 +540,18 @@ ProcRRDeleteOutputProperty (ClientPtr client)
+     UpdateCurrentTime();
+     VERIFY_RR_OUTPUT(stuff->output, output, DixReadAccess);
+ 
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }
+ 
+     prop = RRQueryOutputProperty(output, stuff->property);
+-    if (!prop)
+-    {
++    if (!prop) {
+ 	client->errorValue = stuff->property;
+ 	return BadName;
+     }
+ 
+-    if (prop->immutable)
+-    {
++    if (prop->immutable) {
+ 	client->errorValue = stuff->property;
+ 	return BadAccess;
+     }
+@@ -596,18 +577,15 @@ ProcRRGetOutputProperty (ClientPtr client)
+     VERIFY_RR_OUTPUT(stuff->output, output,
+ 		     stuff->delete ? DixWriteAccess : DixReadAccess);
+ 
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }
+-    if ((stuff->delete != xTrue) && (stuff->delete != xFalse))
+-    {
++    if ((stuff->delete != xTrue) && (stuff->delete != xFalse)) {
+ 	client->errorValue = stuff->delete;
+ 	return BadValue;
+     }
+-    if ((stuff->type != AnyPropertyType) && !ValidAtom(stuff->type))
+-    {
++    if ((stuff->type != AnyPropertyType) && !ValidAtom(stuff->type)) {
+ 	client->errorValue = stuff->type;
+ 	return BadAtom;
+     }
+@@ -618,8 +596,7 @@ ProcRRGetOutputProperty (ClientPtr client)
+ 
+     reply.type = X_Reply;
+     reply.sequenceNumber = client->sequence;
+-    if (!prop) 
+-    {
++    if (!prop) {
+ 	reply.nItems = 0;
+ 	reply.length = 0;
+ 	reply.bytesAfter = 0;
+@@ -646,10 +623,8 @@ ProcRRGetOutputProperty (ClientPtr client)
+     /* If the request type and actual type don't match. Return the
+     property information, but not the data. */
+ 
+-    if (((stuff->type != prop_value->type) &&
+-	 (stuff->type != AnyPropertyType))
+-       )
+-    {
++    if (((stuff->type != prop_value->type) && (stuff->type != AnyPropertyType))
++        ) {
+ 	reply.bytesAfter = prop_value->size;
+ 	reply.format = prop_value->format;
+ 	reply.length = 0;
+@@ -675,8 +650,7 @@ ProcRRGetOutputProperty (ClientPtr client)
+    /* If longOffset is invalid such that it causes "len" to
+ 	    be negative, it's a value error. */
+ 
+-    if (n < ind)
+-    {
++    if (n < ind) {
+ 	client->errorValue = stuff->longOffset;
+ 	return BadValue;
+     }
+@@ -697,8 +671,7 @@ ProcRRGetOutputProperty (ClientPtr client)
+ 	reply.nItems = 0;
+     reply.propertyType = prop_value->type;
+ 
+-    if (stuff->delete && (reply.bytesAfter == 0))
+-    {
++    if (stuff->delete && (reply.bytesAfter == 0)) {
+ 	xRROutputPropertyNotifyEvent    event;
+ 
+ 	event.type = RREventBase + RRNotify;
+@@ -718,24 +691,26 @@ ProcRRGetOutputProperty (ClientPtr client)
+ 	swapl(&reply.nItems);
+     }
+     WriteToClient(client, sizeof(xGenericReply), &reply);
+-    if (len)
+-    {
++    if (len) {
+ 	memcpy(extra, (char *)prop_value->data + ind, len);
+ 	switch (reply.format) {
+-	case 32: client->pSwapReplyFunc = (ReplySwapPtr)CopySwap32Write; break;
+-	case 16: client->pSwapReplyFunc = (ReplySwapPtr)CopySwap16Write; break;
+-	default: client->pSwapReplyFunc = (ReplySwapPtr)WriteToClient; break;
++        case 32:
++            client->pSwapReplyFunc = (ReplySwapPtr) CopySwap32Write;
++            break;
++        case 16:
++            client->pSwapReplyFunc = (ReplySwapPtr) CopySwap16Write;
++            break;
++        default:
++            client->pSwapReplyFunc = (ReplySwapPtr) WriteToClient;
++            break;
+ 	}
+-	WriteSwappedDataToClient(client, len,
+-				 extra);
++        WriteSwappedDataToClient(client, len, extra);
+ 	free(extra);
+     }
+ 
+-    if (stuff->delete && (reply.bytesAfter == 0))
+-    { /* delete the Property */
++    if (stuff->delete && (reply.bytesAfter == 0)) {     /* delete the Property */
+ 	*prev = prop->next;
+ 	RRDestroyOutputProperty (prop);
+     }
+     return Success;
+ }
+-

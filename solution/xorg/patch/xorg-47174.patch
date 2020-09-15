@@ -1,0 +1,25 @@
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index 449c2fd..044e8ef 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -24,6 +24,7 @@
+ #include <dix-config.h>
+ #endif
+ 
++#include "registry.h"
+ #include "damageextint.h"
+ #include "protocol-versions.h"
+ 
+@@ -500,10 +501,12 @@ DamageExtensionInit(void)
+     DamageExtType = CreateNewResourceType (FreeDamageExt);
+     if (!DamageExtType)
+ 	return;
++    RegisterResourceName(DamageExtType, "DamageExt");
+ 
+     DamageExtWinType = CreateNewResourceType (FreeDamageExtWin);
+     if (!DamageExtWinType)
+ 	return;
++    RegisterResourceName(DamageExtWinType, "DamageExtWin");
+ 
+     if (!dixRequestPrivate(DamageClientPrivateKey, sizeof (DamageClientRec)))
+ 	return;

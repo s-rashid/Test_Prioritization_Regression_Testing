@@ -1,0 +1,18 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 3387ecf..22a727e 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -317,11 +317,11 @@ xprAddScreen(int index, ScreenPtr pScreen)
+ 
+     if (noPseudoramiXExtension)
+     {
+-        ErrorF("Warning: noPseudoramiXExtension!\n");
+-        
+         CGDirectDisplayID dpy;
+         CGRect frame;
+ 
++        ErrorF("Warning: noPseudoramiXExtension!\n");
++        
+         dpy = displayAtIndex(index);
+ 
+         frame = displayScreenBounds(dpy);

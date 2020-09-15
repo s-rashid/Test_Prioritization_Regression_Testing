@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxcmdsswap.c b/hw/dmx/glxProxy/glxcmdsswap.c
+index 44f1c15..2294059 100644
+--- a/hw/dmx/glxProxy/glxcmdsswap.c
++++ b/hw/dmx/glxProxy/glxcmdsswap.c
+@@ -252,7 +252,7 @@ int __glXSwapGetVisualConfigs(__GLXclientState *cl, GLbyte *pc)
+ 
+     __GLX_SWAP_INT(&req->screen);
+     screen = req->screen;
+-    if (screen > screenInfo.numScreens) {
++    if (screen >= screenInfo.numScreens) {
+ 	/* The client library must send a valid screen number. */
+ 	client->errorValue = screen;
+ 	return BadValue;

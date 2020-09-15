@@ -1,0 +1,875 @@
+diff --git a/hw/xfree86/xaa/xaaFillPoly.c b/hw/xfree86/xaa/xaaFillPoly.c
+index 289a3ca..0cdedf5 100644
+--- a/hw/xfree86/xaa/xaaFillPoly.c
++++ b/hw/xfree86/xaa/xaaFillPoly.c
+@@ -29,7 +29,6 @@
+  *
+  */
+ 
+-
+ #ifdef HAVE_XORG_CONFIG_H
+ #include <xorg-config.h>
+ #endif
+@@ -52,7 +51,6 @@
+ #define POLY_FULLY_CLIPPED	1
+ #define POLY_IS_EASY		2
+ 
+-
+ #define Setup(c,x,vertex,dx,dy,e,sign,step,DX) {\
+     x = intToX(vertex); \
+     if ((dy = intToY(c) - y)) { \
+@@ -104,7 +102,6 @@
+ 	   } 	 					\
+ }
+ 
+-
+ /*
+    XAAIsEasyPoly -
+ 
+@@ -116,15 +113,10 @@
+ */
+ 
+ int
+-XAAIsEasyPolygon(
+-   DDXPointPtr ptsIn,
+-   int count, 
+-   BoxPtr extents,
+-   int origin,		
+-   DDXPointPtr *topPoint, 	/* return */
++XAAIsEasyPolygon(DDXPointPtr ptsIn, int count, BoxPtr extents, int origin, DDXPointPtr * topPoint,      /* return */
+    int *topY, int *bottomY,	/* return */
+-   int shape
+-){
++                 int shape)
++{
+     int c = 0, vertex1, vertex2;
+ 
+     *topY = 32767;
+@@ -147,9 +139,11 @@ XAAIsEasyPolygon(
+ 	    	*topPoint = ptsIn;
+ 	    }
+ 	    ptsIn++;
+-	    if (c > *bottomY) *bottomY = c;
++            if (c > *bottomY)
++                *bottomY = c;
++        }
+     	}
+-    } else {
++    else {
+ 	int yFlip = 0;
+ 	int dx2, dx1, x1, x2;
+ 
+@@ -166,21 +160,27 @@ XAAIsEasyPolygon(
+ 	    	*topPoint = ptsIn;
+ 	    }
+ 	    ptsIn++;
+-	    if (c > *bottomY) *bottomY = c;
++            if (c > *bottomY)
++                *bottomY = c;
+ 	    if (c == x1)
+ 		continue;
+ 	    if (dx1 > 0) {
+-		if (x2 < 0) x2 = c;
+-		else	    dx2 = dx1 = (c - x1) >> 31;
+-	    } else if ((c - x1) >> 31 != dx1) {
++                if (x2 < 0)
++                    x2 = c;
++                else
++                    dx2 = dx1 = (c - x1) >> 31;
++            }
++            else if ((c - x1) >> 31 != dx1) {
+ 		dx1 = ~dx1;
+ 		yFlip++;
+ 	    }
+ 	    x1 = c;
+        	}
+ 	x1 = (x2 - c) >> 31;
+-	if (x1 != dx1) yFlip++;
+-	if (x1 != dx2) yFlip++;
++        if (x1 != dx1)
++            yFlip++;
++        if (x1 != dx2)
++            yFlip++;
+ 	if (yFlip != 2) {
+ 	   if(*topY == *bottomY)
+ 		return POLY_FULLY_CLIPPED;
+@@ -195,14 +195,10 @@ XAAIsEasyPolygon(
+ }
+ 
+ void
+-XAAFillPolygonSolid(
+-    DrawablePtr	pDraw,
++XAAFillPolygonSolid(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		shape,
+-    int		mode,
+-    int		count,
+-    DDXPointPtr	ptsIn 
+-){
++                    int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAInfoRecPtr   infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     int    	    origin, vertex1, vertex2;
+     int		    *vertex1p, *vertex2p, *endp;
+@@ -261,7 +257,8 @@ XAAFillPolygonSolid(
+ 	    	Setup (c,x1,vertex1,dx1,dy1,e1,sign1,step1,DX1)
+ 	    } while (y >= intToY(vertex1));
+ 	    h = dy1;
+-	} else {
++        }
++        else {
+ 	    Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    h = intToY(vertex1) - y;
+ 	}
+@@ -274,7 +271,8 @@ XAAFillPolygonSolid(
+ 	    } while (y >= intToY(vertex2));
+ 	    if (dy2 < h)
+ 		h = dy2;
+-	} else {
++        }
++        else {
+ 	    Step(x2,dx2,dy2,e2,sign2,step2)
+ 	    if ((c = (intToY(vertex2) - y)) < h)
+ 		h = c;
+@@ -286,12 +284,15 @@ XAAFillPolygonSolid(
+ 	     if(x1 == x2) {
+ 		while(x1 == x2) {
+ 	     	   y++;
+-	    	   if (!--h) break;
++                        if (!--h)
++                            break;
+ 	    	   Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    	   Step(x2,dx2,dy2,e2,sign2,step2)
+ 		}
+-		if(y == maxy) break;
+-    		if(!h) continue;
++                    if (y == maxy)
++                        break;
++                    if (!h)
++                        continue;
+ 	     }
+ 
+              if(x1 < x2)
+@@ -310,42 +311,46 @@ XAAFillPolygonSolid(
+ 	     	FixError(x2,dx2,dy2,e2,sign2,step2,h);
+ 		h = 0;
+ 	     }  	
+-	  } else {
++            }
++            else {
+ 	     while(1) {
+ 	    	if (x2 > x1)
+ 	            (*infoRec->SubsequentSolidFillRect)(infoRec->pScrn,
+-	            		x1, y + yoffset, x2 - x1, 1);
++                                                             x1, y + yoffset,
++                                                             x2 - x1, 1);
+ 	        else if (x1 > x2)
+ 	            (*infoRec->SubsequentSolidFillRect)(infoRec->pScrn,
+-	                    x2, y + yoffset, x1 - x2, 1);
++                                                             x2, y + yoffset,
++                                                             x1 - x2, 1);
+ 	     	y++;
+-	    	if (!--h) break;
++                    if (!--h)
++                        break;
+ 	    	Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    	Step(x2,dx2,dy2,e2,sign2,step2)
+ 	     }
+ 	  }
+-	} else {
++        }
++        else {
+ 	    if (x2 > x1)
+ 	        (*infoRec->SubsequentSolidFillRect)(infoRec->pScrn,
+-	            x1, y + yoffset, x2 - x1, h);
++                                                     x1, y + yoffset, x2 - x1,
++                                                     h);
+ 	    else if (x1 > x2)
+ 	        (*infoRec->SubsequentSolidFillRect)(infoRec->pScrn,
+-	                x2, y + yoffset, x1 - x2, h);
++                                                     x2, y + yoffset, x1 - x2,
++                                                     h);
+ 
+ 	    y += h;
+ 	    h = 0;
+         } 
+-	if (y == maxy) break;
++        if (y == maxy)
++            break;
+     }
+     SET_SYNC_FLAG(infoRec);
+ }
+ 
+-
+-
+-
+ void
+-XAAFillPolygonHelper(
+-    ScrnInfoPtr pScrn,
++XAAFillPolygonHelper(ScrnInfoPtr pScrn,
+     DDXPointPtr	ptsIn,
+     int 	count,
+     DDXPointPtr topPoint,
+@@ -354,10 +359,8 @@ XAAFillPolygonHelper(
+     int		origin,
+     RectFuncPtr RectFunc,
+     TrapFuncPtr TrapFunc,
+-    int 	xorg,
+-    int		yorg,
+-    XAACacheInfoPtr pCache
+-){
++                     int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+     int		    *vertex1p, *vertex2p, *endp;
+     int		    vertex1, vertex2;
+     int		    x1 = 0, x2 = 0;
+@@ -366,7 +369,6 @@ XAAFillPolygonHelper(
+     int		    step1 = 0, step2 = 0, sign1 = 0, sign2 = 0;
+     int		    c, h, yoffset;
+ 
+-
+     endp = (int*)ptsIn + count;
+     vertex2p = vertex1p = (int *)topPoint;
+     yoffset = intToY(origin);
+@@ -384,7 +386,8 @@ XAAFillPolygonHelper(
+ 	    	Setup (c,x1,vertex1,dx1,dy1,e1,sign1,step1,DX1)
+ 	    } while (y >= intToY(vertex1));
+ 	    h = dy1;
+-	} else {
++        }
++        else {
+ 	    Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    h = intToY(vertex1) - y;
+ 	}
+@@ -397,7 +400,8 @@ XAAFillPolygonHelper(
+ 	    } while (y >= intToY(vertex2));
+ 	    if (dy2 < h)
+ 		h = dy2;
+-	} else {
++        }
++        else {
+ 	    Step(x2,dx2,dy2,e2,sign2,step2)
+ 	    if ((c = (intToY(vertex2) - y)) < h)
+ 		h = c;
+@@ -409,12 +413,15 @@ XAAFillPolygonHelper(
+ 	     if(x1 == x2) {
+ 		while(x1 == x2) {
+ 	     	   y++;
+-	    	   if (!--h) break;
++                        if (!--h)
++                            break;
+ 	    	   Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    	   Step(x2,dx2,dy2,e2,sign2,step2)
+ 		}
+-		if(y == maxy) break;
+-    		if(!h) continue;
++                    if (y == maxy)
++                        break;
++                    if (!h)
++                        continue;
+ 	     }
+ 
+              if(x1 < x2)
+@@ -431,21 +438,26 @@ XAAFillPolygonHelper(
+ 	     	FixError(x2,dx2,dy2,e2,sign2,step2,h);
+ 		h = 0;
+ 	     }  	
+-	  } else {
++            }
++            else {
+ 	     while(1) {
+ 	    	if (x2 > x1)
+ 	            (*RectFunc)(pScrn,
+-	            	x1, y + yoffset, x2 - x1, 1, xorg, yorg, pCache);
++                                     x1, y + yoffset, x2 - x1, 1, xorg, yorg,
++                                     pCache);
+ 	        else if (x1 > x2)
+ 	            (*RectFunc)(pScrn,
+-	                    x2, y + yoffset, x1 - x2, 1, xorg, yorg, pCache);
++                                     x2, y + yoffset, x1 - x2, 1, xorg, yorg,
++                                     pCache);
+ 	     	y++;
+-	    	if (!--h) break;
++                    if (!--h)
++                        break;
+ 	    	Step(x1,dx1,dy1,e1,sign1,step1)
+ 	    	Step(x2,dx2,dy2,e2,sign2,step2)
+ 	     }
+ 	  }
+-	} else {
++        }
++        else {
+ 	    if (x2 > x1)
+ 	        (*RectFunc)(pScrn,
+ 	            x1, y + yoffset, x2 - x1, h, xorg, yorg, pCache);
+@@ -456,7 +468,8 @@ XAAFillPolygonHelper(
+ 	    y += h;
+ 	    h = 0;
+         } 
+-	if (y == maxy) break;
++        if (y == maxy)
++            break;
+     }
+ }
+ 
+@@ -465,59 +478,54 @@ XAAFillPolygonHelper(
+ 	\*****************/
+ 
+ static void
+-SolidTrapHelper(
+-   ScrnInfoPtr pScrn,
++SolidTrapHelper(ScrnInfoPtr pScrn,
+    int y, int h,
+    int x1, int dx1, int dy1, int e1,
+    int x2, int dx2, int dy2, int e2,
+-   int xorg, int yorg,
+-   XAACacheInfoPtr pCache
+-){
++                int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     (*infoRec->SubsequentSolidFillTrap) (pScrn, 
+-		y, h, x1, dx1, dy1, e1, x2, dx2, dy2, e2);
++                                         y, h, x1, dx1, dy1, e1, x2, dx2, dy2,
++                                         e2);
+ }
+ 
+ static void
+-SolidRectHelper (
+-   ScrnInfoPtr pScrn,
++SolidRectHelper(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+-   int xorg, int yorg,   
+-   XAACacheInfoPtr pCache
+-){
++                int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     (*infoRec->SubsequentSolidFillRect) (pScrn, x, y, w, h);
+ }
+ 
+-
+ 	/*********************\
+ 	|  Mono 8x8 Patterns  |
+ 	\*********************/
+ 
+ static void
+-Mono8x8PatternTrapHelper_ScreenOrigin(
+-   ScrnInfoPtr pScrn,
++Mono8x8PatternTrapHelper_ScreenOrigin(ScrnInfoPtr pScrn,
+    int y, int h,
+    int x1, int dx1, int dy1, int e1,
+    int x2, int dx2, int dy2, int e2,
+    int xorg, int yorg,
+-   XAACacheInfoPtr pCache
+-){
++                                      XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     (*infoRec->SubsequentMono8x8PatternFillTrap) (pScrn, xorg, yorg,
+-		y, h, x1, dx1, dy1, e1, x2, dx2, dy2, e2);
++                                                  y, h, x1, dx1, dy1, e1, x2,
++                                                  dx2, dy2, e2);
+ }
+ 
+ static void
+-Mono8x8PatternRectHelper_ScreenOrigin (
+-   ScrnInfoPtr pScrn,
++Mono8x8PatternRectHelper_ScreenOrigin(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+    int xorg, int yorg,   
+-   XAACacheInfoPtr pCache
+-){
++                                      XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     (*infoRec->SubsequentMono8x8PatternFillRect) (pScrn, xorg, yorg,
+@@ -525,12 +533,10 @@ Mono8x8PatternRectHelper_ScreenOrigin (
+ }
+ 
+ static void
+-Mono8x8PatternRectHelper (
+-   ScrnInfoPtr pScrn,
++Mono8x8PatternRectHelper(ScrnInfoPtr pScrn,
+    int x, int y, int w, int h,
+-   int xorg, int yorg,   
+-   XAACacheInfoPtr pCache
+-){
++                         int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+ 
+     xorg = (x - xorg) & 0x07;
+@@ -538,40 +544,37 @@ Mono8x8PatternRectHelper (
+ 
+     if(!(infoRec->Mono8x8PatternFillFlags & 		
+ 				HARDWARE_PATTERN_PROGRAMMED_ORIGIN)){
+-	if(infoRec->Mono8x8PatternFillFlags & 
+-				HARDWARE_PATTERN_PROGRAMMED_BITS) {
++        if (infoRec->Mono8x8PatternFillFlags & HARDWARE_PATTERN_PROGRAMMED_BITS) {
+ 		int patx = pCache->pat0; 
+ 		int paty = pCache->pat1;
++
+ 		XAARotateMonoPattern(&patx, &paty, xorg, yorg,
+ 				(infoRec->Mono8x8PatternFillFlags & 		
+ 				BIT_ORDER_IN_BYTE_MSBFIRST));
+-		xorg = patx; yorg = paty;
+-	} else {
++            xorg = patx;
++            yorg = paty;
++        }
++        else {
+ 		int slot = (yorg << 3) + xorg;
++
+ 	    	xorg = pCache->x + pCache->offsets[slot].x;
+ 	    	yorg = pCache->y + pCache->offsets[slot].y;
+ 	}
+      }
+ 
+-
+     (*infoRec->SubsequentMono8x8PatternFillRect) (pScrn, xorg, yorg,
+ 						x, y, w, h);
+ }
+ 
+-
+-
+ 	/****************\
+ 	|  Cache Expand  |
+ 	\****************/
+ 
+-
+ static void
+-CacheExpandRectHelper (
+-   ScrnInfoPtr pScrn,
++CacheExpandRectHelper(ScrnInfoPtr pScrn,
+    int X, int Y, int Width, int Height,
+-   int xorg, int yorg,   
+-   XAACacheInfoPtr pCache
+-){
++                      int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+     int x, phaseY, phaseX, skipleft, w, blit_w, blit_h;
+     int cacheWidth;
+@@ -580,93 +583,102 @@ CacheExpandRectHelper (
+ 	infoRec->CacheColorExpandDensity;
+ 
+     phaseY = (Y - yorg) % pCache->orig_h;
+-    if(phaseY < 0) phaseY += pCache->orig_h;
++    if (phaseY < 0)
++        phaseY += pCache->orig_h;
+     phaseX = (X - xorg) % pCache->orig_w;
+-    if(phaseX < 0) phaseX += pCache->orig_w;
++    if (phaseX < 0)
++        phaseX += pCache->orig_w;
+ 	
+     while(1) {
+-	w = Width; skipleft = phaseX; x = X;
++        w = Width;
++        skipleft = phaseX;
++        x = X;
+ 	blit_h = pCache->h - phaseY;
+-	if(blit_h > Height) blit_h = Height;
++        if (blit_h > Height)
++            blit_h = Height;
+ 	
+ 	while(1) {
+ 		blit_w = cacheWidth - skipleft;
+-		if(blit_w > w) blit_w = w;
+-		(*infoRec->SubsequentScreenToScreenColorExpandFill)(
+-			pScrn, x, Y, blit_w, blit_h,
+-			pCache->x, pCache->y + phaseY, skipleft);
++            if (blit_w > w)
++                blit_w = w;
++            (*infoRec->SubsequentScreenToScreenColorExpandFill) (pScrn, x, Y,
++                                                                 blit_w, blit_h,
++                                                                 pCache->x,
++                                                                 pCache->y +
++                                                                 phaseY,
++                                                                 skipleft);
+ 		w -= blit_w;
+-		if(!w) break;
++            if (!w)
++                break;
+ 		x += blit_w;
+ 		skipleft = (skipleft + blit_w) % pCache->orig_w;
+ 	}
+ 	Height -= blit_h;
+-	if(!Height) break;
++        if (!Height)
++            break;
+ 	Y += blit_h;
+ 	phaseY = (phaseY + blit_h) % pCache->orig_h;
+     }
+ }
+ 
+-
+-
+ 	/**************\
+ 	|  Cache Blit  |
+ 	\**************/
+ 
+-
+ static void
+-CacheBltRectHelper (
+-   ScrnInfoPtr pScrn,
++CacheBltRectHelper(ScrnInfoPtr pScrn,
+    int X, int Y, int Width, int Height,
+-   int xorg, int yorg,   
+-   XAACacheInfoPtr pCache
+-){
++                   int xorg, int yorg, XAACacheInfoPtr pCache)
++{
+      XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCRNINFOPTR(pScrn);
+      int x, phaseY, phaseX, skipleft, w, blit_w, blit_h;
+ 
+      phaseY = (Y - yorg) % pCache->orig_h;
+-     if(phaseY < 0) phaseY += pCache->orig_h;
++    if (phaseY < 0)
++        phaseY += pCache->orig_h;
+      phaseX = (X - xorg) % pCache->orig_w;
+-     if(phaseX < 0) phaseX += pCache->orig_w;
++    if (phaseX < 0)
++        phaseX += pCache->orig_w;
+ 
+      while(1) {
+-	w = Width; skipleft = phaseX; x = X;
++        w = Width;
++        skipleft = phaseX;
++        x = X;
+ 	blit_h = pCache->h - phaseY;
+-	if(blit_h > Height) blit_h = Height;
++        if (blit_h > Height)
++            blit_h = Height;
+ 	
+ 	while(1) {
+ 	    blit_w = pCache->w - skipleft;
+-	    if(blit_w > w) blit_w = w;
++            if (blit_w > w)
++                blit_w = w;
+ 	    (*infoRec->SubsequentScreenToScreenCopy)(pScrn,
+-			pCache->x + skipleft, pCache->y + phaseY,
+-			x, Y, blit_w, blit_h);
++                                                      pCache->x + skipleft,
++                                                      pCache->y + phaseY, x, Y,
++                                                      blit_w, blit_h);
+ 	    w -= blit_w;
+-	    if(!w) break;
++            if (!w)
++                break;
+ 	    x += blit_w;
+ 	    skipleft = (skipleft + blit_w) % pCache->orig_w;
+ 	}
+ 	Height -= blit_h;
+-	if(!Height) break;
++        if (!Height)
++            break;
+ 	Y += blit_h;
+ 	phaseY = (phaseY + blit_h) % pCache->orig_h;
+      }	
+ }
+ 
+-
+ 	/**********************\
+ 	|   Stippled Polygons  |
+ 	\**********************/
+ 
+-
+ void
+-XAAFillPolygonStippled(
+-    DrawablePtr	pDraw,
++XAAFillPolygonStippled(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		shape,
+-    int		mode,
+-    int		count,
+-    DDXPointPtr	ptsIn 
+-){
++                       int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAInfoRecPtr   infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     XAAPixmapPtr    pPriv = XAA_GET_PIXMAP_PRIVATE(pGC->stipple);
+     int    	    origin, type, patx, paty, fg, bg;
+@@ -694,16 +706,17 @@ XAAFillPolygonStippled(
+ 	return;
+     }
+ 
+-
+     if(pGC->fillStyle == FillStippled) {
+     	type = (*infoRec->StippledFillChooser)(pGC);
+-	fg = pGC->fgPixel;  bg = -1;
+-    } else {
++        fg = pGC->fgPixel;
++        bg = -1;
++    }
++    else {
+     	type = (*infoRec->OpaqueStippledFillChooser)(pGC);
+-	fg = pGC->fgPixel;  bg = pGC->bgPixel;
++        fg = pGC->fgPixel;
++        bg = pGC->bgPixel;
+     }
+ 
+-
+     if(!type) {
+ 	(*XAAFallbackOps.FillPolygon)(pDraw, pGC, shape, mode, count, ptsIn);
+ 	return;
+@@ -727,7 +740,6 @@ XAAFillPolygonStippled(
+     xorg = (pDraw->x + pGC->patOrg.x);
+     yorg = (pDraw->y + pGC->patOrg.y);
+ 
+-
+     if((fg == bg) && (bg != -1) && infoRec->SetupForSolidFill) {
+ 
+ 	(*infoRec->SetupForSolidFill)(infoRec->pScrn, fg,
+@@ -735,13 +747,16 @@ XAAFillPolygonStippled(
+ 
+ 	RectFunc = SolidRectHelper;
+         TrapFunc = infoRec->SubsequentSolidFillTrap ? SolidTrapHelper : NULL;
+-    } else
++    }
++    else
+     switch(type) {
+ 	case DO_MONO_8x8:
+-	    patx = pPriv->pattern0; paty = pPriv->pattern1;
++            patx = pPriv->pattern0;
++            paty = pPriv->pattern1;
+ 	    if(infoRec->Mono8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_SCREEN_ORIGIN) {
+-		xorg = (-xorg) & 0x07; yorg = (-yorg) & 0x07;
++                xorg = (-xorg) & 0x07;
++                yorg = (-yorg) & 0x07;
+ 		if(infoRec->Mono8x8PatternFillFlags & 
+ 					HARDWARE_PATTERN_PROGRAMMED_BITS) {
+ 		    if(!(infoRec->Mono8x8PatternFillFlags & 		
+@@ -749,30 +764,40 @@ XAAFillPolygonStippled(
+ 		        XAARotateMonoPattern(&patx, &paty, xorg, yorg,
+ 				(infoRec->Mono8x8PatternFillFlags & 		
+ 				BIT_ORDER_IN_BYTE_MSBFIRST));
+-		        xorg = patx; yorg = paty;
++                        xorg = patx;
++                        yorg = paty;
++                    }
+ 		    }
+-	        } else {
+-		    XAACacheInfoPtr pCache = (*infoRec->CacheMono8x8Pattern)(
+-					infoRec->pScrn, patx, paty);
+-		    patx = pCache->x;  paty = pCache->y;
++                else {
++                    XAACacheInfoPtr pCache =
++                        (*infoRec->CacheMono8x8Pattern) (infoRec->pScrn, patx,
++                                                         paty);
++                    patx = pCache->x;
++                    paty = pCache->y;
+ 		    if(!(infoRec->Mono8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_PROGRAMMED_ORIGIN)){
+ 			int slot = (yorg << 3) + xorg;
++
+ 			patx += pCache->offsets[slot].x;
+ 			paty += pCache->offsets[slot].y;
+-			xorg = patx;  yorg = paty;
++                        xorg = patx;
++                        yorg = paty;
+ 		    }
+ 	        }	
+ 		RectFunc = Mono8x8PatternRectHelper_ScreenOrigin;
+ 		if(infoRec->SubsequentMono8x8PatternFillTrap)
+ 		    TrapFunc = Mono8x8PatternTrapHelper_ScreenOrigin;
+-	    } else {  /* !HARDWARE_PATTERN_SCREEN_ORIGIN */
++            }
++            else {              /* !HARDWARE_PATTERN_SCREEN_ORIGIN */
+ 		if(!(infoRec->Mono8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_PROGRAMMED_BITS)){
+-		    pCache = (*infoRec->CacheMono8x8Pattern)(
+-					infoRec->pScrn, patx, paty);
+-		    patx = pCache->x;  paty = pCache->y;
+-	    	} else {
++                    pCache =
++                        (*infoRec->CacheMono8x8Pattern) (infoRec->pScrn, patx,
++                                                         paty);
++                    patx = pCache->x;
++                    paty = pCache->y;
++                }
++                else {
+                     pCache = &(infoRec->ScratchCacheInfoRec);
+                     pCache->pat0 = patx;
+                     pCache->pat1 = paty;
+@@ -781,13 +806,16 @@ XAAFillPolygonStippled(
+        	    }
+ 
+ 	    (*infoRec->SetupForMono8x8PatternFill)(infoRec->pScrn, 
+-				patx, paty, fg, bg, pGC->alu, pGC->planemask);
++                                                    patx, paty, fg, bg,
++                                                    pGC->alu, pGC->planemask);
+ 	    break;
+ 	case DO_CACHE_EXPAND:
+-	    pCache = (*infoRec->CacheMonoStipple)(infoRec->pScrn, pGC->stipple);
++            pCache =
++                (*infoRec->CacheMonoStipple) (infoRec->pScrn, pGC->stipple);
+ 
+-	    (*infoRec->SetupForScreenToScreenColorExpandFill)(
+-		infoRec->pScrn, fg, bg, pGC->alu, pGC->planemask);
++            (*infoRec->SetupForScreenToScreenColorExpandFill) (infoRec->pScrn,
++                                                               fg, bg, pGC->alu,
++                                                               pGC->planemask);
+ 
+ 	    RectFunc = CacheExpandRectHelper;
+ 	    break;
+@@ -795,7 +823,8 @@ XAAFillPolygonStippled(
+ 	    pCache = (*infoRec->CacheStipple)(infoRec->pScrn, pGC->stipple, 
+ 							fg, bg);
+ 	    (*infoRec->SetupForScreenToScreenCopy)(infoRec->pScrn, 1, 1, 
+-		pGC->alu, pGC->planemask, pCache->trans_color);
++                                                    pGC->alu, pGC->planemask,
++                                                    pCache->trans_color);
+ 
+ 	    RectFunc = CacheBltRectHelper;
+ 	    break;
+@@ -803,30 +832,22 @@ XAAFillPolygonStippled(
+ 	    return;
+     }
+         
+-
+     XAAFillPolygonHelper(infoRec->pScrn, ptsIn, count, topPoint, 
+-		y, maxy, origin, RectFunc, TrapFunc, xorg, yorg, pCache);
++                         y, maxy, origin, RectFunc, TrapFunc, xorg, yorg,
++                         pCache);
+ 
+     SET_SYNC_FLAG(infoRec);	
+ }
+ 
+-
+-
+-
+ 	/*******************\
+ 	|   Tiled Polygons  |
+ 	\*******************/
+ 
+-
+ void
+-XAAFillPolygonTiled(
+-    DrawablePtr	pDraw,
++XAAFillPolygonTiled(DrawablePtr pDraw,
+     GCPtr	pGC,
+-    int		shape,
+-    int		mode,
+-    int		count,
+-    DDXPointPtr	ptsIn 
+-){
++                    int shape, int mode, int count, DDXPointPtr ptsIn)
++{
+     XAAInfoRecPtr   infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     XAAPixmapPtr    pPriv = XAA_GET_PIXMAP_PRIVATE(pGC->tile.pixmap);
+     int    	    origin, type, patx, paty;
+@@ -854,7 +875,6 @@ XAAFillPolygonTiled(
+ 	return;
+     }
+ 
+-
+     type = (*infoRec->TiledFillChooser)(pGC);
+ 
+     if(!type || (type == DO_IMAGE_WRITE)) {
+@@ -882,10 +902,11 @@ XAAFillPolygonTiled(
+ 
+     switch(type) {
+ 	case DO_MONO_8x8:
+-	    patx = pPriv->pattern0; paty = pPriv->pattern1;
+-	    if(infoRec->Mono8x8PatternFillFlags & 
+-				HARDWARE_PATTERN_SCREEN_ORIGIN) {
+-		xorg = (-xorg) & 0x07; yorg = (-yorg) & 0x07;
++        patx = pPriv->pattern0;
++        paty = pPriv->pattern1;
++        if (infoRec->Mono8x8PatternFillFlags & HARDWARE_PATTERN_SCREEN_ORIGIN) {
++            xorg = (-xorg) & 0x07;
++            yorg = (-yorg) & 0x07;
+ 		if(infoRec->Mono8x8PatternFillFlags & 
+ 					HARDWARE_PATTERN_PROGRAMMED_BITS) {
+ 		    if(!(infoRec->Mono8x8PatternFillFlags & 		
+@@ -893,29 +914,38 @@ XAAFillPolygonTiled(
+ 		        XAARotateMonoPattern(&patx, &paty, xorg, yorg,
+ 				(infoRec->Mono8x8PatternFillFlags & 		
+ 				BIT_ORDER_IN_BYTE_MSBFIRST));
+-		        xorg = patx; yorg = paty;
++                    xorg = patx;
++                    yorg = paty;
++                }
+ 		    }
+-	        } else {
+-		    XAACacheInfoPtr pCache = (*infoRec->CacheMono8x8Pattern)(
+-					infoRec->pScrn, patx, paty);
+-		    patx = pCache->x;  paty = pCache->y;
++            else {
++                XAACacheInfoPtr pCache =
++                    (*infoRec->CacheMono8x8Pattern) (infoRec->pScrn, patx,
++                                                     paty);
++                patx = pCache->x;
++                paty = pCache->y;
+ 		    if(!(infoRec->Mono8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_PROGRAMMED_ORIGIN)){
+ 			int slot = (yorg << 3) + xorg;
++
+ 			patx += pCache->offsets[slot].x;
+ 			paty += pCache->offsets[slot].y;
+-			xorg = patx;  yorg = paty;
++                    xorg = patx;
++                    yorg = paty;
+ 		    }
+ 	        }	
+ 		RectFunc = Mono8x8PatternRectHelper_ScreenOrigin;
+ 		if(infoRec->SubsequentMono8x8PatternFillTrap)
+ 		    TrapFunc = Mono8x8PatternTrapHelper_ScreenOrigin;
+-	    } else {  /* !HARDWARE_PATTERN_SCREEN_ORIGIN */
++        }
++        else {                  /* !HARDWARE_PATTERN_SCREEN_ORIGIN */
+ 		if(!(infoRec->Mono8x8PatternFillFlags & 
+ 				HARDWARE_PATTERN_PROGRAMMED_BITS)){
+-		    pCache = (*infoRec->CacheMono8x8Pattern)(
+-					infoRec->pScrn, patx, paty);
+-		    patx = pCache->x;  paty = pCache->y;
++                pCache =
++                    (*infoRec->CacheMono8x8Pattern) (infoRec->pScrn, patx,
++                                                     paty);
++                patx = pCache->x;
++                paty = pCache->y;
+ 	    	}
+ 		else {
+ 		  pCache = &(infoRec->ScratchCacheInfoRec);
+@@ -926,7 +956,9 @@ XAAFillPolygonTiled(
+        	    }
+ 
+ 	    (*infoRec->SetupForMono8x8PatternFill)(infoRec->pScrn, 
+-		 patx, paty, pPriv->fg, pPriv->bg, pGC->alu, pGC->planemask);
++                                                patx, paty, pPriv->fg,
++                                                pPriv->bg, pGC->alu,
++                                                pGC->planemask);
+ 	    break;
+ 	case DO_CACHE_BLT:
+             pCache = (*infoRec->CacheTile)(infoRec->pScrn, pGC->tile.pixmap);
+@@ -939,10 +971,8 @@ XAAFillPolygonTiled(
+ 	    pCache = &(infoRec->ScratchCacheInfoRec);
+ 	    pCache->x = pPriv->offscreenArea->box.x1;
+ 	    pCache->y = pPriv->offscreenArea->box.y1;
+-	    pCache->w = pCache->orig_w = 
+-		pPriv->offscreenArea->box.x2 - pCache->x;
+-	    pCache->h = pCache->orig_h = 
+-		pPriv->offscreenArea->box.y2 - pCache->y;
++        pCache->w = pCache->orig_w = pPriv->offscreenArea->box.x2 - pCache->x;
++        pCache->h = pCache->orig_h = pPriv->offscreenArea->box.y2 - pCache->y;
+ 
+ 	    (*infoRec->SetupForScreenToScreenCopy)(infoRec->pScrn, 1, 1, 
+ 		pGC->alu, pGC->planemask, -1);
+@@ -954,9 +984,8 @@ XAAFillPolygonTiled(
+     }
+ 
+     XAAFillPolygonHelper(infoRec->pScrn, ptsIn, count, topPoint, 
+-		y, maxy, origin, RectFunc, TrapFunc, xorg, yorg, pCache);
++                         y, maxy, origin, RectFunc, TrapFunc, xorg, yorg,
++                         pCache);
+ 
+     SET_SYNC_FLAG(infoRec);	
+ }
+-
+-

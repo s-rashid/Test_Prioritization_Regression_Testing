@@ -1,0 +1,10 @@
+diff --git a/hw/xnest/xnest-config.h b/hw/xnest/xnest-config.h
+index 4889f1f..ef48c58 100644
+--- a/hw/xnest/xnest-config.h
++++ b/hw/xnest/xnest-config.h
+@@ -33,4 +33,4 @@
+ 
+ #undef MITSHM
+ 
+-#endif /* XNEST_CONFIG_H */
++#endif                          /* XNEST_CONFIG_H */

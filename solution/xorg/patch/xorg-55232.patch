@@ -1,0 +1,546 @@
+diff --git a/hw/dmx/dmxcursor.c b/hw/dmx/dmxcursor.c
+index 7e03686..1a77c7d 100644
+--- a/hw/dmx/dmxcursor.c
++++ b/hw/dmx/dmxcursor.c
+@@ -116,12 +116,14 @@ static int dmxCursorDoMultiCursors = 1;
+ 
+ /** Turn off support for displaying multiple cursors on overlapped
+     back-end displays.  See #dmxCursorDoMultiCursors. */
+-void dmxCursorNoMulti(void)
++void
++dmxCursorNoMulti(void)
+ {
+     dmxCursorDoMultiCursors = 0;
+ }
+ 
+-static Bool dmxCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
++static Bool
++dmxCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
+ {
+     DMXScreenInfo *dmxScreen;
+     int           i;
+@@ -137,8 +139,7 @@ static Bool dmxCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
+     dmxScreen = &dmxScreens[(*ppScreen)->myNum];
+     if (localX >= 0
+         && localX < dmxScreen->rootWidth
+-        && localY >= 0
+-        && localY < dmxScreen->rootHeight)
++        && localY >= 0 && localY < dmxScreen->rootHeight)
+         return FALSE;
+ 
+                                 /* Convert to global coordinate space */
+@@ -175,11 +176,13 @@ static Bool dmxCursorOffScreen(ScreenPtr *ppScreen, int *x, int *y)
+     return FALSE;
+ }
+ 
+-static void dmxCrossScreen(ScreenPtr pScreen, Bool entering)
++static void
++dmxCrossScreen(ScreenPtr pScreen, Bool entering)
+ {
+ }
+ 
+-static void dmxWarpCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
++static void
++dmxWarpCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+ {
+     DMXDBG3("dmxWarpCursor(%d,%d,%d)\n", pScreen->myNum, x, y);
+ #if 11 /*BP*/
+@@ -190,8 +193,7 @@ static void dmxWarpCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+ #endif
+ }
+ 
+-miPointerScreenFuncRec dmxPointerCursorFuncs =
+-{
++miPointerScreenFuncRec dmxPointerCursorFuncs = {
+     dmxCursorOffScreen,
+     dmxCrossScreen,
+     dmxWarpCursor,
+@@ -199,9 +201,9 @@ miPointerScreenFuncRec dmxPointerCursorFuncs =
+     NULL,
+ };
+ 
+-
+ /** Create a list of screens that we'll manipulate. */
+-static int *dmxSLCreate(void)
++static int *
++dmxSLCreate(void)
+ {
+     int *list = malloc(dmxNumScreens * sizeof(*list));
+     int i;
+@@ -212,15 +214,18 @@ static int *dmxSLCreate(void)
+ }
+ 
+ /** Free list. */
+-static void dmxSLFree(int *list)
++static void
++dmxSLFree(int *list)
+ {
+     free(list);
+ }
+ 
+ /** Find next uninitialized entry in list. */
+-static int dmxSLFindNext(int *list)
++static int
++dmxSLFindNext(int *list)
+ {
+     int i;
++
+     for (i = 0; i < dmxNumScreens; i++)
+         if (list[i])
+             return i;
+@@ -228,7 +233,8 @@ static int dmxSLFindNext(int *list)
+ }
+ 
+ /** Make one pass over all the screens and return the number updated. */
+-static int dmxTryComputeScreenOrigins(int *screensLeft)
++static int
++dmxTryComputeScreenOrigins(int *screensLeft)
+ {
+     ScreenPtr       pScreen, refScreen;
+     DMXScreenInfo   *screen;
+@@ -298,7 +304,8 @@ static int dmxTryComputeScreenOrigins(int *screensLeft)
+     return changed;
+ }
+ 
+-static void dmxComputeScreenOrigins(void)
++static void
++dmxComputeScreenOrigins(void)
+ {
+     ScreenPtr       pScreen;
+     int             *screensLeft;
+@@ -323,7 +330,6 @@ static void dmxComputeScreenOrigins(void)
+     }
+     dmxSLFree(screensLeft);
+ 
+-
+                                 /* Justify the topmost and leftmost to
+                                  * (0,0). */
+     minX = screenInfo.screens[0]->x;
+@@ -344,7 +350,8 @@ static void dmxComputeScreenOrigins(void)
+ 
+ /** Recompute origin information in the #dmxScreens list.  This is
+  * called from #dmxInitOrigins. */
+-void dmxReInitOrigins(void)
++void
++dmxReInitOrigins(void)
+ {
+     int        i;
+ 
+@@ -354,15 +361,14 @@ void dmxReInitOrigins(void)
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo    *dmxScreen  = &dmxScreens[i];
++
+         dmxLogOutput(dmxScreen,
+                      "s=%dx%d%+d%+d r=%dx%d%+d%+d @%d,%d"
+                      " (be=%dx%d depth=%d bpp=%d)\n",
+                      dmxScreen->scrnWidth, dmxScreen->scrnHeight,
+                      dmxScreen->scrnX, dmxScreen->scrnY,
+-
+                      dmxScreen->rootWidth, dmxScreen->rootHeight,
+                      dmxScreen->rootX, dmxScreen->rootY,
+-                     
+                      dmxScreen->rootXOrigin, dmxScreen->rootYOrigin,
+                      dmxScreen->beWidth, dmxScreen->beHeight,
+                      dmxScreen->beDepth, dmxScreen->beBPP);
+@@ -372,7 +378,8 @@ void dmxReInitOrigins(void)
+ /** Initialize screen origins (and relative position).  This is called
+  * for each server generation.  For dynamic reconfiguration, use
+  * #dmxReInitOrigins() instead. */
+-void dmxInitOrigins(void)
++void
++dmxInitOrigins(void)
+ {
+     int  i;
+ 
+@@ -382,18 +389,16 @@ void dmxInitOrigins(void)
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo    *dmxScreen  = &dmxScreens[i];
++
+         dmxLogOutput(dmxScreen,
+                      "(request) s=%dx%d%+d%+d r=%dx%d%+d%+d @%d,%d (%d)"
+                      " (be=%dx%d depth=%d bpp=%d)\n",
+                      dmxScreen->scrnWidth, dmxScreen->scrnHeight,
+                      dmxScreen->scrnX, dmxScreen->scrnY,
+-
+                      dmxScreen->rootWidth, dmxScreen->rootHeight,
+                      dmxScreen->rootX, dmxScreen->rootY,
+-
+                      dmxScreen->whereX, dmxScreen->whereY,
+                      dmxScreen->where,
+-
+                      dmxScreen->beWidth, dmxScreen->beHeight,
+                      dmxScreen->beDepth, dmxScreen->beBPP);
+     }
+@@ -402,6 +407,7 @@ void dmxInitOrigins(void)
+ 
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo  *dmxScreen = &dmxScreens[i];
++
+         dmxScreen->rootXOrigin = screenInfo.screens[i]->x;
+         dmxScreen->rootYOrigin = screenInfo.screens[i]->y;
+     }
+@@ -411,7 +417,8 @@ void dmxInitOrigins(void)
+ 
+ /** Returns non-zero if the global \a x, \a y coordinate is on the
+  * screen window of the \a dmxScreen. */
+-int dmxOnScreen(int x, int y, DMXScreenInfo *dmxScreen)
++int
++dmxOnScreen(int x, int y, DMXScreenInfo * dmxScreen)
+ {
+ #if DMX_CURSOR_DEBUG > 1
+     dmxLog(dmxDebug,
+@@ -426,39 +433,35 @@ int dmxOnScreen(int x, int y, DMXScreenInfo *dmxScreen)
+     if (x >= dmxScreen->rootXOrigin
+         && x < dmxScreen->rootXOrigin + dmxScreen->rootWidth
+         && y >= dmxScreen->rootYOrigin
+-        && y < dmxScreen->rootYOrigin + dmxScreen->rootHeight) return 1;
++        && y < dmxScreen->rootYOrigin + dmxScreen->rootHeight)
++        return 1;
+     return 0;
+ }
+ 
+ /** Returns non-zero if \a a overlaps \a b. */
+-static int dmxDoesOverlap(DMXScreenInfo *a, DMXScreenInfo *b)
++static int
++dmxDoesOverlap(DMXScreenInfo * a, DMXScreenInfo * b)
+ {
+-    if (dmxOnScreen(a->rootXOrigin,
+-                    a->rootYOrigin,                 b))
++    if (dmxOnScreen(a->rootXOrigin, a->rootYOrigin, b))
+         return 1;
+ 
+-    if (dmxOnScreen(a->rootXOrigin,
+-                    a->rootYOrigin + a->scrnWidth,  b))
++    if (dmxOnScreen(a->rootXOrigin, a->rootYOrigin + a->scrnWidth, b))
+         return 1;
+ 
+-    if (dmxOnScreen(a->rootXOrigin + a->scrnHeight,
+-                    a->rootYOrigin,                 b))
++    if (dmxOnScreen(a->rootXOrigin + a->scrnHeight, a->rootYOrigin, b))
+         return 1;
+ 
+     if (dmxOnScreen(a->rootXOrigin + a->scrnHeight,
+                     a->rootYOrigin + a->scrnWidth,  b))
+         return 1;
+ 
+-    if (dmxOnScreen(b->rootXOrigin,
+-                    b->rootYOrigin,                 a))
++    if (dmxOnScreen(b->rootXOrigin, b->rootYOrigin, a))
+         return 1;
+ 
+-    if (dmxOnScreen(b->rootXOrigin,
+-                    b->rootYOrigin + b->scrnWidth,  a))
++    if (dmxOnScreen(b->rootXOrigin, b->rootYOrigin + b->scrnWidth, a))
+         return 1;
+ 
+-    if (dmxOnScreen(b->rootXOrigin + b->scrnHeight,
+-                    b->rootYOrigin,                 a))
++    if (dmxOnScreen(b->rootXOrigin + b->scrnHeight, b->rootYOrigin, a))
+         return 1;
+ 
+     if (dmxOnScreen(b->rootXOrigin + b->scrnHeight,
+@@ -470,9 +473,11 @@ static int dmxDoesOverlap(DMXScreenInfo *a, DMXScreenInfo *b)
+ 
+ /** Used with \a dmxInterateOverlap to print out a list of screens which
+  * overlap each other. */
+-static void *dmxPrintOverlap(DMXScreenInfo *dmxScreen, void *closure)
++static void *
++dmxPrintOverlap(DMXScreenInfo * dmxScreen, void *closure)
+ {
+     DMXScreenInfo *a = closure;
++
+     if (dmxScreen != a) {
+         if (dmxScreen->cursorNotShared)
+             dmxLogOutputCont(a, " [%d/%s]", dmxScreen->index, dmxScreen->name);
+@@ -485,25 +490,30 @@ static void *dmxPrintOverlap(DMXScreenInfo *dmxScreen, void *closure)
+ /** Iterate over the screens which overlap with the \a start screen,
+  * calling \a f with the \a closure for each argument.  Often used with
+  * #dmxPrintOverlap. */
+-static void *dmxIterateOverlap(DMXScreenInfo *start,
+-                               void *(*f)(DMXScreenInfo *dmxScreen, void *),
+-                               void *closure)
++static void *
++dmxIterateOverlap(DMXScreenInfo * start,
++                  void *(*f) (DMXScreenInfo * dmxScreen, void *), void *closure)
+ {
+     DMXScreenInfo *pt;
+ 
+-    if (!start->over) return f(start, closure);
++    if (!start->over)
++        return f(start, closure);
+ 
+     for (pt = start->over; /* condition at end of loop */; pt = pt->over) {
+         void *retval;
+-        if ((retval = f(pt, closure))) return retval;
+-        if (pt == start) break;
++
++        if ((retval = f(pt, closure)))
++            return retval;
++        if (pt == start)
++            break;
+     }
+     return NULL;
+ }
+ 
+ /** Used with #dmxPropertyIterate to determine if screen \a a is the
+  * same as the screen \a closure. */
+-static void *dmxTestSameDisplay(DMXScreenInfo *a, void *closure)
++static void *
++dmxTestSameDisplay(DMXScreenInfo * a, void *closure)
+ {
+     DMXScreenInfo *b = closure;
+ 
+@@ -516,7 +526,8 @@ static void *dmxTestSameDisplay(DMXScreenInfo *a, void *closure)
+  * uses an O(dmxNumScreens^2) algorithm, but dmxNumScreens is < 100 and
+  * the computation only needs to be performed for every server
+  * generation or dynamic reconfiguration . */
+-void dmxInitOverlap(void)
++void
++dmxInitOverlap(void)
+ {
+     int           i, j;
+     DMXScreenInfo *a, *b, *pt;
+@@ -579,7 +590,8 @@ void dmxInitOverlap(void)
+ }
+ 
+ /** Create \a pCursor on the back-end associated with \a pScreen. */
+-void dmxBECreateCursor(ScreenPtr pScreen, CursorPtr pCursor)
++void
++dmxBECreateCursor(ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+     dmxCursorPrivPtr  pCursorPriv = DMX_GET_CURSOR_PRIV(pCursor, pScreen);
+@@ -660,7 +672,8 @@ void dmxBECreateCursor(ScreenPtr pScreen, CursorPtr pCursor)
+     dmxSync(dmxScreen, FALSE);
+ }
+ 
+-static Bool _dmxRealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
++static Bool
++_dmxRealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+     dmxCursorPrivPtr  pCursorPriv;
+@@ -682,7 +695,8 @@ static Bool _dmxRealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+ }
+ 
+ /** Free \a pCursor on the back-end associated with \a pScreen. */
+-Bool dmxBEFreeCursor(ScreenPtr pScreen, CursorPtr pCursor)
++Bool
++dmxBEFreeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+     dmxCursorPrivPtr  pCursorPriv = DMX_GET_CURSOR_PRIV(pCursor, pScreen);
+@@ -696,12 +710,12 @@ Bool dmxBEFreeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+     return FALSE;
+ }
+ 
+-static Bool _dmxUnrealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
++static Bool
++_dmxUnrealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+ 
+-    DMXDBG2("_dmxUnrealizeCursor(%d,%p)\n",
+-            pScreen->myNum, pCursor);
++    DMXDBG2("_dmxUnrealizeCursor(%d,%p)\n", pScreen->myNum, pCursor);
+ 
+     if (dmxScreen->beDisplay) {
+ 	if (dmxBEFreeCursor(pScreen, pCursor))
+@@ -712,14 +726,17 @@ static Bool _dmxUnrealizeCursor(ScreenPtr pScreen, CursorPtr pCursor)
+     return TRUE;
+ }
+ 
+-static void _dmxMoveCursor(ScreenPtr pScreen, int x, int y)
++static void
++_dmxMoveCursor(ScreenPtr pScreen, int x, int y)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     int           newX       = x + dmxScreen->rootX;
+     int           newY       = y + dmxScreen->rootY;
+ 
+-    if (newX < 0) newX = 0;
+-    if (newY < 0) newY = 0;
++    if (newX < 0)
++        newX = 0;
++    if (newY < 0)
++        newY = 0;
+ 
+     DMXDBG5("_dmxMoveCursor(%d,%d,%d) -> %d,%d\n",
+             pScreen->myNum, x, y, newX, newY);
+@@ -730,7 +747,8 @@ static void _dmxMoveCursor(ScreenPtr pScreen, int x, int y)
+     }
+ }
+ 
+-static void _dmxSetCursor(ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
++static void
++_dmxSetCursor(ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+ {
+     DMXScreenInfo    *dmxScreen = &dmxScreens[pScreen->myNum];
+ 
+@@ -738,6 +756,7 @@ static void _dmxSetCursor(ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+ 
+     if (pCursor) {
+ 	dmxCursorPrivPtr  pCursorPriv = DMX_GET_CURSOR_PRIV(pCursor, pScreen);
++
+ 	if (pCursorPriv && dmxScreen->curCursor != pCursorPriv->cursor) {
+ 	    if (dmxScreen->beDisplay)
+ 		XDefineCursor(dmxScreen->beDisplay, dmxScreen->scrnWin,
+@@ -747,7 +766,8 @@ static void _dmxSetCursor(ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+             dmxScreen->cursorVisible = 1;
+ 	}
+ 	_dmxMoveCursor(pScreen, x, y);
+-    } else {
++    }
++    else {
+ 	if (dmxScreen->beDisplay)
+ 	    XDefineCursor(dmxScreen->beDisplay, dmxScreen->scrnWin,
+ 			  dmxScreen->noCursor);
+@@ -755,10 +775,12 @@ static void _dmxSetCursor(ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
+ 	dmxScreen->curCursor     = (Cursor)0;
+         dmxScreen->cursorVisible = 0;
+     }
+-    if (dmxScreen->beDisplay) dmxSync(dmxScreen, TRUE);
++    if (dmxScreen->beDisplay)
++        dmxSync(dmxScreen, TRUE);
+ }
+ 
+-static Bool dmxRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
++static Bool
++dmxRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo *start = &dmxScreens[pScreen->myNum];
+     DMXScreenInfo *pt;
+@@ -776,7 +798,8 @@ static Bool dmxRealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCu
+     return TRUE;
+ }
+ 
+-static Bool dmxUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
++static Bool
++dmxUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor)
+ {
+     DMXScreenInfo *start = &dmxScreens[pScreen->myNum];
+     DMXScreenInfo *pt;
+@@ -794,7 +817,8 @@ static Bool dmxUnrealizeCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr p
+     return TRUE;
+ }
+ 
+-static CursorPtr dmxFindCursor(DMXScreenInfo *start)
++static CursorPtr
++dmxFindCursor(DMXScreenInfo * start)
+ {
+     DMXScreenInfo *pt;
+ 
+@@ -818,7 +842,8 @@ static CursorPtr dmxFindCursor(DMXScreenInfo *start)
+  * back-end screens and see if they contain the global coord.  If so, call
+  * _dmxMoveCursor() (XWarpPointer) to position the pointer on that screen.
+  */
+-void dmxMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
++void
++dmxMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+ {
+     DMXScreenInfo *start = &dmxScreens[pScreen->myNum];
+     DMXScreenInfo *pt;
+@@ -854,7 +879,8 @@ void dmxMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+             _dmxMoveCursor(screenInfo.screens[pt->index],
+                            x + start->rootXOrigin - pt->rootXOrigin,
+                            y + start->rootYOrigin - pt->rootYOrigin);
+-        } else if (/* pt != start && */ pt->cursorVisible) {
++        }
++        else if ( /* pt != start && */ pt->cursorVisible) {
+             _dmxSetCursor(screenInfo.screens[pt->index],
+                           NULL,
+                           x + start->rootXOrigin - pt->rootXOrigin,
+@@ -865,7 +891,9 @@ void dmxMoveCursor(DeviceIntPtr pDev, ScreenPtr pScreen, int x, int y)
+     }
+ }
+ 
+-static void dmxSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x, int y)
++static void
++dmxSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor, int x,
++             int y)
+ {
+     DMXScreenInfo *start = &dmxScreens[pScreen->myNum];
+     DMXScreenInfo *pt;
+@@ -907,7 +935,8 @@ static void dmxSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor
+             _dmxSetCursor(screenInfo.screens[pt->index], pCursor,
+                           x + start->rootXOrigin - pt->rootXOrigin,
+                           y + start->rootYOrigin - pt->rootYOrigin);
+-        } else {
++        }
++        else {
+             _dmxSetCursor(screenInfo.screens[pt->index], NULL,
+                           x + start->rootXOrigin - pt->rootXOrigin,
+                           y + start->rootYOrigin - pt->rootYOrigin);
+@@ -917,11 +946,11 @@ static void dmxSetCursor(DeviceIntPtr pDev, ScreenPtr pScreen, CursorPtr pCursor
+     }
+ }
+ 
+-
+ /** This routine is used by the backend input routines to hide the
+  * cursor on a screen that is being used for relative input.  \see
+  * dmxbackend.c */
+-void dmxHideCursor(DMXScreenInfo *dmxScreen)
++void
++dmxHideCursor(DMXScreenInfo * dmxScreen)
+ {
+     int       x, y;
+     ScreenPtr pScreen = screenInfo.screens[dmxScreen->index];
+@@ -932,7 +961,8 @@ void dmxHideCursor(DMXScreenInfo *dmxScreen)
+ 
+ /** This routine is called during reconfiguration to make sure the
+  * cursor is visible. */
+-void dmxCheckCursor(void)
++void
++dmxCheckCursor(void)
+ {
+     int           i;
+     int           x, y;
+@@ -945,15 +975,18 @@ void dmxCheckCursor(void)
+     DMXDBG2("dmxCheckCursor %d %d\n", x, y);
+     for (i = 0; i < dmxNumScreens; i++) {
+         DMXScreenInfo *dmxScreen = &dmxScreens[i];
++
+         pScreen                  = screenInfo.screens[dmxScreen->index];
+ 
+         if (!dmxOnScreen(x, y, dmxScreen)) {
+-            if (firstScreen && i == miPointerGetScreen(inputInfo.pointer)->myNum)
+-                miPointerSetScreen(inputInfo.pointer, firstScreen->index, x, y);
+-            _dmxSetCursor(pScreen, NULL,
+-                          x - dmxScreen->rootXOrigin,
++            if (firstScreen &&
++                i == miPointerGetScreen(inputInfo.pointer)->myNum)
++                 miPointerSetScreen(inputInfo.pointer, firstScreen->index, x,
++                                    y);
++            _dmxSetCursor(pScreen, NULL, x - dmxScreen->rootXOrigin,
+                           y - dmxScreen->rootYOrigin);
+-        } else {
++        }
++        else {
+             if (!dmxScreen->cursor) {
+                 CursorPtr pCursor;
+                 
+@@ -969,17 +1002,18 @@ void dmxCheckCursor(void)
+     DMXDBG2("   leave dmxCheckCursor %d %d\n", x, y);
+ }
+ 
+-static Bool dmxDeviceCursorInitialize(DeviceIntPtr pDev, ScreenPtr pScr)
++static Bool
++dmxDeviceCursorInitialize(DeviceIntPtr pDev, ScreenPtr pScr)
+ {
+     return TRUE;
+ }
+ 
+-static void dmxDeviceCursorCleanup(DeviceIntPtr pDev, ScreenPtr pScr)
++static void
++dmxDeviceCursorCleanup(DeviceIntPtr pDev, ScreenPtr pScr)
+ {
+ }
+ 
+-miPointerSpriteFuncRec dmxPointerSpriteFuncs =
+-{
++miPointerSpriteFuncRec dmxPointerSpriteFuncs = {
+     dmxRealizeCursor,
+     dmxUnrealizeCursor,
+     dmxSetCursor,

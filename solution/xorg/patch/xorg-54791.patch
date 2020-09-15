@@ -1,0 +1,144 @@
+diff --git a/hw/xquartz/console_redirect.c b/hw/xquartz/console_redirect.c
+index 0f96a95..7b92eca 100644
+--- a/hw/xquartz/console_redirect.c
++++ b/hw/xquartz/console_redirect.c
+@@ -1,4 +1,5 @@
+-/* Copyright (c) 2011 Apple Inc.
++/*
++ * Copyright (c) 2011-2012 Apple Inc. All rights reserved.
+  *
+  * Permission is hereby granted, free of charge, to any person
+  * obtaining a copy of this software and associated documentation files
+@@ -102,7 +103,8 @@ _read_redirect(int fd, int flush)
+     asl_redirect *aslr = &redirect_fds[fd];
+ 
+     while ((nbytes =
+-            read(fd, aslr->w, BUF_SIZE - (aslr->w - aslr->buf) - 1)) > 0) {
++                read(fd, aslr->w,
++                     BUF_SIZE - (aslr->w - aslr->buf) - 1)) > 0) {
+         char *s, *p;
+ 
+         /* Increment our returned number read */
+@@ -151,7 +153,6 @@ read_from_source(void *_source)
+ {
+     dispatch_source_t source = (dispatch_source_t) _source;
+     int fd = dispatch_source_get_handle(source);
+-
+     if (_read_redirect(fd, 0) == EOF) {
+         dispatch_source_cancel(source);
+     }
+@@ -205,14 +206,16 @@ redirect_thread(void *ctx __unused)
+ 
+                 if (fd < 0 || fd >= n_redirect_fds || aslr->buf == NULL) {
+                     asl_log(NULL, NULL, ASL_LEVEL_ERR,
+-                            "Unexpected file descriptor: %d", fd);
++                            "Unexpected file descriptor: %d",
++                            fd);
+                     goto next;
+                 }
+ 
+                 if (ev.flags & EV_EOF) {
+                     close_fd = 1;
+                     if (EOF != _read_redirect(fd, 1)) {
+-                        asl_log(NULL, NULL, ASL_LEVEL_ERR,
++                        asl_log(
++                            NULL, NULL, ASL_LEVEL_ERR,
+                                 "kevent reported EOF on %d, but read doesn't concur.",
+                                 fd);
+                     }
+@@ -237,7 +240,8 @@ redirect_thread(void *ctx __unused)
+                 return NULL;
+ 
+         default:
+-            ;;
++            ;
++            ;
+         }
+     }
+ 
+@@ -263,8 +267,8 @@ redirect_atexit(void)
+ 
+         /* Wait at least three seconds for our sources to flush to ASL */
+         dispatch_group_wait(read_source_group,
+-                            dispatch_time(DISPATCH_TIME_NOW,
+-                                          3LL * NSEC_PER_SEC));
++                            dispatch_time(DISPATCH_TIME_NOW, 3LL *
++                                          NSEC_PER_SEC));
+     }
+ #else
+     {
+@@ -299,7 +303,8 @@ xq_asl_init(void)
+     assert(read_source_group != NULL);
+ #else
+     assert((kq = kqueue()) != -1);
+-    assert(pthread_create(&redirect_pthread, NULL, redirect_thread, NULL) == 0);
++    assert(pthread_create(&redirect_pthread, NULL, redirect_thread,
++                          NULL) == 0);
+ #endif
+ 
+     atexit(redirect_atexit);
+@@ -311,12 +316,10 @@ xq_asl_log_fd(aslclient asl, aslmsg msg, int level, int fd)
+ #ifdef HAVE_LIBDISPATCH
+     int err __block = 0;
+     static dispatch_once_t once_control;
+-
+     dispatch_once_f(&once_control, NULL, xq_asl_init);
+ #else
+     int err = 0;
+     static pthread_once_t once_control = PTHREAD_ONCE_INIT;
+-
+     assert(pthread_once(&once_control, xq_asl_init) == 0);
+ #endif
+ 
+@@ -335,13 +338,15 @@ xq_asl_log_fd(aslclient asl, aslmsg msg, int level, int fd)
+         if (fd >= n_redirect_fds) {
+             size_t new_n = 1 << (ffs(fd) + 1);
+             asl_redirect *new_array =
+-                realloc(redirect_fds, new_n * sizeof(*redirect_fds));
++                              realloc(redirect_fds, new_n *
++                                      sizeof(*redirect_fds));
+             if (!new_array) {
+                 err = errno;
+                 BLOCK_DONE;
+             }
+             redirect_fds = new_array;
+-            memset(redirect_fds + n_redirect_fds, 0, new_n - n_redirect_fds);
++                          memset(redirect_fds + n_redirect_fds, 0, new_n -
++                                 n_redirect_fds);
+             n_redirect_fds = new_n;
+         }
+ 
+@@ -365,25 +370,28 @@ xq_asl_log_fd(aslclient asl, aslmsg msg, int level, int fd)
+         redirect_fds[fd].msg = msg;
+ 
+         /* Don't block on reads from this fd */
+-        fcntl(fd, F_SETFL, O_NONBLOCK);
++                      fcntl(fd, F_SETFL,
++                            O_NONBLOCK);
+ 
+         /* Start listening */
+ #ifdef HAVE_LIBDISPATCH
+         {
+             dispatch_source_t read_source =
+-                dispatch_source_create(DISPATCH_SOURCE_TYPE_READ, fd, 0,
++                              dispatch_source_create(
++                                  DISPATCH_SOURCE_TYPE_READ, fd, 0,
+                                        redirect_serial_q);
+             redirect_fds[fd].read_source = read_source;
+             dispatch_set_context(read_source, read_source);
+-            dispatch_source_set_event_handler_f(read_source, read_from_source);
+-            dispatch_source_set_cancel_handler_f(read_source, cancel_source);
++                          dispatch_source_set_event_handler_f(read_source,
++                                                              read_from_source);
++                          dispatch_source_set_cancel_handler_f(read_source,
++                                                               cancel_source);
+             dispatch_group_enter(read_source_group);
+             dispatch_resume(read_source);
+         }
+ #else
+         {
+             struct kevent ev;
+-
+             EV_SET(&ev, fd, EVFILT_READ, EV_ADD, 0, 0, 0);
+             kevent(kq, &ev, 1, NULL, 0, NULL);
+         }

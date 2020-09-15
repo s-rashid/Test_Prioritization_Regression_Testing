@@ -1,0 +1,13 @@
+diff --git a/os/connection.c b/os/connection.c
+index bbcfa51..293f31a 100644
+--- a/os/connection.c
++++ b/os/connection.c
+@@ -183,7 +183,7 @@ struct _ct_node *ct_head[256];
+ 
+ void InitConnectionTranslation(void)
+ {
+-    bzero(ct_head, sizeof(ct_head));
++    memset(ct_head, 0, sizeof(ct_head));
+ }
+ 
+ int GetConnectionTranslation(int conn)

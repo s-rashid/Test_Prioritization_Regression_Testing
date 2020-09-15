@@ -1,0 +1,38 @@
+diff --git a/fb/fb.h b/fb/fb.h
+index 7ab4adf..4fde426 100644
+--- a/fb/fb.h
++++ b/fb/fb.h
+@@ -603,8 +603,12 @@ extern _X_EXPORT void fbSetBits (FbStip *bits, int stride, FbStip data);
+     }							    \
+ }
+ 
+-extern _X_EXPORT DevPrivateKey fbGetGCPrivateKey(void);
+-extern _X_EXPORT DevPrivateKey fbGetWinPrivateKey(void);
++extern _X_EXPORT DevPrivateKey
++fbGetGCPrivateKey (void);
++
++extern _X_EXPORT DevPrivateKey
++fbGetWinPrivateKey (void);
++
+ extern _X_EXPORT const GCOps	fbGCOps;
+ extern _X_EXPORT const GCFuncs	fbGCFuncs;
+ 
+@@ -639,7 +643,8 @@ typedef void (*FinishWrapProcPtr)(DrawablePtr pDraw);
+ 
+ 
+ #ifdef FB_SCREEN_PRIVATE
+-extern _X_EXPORT DevPrivateKey fbGetScreenPrivateKey(void);
++extern _X_EXPORT DevPrivateKey
++fbGetScreenPrivateKey(void);
+ 
+ /* private field of a screen */
+ typedef struct {
+@@ -830,8 +835,6 @@ fb24_32ModifyPixmapHeader (PixmapPtr   pPixmap,
+ /*
+  * fballpriv.c
+  */
+-extern _X_EXPORT DevPrivateKey fbGetWinPrivateKey(void);
+-
+ extern _X_EXPORT Bool
+ fbAllocatePrivates(ScreenPtr pScreen, DevPrivateKey *pGCIndex);
+     

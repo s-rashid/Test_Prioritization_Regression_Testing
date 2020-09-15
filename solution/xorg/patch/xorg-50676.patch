@@ -1,0 +1,12 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index cd66876..d4c253e 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -240,7 +240,6 @@ typedef struct _ValuatorClassRec {
+     AxisInfoPtr 	  axes;
+     unsigned short	  numAxes;
+     double		  *axisVal; /* always absolute, but device-coord system */
+-    CARD8	 	  mode;
+     ValuatorAccelerationRec	accelScheme;
+ } ValuatorClassRec, *ValuatorClassPtr;
+ 

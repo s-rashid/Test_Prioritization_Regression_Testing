@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winprocarg.c b/hw/xwin/winprocarg.c
+index 159e533..66da76f 100755
+--- a/hw/xwin/winprocarg.c
++++ b/hw/xwin/winprocarg.c
+@@ -53,7 +53,7 @@ extern Bool			g_fUnicodeClipboard;
+ extern Bool			g_fClipboard;
+ #endif
+ extern int			g_iLogVerbose;
+-extern char *			g_pszLogFile;
++extern const char *		g_pszLogFile;
+ #ifdef RELOCATE_PROJECTROOT
+ extern Bool			g_fLogFileChanged;
+ #endif

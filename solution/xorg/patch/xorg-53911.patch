@@ -1,0 +1,21 @@
+diff --git a/xkb/xkbtext.c b/xkb/xkbtext.c
+index 1ba10a1..b3930f8 100644
+--- a/xkb/xkbtext.c
++++ b/xkb/xkbtext.c
+@@ -334,12 +334,12 @@ static char *buf;
+ char *
+ XkbKeysymText(KeySym sym,unsigned format)
+ {
+-static char buf[32],*rtrn;
++static char buf[32];
+ 
+     if (sym==NoSymbol)
+-	 strcpy(rtrn=buf,"NoSymbol");
+-    else sprintf(rtrn=buf, "0x%lx", (long)sym);
+-    return rtrn;
++	 strcpy(buf,"NoSymbol");
++    else sprintf(buf, "0x%lx", (long)sym);
++    return buf;
+ }
+ 
+ char *

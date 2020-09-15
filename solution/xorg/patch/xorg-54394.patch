@@ -1,0 +1,13 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 8cd4d59..e1a11a1 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -672,7 +672,7 @@ void event_set_state(DeviceIntPtr mouse, DeviceIntPtr kbd, DeviceEvent *event)
+ 
+     for (i = 0; mouse && mouse->button && i < mouse->button->numButtons; i++)
+         if (BitIsOn(mouse->button->down, i))
+-            SetBit(event->buttons, i);
++            SetBit(event->buttons, mouse->button->map[i]);
+ 
+     if (kbd && kbd->key)
+     {

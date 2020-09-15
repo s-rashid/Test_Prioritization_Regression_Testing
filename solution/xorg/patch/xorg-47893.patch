@@ -1,0 +1,13 @@
+diff --git a/xkb/xkbUtils.c b/xkb/xkbUtils.c
+index 5b317c9..e287997 100644
+--- a/xkb/xkbUtils.c
++++ b/xkb/xkbUtils.c
+@@ -753,7 +753,7 @@ XkbSrvLedInfoPtr	sli;
+     if (cause!=NULL) {
+ 	xkbControlsNotify cn;
+ 	cn.numGroups= ctrls->num_groups;
+-	cn.changedControls|= XkbControlsEnabledMask;
++	cn.changedControls= XkbControlsEnabledMask;
+ 	cn.enabledControls= ctrls->enabled_ctrls;
+ 	cn.enabledControlChanges= (ctrls->enabled_ctrls^old);
+ 	cn.keycode= cause->kc;

@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/fbdev/fbinit.c b/hw/kdrive/fbdev/fbinit.c
+index 3b55ab1..1d66fce 100644
+--- a/hw/kdrive/fbdev/fbinit.c
++++ b/hw/kdrive/fbdev/fbinit.c
+@@ -47,6 +47,7 @@ InitInput (int argc, char **argv)
+ void
+ CloseInput (void)
+ {
++    KdCloseInput ();
+ }
+ 
+ void

@@ -1,0 +1,13 @@
+diff --git a/Xi/xichangecursor.c b/Xi/xichangecursor.c
+index f071e84..e72cfac 100644
+--- a/Xi/xichangecursor.c
++++ b/Xi/xichangecursor.c
+@@ -103,7 +103,7 @@ int ProcXIChangeCursor(ClientPtr client)
+ 	rc = dixLookupResourceByType((pointer *)&pCursor, stuff->cursor,
+ 				     RT_CURSOR, client, DixUseAccess);
+ 	if (rc != Success)
+-	    return (rc == BadValue) ? BadCursor : rc;
++	    return rc;
+     }
+ 
+     ChangeWindowDeviceCursor(pWin, pDev, pCursor);

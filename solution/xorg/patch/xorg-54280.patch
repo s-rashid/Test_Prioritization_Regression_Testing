@@ -1,0 +1,23 @@
+diff --git a/dix/inpututils.c b/dix/inpututils.c
+index 8cd4d59..50a122f 100644
+--- a/dix/inpututils.c
++++ b/dix/inpututils.c
+@@ -663,6 +663,8 @@ int event_get_corestate(DeviceIntPtr mouse, DeviceIntPtr kbd)
+     /* core state needs to be assembled BEFORE the device is updated. */
+     corestate = (kbd && kbd->key) ? XkbStateFieldFromRec(&kbd->key->xkbInfo->state) : 0;
+     corestate |= (mouse && mouse->button) ? (mouse->button->state) : 0;
++    corestate |= (mouse && mouse->touch) ? (mouse->touch->state) : 0;
++
+     return corestate;
+ }
+ 
+@@ -674,6 +676,9 @@ void event_set_state(DeviceIntPtr mouse, DeviceIntPtr kbd, DeviceEvent *event)
+         if (BitIsOn(mouse->button->down, i))
+             SetBit(event->buttons, i);
+ 
++    if (mouse && mouse->touch && mouse->touch->buttonsDown > 0)
++        SetBit(event->buttons, mouse->button->map[1]);
++
+     if (kbd && kbd->key)
+     {
+         XkbStatePtr state;

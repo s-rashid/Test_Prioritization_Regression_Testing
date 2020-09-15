@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/xaa/xaaInit.c b/hw/xfree86/xaa/xaaInit.c
+index d0a66b8..ec55632 100644
+--- a/hw/xfree86/xaa/xaaInit.c
++++ b/hw/xfree86/xaa/xaaInit.c
+@@ -84,10 +84,8 @@ XAADestroyInfoRec(XAAInfoRecPtr infoRec)
+     if(infoRec->ClosePixmapCache)
+ 	(*infoRec->ClosePixmapCache)(infoRec->pScrn->pScreen);
+    
+-    if(infoRec->PreAllocMem)
+ 	free(infoRec->PreAllocMem);
+ 
+-    if(infoRec->PixmapCachePrivate)
+ 	free(infoRec->PixmapCachePrivate);
+ 
+     free(infoRec);

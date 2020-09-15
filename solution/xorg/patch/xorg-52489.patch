@@ -1,0 +1,18 @@
+diff --git a/Xext/xvmain.c b/Xext/xvmain.c
+index cd6f097..d21a56c 100644
+--- a/Xext/xvmain.c
++++ b/Xext/xvmain.c
+@@ -1110,12 +1110,7 @@ XvdiMatchPort(
+ 
+   while (nf--)
+     {
+-      if ((pf->depth == pDraw->depth) 
+-#if 0
+-         && ((pDraw->type == DRAWABLE_PIXMAP) || 
+-	   (wVisual(((WindowPtr)pDraw)) == pf->visual))
+-#endif
+-	)
++      if (pf->depth == pDraw->depth)
+ 	return Success;
+       pf++;
+     }

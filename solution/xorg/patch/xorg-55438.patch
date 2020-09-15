@@ -1,0 +1,44 @@
+diff --git a/hw/xfree86/common/xf86VidMode.c b/hw/xfree86/common/xf86VidMode.c
+index 2ae5484..13ffe06 100644
+--- a/hw/xfree86/common/xf86VidMode.c
++++ b/hw/xfree86/common/xf86VidMode.c
+@@ -90,7 +90,6 @@ VidModeExtensionInit(ScreenPtr pScreen)
+ #endif
+ }
+ 
+-
+ #ifdef XF86VIDMODE
+ 
+ static Bool
+@@ -184,7 +183,8 @@ VidModeGetNumOfClocks(int scrnIndex, Bool *progClock)
+     if (pScrn->progClock){
+ 	*progClock = TRUE;
+ 	return 0;
+-    } else {
++    }
++    else {
+ 	*progClock = FALSE;
+ 	return pScrn->numClocks;
+     }
+@@ -210,7 +210,6 @@ VidModeGetClocks(int scrnIndex, int *Clocks)
+     return TRUE;
+ }
+ 
+-
+ Bool
+ VidModeGetFirstModeline(int scrnIndex, pointer *mode, int *dotClock)
+ {
+@@ -549,7 +548,6 @@ VidModeCopyMode(pointer modefrom, pointer modeto)
+   memcpy(modeto, modefrom, sizeof(DisplayModeRec));
+ }
+ 
+-
+ int
+ VidModeGetModeValue(pointer mode, int valtyp)
+ {
+@@ -668,5 +666,4 @@ VidModeGetMonitorValue(pointer monitor, int valtyp, int indx)
+   return ret;
+ }
+ 
+-
+ #endif /* XF86VIDMODE */

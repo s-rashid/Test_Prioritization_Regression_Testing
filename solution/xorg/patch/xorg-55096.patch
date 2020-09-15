@@ -1,0 +1,66 @@
+diff --git a/dix/registry.c b/dix/registry.c
+index 5ab25ad..e9c19b0 100644
+--- a/dix/registry.c
++++ b/dix/registry.c
+@@ -48,7 +48,8 @@ static unsigned nmajor, *nminor, nevent, nerror, nresource;
+ /*
+  * File parsing routines
+  */
+-static int double_size(void *p, unsigned n, unsigned size)
++static int
++double_size(void *p, unsigned n, unsigned size)
+ {
+     char **ptr = (char **)p;
+     unsigned s, f;
+@@ -57,7 +58,8 @@ static int double_size(void *p, unsigned n, unsigned size)
+ 	s = n * size;
+ 	n *= 2 * size;
+ 	f = n;
+-    } else {
++    }
++    else {
+ 	s = 0;
+ 	n = f = BASE_SIZE * size;
+     }
+@@ -92,7 +94,8 @@ RegisterRequestName(unsigned major, unsigned minor, char *name)
+ }
+ 
+ static void
+-RegisterEventName(unsigned event, char *name) {
++RegisterEventName(unsigned event, char *name)
++{
+     while (event >= nevent) {
+ 	if (!double_size(&events, nevent, sizeof(char *)))
+ 	    return;
+@@ -104,7 +107,8 @@ RegisterEventName(unsigned event, char *name) {
+ }
+ 
+ static void
+-RegisterErrorName(unsigned error, char *name) {
++RegisterErrorName(unsigned error, char *name)
++{
+     while (error >= nerror) {
+ 	if (!double_size(&errors, nerror, sizeof(char *)))
+ 	    return;
+@@ -239,8 +243,10 @@ LookupMajorName(int major)
+ 
+ 	retval = requests[major][0];
+ 	return retval ? retval + sizeof(CORE) : XREGISTRY_UNKNOWN;
+-    } else {
++    }
++    else {
+ 	ExtensionEntry *extEntry = GetExtensionEntry(major);
++
+ 	return extEntry ? extEntry->name : XREGISTRY_UNKNOWN;
+     }
+ }
+@@ -314,7 +320,8 @@ dixResetRegistry(void)
+ 	fclose(fh);
+     fh = fopen(FILENAME, "r");
+     if (!fh)
+-	LogMessage(X_WARNING, "Failed to open protocol names file " FILENAME "\n");
++        LogMessage(X_WARNING,
++                   "Failed to open protocol names file " FILENAME "\n");
+ 
+     /* Add built-in resources */
+     RegisterResourceName(RT_NONE, "NONE");

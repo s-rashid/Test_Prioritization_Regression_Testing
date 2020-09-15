@@ -1,0 +1,25 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index d46087a..3729f1b 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -390,19 +390,16 @@ SyncSendAlarmNotifyEvents(SyncAlarm *pAlarm)
+     ane.state = pAlarm->state;
+ 
+     /* send to owner */
+-    if (pAlarm->events && !pAlarm->client->clientGone)
++    if (pAlarm->events)
+ 	WriteEventsToClient(pAlarm->client, 1, (xEvent *) &ane);
+ 
+     /* send to other interested clients */
+     for (pcl = pAlarm->pEventClients; pcl; pcl = pcl->next)
+     {
+-	if (!pcl->client->clientGone)
+-	{
+ 	    ane.sequenceNumber = pcl->client->sequence;
+ 	    WriteEventsToClient(pcl->client, 1, (xEvent *) &ane);
+ 	}
+     }
+-}
+ 
+ 
+ /*  CounterNotify events only occur in response to an Await.  The events

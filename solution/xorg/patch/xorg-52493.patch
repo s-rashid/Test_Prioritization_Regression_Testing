@@ -1,0 +1,12 @@
+diff --git a/miext/rootless/rootlessScreen.c b/miext/rootless/rootlessScreen.c
+index 510d6fd..df8d945 100644
+--- a/miext/rootless/rootlessScreen.c
++++ b/miext/rootless/rootlessScreen.c
+@@ -453,7 +453,6 @@ RootlessMarkOverlappedWindows(WindowPtr pWin, WindowPtr pFirst,
+                 pChild = pChild->nextSib;
+             }
+             anyMarked = TRUE;
+-            pFirst = pFirst->nextSib;
+         }
+         if (anyMarked)
+             (* MarkWindow)(pWin->parent);

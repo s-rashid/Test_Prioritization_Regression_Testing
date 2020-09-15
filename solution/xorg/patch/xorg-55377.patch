@@ -1,0 +1,19 @@
+diff --git a/hw/kdrive/ephyr/os.c b/hw/kdrive/ephyr/os.c
+index e4dc678..a2a705d 100644
+--- a/hw/kdrive/ephyr/os.c
++++ b/hw/kdrive/ephyr/os.c
+@@ -37,8 +37,7 @@ EphyrInit (void)
+    * make sure at least one screen
+    * has been added to the system.
+    */
+-  if (!KdCardInfoLast ())
+-    {
++    if (!KdCardInfoLast()) {
+         processScreenArg ("640x480", NULL) ;
+     }
+   return hostx_init();
+@@ -48,4 +47,3 @@ KdOsFuncs   EphyrOsFuncs = {
+     .Init = EphyrInit,
+     .pollEvents = ephyrPoll,
+ };
+-

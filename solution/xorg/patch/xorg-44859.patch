@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/ddc/interpret_edid.c b/hw/xfree86/ddc/interpret_edid.c
+index bdcc92e..12a5254 100644
+--- a/hw/xfree86/ddc/interpret_edid.c
++++ b/hw/xfree86/ddc/interpret_edid.c
+@@ -330,6 +330,7 @@ get_dt_md_section(Uchar *c, struct edid_version *ver,
+ 	break;
+       case ADD_EST_TIMINGS:
+ 	det_mon[i].type = DS_EST_III;
++	memcpy(det_mon[i].section.est_iii, c + 6, 6);
+ 	break;
+       case ADD_DUMMY:
+ 	det_mon[i].type = DS_DUMMY;

@@ -1,0 +1,84 @@
+diff --git a/glx/indirect_program.c b/glx/indirect_program.c
+index fbf9d3f..3b50ecd 100644
+--- a/glx/indirect_program.c
++++ b/glx/indirect_program.c
+@@ -46,8 +46,8 @@
+ #include "dispatch.h"
+ 
+ static int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
+-    unsigned get_programiv_offset, unsigned get_program_string_offset,
+-    Bool do_swap);
++                              unsigned get_programiv_offset,
++                              unsigned get_program_string_offset, Bool do_swap);
+ 
+ /**
+  * Handle both types of glGetProgramString calls.
+@@ -58,10 +58,10 @@ static int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
+  * caller.  These can be the offsets of either the ARB versions or the NV
+  * versions.
+  */
+-int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
++int
++DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte * pc,
+ 		       unsigned get_programiv_offset,
+-		       unsigned get_program_string_offset,
+-		       Bool do_swap)
++                   unsigned get_program_string_offset, Bool do_swap)
+ {
+     xGLXVendorPrivateWithReplyReq * const req = 
+       (xGLXVendorPrivateWithReplyReq *) pc;
+@@ -69,7 +69,6 @@ int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
+     __GLXcontext * const cx = __glXForceCurrent(cl, req->contextTag, & error);
+     ClientPtr client = cl->client;
+ 
+-
+     pc += __GLX_VENDPRIV_HDR_SIZE;
+     if (cx != NULL) {
+ 	GLenum target;
+@@ -107,7 +106,8 @@ int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
+ 	if (__glXErrorOccured()) {
+ 	    __GLX_BEGIN_REPLY(0);
+ 	    __GLX_SEND_HEADER();
+-	} else {
++        }
++        else {
+ 	    __GLX_BEGIN_REPLY(compsize);
+ 	    ((xGLXGetTexImageReply *)&__glXReply)->width = compsize;
+ 	    __GLX_SEND_HEADER();
+@@ -120,28 +120,29 @@ int DoGetProgramString(struct __GLXclientStateRec *cl, GLbyte *pc,
+     return error;
+ }
+ 
+-int __glXDisp_GetProgramStringARB(struct __GLXclientStateRec *cl, GLbyte *pc)
++int
++__glXDisp_GetProgramStringARB(struct __GLXclientStateRec *cl, GLbyte * pc)
+ {
+     return DoGetProgramString(cl, pc, _gloffset_GetProgramivARB,
+ 			      _gloffset_GetProgramStringARB, False);
+ }
+ 
+-
+-int __glXDispSwap_GetProgramStringARB(struct __GLXclientStateRec *cl, GLbyte *pc)
++int
++__glXDispSwap_GetProgramStringARB(struct __GLXclientStateRec *cl, GLbyte * pc)
+ {
+     return DoGetProgramString(cl, pc, _gloffset_GetProgramivARB,
+ 			      _gloffset_GetProgramStringARB, True);
+ }
+ 
+-
+-int __glXDisp_GetProgramStringNV(struct __GLXclientStateRec *cl, GLbyte *pc)
++int
++__glXDisp_GetProgramStringNV(struct __GLXclientStateRec *cl, GLbyte * pc)
+ {
+     return DoGetProgramString(cl, pc, _gloffset_GetProgramivNV,
+ 			      _gloffset_GetProgramStringNV, False);
+ }
+ 
+-
+-int __glXDispSwap_GetProgramStringNV(struct __GLXclientStateRec *cl, GLbyte *pc)
++int
++__glXDispSwap_GetProgramStringNV(struct __GLXclientStateRec *cl, GLbyte * pc)
+ {
+     return DoGetProgramString(cl, pc, _gloffset_GetProgramivNV,
+ 			      _gloffset_GetProgramStringNV, True);

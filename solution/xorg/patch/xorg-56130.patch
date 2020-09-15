@@ -1,0 +1,141 @@
+diff --git a/xfixes/select.c b/xfixes/select.c
+index 2bf13f3..a896846 100644
+--- a/xfixes/select.c
++++ b/xfixes/select.c
+@@ -75,11 +75,8 @@ XFixesSelectionCallback (CallbackListPtr *callbacks, pointer data, pointer args)
+     default:
+ 	return;
+     }
+-    for (e = selectionEvents; e; e = e->next)
+-    {
+-	if (e->selection == selection->selection && 
+-	    (e->eventMask & eventMask))
+-	{
++    for (e = selectionEvents; e; e = e->next) {
++        if (e->selection == selection->selection && (e->eventMask & eventMask)) {
+ 	    xXFixesSelectionNotifyEvent	ev;
+ 
+ 	    memset(&ev, 0, sizeof(xXFixesSelectionNotifyEvent));
+@@ -101,19 +98,15 @@ XFixesSelectionCallback (CallbackListPtr *callbacks, pointer data, pointer args)
+ static Bool
+ CheckSelectionCallback (void)
+ {
+-    if (selectionEvents)
+-    {
+-	if (!SelectionCallbackRegistered)
+-	{
++    if (selectionEvents) {
++        if (!SelectionCallbackRegistered) {
+ 	    if (!AddCallback (&SelectionCallback, XFixesSelectionCallback, NULL))
+ 		return FALSE;
+ 	    SelectionCallbackRegistered = TRUE;
+ 	}
+     }
+-    else
+-    {
+-	if (SelectionCallbackRegistered)
+-	{
++    else {
++        if (SelectionCallbackRegistered) {
+ 	    DeleteCallback (&SelectionCallback, XFixesSelectionCallback, NULL);
+ 	    SelectionCallbackRegistered = FALSE;
+ 	}
+@@ -127,9 +120,7 @@ CheckSelectionCallback (void)
+ 
+ static int
+ XFixesSelectSelectionInput (ClientPtr	pClient,
+-			    Atom	selection,
+-			    WindowPtr	pWindow,
+-			    CARD32	eventMask)
++                           Atom selection, WindowPtr pWindow, CARD32 eventMask)
+ {
+     pointer val;
+     int rc;
+@@ -139,25 +130,19 @@ XFixesSelectSelectionInput (ClientPtr	pClient,
+     if (rc != Success)
+ 	return rc;
+ 
+-    for (prev = &selectionEvents; (e = *prev); prev = &e->next)
+-    {
++    for (prev = &selectionEvents; (e = *prev); prev = &e->next) {
+ 	if (e->selection == selection &&
+-	    e->pClient == pClient &&
+-	    e->pWindow == pWindow)
+-	{
++            e->pClient == pClient && e->pWindow == pWindow) {
+ 	    break;
+ 	}
+     }
+-    if (!eventMask)
+-    {
+-	if (e)
+-	{
++    if (!eventMask) {
++        if (e) {
+ 	    FreeResource (e->clientResource, 0);
+ 	}
+ 	return Success;
+     }
+-    if (!e)
+-    {
++    if (!e) {
+ 	e = (SelectionEventPtr) malloc(sizeof (SelectionEventRec));
+ 	if (!e)
+ 	    return BadAlloc;
+@@ -177,8 +162,7 @@ XFixesSelectSelectionInput (ClientPtr	pClient,
+ 				      DixGetAttrAccess);
+ 	if (rc != Success)
+ 	    if (!AddResource (pWindow->drawable.id, SelectionWindowType,
+-			      (pointer) pWindow))
+-	    {
++                             (pointer) pWindow)) {
+ 		free(e);
+ 		return BadAlloc;
+ 	    }
+@@ -187,8 +171,7 @@ XFixesSelectSelectionInput (ClientPtr	pClient,
+ 	    return BadAlloc;
+ 
+ 	*prev = e;
+-	if (!CheckSelectionCallback ())
+-	{
++        if (!CheckSelectionCallback()) {
+ 	    FreeResource (e->clientResource, 0);
+ 	    return BadAlloc;
+ 	}
+@@ -208,8 +191,7 @@ ProcXFixesSelectSelectionInput (ClientPtr client)
+     rc = dixLookupWindow(&pWin, stuff->window, client, DixGetAttrAccess);
+     if (rc != Success)
+         return rc;
+-    if (stuff->eventMask & ~SelectionAllEvents)
+-    {
++    if (stuff->eventMask & ~SelectionAllEvents) {
+ 	client->errorValue = stuff->eventMask;
+ 	return BadValue;
+     }
+@@ -248,10 +230,8 @@ SelectionFreeClient (pointer data, XID id)
+     SelectionEventPtr	old = (SelectionEventPtr) data;
+     SelectionEventPtr	*prev, e;
+     
+-    for (prev = &selectionEvents; (e = *prev); prev = &e->next)
+-    {
+-	if (e == old)
+-	{
++    for (prev = &selectionEvents; (e = *prev); prev = &e->next) {
++        if (e == old) {
+ 	    *prev = e->next;
+ 	    free(e);
+ 	    CheckSelectionCallback ();
+@@ -267,11 +247,9 @@ SelectionFreeWindow (pointer data, XID id)
+     WindowPtr		pWindow = (WindowPtr) data;
+     SelectionEventPtr	e, next;
+ 
+-    for (e = selectionEvents; e; e = next)
+-    {
++    for (e = selectionEvents; e; e = next) {
+ 	next = e->next;
+-	if (e->pWindow == pWindow)
+-	{
++        if (e->pWindow == pWindow) {
+ 	    FreeResource (e->clientResource, 0);
+ 	}
+     }

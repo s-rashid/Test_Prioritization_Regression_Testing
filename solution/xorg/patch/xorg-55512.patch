@@ -1,0 +1,21 @@
+diff --git a/hw/xfree86/i2c/tda9885.h b/hw/xfree86/i2c/tda9885.h
+index 004f43d..2d8a8af 100644
+--- a/hw/xfree86/i2c/tda9885.h
++++ b/hw/xfree86/i2c/tda9885.h
+@@ -41,12 +41,16 @@ typedef struct {
+ 
+ #define xf86_Detect_tda9885		Detect_tda9885
+ extern _X_EXPORT TDA9885Ptr Detect_tda9885(I2CBusPtr b, I2CSlaveAddr addr);
++
+ #define xf86_tda9885_init		tda9885_init
+ extern _X_EXPORT Bool tda9885_init(TDA9885Ptr t);
++
+ #define xf86_tda9885_setparameters	tda9885_setparameters
+ extern _X_EXPORT void tda9885_setparameters(TDA9885Ptr t);
++
+ #define xf86_tda9885_getstatus		tda9885_getstatus
+ extern _X_EXPORT void tda9885_getstatus(TDA9885Ptr t);
++
+ #define xf86_tda9885_dumpstatus		tda9885_dumpstatus
+ extern _X_EXPORT void tda9885_dumpstatus(TDA9885Ptr t);
+ 

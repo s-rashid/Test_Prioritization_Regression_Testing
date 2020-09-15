@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/os-support/stub/stub_bios.c b/hw/xfree86/os-support/stub/stub_bios.c
+new file mode 100644
+index 0000000..8628316
+--- /dev/null
++++ b/hw/xfree86/os-support/stub/stub_bios.c
+@@ -0,0 +1,12 @@
++#ifdef HAVE_XORG_CONFIG_H
++#include <xorg-config.h>
++#endif
++
++#include "xf86_OSlib.h"
++
++int
++xf86ReadBIOS(unsigned long Base, unsigned long Offset, unsigned char *Buf,
++		int Len)
++{
++	return -1;
++}

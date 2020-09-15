@@ -1,0 +1,20 @@
+diff --git a/miext/rootless/rootlessValTree.c b/miext/rootless/rootlessValTree.c
+index d242600..9aa8814 100644
+--- a/miext/rootless/rootlessValTree.c
++++ b/miext/rootless/rootlessValTree.c
+@@ -200,7 +200,6 @@ RootlessComputeClips (WindowPtr pParent, ScreenPtr pScreen,
+     RegionRec		childUnion;
+     Bool		overlap;
+     RegionPtr		borderVisible;
+-    Bool		resized;
+     /*
+      * Figure out the new visibility of this window.
+      * The extent of the universe should be the same as the extent of
+@@ -340,7 +339,6 @@ RootlessComputeClips (WindowPtr pParent, ScreenPtr pScreen,
+     }
+ 
+     borderVisible = pParent->valdata->before.borderVisible;
+-    resized = pParent->valdata->before.resized;
+     RegionNull(&pParent->valdata->after.borderExposed);
+     RegionNull(&pParent->valdata->after.exposed);
+ 

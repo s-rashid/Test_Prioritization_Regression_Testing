@@ -1,0 +1,33 @@
+diff --git a/hw/xfree86/xaa/xaarop.h b/hw/xfree86/xaa/xaarop.h
+index edfd75a..f2acde0 100644
+--- a/hw/xfree86/xaa/xaarop.h
++++ b/hw/xfree86/xaa/xaarop.h
+@@ -8,7 +8,6 @@
+ 	MS triadic raster op.  The function will return which components 
+ 	(S-P) need to be enabled.  
+ 
+-
+    int XAAHelpPatternROP(ScrnInfoPtr pScrn, int *fg, int *bg, int pm, int *rop)
+ 
+ 	For use with 8x8 opaque pattern fills.  You give it the foreground, 	
+@@ -17,7 +16,6 @@
+ 	appropriate MS triadic raster op.  The function will return which 
+ 	components (S-P) need to be enabled.  
+ 
+-
+ 	   ROP_PAT - Means to enable 8x8 mono patterns (all bits 
+ 		     set for solid patterns).  Set the foreground and
+ 		     background as returned by the function.  
+@@ -294,8 +292,10 @@
+ #define NO_SRC_ROP(rop) \
+    ((rop == GXnoop) || (rop == GXset) || (rop == GXclear) || (rop == GXinvert))
+ 
+-extern _X_EXPORT int XAAHelpSolidROP(ScrnInfoPtr pScrn, int *fg, int pm, int *rop);
+-extern _X_EXPORT int XAAHelpPatternROP(ScrnInfoPtr pScrn, int *fg, int *bg, int pm, int *rop);
++extern _X_EXPORT int XAAHelpSolidROP(ScrnInfoPtr pScrn, int *fg, int pm,
++                                     int *rop);
++extern _X_EXPORT int XAAHelpPatternROP(ScrnInfoPtr pScrn, int *fg, int *bg,
++                                       int pm, int *rop);
+ 
+ /* XXX These four should be static, but it breaks the 6.7.0 ABI. */
+ extern _X_EXPORT int XAACopyROP[16];

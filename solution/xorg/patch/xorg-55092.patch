@@ -1,0 +1,142 @@
+diff --git a/dix/privates.c b/dix/privates.c
+index d651258..15fbf75 100644
+--- a/dix/privates.c
++++ b/dix/privates.c
+@@ -113,8 +113,11 @@ static Bool
+ fixupScreens(FixupFunc fixup, unsigned bytes)
+ {
+     int s;
++
+     for (s = 0; s < screenInfo.numScreens; s++)
+-	if (!fixup(&screenInfo.screens[s]->devPrivates, keys[PRIVATE_SCREEN].offset, bytes))
++        if (!fixup
++            (&screenInfo.screens[s]->devPrivates, keys[PRIVATE_SCREEN].offset,
++             bytes))
+ 	    return FALSE;
+     return TRUE;
+ }
+@@ -123,7 +126,8 @@ static Bool
+ fixupServerClient(FixupFunc fixup, unsigned bytes)
+ {
+     if (serverClient)
+-	return fixup(&serverClient->devPrivates, keys[PRIVATE_CLIENT].offset, bytes);
++        return fixup(&serverClient->devPrivates, keys[PRIVATE_CLIENT].offset,
++                     bytes);
+     return TRUE;
+ }
+ 
+@@ -132,8 +136,11 @@ fixupExtensions(FixupFunc fixup, unsigned bytes)
+ {
+     unsigned char 	major;
+     ExtensionEntry	*extension;
+-    for (major = EXTENSION_BASE; (extension = GetExtensionEntry(major)); major++)
+-	if (!fixup(&extension->devPrivates, keys[PRIVATE_EXTENSION].offset, bytes))
++
++    for (major = EXTENSION_BASE; (extension = GetExtensionEntry(major));
++         major++)
++        if (!fixup
++            (&extension->devPrivates, keys[PRIVATE_EXTENSION].offset, bytes))
+ 	    return FALSE;
+     return TRUE;
+ }
+@@ -142,11 +149,15 @@ static Bool
+ fixupDefaultColormaps(FixupFunc fixup, unsigned bytes)
+ {
+     int s;
++
+     for (s = 0; s < screenInfo.numScreens; s++) {
+ 	ColormapPtr cmap;
+-	dixLookupResourceByType((pointer *) &cmap, screenInfo.screens[s]->defColormap,
+-	                        RT_COLORMAP, serverClient, DixCreateAccess);
+-	if (cmap && !fixup(&cmap->devPrivates, keys[PRIVATE_COLORMAP].offset, bytes))
++
++        dixLookupResourceByType((pointer *) &cmap,
++                                screenInfo.screens[s]->defColormap, RT_COLORMAP,
++                                serverClient, DixCreateAccess);
++        if (cmap &&
++            !fixup(&cmap->devPrivates, keys[PRIVATE_COLORMAP].offset, bytes))
+ 	    return FALSE;
+     }
+     return TRUE;
+@@ -156,8 +167,7 @@ static Bool (* const allocated_early[PRIVATE_LAST])(FixupFunc, unsigned) = {
+     [PRIVATE_SCREEN] = fixupScreens,
+     [PRIVATE_CLIENT] = fixupServerClient,
+     [PRIVATE_EXTENSION] = fixupExtensions,
+-    [PRIVATE_COLORMAP] = fixupDefaultColormaps,
+-};
++        [PRIVATE_COLORMAP] = fixupDefaultColormaps,};
+ 
+ /*
+  * Register a private key. This takes the type of object the key will
+@@ -215,7 +225,8 @@ dixRegisterPrivateKey(DevPrivateKey key, DevPrivateType type, unsigned size)
+ 	}
+ 
+ 	offset = 0;
+-    } else {
++    }
++    else {
+ 	/* Resize if we can, or make sure nothing's allocated if we can't */
+ 	if (!allocated_early[type])
+ 	    assert(!keys[type].created);
+@@ -238,7 +249,8 @@ dixRegisterPrivateKey(DevPrivateKey key, DevPrivateType type, unsigned size)
+ }
+ 
+ Bool
+-dixRegisterScreenPrivateKey(DevScreenPrivateKey screenKey, ScreenPtr pScreen, DevPrivateType type, unsigned size)
++dixRegisterScreenPrivateKey(DevScreenPrivateKey screenKey, ScreenPtr pScreen,
++                            DevPrivateType type, unsigned size)
+ {
+     DevPrivateKey	key;
+ 
+@@ -301,7 +313,8 @@ _dixFiniPrivates(PrivatePtr privates, DevPrivateType type)
+  * dixAllocateObjectWithPrivates macro
+  */
+ void *
+-_dixAllocateObjectWithPrivates(unsigned baseSize, unsigned clear, unsigned offset, DevPrivateType type)
++_dixAllocateObjectWithPrivates(unsigned baseSize, unsigned clear,
++                               unsigned offset, DevPrivateType type)
+ {
+     unsigned		totalSize;
+     void		*object;
+@@ -341,7 +354,8 @@ dixAllocatePrivates(PrivatePtr *privates, DevPrivateType type)
+     size = keys[type].offset;
+     if (!size) {
+ 	p = NULL;
+-    } else {
++    }
++    else {
+ 	if (!(p = malloc(size)))
+ 	    return FALSE;
+     }
+@@ -359,7 +373,8 @@ dixAllocatePrivates(PrivatePtr *privates, DevPrivateType type)
+  * dixFreeObjectWithPrivates macro
+  */
+ void
+-_dixFreeObjectWithPrivates(void *object, PrivatePtr privates, DevPrivateType type)
++_dixFreeObjectWithPrivates(void *object, PrivatePtr privates,
++                           DevPrivateType type)
+ {
+     _dixFiniPrivates(privates, type);
+     free(object);
+@@ -460,16 +475,16 @@ dixPrivateUsage(void)
+ 
+     for (t = PRIVATE_XSELINUX + 1; t < PRIVATE_LAST; t++) {
+ 	if (keys[t].offset) {
+-	    ErrorF("%s: %d objects of %d bytes = %d total bytes %d private allocs\n",
+-		   key_names[t], keys[t].created, keys[t].offset, keys[t].created * keys[t].offset,
+-		   keys[t].allocated);
++            ErrorF
++                ("%s: %d objects of %d bytes = %d total bytes %d private allocs\n",
++                 key_names[t], keys[t].created, keys[t].offset,
++                 keys[t].created * keys[t].offset, keys[t].allocated);
+ 	    bytes += keys[t].created * keys[t].offset;
+ 	    objects += keys[t].created;
+ 	    alloc += keys[t].allocated;
+ 	}
+     }
+-    ErrorF("TOTAL: %d objects, %d bytes, %d allocs\n",
+-	   objects, bytes, alloc);
++    ErrorF("TOTAL: %d objects, %d bytes, %d allocs\n", objects, bytes, alloc);
+ }
+ 
+ void

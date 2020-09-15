@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index ef61e46..87d40e0 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -818,7 +818,6 @@ DoConfigure(void)
+     }
+ 
+     xf86PostProbe();
+-    xf86EntityInit();
+ 
+     for (j = 0; j < xf86NumScreens; j++) {
+ 	xf86Screens[j]->scrnIndex = j;

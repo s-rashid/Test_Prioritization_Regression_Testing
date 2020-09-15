@@ -1,0 +1,24 @@
+diff --git a/mi/micmap.c b/mi/micmap.c
+index dac700d..3effe6c 100644
+--- a/mi/micmap.c
++++ b/mi/micmap.c
+@@ -40,8 +40,7 @@
+ #include "globals.h"
+ #include "micmap.h"
+ 
+-static int micmapScrPrivateKeyIndex;
+-DevPrivateKey micmapScrPrivateKey = &micmapScrPrivateKeyIndex;
++DevPrivateKeyRec micmapScrPrivateKeyRec;
+ 
+ int
+ miListInstalledColormaps(ScreenPtr pScreen, Colormap *pmaps)
+@@ -300,6 +299,9 @@ miCreateDefColormap(ScreenPtr pScreen)
+     ColormapPtr	cmap;
+     int alloctype;
+     
++    if (!dixRegisterPrivateKey(&micmapScrPrivateKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
+     for (pVisual = pScreen->visuals;
+ 	 pVisual->vid != pScreen->rootVisual;
+ 	 pVisual++)

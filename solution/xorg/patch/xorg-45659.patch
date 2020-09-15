@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Config.h b/hw/xfree86/common/xf86Config.h
+index 5318894..de28704 100644
+--- a/hw/xfree86/common/xf86Config.h
++++ b/hw/xfree86/common/xf86Config.h
+@@ -68,7 +68,5 @@ ConfigStatus xf86HandleConfigFile(Bool);
+ 
+ Bool xf86AutoConfig(void);
+ GDevPtr autoConfigDevice(GDevPtr preconf_device);
+-char* chooseVideoDriver(void);
+-int xchomp(char *line);
+ 
+ #endif /* _xf86_config_h */

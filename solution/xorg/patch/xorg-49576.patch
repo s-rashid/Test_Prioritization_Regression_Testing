@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/xaa/xaaTEText.c b/hw/xfree86/xaa/xaaTEText.c
+index 729e8a8..41c0ebc 100644
+--- a/hw/xfree86/xaa/xaaTEText.c
++++ b/hw/xfree86/xaa/xaaTEText.c
+@@ -299,7 +299,6 @@ XAAGlyphBltTEColorExpansion(
+ 		skippix, ytop - Top, glyphs + skipglyphs, glyphWidth, 
+ 		fg, bg, rop, planemask);
+ 
+-	    if (fallbackBits)
+ 		free(fallbackBits);
+ 	}
+ 

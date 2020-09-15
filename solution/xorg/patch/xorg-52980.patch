@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/glx/winpriv.c b/hw/xwin/glx/winpriv.c
+index a35392b..7772a75 100644
+--- a/hw/xwin/glx/winpriv.c
++++ b/hw/xwin/glx/winpriv.c
+@@ -61,6 +61,9 @@ HWND winGetWindowInfo(WindowPtr pWin)
+               {
+                 /* copy window handle */
+                 hwnd = pWinPriv->hWnd;
++
++                /* mark GLX active on that hwnd */
++                pWinPriv->fWglUsed = TRUE;
+               }
+ 
+             return hwnd;

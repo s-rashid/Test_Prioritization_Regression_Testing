@@ -1,0 +1,49 @@
+diff --git a/randr/rrsdispatch.c b/randr/rrsdispatch.c
+index 543fc90..9968c7f 100644
+--- a/randr/rrsdispatch.c
++++ b/randr/rrsdispatch.c
+@@ -48,13 +48,11 @@ SProcRRSetScreenConfig (ClientPtr client)
+ {
+     REQUEST(xRRSetScreenConfigReq);
+ 
+-    if (RRClientKnowsRates (client))
+-    {
++    if (RRClientKnowsRates(client)) {
+ 	REQUEST_SIZE_MATCH (xRRSetScreenConfigReq);
+ 	swaps(&stuff->rate);
+     }
+-    else
+-    {
++    else {
+ 	REQUEST_SIZE_MATCH (xRR1_0SetScreenConfigReq);
+     }
+     
+@@ -219,6 +217,7 @@ static int
+ SProcRRCreateMode (ClientPtr client)
+ {
+     xRRModeInfo *modeinfo;
++
+     REQUEST(xRRCreateModeReq);
+ 
+     REQUEST_AT_LEAST_SIZE(xRRCreateModeReq);
+@@ -347,12 +346,14 @@ SProcRRSetCrtcTransform (ClientPtr client)
+     int nparams;
+     char *filter;
+     CARD32 *params;
++
+     REQUEST(xRRSetCrtcTransformReq);
+ 
+     REQUEST_AT_LEAST_SIZE(xRRSetCrtcTransformReq);
+     swaps(&stuff->length);
+     swapl(&stuff->crtc);
+-    SwapLongs((CARD32 *)&stuff->transform, bytes_to_int32(sizeof(xRenderTransform)));
++    SwapLongs((CARD32 *) &stuff->transform,
++              bytes_to_int32(sizeof(xRenderTransform)));
+     swaps(&stuff->nbytesFilter);
+     filter = (char *)(stuff + 1);
+     params = (CARD32 *) (filter + pad_to_int32(stuff->nbytesFilter));
+@@ -472,4 +473,3 @@ int (*SProcRandrVector[RRNumberRequests])(ClientPtr) = {
+     SProcRRSetOutputPrimary,	/* 30 */
+     SProcRRGetOutputPrimary,	/* 31 */
+ };
+-

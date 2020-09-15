@@ -1,0 +1,14 @@
+diff --git a/randr/mirrcrtc.c b/randr/mirrcrtc.c
+index cc76797..b1e2c9f 100644
+--- a/randr/mirrcrtc.c
++++ b/randr/mirrcrtc.c
+@@ -66,8 +66,7 @@ miRRSetCrtcConfig(RRCrtcConfigPtr crtc_config)
+ 		     y,
+ 		     crtc_config->rotation,
+ 		     crtc_config->numOutputs,
+-		     crtc_config->outputs,
+-		     crtc_config->pixmap);
++		     crtc_config->outputs);
+ }
+ 
+ Bool

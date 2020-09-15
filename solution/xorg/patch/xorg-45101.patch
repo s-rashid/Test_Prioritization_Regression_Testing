@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 585f84d..51fe115 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -278,7 +278,6 @@ xf86CrtcSetModeTransform (xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotati
+ 
+     adjusted_mode = xf86DuplicateMode(mode);
+ 
+-    didLock = crtc->funcs->lock (crtc);
+ 
+     saved_mode = crtc->mode;
+     saved_x = crtc->x;
+@@ -308,6 +307,7 @@ xf86CrtcSetModeTransform (xf86CrtcPtr crtc, DisplayModePtr mode, Rotation rotati
+ 	goto done;
+     }
+ 
++    didLock = crtc->funcs->lock (crtc);
+     /* Pass our mode to the outputs and the CRTC to give them a chance to
+      * adjust it according to limitations or output properties, and also
+      * a chance to reject the mode entirely.

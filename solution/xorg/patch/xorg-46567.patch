@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_video.c b/hw/xfree86/os-support/linux/lnx_video.c
+index 73409df..09d1787 100644
+--- a/hw/xfree86/os-support/linux/lnx_video.c
++++ b/hw/xfree86/os-support/linux/lnx_video.c
+@@ -336,7 +336,7 @@ mtrr_undo_wc_region(int screenNum, struct mtrr_wc_region *wcr)
+ {
+ 	struct mtrr_wc_region *p, *prev;
+ 
+-	if (mtrr_fd > 0) {
++	if (mtrr_fd >= 0) {
+ 		p = wcr;
+ 		while (p) {
+ 			if (p->added)

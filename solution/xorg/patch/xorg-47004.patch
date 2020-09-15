@@ -1,0 +1,15 @@
+diff --git a/exa/exa_unaccel.c b/exa/exa_unaccel.c
+index 9bc765a..eee14da 100644
+--- a/exa/exa_unaccel.c
++++ b/exa/exa_unaccel.c
+@@ -414,7 +414,9 @@ ExaCheckComposite (CARD8      op,
+ 	PixmapPtr pDstPix;
+ 
+ 	if (!miComputeCompositeRegion (&region, pSrc, pMask, pDst,
+-				       xSrc, ySrc, xMask, yMask, xDst, yDst,
++				       xSrc, ySrc, xMask, yMask,
++				       xDst + pDst->pDrawable->x,
++				       yDst + pDst->pDrawable->y,
+ 				       width, height))
+ 	    goto skip;
+ 

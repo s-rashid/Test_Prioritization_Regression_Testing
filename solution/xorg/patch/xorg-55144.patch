@@ -1,0 +1,151 @@
+diff --git a/fb/fbscreen.c b/fb/fbscreen.c
+index 9e6ecf5..c0903ec 100644
+--- a/fb/fbscreen.c
++++ b/fb/fbscreen.c
+@@ -69,10 +69,8 @@ fbQueryBestSize (int class,
+     case TileShape:
+     case StippleShape:
+ 	w = *width;
+-	if ((w & (w - 1)) && w < FB_UNIT)
+-	{
+-	    for (w = 1; w < *width; w <<= 1)
+-		;
++        if ((w & (w - 1)) && w < FB_UNIT) {
++            for (w = 1; w < *width; w <<= 1);
+ 	    *width = w;
+ 	}
+     }
+@@ -91,15 +89,12 @@ _fbSetWindowPixmap (WindowPtr pWindow, PixmapPtr pPixmap)
+ }
+ 
+ Bool
+-fbSetupScreen(ScreenPtr	pScreen, 
+-	      pointer	pbits,		/* pointer to screen bitmap */
++fbSetupScreen(ScreenPtr pScreen, pointer pbits, /* pointer to screen bitmap */
+ 	      int	xsize, 		/* in pixels */
+-	      int	ysize,
+-	      int	dpix,		/* dots per inch */
+-	      int	dpiy,
+-	      int	width,		/* pixel width of frame buffer */
+-	      int	bpp)		/* bits per pixel for screen */
+-{
++              int ysize, int dpix,      /* dots per inch */
++              int dpiy, int width,      /* pixel width of frame buffer */
++              int bpp)
++{                               /* bits per pixel for screen */
+     if (!fbAllocatePrivates(pScreen, NULL))
+ 	return FALSE;
+     pScreen->defColormap = FakeClientID(0);
+@@ -146,18 +141,12 @@ wfbFinishScreenInit(ScreenPtr		pScreen,
+ 		    int			dpiy,
+ 		    int			width,
+ 		    int			bpp,
+-		    SetupWrapProcPtr	setupWrap,
+-		    FinishWrapProcPtr	finishWrap)
++                    SetupWrapProcPtr setupWrap, FinishWrapProcPtr finishWrap)
+ #else
+ Bool
+ fbFinishScreenInit(ScreenPtr	pScreen,
+ 		   pointer	pbits,
+-		   int		xsize,
+-		   int		ysize,
+-		   int		dpix,
+-		   int		dpiy,
+-		   int		width,
+-		   int		bpp)
++                   int xsize, int ysize, int dpix, int dpiy, int width, int bpp)
+ #endif
+ {
+     VisualPtr	visuals;
+@@ -173,8 +162,7 @@ fbFinishScreenInit(ScreenPtr	pScreen,
+     
+     ysize -= 2;
+     stride = (width * bpp) / 8;
+-    fbSetBits ((FbStip *) pbits, 
+-	       stride / sizeof (FbStip), FB_HEAD_BITS);
++    fbSetBits((FbStip *) pbits, stride / sizeof(FbStip), FB_HEAD_BITS);
+     pbits = (void *) ((char *) pbits + stride);
+     fbSetBits ((FbStip *) ((char *) pbits + stride * ysize),
+ 			   stride / sizeof (FbStip), FB_TAIL_BITS);
+@@ -185,8 +173,7 @@ fbFinishScreenInit(ScreenPtr	pScreen,
+      * pixels.  If you want real 24bit images, include a 24bpp
+      * format in the pixmap formats
+      */
+-    if (bpp == 24)
+-    {
++    if (bpp == 24) {
+ 	int	f;
+ 	
+ 	imagebpp = 32;
+@@ -195,22 +182,18 @@ fbFinishScreenInit(ScreenPtr	pScreen,
+ 	 * in which case windows will use it in preference to a 32 bit
+ 	 * format.
+ 	 */
+-	for (f = 0; f < screenInfo.numPixmapFormats; f++)
+-	{
+-	    if (screenInfo.formats[f].bitsPerPixel == 24)
+-	    {
++        for (f = 0; f < screenInfo.numPixmapFormats; f++) {
++            if (screenInfo.formats[f].bitsPerPixel == 24) {
+ 		imagebpp = 24;
+ 		break;
+ 	    }
+ 	}	    
+     }
+-    if (imagebpp == 32)
+-    {
++    if (imagebpp == 32) {
+ 	fbGetScreenPrivate(pScreen)->win32bpp = bpp;
+ 	fbGetScreenPrivate(pScreen)->pix32bpp = bpp;
+     }
+-    else
+-    {
++    else {
+ 	fbGetScreenPrivate(pScreen)->win32bpp = 32;
+ 	fbGetScreenPrivate(pScreen)->pix32bpp = 32;
+     }
+@@ -220,7 +203,8 @@ fbFinishScreenInit(ScreenPtr	pScreen,
+ #endif
+     rootdepth = 0;
+     if (!fbInitVisuals (&visuals, &depths, &nvisuals, &ndepths, &rootdepth,
+-			&defaultVisual,((unsigned long)1<<(imagebpp-1)), 8))
++                       &defaultVisual, ((unsigned long) 1 << (imagebpp - 1)),
++                       8))
+ 	return FALSE;
+     if (! miScreenInit(pScreen, pbits, xsize, ysize, dpix, dpiy, width,
+ 			rootdepth, ndepths, depths,
+@@ -228,8 +212,7 @@ fbFinishScreenInit(ScreenPtr	pScreen,
+ 	return FALSE;
+     /* overwrite miCloseScreen with our own */
+     pScreen->CloseScreen = fbCloseScreen;
+-    if (bpp == 24 && imagebpp == 32)
+-    {
++    if (bpp == 24 && imagebpp == 32) {
+ 	pScreen->ModifyPixmapHeader = fb24_32ModifyPixmapHeader;
+ 	pScreen->CreateScreenResources = fb24_32CreateScreenResources;
+     }
+@@ -246,9 +229,7 @@ wfbScreenInit(ScreenPtr		pScreen,
+ 	      int		dpix,
+ 	      int		dpiy,
+ 	      int		width,
+-	      int		bpp,
+-	      SetupWrapProcPtr	setupWrap,
+-	      FinishWrapProcPtr	finishWrap)
++              int bpp, SetupWrapProcPtr setupWrap, FinishWrapProcPtr finishWrap)
+ {
+     if (!fbSetupScreen(pScreen, pbits, xsize, ysize, dpix, dpiy, width, bpp))
+ 	return FALSE;
+@@ -261,12 +242,7 @@ wfbScreenInit(ScreenPtr		pScreen,
+ Bool
+ fbScreenInit(ScreenPtr	pScreen,
+ 	     pointer	pbits,
+-	     int	xsize,
+-	     int	ysize,
+-	     int	dpix,
+-	     int	dpiy,
+-	     int	width,
+-	     int	bpp)
++             int xsize, int ysize, int dpix, int dpiy, int width, int bpp)
+ {
+     if (!fbSetupScreen(pScreen, pbits, xsize, ysize, dpix, dpiy, width, bpp))
+ 	return FALSE;

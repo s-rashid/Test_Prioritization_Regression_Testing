@@ -1,0 +1,234 @@
+diff --git a/hw/xfree86/common/xf86RandR.c b/hw/xfree86/common/xf86RandR.c
+index d0e4784..abd894d 100644
+--- a/hw/xfree86/common/xf86RandR.c
++++ b/hw/xfree86/common/xf86RandR.c
+@@ -74,8 +74,7 @@ xf86RandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+ 
+     *rotations = RR_Rotate_0;
+ 
+-    for (mode = scrp->modes; mode != NULL ; mode = mode->next)
+-    {
++    for (mode = scrp->modes; mode != NULL; mode = mode->next) {
+ 	int refresh = xf86RandRModeRefresh (mode);
+ 
+ 	if (mode == scrp->modes)
+@@ -98,14 +97,14 @@ xf86RandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+ 	    return FALSE;
+ 	RRRegisterRate (pScreen, pSize, refresh);
+ 	if (mode == scrp->currentMode &&
+-	    mode->HDisplay == scrp->virtualX && mode->VDisplay == scrp->virtualY)
++            mode->HDisplay == scrp->virtualX &&
++            mode->VDisplay == scrp->virtualY)
+ 	    RRSetCurrentConfig (pScreen, randrp->rotation, refresh, pSize);
+ 	if (mode->next == scrp->modes)
+ 	    break;
+     }
+     if (scrp->currentMode->HDisplay != randrp->virtualX ||
+-	scrp->currentMode->VDisplay != randrp->virtualY)
+-    {
++        scrp->currentMode->VDisplay != randrp->virtualY) {
+ 	mode = scrp->modes;
+ 
+ 	RRModeMM.mode = NULL;
+@@ -125,8 +124,7 @@ xf86RandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+ 	    return FALSE;
+ 	RRRegisterRate (pScreen, pSize, refresh0);
+ 	if (scrp->virtualX == randrp->virtualX &&
+-	    scrp->virtualY == randrp->virtualY)
+-	{
++            scrp->virtualY == randrp->virtualY) {
+ 	    RRSetCurrentConfig (pScreen, randrp->rotation, refresh0, pSize);
+ 	}
+     }
+@@ -147,9 +145,7 @@ xf86RandRGetInfo (ScreenPtr pScreen, Rotation *rotations)
+ static Bool
+ xf86RandRSetMode (ScreenPtr	    pScreen,
+ 		  DisplayModePtr    mode,
+-		  Bool		    useVirtual,
+-		  int		    mmWidth,
+-		  int		    mmHeight)
++                 Bool useVirtual, int mmWidth, int mmHeight)
+ {
+     ScrnInfoPtr		scrp = XF86SCRNINFO(pScreen);
+     XF86RandRInfoPtr	randrp = XF86RANDRINFO(pScreen);
+@@ -164,13 +160,11 @@ xf86RandRSetMode (ScreenPtr	    pScreen,
+ 
+     if (pRoot && scrp->vtSema)
+ 	(*scrp->EnableDisableFBAccess) (pScreen->myNum, FALSE);
+-    if (useVirtual)
+-    {
++    if (useVirtual) {
+ 	scrp->virtualX = randrp->virtualX;
+ 	scrp->virtualY = randrp->virtualY;
+     }
+-    else
+-    {
++    else {
+ 	scrp->virtualX = mode->HDisplay;
+ 	scrp->virtualY = mode->VDisplay;
+     }
+@@ -193,23 +187,20 @@ xf86RandRSetMode (ScreenPtr	    pScreen,
+ 	mmWidth = RRModeMM.mmWidth;
+ 	mmHeight = RRModeMM.mmHeight;
+     }
+-    if(randrp->rotation & (RR_Rotate_90 | RR_Rotate_270))
+-    {
++    if (randrp->rotation & (RR_Rotate_90 | RR_Rotate_270)) {
+ 	/* If the screen is rotated 90 or 270 degrees, swap the sizes. */
+ 	pScreen->width = scrp->virtualY;
+ 	pScreen->height = scrp->virtualX;
+ 	pScreen->mmWidth = mmHeight;
+ 	pScreen->mmHeight = mmWidth;
+     }
+-    else
+-    {
++    else {
+ 	pScreen->width = scrp->virtualX;
+ 	pScreen->height = scrp->virtualY;
+ 	pScreen->mmWidth = mmWidth;
+ 	pScreen->mmHeight = mmHeight;
+     }
+-    if (!xf86SwitchMode (pScreen, mode))
+-    {
++    if (!xf86SwitchMode(pScreen, mode)) {
+ 	pScreen->width = oldWidth;
+ 	pScreen->height = oldHeight;
+ 	pScreen->mmWidth = oldmmWidth;
+@@ -235,9 +226,7 @@ xf86RandRSetMode (ScreenPtr	    pScreen,
+ 
+ static Bool
+ xf86RandRSetConfig (ScreenPtr		pScreen,
+-		    Rotation		rotation,
+-		    int			rate,
+-		    RRScreenSizePtr	pSize)
++                   Rotation rotation, int rate, RRScreenSizePtr pSize)
+ {
+     ScrnInfoPtr		    scrp = XF86SCRNINFO(pScreen);
+     XF86RandRInfoPtr	    randrp = XF86RANDRINFO(pScreen);
+@@ -248,25 +237,21 @@ xf86RandRSetConfig (ScreenPtr		pScreen,
+     DeviceIntPtr	    dev;
+     Bool		    view_adjusted = FALSE;
+ 
+-    for (dev = inputInfo.devices; dev; dev = dev->next)
+-    {
++    for (dev = inputInfo.devices; dev; dev = dev->next) {
+ 	if (!IsMaster(dev) && !IsFloating(dev))
+ 		continue;
+ 
+ 	miPointerGetPosition(dev, &pos[dev->id][0], &pos[dev->id][1]);
+     }
+ 
+-    for (mode = scrp->modes; ; mode = mode->next)
+-    {
++    for (mode = scrp->modes;; mode = mode->next) {
+ 	if (mode->HDisplay == pSize->width &&
+ 	    mode->VDisplay == pSize->height &&
+ 	    (rate == 0 || xf86RandRModeRefresh (mode) == rate))
+ 	    break;
+-	if (mode->next == scrp->modes)
+-	{
++        if (mode->next == scrp->modes) {
+ 	    if (pSize->width == randrp->virtualX &&
+-		pSize->height == randrp->virtualY)
+-	    {
++                pSize->height == randrp->virtualY) {
+ 		mode = scrp->modes;
+ 		useVirtual = TRUE;
+ 		break;
+@@ -280,6 +265,7 @@ xf86RandRSetConfig (ScreenPtr		pScreen,
+         /* Have the driver do its thing. */
+ 	if (scrp->DriverFunc) {
+ 	    xorgRRRotation RRRotation;
++
+ 	    RRRotation.RRConfig.rotation = rotation;
+ 	    RRRotation.RRConfig.rate = rate;
+ 	    RRRotation.RRConfig.width = pSize->width;
+@@ -290,19 +276,23 @@ xf86RandRSetConfig (ScreenPtr		pScreen,
+ 	     */
+ 	    if (!(*scrp->DriverFunc)(scrp, RR_SET_CONFIG, &RRRotation))
+ 		return FALSE;
+-	} else
++        }
++        else
+ 	    return FALSE;
+ 
+ 	randrp->rotation = rotation;
+     }
+ 
+-    if (!xf86RandRSetMode (pScreen, mode, useVirtual, pSize->mmWidth, pSize->mmHeight)) {
++    if (!xf86RandRSetMode
++        (pScreen, mode, useVirtual, pSize->mmWidth, pSize->mmHeight)) {
+ 	if(randrp->rotation != oldRotation) {
+ 	   /* Have the driver undo its thing. */
+ 	   if (scrp->DriverFunc) {
+ 	       xorgRRRotation RRRotation;
++
+ 	       RRRotation.RRConfig.rotation = oldRotation;
+-	       RRRotation.RRConfig.rate = xf86RandRModeRefresh (scrp->currentMode);
++                RRRotation.RRConfig.rate =
++                    xf86RandRModeRefresh(scrp->currentMode);
+ 	       RRRotation.RRConfig.width = scrp->virtualX;
+ 	       RRRotation.RRConfig.height = scrp->virtualY;
+ 	       (*scrp->DriverFunc)(scrp, RR_SET_CONFIG, &RRRotation);
+@@ -313,15 +303,13 @@ xf86RandRSetConfig (ScreenPtr		pScreen,
+ 	return FALSE;
+     }
+ 
+-
+     update_desktop_dimensions();
+ 
+     /*
+      * Move the cursor back where it belongs; SwitchMode repositions it
+      * FIXME: duplicated code, see modes/xf86RandR12.c
+      */
+-    for (dev = inputInfo.devices; dev; dev = dev->next)
+-    {
++    for (dev = inputInfo.devices; dev; dev = dev->next) {
+ 	if (!IsMaster(dev) && !IsFloating(dev))
+ 		continue;
+ 
+@@ -354,6 +342,7 @@ static Bool
+ xf86RandRCreateScreenResources (ScreenPtr pScreen)
+ {
+     XF86RandRInfoPtr	    randrp = XF86RANDRINFO(pScreen);
++
+ #if 0
+     ScrnInfoPtr		    scrp = XF86SCRNINFO(pScreen);
+     DisplayModePtr	    mode;
+@@ -402,8 +391,8 @@ xf86GetRotation(ScreenPtr pScreen)
+ /* Function to change RandR's idea of the virtual screen size */
+ Bool
+ xf86RandRSetNewVirtualAndDimensions(ScreenPtr pScreen,
+-	int newvirtX, int newvirtY, int newmmWidth, int newmmHeight,
+-	Bool resetMode)
++                                    int newvirtX, int newvirtY, int newmmWidth,
++                                    int newmmHeight, Bool resetMode)
+ {
+     XF86RandRInfoPtr randrp;
+ 
+@@ -430,8 +419,7 @@ xf86RandRSetNewVirtualAndDimensions(ScreenPtr pScreen,
+     if (resetMode) {
+ 	return (xf86RandRSetMode(pScreen,
+ 		  XF86SCRNINFO(pScreen)->currentMode,
+-		  TRUE,
+-		  pScreen->mmWidth, pScreen->mmHeight));
++                                 TRUE, pScreen->mmWidth, pScreen->mmHeight));
+     }
+ 
+     return TRUE;
+@@ -459,8 +447,7 @@ xf86RandRInit (ScreenPtr    pScreen)
+     if (!randrp)
+ 	return FALSE;
+ 
+-    if (!RRScreenInit (pScreen))
+-    {
++    if (!RRScreenInit(pScreen)) {
+ 	free(randrp);
+ 	return FALSE;
+     }
+@@ -484,5 +471,3 @@ xf86RandRInit (ScreenPtr    pScreen)
+     dixSetPrivate(&pScreen->devPrivates, xf86RandRKey, randrp);
+     return TRUE;
+ }
+-
+-

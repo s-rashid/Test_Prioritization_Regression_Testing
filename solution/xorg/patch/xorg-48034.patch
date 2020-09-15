@@ -1,0 +1,16 @@
+diff --git a/Xi/sendexev.c b/Xi/sendexev.c
+index 8629dd2..bd96d74 100644
+--- a/Xi/sendexev.c
++++ b/Xi/sendexev.c
+@@ -138,9 +138,10 @@ ProcXSendExtensionEvent(ClientPtr client)
+ 
+     first = ((xEvent *) & stuff[1]);
+     if (!((EXTENSION_EVENT_BASE <= first->u.u.type) &&
+-	  (first->u.u.type < lastEvent)))
++	  (first->u.u.type < lastEvent))) {
+ 	client->errorValue = first->u.u.type;
+ 	return BadValue;
++    }
+ 
+     list = (XEventClass *) (first + stuff->num_events);
+     if ((ret = CreateMaskFromList(client, list, stuff->count, tmp, dev,

@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/darwin.c b/hw/xquartz/darwin.c
+index 96c171a..d826ebf 100644
+--- a/hw/xquartz/darwin.c
++++ b/hw/xquartz/darwin.c
+@@ -606,6 +606,9 @@ DarwinAdjustScreenOrigins(ScreenInfo *pScreenInfo)
+                       pScreenInfo->screens[i]->y);
+         }
+     }
++
++    /* Update screenInfo.x/y */
++    update_desktop_dimensions();
+ }
+ 
+ /*

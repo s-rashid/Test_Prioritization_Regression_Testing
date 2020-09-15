@@ -1,0 +1,593 @@
+diff --git a/hw/xfree86/vgahw/vgaHW.c b/hw/xfree86/vgahw/vgaHW.c
+index 4036a01..e044682 100644
+--- a/hw/xfree86/vgahw/vgaHW.c
++++ b/hw/xfree86/vgahw/vgaHW.c
+@@ -75,7 +75,6 @@
+ #define BLACK_VALUE 0x00
+ #define OVERSCAN_VALUE 0x01
+ 
+-
+ /* Use a private definition of this here */
+ #undef VGAHWPTR
+ #define VGAHWPTRLVAL(p) (p)->privates[vgaHWPrivateIndex].ptr
+@@ -88,8 +87,7 @@ static int vgaHWPrivateIndex = -1;
+ #ifdef NEED_SAVED_CMAP
+ /* This default colourmap is used only when it can't be read from the VGA */
+ 
+-static CARD8 defaultDAC[768] =
+-{
++static CARD8 defaultDAC[768] = {
+      0,  0,  0,    0,  0, 42,    0, 42,  0,    0, 42, 42,
+     42,  0,  0,   42,  0, 42,   42, 21,  0,   42, 42, 42,
+     21, 21, 21,   21, 21, 63,   21, 63, 21,   21, 63, 63,
+@@ -590,7 +588,8 @@ vgaHWProtect(ScrnInfoPtr pScrn, Bool on)
+       hwp->writeSeq(hwp, 0x01, tmp | 0x20);	/* disable the display */
+ 
+       hwp->enablePalette(hwp);
+-    } else {
++        }
++        else {
+       /*
+        * Reenable sequencer, then turn on screen.
+        */
+@@ -605,7 +604,9 @@ vgaHWProtect(ScrnInfoPtr pScrn, Bool on)
+   }
+ }
+ 
+-vgaHWProtectProc *vgaHWProtectWeak(void) {
++vgaHWProtectProc *
++vgaHWProtectWeak(void)
++{
+   return vgaHWProtect;
+ }
+ 
+@@ -623,7 +624,8 @@ vgaHWBlankScreen(ScrnInfoPtr pScrn, Bool on)
+ 
+   if (on) {
+     scrn &= ~0x20;			/* enable screen */
+-  } else {
++    }
++    else {
+     scrn |= 0x20;			/* blank screen */
+   }
+ 
+@@ -632,7 +634,9 @@ vgaHWBlankScreen(ScrnInfoPtr pScrn, Bool on)
+   vgaHWSeqReset(hwp, FALSE);
+ }
+ 
+-vgaHWBlankScreenProc *vgaHWBlankScreenWeak(void) {
++vgaHWBlankScreenProc *
++vgaHWBlankScreenWeak(void)
++{
+   return vgaHWBlankScreen;
+ }  
+ 
+@@ -662,7 +666,6 @@ vgaHWSaveScreen(ScreenPtr pScreen, int mode)
+    return TRUE;
+ }
+ 
+-
+ /*
+  * vgaHWDPMSSet -- Sets VESA Display Power Management Signaling (DPMS) Mode
+  *
+@@ -677,7 +680,8 @@ vgaHWDPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode, int flags)
+   unsigned char seq1 = 0, crtc17 = 0;
+   vgaHWPtr hwp = VGAHWPTR(pScrn);
+ 
+-  if (!pScrn->vtSema) return;
++    if (!pScrn->vtSema)
++        return;
+ 
+   switch (PowerManagementMode) {
+   case DPMSModeOn:
+@@ -710,7 +714,6 @@ vgaHWDPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode, int flags)
+   hwp->writeSeq(hwp, 0x00, 0x03);		/* End Reset */
+ }
+ 
+-
+ /*
+  * vgaHWSeqReset
+  *      perform a sequencer reset.
+@@ -725,7 +728,6 @@ vgaHWSeqReset(vgaHWPtr hwp, Bool start)
+     hwp->writeSeq(hwp, 0x00, 0x03);		/* End Reset */
+ }
+ 
+-
+ void
+ vgaHWRestoreFonts(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+ {
+@@ -839,7 +841,6 @@ vgaHWRestoreFonts(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+ #endif /* SAVE_TEXT || SAVE_FONT1 || SAVE_FONT2 */
+ }
+ 
+-
+ void
+ vgaHWRestoreMode(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+ {
+@@ -871,7 +872,6 @@ vgaHWRestoreMode(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+     hwp->disablePalette(hwp);
+ }
+ 
+-
+ void
+ vgaHWRestoreColormap(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+ {
+@@ -892,7 +892,6 @@ vgaHWRestoreColormap(ScrnInfoPtr scrninfp, vgaRegPtr restore)
+     hwp->disablePalette(hwp);
+ }
+ 
+-
+ /*
+  * vgaHWRestore --
+  *      restore the VGA state
+@@ -990,7 +989,8 @@ vgaHWSaveFonts(ScrnInfoPtr scrninfp, vgaRegPtr save)
+ 	hwp->writeSeq(hwp, 0x02, 0x02);	/* write to plane 1 */
+ 	hwp->writeGr(hwp, 0x04, 0x01);	/* read plane 1 */
+ 	slowbcopy_frombus(hwp->Base,
+-		(unsigned char *)hwp->TextInfo + TEXT_AMOUNT, TEXT_AMOUNT);
++                          (unsigned char *) hwp->TextInfo + TEXT_AMOUNT,
++                          TEXT_AMOUNT);
+     }
+ #endif /* SAVE_TEXT */
+ 
+@@ -1047,7 +1047,6 @@ vgaHWSaveMode(ScrnInfoPtr scrninfp, vgaRegPtr save)
+     }
+ }
+ 
+-
+ void
+ vgaHWSaveColormap(ScrnInfoPtr scrninfp, vgaRegPtr save)
+ {
+@@ -1116,7 +1115,8 @@ vgaHWSaveColormap(ScrnInfoPtr scrninfp, vgaRegPtr save)
+ 	memmove(save->DAC, defaultDAC, 768);
+ 	xf86DrvMsg(scrninfp->scrnIndex, X_WARNING,
+ 	   "Cannot read colourmap from VGA.  Will restore with default\n");
+-    } else {
++    }
++    else {
+ 	/* save the colourmap */
+ 	hwp->writeDacReadAddr(hwp, 0x02);
+ 	for (i = 6; i < 768; i++) {
+@@ -1161,7 +1161,6 @@ vgaHWSave(ScrnInfoPtr scrninfp, vgaRegPtr save, int flags)
+ 	vgaHWSaveFonts(scrninfp, save);
+ }
+ 
+-
+ /*
+  * vgaHWInit --
+  *      Handle the initialization, etc. of a screen.
+@@ -1188,15 +1187,16 @@ vgaHWInit(ScrnInfoPtr scrninfp, DisplayModePtr mode)
+      * compute correct Hsync & Vsync polarity 
+      */
+     if ((mode->Flags & (V_PHSYNC | V_NHSYNC))
+-        && (mode->Flags & (V_PVSYNC | V_NVSYNC)))
+-    {
++        && (mode->Flags & (V_PVSYNC | V_NVSYNC))) {
+         regp->MiscOutReg = 0x23;
+-        if (mode->Flags & V_NHSYNC) regp->MiscOutReg |= 0x40;
+-        if (mode->Flags & V_NVSYNC) regp->MiscOutReg |= 0x80;
++        if (mode->Flags & V_NHSYNC)
++            regp->MiscOutReg |= 0x40;
++        if (mode->Flags & V_NVSYNC)
++            regp->MiscOutReg |= 0x80;
+     }
+-    else
+-    {
++    else {
+         int VDisplay = mode->VDisplay;
++
+         if (mode->Flags & V_DBLSCAN)
+             VDisplay *= 2;
+         if (mode->VScan > 1)
+@@ -1252,8 +1252,7 @@ vgaHWInit(ScrnInfoPtr scrninfp, DisplayModePtr mode)
+ 	| (((mode->CrtcVDisplay - 1) & 0x100) >> 7)
+ 	| ((mode->CrtcVSyncStart & 0x100) >> 6)
+ 	| (((mode->CrtcVBlankStart - 1) & 0x100) >> 5)
+-	| 0x10
+-	| (((mode->CrtcVTotal - 2) & 0x200)   >> 4)
++        | 0x10 | (((mode->CrtcVTotal - 2) & 0x200) >> 4)
+ 	| (((mode->CrtcVDisplay - 1) & 0x200) >> 3)
+ 	| ((mode->CrtcVSyncStart & 0x200) >> 2);
+     regp->CRTC[8]  = 0x00;
+@@ -1300,7 +1299,8 @@ vgaHWInit(ScrnInfoPtr scrninfp, DisplayModePtr mode)
+     if (depth == 1) {
+         regp->Graphics[4] = BIT_PLANE;
+         regp->Graphics[5] = 0x00;
+-    } else {
++    }
++    else {
+         regp->Graphics[4] = 0x00;
+         if (depth == 4)
+             regp->Graphics[5] = 0x02;
+@@ -1325,7 +1325,8 @@ vgaHWInit(ScrnInfoPtr scrninfp, DisplayModePtr mode)
+         regp->Attribute[16] = 0x01;  /* -VGA2- */ /* wrong for the ET4000 */
+ 	if (!hwp->ShowOverscan)
+             regp->Attribute[OVERSCAN] = OVERSCAN_VALUE;  /* -VGA2- */
+-    } else {
++    }
++    else {
+         regp->Attribute[0]  = 0x00; /* standard colormap translation */
+         regp->Attribute[1]  = 0x01;
+         regp->Attribute[2]  = 0x02;
+@@ -1404,17 +1405,18 @@ vgaHWHBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+ 
+     /* First the horizontal case */
+     if ((Flags & KGA_FIX_OVERSCAN)
+-	&& ((mode->CrtcHBlankEnd >> 3) == (mode->CrtcHTotal >> 3)))
+-    {
++        && ((mode->CrtcHBlankEnd >> 3) == (mode->CrtcHTotal >> 3))) {
+ 	int i = (regp->CRTC[3] & 0x1F) 
+ 	    | ((regp->CRTC[5] & 0x80) >> 2)
+ 	    | ExtBits;
++
+ 	if (Flags & KGA_ENABLE_ON_ZERO) {
+ 	    if ((i-- > (((mode->CrtcHBlankStart >> 3) - 1) 
+ 		       & (0x3F | ExtBitMask)))
+ 	    && (mode->CrtcHBlankEnd == mode->CrtcHTotal))
+ 	    i = 0;
+-	} else if (Flags & KGA_BE_TOT_DEC)
++        }
++        else if (Flags & KGA_BE_TOT_DEC)
+ 	    i--;
+ 	regp->CRTC[3] = (regp->CRTC[3] & ~0x1F) | (i & 0x1F);
+ 	regp->CRTC[5] = (regp->CRTC[5] & ~0x80) | ((i << 2) & 0x80);
+@@ -1436,10 +1438,12 @@ vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+     CARD32 ExtBits;
+     CARD32 nExtBits = (nBits < 8) ? 0 : (nBits - 8);
+     CARD32 ExtBitMask = ((1 << nExtBits) - 1) << 8;
++
+     /* If width is not known nBits should be 0. In this 
+      * case BitMask is set to 0 so we can check for it. */
+     CARD32 BitMask = (nBits < 7) ? 0 : ((1 << nExtBits) - 1);
+     int VBlankStart = (mode->CrtcVBlankStart - 1) & 0xFF; 
++
+     regp->CRTC[22] = (mode->CrtcVBlankEnd - 1) & 0xFF;
+     ExtBits        = (mode->CrtcVBlankEnd - 1) & ExtBitMask;
+ 
+@@ -1448,6 +1452,7 @@ vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+       /* Null top overscan */
+     {
+ 	int i = regp->CRTC[22] | ExtBits;
++
+ 	if (Flags & KGA_ENABLE_ON_ZERO) {
+ 	    if (((BitMask && ((i & BitMask) > (VBlankStart & BitMask)))
+ 	     || ((i > VBlankStart)  &&  		/* 8-bit case */
+@@ -1456,7 +1461,8 @@ vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+ 	    i = 0;
+ 	else
+ 	    i = (i - 1);
+-	} else if (Flags & KGA_BE_TOT_DEC)
++        }
++        else if (Flags & KGA_BE_TOT_DEC)
+ 	    i = (i - 1);
+ 
+ 	regp->CRTC[22] = i & 0xFF;
+@@ -1476,25 +1482,17 @@ vgaHWGetHWRecPrivate(void)
+     return;
+ }
+ 
+-
+ static void
+ vgaHWFreeRegs(vgaRegPtr regp)
+ {
+     free(regp->CRTC);
+ 
+-    regp->CRTC =
+-    regp->Sequencer =
+-    regp->Graphics =
+-    regp->Attribute = NULL;
++    regp->CRTC = regp->Sequencer = regp->Graphics = regp->Attribute = NULL;
+ 
+     regp->numCRTC =
+-    regp->numSequencer =
+-    regp->numGraphics =
+-    regp->numAttribute = 0;
++        regp->numSequencer = regp->numGraphics = regp->numAttribute = 0;
+ }
+ 
+-
+-
+ static Bool
+ vgaHWAllocRegs(vgaRegPtr regp)
+ {
+@@ -1506,8 +1504,7 @@ vgaHWAllocRegs(vgaRegPtr regp)
+ 
+     buf = calloc(regp->numCRTC +
+     		  regp->numSequencer +
+-		  regp->numGraphics +
+-		  regp->numAttribute, 1);
++                 regp->numGraphics + regp->numAttribute, 1);
+     if (!buf)
+     	return FALSE;
+ 
+@@ -1519,7 +1516,6 @@ vgaHWAllocRegs(vgaRegPtr regp)
+     return TRUE;
+ }
+ 
+-
+ Bool
+ vgaHWAllocDefaultRegs(vgaRegPtr regp)
+ {
+@@ -1531,7 +1527,6 @@ vgaHWAllocDefaultRegs(vgaRegPtr regp)
+     return vgaHWAllocRegs(regp);
+ }
+ 
+-
+ Bool
+ vgaHWSetRegCounts(ScrnInfoPtr scrp, int numCRTC, int numSequencer,
+ 		  int numGraphics, int numAttribute)
+@@ -1601,7 +1596,6 @@ vgaHWSetRegCounts(ScrnInfoPtr scrp, int numCRTC, int numSequencer,
+ #undef VGAHWCOPYREGSET
+ }
+ 
+-
+ Bool
+ vgaHWCopyReg(vgaRegPtr dst, vgaRegPtr src)
+ {
+@@ -1620,7 +1614,6 @@ vgaHWCopyReg(vgaRegPtr dst, vgaRegPtr src)
+     return TRUE;
+ }
+ 
+-
+ Bool
+ vgaHWGetHWRec(ScrnInfoPtr scrp)
+ {
+@@ -1651,13 +1644,19 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+ 	rgb blackColour = scrp->display->blackColour,
+ 	    whiteColour = scrp->display->whiteColour;
+ 
+-	if (blackColour.red   > 0x3F) blackColour.red   = 0x3F;
+-	if (blackColour.green > 0x3F) blackColour.green = 0x3F;
+-	if (blackColour.blue  > 0x3F) blackColour.blue  = 0x3F;
++        if (blackColour.red > 0x3F)
++            blackColour.red = 0x3F;
++        if (blackColour.green > 0x3F)
++            blackColour.green = 0x3F;
++        if (blackColour.blue > 0x3F)
++            blackColour.blue = 0x3F;
+ 
+-	if (whiteColour.red   > 0x3F) whiteColour.red   = 0x3F;
+-	if (whiteColour.green > 0x3F) whiteColour.green = 0x3F;
+-	if (whiteColour.blue  > 0x3F) whiteColour.blue  = 0x3F;
++        if (whiteColour.red > 0x3F)
++            whiteColour.red = 0x3F;
++        if (whiteColour.green > 0x3F)
++            whiteColour.green = 0x3F;
++        if (whiteColour.blue > 0x3F)
++            whiteColour.blue = 0x3F;
+ 
+ 	if ((blackColour.red   == whiteColour.red  ) &&
+ 	    (blackColour.green == whiteColour.green) &&
+@@ -1670,8 +1669,10 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+         /*
+          * initialize default colormap for monochrome
+          */
+-        for (i=0; i<3;   i++) regp->DAC[i] = 0x00;
+-        for (i=3; i<768; i++) regp->DAC[i] = 0x3F;
++        for (i = 0; i < 3; i++)
++            regp->DAC[i] = 0x00;
++        for (i = 3; i < 768; i++)
++            regp->DAC[i] = 0x3F;
+         i = BLACK_VALUE * 3;
+         regp->DAC[i++] = blackColour.red;
+         regp->DAC[i++] = blackColour.green;
+@@ -1684,9 +1685,11 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+         regp->DAC[i++] = 0x00;
+         regp->DAC[i++] = 0x00;
+         regp->DAC[i] = 0x00;
+-    } else {
++    }
++    else {
+ 	/* Set all colours to black */
+-        for (i=0; i<768; i++) regp->DAC[i] = 0x00;
++        for (i = 0; i < 768; i++)
++            regp->DAC[i] = 0x00;
+         /* ... and the overscan */
+         if (scrp->depth >= 4)
+             regp->Attribute[OVERSCAN] = 0xFF;
+@@ -1699,7 +1702,8 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+ 	regp->DAC[767] = 0x3F; 
+ 	regp->Attribute[OVERSCAN] = 0xFF;
+ 	hwp->ShowOverscan = TRUE;
+-    } else
++    }
++    else
+ 	hwp->ShowOverscan = FALSE;
+ 
+     hwp->paletteEnabled = FALSE;
+@@ -1712,7 +1716,6 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+     return TRUE;
+ }
+ 
+-
+ void
+ vgaHWFreeHWRec(ScrnInfoPtr scrp)
+ {
+@@ -1736,7 +1739,6 @@ vgaHWFreeHWRec(ScrnInfoPtr scrp)
+     }
+ }
+ 
+-
+ Bool
+ vgaHWMapMem(ScrnInfoPtr scrp)
+ {
+@@ -1758,11 +1760,11 @@ vgaHWMapMem(ScrnInfoPtr scrp)
+      * for now.
+      */
+     DebugF("Mapping VGAMem\n");
+-    pci_device_map_legacy(hwp->dev, hwp->MapPhys, hwp->MapSize, PCI_DEV_MAP_FLAG_WRITABLE, &hwp->Base);
++    pci_device_map_legacy(hwp->dev, hwp->MapPhys, hwp->MapSize,
++                          PCI_DEV_MAP_FLAG_WRITABLE, &hwp->Base);
+     return hwp->Base != NULL;
+ }
+ 
+-
+ void
+ vgaHWUnmapMem(ScrnInfoPtr scrp)
+ {
+@@ -1782,7 +1784,6 @@ vgaHWGetIndex(void)
+     return vgaHWPrivateIndex;
+ }
+ 
+-
+ void
+ vgaHWGetIOBase(vgaHWPtr hwp)
+ {
+@@ -1792,7 +1793,6 @@ vgaHWGetIOBase(vgaHWPtr hwp)
+ 	"vgaHWGetIOBase: hwp->IOBase is 0x%04x\n", hwp->IOBase);
+ }
+ 
+-
+ void
+ vgaHWLock(vgaHWPtr hwp)
+ {
+@@ -1807,21 +1807,18 @@ vgaHWUnlock(vgaHWPtr hwp)
+      hwp->writeCrtc(hwp, 0x11, hwp->readCrtc(hwp, 0x11) & ~0x80);
+ }
+ 
+-
+ void
+ vgaHWEnable(vgaHWPtr hwp)
+ {
+     hwp->writeEnable(hwp, hwp->readEnable(hwp) | 0x01);
+ }
+ 
+-
+ void
+ vgaHWDisable(vgaHWPtr hwp)
+ {
+     hwp->writeEnable(hwp, hwp->readEnable(hwp) & ~0x01);
+ }
+ 
+-
+ static void
+ vgaHWLoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices, LOCO *colors,
+ 		 VisualPtr pVisual)
+@@ -1845,7 +1842,6 @@ vgaHWLoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices, LOCO *colors,
+     hwp->disablePalette(hwp);
+ }
+ 
+-
+ static void
+ vgaHWSetOverscan(ScrnInfoPtr pScrn, int overscan)
+ {
+@@ -1874,7 +1870,6 @@ vgaHWSetOverscan(ScrnInfoPtr pScrn, int overscan)
+     hwp->disablePalette(hwp);
+ }
+ 
+-
+ Bool
+ vgaHWHandleColormaps(ScreenPtr pScreen)
+ {
+@@ -1924,10 +1919,12 @@ vgaHWddc1SetSpeed(ScrnInfoPtr pScrn, xf86ddcSpeed speed)
+     vgaHWPtr hwp = VGAHWPTR(pScrn);
+     unsigned char tmp;
+     struct _vgaDdcSave* save;
++
+     switch (speed) {
+     case DDC_FAST:
+         
+-        if (hwp->ddc != NULL) break;
++        if (hwp->ddc != NULL)
++            break;
+         hwp->ddc = xnfcalloc(sizeof(struct _vgaDdcSave),1);
+ 	save = (struct _vgaDdcSave *)hwp->ddc;
+       /* Lightpen register disable - allow access to cr10 & 11; just in case */
+@@ -1956,7 +1953,8 @@ vgaHWddc1SetSpeed(ScrnInfoPtr pScrn, xf86ddcSpeed speed)
+ 	hwp->writeMiscOut(hwp,((save->msr & 0xF3) | 0x80));
+ 	break;
+     case DDC_SLOW:
+-        if (hwp->ddc == NULL) break;
++        if (hwp->ddc == NULL)
++            break;
+ 	save = (struct _vgaDdcSave *)hwp->ddc;
+ 	hwp->writeMiscOut(hwp,save->msr);
+ 	hwp->writeCrtc(hwp,0x07,save->cr07);
+@@ -1983,7 +1981,8 @@ vgaHWddc1SetSpeedWeak(void)
+     return vgaHWddc1SetSpeed;
+ }
+ 
+-SaveScreenProcPtr vgaHWSaveScreenWeak(void)
++SaveScreenProcPtr
++vgaHWSaveScreenWeak(void)
+ {
+     return vgaHWSaveScreen;
+ }
+@@ -1994,8 +1993,9 @@ SaveScreenProcPtr vgaHWSaveScreenWeak(void)
+ void
+ xf86GetClocks(ScrnInfoPtr pScrn, int num, Bool (*ClockFunc)(ScrnInfoPtr, int),
+ 	      void (*ProtectRegs)(ScrnInfoPtr, Bool),
+-	      void (*BlankScreen)(ScrnInfoPtr, Bool), unsigned long vertsyncreg,
+-	      int maskval, int knownclkindex, int knownclkvalue)
++              void (*BlankScreen) (ScrnInfoPtr, Bool),
++              unsigned long vertsyncreg, int maskval, int knownclkindex,
++              int knownclkvalue)
+ {
+     register int status = vertsyncreg;
+     unsigned long i, cnt, rcnt, sync;
+@@ -2007,12 +2007,10 @@ xf86GetClocks(ScrnInfoPtr pScrn, int num, Bool (*ClockFunc)(ScrnInfoPtr, int),
+     if (num > MAXCLOCKS)
+ 	num = MAXCLOCKS;
+ 
+-    for (i = 0; i < num; i++)
+-    {
++    for (i = 0; i < num; i++) {
+ 	if (ProtectRegs)
+ 	    (*ProtectRegs)(pScrn, TRUE);
+-	if (!(*ClockFunc)(pScrn, i))
+-	{
++        if (!(*ClockFunc) (pScrn, i)) {
+ 	    pScrn->clock[i] = -1;
+ 	    continue;
+ 	}
+@@ -2027,18 +2025,20 @@ xf86GetClocks(ScrnInfoPtr pScrn, int num, Bool (*ClockFunc)(ScrnInfoPtr, int),
+ 	sync = 200000;
+ 
+ 	while ((pci_io_read8(hwp->io, status) & maskval) == 0x00)
+-	    if (sync-- == 0) goto finish;
++            if (sync-- == 0)
++                goto finish;
+ 	/* Something appears to be happening, so reset sync count */
+ 	sync = 200000;
+ 	while ((pci_io_read8(hwp->io, status) & maskval) == maskval)
+-	    if (sync-- == 0) goto finish;
++            if (sync-- == 0)
++                goto finish;
+ 	/* Something appears to be happening, so reset sync count */
+ 	sync = 200000;
+ 	while ((pci_io_read8(hwp->io, status) & maskval) == 0x00)
+-	    if (sync-- == 0) goto finish;
++            if (sync-- == 0)
++                goto finish;
+ 
+-	for (rcnt = 0; rcnt < 5; rcnt++)
+-	{
++        for (rcnt = 0; rcnt < 5; rcnt++) {
+ 	    while (!(pci_io_read8(hwp->io, status) & maskval))
+ 		cnt++;
+ 	    while ((pci_io_read8(hwp->io, status) & maskval))
+@@ -2051,18 +2051,15 @@ finish:
+             (*BlankScreen)(pScrn, TRUE);
+     }
+ 
+-    for (i = 0; i < num; i++)
+-    {
+-	if (i != knownclkindex)
+-	{
+-	    if (pScrn->clock[i] == -1)
+-	    {
++    for (i = 0; i < num; i++) {
++        if (i != knownclkindex) {
++            if (pScrn->clock[i] == -1) {
+ 		pScrn->clock[i] = 0;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		pScrn->clock[i] = (int)(0.5 +
+-                    (((float)knownclkvalue) * pScrn->clock[knownclkindex]) /
++                                         (((float) knownclkvalue) *
++                                          pScrn->clock[knownclkindex]) /
+ 	            (pScrn->clock[i]));
+ 		/* Round to nearest 10KHz */
+ 		pScrn->clock[i] += 5;

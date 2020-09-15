@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/mach-startup/stub.c b/hw/xquartz/mach-startup/stub.c
+index 1804560..3653bca 100644
+--- a/hw/xquartz/mach-startup/stub.c
++++ b/hw/xquartz/mach-startup/stub.c
+@@ -40,7 +40,7 @@
+ #include <sys/socket.h>
+ #include <sys/un.h>
+ 
+-#define kX11AppBundleId LAUNCHD_ID_PREFIX".X11"
++#define kX11AppBundleId BUNDLE_ID_PREFIX".X11"
+ #define kX11AppBundlePath "/Contents/MacOS/X11"
+ 
+ static char *server_bootstrap_name = kX11AppBundleId;

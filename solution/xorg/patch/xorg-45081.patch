@@ -1,0 +1,21 @@
+diff --git a/Xi/querydev.c b/Xi/querydev.c
+index 1f7fed1..22a5537 100644
+--- a/Xi/querydev.c
++++ b/Xi/querydev.c
+@@ -425,6 +425,7 @@ SwapDeviceInfo(DeviceIntPtr dev, xXIDeviceInfo* info)
+ 
+     for (i = 0; i < info->num_classes; i++)
+     {
++        int len = ((xXIAnyInfo*)any)->length;
+         switch(((xXIAnyInfo*)any)->type)
+         {
+             case ButtonClass:
+@@ -438,7 +439,7 @@ SwapDeviceInfo(DeviceIntPtr dev, xXIDeviceInfo* info)
+                 break;
+         }
+ 
+-        any += (((xXIAnyInfo*)any)->length * 4);
++        any += len * 4;
+     }
+ 
+     swaps(&info->deviceid, n);

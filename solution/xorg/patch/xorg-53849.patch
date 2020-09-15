@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index 053c76f..edf2c39 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -1495,7 +1495,7 @@ GrabKey(ClientPtr client, DeviceIntPtr dev, DeviceIntPtr modifier_device,
+     rc = CheckGrabValues(client, param);
+     if (rc != Success)
+         return rc;
+-    if (k == NULL)
++    if ((dev->id != XIAllDevices && dev->id != XIAllMasterDevices) && k == NULL)
+ 	return BadMatch;
+     if (grabtype == GRABTYPE_XI)
+     {

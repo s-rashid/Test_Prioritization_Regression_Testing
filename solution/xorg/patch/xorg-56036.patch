@@ -1,0 +1,36 @@
+diff --git a/miext/shadow/shadow.c b/miext/shadow/shadow.c
+index 95f11cd..d2ba684 100644
+--- a/miext/shadow/shadow.c
++++ b/miext/shadow/shadow.c
+@@ -37,6 +37,7 @@
+ #include    "shadow.h"
+ 
+ static DevPrivateKeyRec shadowScrPrivateKeyRec;
++
+ #define shadowScrPrivateKey (&shadowScrPrivateKeyRec)
+ 
+ #define wrap(priv, real, mem) {\
+@@ -81,6 +82,7 @@ shadowGetImage(DrawablePtr pDrawable, int sx, int sy, int w, int h,
+ 	       unsigned int format, unsigned long planeMask, char *pdstLine)
+ {
+     ScreenPtr pScreen = pDrawable->pScreen;
++
+     shadowBuf(pScreen);
+ 
+     /* Many apps use GetImage to sync with the visable frame buffer */
+@@ -148,13 +150,11 @@ shadowSetup(ScreenPtr pScreen)
+ #ifdef BACKWARDS_COMPATIBILITY
+     pBuf->pDamage = DamageCreate((DamageReportFunc)shadowReportFunc, 
+ 		    		 (DamageDestroyFunc)NULL,
+-				 DamageReportRawRegion,
+-				 TRUE, pScreen, pScreen);
++                                 DamageReportRawRegion, TRUE, pScreen, pScreen);
+ #else
+     pBuf->pDamage = DamageCreate((DamageReportFunc)NULL, 
+ 		    		 (DamageDestroyFunc)NULL,
+-				 DamageReportNone,
+-				 TRUE, pScreen, pScreen);
++                                 DamageReportNone, TRUE, pScreen, pScreen);
+ #endif
+     if (!pBuf->pDamage) {
+ 	free(pBuf);

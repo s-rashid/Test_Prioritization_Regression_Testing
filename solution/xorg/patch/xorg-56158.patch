@@ -1,0 +1,452 @@
+diff --git a/xkb/xkbgeom.h b/xkb/xkbgeom.h
+index d10b956..bef3775 100644
+--- a/xkb/xkbgeom.h
++++ b/xkb/xkbgeom.h
+@@ -90,6 +90,7 @@ typedef struct	_XkbBounds {
+ 	short	x1,y1;
+ 	short	x2,y2;
+ } XkbBoundsRec, *XkbBoundsPtr;
++
+ #define	XkbBoundsWidth(b)	(((b)->x2)-((b)->x1))
+ #define	XkbBoundsHeight(b)	(((b)->y2)-((b)->y1))
+ 
+@@ -109,6 +110,7 @@ typedef struct _XkbShape {
+ 	XkbOutlinePtr	 primary;
+ 	XkbBoundsRec	 bounds;
+ } XkbShapeRec, *XkbShapePtr;
++
+ #define	XkbOutlineIndex(s,o)	((int)((o)-&(s)->outlines[0]))
+ 
+ typedef struct _XkbShapeDoodad {
+@@ -121,6 +123,7 @@ typedef struct _XkbShapeDoodad {
+ 	unsigned short	 color_ndx;
+ 	unsigned short	 shape_ndx;
+ } XkbShapeDoodadRec, *XkbShapeDoodadPtr;
++
+ #define	XkbShapeDoodadColor(g,d)	(&(g)->colors[(d)->color_ndx])
+ #define	XkbShapeDoodadShape(g,d)	(&(g)->shapes[(d)->shape_ndx])
+ #define	XkbSetShapeDoodadColor(g,d,c)	((d)->color_ndx= (c)-&(g)->colors[0])
+@@ -139,6 +142,7 @@ typedef struct _XkbTextDoodad {
+ 	char *		 text;
+ 	char *		 font;
+ } XkbTextDoodadRec, *XkbTextDoodadPtr;
++
+ #define	XkbTextDoodadColor(g,d)	(&(g)->colors[(d)->color_ndx])
+ #define	XkbSetTextDoodadColor(g,d,c)	((d)->color_ndx= (c)-&(g)->colors[0])
+ 
+@@ -153,6 +157,7 @@ typedef struct _XkbIndicatorDoodad {
+ 	unsigned short	 on_color_ndx;
+ 	unsigned short	 off_color_ndx;
+ } XkbIndicatorDoodadRec, *XkbIndicatorDoodadPtr;
++
+ #define	XkbIndicatorDoodadShape(g,d)	(&(g)->shapes[(d)->shape_ndx])
+ #define	XkbIndicatorDoodadOnColor(g,d)	(&(g)->colors[(d)->on_color_ndx])
+ #define	XkbIndicatorDoodadOffColor(g,d)	(&(g)->colors[(d)->off_color_ndx])
+@@ -174,6 +179,7 @@ typedef struct _XkbLogoDoodad {
+ 	unsigned short	 shape_ndx;
+ 	char *		 logo_name;
+ } XkbLogoDoodadRec, *XkbLogoDoodadPtr;
++
+ #define	XkbLogoDoodadColor(g,d)		(&(g)->colors[(d)->color_ndx])
+ #define	XkbLogoDoodadShape(g,d)		(&(g)->shapes[(d)->shape_ndx])
+ #define	XkbSetLogoDoodadColor(g,d,c)	((d)->color_ndx= (c)-&(g)->colors[0])
+@@ -209,6 +215,7 @@ typedef struct _XkbKey {
+ 	unsigned char	 shape_ndx;
+ 	unsigned char	 color_ndx;
+ } XkbKeyRec, *XkbKeyPtr;
++
+ #define	XkbKeyShape(g,k)	(&(g)->shapes[(k)->shape_ndx])
+ #define	XkbKeyColor(g,k)	(&(g)->colors[(k)->color_ndx])
+ #define	XkbSetKeyShape(g,k,s)	((k)->shape_ndx= (s)-&(g)->shapes[0])
+@@ -291,6 +298,7 @@ typedef struct _XkbGeometry {
+ 	XkbDoodadPtr	 doodads;
+ 	XkbKeyAliasPtr	 key_aliases;
+ } XkbGeometryRec;
++
+ #define	XkbGeomColorIndex(g,c)	((int)((c)-&(g)->colors[0]))
+ 
+ #define	XkbGeomPropertiesMask	(1<<0)
+@@ -315,335 +323,256 @@ typedef struct _XkbGeometrySizes {
+  * Specifies which items should be cleared in an XKB geometry array
+  * when the array is reallocated.
+  */
+-typedef enum
+-{
++typedef enum {
+     XKB_GEOM_CLEAR_NONE,   /* Don't clear any items, just reallocate.   */
+     XKB_GEOM_CLEAR_EXCESS, /* Clear new extra items after reallocation. */
+     XKB_GEOM_CLEAR_ALL     /* Clear all items after reallocation.       */
+ } XkbGeomClearance;
+ 
+-extern	XkbPropertyPtr
+-XkbAddGeomProperty(
+-    XkbGeometryPtr	/* geom */,
++extern XkbPropertyPtr XkbAddGeomProperty(XkbGeometryPtr /* geom */ ,
+     char *		/* name */,
+     char *		/* value */
+ );
+ 
+-extern	XkbKeyAliasPtr
+-XkbAddGeomKeyAlias(
+-    XkbGeometryPtr	/* geom */,
++extern XkbKeyAliasPtr XkbAddGeomKeyAlias(XkbGeometryPtr /* geom */ ,
+     char *		/* alias */,
+     char *		/* real */
+ );
+ 
+-extern	XkbColorPtr
+-XkbAddGeomColor(
+-    XkbGeometryPtr	/* geom */,
++extern XkbColorPtr XkbAddGeomColor(XkbGeometryPtr /* geom */ ,
+     char *		/* spec */,
+     unsigned int	/* pixel */
+ );
+ 
+-extern	XkbOutlinePtr
+-XkbAddGeomOutline(
+-    XkbShapePtr		/* shape */,
++extern XkbOutlinePtr XkbAddGeomOutline(XkbShapePtr /* shape */ ,
+     int			/* sz_points */
+ );
+ 
+-extern XkbShapePtr
+-XkbAddGeomShape(
+-    XkbGeometryPtr	/* geom */,
++extern XkbShapePtr XkbAddGeomShape(XkbGeometryPtr /* geom */ ,
+     Atom		/* name */,
+     int			/* sz_outlines */
+ );
+ 
+-extern XkbKeyPtr
+-XkbAddGeomKey(
+-    XkbRowPtr		/* row */
++extern XkbKeyPtr XkbAddGeomKey(XkbRowPtr        /* row */
+ );
+ 
+-extern XkbRowPtr
+-XkbAddGeomRow(
+-    XkbSectionPtr	/* section */,
++extern XkbRowPtr XkbAddGeomRow(XkbSectionPtr /* section */ ,
+     int			/* sz_keys */
+ );
+ 
+-extern XkbSectionPtr
+-XkbAddGeomSection(
+-    XkbGeometryPtr	/* geom */,
++extern XkbSectionPtr XkbAddGeomSection(XkbGeometryPtr /* geom */ ,
+     Atom		/* name */,
+     int			/* sz_rows */,
+     int			/* sz_doodads */,
+     int			/* sz_overlays */
+ );
+ 
+-extern XkbOverlayPtr
+-XkbAddGeomOverlay(
+-    XkbSectionPtr	/* section */,
++extern XkbOverlayPtr XkbAddGeomOverlay(XkbSectionPtr /* section */ ,
+     Atom		/* name */,
+     int			/* sz_rows */
+ );
+ 
+-extern XkbOverlayRowPtr
+-XkbAddGeomOverlayRow(
+-    XkbOverlayPtr	/* overlay */,
++extern XkbOverlayRowPtr XkbAddGeomOverlayRow(XkbOverlayPtr /* overlay */ ,
+     int			/* row_under */,
+     int			/* sz_keys */
+ );
+ 
+-extern XkbOverlayKeyPtr
+-XkbAddGeomOverlayKey(
+-    XkbOverlayPtr	/* overlay */,
++extern XkbOverlayKeyPtr XkbAddGeomOverlayKey(XkbOverlayPtr /* overlay */ ,
+     XkbOverlayRowPtr	/* row */,
+     char *		/* over */,
+     char *		/* under */
+ );
+ 
+-extern XkbDoodadPtr
+-XkbAddGeomDoodad(
+-    XkbGeometryPtr	/* geom */,
++extern XkbDoodadPtr XkbAddGeomDoodad(XkbGeometryPtr /* geom */ ,
+     XkbSectionPtr	/* section */,
+     Atom		/* name */
+ );
+ 
+-
+ extern void
+-XkbFreeGeomKeyAliases(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeomKeyAliases(XkbGeometryPtr /* geom */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomColors(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeomColors(XkbGeometryPtr /* geom */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomDoodads(
+-    XkbDoodadPtr	/* doodads */,
++ XkbFreeGeomDoodads(XkbDoodadPtr /* doodads */ ,
+     int			/* nDoodads */,
+     Bool		/* freeAll */
+ );
+ 
+-
+ extern void
+-XkbFreeGeomProperties(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeomProperties(XkbGeometryPtr /* geom */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomOverlayKeys(
+-    XkbOverlayRowPtr	/* row */,
++ XkbFreeGeomOverlayKeys(XkbOverlayRowPtr /* row */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomOverlayRows(
+-    XkbOverlayPtr	/* overlay */,
++ XkbFreeGeomOverlayRows(XkbOverlayPtr /* overlay */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomOverlays(
+-    XkbSectionPtr	/* section */,
++ XkbFreeGeomOverlays(XkbSectionPtr /* section */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomKeys(
+-    XkbRowPtr		/* row */,
++ XkbFreeGeomKeys(XkbRowPtr /* row */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomRows(
+-    XkbSectionPtr	/* section */,
++ XkbFreeGeomRows(XkbSectionPtr /* section */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomSections(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeomSections(XkbGeometryPtr /* geom */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+-
+ extern void
+-XkbFreeGeomPoints(
+-    XkbOutlinePtr	/* outline */,
++ XkbFreeGeomPoints(XkbOutlinePtr /* outline */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomOutlines(
+-    XkbShapePtr		/* shape */,
++ XkbFreeGeomOutlines(XkbShapePtr /* shape */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeomShapes(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeomShapes(XkbGeometryPtr /* geom */ ,
+     int			/* first */,
+     int			/* count */,
+     Bool		/* freeAll */
+ );
+ 
+ extern void
+-XkbFreeGeometry(
+-    XkbGeometryPtr	/* geom */,
++ XkbFreeGeometry(XkbGeometryPtr /* geom */ ,
+     unsigned int	/* which */,
+     Bool		/* freeMap */
+ );
+ 
+ extern Bool
+-XkbGeomRealloc(
+-    void **		/* buffer */,
++ XkbGeomRealloc(void ** /* buffer */ ,
+     int			/* szItems */,
+     int			/* nrItems */,
+     int			/* itemSize */,
+     XkbGeomClearance	/* clearance */
+ );
+ 
+-extern Status
+-XkbAllocGeomProps(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomProps(XkbGeometryPtr /* geom */ ,
+     int			/* nProps */
+ );
+ 
+-extern Status
+-XkbAllocGeomKeyAliases(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomKeyAliases(XkbGeometryPtr /* geom */ ,
+     int			/* nAliases */
+ );
+ 
+-extern Status
+-XkbAllocGeomColors(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomColors(XkbGeometryPtr /* geom */ ,
+     int			/* nColors */
+ );
+ 
+-extern Status
+-XkbAllocGeomShapes(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomShapes(XkbGeometryPtr /* geom */ ,
+     int			/* nShapes */
+ );
+ 
+-extern Status
+-XkbAllocGeomSections(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomSections(XkbGeometryPtr /* geom */ ,
+     int			/* nSections */
+ );
+ 
+-extern Status
+-XkbAllocGeomOverlays(
+-    XkbSectionPtr	/* section */,
++extern Status XkbAllocGeomOverlays(XkbSectionPtr /* section */ ,
+     int			/* num_needed */
+ );
+ 
+-extern Status
+-XkbAllocGeomOverlayRows(
+-    XkbOverlayPtr	/* overlay */,
++extern Status XkbAllocGeomOverlayRows(XkbOverlayPtr /* overlay */ ,
+     int			/* num_needed */
+ );
+ 
+-extern Status
+-XkbAllocGeomOverlayKeys(
+-    XkbOverlayRowPtr	/* row */,
++extern Status XkbAllocGeomOverlayKeys(XkbOverlayRowPtr /* row */ ,
+     int			/* num_needed */
+ );
+ 
+-extern Status
+-XkbAllocGeomDoodads(
+-    XkbGeometryPtr	/* geom */,
++extern Status XkbAllocGeomDoodads(XkbGeometryPtr /* geom */ ,
+     int			/* nDoodads */
+ );
+ 
+-extern Status
+-XkbAllocGeomSectionDoodads(
+-    XkbSectionPtr	/* section */,
++extern Status XkbAllocGeomSectionDoodads(XkbSectionPtr /* section */ ,
+     int			/* nDoodads */
+ );
+ 
+-extern Status
+-XkbAllocGeomOutlines(
+-    XkbShapePtr		/* shape */,
++extern Status XkbAllocGeomOutlines(XkbShapePtr /* shape */ ,
+     int			/* nOL */
+ );
+ 
+-extern Status
+-XkbAllocGeomRows(
+-    XkbSectionPtr	/* section */,
++extern Status XkbAllocGeomRows(XkbSectionPtr /* section */ ,
+     int			/* nRows */
+ );
+ 
+-extern Status
+-XkbAllocGeomPoints(
+-    XkbOutlinePtr	/* ol */,
++extern Status XkbAllocGeomPoints(XkbOutlinePtr /* ol */ ,
+     int			/* nPts */
+ );
+ 
+-extern Status
+-XkbAllocGeomKeys(
+-    XkbRowPtr		/* row */,
++extern Status XkbAllocGeomKeys(XkbRowPtr /* row */ ,
+     int			/* nKeys */
+ );
+ 
+-extern	Status
+-XkbAllocGeometry(
+-	XkbDescPtr		/* xkb */,
++extern Status XkbAllocGeometry(XkbDescPtr /* xkb */ ,
+ 	XkbGeometrySizesPtr	/* sizes */
+ );
+ 
+ extern	Bool
+-XkbComputeShapeTop(
+-	XkbShapePtr		/* shape */,
++ XkbComputeShapeTop(XkbShapePtr /* shape */ ,
+ 	XkbBoundsPtr		/* bounds */
+ );
+ 
+ extern	Bool
+-XkbComputeShapeBounds(
+-	XkbShapePtr		/* shape */
++ XkbComputeShapeBounds(XkbShapePtr      /* shape */
+ );
+ 
+ extern	Bool
+-XkbComputeRowBounds(
+-	XkbGeometryPtr		/* geom */,
++ XkbComputeRowBounds(XkbGeometryPtr /* geom */ ,
+ 	XkbSectionPtr		/* section */,
+ 	XkbRowPtr		/* row */
+ );
+ 
+ extern	Bool
+-XkbComputeSectionBounds(
+-	XkbGeometryPtr		/* geom */,
++ XkbComputeSectionBounds(XkbGeometryPtr /* geom */ ,
+ 	XkbSectionPtr		/* section */
+ );
+ 
+-extern	char *
+-XkbFindOverlayForKey(
+-	XkbGeometryPtr		/* geom */,
++extern char *XkbFindOverlayForKey(XkbGeometryPtr /* geom */ ,
+ 	XkbSectionPtr		/* wanted */,
+ 	char *			/* under */
+ );

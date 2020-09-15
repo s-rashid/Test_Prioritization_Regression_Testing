@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index ca532ee..560519d 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -1046,11 +1046,6 @@ xf86PrintDefaultLibraryPath(void)
+ int
+ ddxProcessArgument(int argc, char **argv, int i)
+ {
+-  /*
+-   * Note: can't use xalloc/xfree here because OsInit() hasn't been called
+-   * yet.  Use malloc/free instead.
+-   */
+-
+ #define CHECK_FOR_REQUIRED_ARGUMENT() \
+     if (((i + 1) >= argc) || (!argv[i + 1])) { 				\
+       ErrorF("Required argument to %s not specified\n", argv[i]); 	\

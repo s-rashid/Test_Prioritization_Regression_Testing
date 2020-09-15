@@ -1,0 +1,14 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index fbcf6e3..23d8ee8 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -2167,6 +2167,9 @@ XISetEventMask(DeviceIntPtr dev, WindowPtr win, ClientPtr client,
+         others= wOtherInputMasks(win)->inputClients;
+     }
+ 
++    if (!len)
++        memset(others->xi2mask[dev->id], 0, sizeof(others->xi2mask[dev->id]));
++    else
+     memcpy(others->xi2mask[dev->id], mask, len);
+ 
+     RecalculateDeviceDeliverableEvents(win);

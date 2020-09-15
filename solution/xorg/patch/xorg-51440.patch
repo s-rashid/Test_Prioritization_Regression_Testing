@@ -1,0 +1,12 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index 9ba5dd0..4b058e7 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -152,7 +152,6 @@ typedef struct _CompScreen {
+ 
+     ScreenBlockHandlerProcPtr	BlockHandler;
+     CloseScreenProcPtr		CloseScreen;
+-    Bool			damaged;
+     int				numAlternateVisuals;
+     VisualID			*alternateVisuals;
+ 

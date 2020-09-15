@@ -1,0 +1,13 @@
+diff --git a/fb/fbbits.c b/fb/fbbits.c
+index 850d163..ac44f3e 100644
+--- a/fb/fbbits.c
++++ b/fb/fbbits.c
+@@ -139,7 +139,7 @@
+ #undef BITSMUL
+ #undef BITSUNIT
+ #undef BITS
+-    
++
+ #undef BRESSOLID
+ #undef BRESDASH
+ #undef DOTS

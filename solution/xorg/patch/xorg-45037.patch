@@ -1,0 +1,15 @@
+diff --git a/dix/events.c b/dix/events.c
+index 538d6fd..ffeb449 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2093,7 +2093,10 @@ DeliverEventsToWindow(DeviceIntPtr pDev, WindowPtr pWin, xEvent
+         else if (type == DeviceButtonPress)
+             tempGrab.grabtype = GRABTYPE_XI;
+         else
++        {
++            tempGrab.type = ((xGenericEvent*)pEvents)->evtype;
+             tempGrab.grabtype = GRABTYPE_XI2;
++        }
+ 
+         /* get the XI and XI2 device mask */
+         inputMasks = wOtherInputMasks(pWin);

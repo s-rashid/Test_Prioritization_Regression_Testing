@@ -1,0 +1,28 @@
+diff --git a/Xi/xiproperty.c b/Xi/xiproperty.c
+index b4d939f..c1839aa 100644
+--- a/Xi/xiproperty.c
++++ b/Xi/xiproperty.c
+@@ -622,7 +622,6 @@ XIFetchDeviceProperty(DeviceIntPtr dev, Atom property)
+ static void
+ XIDestroyDeviceProperty (XIPropertyPtr prop)
+ {
+-    if (prop->value.data)
+         free(prop->value.data);
+     free(prop);
+ }
+@@ -798,7 +797,6 @@ XIChangeDeviceProperty (DeviceIntPtr dev, Atom property, Atom type,
+                                 &new_value, checkonly);
+                         if (checkonly && rc != Success)
+                         {
+-                            if (new_value.data)
+                                 free(new_value.data);
+                             return (rc);
+                         }
+@@ -808,7 +806,6 @@ XIChangeDeviceProperty (DeviceIntPtr dev, Atom property, Atom type,
+                 checkonly = !checkonly;
+             } while (!checkonly);
+         }
+-        if (prop_value->data)
+             free(prop_value->data);
+         *prop_value = new_value;
+     } else if (len == 0)

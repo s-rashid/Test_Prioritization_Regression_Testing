@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/glxProxy/g_renderswap.c b/hw/dmx/glxProxy/g_renderswap.c
+index e675696..e434a71 100644
+--- a/hw/dmx/glxProxy/g_renderswap.c
++++ b/hw/dmx/glxProxy/g_renderswap.c
+@@ -32,6 +32,7 @@
+ #include "glxext.h"
+ #include "g_disptab.h"
+ #include "unpack.h"
++#include "compsize.h"
+ 
+ void __glXDispSwap_CallList(GLbyte *pc)
+ {

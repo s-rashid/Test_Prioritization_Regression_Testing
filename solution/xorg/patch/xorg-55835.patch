@@ -1,0 +1,68 @@
+diff --git a/hw/xwin/winclipboardtextconv.c b/hw/xwin/winclipboardtextconv.c
+index 400f560..74a351b 100644
+--- a/hw/xwin/winclipboardtextconv.c
++++ b/hw/xwin/winclipboardtextconv.c
+@@ -54,8 +54,7 @@ winClipboardDOStoUNIX (char *pszSrc, int iLength)
+   char			*pszEnd = pszSrc + iLength;
+ 
+   /* Loop until the last character */
+-  while (pszSrc < pszEnd)
+-    {
++    while (pszSrc < pszEnd) {
+       /* Copy the current source character to current destination character */
+       *pszDest = *pszSrc;
+ 
+@@ -71,7 +70,6 @@ winClipboardDOStoUNIX (char *pszSrc, int iLength)
+   *pszDest = '\0';
+ }
+ 
+-
+ /*
+  * Convert \n to \r\n
+  */
+@@ -87,18 +85,15 @@ winClipboardUNIXtoDOS (unsigned char **ppszData, int iLength)
+   winDebug("UNIXtoDOS () - Original data:'%s'\n", *ppszData);
+ 
+   /* Count \n characters without leading \r */
+-  while (pszSrc < pszEnd)
+-    {
++    while (pszSrc < pszEnd) {
+       /* Skip ahead two character if found set of \r\n */
+-      if (*pszSrc == '\r' && pszSrc + 1 < pszEnd && *(pszSrc + 1) == '\n')
+-	{
++        if (*pszSrc == '\r' && pszSrc + 1 < pszEnd && *(pszSrc + 1) == '\n') {
+ 	  pszSrc += 2;
+ 	  continue;
+ 	} 
+ 
+       /* Increment the count if found naked \n */
+-      if (*pszSrc == '\n')
+-	{
++        if (*pszSrc == '\n') {
+ 	  iNewlineCount++;
+ 	}
+ 
+@@ -116,11 +111,9 @@ winClipboardUNIXtoDOS (unsigned char **ppszData, int iLength)
+   pszSrc = *ppszData;
+ 
+   /* Loop through all characters in source string */
+-  while (pszSrc < pszEnd)
+-    {
++    while (pszSrc < pszEnd) {
+       /* Copy line endings that are already valid */
+-      if (*pszSrc == '\r' && pszSrc + 1 < pszEnd && *(pszSrc + 1) == '\n')
+-	{
++        if (*pszSrc == '\r' && pszSrc + 1 < pszEnd && *(pszSrc + 1) == '\n') {
+ 	  *pszDest = *pszSrc;
+ 	  *(pszDest + 1) = *(pszSrc + 1);
+ 	  pszDest += 2;
+@@ -129,8 +122,7 @@ winClipboardUNIXtoDOS (unsigned char **ppszData, int iLength)
+ 	}
+ 
+       /* Add \r to naked \n's */
+-      if (*pszSrc == '\n')
+-	{
++        if (*pszSrc == '\n') {
+ 	  *pszDest = '\r';
+ 	  *(pszDest + 1) = *pszSrc;
+ 	  pszDest += 2;

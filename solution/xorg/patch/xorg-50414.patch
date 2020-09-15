@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Globals.c b/hw/xfree86/common/xf86Globals.c
+index 43665d1..781ee49 100644
+--- a/hw/xfree86/common/xf86Globals.c
++++ b/hw/xfree86/common/xf86Globals.c
+@@ -198,7 +198,3 @@ Bool xf86VidModeAllowNonLocal = FALSE;
+ RootWinPropPtr *xf86RegisteredPropertiesTable = NULL;
+ Bool xf86inSuspend = FALSE;
+ Bool xorgHWAccess = FALSE;
+-
+-struct pci_slot_match xf86IsolateDevice = {
+-    PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, PCI_MATCH_ANY, 0
+-};

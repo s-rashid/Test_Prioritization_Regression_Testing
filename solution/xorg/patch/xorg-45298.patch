@@ -1,0 +1,13 @@
+diff --git a/Xi/xigetclientpointer.c b/Xi/xigetclientpointer.c
+index 859d3fd..401e89f 100644
+--- a/Xi/xigetclientpointer.c
++++ b/Xi/xigetclientpointer.c
+@@ -68,7 +68,7 @@ int ProcXIGetClientPointer(ClientPtr client)
+     if (stuff->win != None)
+     {
+         rc = dixLookupClient(&winclient, stuff->win, client,
+-                DixWriteAccess);
++                DixGetAttrAccess);
+ 
+         if (rc != Success)
+             return BadWindow;

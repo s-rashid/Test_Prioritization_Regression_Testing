@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/linux/lnx_init.c b/hw/xfree86/os-support/linux/lnx_init.c
+index f18271f..5f3e3a9 100644
+--- a/hw/xfree86/os-support/linux/lnx_init.c
++++ b/hw/xfree86/os-support/linux/lnx_init.c
+@@ -146,7 +146,7 @@ xf86OpenConsole(void)
+ 
+         i=0;
+         while (vcs[i] != NULL) {
+-            sprintf(vtname, vcs[i], xf86Info.vtno); /* /dev/tty1-64 */
++            snprintf(vtname, sizeof(vtname), vcs[i], xf86Info.vtno); /* /dev/tty1-64 */
+      	    if ((xf86Info.consoleFd = open(vtname, O_RDWR|O_NDELAY, 0)) >= 0)
+ 		break;
+             i++;

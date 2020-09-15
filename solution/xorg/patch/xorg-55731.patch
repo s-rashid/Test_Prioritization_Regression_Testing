@@ -1,0 +1,34 @@
+diff --git a/hw/xnest/GCOps.c b/hw/xnest/GCOps.c
+index 829b86b..e26a136 100644
+--- a/hw/xnest/GCOps.c
++++ b/hw/xnest/GCOps.c
+@@ -96,8 +96,7 @@ xnestPutImage(DrawablePtr pDrawable, GCPtr pGC, int depth, int x, int y,
+ 
+ void
+ xnestGetImage(DrawablePtr pDrawable, int x, int y, int w, int h,
+-	      unsigned int format, unsigned long planeMask,
+-	      char *pImage)
++              unsigned int format, unsigned long planeMask, char *pImage)
+ {
+   XImage *ximage;
+   int length;
+@@ -133,7 +132,8 @@ xnestBitBlitHelper(GCPtr pGC)
+ 
+     pReg = RegionCreate(NULL, 1);
+     pTmpReg = RegionCreate(NULL, 1);
+-    if(!pReg || !pTmpReg) return NullRegion;
++        if (!pReg || !pTmpReg)
++            return NullRegion;
+     
+     pending = True;
+     while (pending) {
+@@ -313,8 +313,7 @@ xnestPushPixels(GCPtr pGC, PixmapPtr pBitmap, DrawablePtr pDst,
+ 		int width, int height, int x, int y)
+ {
+   /* only works for solid bitmaps */
+-  if (pGC->fillStyle == FillSolid)
+-  {
++    if (pGC->fillStyle == FillSolid) {
+     XSetStipple (xnestDisplay, xnestGC(pGC), xnestPixmap(pBitmap));
+     XSetTSOrigin (xnestDisplay, xnestGC(pGC), x, y);
+     XSetFillStyle (xnestDisplay, xnestGC(pGC), FillStippled);

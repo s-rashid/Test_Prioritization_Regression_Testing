@@ -1,0 +1,22 @@
+diff --git a/mi/mipolyutil.c b/mi/mipolyutil.c
+index 15561b7..c4ce882 100644
+--- a/mi/mipolyutil.c
++++ b/mi/mipolyutil.c
+@@ -99,7 +99,7 @@ miInsertEdgeInET(EdgeTable *ET, EdgeTableEntry *ETE,  int scanline,
+     {
+         if (*iSLLBlock > SLLSPERBLOCK-1) 
+         {
+-            tmpSLLBlock = xalloc(sizeof(ScanLineListBlock));
++            tmpSLLBlock = malloc(sizeof(ScanLineListBlock));
+ 	    if (!tmpSLLBlock)
+ 		return FALSE;
+             (*SLLBlock)->next = tmpSLLBlock;
+@@ -379,7 +379,7 @@ miFreeStorage(ScanLineListBlock *pSLLBlock)
+     while (pSLLBlock) 
+     {
+         tmpSLLBlock = pSLLBlock->next;
+-        xfree(pSLLBlock);
++        free(pSLLBlock);
+         pSLLBlock = tmpSLLBlock;
+     }
+ }

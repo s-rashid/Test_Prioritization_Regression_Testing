@@ -1,0 +1,13 @@
+diff --git a/Xext/sync.c b/Xext/sync.c
+index d5d19d4..37c59c2 100644
+--- a/Xext/sync.c
++++ b/Xext/sync.c
+@@ -1557,7 +1557,7 @@ ProcSyncAwait(ClientPtr client)
+ 
+     /* don't need to do any more memory allocation for this request! */
+ 
+-    pProtocolWaitConds = (xSyncWaitCondition *) & stuff[1];
++    pProtocolWaitConds = (xSyncWaitCondition *) &stuff[1];
+ 
+     pAwait = &(pAwaitUnion + 1)->await; /* skip over header */
+     for (i = 0; i < items; i++, pProtocolWaitConds++, pAwait++) {

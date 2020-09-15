@@ -1,0 +1,13 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index 9f4fbf3..a9357e8 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -404,7 +404,7 @@ typedef    void (* DeviceCursorCleanupProcPtr)(
+         ScreenPtr    /* pScreen */);
+ 
+ typedef void (*ConstrainCursorHarderProcPtr)(
+-       DeviceIntPtr, ScreenPtr, int *, int *);
++       DeviceIntPtr, ScreenPtr, int, int *, int *);
+ 
+ typedef struct _Screen {
+     int			myNum;	/* index of this instance in Screens[] */

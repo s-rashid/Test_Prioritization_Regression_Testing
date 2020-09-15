@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index e6d98f5..db04268 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -42,7 +42,6 @@
+ #include "scrnintstr.h"
+ #include "pixmapstr.h"
+ #include "extnsionst.h"
+-#include "xf86drm.h"
+ #include "xfixes.h"
+ #include "dri2.h"
+ #include "protocol-versions.h"

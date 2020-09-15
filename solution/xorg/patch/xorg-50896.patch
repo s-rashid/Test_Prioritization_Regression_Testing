@@ -1,0 +1,9 @@
+diff --git a/fb/wfbrename.h b/fb/wfbrename.h
+index 5846052..e855edd 100644
+--- a/fb/wfbrename.h
++++ b/fb/wfbrename.h
+@@ -169,4 +169,3 @@
+ #define fbZeroSegment wfbZeroSegment
+ #define free_pixman_pict wfb_free_pixman_pict
+ #define image_from_pict wfb_image_from_pict
+-#define composeFunctions wfbComposeFunctions

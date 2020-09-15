@@ -1,0 +1,9 @@
+diff --git a/hw/xfree86/os-support/shared/ioperm_noop.c b/hw/xfree86/os-support/shared/ioperm_noop.c
+index 805cacc..30688c0 100644
+--- a/hw/xfree86/os-support/shared/ioperm_noop.c
++++ b/hw/xfree86/os-support/shared/ioperm_noop.c
+@@ -46,4 +46,3 @@ xf86DisableIO()
+ {
+ 	return;
+ }
+-

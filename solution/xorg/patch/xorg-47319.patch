@@ -1,0 +1,14 @@
+diff --git a/Xi/stubs.c b/Xi/stubs.c
+index 400e937..04ba976 100644
+--- a/Xi/stubs.c
++++ b/Xi/stubs.c
+@@ -227,7 +227,8 @@ ChangeDeviceControl(ClientPtr client, DeviceIntPtr dev,
+  *
+  */
+ int
+-NewInputDeviceRequest(InputOption *options, DeviceIntPtr *pdev)
++NewInputDeviceRequest(InputOption *options, InputAttributes *attrs,
++                      DeviceIntPtr *pdev)
+ {
+     return BadValue;
+ }

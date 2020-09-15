@@ -1,0 +1,13 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index 2c733d8..7268768 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -465,7 +465,7 @@ ProcXTestGrabControl(ClientPtr client)
+     if ((stuff->impervious != xTrue) && (stuff->impervious != xFalse))
+     {
+         client->errorValue = stuff->impervious;
+-        return(BadValue);
++        return BadValue;
+     }
+     if (stuff->impervious)
+         MakeClientGrabImpervious(client);

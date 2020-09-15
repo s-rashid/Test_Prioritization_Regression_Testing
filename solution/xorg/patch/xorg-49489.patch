@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/dri/dri.c b/hw/xfree86/dri/dri.c
+index db4cd7b..61bbe9a 100644
+--- a/hw/xfree86/dri/dri.c
++++ b/hw/xfree86/dri/dri.c
+@@ -578,9 +578,7 @@ DRIScreenInit(ScreenPtr pScreen, DRIInfoPtr pDRIInfo, int *pDRMFD)
+ 	      drmInstallSIGIOHandler(pDRIPriv->drmFD, DRISwapContext))) {
+ 	    DRIDrvMsg(pScreen->myNum, X_ERROR,
+ 		      "[drm] failed to setup DRM signal handler\n");
+-	    if (pDRIPriv->hiddenContextStore)
+ 		free(pDRIPriv->hiddenContextStore);
+-	    if (pDRIPriv->partial3DContextStore)
+ 		free(pDRIPriv->partial3DContextStore);
+ 	    DRIDestroyContextPriv(pDRIContextPriv);
+ 	    return FALSE;
+@@ -1618,7 +1616,7 @@ DRICreateInfoRec(void)
+ void
+ DRIDestroyInfoRec(DRIInfoPtr DRIInfo)
+ {
+-    if (DRIInfo->busIdString) free(DRIInfo->busIdString);
++    free(DRIInfo->busIdString);
+     free((char*)DRIInfo);
+ }
+ 

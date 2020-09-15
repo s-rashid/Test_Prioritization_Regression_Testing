@@ -1,0 +1,115 @@
+diff --git a/Xext/geext.c b/Xext/geext.c
+index a8718cc..0702823 100644
+--- a/Xext/geext.c
++++ b/Xext/geext.c
+@@ -60,6 +60,7 @@ ProcGEQueryVersion(ClientPtr client)
+ {
+     GEClientInfoPtr pGEClient = GEGetClient(client);
+     xGEQueryVersionReply rep;
++
+     REQUEST(xGEQueryVersionReq);
+ 
+     REQUEST_SIZE_MATCH(xGEQueryVersionReq);
+@@ -77,8 +78,7 @@ ProcGEQueryVersion(ClientPtr client)
+     pGEClient->major_version = stuff->majorVersion;
+     pGEClient->minor_version = stuff->minorVersion;
+ 
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swaps(&rep.majorVersion);
+@@ -91,8 +91,7 @@ ProcGEQueryVersion(ClientPtr client)
+ 
+ int (*ProcGEVector[GENumberRequests])(ClientPtr) = {
+     /* Version 1.0 */
+-    ProcGEQueryVersion
+-};
++ProcGEQueryVersion};
+ 
+ /************************************************************/
+ /*                swapped request handlers                  */
+@@ -111,9 +110,7 @@ SProcGEQueryVersion(ClientPtr client)
+ 
+ int (*SProcGEVector[GENumberRequests])(ClientPtr) = {
+     /* Version 1.0 */
+-    SProcGEQueryVersion
+-};
+-
++SProcGEQueryVersion};
+ 
+ /************************************************************/
+ /*                callbacks                                 */
+@@ -124,6 +121,7 @@ static int
+ ProcGEDispatch(ClientPtr client)
+ {
+     GEClientInfoPtr pGEClient = GEGetClient(client);
++
+     REQUEST(xGEReq);
+ 
+     if (pGEClient->major_version >= NUM_VERSION_REQUESTS)
+@@ -151,9 +149,7 @@ SProcGEDispatch(ClientPtr client)
+  * used in the furture for versioning support.
+  */
+ static void
+-GEClientCallback(CallbackListPtr *list,
+-                 pointer closure,
+-                 pointer data)
++GEClientCallback(CallbackListPtr *list, pointer closure, pointer data)
+ {
+     NewClientInfoRec	*clientinfo = (NewClientInfoRec *) data;
+     ClientPtr		pClient = clientinfo->client;
+@@ -184,8 +180,7 @@ SGEGenericEvent(xEvent* from, xEvent* to)
+     xGenericEvent* gefrom = (xGenericEvent*)from;
+     xGenericEvent* geto = (xGenericEvent*)to;
+ 
+-    if ((gefrom->extension & 0x7f) > MAXEXTENSIONS)
+-    {
++    if ((gefrom->extension & 0x7f) > MAXEXTENSIONS) {
+         ErrorF("GE: Invalid extension offset for event.\n");
+         return;
+     }
+@@ -203,23 +198,23 @@ GEExtensionInit(void)
+ {
+     ExtensionEntry *extEntry;
+ 
+-    if (!dixRegisterPrivateKey(&GEClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(GEClientInfoRec)))
++    if (!dixRegisterPrivateKey
++        (&GEClientPrivateKeyRec, PRIVATE_CLIENT, sizeof(GEClientInfoRec)))
+         FatalError("GEExtensionInit: GE private request failed.\n");
+ 
+-    if(!AddCallback(&ClientStateCallback, GEClientCallback, 0))
+-    {
++    if (!AddCallback(&ClientStateCallback, GEClientCallback, 0)) {
+         FatalError("GEExtensionInit: register client callback failed.\n");
+     }
+ 
+     if((extEntry = AddExtension(GE_NAME,
+                         0, GENumberErrors,
+                         ProcGEDispatch, SProcGEDispatch,
+-                        GEResetProc, StandardMinorOpcode)) != 0)
+-    {
++                                 GEResetProc, StandardMinorOpcode)) != 0) {
+         memset(GEExtensions, 0, sizeof(GEExtensions));
+ 
+         EventSwapVector[GenericEvent] = (EventSwapPtr) SGEGenericEvent;
+-    } else {
++    }
++    else {
+         FatalError("GEInit: AddExtensions failed.\n");
+     }
+ 
+@@ -247,7 +242,6 @@ GERegisterExtension(int extension,
+     GEExtensions[EXT_MASK(extension)].evswap = ev_swap;
+ }
+ 
+-
+ /* Sets type and extension field for a generic event. This is just an
+  * auxiliary function, extensions could do it manually too.
+  */
+@@ -258,4 +252,3 @@ GEInitEvent(xGenericEvent* ev, int extension)
+     ev->extension = extension;
+     ev->length = 0;
+ }
+-

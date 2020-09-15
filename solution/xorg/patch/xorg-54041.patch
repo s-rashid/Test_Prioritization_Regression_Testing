@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ramdac/BTPriv.h b/hw/xfree86/ramdac/BTPriv.h
+index 184b481..5273776 100644
+--- a/hw/xfree86/ramdac/BTPriv.h
++++ b/hw/xfree86/ramdac/BTPriv.h
+@@ -6,7 +6,7 @@
+ #include "BT.h"
+ 
+ typedef struct {
+-	char *DeviceName;
++	const char *DeviceName;
+ } xf86BTramdacInfo;
+ 
+ extern xf86BTramdacInfo BTramdacDeviceInfo[];

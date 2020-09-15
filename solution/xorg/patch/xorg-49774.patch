@@ -1,0 +1,32 @@
+diff --git a/mi/misprite.c b/mi/misprite.c
+index b2cf5f0..38a6b93 100644
+--- a/mi/misprite.c
++++ b/mi/misprite.c
+@@ -182,10 +182,10 @@ miSpriteIsDown(miCursorInfoPtr pDevCursor)
+  * screen wrappers
+  */
+ 
+-static int miSpriteScreenKeyIndex;
+-static DevPrivateKey miSpriteScreenKey = &miSpriteScreenKeyIndex;
+-static int miSpriteDevPrivatesKeyIndex;
+-static DevPrivateKey miSpriteDevPrivatesKey = &miSpriteDevPrivatesKeyIndex;
++static DevPrivateKeyRec miSpriteScreenKeyRec;
++#define miSpriteScreenKey (&miSpriteScreenKeyRec)
++static DevPrivateKeyRec miSpriteDevPrivatesKeyRec;
++#define miSpriteDevPrivatesKey (&miSpriteDevPrivatesKeyRec)
+ 
+ static Bool	    miSpriteCloseScreen(int i, ScreenPtr pScreen);
+ static void	    miSpriteGetImage(DrawablePtr pDrawable, int sx, int sy,
+@@ -293,6 +293,12 @@ miSpriteInitialize (ScreenPtr               pScreen,
+     if (!DamageSetup (pScreen))
+ 	return FALSE;
+ 
++    if (!dixRegisterPrivateKey(&miSpriteScreenKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
++    if (!dixRegisterPrivateKey(&miSpriteDevPrivatesKeyRec, PRIVATE_DEVICE, 0))
++	return FALSE;
++
+     pScreenPriv = malloc(sizeof (miSpriteScreenRec));
+     if (!pScreenPriv)
+ 	return FALSE;

@@ -1,0 +1,14 @@
+diff --git a/include/xkbsrv.h b/include/xkbsrv.h
+index af8df2f..ed3779a 100644
+--- a/include/xkbsrv.h
++++ b/include/xkbsrv.h
+@@ -310,9 +310,6 @@ extern	_X_EXPORT int	DeviceButtonPress,DeviceButtonRelease;
+ #define	_XkbIsPressEvent(t)	(((t)==KeyPress)||((t)==DeviceKeyPress))
+ #define	_XkbIsReleaseEvent(t)	(((t)==KeyRelease)||((t)==DeviceKeyRelease))
+ 
+-#undef	IsKeypadKey
+-#define	IsKeypadKey(s)		XkbKSIsKeypad(s)
+-
+ #define	Status		int
+ 
+ #ifndef True

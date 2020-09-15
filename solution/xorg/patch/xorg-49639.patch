@@ -1,0 +1,30 @@
+diff --git a/test/input.c b/test/input.c
+index 12771c5..dd197dd 100644
+--- a/test/input.c
++++ b/test/input.c
+@@ -801,6 +801,13 @@ static void cmp_attr_fields(InputAttributes *attr1,
+     } else
+         g_assert(attr2->device == NULL);
+ 
++    if (attr1->pnp_id != NULL)
++    {
++        g_assert(attr1->pnp_id != attr2->pnp_id);
++        g_assert(strcmp(attr1->pnp_id, attr2->pnp_id) == 0);
++    } else
++        g_assert(attr2->pnp_id == NULL);
++
+     tags1 = attr1->tags;
+     tags2 = attr2->tags;
+ 
+@@ -866,6 +873,11 @@ static void dix_input_attributes(void)
+     cmp_attr_fields(&orig, new);
+     FreeInputAttributes(new);
+ 
++    orig.pnp_id = "PnPID";
++    new = DuplicateInputAttributes(&orig);
++    cmp_attr_fields(&orig, new);
++    FreeInputAttributes(new);
++
+     orig.flags = 0xF0;
+     new = DuplicateInputAttributes(&orig);
+     cmp_attr_fields(&orig, new);

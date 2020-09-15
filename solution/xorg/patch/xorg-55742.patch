@@ -1,0 +1,145 @@
+diff --git a/hw/xnest/Screen.c b/hw/xnest/Screen.c
+index d0c7fc8..dd76cb8 100644
+--- a/hw/xnest/Screen.c
++++ b/hw/xnest/Screen.c
+@@ -113,15 +113,13 @@ xnestCrossScreen(ScreenPtr pScreen, Bool entering)
+ {
+ }
+ 
+-static miPointerScreenFuncRec xnestPointerCursorFuncs =
+-{
++static miPointerScreenFuncRec xnestPointerCursorFuncs = {
+     xnestCursorOffScreen,
+     xnestCrossScreen,
+     miPointerWarpCursor
+ };
+ 
+-static miPointerSpriteFuncRec xnestPointerSpriteFuncs = 
+-{
++static miPointerSpriteFuncRec xnestPointerSpriteFuncs = {
+     xnestRealizeCursor,
+     xnestUnrealizeCursor,
+     xnestSetCursor,
+@@ -145,13 +143,18 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+   int rootDepth;
+   miPointerScreenPtr PointPriv;
+ 
+-  if (!dixRegisterPrivateKey(&xnestWindowPrivateKeyRec, PRIVATE_WINDOW, sizeof(xnestPrivWin)))
++    if (!dixRegisterPrivateKey
++        (&xnestWindowPrivateKeyRec, PRIVATE_WINDOW, sizeof(xnestPrivWin)))
+       return FALSE;
+-  if (!dixRegisterPrivateKey(&xnestGCPrivateKeyRec, PRIVATE_GC, sizeof(xnestPrivGC)))
++    if (!dixRegisterPrivateKey
++        (&xnestGCPrivateKeyRec, PRIVATE_GC, sizeof(xnestPrivGC)))
+     return FALSE;
+-  if (!dixRegisterPrivateKey(&xnestPixmapPrivateKeyRec, PRIVATE_PIXMAP, sizeof (xnestPrivPixmap)))
++    if (!dixRegisterPrivateKey
++        (&xnestPixmapPrivateKeyRec, PRIVATE_PIXMAP, sizeof(xnestPrivPixmap)))
+       return FALSE;
+-  if (!dixRegisterPrivateKey(&xnestColormapPrivateKeyRec, PRIVATE_COLORMAP, sizeof (xnestPrivColormap)))
++    if (!dixRegisterPrivateKey
++        (&xnestColormapPrivateKeyRec, PRIVATE_COLORMAP,
++         sizeof(xnestPrivColormap)))
+       return FALSE;
+   if (!dixRegisterPrivateKey(&xnestCursorScreenKeyRec, PRIVATE_SCREEN, 0))
+       return FALSE;
+@@ -180,8 +183,10 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+     /* Check for and remove duplicates. */
+     for (j = 0; j < numVisuals; j++) {
+       if (visuals[numVisuals].class           == visuals[j].class           &&
+-	  visuals[numVisuals].bitsPerRGBValue == visuals[j].bitsPerRGBValue &&
+-	  visuals[numVisuals].ColormapEntries == visuals[j].ColormapEntries &&
++                visuals[numVisuals].bitsPerRGBValue ==
++                visuals[j].bitsPerRGBValue &&
++                visuals[numVisuals].ColormapEntries ==
++                visuals[j].ColormapEntries &&
+ 	  visuals[numVisuals].nplanes         == visuals[j].nplanes         &&
+ 	  visuals[numVisuals].redMask         == visuals[j].redMask         &&
+ 	  visuals[numVisuals].greenMask       == visuals[j].greenMask       &&
+@@ -233,10 +238,7 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+ 
+   /* myNum */
+   /* id */
+-  miScreenInit(pScreen, NULL, xnestWidth, xnestHeight, 1, 1, xnestWidth,
+-	       rootDepth,
+-	       numDepths, depths,
+-	       defaultVisual, /* root visual */
++    miScreenInit(pScreen, NULL, xnestWidth, xnestHeight, 1, 1, xnestWidth, rootDepth, numDepths, depths, defaultVisual, /* root visual */
+ 	       numVisuals, visuals);
+ 
+   pScreen->defColormap = (Colormap) FakeClientID(0);
+@@ -313,17 +315,17 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+   miDCInitialize(pScreen, &xnestPointerCursorFuncs); /* init SW rendering */
+   PointPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey);
+   xnestCursorFuncs.spriteFuncs = PointPriv->spriteFuncs;
+-  dixSetPrivate(&pScreen->devPrivates, xnestCursorScreenKey, &xnestCursorFuncs);
++    dixSetPrivate(&pScreen->devPrivates, xnestCursorScreenKey,
++                  &xnestCursorFuncs);
+   PointPriv->spriteFuncs = &xnestPointerSpriteFuncs;
+ 
+   pScreen->mmWidth = xnestWidth * DisplayWidthMM(xnestDisplay, 
++                                                   DefaultScreen(xnestDisplay))
++        / DisplayWidth(xnestDisplay, DefaultScreen(xnestDisplay));
++    pScreen->mmHeight =
++        xnestHeight * DisplayHeightMM(xnestDisplay,
+ 		       DefaultScreen(xnestDisplay)) / 
+-			 DisplayWidth(xnestDisplay, 
+-			   DefaultScreen(xnestDisplay));
+-  pScreen->mmHeight = xnestHeight * DisplayHeightMM(xnestDisplay, 
+-		        DefaultScreen(xnestDisplay)) /
+-			  DisplayHeight(xnestDisplay, 
+-			    DefaultScreen(xnestDisplay));
++        DisplayHeight(xnestDisplay, DefaultScreen(xnestDisplay));
+ 
+   /* overwrite miCloseScreen with our own */
+   pScreen->CloseScreen = xnestCloseScreen;
+@@ -343,13 +345,15 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+     valuemask = CWBackPixel | CWEventMask | CWColormap;
+     attributes.background_pixel = xnestWhitePixel;
+     attributes.event_mask = xnestEventMask;
+-    attributes.colormap = xnestDefaultVisualColormap(xnestDefaultVisual(pScreen));
++        attributes.colormap =
++            xnestDefaultVisualColormap(xnestDefaultVisual(pScreen));
+     
+     if (xnestParentWindow != 0) {
+       xnestDefaultWindows[pScreen->myNum] = xnestParentWindow;
+       XSelectInput (xnestDisplay, xnestDefaultWindows[pScreen->myNum],
+ 		    xnestEventMask);
+-    } else
++        }
++        else
+       xnestDefaultWindows[pScreen->myNum] = 
+ 	XCreateWindow(xnestDisplay, 
+ 		      DefaultRootWindow(xnestDisplay),
+@@ -378,8 +382,7 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+ 			   xnestDefaultWindows[pScreen->myNum], 
+ 			   xnestWindowName, 
+ 			   xnestWindowName, 
+-			   xnestIconBitmap,
+-			   argv, argc, &sizeHints);
++                               xnestIconBitmap, argv, argc, &sizeHints);
+     
+     XMapWindow(xnestDisplay, xnestDefaultWindows[pScreen->myNum]);
+ 
+@@ -391,13 +394,16 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+       XCreateWindow(xnestDisplay, 
+ 		    xnestDefaultWindows[pScreen->myNum],
+ 		    0, 0, xnestWidth, xnestHeight, 0,
+-		    DefaultDepth(xnestDisplay, DefaultScreen(xnestDisplay)),
+-		    InputOutput, 
+-		    DefaultVisual(xnestDisplay, DefaultScreen(xnestDisplay)),
+-		    valuemask, &attributes);
++                          DefaultDepth(xnestDisplay,
++                                       DefaultScreen(xnestDisplay)),
++                          InputOutput, DefaultVisual(xnestDisplay,
++                                                     DefaultScreen
++                                                     (xnestDisplay)), valuemask,
++                          &attributes);
+   }
+   
+-  if (!xnestCreateDefaultColormap(pScreen)) return False;
++    if (!xnestCreateDefaultColormap(pScreen))
++        return False;
+   
+   return True;
+ }

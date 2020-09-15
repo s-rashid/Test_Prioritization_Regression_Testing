@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index a97508d..dd56f9c 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -816,7 +816,8 @@ DRI2WaitSwap(ClientPtr client, DrawablePtr pDrawable)
+     /* If we're currently waiting for a swap on this drawable, reset
+      * the request and suspend the client.  We only support one
+      * blocked client per drawable. */
+-    if ((pPriv->swapsPending) &&
++    if (pPriv &&
++	pPriv->swapsPending &&
+ 	pPriv->blockedClient == NULL) {
+ 	ResetCurrentRequest(client);
+ 	client->sequence--;

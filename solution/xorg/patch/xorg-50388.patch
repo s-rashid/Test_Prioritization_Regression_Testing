@@ -1,0 +1,15 @@
+diff --git a/include/colormapst.h b/include/colormapst.h
+index f1fc8eb..0ba5bd0 100644
+--- a/include/colormapst.h
++++ b/include/colormapst.h
+@@ -126,9 +126,7 @@ typedef struct _ColormapRec
+     Entry	*red;
+     Entry 	*green;
+     Entry	*blue;
+-    pointer	devPriv;
+-    PrivateRec	*devPrivates;	/* dynamic devPrivates added after devPriv
+-				   already existed - must keep devPriv */
++    PrivateRec	*devPrivates;
+ } ColormapRec;
+ 	      
+ #endif /* COLORMAP_H */

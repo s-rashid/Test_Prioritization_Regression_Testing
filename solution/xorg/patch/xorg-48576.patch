@@ -1,0 +1,12 @@
+diff --git a/glx/glxdri2.c b/glx/glxdri2.c
+index 9df682e..b971102 100644
+--- a/glx/glxdri2.c
++++ b/glx/glxdri2.c
+@@ -187,7 +187,6 @@ __glXdriSwapEvent(ClientPtr client, void *data, int type, CARD64 ust,
+ 	/* unknown swap completion type */
+ 	break;
+     }
+-    wire.sequenceNumber = client->sequence;
+     wire.drawable = drawable->drawId;
+     wire.ust_hi = ust >> 32;
+     wire.ust_lo = ust & 0xffffffff;

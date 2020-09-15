@@ -1,0 +1,22 @@
+diff --git a/Xi/queryst.c b/Xi/queryst.c
+index 78b97a7..65a43d1 100644
+--- a/Xi/queryst.c
++++ b/Xi/queryst.c
+@@ -119,7 +119,7 @@ ProcXQueryDeviceState(ClientPtr client)
+ 	total_length += (sizeof(xValuatorState) + (v->numAxes * sizeof(int)));
+ 	num_classes++;
+     }
+-    buf = (char *)xcalloc(total_length, 1);
++    buf = (char *)calloc(total_length, 1);
+     if (!buf)
+ 	return BadAlloc;
+     savbuf = buf;
+@@ -169,7 +169,7 @@ ProcXQueryDeviceState(ClientPtr client)
+     WriteReplyToClient(client, sizeof(xQueryDeviceStateReply), &rep);
+     if (total_length > 0)
+ 	WriteToClient(client, total_length, savbuf);
+-    xfree(savbuf);
++    free(savbuf);
+     return Success;
+ }
+ 

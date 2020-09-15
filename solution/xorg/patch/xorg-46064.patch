@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/common/xf86DPMS.c b/hw/xfree86/common/xf86DPMS.c
+index f78267d..22174c7 100644
+--- a/hw/xfree86/common/xf86DPMS.c
++++ b/hw/xfree86/common/xf86DPMS.c
+@@ -42,6 +42,7 @@
+ #include <X11/extensions/dpmsconst.h>
+ #include "dpmsproc.h"
+ #endif
++#include "xf86VGAarbiter.h"
+ 
+ 
+ #ifdef DPMSExtension
+@@ -162,8 +163,9 @@ DPMSSet(ClientPtr client, int level)
+     	pScrn = xf86Screens[i];
+ 	pDPMS = dixLookupPrivate(&screenInfo.screens[i]->devPrivates, DPMSKey);
+ 	if (pDPMS && pScrn->DPMSSet && pDPMS->Enabled && pScrn->vtSema) { 
+-	    xf86EnableAccess(pScrn);
++	    xf86VGAarbiterLock(pScrn);
+ 	    pScrn->DPMSSet(pScrn, level, 0);
++	    xf86VGAarbiterUnlock(pScrn);
+ 	}
+     }
+     return Success;

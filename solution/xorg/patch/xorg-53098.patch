@@ -1,0 +1,11 @@
+diff --git a/hw/kdrive/src/kshadow.c b/hw/kdrive/src/kshadow.c
+index 6f5a2f3..63bb87b 100644
+--- a/hw/kdrive/src/kshadow.c
++++ b/hw/kdrive/src/kshadow.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 1999 Keith Packard
++ * Copyright Â© 1999 Keith Packard
+  *
+  * Permission to use, copy, modify, distribute, and sell this software and its
+  * documentation for any purpose is hereby granted without fee, provided that

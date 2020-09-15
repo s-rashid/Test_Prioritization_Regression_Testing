@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/parser/xf86tokens.h b/hw/xfree86/parser/xf86tokens.h
+index 4c1d38c..e3a9d71 100644
+--- a/hw/xfree86/parser/xf86tokens.h
++++ b/hw/xfree86/parser/xf86tokens.h
+@@ -273,7 +273,18 @@ typedef enum {
+ 
+     /* DRI Tokens */
+     GROUP,
+-    BUFFERS
++    BUFFERS,
++
++    /* InputClass Tokens */
++    MATCH_PRODUCT,
++    MATCH_VENDOR,
++    MATCH_DEVICE_PATH,
++    MATCH_IS_KEYBOARD,
++    MATCH_IS_POINTER,
++    MATCH_IS_JOYSTICK,
++    MATCH_IS_TABLET,
++    MATCH_IS_TOUCHPAD,
++    MATCH_IS_TOUCHSCREEN
+ } ParserTokens;
+ 
+ #endif /* _xf86_tokens_h */

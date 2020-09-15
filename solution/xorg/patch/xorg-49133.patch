@@ -1,0 +1,20 @@
+diff --git a/Xext/xselinuxint.h b/Xext/xselinuxint.h
+index e5dbe11..011a103 100644
+--- a/Xext/xselinuxint.h
++++ b/Xext/xselinuxint.h
+@@ -62,9 +62,12 @@ typedef struct {
+  * Globals
+  */
+ 
+-extern DevPrivateKey subjectKey;
+-extern DevPrivateKey objectKey;
+-extern DevPrivateKey dataKey;
++extern DevPrivateKeyRec subjectKeyRec;
++#define subjectKey (&subjectKeyRec)
++extern DevPrivateKeyRec objectKeyRec;
++#define objectKey (&objectKeyRec)
++extern DevPrivateKeyRec dataKeyRec;
++#define dataKey (&dataKeyRec)
+ 
+ /*
+  * Label functions

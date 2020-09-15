@@ -1,0 +1,12 @@
+diff --git a/hw/xwin/winmouse.c b/hw/xwin/winmouse.c
+index 188126b..9cfc945 100644
+--- a/hw/xwin/winmouse.c
++++ b/hw/xwin/winmouse.c
+@@ -354,7 +354,6 @@ winMouseButtonsHandle (ScreenPtr pScreen,
+ void winEnqueueMotion(int x, int y)
+ {
+   miPointerSetPosition(g_pwinPointer, &x, &y);
+-  g_c32LastInputEventTime = GetTickCount();
+ 
+   int i, nevents;
+   int valuators[2];

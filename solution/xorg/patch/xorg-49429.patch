@@ -1,0 +1,13 @@
+diff --git a/Xext/panoramiX.c b/Xext/panoramiX.c
+index 27ca01f..b73c53f 100644
+--- a/Xext/panoramiX.c
++++ b/Xext/panoramiX.c
+@@ -339,7 +339,7 @@ XineramaFindIDByScrnum(pointer resource, XID id, pointer privdata)
+     PanoramiXRes *res = (PanoramiXRes*)resource;
+     PanoramiXSearchData *data = (PanoramiXSearchData*)privdata;
+     
+-    return (res->info[data->screen].id == data->id);
++    return res->info[data->screen].id == data->id;
+ }
+ 
+ PanoramiXRes *

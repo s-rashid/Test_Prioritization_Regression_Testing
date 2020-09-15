@@ -1,0 +1,18 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index e19e207..9689ef8 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -111,13 +111,6 @@ XIShouldNotify(ClientPtr client, DeviceIntPtr dev)
+     return 0;
+ }
+ 
+-void
+-RegisterOtherDevice(DeviceIntPtr device)
+-{
+-    device->public.processInputProc = ProcessOtherEvent;
+-    device->public.realInputProc = ProcessOtherEvent;
+-}
+-
+ Bool
+ IsPointerEvent(InternalEvent* event)
+ {

@@ -1,0 +1,13 @@
+diff --git a/Xi/grabdev.c b/Xi/grabdev.c
+index c505de3..c904a97 100644
+--- a/Xi/grabdev.c
++++ b/Xi/grabdev.c
+@@ -122,7 +122,7 @@ ProcXGrabDevice(ClientPtr client)
+     if (rc != Success)
+         return rc;
+ 
+-    if ((rc = CreateMaskFromList(client, (XEventClass *) & stuff[1],
++    if ((rc = CreateMaskFromList(client, (XEventClass *) &stuff[1],
+                                  stuff->event_count, tmp, dev,
+                                  X_GrabDevice)) != Success)
+         return rc;

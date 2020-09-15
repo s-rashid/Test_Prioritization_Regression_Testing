@@ -1,0 +1,55 @@
+diff --git a/hw/xfree86/common/xf86fbman.c b/hw/xfree86/common/xf86fbman.c
+index d883ab3..e60e5c4 100644
+--- a/hw/xfree86/common/xf86fbman.c
++++ b/hw/xfree86/common/xf86fbman.c
+@@ -42,7 +42,7 @@
+ #define DEBUG
+ */
+ 
+-static int xf86FBManagerKeyIndex;
++static DevPrivateKeyRec xf86FBManagerKeyRec;
+ static DevPrivateKey xf86FBManagerKey;
+ 
+ Bool xf86RegisterOffscreenManager(
+@@ -50,7 +50,11 @@ Bool xf86RegisterOffscreenManager(
+     FBManagerFuncsPtr funcs
+ ){
+ 
+-   xf86FBManagerKey = &xf86FBManagerKeyIndex;
++   xf86FBManagerKey = &xf86FBManagerKeyRec;
++
++   if (!dixRegisterPrivateKey(&xf86FBManagerKeyRec, PRIVATE_SCREEN, 0))
++       return FALSE;
++
+    dixSetPrivate(&pScreen->devPrivates, xf86FBManagerKey, funcs);
+ 
+    return TRUE;
+@@ -62,6 +66,7 @@ xf86FBManagerRunning(ScreenPtr pScreen)
+ {
+     if(xf86FBManagerKey == NULL) 
+ 	return FALSE;
++
+     if(!dixLookupPrivate(&pScreen->devPrivates, xf86FBManagerKey))
+ 	return FALSE;
+ 
+@@ -270,8 +275,8 @@ xf86PurgeUnlockedOffscreenAreas(ScreenPtr pScreen)
+ 
+ \************************************************************/ 
+ 
+-static int xf86FBScreenKeyIndex;
+-static DevPrivateKey xf86FBScreenKey = &xf86FBScreenKeyIndex;
++static DevPrivateKeyRec xf86FBScreenKeyRec;
++#define xf86FBScreenKey (&xf86FBScreenKeyRec)
+ 
+ typedef struct _FBLink {
+   FBArea area;
+@@ -1321,6 +1326,9 @@ xf86InitFBManagerRegion(
+    if(RegionNil(FullRegion))
+ 	return FALSE;
+ 
++   if (!dixRegisterPrivateKey(&xf86FBScreenKeyRec, PRIVATE_SCREEN, 0))
++       return FALSE;
++
+    if(!xf86RegisterOffscreenManager(pScreen, &xf86FBManFuncs))
+ 	return FALSE;
+ 

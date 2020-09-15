@@ -1,0 +1,16 @@
+diff --git a/include/dixfont.h b/include/dixfont.h
+index cf86f54..617b94a 100644
+--- a/include/dixfont.h
++++ b/include/dixfont.h
+@@ -141,10 +141,7 @@ extern _X_EXPORT void InitGlyphCaching(void);
+ 
+ extern _X_EXPORT void SetGlyphCachingMode(int /*newmode*/);
+ 
+-/*
+- * libXfont/src/builtins/builtin.h
+- */
+-extern _X_EXPORT void BuiltinRegisterFpeFunctions(void);
++extern _X_EXPORT void register_fpe_functions(void);
+ 
+ /*
+  * libXfont stubs.

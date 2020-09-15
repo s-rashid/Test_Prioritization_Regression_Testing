@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/os-support/shared/VTsw_noop.c b/hw/xfree86/os-support/shared/VTsw_noop.c
+index 78cbe0e..3425840 100644
+--- a/hw/xfree86/os-support/shared/VTsw_noop.c
++++ b/hw/xfree86/os-support/shared/VTsw_noop.c
+@@ -52,3 +52,9 @@ xf86VTSwitchTo(void)
+ {
+ 	return(TRUE);
+ }
++
++Bool
++xf86VTActivate(int vtno)
++{
++	return(TRUE);
++}

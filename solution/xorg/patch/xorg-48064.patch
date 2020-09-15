@@ -1,0 +1,18 @@
+diff --git a/fb/fbtrap.c b/fb/fbtrap.c
+index 515e2e1..9f5c39f 100644
+--- a/fb/fbtrap.c
++++ b/fb/fbtrap.c
+@@ -26,8 +26,6 @@
+ 
+ #include "fb.h"
+ 
+-#ifdef RENDER
+-
+ #include "picturestr.h"
+ #include "mipict.h"
+ #include "renderedge.h"
+@@ -160,4 +158,3 @@ fbAddTriangles (PicturePtr  pPicture,
+     }
+ }
+ 
+-#endif /* RENDER */

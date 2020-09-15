@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Pixmap.c b/hw/xnest/Pixmap.c
+index 676a2ba..583f877 100644
+--- a/hw/xnest/Pixmap.c
++++ b/hw/xnest/Pixmap.c
+@@ -79,7 +79,7 @@ xnestDestroyPixmap(PixmapPtr pPixmap)
+     return TRUE;
+   XFreePixmap(xnestDisplay, xnestPixmap(pPixmap));
+   dixFreePrivates(pPixmap->devPrivates);
+-  xfree(pPixmap);
++  free(pPixmap);
+   return TRUE;
+ }
+ 

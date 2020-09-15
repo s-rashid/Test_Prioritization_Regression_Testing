@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/wincmap.c b/hw/xwin/wincmap.c
+index 9da0388..d526a92 100644
+--- a/hw/xwin/wincmap.c
++++ b/hw/xwin/wincmap.c
+@@ -516,11 +516,8 @@ winGetPaletteDD (ScreenPtr pScreen, ColormapPtr pcmap)
+   pScreen->blackPixel = 0;
+ 
+   /* Free colormap */
+-  if (ppeColors != NULL)
+-    {
+       free (ppeColors);
+       ppeColors = NULL;
+-    }
+ 
+   /* Free the DC */
+   if (hdc != NULL)

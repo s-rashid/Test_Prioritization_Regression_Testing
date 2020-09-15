@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/dri2/dri2.c b/hw/xfree86/dri2/dri2.c
+index 0d613be..d2035a4 100644
+--- a/hw/xfree86/dri2/dri2.c
++++ b/hw/xfree86/dri2/dri2.c
+@@ -181,6 +181,7 @@ DRI2AllocateDrawable(DrawablePtr pDraw)
+     pPriv->last_swap_ust = 0;
+     list_init(&pPriv->reference_list);
+     pPriv->serialNumber = DRI2DrawableSerial(pDraw);
++    pPriv->needInvalidate = FALSE;
+ 
+     if (pDraw->type == DRAWABLE_WINDOW) {
+ 	pWin = (WindowPtr) pDraw;

@@ -1,0 +1,13 @@
+diff --git a/randr/rrdispatch.c b/randr/rrdispatch.c
+index aed746b..b0b451c 100644
+--- a/randr/rrdispatch.c
++++ b/randr/rrdispatch.c
+@@ -35,7 +35,7 @@ RRClientKnowsRates (ClientPtr	pClient)
+ static int
+ ProcRRQueryVersion (ClientPtr client)
+ {
+-    xRRQueryVersionReply rep;
++    xRRQueryVersionReply rep = {0};
+     register int n;
+     REQUEST(xRRQueryVersionReq);
+     rrClientPriv(client);

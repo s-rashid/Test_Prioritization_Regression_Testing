@@ -1,0 +1,19 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 7fc2a60..ae5aad3 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -660,13 +660,11 @@ xf86OutputCreate (ScrnInfoPtr		    scrn,
+ Bool
+ xf86OutputRename (xf86OutputPtr output, const char *name)
+ {
+-    int	    len = strlen(name) + 1;
+-    char    *newname = malloc(len);
++    char    *newname = strdup(name);
+     
+     if (!newname)
+ 	return FALSE;	/* so sorry... */
+     
+-    strcpy (newname, name);
+     if (output->name && output->name != (char *) (output + 1))
+ 	free(output->name);
+     output->name = newname;

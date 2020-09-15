@@ -1,0 +1,38 @@
+diff --git a/miext/rootless/rootlessScreen.c b/miext/rootless/rootlessScreen.c
+index 7a799d9..5f24946 100644
+--- a/miext/rootless/rootlessScreen.c
++++ b/miext/rootless/rootlessScreen.c
+@@ -242,8 +242,6 @@ RootlessSourceValidate(DrawablePtr pDrawable, int x, int y, int w, int h)
+     SCREEN_WRAP(pDrawable->pScreen, SourceValidate);
+ }
+ 
+-#ifdef RENDER
+-
+ static void
+ RootlessComposite(CARD8 op, PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
+                   INT16 xSrc, INT16 ySrc, INT16  xMask, INT16  yMask,
+@@ -363,8 +361,6 @@ RootlessGlyphs(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+     }
+ }
+ 
+-#endif // RENDER
+-
+ 
+ /*
+  * RootlessValidateTree
+@@ -698,7 +694,6 @@ RootlessWrap(ScreenPtr pScreen)
+ 
+     WRAP(SetShape);
+ 
+-#ifdef RENDER
+     {
+         // Composite and Glyphs don't use normal screen wrapping
+         PictureScreenPtr ps = GetPictureScreen(pScreen);
+@@ -707,7 +702,6 @@ RootlessWrap(ScreenPtr pScreen)
+         s->Glyphs = ps->Glyphs;
+         ps->Glyphs = RootlessGlyphs;
+     }
+-#endif
+ 
+     // WRAP(ClearToBackground); fixme put this back? useful for shaped wins?
+ 

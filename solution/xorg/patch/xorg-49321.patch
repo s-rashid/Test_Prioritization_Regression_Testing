@@ -1,0 +1,24 @@
+diff --git a/dix/events.c b/dix/events.c
+index 1be212f..2dc0e98 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3793,9 +3793,7 @@ DeliverFocusedEvent(DeviceIntPtr keybd, InternalEvent *event, WindowPtr window)
+     }
+ 
+ unwind:
+-    if (xE)
+         free(xE);
+-    if (xi2)
+         free(xi2);
+     return;
+ }
+@@ -3976,9 +3974,7 @@ DeliverGrabbedEvent(InternalEvent *event, DeviceIntPtr thisDev,
+ 	}
+     }
+ 
+-    if (xi)
+         free(xi);
+-    if (xi2)
+         free(xi2);
+ }
+ 

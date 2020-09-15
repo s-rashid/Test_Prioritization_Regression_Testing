@@ -1,0 +1,13 @@
+diff --git a/Xi/querydev.c b/Xi/querydev.c
+index a44cf22..1f7fed1 100644
+--- a/Xi/querydev.c
++++ b/Xi/querydev.c
+@@ -284,7 +284,7 @@ SwapKeyInfo(DeviceIntPtr dev, xXIKeyInfo* info)
+     swaps(&info->length, n);
+ 
+     for (i = 0, key = (uint32_t*)&info[1]; i < info->num_keycodes; i++, key++)
+-        swaps(key, n);
++        swapl(key, n);
+ 
+     swaps(&info->num_keycodes, n);
+ }

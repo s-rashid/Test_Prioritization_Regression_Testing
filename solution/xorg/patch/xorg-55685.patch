@@ -1,0 +1,165 @@
+diff --git a/hw/xfree86/xaa/xaaCpyPlane.c b/hw/xfree86/xaa/xaaCpyPlane.c
+index 6d2b3a0..b9197e4 100644
+--- a/hw/xfree86/xaa/xaaCpyPlane.c
++++ b/hw/xfree86/xaa/xaaCpyPlane.c
+@@ -36,25 +36,23 @@ static void XAACopyPlaneNtoNColorExpand(DrawablePtr pSrc, DrawablePtr pDst,
+ 					GCPtr pGC, RegionPtr rgnDst,
+ 					DDXPointPtr pptSrc);
+ 
+-
+ static unsigned long TmpBitPlane; 
+ 
+ RegionPtr
+-XAACopyPlaneColorExpansion(
+-    DrawablePtr	pSrc,
++XAACopyPlaneColorExpansion(DrawablePtr pSrc,
+     DrawablePtr	pDst,
+     GCPtr pGC,
+     int	srcx, int srcy,
+     int	width, int height,
+-    int	dstx, int dsty,
+-    unsigned long bitPlane 
+-){
++                           int dstx, int dsty, unsigned long bitPlane)
++{
+     if((pSrc->type == DRAWABLE_PIXMAP) && !XAA_DEPTH_BUG(pGC)) {
+ 	if(pSrc->bitsPerPixel == 1) {
+ 	   return(XAABitBlt(pSrc, pDst, pGC, srcx, srcy,
+ 			width, height, dstx, dsty, 
+ 			XAACopyPlane1toNColorExpand, bitPlane));
+-	} else if(bitPlane < (1 << pDst->depth)){
++        }
++        else if (bitPlane < (1 << pDst->depth)) {
+ 	   TmpBitPlane = bitPlane;
+ 	   return(XAABitBlt(pSrc, pDst, pGC, srcx, srcy,
+ 			width, height, dstx, dsty, 
+@@ -66,14 +64,10 @@ XAACopyPlaneColorExpansion(
+ 			width, height, dstx, dsty, bitPlane));
+ }
+ 
+-
+ static void 
+-XAACopyPlane1toNColorExpand(
+-    DrawablePtr   pSrc, 
++XAACopyPlane1toNColorExpand(DrawablePtr pSrc,
+     DrawablePtr	  pDst,
+-    GCPtr	  pGC,
+-    RegionPtr     rgnDst,
+-    DDXPointPtr   pptSrc )
++                            GCPtr pGC, RegionPtr rgnDst, DDXPointPtr pptSrc)
+ {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     BoxPtr pbox = RegionRects(rgnDst);
+@@ -84,22 +78,20 @@ XAACopyPlane1toNColorExpand(
+     while(numrects--) {	
+ 	(*infoRec->WriteBitmap)(infoRec->pScrn, pbox->x1, pbox->y1, 
+ 		pbox->x2 - pbox->x1, pbox->y2 - pbox->y1, 
+-		src + (srcwidth * pptSrc->y) + ((pptSrc->x >> 5) << 2), 
+-		srcwidth, pptSrc->x & 31, 
+-		pGC->fgPixel, pGC->bgPixel, pGC->alu, pGC->planemask);
+-	pbox++; pptSrc++;
++                                 src + (srcwidth * pptSrc->y) +
++                                 ((pptSrc->x >> 5) << 2), srcwidth,
++                                 pptSrc->x & 31, pGC->fgPixel, pGC->bgPixel,
++                                 pGC->alu, pGC->planemask);
++        pbox++;
++        pptSrc++;
+     }
+ }
+ 
+-
+ static void 
+-XAACopyPlaneNtoNColorExpand(
+-    DrawablePtr   pSrc, 
++XAACopyPlaneNtoNColorExpand(DrawablePtr pSrc,
+     DrawablePtr	  pDst,
+-    GCPtr	  pGC,
+-    RegionPtr     rgnDst,
+-    DDXPointPtr   pptSrc 
+-){
++                            GCPtr pGC, RegionPtr rgnDst, DDXPointPtr pptSrc)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     BoxPtr pbox = RegionRects(rgnDst);
+     int numrects = RegionNumRects(rgnDst);
+@@ -112,13 +104,16 @@ XAACopyPlaneNtoNColorExpand(
+ 
+     if(TmpBitPlane < (1 << 8)) {
+ 	offset = 0;
+-    } else if(TmpBitPlane < (1 << 16)) {
++    }
++    else if (TmpBitPlane < (1 << 16)) {
+ 	offset = 1;
+ 	mask >>= 8;
+-    } else if(TmpBitPlane < (1 << 24)) {
++    }
++    else if (TmpBitPlane < (1 << 24)) {
+ 	offset = 2;
+ 	mask >>= 16;
+-    } else {
++    }
++    else {
+ 	offset = 3;
+ 	mask >>= 24;
+     }
+@@ -135,8 +130,7 @@ XAACopyPlaneNtoNColorExpand(
+ 	   goto ALLOC_FAILED;
+ 
+ 	dataPtr = data;
+-        srcPtr = ((pptSrc->y) * srcwidth) + src + 
+-                        ((pptSrc->x) * Bpp) + offset;
++        srcPtr = ((pptSrc->y) * srcwidth) + src + ((pptSrc->x) * Bpp) + offset;
+ 
+ 	while(h--) {
+ 	    for(i = index = 0; i < width; i++, index += Bpp) {
+@@ -148,24 +142,24 @@ XAACopyPlaneNtoNColorExpand(
+ 	}
+ 
+ 	(*infoRec->WriteBitmap)(infoRec->pScrn, 
+-		pbox->x1, pbox->y1, width, height, data, pitch, 0, 
+-		pGC->fgPixel, pGC->bgPixel, pGC->alu, pGC->planemask);
++                                 pbox->x1, pbox->y1, width, height, data, pitch,
++                                 0, pGC->fgPixel, pGC->bgPixel, pGC->alu,
++                                 pGC->planemask);
+ 	
+ 	free(data);
+ 
+ ALLOC_FAILED:
+ 
+-	pbox++; pptSrc++;
++        pbox++;
++        pptSrc++;
+     }
+ }
+ 
+ void
+-XAAPushPixelsSolidColorExpansion(
+-    GCPtr	pGC,
++XAAPushPixelsSolidColorExpansion(GCPtr pGC,
+     PixmapPtr	pBitMap,
+     DrawablePtr pDraw,
+-    int	dx, int dy, 
+-    int xOrg, int yOrg )
++                                 int dx, int dy, int xOrg, int yOrg)
+ {
+    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+    int MaxBoxes = RegionNumRects(pGC->pCompositeClip);
+@@ -185,8 +179,11 @@ XAAPushPixelsSolidColorExpansion(
+ 
+    if(MaxBoxes > (infoRec->PreAllocSize/sizeof(BoxRec))) {
+ 	pClipBoxes = malloc(MaxBoxes * sizeof(BoxRec));
+-	if(!pClipBoxes) return;	
+-   } else pClipBoxes = (BoxPtr)infoRec->PreAllocMem;
++        if (!pClipBoxes)
++            return;
++    }
++    else
++        pClipBoxes = (BoxPtr) infoRec->PreAllocMem;
+ 
+    nboxes = XAAGetRectClipBoxes(pGC, pClipBoxes, 1, &TheRect);
+    pbox = pClipBoxes;
+@@ -205,4 +202,3 @@ XAAPushPixelsSolidColorExpansion(
+     if(pClipBoxes != (BoxPtr)infoRec->PreAllocMem)
+ 	free(pClipBoxes);
+ }
+-

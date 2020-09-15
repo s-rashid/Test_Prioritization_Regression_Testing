@@ -1,0 +1,13 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 1376f4f..1e7b51e 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -810,7 +810,7 @@ static void SXIPropertyEvent(xXIPropertyEvent *from, xXIPropertyEvent *to)
+ }
+ 
+ /** Event swapping function for XI2 events. */
+-static void
++void
+ XI2EventSwap(xGenericEvent *from, xGenericEvent *to)
+ {
+     switch(from->evtype)

@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index f773ac2..0428673 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -353,7 +353,6 @@ xf86ActivateDevice(LocalDevicePtr local)
+ 
+         dev->config_info = xf86SetStrOption(local->options, "config_info", NULL);
+ 
+-        RegisterOtherDevice(dev);
+         XkbSetExtension(dev, ProcessKeyboardEvent);
+ 
+         if (serverGeneration == 1) 

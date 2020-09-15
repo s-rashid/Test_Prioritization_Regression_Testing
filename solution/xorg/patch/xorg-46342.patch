@@ -1,0 +1,13 @@
+diff --git a/Xext/xcmisc.c b/Xext/xcmisc.c
+index f644cb4..39079a2 100644
+--- a/Xext/xcmisc.c
++++ b/Xext/xcmisc.c
+@@ -55,6 +55,8 @@ static DISPATCH_PROC(SProcXCMiscGetVersion);
+ static DISPATCH_PROC(SProcXCMiscGetXIDList);
+ static DISPATCH_PROC(SProcXCMiscGetXIDRange);
+ 
++void XCMiscExtensionInit(INITARGS);
++
+ void
+ XCMiscExtensionInit(INITARGS)
+ {

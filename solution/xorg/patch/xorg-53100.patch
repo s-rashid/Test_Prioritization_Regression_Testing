@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86ShowOpts.c b/hw/xfree86/common/xf86ShowOpts.c
+index c0fa80a..a805916 100644
+--- a/hw/xfree86/common/xf86ShowOpts.c
++++ b/hw/xfree86/common/xf86ShowOpts.c
+@@ -124,7 +124,7 @@ void DoShowOptions (void) {
+ 	}
+ 	bail:
+ 	OsCleanup (TRUE);                             
+-	AbortDDX ();                                                           
++	AbortDDX (EXIT_ERR_DRIVERS);
+ 	fflush (stderr);                        
+ 	exit (0);
+ }

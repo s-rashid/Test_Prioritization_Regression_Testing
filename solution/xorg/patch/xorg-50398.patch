@@ -1,0 +1,15 @@
+diff --git a/include/gc.h b/include/gc.h
+index 63eecbd..2079cfa 100644
+--- a/include/gc.h
++++ b/include/gc.h
+@@ -122,10 +122,6 @@ extern _X_EXPORT int FreeGC(
+     pointer /*pGC*/,
+     XID /*gid*/);
+ 
+-extern _X_EXPORT GCPtr CreateScratchGC(
+-    ScreenPtr /*pScreen*/,
+-    unsigned /*depth*/);
+-
+ extern _X_EXPORT void FreeGCperDepth(
+     int /*screenNum*/);
+ 

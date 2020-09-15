@@ -1,0 +1,109 @@
+diff --git a/hw/xfree86/xaa/xaaRect.c b/hw/xfree86/xaa/xaaRect.c
+index 4a39129..0020900 100644
+--- a/hw/xfree86/xaa/xaaRect.c
++++ b/hw/xfree86/xaa/xaaRect.c
+@@ -19,13 +19,9 @@
+ 	Harm Hanemaayer (H.Hanemaayer@inter.nl.net).
+ */
+ 
+-
+ void
+-XAAPolyRectangleThinSolid(
+-    DrawablePtr  pDrawable,
+-    GCPtr        pGC,    
+-    int	         nRectsInit,
+-    xRectangle  *pRectsInit )
++XAAPolyRectangleThinSolid(DrawablePtr pDrawable,
++                          GCPtr pGC, int nRectsInit, xRectangle *pRectsInit)
+ {
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_GC(pGC);
+     int         nClipRects;     /* number of clip rectangles */
+@@ -49,28 +45,23 @@ XAAPolyRectangleThinSolid(
+     nClipRects = RegionNumRects(pGC->pCompositeClip);
+     pClipRects = RegionRects(pGC->pCompositeClip);
+ 
+-    if(!nClipRects) return;
++    if (!nClipRects)
++        return;
+ 
+     xOrigin = pDrawable->x;
+     yOrigin = pDrawable->y;
+ 
+-
+     (*infoRec->SetupForSolidLine)(infoRec->pScrn, 
+ 			pGC->fgPixel, pGC->alu, pGC->planemask);
+ 
+-
+-    for ( ; nClipRects > 0; 
+-	  nClipRects--, pClipRects++ )
+-    {
++    for (; nClipRects > 0; nClipRects--, pClipRects++) {
+         clipYMin = pClipRects->y1;
+         clipYMax = pClipRects->y2 - 1;
+         clipXMin = pClipRects->x1;
+         clipXMax = pClipRects->x2 - 1;
+ 
+ 	for (pRect = pRectsInit, nRects = nRectsInit; 
+-	     nRects > 0; 
+-	     nRects--, pRect++ )
+-        {
++             nRects > 0; nRects--, pRect++) {
+ 	    /* translate rectangle data over to the drawable */
+             origX1 = pRect->x + xOrigin; 
+ 	    origY1 = pRect->y + yOrigin;
+@@ -92,7 +83,8 @@ XAAPolyRectangleThinSolid(
+ 
+ 	    if (origY1 >= clipYMin) {
+ 		(*infoRec->SubsequentSolidHorVertLine)(infoRec->pScrn,
+-			clippedX1, clippedY1, width, DEGREES_0);
++                                                        clippedX1, clippedY1,
++                                                        width, DEGREES_0);
+ 
+ 		/* don't overwrite corner */
+ 		clippedY1++;
+@@ -100,37 +92,30 @@ XAAPolyRectangleThinSolid(
+ 
+ 	    if ((origY2 <= clipYMax) && (origY1 != origY2)) {
+ 		(*infoRec->SubsequentSolidHorVertLine)(infoRec->pScrn,
+-			clippedX1, clippedY2, width, DEGREES_0);
++                                                        clippedX1, clippedY2,
++                                                        width, DEGREES_0);
+ 
+ 		/* don't overwrite corner */
+ 		clippedY2--; 
+ 	    }
+ 
+-	    if (clippedY2 < clippedY1) continue;
++            if (clippedY2 < clippedY1)
++                continue;
+ 
+ 	    height = clippedY2 - clippedY1 + 1;
+ 
+ 	    /* draw vertical edges using lines if not clipped out */
+             if (origX1 >= clipXMin) 
+ 		(*infoRec->SubsequentSolidHorVertLine)(infoRec->pScrn,
+-			clippedX1, clippedY1, height, DEGREES_270);
++                                                        clippedX1, clippedY1,
++                                                        height, DEGREES_270);
+ 
+             if ((origX2 <= clipXMax) && (origX2 != origX1))
+ 		(*infoRec->SubsequentSolidHorVertLine)(infoRec->pScrn,
+-			clippedX2, clippedY1, height, DEGREES_270);
++                                                        clippedX2, clippedY1,
++                                                        height, DEGREES_270);
+ 	}
+     }
+ 
+     SET_SYNC_FLAG(infoRec);
+ } 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-

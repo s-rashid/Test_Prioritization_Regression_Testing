@@ -1,0 +1,17 @@
+diff --git a/xkb/ddxCtrls.c b/xkb/ddxCtrls.c
+index 04de608..0805fb2 100644
+--- a/xkb/ddxCtrls.c
++++ b/xkb/ddxCtrls.c
+@@ -52,7 +52,6 @@ int realRepeat;
+     return;
+ }
+ 
+-
+ int
+ XkbDDXUsesSoftRepeat(DeviceIntPtr pXDev)
+ {
+@@ -82,4 +81,3 @@ unsigned 	char *rep_old, *rep_new, *rep_fb;
+     }
+     return;
+ }
+-

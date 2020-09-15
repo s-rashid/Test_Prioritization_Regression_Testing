@@ -1,0 +1,13 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 75685a2..b2a168a 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -156,7 +156,7 @@ typedef struct _WorkQueue {
+ } WorkQueueRec;
+ 
+ extern _X_EXPORT TimeStamp currentTime;
+-extern _X_EXPORT TimeStamp lastDeviceEventTime;
++extern _X_EXPORT TimeStamp lastDeviceEventTime[MAXDEVICES];
+ 
+ extern _X_EXPORT int
+ CompareTimeStamps(TimeStamp /*a */ ,

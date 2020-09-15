@@ -1,0 +1,16 @@
+diff --git a/dix/swaprep.c b/dix/swaprep.c
+index a02333d..28c354c 100644
+--- a/dix/swaprep.c
++++ b/dix/swaprep.c
+@@ -397,9 +397,9 @@ SwapFont(xQueryFontReply *pr, Bool hasGlyphs)
+      * they are always 2 4 byte values */
+     for(i = 0; i < nprops; i++)
+     {
+-	swapl(pby);
++	swapl((int *)pby);
+ 	pby += 4;
+-	swapl(pby);
++	swapl((int *)pby);
+ 	pby += 4;
+     }
+     if (hasGlyphs)

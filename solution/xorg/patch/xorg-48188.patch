@@ -1,0 +1,14 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 175cd9d..fd286de 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -155,9 +155,7 @@ static PixmapFormatRec g_PixmapFormats[] = {
+   { 15,   16,     BITMAP_SCANLINE_PAD },
+   { 16,   16,     BITMAP_SCANLINE_PAD },
+   { 24,   32,     BITMAP_SCANLINE_PAD },
+-#ifdef RENDER
+   { 32,   32,     BITMAP_SCANLINE_PAD }
+-#endif
+ };
+ 
+ const int NUMFORMATS = sizeof (g_PixmapFormats) / sizeof (g_PixmapFormats[0]);

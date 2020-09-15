@@ -1,0 +1,24 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index dc07b47..8acf267 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -416,6 +416,11 @@ static int DRI2DrawableGone(pointer p, XID id)
+ static void
+ DRI2ExtensionInit(void)
+ {
++    dri2DrawableRes = CreateNewResourceType(DRI2DrawableGone);
++
++    if (!dri2DrawableRes)
++	return;
++
+     dri2Extension = AddExtension(DRI2_NAME,
+ 				 DRI2NumberEvents,
+ 				 DRI2NumberErrors,
+@@ -424,7 +429,6 @@ DRI2ExtensionInit(void)
+ 				 NULL,
+ 				 StandardMinorOpcode);
+ 
+-    dri2DrawableRes = CreateNewResourceType(DRI2DrawableGone);
+ }
+ 
+ extern Bool noDRI2Extension;

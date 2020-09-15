@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxutil.c b/hw/dmx/glxProxy/glxutil.c
+index d0ce504..cfd0269 100644
+--- a/hw/dmx/glxProxy/glxutil.c
++++ b/hw/dmx/glxProxy/glxutil.c
+@@ -83,7 +83,7 @@ __glXRealloc(void *addr, size_t newSize)
+ 
+     if (addr) {
+ 	if (newSize == 0) {
+-	    xfree(addr);
++	    free(addr);
+ 	    return NULL;
+ 	} else {
+ 	    newAddr = realloc(addr, newSize);

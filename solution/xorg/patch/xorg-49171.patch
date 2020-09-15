@@ -1,0 +1,13 @@
+diff --git a/miext/rootless/rootlessScreen.c b/miext/rootless/rootlessScreen.c
+index 7a24af8..d24ca04 100644
+--- a/miext/rootless/rootlessScreen.c
++++ b/miext/rootless/rootlessScreen.c
+@@ -493,7 +493,7 @@ static void expose_1 (WindowPtr pWin) {
+ void
+ RootlessScreenExpose (ScreenPtr pScreen)
+ {
+-    expose_1 (WindowTable[pScreen->myNum]);
++    expose_1 (pScreen->root);
+ }
+ 
+ 

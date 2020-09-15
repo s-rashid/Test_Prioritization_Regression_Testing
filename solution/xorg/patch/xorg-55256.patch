@@ -1,0 +1,199 @@
+diff --git a/hw/dmx/dmxscrinit.c b/hw/dmx/dmxscrinit.c
+index 7a94627..37b3f3b 100644
+--- a/hw/dmx/dmxscrinit.c
++++ b/hw/dmx/dmxscrinit.c
+@@ -76,7 +76,8 @@ DevPrivateKeyRec dmxGlyphSetPrivateKeyRec;
+ 
+ /** Initialize the parts of screen \a idx that require access to the
+  *  back-end server. */
+-void dmxBEScreenInit(int idx, ScreenPtr pScreen)
++void
++dmxBEScreenInit(int idx, ScreenPtr pScreen)
+ {
+     DMXScreenInfo        *dmxScreen = &dmxScreens[idx];
+     XSetWindowAttributes  attribs;
+@@ -114,8 +115,7 @@ void dmxBEScreenInit(int idx, ScreenPtr pScreen)
+                           | EnterWindowMask
+                           | LeaveWindowMask
+                           | PointerMotionMask
+-                          | KeymapStateMask
+-                          | FocusChangeMask);
++                          | KeymapStateMask | FocusChangeMask);
+     attribs.colormap = dmxScreen->beDefColormaps[dmxScreen->beDefVisualIndex];
+     attribs.override_redirect = True;
+     
+@@ -130,8 +130,7 @@ void dmxBEScreenInit(int idx, ScreenPtr pScreen)
+ 		      pScreen->rootDepth,
+ 		      InputOutput,
+ 		      dmxScreen->beVisuals[dmxScreen->beDefVisualIndex].visual,
+-		      mask,
+-		      &attribs);
++                      mask, &attribs);
+     dmxPropertyWindow(dmxScreen);
+ 
+     /*
+@@ -140,7 +139,8 @@ void dmxBEScreenInit(int idx, ScreenPtr pScreen)
+      */
+     {
+ 	char noCursorData[] = {0, 0, 0, 0,
+-			       0, 0, 0, 0};
++            0, 0, 0, 0
++        };
+ 	Pixmap pixmap;
+ 	XColor color, tmp;
+ 
+@@ -160,29 +160,23 @@ void dmxBEScreenInit(int idx, ScreenPtr pScreen)
+     XMapWindow(dmxScreen->beDisplay, dmxScreen->scrnWin);
+ 
+     if (dmxShadowFB) {
+-	mask = (GCFunction
+-		| GCPlaneMask
+-		| GCClipMask);
++        mask = (GCFunction | GCPlaneMask | GCClipMask);
+ 	gcvals.function = GXcopy;
+ 	gcvals.plane_mask = AllPlanes;
+ 	gcvals.clip_mask = None;
+ 
+ 	dmxScreen->shadowGC = XCreateGC(dmxScreen->beDisplay,
+-					dmxScreen->scrnWin,
+-					mask, &gcvals);
++                                        dmxScreen->scrnWin, mask, &gcvals);
+ 
+ 	dmxScreen->shadowFBImage =
+ 	    XCreateImage(dmxScreen->beDisplay,
+-			 dmxScreen->beVisuals[dmxScreen->beDefVisualIndex].visual,
+-			 dmxScreen->beDepth,
+-			 ZPixmap,
+-			 0,
+-			 (char *)dmxScreen->shadow,
+-			 dmxScreen->scrnWidth, dmxScreen->scrnHeight,
+-			 dmxScreen->beBPP,
+-			 PixmapBytePad(dmxScreen->scrnWidth,
+-				       dmxScreen->beBPP));
+-    } else {
++                         dmxScreen->beVisuals[dmxScreen->beDefVisualIndex].
++                         visual, dmxScreen->beDepth, ZPixmap, 0,
++                         (char *) dmxScreen->shadow, dmxScreen->scrnWidth,
++                         dmxScreen->scrnHeight, dmxScreen->beBPP,
++                         PixmapBytePad(dmxScreen->scrnWidth, dmxScreen->beBPP));
++    }
++    else {
+ 	/* Create default drawables (used during GC creation) */
+ 	for (i = 0; i < dmxScreen->beNumPixmapFormats; i++) 
+ 	    for (j = 0; j < dmxScreen->beNumDepths; j++)
+@@ -191,14 +185,16 @@ void dmxBEScreenInit(int idx, ScreenPtr pScreen)
+ 		     dmxScreen->beDepths[j])) {
+ 		    dmxScreen->scrnDefDrawables[i] = (Drawable)
+ 			XCreatePixmap(dmxScreen->beDisplay, dmxScreen->scrnWin,
+-				      1, 1, dmxScreen->bePixmapFormats[i].depth);
++                                      1, 1,
++                                      dmxScreen->bePixmapFormats[i].depth);
+ 		    break;
+ 		}
+     }
+ }
+ 
+ /** Initialize screen number \a idx. */
+-Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
++Bool
++dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+ {
+     DMXScreenInfo        *dmxScreen = &dmxScreens[idx];
+     int                   i, j;
+@@ -223,10 +219,14 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+ 	dmxScreen->shadow = shadowAlloc(dmxScreen->scrnWidth,
+ 					dmxScreen->scrnHeight,
+ 					dmxScreen->beBPP);
+-    } else {
+-	if (!dmxInitGC(pScreen)) return FALSE;
+-	if (!dmxInitWindow(pScreen)) return FALSE;
+-	if (!dmxInitPixmap(pScreen)) return FALSE;
++    }
++    else {
++        if (!dmxInitGC(pScreen))
++            return FALSE;
++        if (!dmxInitWindow(pScreen))
++            return FALSE;
++        if (!dmxInitPixmap(pScreen))
++            return FALSE;
+     }
+ 
+     /*
+@@ -271,9 +271,7 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+ 		 dmxScreen->scrnWidth,
+ 		 dmxScreen->scrnHeight,
+ 		 dmxScreen->beXDPI,
+-		 dmxScreen->beXDPI,
+-		 dmxScreen->scrnWidth,
+-		 dmxScreen->beBPP);
++                 dmxScreen->beXDPI, dmxScreen->scrnWidth, dmxScreen->beBPP);
+     (void)dmxPictureInit(pScreen, 0, 0);
+ 
+     /* Not yet... */
+@@ -285,13 +283,13 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+ 
+     if (dmxShadowFB) {
+ 	miDCInitialize(pScreen, &dmxPointerCursorFuncs);
+-    } else {
++    }
++    else {
+         MAXSCREENSALLOC(dmxCursorGeneration);
+ 	if (dmxCursorGeneration[idx] != serverGeneration) {
+ 	    if (!(miPointerInitialize(pScreen,
+ 				      &dmxPointerSpriteFuncs,
+-				      &dmxPointerCursorFuncs,
+-				      FALSE)))
++                                      &dmxPointerCursorFuncs, FALSE)))
+ 		return FALSE;
+ 
+ 	    dmxCursorGeneration[idx] = serverGeneration;
+@@ -354,7 +352,8 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+ }
+ 
+ /** Close the \a pScreen resources on the back-end server. */
+-void dmxBECloseScreen(ScreenPtr pScreen)
++void
++dmxBECloseScreen(ScreenPtr pScreen)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+     int            i;
+@@ -377,7 +376,8 @@ void dmxBECloseScreen(ScreenPtr pScreen)
+ 	dmxScreen->shadowGC = NULL;
+ 	XFree(dmxScreen->shadowFBImage);
+ 	dmxScreen->shadowFBImage = NULL;
+-    } else {
++    }
++    else {
+ 	/* Free the default drawables */
+ 	for (i = 0; i < dmxScreen->beNumPixmapFormats; i++) {
+ 	    if (dmxScreen->scrnDefDrawables[i]) {
+@@ -421,7 +421,8 @@ void dmxBECloseScreen(ScreenPtr pScreen)
+ }
+ 
+ /** Close screen number \a idx. */
+-Bool dmxCloseScreen(int idx, ScreenPtr pScreen)
++Bool
++dmxCloseScreen(int idx, ScreenPtr pScreen)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[idx];
+ 
+@@ -434,7 +435,8 @@ Bool dmxCloseScreen(int idx, ScreenPtr pScreen)
+     if (dmxShadowFB) {
+ 	/* Free the shadow framebuffer */
+ 	free(dmxScreen->shadow);
+-    } else {
++    }
++    else {
+ 
+ 	/* Unwrap Shape functions */
+ 	DMX_UNWRAP(SetShape, dmxScreen, pScreen);
+@@ -499,7 +501,8 @@ Bool dmxCloseScreen(int idx, ScreenPtr pScreen)
+     return pScreen->CloseScreen(idx, pScreen);
+ }
+ 
+-static Bool dmxSaveScreen(ScreenPtr pScreen, int what)
++static Bool
++dmxSaveScreen(ScreenPtr pScreen, int what)
+ {
+     DMXScreenInfo *dmxScreen = &dmxScreens[pScreen->myNum];
+ 

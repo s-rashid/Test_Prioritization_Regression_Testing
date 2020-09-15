@@ -1,0 +1,13 @@
+diff --git a/Xi/xiproperty.c b/Xi/xiproperty.c
+index 88de119..c612af2 100644
+--- a/Xi/xiproperty.c
++++ b/Xi/xiproperty.c
+@@ -706,7 +706,7 @@ XIDeleteDeviceProperty (DeviceIntPtr device, Atom property, Bool fromClient)
+ int
+ XIChangeDeviceProperty (DeviceIntPtr dev, Atom property, Atom type,
+                         int format, int mode, unsigned long len,
+-                        const pointer value, Bool sendevent)
++                        const void *value, Bool sendevent)
+ {
+     XIPropertyPtr               prop;
+     int                         size_in_bytes;

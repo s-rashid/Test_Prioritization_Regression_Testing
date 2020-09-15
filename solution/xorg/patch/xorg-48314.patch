@@ -1,0 +1,11 @@
+diff --git a/dix/atom.c b/dix/atom.c
+index 6910dd5..02843d2 100644
+--- a/dix/atom.c
++++ b/dix/atom.c
+@@ -213,5 +213,5 @@ InitAtoms(void)
+     nodeTable[None] = (NodePtr)NULL;
+     MakePredeclaredAtoms();
+     if (lastAtom != XA_LAST_PREDEFINED)
+-	AtomError ();
++	AtomError();
+ }

@@ -1,0 +1,25 @@
+diff --git a/xfixes/saveset.c b/xfixes/saveset.c
+index 3c0504f..35d8e17 100644
+--- a/xfixes/saveset.c
++++ b/xfixes/saveset.c
+@@ -43,17 +43,17 @@ ProcXFixesChangeSaveSet(ClientPtr client)
+     if ((stuff->mode != SetModeInsert) && (stuff->mode != SetModeDelete))
+     {
+ 	client->errorValue = stuff->mode;
+-	return( BadValue );
++	return BadValue;
+     }
+     if ((stuff->target != SaveSetNearest) && (stuff->target != SaveSetRoot))
+     {
+ 	client->errorValue = stuff->target;
+-	return( BadValue );
++	return BadValue;
+     }
+     if ((stuff->map != SaveSetMap) && (stuff->map != SaveSetUnmap))
+     {
+ 	client->errorValue = stuff->map;
+-	return( BadValue );
++	return BadValue;
+     }
+     toRoot = (stuff->target == SaveSetRoot);
+     map = (stuff->map == SaveSetMap);

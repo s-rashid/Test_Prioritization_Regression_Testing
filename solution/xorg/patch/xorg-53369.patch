@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index 7b7a9f5..832bcf7 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -127,7 +127,7 @@
+ 
+ /* X Input */
+ #define SERVER_XI_MAJOR_VERSION			2
+-#define SERVER_XI_MINOR_VERSION			0
++#define SERVER_XI_MINOR_VERSION			1
+ 
+ /* XKB */
+ #define SERVER_XKB_MAJOR_VERSION		1

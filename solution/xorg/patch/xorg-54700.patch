@@ -1,0 +1,13 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 841e805..5a38924 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -591,6 +591,8 @@ typedef struct _DeviceIntRec {
+ 
+     /* XTest related master device id */
+     int xtest_master_id;
++
++    struct _SyncCounter *idle_counter;
+ } DeviceIntRec;
+ 
+ typedef struct {

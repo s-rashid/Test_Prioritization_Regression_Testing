@@ -1,0 +1,20 @@
+diff --git a/hw/xwin/winclipboardxevents.c b/hw/xwin/winclipboardxevents.c
+index 8b502b1..b0006a0 100644
+--- a/hw/xwin/winclipboardxevents.c
++++ b/hw/xwin/winclipboardxevents.c
+@@ -636,11 +636,14 @@ winClipboardFlushXEvents (HWND hwnd,
+ 		case XNoMemory:
+ 		  ErrorF ("XNoMemory\n");
+ 		  break;
++		case XLocaleNotSupported:
++		  ErrorF ("XLocaleNotSupported\n");
++		  break;
+ 		case XConverterNotFound:
+ 		  ErrorF ("XConverterNotFound\n");
+ 		  break;
+ 		default:
+-		  ErrorF ("%d", iReturn);
++		  ErrorF ("%d\n", iReturn);
+ 		  break;
+ 		}
+ 	      pszReturnData = malloc (1);

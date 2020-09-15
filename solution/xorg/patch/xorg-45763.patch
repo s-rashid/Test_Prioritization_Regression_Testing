@@ -1,0 +1,32 @@
+diff --git a/hw/xfree86/common/xf86fbBus.c b/hw/xfree86/common/xf86fbBus.c
+index 90e6eb0..059e378 100644
+--- a/hw/xfree86/common/xf86fbBus.c
++++ b/hw/xfree86/common/xf86fbBus.c
+@@ -40,16 +40,12 @@
+ #include "os.h"
+ #include "xf86.h"
+ #include "xf86Priv.h"
+-#include "xf86Resources.h"
+ 
+ #include "xf86Bus.h"
+ 
+ #define XF86_OS_PRIVS
+-#define NEED_OS_RAC_PROTOS
+ #include "xf86_OSproc.h"
+ 
+-#include "xf86RAC.h"
+-
+ Bool fbSlotClaimed = FALSE;
+ 
+ int
+@@ -73,10 +69,6 @@ xf86ClaimFbSlot(DriverPtr drvp, int chipset, GDevPtr dev, Bool active)
+     p->active = active;
+     p->inUse = FALSE;
+     xf86AddDevToEntity(num, dev);
+-    p->access = xnfcalloc(1,sizeof(EntityAccessRec));
+-    p->access->fallback = &AccessNULL;
+-    p->access->pAccess = &AccessNULL;
+-    p->busAcc = NULL;
+ 
+     fbSlotClaimed = TRUE;
+     return num;

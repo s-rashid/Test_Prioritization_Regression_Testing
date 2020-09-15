@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index 3d5d9a6..948f82d 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -1220,7 +1220,7 @@ xf86XVQueryAdaptors(
+   *p_nAdaptors = pxvs->nAdaptors;
+   *p_pAdaptors = pxvs->pAdaptors;
+ 
+-  return (Success);
++  return Success;
+ }
+ 
+ 

@@ -1,0 +1,91 @@
+diff --git a/hw/xquartz/xpr/appledri.h b/hw/xquartz/xpr/appledri.h
+index 0abf866..a96c96f 100644
+--- a/hw/xquartz/xpr/appledri.h
++++ b/hw/xquartz/xpr/appledri.h
+@@ -3,7 +3,7 @@
+ 
+ Copyright 1998-1999 Precision Insight, Inc., Cedar Park, Texas.
+ Copyright 2000 VA Linux Systems, Inc.
+-Copyright (c) 2002, 2008, 2009 Apple Computer, Inc.
++   Copyright (c) 2002-2012 Apple Computer, Inc.
+ All Rights Reserved.
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a
+@@ -33,6 +33,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  *   Kevin E. Martin <martin@valinux.com>
+  *   Jens Owen <jens@valinux.com>
+  *   Rickard E. (Rik) Faith <faith@valinux.com>
++ *   Jeremy Huddleston <jeremyhu@apple.com>
+  *
+  */
+ 
+@@ -84,39 +85,53 @@ typedef struct {
+ 
+ _XFUNCPROTOBEGIN
+ 
+-Bool XAppleDRIQueryExtension(Display * dpy, int *event_base, int *error_base);
++Bool
++XAppleDRIQueryExtension(Display *dpy, int *event_base, int *error_base);
+ 
+-Bool XAppleDRIQueryVersion(Display * dpy, int *majorVersion,
+-                           int *minorVersion, int *patchVersion);
++Bool
++XAppleDRIQueryVersion(Display *dpy, int *majorVersion, int *minorVersion,
++                      int *patchVersion);
+ 
+-Bool XAppleDRIQueryDirectRenderingCapable(Display * dpy, int screen,
++Bool
++XAppleDRIQueryDirectRenderingCapable(Display *dpy, int screen,
+                                           Bool *isCapable);
+ 
+-void *XAppleDRISetSurfaceNotifyHandler(void (*fun) (Display * dpy,
+-                                                    unsigned uid, int kind));
++void *
++XAppleDRISetSurfaceNotifyHandler(void (*fun)(Display *dpy, unsigned uid,
++                                             int kind));
+ 
+-Bool XAppleDRIAuthConnection(Display * dpy, int screen, unsigned int magic);
++Bool
++XAppleDRIAuthConnection(Display *dpy, int screen, unsigned int magic);
+ 
+ Bool XAppleDRICreateSurface(Display * dpy, int screen, Drawable drawable,
+                             unsigned int client_id, unsigned int key[2],
+                             unsigned int *uid);
+ 
+-Bool XAppleDRIDestroySurface(Display * dpy, int screen, Drawable drawable);
++Bool
++XAppleDRIDestroySurface(Display *dpy, int screen, Drawable drawable);
+ 
+-Bool XAppleDRISynchronizeSurfaces(Display * dpy);
++Bool
++XAppleDRISynchronizeSurfaces(Display *dpy);
+ 
+-Bool XAppleDRICreateSharedBuffer(Display * dpy, int screen, Drawable drawable,
++Bool
++XAppleDRICreateSharedBuffer(Display *dpy, int screen, Drawable drawable,
+                                  Bool doubleSwap, char *path, size_t pathlen,
+-                                 int *width, int *height);
++                            int *width,
++                            int *height);
+ 
+-Bool XAppleDRISwapBuffers(Display * dpy, int screen, Drawable drawable);
++Bool
++XAppleDRISwapBuffers(Display *dpy, int screen, Drawable drawable);
+ 
+-Bool XAppleDRICreatePixmap(Display * dpy, int screen, Drawable drawable,
+-                           int *width, int *height, int *pitch, int *bpp,
+-                           size_t * size, char *bufname, size_t bufnamesize);
++Bool
++XAppleDRICreatePixmap(Display *dpy, int screen, Drawable drawable, int *width,
++                      int *height, int *pitch, int *bpp, size_t *size,
++                      char *bufname,
++                      size_t bufnamesize);
+ 
+-Bool XAppleDRIDestroyPixmap(Display * dpy, Pixmap pixmap);
++Bool
++XAppleDRIDestroyPixmap(Display *dpy, Pixmap pixmap);
+ 
+ _XFUNCPROTOEND
++
+ #endif                          /* _APPLEDRI_SERVER_ */
+ #endif                          /* _APPLEDRI_H_ */

@@ -1,0 +1,210 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index 63a2d2a..b637c06 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -27,18 +27,30 @@ RESTYPE	RRModeType;
+ static Bool
+ RRModeEqual (xRRModeInfo *a, xRRModeInfo *b)
+ {
+-    if (a->width != b->width) return FALSE;
+-    if (a->height != b->height) return FALSE;
+-    if (a->dotClock != b->dotClock) return FALSE;
+-    if (a->hSyncStart != b->hSyncStart) return FALSE;
+-    if (a->hSyncEnd != b->hSyncEnd) return FALSE;
+-    if (a->hTotal != b->hTotal) return FALSE;
+-    if (a->hSkew != b->hSkew) return FALSE;
+-    if (a->vSyncStart != b->vSyncStart) return FALSE;
+-    if (a->vSyncEnd != b->vSyncEnd) return FALSE;
+-    if (a->vTotal != b->vTotal) return FALSE;
+-    if (a->nameLength != b->nameLength) return FALSE;
+-    if (a->modeFlags != b->modeFlags) return FALSE;
++    if (a->width != b->width)
++        return FALSE;
++    if (a->height != b->height)
++        return FALSE;
++    if (a->dotClock != b->dotClock)
++        return FALSE;
++    if (a->hSyncStart != b->hSyncStart)
++        return FALSE;
++    if (a->hSyncEnd != b->hSyncEnd)
++        return FALSE;
++    if (a->hTotal != b->hTotal)
++        return FALSE;
++    if (a->hSkew != b->hSkew)
++        return FALSE;
++    if (a->vSyncStart != b->vSyncStart)
++        return FALSE;
++    if (a->vSyncEnd != b->vSyncEnd)
++        return FALSE;
++    if (a->vTotal != b->vTotal)
++        return FALSE;
++    if (a->nameLength != b->nameLength)
++        return FALSE;
++    if (a->modeFlags != b->modeFlags)
++        return FALSE;
+     return TRUE;
+ }
+ 
+@@ -49,9 +61,7 @@ static int	    num_modes;
+ static RRModePtr    *modes;
+ 
+ static RRModePtr
+-RRModeCreate (xRRModeInfo   *modeInfo,
+-	      const char    *name,
+-	      ScreenPtr	    userScreen)
++RRModeCreate(xRRModeInfo * modeInfo, const char *name, ScreenPtr userScreen)
+ {
+     RRModePtr	mode, *newModes;
+     
+@@ -73,8 +83,7 @@ RRModeCreate (xRRModeInfo   *modeInfo,
+     else
+ 	newModes = malloc(sizeof (RRModePtr));
+ 
+-    if (!newModes)
+-    {
++    if (!newModes) {
+ 	free(mode);
+ 	return NULL;
+     }
+@@ -93,18 +102,15 @@ RRModeCreate (xRRModeInfo   *modeInfo,
+ }
+ 
+ static RRModePtr
+-RRModeFindByName (const char	*name,
+-		  CARD16    	nameLength)
++RRModeFindByName(const char *name, CARD16 nameLength)
+ {
+     int		i;
+     RRModePtr	mode;
+ 
+-    for (i = 0; i < num_modes; i++)
+-    {
++    for (i = 0; i < num_modes; i++) {
+ 	mode = modes[i];
+ 	if (mode->mode.nameLength == nameLength &&
+-	    !memcmp (name, mode->name, nameLength))
+-	{
++            !memcmp(name, mode->name, nameLength)) {
+ 	    return mode;
+ 	}
+     }
+@@ -112,17 +118,15 @@ RRModeFindByName (const char	*name,
+ }
+ 
+ RRModePtr
+-RRModeGet (xRRModeInfo	*modeInfo,
+-	   const char	*name)
++RRModeGet(xRRModeInfo * modeInfo, const char *name)
+ {
+     int	i;
+ 
+-    for (i = 0; i < num_modes; i++)
+-    {
++    for (i = 0; i < num_modes; i++) {
+ 	RRModePtr   mode = modes[i];
++
+ 	if (RRModeEqual (&mode->mode, modeInfo) &&
+-	    !memcmp (name, mode->name, modeInfo->nameLength))
+-	{
++            !memcmp(name, mode->name, modeInfo->nameLength)) {
+ 	    ++mode->refcnt;
+ 	    return mode;
+ 	}
+@@ -133,22 +137,18 @@ RRModeGet (xRRModeInfo	*modeInfo,
+ 
+ static RRModePtr
+ RRModeCreateUser (ScreenPtr	pScreen,
+-		  xRRModeInfo	*modeInfo,
+-		  const char	*name,
+-		  int		*error)
++                 xRRModeInfo * modeInfo, const char *name, int *error)
+ {
+     RRModePtr	mode;
+ 
+     mode = RRModeFindByName (name, modeInfo->nameLength);
+-    if (mode)
+-    {
++    if (mode) {
+ 	*error = BadName;
+ 	return NULL;
+     }
+     
+     mode = RRModeCreate (modeInfo, name, pScreen);
+-    if (!mode)
+-    {
++    if (!mode) {
+ 	*error = BadAlloc;
+ 	return NULL;
+     }
+@@ -171,13 +171,11 @@ RRModesForScreen (ScreenPtr pScreen, int *num_ret)
+     /*
+      * Add modes from all outputs
+      */
+-    for (o = 0; o < pScrPriv->numOutputs; o++)
+-    {
++    for (o = 0; o < pScrPriv->numOutputs; o++) {
+ 	RROutputPtr	output = pScrPriv->outputs[o];
+ 	int		m, n;
+ 
+-	for (m = 0; m < output->numModes + output->numUserModes; m++)
+-	{
++        for (m = 0; m < output->numModes + output->numUserModes; m++) {
+ 	    RRModePtr   mode = (m < output->numModes ? 
+ 				output->modes[m] : 
+ 				output->userModes[m-output->numModes]);
+@@ -193,13 +191,13 @@ RRModesForScreen (ScreenPtr pScreen, int *num_ret)
+      * make sure all available and active modes
+      * are visible to the client
+      */
+-    for (c = 0; c < pScrPriv->numCrtcs; c++)
+-    {
++    for (c = 0; c < pScrPriv->numCrtcs; c++) {
+ 	RRCrtcPtr	crtc = pScrPriv->crtcs[c];
+ 	RRModePtr	mode = crtc->mode;
+ 	int		n;
+ 
+-	if (!mode) continue;
++        if (!mode)
++            continue;
+ 	for (n = 0; n < num_screen_modes; n++)
+ 	    if (screen_modes[n] == mode)
+ 		break;
+@@ -209,8 +207,7 @@ RRModesForScreen (ScreenPtr pScreen, int *num_ret)
+     /*
+      * Add all user modes for this screen
+      */
+-    for (m = 0; m < num_modes; m++)
+-    {
++    for (m = 0; m < num_modes; m++) {
+ 	RRModePtr	mode = modes[m];
+ 	int		n;
+ 
+@@ -234,15 +231,12 @@ RRModeDestroy (RRModePtr mode)
+     
+     if (--mode->refcnt > 0)
+ 	return;
+-    for (m = 0; m < num_modes; m++)
+-    {
+-	if (modes[m] == mode)
+-	{
++    for (m = 0; m < num_modes; m++) {
++        if (modes[m] == mode) {
+ 	    memmove (modes + m, modes + m + 1,
+ 		     (num_modes - m - 1) * sizeof (RRModePtr));
+ 	    num_modes--;
+-	    if (!num_modes)
+-	    {
++            if (!num_modes) {
+ 		free(modes);
+ 		modes = NULL;
+ 	    }
+@@ -323,8 +317,7 @@ ProcRRCreateMode (ClientPtr client)
+     rep.sequenceNumber = client->sequence;
+     rep.length = 0;
+     rep.mode = mode->mode.id;
+-    if (client->swapped)
+-    {
++    if (client->swapped) {
+ 	swaps(&rep.sequenceNumber);
+ 	swapl(&rep.length);
+ 	swapl(&rep.mode);

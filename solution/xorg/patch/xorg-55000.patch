@@ -1,0 +1,24 @@
+diff --git a/Xi/sendexev.c b/Xi/sendexev.c
+index 4770c28..3c21386 100644
+--- a/Xi/sendexev.c
++++ b/Xi/sendexev.c
+@@ -88,7 +88,8 @@ SProcXSendExtensionEvent(ClientPtr client)
+     swapl(&stuff->destination);
+     swaps(&stuff->count);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xSendExtensionEventReq)) + stuff->count +
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xSendExtensionEventReq)) + stuff->count +
+        bytes_to_int32(stuff->num_events * sizeof(xEvent)))
+        return BadLength;
+ 
+@@ -125,7 +126,8 @@ ProcXSendExtensionEvent(ClientPtr client)
+     REQUEST(xSendExtensionEventReq);
+     REQUEST_AT_LEAST_SIZE(xSendExtensionEventReq);
+ 
+-    if (stuff->length != bytes_to_int32(sizeof(xSendExtensionEventReq)) + stuff->count +
++    if (stuff->length !=
++        bytes_to_int32(sizeof(xSendExtensionEventReq)) + stuff->count +
+ 	(stuff->num_events * bytes_to_int32(sizeof(xEvent))))
+ 	return BadLength;
+ 

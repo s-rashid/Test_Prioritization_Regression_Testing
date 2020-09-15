@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/os-support/stub/stub_bell.c b/hw/xfree86/os-support/stub/stub_bell.c
+new file mode 100644
+index 0000000..4862592
+--- /dev/null
++++ b/hw/xfree86/os-support/stub/stub_bell.c
+@@ -0,0 +1,10 @@
++#ifdef HAVE_XORG_CONFIG_H
++#include <xorg-config.h>
++#endif
++
++#include "xf86_OSlib.h"
++
++void
++xf86OSRingBell(int loudness, int pitch, int duration)
++{
++}

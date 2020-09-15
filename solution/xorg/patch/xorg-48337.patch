@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaaPCache.c b/hw/xfree86/xaa/xaaPCache.c
+index e78a6f8..e62f280 100644
+--- a/hw/xfree86/xaa/xaaPCache.c
++++ b/hw/xfree86/xaa/xaaPCache.c
+@@ -1881,7 +1881,7 @@ XAAWriteBitmapToCacheLinear(
+    pGC = GetScratchGC(pScreenPix->drawable.depth, pScreen);
+    gcvals[0] = fg;
+    gcvals[1] = bg;
+-   DoChangeGC(pGC, GCForeground | GCBackground, gcvals, 0);
++   dixChangeGC(NullClient, pGC, GCForeground | GCBackground, gcvals, NULL);
+    ValidateGC((DrawablePtr)pDstPix, pGC);
+ 
+    /* We've unwrapped already so these ops miss a sync */

@@ -1,0 +1,13 @@
+diff --git a/miext/rootless/rootlessScreen.c b/miext/rootless/rootlessScreen.c
+index 0801e72..c855706 100644
+--- a/miext/rootless/rootlessScreen.c
++++ b/miext/rootless/rootlessScreen.c
+@@ -247,7 +247,7 @@ RootlessComposite(CARD8 op, PicturePtr pSrc, PicturePtr pMask, PicturePtr pDst,
+     WindowPtr srcWin, dstWin, maskWin = NULL;
+ 
+     if (pMask) {                        // pMask can be NULL
+-        maskWin = (pMask->pDrawable->type == DRAWABLE_WINDOW) ?
++        maskWin = (pMask->pDrawable && pMask->pDrawable->type == DRAWABLE_WINDOW) ?
+                   (WindowPtr)pMask->pDrawable :  NULL;
+     }
+     srcWin  = (pSrc->pDrawable && pSrc->pDrawable->type  == DRAWABLE_WINDOW) ?

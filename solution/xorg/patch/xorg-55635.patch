@@ -1,0 +1,109 @@
+diff --git a/hw/xfree86/ramdac/TI.c b/hw/xfree86/ramdac/TI.c
+index eee5d45..393b774 100644
+--- a/hw/xfree86/ramdac/TI.c
++++ b/hw/xfree86/ramdac/TI.c
+@@ -43,8 +43,7 @@
+ #define TI_MAX_VCO_FREQ  220000
+ 
+ unsigned long
+-TIramdacCalculateMNPForClock(
+-    unsigned long RefClock,	/* In 100Hz units */
++TIramdacCalculateMNPForClock(unsigned long RefClock,    /* In 100Hz units */
+     unsigned long ReqClock,	/* In 100Hz units */
+     char IsPixClock,	/* boolean, is this the pixel or the sys clock */
+     unsigned long MinClock,	/* Min VCO rating */
+@@ -316,9 +315,11 @@ TIramdacProbe(ScrnInfoPtr pScrn, RamDacSupportedInfoRecPtr ramdacs)
+         xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
+ 		"Cannot determine TI RAMDAC type, aborting\n");
+ 	return NULL;
+-    } else {
++    }
++    else {
+         xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
+-		"Attached RAMDAC is %s\n", TIramdacDeviceInfo[TIramdac_ID&0xFFFF].DeviceName);
++                   "Attached RAMDAC is %s\n",
++                   TIramdacDeviceInfo[TIramdac_ID & 0xFFFF].DeviceName);
+     }
+ 
+     for (i=0;ramdacs[i].token != -1;i++) {
+@@ -414,7 +415,8 @@ TIramdac3026SetBpp(ScrnInfoPtr pScrn, RamDacRegRecPtr ramdacReg)
+ #endif
+ 	if (pScrn->depth == 16) {
+ 	    ramdacReg->DacRegs[TIDAC_true_color_ctrl] = 0x45;
+-	} else {
++        }
++        else {
+ 	    ramdacReg->DacRegs[TIDAC_true_color_ctrl] = 0x44;
+ 	}
+ #if 0
+@@ -531,7 +533,8 @@ TIramdac3030SetBpp(ScrnInfoPtr pScrn, RamDacRegRecPtr ramdacReg)
+ #endif
+ 	if (pScrn->depth == 16) {
+ 	    ramdacReg->DacRegs[TIDAC_true_color_ctrl] = 0x45;
+-	} else {
++        }
++        else {
+ 	    ramdacReg->DacRegs[TIDAC_true_color_ctrl] = 0x44;
+ 	}
+ #if 0
+@@ -624,14 +627,18 @@ TIramdacSetCursorColors(ScrnInfoPtr pScrn, int bg, int fg)
+ 
+     /* Background color */
+     (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_WRITE_ADDR, 0, 1);
+-    (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0, ((bg&0x00ff0000) >> 16));
+-    (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0, ((bg&0x0000ff00) >>  8));
++    (*ramdacPtr->WriteDAC) (pScrn, TIDAC_CURS_COLOR, 0,
++                            ((bg & 0x00ff0000) >> 16));
++    (*ramdacPtr->WriteDAC) (pScrn, TIDAC_CURS_COLOR, 0,
++                            ((bg & 0x0000ff00) >> 8));
+     (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0,  (bg&0x000000ff)       );
+ 
+     /* Foreground color */
+     (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_WRITE_ADDR, 0, 2);
+-    (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0, ((fg&0x00ff0000) >> 16));
+-    (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0, ((fg&0x0000ff00) >>  8));
++    (*ramdacPtr->WriteDAC) (pScrn, TIDAC_CURS_COLOR, 0,
++                            ((fg & 0x00ff0000) >> 16));
++    (*ramdacPtr->WriteDAC) (pScrn, TIDAC_CURS_COLOR, 0,
++                            ((fg & 0x0000ff00) >> 8));
+     (*ramdacPtr->WriteDAC)(pScrn, TIDAC_CURS_COLOR, 0,  (fg&0x000000ff)       );
+ }
+ 
+@@ -674,13 +681,11 @@ TIramdacHWCursorInit(xf86CursorInfoPtr infoPtr)
+     infoPtr->UseHWCursor = TIramdacUseHWCursor;
+ }
+ 
+-void TIramdacLoadPalette(
+-    ScrnInfoPtr pScrn, 
++void
++TIramdacLoadPalette(ScrnInfoPtr pScrn,
+     int numColors, 
+-    int *indices,
+-    LOCO *colors,
+-    VisualPtr pVisual
+-){
++                    int *indices, LOCO * colors, VisualPtr pVisual)
++{
+     RamDacRecPtr hwp = RAMDACSCRPTR(pScrn);
+     int i, index, shift;
+ 
+@@ -699,7 +704,8 @@ void TIramdacLoadPalette(
+ 	    (*hwp->WriteData)(pScrn, colors[index].blue);
+ 	}
+     }
+-} else {
++    }
++    else {
+     shift = (pScrn->depth == 15) ? 3 : 0;
+ 
+     for(i = 0; i < numColors; i++) {
+@@ -712,6 +718,8 @@ void TIramdacLoadPalette(
+ }
+ }
+ 
+-TIramdacLoadPaletteProc *TIramdacLoadPaletteWeak(void) {
++TIramdacLoadPaletteProc *
++TIramdacLoadPaletteWeak(void)
++{
+     return TIramdacLoadPalette;
+ }

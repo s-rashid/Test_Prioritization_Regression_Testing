@@ -1,0 +1,12 @@
+diff --git a/Xext/syncsrv.h b/Xext/syncsrv.h
+index f2f7a0f..2fa8687 100644
+--- a/Xext/syncsrv.h
++++ b/Xext/syncsrv.h
+@@ -83,6 +83,7 @@ typedef struct _SysCounterInfo {
+     SyncCounterType counterType;        /* how can this counter change */
+     SyncSystemCounterQueryValue QueryValue;
+     SyncSystemCounterBracketValues BracketValues;
++    void *private;
+     struct xorg_list entry;
+ } SysCounterInfo;
+ 

@@ -1,0 +1,91 @@
+diff --git a/mi/mipolycon.c b/mi/mipolycon.c
+index c201e39..e831633 100644
+--- a/mi/mipolycon.c
++++ b/mi/mipolycon.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -72,10 +71,7 @@ static int getPolyYBounds(DDXPointPtr pts, int n, int *by, int *ty);
+  *     this code.
+  */
+ Bool
+-miFillConvexPoly(
+-    DrawablePtr dst,
+-    GCPtr	pgc,
+-    int		count,                /* number of points        */
++miFillConvexPoly(DrawablePtr dst, GCPtr pgc, int count, /* number of points        */
+     DDXPointPtr ptsIn                 /* the points              */
+     )
+ {
+@@ -107,8 +103,7 @@ miFillConvexPoly(
+ 	return TRUE;
+     ptsOut = FirstPoint = malloc(sizeof(DDXPointRec)*dy);
+     width = FirstWidth = malloc(sizeof(int) * dy);
+-    if(!FirstPoint || !FirstWidth)
+-    {
++    if (!FirstPoint || !FirstWidth) {
+ 	free(FirstWidth);
+ 	free(FirstPoint);
+ 	return FALSE;
+@@ -173,26 +168,22 @@ miFillConvexPoly(
+          */
+         i = min(ptsIn[nextleft].y, ptsIn[nextright].y) - y;
+ 	/* in case we're called with non-convex polygon */
+-	if(i < 0)
+-        {
++        if (i < 0) {
+ 	    free(FirstWidth);
+ 	    free(FirstPoint);
+ 	    return TRUE;
+ 	}
+-        while (i-- > 0) 
+-        {
++        while (i-- > 0) {
+             ptsOut->y = y;
+ 
+             /*
+              *  reverse the edges if necessary
+              */
+-            if (xl < xr) 
+-            {
++            if (xl < xr) {
+                 *(width++) = xr - xl;
+                 (ptsOut++)->x = xl;
+             }
+-            else 
+-            {
++            else {
+                 *(width++) = xl - xr;
+                 (ptsOut++)->x = xr;
+             }
+@@ -208,14 +199,12 @@ miFillConvexPoly(
+      * Finally, fill the <remaining> spans
+      */
+     (*pgc->ops->FillSpans)(dst, pgc, 
+-		      ptsOut-FirstPoint,FirstPoint,FirstWidth,
+-		      1);
++                            ptsOut - FirstPoint, FirstPoint, FirstWidth, 1);
+     free(FirstWidth);
+     free(FirstPoint);
+     return TRUE;
+ }
+ 
+-
+ /*
+  *     Find the index of the point with the smallest y.
+  */
+@@ -230,8 +219,7 @@ getPolyYBounds(DDXPointPtr pts, int n, int *by, int *ty)
+     ymin = ymax = (pts++)->y;
+ 
+     while (--n > 0) {
+-        if (pts->y < ymin)
+-	{
++        if (pts->y < ymin) {
+             ptMin = pts;
+             ymin = pts->y;
+         }

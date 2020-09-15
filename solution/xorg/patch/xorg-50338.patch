@@ -1,0 +1,20 @@
+diff --git a/os/osinit.c b/os/osinit.c
+index 32747df..de815c6 100644
+--- a/os/osinit.c
++++ b/os/osinit.c
+@@ -168,15 +168,9 @@ OsInit(void)
+ 	struct sigaction act, oact;
+ 	int i;
+ 	int siglist[] = { SIGSEGV, SIGQUIT, SIGILL, SIGFPE, SIGBUS,
+-#ifdef SIGSYS
+ 			  SIGSYS,
+-#endif
+-#ifdef SIGXCPU
+ 			  SIGXCPU,
+-#endif
+-#ifdef SIGXFSZ
+ 			  SIGXFSZ,
+-#endif
+ #ifdef SIGEMT
+ 			  SIGEMT,
+ #endif

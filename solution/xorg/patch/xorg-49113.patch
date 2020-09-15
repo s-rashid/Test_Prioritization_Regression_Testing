@@ -1,0 +1,25 @@
+diff --git a/Xext/saver.c b/Xext/saver.c
+index 696c4aa..6d91ddf 100644
+--- a/Xext/saver.c
++++ b/Xext/saver.c
+@@ -226,8 +226,8 @@ MakeScreenPrivate (
+ 	ScreenPtr /* pScreen */
+ 	);
+ 
+-static int ScreenPrivateKeyIndex;
+-static DevPrivateKey ScreenPrivateKey = &ScreenPrivateKeyIndex;
++static DevPrivateKeyRec ScreenPrivateKeyRec;
++#define ScreenPrivateKey (&ScreenPrivateKeyRec)
+ 
+ #define GetScreenPrivate(s) ((ScreenSaverScreenPrivatePtr) \
+     dixLookupPrivate(&(s)->devPrivates, ScreenPrivateKey))
+@@ -252,6 +252,9 @@ ScreenSaverExtensionInit(INITARGS)
+     int		    i;
+     ScreenPtr	    pScreen;
+ 
++    if (!dixRegisterPrivateKey(&ScreenPrivateKeyRec, PRIVATE_SCREEN, 0))
++	return;
++
+     AttrType = CreateNewResourceType(ScreenSaverFreeAttr, "SaverAttr");
+     SaverEventType = CreateNewResourceType(ScreenSaverFreeEvents,
+ 					   "SaverEvent");

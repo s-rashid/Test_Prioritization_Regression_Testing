@@ -1,0 +1,20 @@
+diff --git a/dix/events.c b/dix/events.c
+index 015c2b1..7e0867c 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -5080,12 +5080,9 @@ InitEvents(void)
+ void
+ CloseDownEvents(void)
+ {
+-    int len;
+-    EventListPtr list;
+-
+-    len = GetEventList(&list);
+-    while(len--)
+-        xfree(list[len].event);
++    FreeEventList(InputEventList, InputEventListLen);
++    InputEventListLen = 0;
++    InputEventList = NULL;
+ }
+ 
+ /**

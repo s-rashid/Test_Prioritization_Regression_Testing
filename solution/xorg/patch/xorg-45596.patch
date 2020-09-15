@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Rotate.c b/hw/xfree86/modes/xf86Rotate.c
+index 618072a..e808434 100644
+--- a/hw/xfree86/modes/xf86Rotate.c
++++ b/hw/xfree86/modes/xf86Rotate.c
+@@ -40,8 +40,7 @@
+ #include "xf86Modes.h"
+ #include "xf86RandR12.h"
+ #include "X11/extensions/render.h"
+-#define DPMS_SERVER
+-#include "X11/extensions/dpms.h"
++#include "X11/extensions/dpmsconst.h"
+ #include "X11/Xatom.h"
+ 
+ /* borrowed from composite extension, move to Render and publish? */

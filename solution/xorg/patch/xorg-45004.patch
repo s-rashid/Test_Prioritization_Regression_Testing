@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/src/kdrive.h b/hw/kdrive/src/kdrive.h
+index c60559a..ce47cf4 100644
+--- a/hw/kdrive/src/kdrive.h
++++ b/hw/kdrive/src/kdrive.h
+@@ -220,6 +220,7 @@ struct _KdPointerInfo {
+     DeviceIntPtr          dixdev;
+     char                  *name;
+     char                  *path;
++    char                  *protocol;
+     InputOption           *options;
+     int                   inputClass;
+ 

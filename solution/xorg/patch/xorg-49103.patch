@@ -1,0 +1,20 @@
+diff --git a/exa/exa.c b/exa/exa.c
+index bbe93f6..118a110 100644
+--- a/exa/exa.c
++++ b/exa/exa.c
+@@ -37,12 +37,9 @@
+ #include "exa_priv.h"
+ #include "exa.h"
+ 
+-static DevPrivateKeyRec exaScreenPrivateKeyRec;
+-#define exaScreenPrivateKey (&exaScreenPrivateKeyRec)
+-static DevPrivateKeyRec exaPixmapPrivateKeyRec;
+-#define exaPixmapPrivateKey (&exaPixmapPrivateKeyRec)
+-static DevPrivateKeyRec exaGCPrivateKeyRec;
+-#define exaGCPrivateKey (&exaGCPrivateKeyRec)
++DevPrivateKeyRec exaScreenPrivateKeyRec;
++DevPrivateKeyRec exaPixmapPrivateKeyRec;
++DevPrivateKeyRec exaGCPrivateKeyRec;
+ 
+ #ifdef MITSHM
+ static ShmFuncs exaShmFuncs = { NULL, NULL };

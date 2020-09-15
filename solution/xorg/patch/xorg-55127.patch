@@ -1,0 +1,306 @@
+diff --git a/fb/fbcopy.c b/fb/fbcopy.c
+index 8983203..e9c252a 100644
+--- a/fb/fbcopy.c
++++ b/fb/fbcopy.c
+@@ -34,13 +34,10 @@ fbCopyRegion (DrawablePtr   pSrcDrawable,
+              DrawablePtr   pDstDrawable,
+              GCPtr         pGC,
+              RegionPtr     pDstRegion,
+-             int           dx,
+-             int           dy,
+-             fbCopyProc    copyProc,
+-             Pixel         bitPlane,
+-             void          *closure)
++             int dx, int dy, fbCopyProc copyProc, Pixel bitPlane, void *closure)
+ {
+-    miCopyRegion(pSrcDrawable, pDstDrawable, pGC, pDstRegion, dx, dy, copyProc, bitPlane, closure);
++    miCopyRegion(pSrcDrawable, pDstDrawable, pGC, pDstRegion, dx, dy, copyProc,
++                 bitPlane, closure);
+ }
+ 
+ /* Compatibility wrapper, to be removed at next ABI change. */
+@@ -52,13 +49,10 @@ fbDoCopy (DrawablePtr  pSrcDrawable,
+          int           yIn,
+          int           widthSrc,
+          int           heightSrc,
+-         int           xOut,
+-         int           yOut,
+-         fbCopyProc    copyProc,
+-         Pixel         bitPlane,
+-         void          *closure)
++         int xOut, int yOut, fbCopyProc copyProc, Pixel bitPlane, void *closure)
+ {
+-    return miDoCopy(pSrcDrawable, pDstDrawable, pGC, xIn, yIn, widthSrc, heightSrc, xOut, yOut, copyProc, bitPlane, closure);
++    return miDoCopy(pSrcDrawable, pDstDrawable, pGC, xIn, yIn, widthSrc,
++                    heightSrc, xOut, yOut, copyProc, bitPlane, closure);
+ }
+ 
+ void
+@@ -68,11 +62,7 @@ fbCopyNtoN (DrawablePtr	pSrcDrawable,
+ 	    BoxPtr	pbox,
+ 	    int		nbox,
+ 	    int		dx,
+-	    int		dy,
+-	    Bool	reverse,
+-	    Bool	upsidedown,
+-	    Pixel	bitplane,
+-	    void	*closure)
++           int dy, Bool reverse, Bool upsidedown, Pixel bitplane, void *closure)
+ {
+     CARD8	alu = pGC ? pGC->alu : GXcopy;
+     FbBits	pm = pGC ? fbGetGCPrivate(pGC)->pm : FB_ALLONES;
+@@ -88,18 +78,14 @@ fbCopyNtoN (DrawablePtr	pSrcDrawable,
+     fbGetDrawable (pSrcDrawable, src, srcStride, srcBpp, srcXoff, srcYoff);
+     fbGetDrawable (pDstDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+ 
+-    while (nbox--)
+-    {
++    while (nbox--) {
+ #ifndef FB_ACCESS_WRAPPER /* pixman_blt() doesn't support accessors yet */
+-	if (pm == FB_ALLONES && alu == GXcopy && !reverse &&
+-	    !upsidedown)
+-	{
+-	    if (!pixman_blt ((uint32_t *)src, (uint32_t *)dst, srcStride, dstStride, srcBpp, dstBpp,
+-			     (pbox->x1 + dx + srcXoff),
+-			     (pbox->y1 + dy + srcYoff),
+-			     (pbox->x1 + dstXoff),
+-			     (pbox->y1 + dstYoff),
+-			     (pbox->x2 - pbox->x1),
++        if (pm == FB_ALLONES && alu == GXcopy && !reverse && !upsidedown) {
++            if (!pixman_blt
++                ((uint32_t *) src, (uint32_t *) dst, srcStride, dstStride,
++                 srcBpp, dstBpp, (pbox->x1 + dx + srcXoff),
++                 (pbox->y1 + dy + srcYoff), (pbox->x1 + dstXoff),
++                 (pbox->y1 + dstYoff), (pbox->x2 - pbox->x1),
+ 			     (pbox->y2 - pbox->y1)))
+ 		goto fallback;
+ 	    else
+@@ -110,20 +96,11 @@ fbCopyNtoN (DrawablePtr	pSrcDrawable,
+ 	fbBlt (src + (pbox->y1 + dy + srcYoff) * srcStride,
+ 	       srcStride,
+ 	       (pbox->x1 + dx + srcXoff) * srcBpp,
+-	       
+ 	       dst + (pbox->y1 + dstYoff) * dstStride,
+ 	       dstStride,
+ 	       (pbox->x1 + dstXoff) * dstBpp,
+-	       
+ 	       (pbox->x2 - pbox->x1) * dstBpp,
+-	       (pbox->y2 - pbox->y1),
+-	       
+-	       alu,
+-	       pm,
+-	       dstBpp,
+-	       
+-	       reverse,
+-	       upsidedown);
++              (pbox->y2 - pbox->y1), alu, pm, dstBpp, reverse, upsidedown);
+ #ifndef FB_ACCESS_WRAPPER
+     next:
+ #endif
+@@ -140,11 +117,7 @@ fbCopy1toN (DrawablePtr	pSrcDrawable,
+ 	    BoxPtr	pbox,
+ 	    int		nbox,
+ 	    int		dx,
+-	    int		dy,
+-	    Bool	reverse,
+-	    Bool	upsidedown,
+-	    Pixel	bitplane,
+-	    void	*closure)
++           int dy, Bool reverse, Bool upsidedown, Pixel bitplane, void *closure)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate(pGC);
+     FbBits	*src;
+@@ -159,45 +132,31 @@ fbCopy1toN (DrawablePtr	pSrcDrawable,
+     fbGetDrawable (pSrcDrawable, src, srcStride, srcBpp, srcXoff, srcYoff);
+     fbGetDrawable (pDstDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+ 
+-    while (nbox--)
+-    {
+-	if (dstBpp == 1)
+-	{
++    while (nbox--) {
++        if (dstBpp == 1) {
+ 	    fbBlt (src + (pbox->y1 + dy + srcYoff) * srcStride,
+ 		   srcStride,
+ 		   (pbox->x1 + dx + srcXoff) * srcBpp,
+-    
+ 		   dst + (pbox->y1 + dstYoff) * dstStride,
+ 		   dstStride,
+ 		   (pbox->x1 + dstXoff) * dstBpp,
+-    
+ 		   (pbox->x2 - pbox->x1) * dstBpp,
+ 		   (pbox->y2 - pbox->y1),
+-    
+ 		   FbOpaqueStipple1Rop(pGC->alu,
+ 				       pGC->fgPixel,pGC->bgPixel),
+-		   pPriv->pm,
+-		   dstBpp,
+-    
+-		   reverse,
+-		   upsidedown);
++                  pPriv->pm, dstBpp, reverse, upsidedown);
+ 	}
+-	else
+-	{
++        else {
+ 	    fbBltOne ((FbStip *) (src + (pbox->y1 + dy + srcYoff) * srcStride),
+ 		      srcStride*(FB_UNIT/FB_STIP_UNIT),
+ 		      (pbox->x1 + dx + srcXoff),
+-    
+ 		      dst + (pbox->y1 + dstYoff) * dstStride,
+ 		      dstStride,
+ 		      (pbox->x1 + dstXoff) * dstBpp,
+ 		      dstBpp,
+-    
+ 		      (pbox->x2 - pbox->x1) * dstBpp,
+ 		      (pbox->y2 - pbox->y1),
+-    
+-		      pPriv->and, pPriv->xor,
+-		      pPriv->bgand, pPriv->bgxor);
++                     pPriv->and, pPriv->xor, pPriv->bgand, pPriv->bgxor);
+ 	}
+ 	pbox++;
+     }
+@@ -213,18 +172,12 @@ fbCopyNto1 (DrawablePtr	pSrcDrawable,
+ 	    BoxPtr	pbox,
+ 	    int		nbox,
+ 	    int		dx,
+-	    int		dy,
+-	    Bool	reverse,
+-	    Bool	upsidedown,
+-	    Pixel	bitplane,
+-	    void	*closure)
++           int dy, Bool reverse, Bool upsidedown, Pixel bitplane, void *closure)
+ {
+     FbGCPrivPtr	pPriv = fbGetGCPrivate (pGC);
+     
+-    while (nbox--)
+-    {
+-	if (pDstDrawable->bitsPerPixel == 1)
+-	{
++    while (nbox--) {
++        if (pDstDrawable->bitsPerPixel == 1) {
+ 	    FbBits	*src;
+ 	    FbStride    srcStride;
+ 	    int		srcBpp;
+@@ -235,28 +188,21 @@ fbCopyNto1 (DrawablePtr	pSrcDrawable,
+ 	    int		dstBpp;
+ 	    int		dstXoff, dstYoff;
+ 	    
+-	    fbGetDrawable (pSrcDrawable, src, srcStride, srcBpp, srcXoff, srcYoff);
+-	    fbGetStipDrawable (pDstDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+-	    fbBltPlane (src + (pbox->y1+ dy + srcYoff) * srcStride,
+-			srcStride,
+-			(pbox->x1 + dx + srcXoff) * srcBpp,
+-			srcBpp,
+-    
+-			dst + (pbox->y1 + dstYoff) * dstStride,
+-			dstStride,
++            fbGetDrawable(pSrcDrawable, src, srcStride, srcBpp, srcXoff,
++                          srcYoff);
++            fbGetStipDrawable(pDstDrawable, dst, dstStride, dstBpp, dstXoff,
++                              dstYoff);
++            fbBltPlane(src + (pbox->y1 + dy + srcYoff) * srcStride, srcStride,
++                       (pbox->x1 + dx + srcXoff) * srcBpp, srcBpp,
++                       dst + (pbox->y1 + dstYoff) * dstStride, dstStride,
+ 			(pbox->x1 + dstXoff) * dstBpp,
+-    
+-			(pbox->x2 - pbox->x1) * srcBpp,
+-			(pbox->y2 - pbox->y1),
+-    
++                       (pbox->x2 - pbox->x1) * srcBpp, (pbox->y2 - pbox->y1),
+ 			(FbStip) pPriv->and, (FbStip) pPriv->xor,
+-			(FbStip) pPriv->bgand, (FbStip) pPriv->bgxor,
+-			bitplane);
++                       (FbStip) pPriv->bgand, (FbStip) pPriv->bgxor, bitplane);
+ 	    fbFinishAccess (pDstDrawable);
+ 	    fbFinishAccess (pSrcDrawable);
+ 	}
+-	else
+-	{
++        else {
+ 	    FbBits	*src;
+ 	    FbStride    srcStride;
+ 	    int		srcBpp;
+@@ -279,40 +225,34 @@ fbCopyNto1 (DrawablePtr	pSrcDrawable,
+ 	    if (!tmp)
+ 		return;
+ 	    
+-	    fbGetDrawable (pSrcDrawable, src, srcStride, srcBpp, srcXoff, srcYoff);
+-	    fbGetDrawable (pDstDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
++            fbGetDrawable(pSrcDrawable, src, srcStride, srcBpp, srcXoff,
++                          srcYoff);
++            fbGetDrawable(pDstDrawable, dst, dstStride, dstBpp, dstXoff,
++                          dstYoff);
+ 	    
+ 	    fbBltPlane (src + (pbox->y1+ dy + srcYoff) * srcStride,
+ 			srcStride,
+ 			(pbox->x1 + dx + srcXoff) * srcBpp,
+ 			srcBpp,
+-    
+ 			tmp,
+ 			tmpStride,
+ 			0,
+-    
+ 			width * srcBpp,
+ 			height,
+-    
+ 			fbAndStip(GXcopy,FB_ALLONES,FB_ALLONES),
+ 			fbXorStip(GXcopy,FB_ALLONES,FB_ALLONES),
+ 			fbAndStip(GXcopy,0,FB_ALLONES),
+-			fbXorStip(GXcopy,0,FB_ALLONES),
+-			bitplane);
++                       fbXorStip(GXcopy, 0, FB_ALLONES), bitplane);
+ 	    fbBltOne (tmp,
+ 		      tmpStride,
+ 		      0,
+-    
+ 		      dst + (pbox->y1 + dstYoff) * dstStride,
+ 		      dstStride,
+ 		      (pbox->x1 + dstXoff) * dstBpp,
+ 		      dstBpp,
+-    
+ 		      width * dstBpp,
+ 		      height,
+-    
+-		      pPriv->and, pPriv->xor,
+-		      pPriv->bgand, pPriv->bgxor);
++                     pPriv->and, pPriv->xor, pPriv->bgand, pPriv->bgxor);
+ 	    free(tmp);
+ 
+ 	    fbFinishAccess (pDstDrawable);
+@@ -326,12 +266,7 @@ RegionPtr
+ fbCopyArea (DrawablePtr	pSrcDrawable,
+ 	    DrawablePtr	pDstDrawable,
+ 	    GCPtr	pGC,
+-	    int		xIn, 
+-	    int		yIn,
+-	    int		widthSrc, 
+-	    int		heightSrc,
+-	    int		xOut, 
+-	    int		yOut)
++           int xIn, int yIn, int widthSrc, int heightSrc, int xOut, int yOut)
+ {
+     miCopyProc	copy;
+ 
+@@ -350,10 +285,7 @@ fbCopyPlane (DrawablePtr    pSrcDrawable,
+ 	     int	    xIn, 
+ 	     int	    yIn,
+ 	     int	    widthSrc, 
+-	     int	    heightSrc,
+-	     int	    xOut, 
+-	     int	    yOut,
+-	     unsigned long  bitplane)
++            int heightSrc, int xOut, int yOut, unsigned long bitplane)
+ {
+     if (pSrcDrawable->bitsPerPixel > 1)
+ 	return miDoCopy (pSrcDrawable, pDstDrawable, pGC,
+@@ -366,7 +298,5 @@ fbCopyPlane (DrawablePtr    pSrcDrawable,
+     else
+ 	return miHandleExposures(pSrcDrawable, pDstDrawable, pGC,
+ 				 xIn, yIn,
+-				 widthSrc,
+-				 heightSrc,
+-				 xOut, yOut, bitplane);
++                                 widthSrc, heightSrc, xOut, yOut, bitplane);
+ }

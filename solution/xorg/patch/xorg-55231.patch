@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/dmxcmap.h b/hw/dmx/dmxcmap.h
+index 75e0650..29318b5 100644
+--- a/hw/dmx/dmxcmap.h
++++ b/hw/dmx/dmxcmap.h
+@@ -44,7 +44,6 @@ typedef struct _dmxColormapPriv {
+     Colormap  cmap;
+ } dmxColormapPrivRec, *dmxColormapPrivPtr;
+ 
+-
+ extern Bool dmxCreateColormap(ColormapPtr pColormap);
+ extern void dmxDestroyColormap(ColormapPtr pColormap);
+ extern void dmxInstallColormap(ColormapPtr pColormap);

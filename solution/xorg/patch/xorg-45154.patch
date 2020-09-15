@@ -1,0 +1,17 @@
+diff --git a/Xi/xichangecursor.c b/Xi/xichangecursor.c
+index ee2d65d..7517d2c 100644
+--- a/Xi/xichangecursor.c
++++ b/Xi/xichangecursor.c
+@@ -74,12 +74,6 @@ int ProcXIChangeCursor(ClientPtr client)
+     REQUEST(xXIChangeCursorReq);
+     REQUEST_SIZE_MATCH(xXIChangeCursorReq);
+ 
+-    if (stuff->deviceid > 0xFF) /* FIXME */
+-    {
+-        client->errorValue = stuff->deviceid;
+-        return BadImplementation;
+-    }
+-
+     rc = dixLookupDevice(&pDev, stuff->deviceid, client, DixSetAttrAccess);
+     if (rc != Success)
+         return rc;

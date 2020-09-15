@@ -1,0 +1,26 @@
+diff --git a/hw/xquartz/quartz.c b/hw/xquartz/quartz.c
+index 26b2c1f..6c185a8 100644
+--- a/hw/xquartz/quartz.c
++++ b/hw/xquartz/quartz.c
+@@ -80,7 +80,6 @@ Bool XQuartzRootlessDefault = TRUE;
+ Bool XQuartzIsRootless = TRUE;
+ Bool XQuartzServerVisible = FALSE;
+ Bool XQuartzFullscreenMenu = FALSE;
+-Bool XQuartzUseSysBeep = FALSE;
+ 
+ /*
+ ===========================================================================
+@@ -446,3 +445,13 @@ void QuartzCopyDisplayIDs(ScreenPtr pScreen,
+     memcpy(pQuartzScreen->displayIDs, displayIDs, size);
+     pQuartzScreen->displayCount = displayCount;
+ }
++
++void NSBeep(void);
++void DDXRingBell(
++    int volume,         // volume is % of max
++    int pitch,          // pitch is Hz
++    int duration)       // duration is milliseconds
++{
++    if (volume)
++        NSBeep();
++}

@@ -1,0 +1,13 @@
+diff --git a/randr/rrdispatch.c b/randr/rrdispatch.c
+index ad1439d..ebfda57 100644
+--- a/randr/rrdispatch.c
++++ b/randr/rrdispatch.c
+@@ -65,7 +65,7 @@ ProcRRQueryVersion (ClientPtr client)
+ 	swapl(&rep.minorVersion, n);
+     }
+     WriteToClient(client, sizeof(xRRQueryVersionReply), (char *)&rep);
+-    return (client->noClientException);
++    return Success;
+ }
+ 
+ static int

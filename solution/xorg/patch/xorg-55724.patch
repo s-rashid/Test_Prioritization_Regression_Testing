@@ -1,0 +1,73 @@
+diff --git a/hw/xnest/Display.c b/hw/xnest/Display.c
+index 3176b60..a2f8acb 100644
+--- a/hw/xnest/Display.c
++++ b/hw/xnest/Display.c
+@@ -12,7 +12,6 @@ is" without express or implied warranty.
+ 
+ */
+ 
+-
+ #ifdef HAVE_XNEST_CONFIG_H
+ #include <xnest-config.h>
+ #endif
+@@ -61,7 +60,8 @@ unsigned long xnestEventMask;
+ #endif
+ 
+ static int _X_NORETURN
+-x_io_error_handler (Display *dpy) {
++x_io_error_handler(Display * dpy)
++{
+     ErrorF("Lost connection to X server: %s\n", strerror(errno));
+     CloseWellKnownConnections();
+     OsCleanup(1);
+@@ -75,7 +75,8 @@ xnestOpenDisplay(int argc, char *argv[])
+   long mask;
+   int i, j;
+ 
+-  if (!xnestDoFullGeneration) return;
++    if (!xnestDoFullGeneration)
++        return;
+ 
+   XSetIOErrorHandler(x_io_error_handler);
+ 
+@@ -111,7 +112,8 @@ xnestOpenDisplay(int argc, char *argv[])
+   }
+   else {
+     vi.visualid = XVisualIDFromVisual(DefaultVisual(xnestDisplay, 
+-				      DefaultScreen(xnestDisplay))); 
++                                                        DefaultScreen
++                                                        (xnestDisplay)));
+     xnestDefaultVisualIndex = 0;
+     for (i = 0; i < xnestNumVisuals; i++)
+       if (vi.visualid == xnestVisuals[i].visualid)
+@@ -123,7 +125,8 @@ xnestOpenDisplay(int argc, char *argv[])
+ 					     sizeof(Colormap));
+   for (i = 0; i < xnestNumDefaultColormaps; i++)
+     xnestDefaultColormaps[i] = XCreateColormap(xnestDisplay,
+-					       DefaultRootWindow(xnestDisplay),
++                                                   DefaultRootWindow
++                                                   (xnestDisplay),
+ 					       xnestVisuals[i].visual,
+ 					       AllocNone);
+   
+@@ -177,9 +180,7 @@ xnestOpenDisplay(int argc, char *argv[])
+   xnestIconBitmap = 
+     XCreateBitmapFromData(xnestDisplay,
+ 			  DefaultRootWindow(xnestDisplay),
+-			  (char *)icon_bits,
+-			  icon_width,
+-			  icon_height);
++                              (char *) icon_bits, icon_width, icon_height);
+   
+   xnestScreenSaverPixmap = 
+     XCreatePixmapFromBitmapData(xnestDisplay,
+@@ -196,7 +197,8 @@ xnestOpenDisplay(int argc, char *argv[])
+ void
+ xnestCloseDisplay(void)
+ {
+-  if (!xnestDoFullGeneration || !xnestDisplay) return;
++    if (!xnestDoFullGeneration || !xnestDisplay)
++        return;
+ 
+   /*
+     If xnestDoFullGeneration all x resources will be destroyed upon closing

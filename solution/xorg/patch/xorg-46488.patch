@@ -1,0 +1,16 @@
+diff --git a/hw/xquartz/xpr/appledri.c b/hw/xquartz/xpr/appledri.c
+index 835ccab..74a4ec3 100644
+--- a/hw/xquartz/xpr/appledri.c
++++ b/hw/xquartz/xpr/appledri.c
+@@ -255,10 +255,10 @@ ProcAppleDRIDestroySurface(
+     register ClientPtr client
+ )
+ {
++    int rc;
+     REQUEST(xAppleDRIDestroySurfaceReq);
+     DrawablePtr pDrawable;
+     REQUEST_SIZE_MATCH(xAppleDRIDestroySurfaceReq);
+-    int rc;
+ 
+     rc = dixLookupDrawable(&pDrawable, stuff->drawable, client, 0,
+ 			   DixReadAccess);

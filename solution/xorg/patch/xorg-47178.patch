@@ -1,0 +1,14 @@
+diff --git a/xfixes/region.c b/xfixes/region.c
+index 966eda0..59d8cee 100644
+--- a/xfixes/region.c
++++ b/xfixes/region.c
+@@ -64,7 +64,8 @@ Bool
+ XFixesRegionInit (void)
+ {
+     RegionResType = CreateNewResourceType(RegionResFree);
+-    return TRUE;
++
++    return (RegionResType != 0);
+ }
+ 
+ int

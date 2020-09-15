@@ -1,0 +1,13 @@
+diff --git a/dix/main.c b/dix/main.c
+index bc958b8..955b7ea 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -139,8 +139,6 @@ int main(int argc, char *argv[], char *envp[])
+ 
+     InitRegions();
+ 
+-    pixman_disable_out_of_bounds_workaround();
+-
+     CheckUserParameters(argc, argv, envp);
+ 
+     CheckUserAuthorization();

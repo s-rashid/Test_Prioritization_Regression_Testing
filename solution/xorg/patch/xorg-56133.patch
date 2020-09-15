@@ -1,0 +1,20 @@
+diff --git a/xfixes/xfixesint.h b/xfixes/xfixesint.h
+index 6ba276e..71f88a9 100644
+--- a/xfixes/xfixesint.h
++++ b/xfixes/xfixesint.h
+@@ -91,6 +91,7 @@ int
+ SProcXFixesSelectSelectionInput (ClientPtr client);
+ 
+ void
++
+ SXFixesSelectionNotifyEvent (xXFixesSelectionNotifyEvent *from,
+ 			     xXFixesSelectionNotifyEvent *to);
+ Bool
+@@ -107,6 +108,7 @@ int
+ SProcXFixesSelectCursorInput (ClientPtr client);
+ 
+ void
++
+ SXFixesCursorNotifyEvent (xXFixesCursorNotifyEvent *from,
+ 			  xXFixesCursorNotifyEvent *to);
+ 

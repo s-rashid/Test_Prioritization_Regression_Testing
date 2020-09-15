@@ -1,0 +1,141 @@
+diff --git a/os/backtrace.c b/os/backtrace.c
+index edaeb17..81348f4 100644
+--- a/os/backtrace.c
++++ b/os/backtrace.c
+@@ -37,17 +37,20 @@
+ #include <dlfcn.h>
+ #include <execinfo.h>
+ 
+-void xorg_backtrace(void)
++void
++xorg_backtrace(void)
+ {
+     void *array[64];
+     const char *mod;
+     int size, i;
+     Dl_info info;
++
+     ErrorF("\n");
+     ErrorF("Backtrace:\n");
+     size = backtrace(array, 64);
+     for (i = 0; i < size; i++) {
+ 	int rc = dladdr(array[i], &info);
++
+ 	if (rc == 0) {
+ 	    ErrorF("%d: ?? [%p]\n", i, array[i]);
+ 	    continue;
+@@ -55,10 +58,14 @@ void xorg_backtrace(void)
+ 	mod = (info.dli_fname && *info.dli_fname) ? info.dli_fname : "(vdso)";
+ 	if (info.dli_saddr)
+ 	    ErrorF("%d: %s (%s+0x%lx) [%p]\n", i, mod,
+-		   info.dli_sname, (long unsigned int)((char *) array[i] - (char *) info.dli_saddr), array[i]);
++                   info.dli_sname,
++                   (long unsigned int) ((char *) array[i] -
++                                        (char *) info.dli_saddr), array[i]);
+ 	else
+ 	    ErrorF("%d: %s (%p+0x%lx) [%p]\n", i, mod,
+-		   info.dli_fbase, (long unsigned int)((char *) array[i] - (char *) info.dli_fbase), array[i]);
++                   info.dli_fbase,
++                   (long unsigned int) ((char *) array[i] -
++                                        (char *) info.dli_fbase), array[i]);
+     }
+     ErrorF("\n");
+ }
+@@ -83,7 +90,8 @@ void xorg_backtrace(void)
+ #endif
+ 
+ /* Called for each frame on the stack to print it's contents */
+-static int xorg_backtrace_frame(uintptr_t pc, int signo, void *arg)
++static int
++xorg_backtrace_frame(uintptr_t pc, int signo, void *arg)
+ {
+     Dl_info dlinfo;
+     ElfSym *dlsym;
+@@ -110,14 +118,15 @@ static int xorg_backtrace_frame(uintptr_t pc, int signo, void *arg)
+ 	
+ 	if (offset < dlsym->st_size) { /* inside a function */
+ 	    symname = dlinfo.dli_sname;
+-	} else { /* found which file it was in, but not which function */
++        }
++        else {                  /* found which file it was in, but not which function */
+ 	    symname = "<section start>";
+ 	    offset = pc - (uintptr_t)dlinfo.dli_fbase;
+ 	}
+-	ErrorF("%s: %s:%s+0x%lx\n", header, dlinfo.dli_fname,
+-	       symname, offset);
++        ErrorF("%s: %s:%s+0x%lx\n", header, dlinfo.dli_fname, symname, offset);
+ 
+-    } else {
++    }
++    else {
+ 	/* Couldn't find symbol info from system dynamic loader, should
+ 	 * probably poke elfloader here, but haven't written that code yet,
+ 	 * so we just print the pc.
+@@ -130,7 +139,9 @@ static int xorg_backtrace_frame(uintptr_t pc, int signo, void *arg)
+ # endif /* HAVE_WALKCONTEXT */
+ 
+ # ifdef HAVE_PSTACK
+-static int xorg_backtrace_pstack(void) {
++static int
++xorg_backtrace_pstack(void)
++{
+     pid_t kidpid;
+     int pipefd[2];
+ 
+@@ -143,7 +154,8 @@ static int xorg_backtrace_pstack(void) {
+     if (kidpid == -1) {
+ 	/* ERROR */
+ 	return -1;
+-    } else if (kidpid == 0) {
++    }
++    else if (kidpid == 0) {
+ 	/* CHILD */
+ 	char parent[16];
+ 	
+@@ -156,7 +168,8 @@ static int xorg_backtrace_pstack(void) {
+ 	snprintf(parent, sizeof(parent), "%d", getppid());
+ 	execle("/usr/bin/pstack", "pstack", parent, NULL);
+ 	exit(1);
+-    } else {
++    }
++    else {
+ 	/* PARENT */
+ 	char btline[256];
+ 	int kidstat;
+@@ -172,8 +185,7 @@ static int xorg_backtrace_pstack(void) {
+ 		btline[bytesread] = 0;
+ 		ErrorF("%s", btline);
+ 	    }
+-	    else if ((bytesread < 0) ||
+-		     ((errno != EINTR) && (errno != EAGAIN)))
++            else if ((bytesread < 0) || ((errno != EINTR) && (errno != EAGAIN)))
+ 		done = 1;
+ 	}
+ 	close(pipefd[0]);
+@@ -185,10 +197,11 @@ static int xorg_backtrace_pstack(void) {
+ }
+ # endif /* HAVE_PSTACK */
+ 
+-
+ # if defined(HAVE_PSTACK) || defined(HAVE_WALKCONTEXT)
+ 
+-void xorg_backtrace(void) {
++void
++xorg_backtrace(void)
++{
+ 
+     ErrorF("\n");
+     ErrorF("Backtrace:\n");
+@@ -216,7 +229,11 @@ void xorg_backtrace(void) {
+ # else
+ 
+ /* Default fallback if we can't find any way to get a backtrace */
+-void xorg_backtrace(void) { return; }
++void
++xorg_backtrace(void)
++{
++    return;
++}
+ 
+ # endif
+ #endif

@@ -1,0 +1,27 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 47fa6d4..0d2552d 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -145,9 +145,10 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+     pExaPixmap = ExaGetPixmapPriv(pPixmap);
+ 
+     if (pExaPixmap) {
+-        if (pPixData) {
+ 	    if (!exaPixmapIsPinned(pPixmap)) {
+ 		free(pExaPixmap->sys_ptr);
++	    pExaPixmap->sys_ptr = pPixmap->devPrivate.ptr = NULL;
++	    pExaPixmap->sys_pitch = pPixmap->devKind = 0;
+ 
+ 		/* We no longer need this. */
+ 		if (pExaPixmap->pDamage) {
+@@ -156,8 +157,9 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+ 		    pExaPixmap->pDamage = NULL;
+ 		}
+ 	    }
++
++        if (pPixData)
+             pExaPixmap->sys_ptr = pPixData;
+-	}
+ 
+         if (devKind > 0)
+             pExaPixmap->sys_pitch = devKind;

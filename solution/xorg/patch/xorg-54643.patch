@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 0e4ba86..f7b9456 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -341,7 +341,7 @@ IsMaster(DeviceIntPtr dev)
+ Bool
+ IsFloating(DeviceIntPtr dev)
+ {
+-    return GetMaster(dev, MASTER_KEYBOARD) == NULL;
++    return !IsMaster(dev) && GetMaster(dev, MASTER_KEYBOARD) == NULL;
+ }
+ 
+ /**

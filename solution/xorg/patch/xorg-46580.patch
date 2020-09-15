@@ -1,0 +1,22 @@
+diff --git a/dix/events.c b/dix/events.c
+index d60b8a5..14e3900 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -1460,7 +1460,7 @@ static DevPrivateKey GrabPrivateKey = &GrabPrivateKeyIndex;
+ static void
+ DetachFromMaster(DeviceIntPtr dev)
+ {
+-    int id;
++    intptr_t id;
+     if (!dev->u.master)
+         return;
+ 
+@@ -1482,7 +1482,7 @@ ReattachToOldMaster(DeviceIntPtr dev)
+ 
+ 
+     p = dixLookupPrivate(&dev->devPrivates, GrabPrivateKey);
+-    id = (int)p; /* silence gcc warnings */
++    id = (intptr_t) p; /* silence gcc warnings */
+     dixLookupDevice(&master, id, serverClient, DixUseAccess);
+ 
+     if (master)

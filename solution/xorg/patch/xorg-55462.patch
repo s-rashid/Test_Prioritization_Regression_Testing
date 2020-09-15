@@ -1,0 +1,31 @@
+diff --git a/hw/xfree86/ddc/ddcProperty.c b/hw/xfree86/ddc/ddcProperty.c
+index c3aced5..fc63f0e 100644
+--- a/hw/xfree86/ddc/ddcProperty.c
++++ b/hw/xfree86/ddc/ddcProperty.c
+@@ -56,12 +56,14 @@ addRootWindowProperties(ScrnInfoPtr pScrn, xf86MonPtr DDC)
+     if (DDC->flags & MONITOR_DISPLAYID) {
+ 	/* Don't bother, use RANDR already */
+ 	return;
+-    } else if (DDC->ver.version == 1) {
++    }
++    else if (DDC->ver.version == 1) {
+ 	int size = 128 +
+ 	    (DDC->flags & EDID_COMPLETE_RAWDATA ? DDC->no_sections * 128 : 0);
+ 
+ 	edidMakeAtom(scrnIndex, EDID1_ATOM_NAME, DDC->rawData, size);
+-    } else {
++    }
++    else {
+ 	xf86DrvMsg(scrnIndex, X_PROBED, "unexpected EDID version %d.%d\n",
+ 		DDC->ver.version, DDC->ver.revision);
+ 	return;
+@@ -74,8 +76,7 @@ xf86SetDDCproperties(ScrnInfoPtr pScrn, xf86MonPtr DDC)
+     if (!pScrn || !pScrn->monitor || !DDC)
+         return FALSE;
+ 
+-    if (DDC->flags & MONITOR_DISPLAYID)
+-	;
++    if (DDC->flags & MONITOR_DISPLAYID);
+     else
+ 	xf86EdidMonitorSet(pScrn->scrnIndex, pScrn->monitor, DDC);
+ 

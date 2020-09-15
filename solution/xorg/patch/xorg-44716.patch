@@ -1,0 +1,13 @@
+diff --git a/render/render.c b/render/render.c
+index 8487b60..5622994 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -1857,7 +1857,7 @@ ProcRenderCreateAnimCursor (ClientPtr client)
+     elt = (xAnimCursorElt *) (stuff + 1);
+     for (i = 0; i < ncursor; i++)
+     {
+-	ret = dixLookupResourceByType((pointer *)(cursors + 1), elt->cursor,
++	ret = dixLookupResourceByType((pointer *)(cursors + i), elt->cursor,
+ 				      RT_CURSOR, client, DixReadAccess);
+ 	if (ret != Success)
+ 	{

@@ -1,0 +1,13 @@
+diff --git a/render/mipict.c b/render/mipict.c
+index b5dfcb2..1dad88e 100644
+--- a/render/mipict.c
++++ b/render/mipict.c
+@@ -106,7 +106,7 @@ miChangePictureClip (PicturePtr    pPicture,
+ 	if (!clientClip)
+ 	    return BadAlloc;
+ 	clientClipType = CT_REGION;
+-	xfree(value);
++	free(value);
+ 	break;
+     }
+     (*ps->DestroyPictureClip) (pPicture);

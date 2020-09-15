@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86str.h b/hw/xfree86/common/xf86str.h
+index c9b261d..b979884 100644
+--- a/hw/xfree86/common/xf86str.h
++++ b/hw/xfree86/common/xf86str.h
+@@ -765,7 +765,6 @@ typedef struct _ScrnInfoRec {
+ 
+     /* Allow screens to be enabled/disabled individually */
+     Bool		vtSema;
+-    DevUnion		pixmapPrivate;		/* saved devPrivate from pixmap */
+ 
+     /* hw cursor moves at SIGIO time */
+     Bool		silkenMouse;

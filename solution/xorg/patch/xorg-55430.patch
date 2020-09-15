@@ -1,0 +1,81 @@
+diff --git a/hw/xfree86/common/xf86PM.c b/hw/xfree86/common/xf86PM.c
+index 47e0297..f69fffa 100644
+--- a/hw/xfree86/common/xf86PM.c
++++ b/hw/xfree86/common/xf86PM.c
+@@ -44,21 +44,51 @@ static int
+ eventName(pmEvent event, const char **str)
+ {
+     switch(event) {
+-    case XF86_APM_SYS_STANDBY: *str="System Standby Request"; return 0;
+-    case XF86_APM_SYS_SUSPEND: *str="System Suspend Request"; return 0;
+-    case XF86_APM_CRITICAL_SUSPEND: *str="Critical Suspend"; return 0;
+-    case XF86_APM_USER_STANDBY: *str="User System Standby Request"; return 0;
+-    case XF86_APM_USER_SUSPEND: *str="User System Suspend Request"; return 0;
+-    case XF86_APM_STANDBY_RESUME: *str="System Standby Resume"; return 0;
+-    case XF86_APM_NORMAL_RESUME: *str="Normal Resume System"; return 0;
+-    case XF86_APM_CRITICAL_RESUME: *str="Critical Resume System"; return 0;
+-    case XF86_APM_LOW_BATTERY: *str="Battery Low"; return 3;
+-    case XF86_APM_POWER_STATUS_CHANGE: *str="Power Status Change";return 3;
+-    case XF86_APM_UPDATE_TIME: *str="Update Time";return 3;
+-    case XF86_APM_CAPABILITY_CHANGED: *str="Capability Changed"; return 3;
+-    case XF86_APM_STANDBY_FAILED: *str="Standby Request Failed"; return 0;
+-    case XF86_APM_SUSPEND_FAILED: *str="Suspend Request Failed"; return 0;
+-    default: *str="Unknown Event"; return 0;
++    case XF86_APM_SYS_STANDBY:
++        *str = "System Standby Request";
++        return 0;
++    case XF86_APM_SYS_SUSPEND:
++        *str = "System Suspend Request";
++        return 0;
++    case XF86_APM_CRITICAL_SUSPEND:
++        *str = "Critical Suspend";
++        return 0;
++    case XF86_APM_USER_STANDBY:
++        *str = "User System Standby Request";
++        return 0;
++    case XF86_APM_USER_SUSPEND:
++        *str = "User System Suspend Request";
++        return 0;
++    case XF86_APM_STANDBY_RESUME:
++        *str = "System Standby Resume";
++        return 0;
++    case XF86_APM_NORMAL_RESUME:
++        *str = "Normal Resume System";
++        return 0;
++    case XF86_APM_CRITICAL_RESUME:
++        *str = "Critical Resume System";
++        return 0;
++    case XF86_APM_LOW_BATTERY:
++        *str = "Battery Low";
++        return 3;
++    case XF86_APM_POWER_STATUS_CHANGE:
++        *str = "Power Status Change";
++        return 3;
++    case XF86_APM_UPDATE_TIME:
++        *str = "Update Time";
++        return 3;
++    case XF86_APM_CAPABILITY_CHANGED:
++        *str = "Capability Changed";
++        return 3;
++    case XF86_APM_STANDBY_FAILED:
++        *str = "Standby Request Failed";
++        return 0;
++    case XF86_APM_SUSPEND_FAILED:
++        *str = "Suspend Request Failed";
++        return 0;
++    default:
++        *str = "Unknown Event";
++        return 0;
+     }
+ }
+ 
+@@ -137,7 +167,8 @@ DoApmEvent(pmEvent event, Bool undo)
+ 	if (!undo && !suspended) {
+ 	    suspend(event,undo);
+ 	    suspended = TRUE;
+-	} else if (undo && suspended) {
++        }
++        else if (undo && suspended) {
+ 	    resume(event,undo);
+ 	    suspended = FALSE;
+ 	}

@@ -1,0 +1,42 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 2e65a04..0f00f24 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -261,8 +261,8 @@ AddInputDevice(ClientPtr client, DeviceProc deviceProc, Bool autoStart)
+     if (!dev)
+ 	return (DeviceIntPtr)NULL;
+     dev->id = devid;
+-    dev->public.processInputProc = (ProcessInputProc)NoopDDA;
+-    dev->public.realInputProc = (ProcessInputProc)NoopDDA;
++    dev->public.processInputProc = ProcessOtherEvent;
++    dev->public.realInputProc = ProcessOtherEvent;
+     dev->public.enqueueInputProc = EnqueueEvent;
+     dev->deviceProc = deviceProc;
+     dev->startup = autoStart;
+@@ -272,6 +272,7 @@ AddInputDevice(ClientPtr client, DeviceProc deviceProc, Bool autoStart)
+     dev->deviceGrab.ActivateGrab = ActivateKeyboardGrab;
+     dev->deviceGrab.DeactivateGrab = DeactivateKeyboardGrab;
+ 
++
+     dev->coreEvents = TRUE;
+ 
+     /* sprite defaults */
+@@ -1106,18 +1107,6 @@ NumMotionEvents(void)
+     return inputInfo.pointer->valuator->numMotionEvents;
+ }
+ 
+-void
+-RegisterPointerDevice(DeviceIntPtr device)
+-{
+-    RegisterOtherDevice(device);
+-}
+-
+-void
+-RegisterKeyboardDevice(DeviceIntPtr device)
+-{
+-    RegisterOtherDevice(device);
+-}
+-
+ int
+ dixLookupDevice(DeviceIntPtr *pDev, int id, ClientPtr client, Mask access_mode)
+ {

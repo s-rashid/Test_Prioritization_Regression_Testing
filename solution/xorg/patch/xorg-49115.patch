@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winkeybd.c b/hw/xwin/winkeybd.c
+index ad9e66a..6d91ce0 100644
+--- a/hw/xwin/winkeybd.c
++++ b/hw/xwin/winkeybd.c
+@@ -262,7 +262,7 @@ winRestoreModeKeyStates (void)
+ 
+   /* Only process events if the rootwindow is mapped. The keyboard events
+    * will cause segfaults otherwise */
+-  if (WindowTable && WindowTable[0] && WindowTable[0]->mapped == FALSE)
++  if (screenInfo.screens[0]->root && screenInfo.screens[0]->root->mapped == FALSE)
+     processEvents = FALSE;    
+   
+   /* Force to process all pending events in the mi event queue */

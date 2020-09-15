@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winwin32rootless.c b/hw/xwin/winwin32rootless.c
+index c225a44..9749861 100755
+--- a/hw/xwin/winwin32rootless.c
++++ b/hw/xwin/winwin32rootless.c
+@@ -150,8 +150,8 @@ winMWExtWMCreateRgnFromRegion (RegionPtr pShape)
+ 
+   if (pShape == NULL) return NULL;
+ 
+-  nRects = REGION_NUM_RECTS(pShape);
+-  pRects = REGION_RECTS(pShape);
++  nRects = RegionNumRects(pShape);
++  pRects = RegionRects(pShape);
+   
+   hRgn = CreateRectRgn (0, 0, 0, 0);
+   if (hRgn == NULL)

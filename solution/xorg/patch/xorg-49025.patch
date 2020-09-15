@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/dmxconsole.c b/hw/dmx/input/dmxconsole.c
+index 9542efa..bf34169 100644
+--- a/hw/dmx/input/dmxconsole.c
++++ b/hw/dmx/input/dmxconsole.c
+@@ -204,7 +204,7 @@ static void dmxConsoleDrawWindows(pointer private)
+     XUnionRectWithRegion(&rect, whole, whole);
+     
+     for (i = 0; i < dmxNumScreens; i++) {
+-        WindowPtr     pRoot       = WindowTable[i];
++        WindowPtr     pRoot       = screenInfo.screens[i]->root;
+         WindowPtr     pChild;
+ 
+ #if DMX_WINDOW_DEBUG

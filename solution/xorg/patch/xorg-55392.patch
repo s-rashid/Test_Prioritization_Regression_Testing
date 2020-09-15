@@ -1,0 +1,45 @@
+diff --git a/hw/kdrive/linux/ms.c b/hw/kdrive/linux/ms.c
+index 176e125..e82350a 100644
+--- a/hw/kdrive/linux/ms.c
++++ b/hw/kdrive/linux/ms.c
+@@ -41,11 +41,9 @@ MsReadBytes (int fd, char *buf, int len, int min)
+     struct timeval  tv;
+ 
+     tot = 0;
+-    while (len)
+-    {
++    while (len) {
+ 	n = read (fd, buf, len);
+-	if (n > 0)
+-	{
++        if (n > 0) {
+ 	    tot += n;
+ 	    buf += n;
+ 	    len -= n;
+@@ -72,11 +70,9 @@ MsRead (int port, void *closure)
+     int		    dx, dy;
+     unsigned long   flags;
+ 
+-    while ((n = MsReadBytes (port, (char *) buf, sizeof (buf), 3)) > 0)
+-    {
++    while ((n = MsReadBytes(port, (char *) buf, sizeof(buf), 3)) > 0) {
+ 	b = buf;
+-	while (n >= 3)
+-	{
++        while (n >= 3) {
+ 	    flags = KD_MOUSE_DELTA;
+ 
+ 	    if (b[0] & 0x20)
+@@ -118,9 +114,9 @@ MsEnable (KdPointerInfo *pi)
+     if(port < 0) {
+         ErrorF("Couldn't open %s (%d)\n", pi->path, (int)errno);
+         return 0;
+-    } else if (port == 0) {
+-        ErrorF("Opening %s returned 0!  Please complain to Keith.\n",
+-               pi->path);
++    }
++    else if (port == 0) {
++        ErrorF("Opening %s returned 0!  Please complain to Keith.\n", pi->path);
+ 	goto bail;
+     }
+ 

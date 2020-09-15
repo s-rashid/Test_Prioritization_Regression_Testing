@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/os-support/bsd/arm_video.c b/hw/xfree86/os-support/bsd/arm_video.c
+index eb631a7..ffc42a8 100644
+--- a/hw/xfree86/os-support/bsd/arm_video.c
++++ b/hw/xfree86/os-support/bsd/arm_video.c
+@@ -113,8 +113,6 @@ struct memAccess ioMemInfo = { CONSOLE_GET_IO_INFO, NULL, NULL,
+ static Bool useDevMem = FALSE;
+ static int  devMemFd = -1;
+ 
+-#define DEV_MEM "/dev/mem"
+-
+ static pointer mapVidMem(int, unsigned long, unsigned long, int);
+ static void unmapVidMem(int, pointer, unsigned long);
+ 

@@ -1,0 +1,37 @@
+diff --git a/hw/xfree86/common/xf86xv.c b/hw/xfree86/common/xf86xv.c
+index 8221659..bdcc4fc 100644
+--- a/hw/xfree86/common/xf86xv.c
++++ b/hw/xfree86/common/xf86xv.c
+@@ -787,8 +787,8 @@ xf86XVReputVideo(XvPortRecPrivatePtr portPriv)
+ 
+      VPBox.x1 = portPriv->pScrn->frameX0;
+      VPBox.y1 = portPriv->pScrn->frameY0;
+-     VPBox.x2 = portPriv->pScrn->frameX1;
+-     VPBox.y2 = portPriv->pScrn->frameY1;
++     VPBox.x2 = portPriv->pScrn->frameX1 + 1;
++     VPBox.y2 = portPriv->pScrn->frameY1 + 1;
+ 
+      REGION_INIT(pScreen, &VPReg, &VPBox, 1);
+      REGION_INTERSECT(pScreen, &ClipRegion, &ClipRegion, &VPReg);
+@@ -877,8 +877,8 @@ xf86XVReputImage(XvPortRecPrivatePtr portPriv)
+ 
+      VPBox.x1 = portPriv->pScrn->frameX0;
+      VPBox.y1 = portPriv->pScrn->frameY0;
+-     VPBox.x2 = portPriv->pScrn->frameX1;
+-     VPBox.y2 = portPriv->pScrn->frameY1;
++     VPBox.x2 = portPriv->pScrn->frameX1 + 1;
++     VPBox.y2 = portPriv->pScrn->frameY1 + 1;
+ 
+      REGION_INIT(pScreen, &VPReg, &VPBox, 1);
+      REGION_INTERSECT(pScreen, &ClipRegion, &ClipRegion, &VPReg);
+@@ -1433,8 +1433,8 @@ xf86XVPutStill(
+ 
+      VPBox.x1 = portPriv->pScrn->frameX0;
+      VPBox.y1 = portPriv->pScrn->frameY0;
+-     VPBox.x2 = portPriv->pScrn->frameX1;
+-     VPBox.y2 = portPriv->pScrn->frameY1;
++     VPBox.x2 = portPriv->pScrn->frameX1 + 1;
++     VPBox.y2 = portPriv->pScrn->frameY1 + 1;
+ 
+      REGION_INIT(pScreen, &VPReg, &VPBox, 1);
+      REGION_INTERSECT(pScreen, &ClipRegion, &ClipRegion, &VPReg);

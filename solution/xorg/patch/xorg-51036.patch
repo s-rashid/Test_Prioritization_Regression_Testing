@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxscrinit.c b/hw/dmx/dmxscrinit.c
+index 6d2f2d3..7a94627 100644
+--- a/hw/dmx/dmxscrinit.c
++++ b/hw/dmx/dmxscrinit.c
+@@ -283,8 +283,6 @@ Bool dmxScreenInit(int idx, ScreenPtr pScreen, int argc, char *argv[])
+     if (dmxShadowFB && !shadowInit(pScreen, dmxShadowUpdateProc, NULL))
+ 	return FALSE;
+ 
+-    miInitializeBackingStore(pScreen);
+-
+     if (dmxShadowFB) {
+ 	miDCInitialize(pScreen, &dmxPointerCursorFuncs);
+     } else {

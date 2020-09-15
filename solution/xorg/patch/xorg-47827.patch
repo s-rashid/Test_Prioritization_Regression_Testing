@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winshaddd.c b/hw/xwin/winshaddd.c
+index 4f3e895..85dc10f 100644
+--- a/hw/xwin/winshaddd.c
++++ b/hw/xwin/winshaddd.c
+@@ -42,7 +42,7 @@
+  */
+ 
+ extern HWND			g_hDlgExit;
+-extern char *g_pszLogFile;
++extern const char *g_pszLogFile;
+ 
+ /*
+  * FIXME: Headers are broken, DEFINE_GUID doesn't work correctly,

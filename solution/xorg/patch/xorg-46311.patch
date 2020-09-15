@@ -1,0 +1,13 @@
+diff --git a/dix/devices.c b/dix/devices.c
+index 76e962e..62574f2 100644
+--- a/dix/devices.c
++++ b/dix/devices.c
+@@ -246,7 +246,7 @@ AddInputDevice(ClientPtr client, DeviceProc deviceProc, Bool autoStart)
+     return dev;
+ }
+ 
+-static void
++void
+ SendDevicePresenceEvent(int deviceid, int type)
+ {
+     DeviceIntRec dummyDev;

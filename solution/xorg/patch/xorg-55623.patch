@@ -1,0 +1,200 @@
+diff --git a/hw/xfree86/parser/read.c b/hw/xfree86/parser/read.c
+index d4d5252..eef873e 100644
+--- a/hw/xfree86/parser/read.c
++++ b/hw/xfree86/parser/read.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,8 +64,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec TopLevelTab[] =
+-{
++static xf86ConfigSymTabRec TopLevelTab[] = {
+ 	{SECTION, "section"},
+ 	{-1, ""},
+ };
+@@ -96,129 +94,108 @@ xf86readConfigFile (void)
+ 	int token;
+ 	XF86ConfigPtr ptr = NULL;
+ 
+-	if ((ptr = calloc (1, sizeof (XF86ConfigRec))) == NULL)
+-	{
++    if ((ptr = calloc(1, sizeof(XF86ConfigRec))) == NULL) {
+ 		return NULL;
+ 	}
+ 
+-	while ((token = xf86getToken (TopLevelTab)) != EOF_TOKEN)
+-	{
+-		switch (token)
+-		{
++    while ((token = xf86getToken(TopLevelTab)) != EOF_TOKEN) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->conf_comment = xf86addComment(ptr->conf_comment, val.str);
+ 			break;
+ 		case SECTION:
+-			if (xf86getSubToken (&(ptr->conf_comment)) != STRING)
+-			{
++            if (xf86getSubToken(&(ptr->conf_comment)) != STRING) {
+ 				xf86parseError (QUOTE_MSG, "Section");
+ 				CLEANUP (ptr);
+ 				return NULL;
+ 			}
+ 			xf86setSection (val.str);
+-			if (xf86nameCompare (val.str, "files") == 0)
+-			{
++            if (xf86nameCompare(val.str, "files") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_RETURN (conf_files, xf86parseFilesSection ());
+ 			}
+-			else if (xf86nameCompare (val.str, "serverflags") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "serverflags") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_RETURN (conf_flags, xf86parseFlagsSection ());
+ 			}
+-			else if (xf86nameCompare (val.str, "pointer") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "pointer") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_input_lst, xf86parsePointerSection,
+ 							 XF86ConfInputPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "videoadaptor") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "videoadaptor") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_videoadaptor_lst, xf86parseVideoAdaptorSection,
+ 							 XF86ConfVideoAdaptorPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "device") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "device") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_device_lst, xf86parseDeviceSection,
+ 							 XF86ConfDevicePtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "monitor") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "monitor") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_monitor_lst, xf86parseMonitorSection,
+ 							 XF86ConfMonitorPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "modes") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "modes") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_modes_lst, xf86parseModesSection,
+ 							 XF86ConfModesPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "screen") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "screen") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_screen_lst, xf86parseScreenSection,
+ 							 XF86ConfScreenPtr);
+ 			}
+-			else if (xf86nameCompare(val.str, "inputdevice") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "inputdevice") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_input_lst, xf86parseInputSection,
+ 							 XF86ConfInputPtr);
+ 			}
+-			else if (xf86nameCompare(val.str, "inputclass") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "inputclass") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_inputclass_lst,
+-						xf86parseInputClassSection,
+-						XF86ConfInputClassPtr);
++                            xf86parseInputClassSection, XF86ConfInputClassPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "module") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "module") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_RETURN (conf_modules, xf86parseModuleSection ());
+ 			}
+-			else if (xf86nameCompare (val.str, "serverlayout") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "serverlayout") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_layout_lst, xf86parseLayoutSection,
+ 							 XF86ConfLayoutPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "vendor") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "vendor") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_LIST (conf_vendor_lst, xf86parseVendorSection,
+ 							 XF86ConfVendorPtr);
+ 			}
+-			else if (xf86nameCompare (val.str, "dri") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "dri") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_RETURN (conf_dri, xf86parseDRISection ());
+ 			}
+-			else if (xf86nameCompare (val.str, "extensions") == 0)
+-			{
++            else if (xf86nameCompare(val.str, "extensions") == 0) {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				HANDLE_RETURN (conf_extensions, xf86parseExtensionsSection ());
+ 			}
+-			else
+-			{
++            else {
+ 				free(val.str);
+ 				val.str = NULL;
+ 				Error (INVALID_SECTION_MSG, xf86tokenString ());
+@@ -233,8 +210,7 @@ xf86readConfigFile (void)
+ 
+ 	if (xf86validateConfig (ptr))
+ 		return ptr;
+-	else
+-	{
++    else {
+ 		CLEANUP (ptr);
+ 		return NULL;
+ 	}
+@@ -254,14 +230,12 @@ xf86addListItem (GenericListPtr head, GenericListPtr new)
+ 	GenericListPtr p = head;
+ 	GenericListPtr last = NULL;
+ 
+-	while (p)
+-	{
++    while (p) {
+ 		last = p;
+ 		p = p->next;
+ 	}
+ 
+-	if (last)
+-	{
++    if (last) {
+ 		last->next = new;
+ 		return head;
+ 	}

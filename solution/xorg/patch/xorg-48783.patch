@@ -1,0 +1,24 @@
+diff --git a/glx/glxscreens.c b/glx/glxscreens.c
+index b75aea6..ffe70c3 100644
+--- a/glx/glxscreens.c
++++ b/glx/glxscreens.c
+@@ -378,7 +378,7 @@ void __glXScreenInit(__GLXscreen *pGlxScreen, ScreenPtr pScreen)
+     pGlxScreen->numFBConfigs = i;
+ 
+     pGlxScreen->visuals =
+-	xcalloc(pGlxScreen->numFBConfigs, sizeof (__GLXconfig *));
++	calloc(pGlxScreen->numFBConfigs, sizeof (__GLXconfig *));
+ 
+     /* First, try to choose featureful FBconfigs for the existing X visuals.
+      * Note that if multiple X visuals end up with the same FBconfig being
+@@ -436,7 +436,7 @@ void __glXScreenInit(__GLXscreen *pGlxScreen, ScreenPtr pScreen)
+ 
+ void __glXScreenDestroy(__GLXscreen *screen)
+ {
+-    xfree(screen->GLXvendor);
+-    xfree(screen->GLXextensions);
+-    xfree(screen->GLextensions);
++    free(screen->GLXvendor);
++    free(screen->GLXextensions);
++    free(screen->GLextensions);
+ }

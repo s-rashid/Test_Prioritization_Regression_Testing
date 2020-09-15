@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index c2814d4..3fae039 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -133,6 +133,7 @@ xf86CrtcCreate (ScrnInfoPtr		scrn,
+ 	crtcs = malloc((xf86_config->num_crtc + 1) * sizeof (xf86CrtcPtr));
+     if (!crtcs)
+     {
++	free(crtc->gamma_red);
+ 	free(crtc);
+ 	return NULL;
+     }

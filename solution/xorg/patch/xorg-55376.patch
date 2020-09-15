@@ -1,0 +1,134 @@
+diff --git a/hw/kdrive/ephyr/hostx.h b/hw/kdrive/ephyr/hostx.h
+index 4257857..d621711 100644
+--- a/hw/kdrive/ephyr/hostx.h
++++ b/hw/kdrive/ephyr/hostx.h
+@@ -41,16 +41,14 @@
+ typedef struct EphyrHostXVars  EphyrHostXVars;
+ typedef struct EphyrHostXEvent EphyrHostXEvent;
+ typedef void* EphyrScreenInfo ;
+-typedef enum EphyrHostXEventType
+-{
++typedef enum EphyrHostXEventType {
+   EPHYR_EV_MOUSE_MOTION,
+   EPHYR_EV_MOUSE_PRESS,
+   EPHYR_EV_MOUSE_RELEASE,
+   EPHYR_EV_KEY_PRESS,
+   EPHYR_EV_KEY_RELEASE,
+   EPHYR_EV_EXPOSE
+-} 
+-EphyrHostXEventType;
++} EphyrHostXEventType;
+ 
+ /* I can't believe it's not a KeySymsRec. */
+ typedef struct {
+@@ -60,12 +58,10 @@ typedef struct {
+   CARD32         *map;
+ } EphyrKeySyms;
+ 
+-struct EphyrHostXEvent
+-{
++struct EphyrHostXEvent {
+   EphyrHostXEventType type;
+ 
+-  union 
+-  {
++    union {
+     struct mouse_motion { 	
+       int x;
+       int y;
+@@ -182,27 +178,19 @@ int
+ hostx_get_bpp(void *info);
+ 
+ void
+-hostx_get_visual_masks (void   *info,
+-			CARD32 *rmsk, 
+-			CARD32 *gmsk, 
+-			CARD32 *bmsk);
++ hostx_get_visual_masks(void *info, CARD32 *rmsk, CARD32 *gmsk, CARD32 *bmsk);
+ void
++
+ hostx_set_cmap_entry(unsigned char idx, 
+-		     unsigned char r, 
+-		     unsigned char g, 
+-		     unsigned char b);
++                     unsigned char r, unsigned char g, unsigned char b);
+ 
+-void*
+-hostx_screen_init (EphyrScreenInfo screen,
+-                   int width, int height,
+-                   int buffer_height);
++void *hostx_screen_init(EphyrScreenInfo screen,
++                        int width, int height, int buffer_height);
+ 
+ void
+-hostx_paint_rect(EphyrScreenInfo screen,
+-		 int sx,    int sy,
+-		 int dx,    int dy,
+-		 int width, int height);
+ 
++hostx_paint_rect(EphyrScreenInfo screen,
++                 int sx, int sy, int dx, int dy, int width, int height);
+ 
+ void
+ hostx_load_keymap (void);
+@@ -210,8 +198,7 @@ hostx_load_keymap (void);
+ int
+ hostx_get_event (EphyrHostXEvent *ev);
+ 
+-void*
+-hostx_get_display (void) ;
++void *hostx_get_display(void);
+ 
+ int
+ hostx_get_window (int a_screen_number) ;
+@@ -220,42 +207,37 @@ int
+ hostx_get_window_attributes (int a_window, EphyrHostWindowAttributes *a_attr)  ;
+ 
+ int
++
+ hostx_get_extension_info (const char *a_ext_name,
+                           int *a_major_opcode,
+-                          int *a_first_even,
+-                          int *a_first_error) ;
++                         int *a_first_even, int *a_first_error);
+ int
+-hostx_get_visuals_info (EphyrHostVisualInfo **a_visuals,
+-                        int *a_num_entries) ;
++ hostx_get_visuals_info(EphyrHostVisualInfo ** a_visuals, int *a_num_entries);
+ 
+ int hostx_create_window (int a_screen_number,
+                          EphyrBox *a_geometry,
+-                         int a_visual_id,
+-                         int *a_host_win /*out parameter*/) ;
++                        int a_visual_id, int *a_host_win /*out parameter */ );
+ 
+ int hostx_destroy_window (int a_win) ;
+ 
+ int hostx_set_window_geometry (int a_win, EphyrBox *a_geo) ;
+ 
+-
+ int hostx_set_window_bounding_rectangles (int a_window,
+-                                          EphyrRect *a_rects,
+-                                          int a_num_rects) ;
++                                         EphyrRect * a_rects, int a_num_rects);
+ 
+ int hostx_set_window_clipping_rectangles (int a_window,
+-                                          EphyrRect *a_rects,
+-                                          int a_num_rects) ;
++                                         EphyrRect * a_rects, int a_num_rects);
+ int hostx_has_xshape (void) ;
+ 
+ #ifdef XF86DRI
+ int hostx_lookup_peer_window (void *a_local_window,
+                               int *a_host_peer /*out parameter*/) ;
+ int
++
+ hostx_allocate_resource_id_peer (int a_local_resource_id,
+                                  int *a_remote_resource_id) ;
+ int
+-hostx_get_resource_id_peer (int a_local_resource_id,
+-                            int *a_remote_resource_id) ;
++ hostx_get_resource_id_peer(int a_local_resource_id, int *a_remote_resource_id);
+ int hostx_has_dri (void) ;
+ 
+ int hostx_has_glx (void) ;

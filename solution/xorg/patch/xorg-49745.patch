@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/parser/xf86Parser.h b/hw/xfree86/parser/xf86Parser.h
+index 26d9a5b..337ad07 100644
+--- a/hw/xfree86/parser/xf86Parser.h
++++ b/hw/xfree86/parser/xf86Parser.h
+@@ -357,6 +357,7 @@ typedef struct
+ 	struct list match_os;
+ 	struct list match_pnpid;
+ 	struct list match_usbid;
++	struct list match_driver;
+ 	struct list match_tag;
+ 	xf86TriState is_keyboard;
+ 	xf86TriState is_pointer;

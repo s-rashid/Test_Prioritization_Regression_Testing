@@ -1,0 +1,14 @@
+diff --git a/hw/xquartz/xpr/xprScreen.c b/hw/xquartz/xpr/xprScreen.c
+index 972278b..f6a7129 100644
+--- a/hw/xquartz/xpr/xprScreen.c
++++ b/hw/xquartz/xpr/xprScreen.c
+@@ -326,7 +326,9 @@ xprAddScreen(int index, ScreenPtr pScreen)
+ #endif
+     }
+     
++#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+ have_depth:
++#endif
+     switch(depth) {
+         case 8: // pseudo-working
+             dfb->visuals = PseudoColorMask;

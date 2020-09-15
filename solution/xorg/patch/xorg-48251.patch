@@ -1,0 +1,25 @@
+diff --git a/Xext/xf86bigfont.c b/Xext/xf86bigfont.c
+index a4eb3f6..68c5d52 100644
+--- a/Xext/xf86bigfont.c
++++ b/Xext/xf86bigfont.c
+@@ -427,19 +427,9 @@ ProcXF86BigfontQueryFont(
+ 	    return BadLength;
+     }
+ #endif
+-    client->errorValue = stuff->id;		/* EITHER font or gc */
+-    dixLookupResourceByType((pointer *)&pFont, stuff->id, RT_FONT,
+-			    client, DixGetAttrAccess);
+-    if (!pFont) {
+-	GC *pGC;
+-	dixLookupResourceByType((pointer *)&pGC, stuff->id, RT_GC,
+-				client, DixGetAttrAccess);
+-        if (!pGC)
++    if (dixLookupFontable(&pFont, stuff->id, client, DixGetAttrAccess) != Success)
+             return BadFont;    /* procotol spec says only error is BadFont */
+ 
+-	pFont = pGC->font;
+-    }
+-
+     pmax = FONTINKMAX(pFont);
+     pmin = FONTINKMIN(pFont);
+     nCharInfos =

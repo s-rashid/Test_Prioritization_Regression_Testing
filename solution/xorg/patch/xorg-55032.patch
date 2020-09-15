@@ -1,0 +1,14 @@
+diff --git a/Xi/xiproperty.h b/Xi/xiproperty.h
+index d8b8863..482c834 100644
+--- a/Xi/xiproperty.h
++++ b/Xi/xiproperty.h
+@@ -60,8 +60,7 @@ int SProcXIGetProperty          (ClientPtr client);
+ 
+ void SRepXIListProperties(ClientPtr client, int size,
+                           xXIListPropertiesReply *rep);
+-void SRepXIGetProperty(ClientPtr client, int size,
+-                       xXIGetPropertyReply *rep);
++void SRepXIGetProperty(ClientPtr client, int size, xXIGetPropertyReply * rep);
+ 
+ void XIResetProperties(void);
+ 

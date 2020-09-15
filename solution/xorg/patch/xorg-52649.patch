@@ -1,0 +1,35 @@
+diff --git a/dix/events.c b/dix/events.c
+index 77f8715..aeb37aa 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2173,24 +2173,22 @@ DeliverEventsToWindow(DeviceIntPtr pDev, WindowPtr pWin, xEvent
+         }
+     }
+ 
++    if (deliveries)
++    {
+     /*
+      * Note that since core events are delivered first, an implicit grab may
+      * be activated on a core grab, stopping the XI events.
+      */
+-    if (deliveries && !grab && ActivateImplicitGrab(pDev, client, pWin, pEvents, deliveryMask))
++        if (!grab && ActivateImplicitGrab(pDev, client, pWin, pEvents, deliveryMask))
+         /* grab activated */;
+-    else if ((type == MotionNotify) && deliveries)
++        else if ((type == MotionNotify))
+ 	pDev->valuator->motionHintWindow = pWin;
+-    else
+-    {
+-	if ((type == DeviceMotionNotify || type == DeviceButtonPress) &&
+-	    deliveries)
++        else if (type == DeviceMotionNotify || type == DeviceButtonPress)
+ 	    CheckDeviceGrabAndHintWindow (pWin, type,
+ 					  (deviceKeyButtonPointer*) pEvents,
+ 					  grab, client, deliveryMask);
+-    }
+-    if (deliveries)
+ 	return deliveries;
++    }
+     return nondeliveries;
+ }
+ 

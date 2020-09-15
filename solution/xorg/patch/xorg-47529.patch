@@ -1,0 +1,13 @@
+diff --git a/xkb/XKBGAlloc.c b/xkb/XKBGAlloc.c
+index 752b11a..0bab39a 100644
+--- a/xkb/XKBGAlloc.c
++++ b/xkb/XKBGAlloc.c
+@@ -615,7 +615,7 @@ XkbGeometryPtr	geom;
+ Status		rtrn;
+ 
+     if (xkb->geom==NULL) {
+-	xkb->geom= _XkbTypedCalloc(1,XkbGeometryRec);
++	xkb->geom= xcalloc(1, sizeof(XkbGeometryRec));
+ 	if (!xkb->geom)
+ 	    return BadAlloc;
+     }

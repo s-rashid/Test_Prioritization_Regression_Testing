@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/ephyr/ephyrvideo.c b/hw/kdrive/ephyr/ephyrvideo.c
+index bb2ee10..6624ab9 100644
+--- a/hw/kdrive/ephyr/ephyrvideo.c
++++ b/hw/kdrive/ephyr/ephyrvideo.c
+@@ -302,7 +302,7 @@ ephyrInitVideo (ScreenPtr pScreen)
+ 
+     EPHYR_LOG ("enter\n") ;
+ 
+-    if (screen->fb[0].bitsPerPixel == 8) {
++    if (screen->fb.bitsPerPixel == 8) {
+         EPHYR_LOG_ERROR ("8 bits depth not supported\n") ;
+         return FALSE ;
+     }

@@ -1,0 +1,17 @@
+diff --git a/mi/mifpolycon.c b/mi/mifpolycon.c
+index 13b5a48..1be0150 100644
+--- a/mi/mifpolycon.c
++++ b/mi/mifpolycon.c
+@@ -122,9 +122,9 @@ miFillSppPoly(
+ 
+     if(!ptsOut || !width || !Marked)
+     {
+-	if (Marked) free(Marked);
+-	if (width) free(width);
+-	if (ptsOut) free(ptsOut);
++	free(Marked);
++	free(width);
++	free(ptsOut);
+ 	return;
+     }
+ 

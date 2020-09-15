@@ -1,0 +1,64 @@
+diff --git a/dix/pixmap.c b/dix/pixmap.c
+index cbb5e7f..47b220b 100644
+--- a/dix/pixmap.c
++++ b/dix/pixmap.c
+@@ -41,13 +41,11 @@ from The Open Group.
+ #include "servermd.h"
+ #include "site.h"
+ 
+-
+ /*
+  *  Scratch pixmap management and device independent pixmap allocation
+  *  function.
+  */
+ 
+-
+ /* callable by ddx */
+ PixmapPtr
+ GetScratchPixmapHeader(ScreenPtr pScreen, int width, int height, int depth, 
+@@ -70,13 +68,11 @@ GetScratchPixmapHeader(ScreenPtr pScreen, int width, int height, int depth,
+     return NullPixmap;
+ }
+ 
+-
+ /* callable by ddx */
+ void
+ FreeScratchPixmapHeader(PixmapPtr pPixmap)
+ {
+-    if (pPixmap)
+-    {
++    if (pPixmap) {
+ 	ScreenPtr pScreen = pPixmap->drawable.pScreen;
+ 
+ 	pPixmap->devPrivate.ptr = NULL; /* lest ddx chases bad ptr */
+@@ -87,28 +83,26 @@ FreeScratchPixmapHeader(PixmapPtr pPixmap)
+     }
+ }
+ 
+-
+ Bool
+ CreateScratchPixmapsForScreen(int scrnum)
+ {
+     unsigned int	pixmap_size;
+ 
+     pixmap_size = sizeof(PixmapRec) + dixPrivatesSize(PRIVATE_PIXMAP);
+-    screenInfo.screens[scrnum]->totalPixmapSize = BitmapBytePad(pixmap_size * 8);
++    screenInfo.screens[scrnum]->totalPixmapSize =
++        BitmapBytePad(pixmap_size * 8);
+ 
+     /* let it be created on first use */
+     screenInfo.screens[scrnum]->pScratchPixmap = NULL;
+     return TRUE;
+ }
+ 
+-
+ void
+ FreeScratchPixmapsForScreen(int scrnum)
+ {
+     FreeScratchPixmapHeader(screenInfo.screens[scrnum]->pScratchPixmap);
+ }
+ 
+-
+ /* callable by ddx */
+ PixmapPtr
+ AllocatePixmap(ScreenPtr pScreen, int pixDataSize)

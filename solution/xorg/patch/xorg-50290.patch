@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/parser/Flags.c b/hw/xfree86/parser/Flags.c
+index 699dc6b..7fafb6c 100644
+--- a/hw/xfree86/parser/Flags.c
++++ b/hw/xfree86/parser/Flags.c
+@@ -132,7 +132,6 @@ xf86parseFlagsSection (void)
+ 					if (ServerFlagsTab[i].token == token)
+ 					{
+ 						char *valstr = NULL;
+-						/* can't use strdup because it calls malloc */
+ 						tmp = strdup (ServerFlagsTab[i].name);
+ 						if (hasvalue)
+ 						{
+@@ -365,7 +364,6 @@ xf86optionListCreate( const char **options, int count, int used )
+ 	}
+ 	for (i = 0; i < count; i += 2)
+ 	{
+-		/* can't use strdup because it calls malloc */
+ 		t1 = malloc (sizeof (char) *
+ 				(strlen (options[i]) + 1));
+ 		strcpy (t1, options[i]);

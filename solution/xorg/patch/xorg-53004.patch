@@ -1,0 +1,11 @@
+diff --git a/hw/kdrive/ephyr/ephyr_draw.c b/hw/kdrive/ephyr/ephyr_draw.c
+index b1982a5..cf5f553 100644
+--- a/hw/kdrive/ephyr/ephyr_draw.c
++++ b/hw/kdrive/ephyr/ephyr_draw.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 2006 Intel Corporation
++ * Copyright Â© 2006 Intel Corporation
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),

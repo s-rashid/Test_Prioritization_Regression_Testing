@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 441efb0..37802d6 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -169,17 +169,6 @@ xf86LookupInput(const char *name)
+     return NULL;
+ }
+ 
+-/* ABI stubs of despair */
+-void
+-xf86AddModuleInfo(pointer info, pointer module)
+-{
+-}
+-
+-void
+-xf86DeleteModuleInfo(int idx)
+-{
+-}
+-
+ /* Allocate a new ScrnInfoRec in xf86Screens */
+ 
+ ScrnInfoPtr

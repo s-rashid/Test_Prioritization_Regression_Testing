@@ -1,0 +1,22 @@
+diff --git a/hw/xquartz/darwinEvents.c b/hw/xquartz/darwinEvents.c
+index 5bcee04..f3e1225 100644
+--- a/hw/xquartz/darwinEvents.c
++++ b/hw/xquartz/darwinEvents.c
+@@ -197,8 +197,6 @@ static void DarwinUpdateModifiers(
+ static void DarwinEventHandler(int screenNum, InternalEvent *ie, DeviceIntPtr dev) {
+     XQuartzEvent *e = &(ie->xquartz_event);
+ 
+-    TA_SERVER();
+-
+     switch(e->subtype) {
+         case kXquartzControllerNotify:
+             DEBUG_LOG("kXquartzControllerNotify\n");
+@@ -381,8 +379,6 @@ void ProcessInputEvents(void) {
+     char nullbyte;
+ 	int x = sizeof(nullbyte);
+     
+-    TA_SERVER();
+-
+     mieqProcessInputEvents();
+ 
+     // Empty the signaling pipe

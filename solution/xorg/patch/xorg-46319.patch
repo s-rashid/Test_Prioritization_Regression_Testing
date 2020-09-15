@@ -1,0 +1,12 @@
+diff --git a/include/input.h b/include/input.h
+index 7ab5e9d..0e5b0bf 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -503,6 +503,7 @@ extern int AllocXTestDevice(ClientPtr client,
+                              DeviceIntPtr master_keybd);
+ extern BOOL IsXTestDevice(DeviceIntPtr dev, DeviceIntPtr master);
+ extern DeviceIntPtr GetXTestDevice(DeviceIntPtr master);
++extern void SendDevicePresenceEvent(int deviceid, int type);
+ 
+ /* misc event helpers */
+ extern Mask GetEventFilter(DeviceIntPtr dev, xEvent *event);

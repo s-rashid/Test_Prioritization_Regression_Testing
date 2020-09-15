@@ -1,0 +1,74 @@
+diff --git a/Xext/xselinux_label.c b/Xext/xselinux_label.c
+index e5929fa..2c33d1c 100644
+--- a/Xext/xselinux_label.c
++++ b/Xext/xselinux_label.c
+@@ -43,8 +43,10 @@ static struct selabel_handle *label_hnd;
+ 
+ /* Array of object classes indexed by resource type */
+ SELinuxArrayRec arr_types;
++
+ /* Array of event SIDs indexed by event type */
+ SELinuxArrayRec arr_events;
++
+ /* Array of property and selection SID structures */
+ SELinuxArrayRec arr_atoms;
+ 
+@@ -78,6 +80,7 @@ SELinuxArrayFree(SELinuxArrayRec *rec, int free_elements)
+ {
+     if (free_elements) {
+ 	unsigned i = rec->size;
++
+ 	while (i)
+ 	    free(rec->array[--i]);
+     }
+@@ -102,10 +105,12 @@ SELinuxAtomToSIDLookup(Atom atom, SELinuxObjectRec *obj, int map, int polymap)
+     /* Look in the mappings of names to contexts */
+     if (selabel_lookup_raw(label_hnd, &ctx, name, map) == 0) {
+ 	obj->poly = 0;
+-    } else if (errno != ENOENT) {
++    }
++    else if (errno != ENOENT) {
+ 	ErrorF("SELinux: a property label lookup failed!\n");
+ 	return BadValue;
+-    } else if (selabel_lookup_raw(label_hnd, &ctx, name, polymap) < 0) {
++    }
++    else if (selabel_lookup_raw(label_hnd, &ctx, name, polymap) < 0) {
+ 	ErrorF("SELinux: a property label lookup failed!\n");
+ 	return BadValue;
+     }
+@@ -141,7 +146,8 @@ SELinuxAtomToSID(Atom atom, int prop, SELinuxObjectRec **obj_rtn)
+ 	obj = &rec->prp;
+ 	map = SELABEL_X_PROP;
+ 	polymap = SELABEL_X_POLYPROP;
+-    } else {
++    }
++    else {
+ 	obj = &rec->sel;
+ 	map = SELABEL_X_SELN;
+ 	polymap = SELABEL_X_POLYSELN;
+@@ -219,8 +225,7 @@ SELinuxPropertyToSID(Atom property, SELinuxSubjectRec *subj,
+     }
+ 
+     /* Perform a transition */
+-    if (avc_compute_create(subj->sid, obj->sid,
+-			   SECCLASS_X_PROPERTY, &tsid) < 0) {
++    if (avc_compute_create(subj->sid, obj->sid, SECCLASS_X_PROPERTY, &tsid) < 0) {
+ 	ErrorF("SELinux: a compute_create call failed!\n");
+ 	return BadValue;
+     }
+@@ -251,6 +256,7 @@ SELinuxEventToSID(unsigned type, security_id_t sid_of_window,
+     const char *name = LookupEventName(type);
+     security_id_t sid;
+     security_context_t ctx;
++
+     type &= 127;
+ 
+     sid = SELinuxArrayGet(&arr_events, type);
+@@ -327,6 +333,7 @@ SELinuxTypeToClass(RESTYPE type)
+ 	else {
+ 	    /* Need to do a string lookup */
+ 	    const char *str = LookupResourceName(type);
++
+ 	    if (!strcmp(str, "PICTURE"))
+ 		class = SECCLASS_X_DRAWABLE;
+ 	    else if (!strcmp(str, "GLYPHSET"))

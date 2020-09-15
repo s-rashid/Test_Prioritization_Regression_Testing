@@ -1,0 +1,13 @@
+diff --git a/glx/glxdri.c b/glx/glxdri.c
+index 6122653..21e44d1 100644
+--- a/glx/glxdri.c
++++ b/glx/glxdri.c
+@@ -245,7 +245,7 @@ __glXDRIdrawableDestroy(__GLXdrawable *drawable)
+ }
+ 
+ static GLboolean
+-__glXDRIdrawableSwapBuffers(__GLXdrawable *basePrivate)
++__glXDRIdrawableSwapBuffers(ClientPtr client, __GLXdrawable *basePrivate)
+ {
+     __GLXDRIdrawable *private = (__GLXDRIdrawable *) basePrivate;
+     __GLXDRIscreen *screen =

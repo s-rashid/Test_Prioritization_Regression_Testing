@@ -1,0 +1,26 @@
+diff --git a/config/config-backends.h b/config/config-backends.h
+index 907e86b..0a2a22a 100644
+--- a/config/config-backends.h
++++ b/config/config-backends.h
+@@ -26,6 +26,16 @@
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
++#include "input.h"
++
++void remove_devices(const char *backend, const char *config_info);
++BOOL device_is_duplicate(const char *config_info);
++void add_option(InputOption **options, const char *key, const char *value);
++
++#ifdef CONFIG_UDEV
++int config_udev_init(void);
++void config_udev_fini(void);
++#else
+ 
+ #ifdef CONFIG_NEED_DBUS
+ #include <dbus/dbus.h>
+@@ -57,3 +67,4 @@ void config_dbus_fini(void);
+ int config_hal_init(void);
+ void config_hal_fini(void);
+ #endif
++#endif

@@ -1,0 +1,356 @@
+diff --git a/hw/xfree86/parser/Monitor.c b/hw/xfree86/parser/Monitor.c
+index 52c5500..b237dfb 100644
+--- a/hw/xfree86/parser/Monitor.c
++++ b/hw/xfree86/parser/Monitor.c
+@@ -52,7 +52,6 @@
+  * authorization from the copyright holder(s) and author(s).
+  */
+ 
+-
+ /* View/edit this file with tab stops set to 4 */
+ 
+ #ifdef HAVE_XORG_CONFIG_H
+@@ -65,8 +64,7 @@
+ 
+ extern LexRec val;
+ 
+-static xf86ConfigSymTabRec MonitorTab[] =
+-{
++static xf86ConfigSymTabRec MonitorTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{IDENTIFIER, "identifier"},
+ 	{VENDOR, "vendorname"},
+@@ -82,8 +80,7 @@ static xf86ConfigSymTabRec MonitorTab[] =
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec ModesTab[] =
+-{
++static xf86ConfigSymTabRec ModesTab[] = {
+ 	{ENDSECTION, "endsection"},
+ 	{IDENTIFIER, "identifier"},
+ 	{MODELINE, "modeline"},
+@@ -91,8 +88,7 @@ static xf86ConfigSymTabRec ModesTab[] =
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec TimingTab[] =
+-{
++static xf86ConfigSymTabRec TimingTab[] = {
+ 	{TT_INTERLACE, "interlace"},
+ 	{TT_PHSYNC, "+hsync"},
+ 	{TT_NHSYNC, "-hsync"},
+@@ -108,8 +104,7 @@ static xf86ConfigSymTabRec TimingTab[] =
+ 	{-1, ""},
+ };
+ 
+-static xf86ConfigSymTabRec ModeTab[] =
+-{
++static xf86ConfigSymTabRec ModeTab[] = {
+ 	{DOTCLOCK, "dotclock"},
+ 	{HTIMINGS, "htimings"},
+ 	{VTIMINGS, "vtimings"},
+@@ -127,8 +122,8 @@ static void
+ xf86freeModeLineList (XF86ConfModeLinePtr ptr)
+ {
+ 	XF86ConfModeLinePtr prev;
+-	while (ptr)
+-	{
++
++    while (ptr) {
+ 		TestFree (ptr->ml_identifier);
+ 		TestFree (ptr->ml_comment);
+ 		prev = ptr;
+@@ -141,6 +136,7 @@ static XF86ConfModeLinePtr
+ xf86parseModeLine (void)
+ {
+ 	int token;
++
+ 	parsePrologue (XF86ConfModeLinePtr, XF86ConfModeLineRec)
+ 
+ 	/* Identifier */
+@@ -199,10 +195,8 @@ xf86parseModeLine (void)
+ 		   (token == TT_NVSYNC) || (token == TT_CSYNC) ||
+ 		   (token == TT_PCSYNC) || (token == TT_NCSYNC) ||
+ 		   (token == TT_DBLSCAN) || (token == TT_HSKEW) ||
+-		   (token == TT_VSCAN) || (token == TT_BCAST))
+-	{
+-		switch (token)
+-		{
++           (token == TT_VSCAN) || (token == TT_BCAST)) {
++        switch (token) {
+ 
+ 		case TT_INTERLACE:
+ 			ptr->ml_flags |= XF86CONF_INTERLACE;
+@@ -268,15 +262,14 @@ xf86parseVerboseMode (void)
+ {
+ 	int token, token2;
+ 	int had_dotclock = 0, had_htimings = 0, had_vtimings = 0;
++
+ 	parsePrologue (XF86ConfModeLinePtr, XF86ConfModeLineRec)
+ 
+ 		if (xf86getSubToken (&(ptr->ml_comment)) != STRING)
+ 		Error ("Mode name expected");
+ 	ptr->ml_identifier = val.str;
+-	while ((token = xf86getToken (ModeTab)) != ENDMODE)
+-	{
+-		switch (token)
+-		{
++    while ((token = xf86getToken(ModeTab)) != ENDMODE) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->ml_comment = xf86addComment(ptr->ml_comment, val.str);
+ 			break;
+@@ -334,11 +327,9 @@ xf86parseVerboseMode (void)
+ 			token = xf86getSubToken (&(ptr->ml_comment));
+ 			if (token != STRING)
+ 				Error (QUOTE_MSG, "Flags");
+-			while (token == STRING)
+-			{
++            while (token == STRING) {
+ 				token2 = xf86getStringToken (TimingTab);
+-				switch (token2)
+-				{
++                switch (token2) {
+ 				case TT_INTERLACE:
+ 					ptr->ml_flags |= XF86CONF_INTERLACE;
+ 					break;
+@@ -418,12 +409,11 @@ xf86parseMonitorSection (void)
+ {
+ 	int has_ident = FALSE;
+ 	int token;
++
+ 	parsePrologue (XF86ConfMonitorPtr, XF86ConfMonitorRec)
+ 
+-		while ((token = xf86getToken (MonitorTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(MonitorTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->mon_comment = xf86addComment(ptr->mon_comment, val.str);
+ 			break;
+@@ -469,15 +459,15 @@ xf86parseMonitorSection (void)
+ 				if (ptr->mon_n_hsync >= CONF_MAX_HSYNC)
+ 					Error ("Sorry. Too many horizontal sync intervals.");
+ 				ptr->mon_hsync[ptr->mon_n_hsync].lo = val.realnum;
+-				switch (token = xf86getSubToken (&(ptr->mon_comment)))
+-				{
++                switch (token = xf86getSubToken(&(ptr->mon_comment))) {
+ 					case COMMA:
+ 						ptr->mon_hsync[ptr->mon_n_hsync].hi =
+ 						ptr->mon_hsync[ptr->mon_n_hsync].lo;
+ 						break;
+ 					case DASH:
+ 						if (xf86getSubToken (&(ptr->mon_comment)) != NUMBER ||
+-						    (float)val.realnum < ptr->mon_hsync[ptr->mon_n_hsync].lo)
++                        (float) val.realnum <
++                        ptr->mon_hsync[ptr->mon_n_hsync].lo)
+ 							Error (HORIZSYNC_MSG);
+ 						ptr->mon_hsync[ptr->mon_n_hsync].hi = val.realnum;
+ 						if ((token = xf86getSubToken (&(ptr->mon_comment))) == COMMA)
+@@ -504,15 +494,15 @@ HorizDone:
+ 				Error (VERTREFRESH_MSG);
+ 			do {
+ 				ptr->mon_vrefresh[ptr->mon_n_vrefresh].lo = val.realnum;
+-				switch (token = xf86getSubToken (&(ptr->mon_comment)))
+-				{
++                switch (token = xf86getSubToken(&(ptr->mon_comment))) {
+ 					case COMMA:
+ 						ptr->mon_vrefresh[ptr->mon_n_vrefresh].hi =
+ 						ptr->mon_vrefresh[ptr->mon_n_vrefresh].lo;
+ 						break;
+ 					case DASH:
+ 						if (xf86getSubToken (&(ptr->mon_comment)) != NUMBER ||
+-						    (float)val.realnum < ptr->mon_vrefresh[ptr->mon_n_vrefresh].lo)
++                        (float) val.realnum <
++                        ptr->mon_vrefresh[ptr->mon_n_vrefresh].lo)
+ 							Error (VERTREFRESH_MSG);
+ 						ptr->mon_vrefresh[ptr->mon_n_vrefresh].hi = val.realnum;
+ 						if ((token = xf86getSubToken (&(ptr->mon_comment))) == COMMA)
+@@ -537,23 +527,18 @@ VertDone:
+ 			break;
+ 
+ 		case GAMMA:
+-			if( xf86getSubToken (&(ptr->mon_comment)) != NUMBER )
+-			{
++            if (xf86getSubToken(&(ptr->mon_comment)) != NUMBER) {
+ 				Error (INVALID_GAMMA_MSG);
+ 			}
+-			else
+-			{
++            else {
+ 				ptr->mon_gamma_red = ptr->mon_gamma_green =
+ 					ptr->mon_gamma_blue = val.realnum;
+-				if( xf86getSubToken (&(ptr->mon_comment)) == NUMBER )
+-				{
++                if (xf86getSubToken(&(ptr->mon_comment)) == NUMBER) {
+ 					ptr->mon_gamma_green = val.realnum;
+-					if( xf86getSubToken (&(ptr->mon_comment)) == NUMBER )
+-					{
++                    if (xf86getSubToken(&(ptr->mon_comment)) == NUMBER) {
+ 						ptr->mon_gamma_blue = val.realnum;
+ 					}
+-					else
+-					{
++                    else {
+ 						Error (INVALID_GAMMA_MSG);
+ 					}
+ 				}
+@@ -610,12 +595,11 @@ xf86parseModesSection (void)
+ {
+ 	int has_ident = FALSE;
+ 	int token;
++
+ 	parsePrologue (XF86ConfModesPtr, XF86ConfModesRec)
+ 
+-	while ((token = xf86getToken (ModesTab)) != ENDSECTION)
+-	{
+-		switch (token)
+-		{
++        while ((token = xf86getToken(ModesTab)) != ENDSECTION) {
++        switch (token) {
+ 		case COMMENT:
+ 			ptr->modes_comment = xf86addComment(ptr->modes_comment, val.str);
+ 			break;
+@@ -661,8 +645,7 @@ xf86printMonitorSection (FILE * cf, XF86ConfMonitorPtr ptr)
+ 	XF86ConfModeLinePtr mlptr;
+ 	XF86ConfModesLinkPtr mptr;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		mptr = ptr->mon_modes_sect_lst;
+ 		fprintf (cf, "Section \"Monitor\"\n");
+ 		if (ptr->mon_comment)
+@@ -679,35 +662,27 @@ xf86printMonitorSection (FILE * cf, XF86ConfMonitorPtr ptr)
+ 		}
+ 		if (ptr->mon_width)
+ 			fprintf (cf, "\tDisplaySize  %d\t%d\n",
+-					 ptr->mon_width,
+-					 ptr->mon_height);
+-		for (i = 0; i < ptr->mon_n_hsync; i++)
+-		{
++                    ptr->mon_width, ptr->mon_height);
++        for (i = 0; i < ptr->mon_n_hsync; i++) {
+ 			fprintf (cf, "\tHorizSync    %2.1f - %2.1f\n",
+-					 ptr->mon_hsync[i].lo,
+-					 ptr->mon_hsync[i].hi);
++                    ptr->mon_hsync[i].lo, ptr->mon_hsync[i].hi);
+ 		}
+-		for (i = 0; i < ptr->mon_n_vrefresh; i++)
+-		{
++        for (i = 0; i < ptr->mon_n_vrefresh; i++) {
+ 			fprintf (cf, "\tVertRefresh  %2.1f - %2.1f\n",
+-					 ptr->mon_vrefresh[i].lo,
+-					 ptr->mon_vrefresh[i].hi);
++                    ptr->mon_vrefresh[i].lo, ptr->mon_vrefresh[i].hi);
+ 		}
+ 		if (ptr->mon_gamma_red) {
+ 			if (ptr->mon_gamma_red == ptr->mon_gamma_green
+-				&& ptr->mon_gamma_red == ptr->mon_gamma_blue)
+-			{
+-				fprintf (cf, "\tGamma        %.4g\n",
+-					ptr->mon_gamma_red);
+-			} else {
++                && ptr->mon_gamma_red == ptr->mon_gamma_blue) {
++                fprintf(cf, "\tGamma        %.4g\n", ptr->mon_gamma_red);
++            }
++            else {
+ 				fprintf (cf, "\tGamma        %.4g %.4g %.4g\n",
+ 					ptr->mon_gamma_red,
+-					ptr->mon_gamma_green,
+-					ptr->mon_gamma_blue);
++                        ptr->mon_gamma_green, ptr->mon_gamma_blue);
+ 			}
+ 		}
+-		for (mlptr = ptr->mon_modeline_lst; mlptr; mlptr = mlptr->list.next)
+-		{
++        for (mlptr = ptr->mon_modeline_lst; mlptr; mlptr = mlptr->list.next) {
+ 			fprintf (cf, "\tModeLine     \"%s\" %2.1f ",
+ 					 mlptr->ml_identifier, mlptr->ml_clock / 1000.0);
+ 			fprintf (cf, "%d %d %d %d %d %d %d %d",
+@@ -750,15 +725,13 @@ xf86printModesSection (FILE * cf, XF86ConfModesPtr ptr)
+ {
+ 	XF86ConfModeLinePtr mlptr;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		fprintf (cf, "Section \"Modes\"\n");
+ 		if (ptr->modes_comment)
+ 			fprintf (cf, "%s", ptr->modes_comment);
+ 		if (ptr->modes_identifier)
+ 			fprintf (cf, "\tIdentifier     \"%s\"\n", ptr->modes_identifier);
+-		for (mlptr = ptr->mon_modeline_lst; mlptr; mlptr = mlptr->list.next)
+-		{
++        for (mlptr = ptr->mon_modeline_lst; mlptr; mlptr = mlptr->list.next) {
+ 			fprintf (cf, "\tModeLine     \"%s\" %2.1f ",
+ 					 mlptr->ml_identifier, mlptr->ml_clock / 1000.0);
+ 			fprintf (cf, "%d %d %d %d %d %d %d %d",
+@@ -805,8 +778,7 @@ xf86freeMonitorList (XF86ConfMonitorPtr ptr)
+ {
+ 	XF86ConfMonitorPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->mon_identifier);
+ 		TestFree (ptr->mon_vendor);
+ 		TestFree (ptr->mon_modelname);
+@@ -824,8 +796,7 @@ xf86freeModesList (XF86ConfModesPtr ptr)
+ {
+ 	XF86ConfModesPtr prev;
+ 
+-	while (ptr)
+-	{
++    while (ptr) {
+ 		TestFree (ptr->modes_identifier);
+ 		TestFree (ptr->modes_comment);
+ 		xf86freeModeLineList (ptr->mon_modeline_lst);
+@@ -838,8 +809,7 @@ xf86freeModesList (XF86ConfModesPtr ptr)
+ XF86ConfMonitorPtr
+ xf86findMonitor (const char *ident, XF86ConfMonitorPtr p)
+ {
+-	while (p)
+-	{
++    while (p) {
+ 		if (xf86nameCompare (ident, p->mon_identifier) == 0)
+ 			return p;
+ 
+@@ -851,8 +821,7 @@ xf86findMonitor (const char *ident, XF86ConfMonitorPtr p)
+ XF86ConfModesPtr
+ xf86findModes (const char *ident, XF86ConfModesPtr p)
+ {
+-	while (p)
+-	{
++    while (p) {
+ 		if (xf86nameCompare (ident, p->modes_identifier) == 0)
+ 			return p;
+ 
+@@ -864,8 +833,7 @@ xf86findModes (const char *ident, XF86ConfModesPtr p)
+ XF86ConfModeLinePtr
+ xf86findModeLine (const char *ident, XF86ConfModeLinePtr p)
+ {
+-	while (p)
+-	{
++    while (p) {
+ 		if (xf86nameCompare (ident, p->ml_identifier) == 0)
+ 			return p;
+ 
+@@ -880,11 +848,10 @@ xf86validateMonitor (XF86ConfigPtr p, XF86ConfScreenPtr screen)
+ 	XF86ConfMonitorPtr monitor = screen->scrn_monitor;
+ 	XF86ConfModesLinkPtr modeslnk = monitor->mon_modes_sect_lst;
+ 	XF86ConfModesPtr modes;
+-	while(modeslnk)
+-	{
++
++    while (modeslnk) {
+ 		modes = xf86findModes (modeslnk->ml_modes_str, p->conf_modes_lst);
+-		if (!modes)
+-		{
++        if (!modes) {
+ 			xf86validationError (UNDEFINED_MODES_MSG, 
+ 					     modeslnk->ml_modes_str, 
+ 					     screen->scrn_identifier);

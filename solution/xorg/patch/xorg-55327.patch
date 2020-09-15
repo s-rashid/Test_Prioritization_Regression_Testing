@@ -1,0 +1,24 @@
+diff --git a/hw/dmx/input/dmxdummy.c b/hw/dmx/input/dmxdummy.c
+index 971892b..0690177 100644
+--- a/hw/dmx/input/dmxdummy.c
++++ b/hw/dmx/input/dmxdummy.c
+@@ -47,7 +47,8 @@
+ /** Return information about the dummy keyboard device specified in \a pDev
+  * into the structure pointed to by \a info.  The keyboard is set up to
+  * have 1 valid key code that is \a NoSymbol */
+-void dmxDummyKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxDummyKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     static KeySym keyboard_mapping = NoSymbol;
+ 
+@@ -66,7 +67,8 @@ void dmxDummyKbdGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ /** Return information about the dummy mouse device specified in \a pDev
+  * into the structure pointed to by \a info.  They mouse has 3 buttons
+  * and two axes. */
+-void dmxDummyMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++dmxDummyMouGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     info->buttonClass      = 1;
+     info->numButtons       = 3;

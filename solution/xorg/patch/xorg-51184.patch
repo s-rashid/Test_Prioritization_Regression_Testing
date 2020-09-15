@@ -1,0 +1,12 @@
+diff --git a/dix/privates.c b/dix/privates.c
+index 687fa7a..d651258 100644
+--- a/dix/privates.c
++++ b/dix/privates.c
+@@ -447,6 +447,7 @@ static const char *key_names[PRIVATE_LAST] = {
+     [PRIVATE_GLYPH] = "GLYPH",
+     [PRIVATE_GLYPHSET] = "GLYPHSET",
+     [PRIVATE_PICTURE] = "PICTURE",
++    [PRIVATE_SYNC_FENCE] = "SYNC_FENCE",
+ };
+ 
+ void

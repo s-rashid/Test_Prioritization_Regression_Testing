@@ -1,0 +1,17 @@
+diff --git a/Xi/xiselectev.c b/Xi/xiselectev.c
+index 31e6a77..9dbdea7 100644
+--- a/Xi/xiselectev.c
++++ b/Xi/xiselectev.c
+@@ -82,6 +82,12 @@ ProcXISelectEvent(ClientPtr client)
+     num_masks = stuff->num_masks;
+     while(num_masks--)
+     {
++        if (evmask->deviceid > 0xFF) /* FIXME */
++        {
++            client->errorValue = evmask->deviceid;
++            return BadImplementation;
++        }
++
+         if (evmask->deviceid != XIAllDevices &&
+             evmask->deviceid != XIAllMasterDevices)
+             rc = dixLookupDevice(&dev, evmask->deviceid, client, DixReadAccess);

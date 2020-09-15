@@ -1,0 +1,49 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 73ef7f2..2579a5c 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -203,7 +203,6 @@ ProcDRI2DestroyDrawable(ClientPtr client)
+     return Success;
+ }
+ 
+-
+ static int
+ send_buffers_reply(ClientPtr client, DrawablePtr pDrawable,
+ 		   DRI2BufferPtr *buffers, int count, int width, int height)
+@@ -254,7 +253,6 @@ send_buffers_reply(ClientPtr client, DrawablePtr pDrawable,
+     return Success;
+ }
+ 
+-
+ static int
+ ProcDRI2GetBuffers(ClientPtr client)
+ {
+@@ -276,7 +274,6 @@ ProcDRI2GetBuffers(ClientPtr client)
+     buffers = DRI2GetBuffers(pDrawable, &width, &height,
+ 			     attachments, stuff->count, &count);
+ 
+-
+     return send_buffers_reply(client, pDrawable, buffers, count, width, height);
+ 
+ }
+@@ -610,8 +607,7 @@ SProcDRI2Dispatch (ClientPtr client)
+      * Only local clients are allowed DRI access, but remote clients
+      * still need these requests to find out cleanly.
+      */
+-    switch (stuff->data)
+-    {
++    switch (stuff->data) {
+     case X_DRI2QueryVersion:
+ 	return ProcDRI2QueryVersion(client);
+     case X_DRI2Connect:
+@@ -630,9 +626,7 @@ DRI2ExtensionInit(void)
+ 				 DRI2NumberEvents,
+ 				 DRI2NumberErrors,
+ 				 ProcDRI2Dispatch,
+-				 SProcDRI2Dispatch,
+-				 NULL,
+-				 StandardMinorOpcode);
++                                 SProcDRI2Dispatch, NULL, StandardMinorOpcode);
+ 
+     DRI2EventBase = dri2Extension->eventBase;
+ 

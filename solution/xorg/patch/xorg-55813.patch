@@ -1,0 +1,12 @@
+diff --git a/hw/xquartz/xpr/xpr.h b/hw/xquartz/xpr/xpr.h
+index 0b138dd..ec7e49d 100644
+--- a/hw/xquartz/xpr/xpr.h
++++ b/hw/xquartz/xpr/xpr.h
+@@ -62,6 +62,7 @@ void QuartzResumeXCursor(ScreenPtr pScreen);
+ static const int normal_window_levels[AppleWMNumWindowLevels+1] = {
+ 0, 3, 4, 5, INT_MIN + 30, INT_MIN + 29,
+ };
++
+ static const int rooted_window_levels[AppleWMNumWindowLevels+1] = {
+ 20, 21, 22, 23, 19, 18,
+ };

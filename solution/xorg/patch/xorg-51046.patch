@@ -1,0 +1,12 @@
+diff --git a/glx/glxdri.c b/glx/glxdri.c
+index db3fcd5..7717fcf 100644
+--- a/glx/glxdri.c
++++ b/glx/glxdri.c
+@@ -56,7 +56,6 @@
+ #include "glxutil.h"
+ #include "glxdricommon.h"
+ 
+-#include "g_disptab.h"
+ #include "glapitable.h"
+ #include "glapi.h"
+ #include "glthread.h"

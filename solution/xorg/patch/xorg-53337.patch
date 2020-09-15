@@ -1,0 +1,16 @@
+diff --git a/Xi/chgkbd.c b/Xi/chgkbd.c
+index f9fd099..d813919 100644
+--- a/Xi/chgkbd.c
++++ b/Xi/chgkbd.c
+@@ -75,10 +75,8 @@ SOFTWARE.
+ int
+ SProcXChangeKeyboardDevice(ClientPtr client)
+ {
+-    char n;
+-
+     REQUEST(xChangeKeyboardDeviceReq);
+-    swaps(&stuff->length, n);
++    swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xChangeKeyboardDeviceReq);
+     return (ProcXChangeKeyboardDevice(client));
+ }

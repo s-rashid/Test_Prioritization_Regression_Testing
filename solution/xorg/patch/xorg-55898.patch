@@ -1,0 +1,455 @@
+diff --git a/hw/xwin/winwindow.c b/hw/xwin/winwindow.c
+index 7975d71..5947917 100644
+--- a/hw/xwin/winwindow.c
++++ b/hw/xwin/winwindow.c
+@@ -34,7 +34,6 @@
+ #endif
+ #include "win.h"
+ 
+-
+ /*
+  * Prototypes for local functions
+  */
+@@ -50,7 +49,6 @@ static
+ void
+ winReshapeRootless (WindowPtr pWin);
+ 
+-
+ #ifdef XWIN_NATIVEGDI
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbCreateWindow() */
+@@ -60,6 +58,7 @@ winCreateWindowNativeGDI (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -74,7 +73,6 @@ winCreateWindowNativeGDI (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbDestroyWindow() */
+ 
+@@ -83,6 +81,7 @@ winDestroyWindowNativeGDI (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -97,7 +96,6 @@ winDestroyWindowNativeGDI (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbPositionWindow() */
+ 
+@@ -106,6 +104,7 @@ winPositionWindowNativeGDI (WindowPtr pWin, int x, int y)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -120,14 +119,11 @@ winPositionWindowNativeGDI (WindowPtr pWin, int x, int y)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 39 */
+ /* See mfb/mfbwindow.c - mfbCopyWindow() */
+ 
+ void 
+-winCopyWindowNativeGDI (WindowPtr pWin,
+-			DDXPointRec ptOldOrg,
+-			RegionPtr prgnSrc)
++winCopyWindowNativeGDI(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ {
+   DDXPointPtr		pptSrc;
+   DDXPointPtr		ppt;
+@@ -138,6 +134,7 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+   WindowPtr		pwinRoot;
+   BoxPtr		pBoxDst;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if 0
+@@ -156,8 +153,7 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+ 
+   /* Translate the region from the destination to the source? */
+   RegionTranslate(prgnSrc, -dx, -dy);
+-  RegionIntersect(prgnDst, &pWin->borderClip,
+-		   prgnSrc);
++    RegionIntersect(prgnDst, &pWin->borderClip, prgnSrc);
+ 
+   /* Get a pointer to the first box in the region to be copied */
+   pBox = RegionRects(prgnDst);
+@@ -173,8 +169,7 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+   ppt = pptSrc;
+ 
+   /* Calculate the source point of each box? */
+-  for (i = nbox; --i >= 0; ppt++, pBox++)
+-    {
++    for (i = nbox; --i >= 0; ppt++, pBox++) {
+       ppt->x = pBox->x1 + dx;
+       ppt->y = pBox->y1 + dy;
+     }
+@@ -188,8 +183,7 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+ #endif
+ 
+   /* BitBlt each source to the destination point */
+-  for (i = nbox; --i >= 0; pBoxDst++, ppt++)
+-    {
++    for (i = nbox; --i >= 0; pBoxDst++, ppt++) {
+ #if 0
+       ErrorF ("winCopyWindow - %d\t%d\t%d\t%d\t%d\t%d\n",
+ 	      pBoxDst->x1, pBoxDst->x2, pBoxDst->y1, pBoxDst->y2,
+@@ -199,9 +193,7 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+       BitBlt (pScreenPriv->hdcScreen,
+ 	      pBoxDst->x1, pBoxDst->y1,
+ 	      pBoxDst->x2 - pBoxDst->x1, pBoxDst->y2 - pBoxDst->y1,
+-	      pScreenPriv->hdcScreen,
+-	      ppt->x, ppt->y,
+-	      SRCCOPY);
++               pScreenPriv->hdcScreen, ppt->x, ppt->y, SRCCOPY);
+     }
+ 
+   /* Cleanup the regions, etc. */
+@@ -209,7 +201,6 @@ winCopyWindowNativeGDI (WindowPtr pWin,
+   RegionDestroy(prgnDst);
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbChangeWindowAttributes() */
+ 
+@@ -218,6 +209,7 @@ winChangeWindowAttributesNativeGDI (WindowPtr pWin, unsigned long mask)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -236,7 +228,6 @@ winChangeWindowAttributesNativeGDI (WindowPtr pWin, unsigned long mask)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37
+  * Also referred to as UnrealizeWindow
+  */
+@@ -246,6 +237,7 @@ winUnmapWindowNativeGDI (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -260,7 +252,6 @@ winUnmapWindowNativeGDI (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37
+  * Also referred to as RealizeWindow
+  */
+@@ -270,6 +261,7 @@ winMapWindowNativeGDI (WindowPtr pWin)
+ {
+   Bool			fResult = TRUE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -286,7 +278,6 @@ winMapWindowNativeGDI (WindowPtr pWin)
+ }
+ #endif
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbCreateWindow() */
+ 
+@@ -295,6 +286,7 @@ winCreateWindowRootless (WindowPtr pWin)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -311,7 +303,6 @@ winCreateWindowRootless (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbDestroyWindow() */
+ 
+@@ -320,6 +311,7 @@ winDestroyWindowRootless (WindowPtr pWin)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -331,8 +323,7 @@ winDestroyWindowRootless (WindowPtr pWin)
+   fResult = (*pScreen->DestroyWindow)(pWin);
+   WIN_WRAP(DestroyWindow, winDestroyWindowRootless);
+   
+-  if (pWinPriv->hRgn != NULL)
+-    {
++    if (pWinPriv->hRgn != NULL) {
+       DeleteObject(pWinPriv->hRgn);
+       pWinPriv->hRgn = NULL;
+     }
+@@ -342,7 +333,6 @@ winDestroyWindowRootless (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbPositionWindow() */
+ 
+@@ -351,8 +341,8 @@ winPositionWindowRootless (WindowPtr pWin, int x, int y)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
+-  winScreenPriv(pScreen);
+ 
++    winScreenPriv(pScreen);
+ 
+ #if CYGDEBUG
+   winTrace ("winPositionWindowRootless (%p)\n", pWin);
+@@ -367,7 +357,6 @@ winPositionWindowRootless (WindowPtr pWin, int x, int y)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37 */
+ /* See mfb/mfbwindow.c - mfbChangeWindowAttributes() */
+ 
+@@ -376,6 +365,7 @@ winChangeWindowAttributesRootless (WindowPtr pWin, unsigned long mask)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGDEBUG
+@@ -391,7 +381,6 @@ winChangeWindowAttributesRootless (WindowPtr pWin, unsigned long mask)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37
+  * Also referred to as UnrealizeWindow
+  */
+@@ -401,6 +390,7 @@ winUnmapWindowRootless (WindowPtr pWin)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winWindowPriv(pWin);
+   winScreenPriv(pScreen);
+ 
+@@ -412,8 +402,7 @@ winUnmapWindowRootless (WindowPtr pWin)
+   fResult = (*pScreen->UnrealizeWindow)(pWin);
+   WIN_WRAP(UnrealizeWindow, winUnmapWindowRootless);
+   
+-  if (pWinPriv->hRgn != NULL)
+-    {
++    if (pWinPriv->hRgn != NULL) {
+       DeleteObject(pWinPriv->hRgn);
+       pWinPriv->hRgn = NULL;
+     }
+@@ -423,7 +412,6 @@ winUnmapWindowRootless (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ /* See Porting Layer Definition - p. 37
+  * Also referred to as RealizeWindow
+  */
+@@ -433,6 +421,7 @@ winMapWindowRootless (WindowPtr pWin)
+ {
+   Bool			fResult = FALSE;
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGDEBUG
+@@ -450,11 +439,11 @@ winMapWindowRootless (WindowPtr pWin)
+   return fResult;
+ }
+ 
+-
+ void
+ winSetShapeRootless (WindowPtr pWin, int kind)
+ {
+   ScreenPtr		pScreen = pWin->drawable.pScreen;
++
+   winScreenPriv(pScreen);
+ 
+ #if CYGDEBUG
+@@ -471,7 +460,6 @@ winSetShapeRootless (WindowPtr pWin, int kind)
+   return;
+ }
+ 
+-
+ /*
+  * Local function for adding a region to the Windows window region
+  */
+@@ -483,16 +471,15 @@ winAddRgn (WindowPtr pWin, pointer data)
+   int		iX, iY, iWidth, iHeight, iBorder;
+   HRGN		hRgn = *(HRGN*)data;
+   HRGN		hRgnWin;
++
+   winWindowPriv(pWin);
+   
+   /* If pWin is not Root */
+-  if (pWin->parent != NULL) 
+-    {
++    if (pWin->parent != NULL) {
+ #if CYGDEBUG
+       winDebug ("winAddRgn ()\n");
+ #endif
+-      if (pWin->mapped)
+-	{
++        if (pWin->mapped) {
+ 	  iBorder = wBorderWidth (pWin);
+ 	  
+ 	  iX = pWin->drawable.x - iBorder;
+@@ -503,26 +490,22 @@ winAddRgn (WindowPtr pWin, pointer data)
+ 	  
+ 	  hRgnWin = CreateRectRgn (0, 0, iWidth, iHeight);
+ 	  
+-	  if (hRgnWin == NULL)
+-	    {
++            if (hRgnWin == NULL) {
+ 	      ErrorF ("winAddRgn - CreateRectRgn () failed\n");
+ 	      ErrorF ("  Rect %d %d %d %d\n",
+ 		      iX, iY, iX + iWidth, iY + iHeight);
+ 	    }
+ 	  
+-	  if (pWinPriv->hRgn)
+-	    {
++            if (pWinPriv->hRgn) {
+ 	      if (CombineRgn (hRgnWin, hRgnWin, pWinPriv->hRgn, RGN_AND)
+-		  == ERROR)
+-		{
++                    == ERROR) {
+ 		  ErrorF ("winAddRgn - CombineRgn () failed\n");
+ 		}
+ 	    }
+ 	  
+ 	  OffsetRgn (hRgnWin, iX, iY);
+ 
+-	  if (CombineRgn (hRgn, hRgn, hRgnWin, RGN_OR) == ERROR)
+-	    {
++            if (CombineRgn(hRgn, hRgn, hRgnWin, RGN_OR) == ERROR) {
+ 	      ErrorF ("winAddRgn - CombineRgn () failed\n");
+ 	    }
+ 	  
+@@ -530,13 +513,11 @@ winAddRgn (WindowPtr pWin, pointer data)
+ 	}
+       return WT_DONTWALKCHILDREN;
+     }
+-  else
+-    {
++    else {
+       return WT_WALKCHILDREN;
+     }
+ }
+ 
+-
+ /*
+  * Local function to update the Windows window's region
+  */
+@@ -547,19 +528,16 @@ winUpdateRgnRootless (WindowPtr pWin)
+ {
+   HRGN		hRgn = CreateRectRgn (0, 0, 0, 0);
+   
+-  if (hRgn != NULL)
+-    {
++    if (hRgn != NULL) {
+       WalkTree (pWin->drawable.pScreen, winAddRgn, &hRgn);
+       SetWindowRgn (winGetScreenPriv(pWin->drawable.pScreen)->hwndScreen,
+ 		    hRgn, TRUE);
+     }
+-  else
+-    {
++    else {
+       ErrorF ("winUpdateRgnRootless - CreateRectRgn failed.\n");
+     }
+ }
+ 
+-
+ static
+ void
+ winReshapeRootless (WindowPtr pWin)
+@@ -568,6 +546,7 @@ winReshapeRootless (WindowPtr pWin)
+   RegionRec	rrNewShape;
+   BoxPtr	pShape, pRects, pEnd;
+   HRGN		hRgn, hRgnRect;
++
+   winWindowPriv(pWin);
+ 
+ #if CYGDEBUG
+@@ -583,8 +562,7 @@ winReshapeRootless (WindowPtr pWin)
+     return;
+ 
+   /* Free any existing window region stored in the window privates */
+-  if (pWinPriv->hRgn != NULL)
+-    {
++    if (pWinPriv->hRgn != NULL) {
+       DeleteObject (pWinPriv->hRgn);
+       pWinPriv->hRgn = NULL;
+     }
+@@ -595,31 +573,26 @@ winReshapeRootless (WindowPtr pWin)
+ 
+   RegionNull(&rrNewShape);
+   RegionCopy(&rrNewShape, wBoundingShape(pWin));
+-  RegionTranslate(&rrNewShape, pWin->borderWidth,
+-                   pWin->borderWidth);
++    RegionTranslate(&rrNewShape, pWin->borderWidth, pWin->borderWidth);
+   
+   nRects = RegionNumRects(&rrNewShape);
+   pShape = RegionRects(&rrNewShape);
+   
+-  if (nRects > 0)
+-    {
++    if (nRects > 0) {
+       /* Create initial empty Windows region */
+       hRgn = CreateRectRgn (0, 0, 0, 0);
+ 
+       /* Loop through all rectangles in the X region */
+-      for (pRects = pShape, pEnd = pShape + nRects; pRects < pEnd; pRects++)
+-        {
++        for (pRects = pShape, pEnd = pShape + nRects; pRects < pEnd; pRects++) {
+ 	  /* Create a Windows region for the X rectangle */
+ 	  hRgnRect = CreateRectRgn (pRects->x1, pRects->y1,
+ 				    pRects->x2, pRects->y2);
+-	  if (hRgnRect == NULL)
+-	    {
++            if (hRgnRect == NULL) {
+ 	      ErrorF("winReshapeRootless - CreateRectRgn() failed\n");
+ 	    }
+ 
+ 	  /* Merge the Windows region with the accumulated region */
+-	  if (CombineRgn (hRgn, hRgn, hRgnRect, RGN_OR) == ERROR)
+-	    {
++            if (CombineRgn(hRgn, hRgn, hRgnRect, RGN_OR) == ERROR) {
+ 	      ErrorF("winReshapeRootless - CombineRgn() failed\n");
+ 	    }
+ 

@@ -1,0 +1,19 @@
+diff --git a/dix/dispatch.c b/dix/dispatch.c
+index 43cb4d1..2b6cb82 100644
+--- a/dix/dispatch.c
++++ b/dix/dispatch.c
+@@ -2029,6 +2029,14 @@ DoGetImage(ClientPtr client, int format, Drawable drawable,
+ 	if (!pWin->viewable)
+ 	    return BadMatch;
+ 
++	/* If the drawable is a window, the rectangle must be contained within
++	 * its bounds (including the border). */
++	if (x < -wBorderWidth(pWin) ||
++	    x + width > wBorderWidth(pWin) + (int)pDraw->width ||
++	    y < -wBorderWidth(pWin) ||
++	    y + height > wBorderWidth(pWin) + (int)pDraw->height)
++	    return BadMatch;
++
+ 	relx += pDraw->x;
+ 	rely += pDraw->y;
+ 

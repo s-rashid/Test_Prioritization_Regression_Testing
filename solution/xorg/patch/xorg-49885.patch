@@ -1,0 +1,13 @@
+diff --git a/mi/miwindow.c b/mi/miwindow.c
+index 51c5cc8..25dd1c0 100644
+--- a/mi/miwindow.c
++++ b/mi/miwindow.c
+@@ -50,7 +50,7 @@ SOFTWARE.
+ #endif
+ 
+ #include <X11/X.h>
+-#include <X11/extensions/shape.h>
++#include <X11/extensions/shapeconst.h>
+ #include "regionstr.h"
+ #include "region.h"
+ #include "mi.h"

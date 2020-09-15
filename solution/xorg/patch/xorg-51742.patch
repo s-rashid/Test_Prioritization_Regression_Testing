@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86xv.h b/hw/xfree86/common/xf86xv.h
+index 47061fe..f0d8495 100644
+--- a/hw/xfree86/common/xf86xv.h
++++ b/hw/xfree86/common/xf86xv.h
+@@ -244,6 +244,9 @@ xf86XVFillKeyHelper (ScreenPtr pScreen, CARD32 key, RegionPtr clipboxes);
+ extern _X_EXPORT void
+ xf86XVFillKeyHelperDrawable (DrawablePtr pDraw, CARD32 key, RegionPtr clipboxes);
+ 
++extern _X_EXPORT void
++xf86XVFillKeyHelperPort (DrawablePtr pDraw, pointer data, CARD32 key, RegionPtr clipboxes, Bool fillEverything);
++
+ extern _X_EXPORT Bool
+ xf86XVClipVideoHelper(
+     BoxPtr dst,

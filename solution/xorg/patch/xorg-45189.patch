@@ -1,0 +1,17 @@
+diff --git a/Xi/xiquerypointer.c b/Xi/xiquerypointer.c
+index 1d00b9e..e770e84 100644
+--- a/Xi/xiquerypointer.c
++++ b/Xi/xiquerypointer.c
+@@ -81,12 +81,6 @@ ProcXIQueryPointer(ClientPtr client)
+     REQUEST(xXIQueryPointerReq);
+     REQUEST_SIZE_MATCH(xXIQueryPointerReq);
+ 
+-    if (stuff->deviceid > 0xFF) /* FIXME */
+-    {
+-        client->errorValue = stuff->deviceid;
+-        return BadImplementation;
+-    }
+-
+     rc = dixLookupDevice(&pDev, stuff->deviceid, client, DixReadAccess);
+     if (rc != Success)
+         return rc;

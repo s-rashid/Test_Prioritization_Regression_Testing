@@ -1,0 +1,35 @@
+diff --git a/hw/dmx/examples/xled.c b/hw/dmx/examples/xled.c
+index 270f805..32e8e37 100644
+--- a/hw/dmx/examples/xled.c
++++ b/hw/dmx/examples/xled.c
+@@ -40,7 +40,8 @@
+ #include <X11/extensions/XKBstr.h>
+ #include <sys/time.h>
+ 
+-int main(int argc, char **argv)
++int
++main(int argc, char **argv)
+ {
+     Display              *display = NULL;
+     int                  mask     = 0;
+@@ -55,8 +56,10 @@ int main(int argc, char **argv)
+             printf("Cannot open display %s\n", argv[1]);
+             return -1;
+         }
+-        if (argc >= 3) mask = strtol(argv[2], NULL, 0);
+-    } else {
++        if (argc >= 3)
++            mask = strtol(argv[2], NULL, 0);
++    }
++    else {
+         printf("Usage: %s display [mask]\n", argv[0]);
+         return -1;
+     }
+@@ -88,7 +91,6 @@ int main(int argc, char **argv)
+     printf("XkbSetIndicatorMap = %d\n", XkbSetIndicatorMap(display, ~0, xkb));
+     XkbFreeKeyboard(xkb, 0, True);
+ 
+-    
+     if (!(xkb = XkbAllocKeyboard())) {
+         printf("Cannot allocate\n");
+         return -1;

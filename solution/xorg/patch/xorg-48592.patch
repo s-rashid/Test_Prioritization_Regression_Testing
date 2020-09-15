@@ -1,0 +1,16 @@
+diff --git a/composite/compext.c b/composite/compext.c
+index 3bb9a37..ed43775 100644
+--- a/composite/compext.c
++++ b/composite/compext.c
+@@ -140,10 +140,7 @@ ProcCompositeQueryVersion (ClientPtr client)
+ 	int err;							\
+ 	err = dixLookupResourceByType((pointer *) &pWindow, wid,	\
+ 				      RT_WINDOW, client, mode);		\
+-	if (err == BadValue) {						\
+-	    client->errorValue = wid;					\
+-	    return BadWindow;						\
+-	} else if (err != Success) {					\
++	if (err != Success) {						\
+ 	    client->errorValue = wid;					\
+ 	    return err;							\
+ 	}								\

@@ -1,0 +1,13 @@
+diff --git a/Xi/queryst.c b/Xi/queryst.c
+index 65a43d1..9c9e4e0 100644
+--- a/Xi/queryst.c
++++ b/Xi/queryst.c
+@@ -151,7 +151,7 @@ ProcXQueryDeviceState(ClientPtr client)
+ 	tv->class = ValuatorClass;
+ 	tv->length = sizeof(xValuatorState) + v->numAxes * 4;
+ 	tv->num_valuators = v->numAxes;
+-	tv->mode = v->mode;
++	tv->mode |= (dev->proximity && !dev->proximity->in_proximity) ? OutOfProximity : 0;
+ 	buf += sizeof(xValuatorState);
+ 	for (i = 0, values = v->axisVal; i < v->numAxes; i++) {
+ 	    if (rc != BadAccess)

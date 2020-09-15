@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/xaa/xaaGC.c b/hw/xfree86/xaa/xaaGC.c
+index fb24387..44d50e6 100644
+--- a/hw/xfree86/xaa/xaaGC.c
++++ b/hw/xfree86/xaa/xaaGC.c
+@@ -48,11 +48,6 @@ XAACreateGC(GCPtr pGC)
+ 	pGCPriv->wrapOps = NULL;
+ 	pGCPriv->wrapFuncs = pGC->funcs;
+ 	pGCPriv->XAAOps = &XAAFallbackOps;
+-	pGCPriv->flags = 0;
+-	pGCPriv->DashLength = 0;
+-	pGCPriv->DashPattern = NULL;
+-	pGCPriv->changes = 0;
+-	/* initialize any other private fields here */
+ 	pGC->funcs = &XAAGCFuncs;
+     }
+  

@@ -1,0 +1,47 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index 0428673..c30efb8 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -329,7 +329,6 @@ xf86ActivateDevice(LocalDevicePtr local)
+ {
+     DeviceIntPtr	dev;
+ 
+-    if (local->flags & XI86_CONFIGURED) {
+         dev = AddInputDevice(serverClient, local->device_control, TRUE);
+ 
+         if (dev == NULL)
+@@ -340,11 +339,9 @@ xf86ActivateDevice(LocalDevicePtr local)
+             return FALSE;
+         }
+ 
+-        local->atom = MakeAtom(local->type_name,
+-                               strlen(local->type_name),
+-                               TRUE);
++    local->atom = MakeAtom(local->type_name, strlen(local->type_name), TRUE);
+         AssignTypeAndName(dev, local->atom, local->name);
+-        dev->public.devicePrivate = (pointer) local;
++    dev->public.devicePrivate = local;
+         local->dev = dev;      
+         
+         dev->coreEvents = local->flags & XI86_ALWAYS_CORE; 
+@@ -358,7 +355,6 @@ xf86ActivateDevice(LocalDevicePtr local)
+         if (serverGeneration == 1) 
+             xf86Msg(X_INFO, "XINPUT: Adding extended input device \"%s\" (type: %s)\n",
+                     local->name, local->type_name);
+-    }
+ 
+     return TRUE;
+ }
+@@ -782,12 +778,6 @@ xf86NewInputDevice(IDevPtr idev, DeviceIntPtr *pdev, BOOL enable)
+         xf86Msg(X_ERROR, "PreInit returned %d for \"%s\"\n", rval, idev->identifier);
+         goto unwind;
+     }
+-    else if (!(pInfo->flags & XI86_CONFIGURED)) {
+-        xf86Msg(X_ERROR, "PreInit failed for input device \"%s\"\n",
+-                idev->identifier);
+-        rval = BadMatch;
+-        goto unwind;
+-    }
+ 
+     if (!xf86ActivateDevice(pInfo))
+     {

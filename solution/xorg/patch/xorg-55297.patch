@@ -1,0 +1,38 @@
+diff --git a/hw/dmx/glxProxy/glxfbconfig.c b/hw/dmx/glxProxy/glxfbconfig.c
+index a7741ff..2f46bd0 100644
+--- a/hw/dmx/glxProxy/glxfbconfig.c
++++ b/hw/dmx/glxProxy/glxfbconfig.c
+@@ -30,12 +30,12 @@
+ 
+ #include "glxfbconfig.h"
+ 
+-int AreFBConfigsMatch( __GLXFBConfig *c1, __GLXFBConfig *c2 )
++int
++AreFBConfigsMatch(__GLXFBConfig * c1, __GLXFBConfig * c2)
+ {
+    int match;
+ 
+-   match = (
+-	     (c1->visualType == c2->visualType) &&
++    match = ((c1->visualType == c2->visualType) &&
+ 	     (c1->transparentType == c2->transparentType) &&
+ 	     (c1->transparentRed == c2->transparentRed) &&
+ 	     (c1->transparentGreen == c2->transparentGreen) &&
+@@ -86,14 +86,14 @@ int AreFBConfigsMatch( __GLXFBConfig *c1, __GLXFBConfig *c2 )
+ 	     (c1->maxGreen == c2->maxGreen) &&
+ 	     (c1->minBlue == c2->minBlue) &&
+ 	     (c1->maxBlue == c2->maxBlue) &&
+-	     (c1->minAlpha == c2->minAlpha) &&
+-	     (c1->maxAlpha == c2->maxAlpha) 
++             (c1->minAlpha == c2->minAlpha) && (c1->maxAlpha == c2->maxAlpha)
+ 	   );
+ 
+    return match;
+ }
+ 
+-__GLXFBConfig *FindMatchingFBConfig( __GLXFBConfig *c, __GLXFBConfig *configs, int nconfigs )
++__GLXFBConfig *
++FindMatchingFBConfig(__GLXFBConfig * c, __GLXFBConfig * configs, int nconfigs)
+ {
+    int i;
+ 

@@ -1,0 +1,27 @@
+diff --git a/hw/dmx/config/CanvasP.h b/hw/dmx/config/CanvasP.h
+index cf43710..b1ccf24 100644
+--- a/hw/dmx/config/CanvasP.h
++++ b/hw/dmx/config/CanvasP.h
+@@ -45,8 +45,8 @@ typedef struct {
+ } CanvasClassPart;
+ 
+ typedef struct _CanvasClassRec {
+-    CoreClassPart	core_class;
+-    CanvasClassPart	canvas_class;
++    CoreClassPart core_class;
++    CanvasClassPart canvas_class;
+ } CanvasClassRec;
+ 
+ extern CanvasClassRec canvasClassRec;
+@@ -58,8 +58,8 @@ typedef struct {
+ } CanvasPart;
+ 
+ typedef struct _CanvasRec {
+-    CorePart	core;
+-    CanvasPart	canvas;
++    CorePart core;
++    CanvasPart canvas;
+ } CanvasRec;
+ 
+-#endif /* _CanvasP_h */
++#endif                          /* _CanvasP_h */

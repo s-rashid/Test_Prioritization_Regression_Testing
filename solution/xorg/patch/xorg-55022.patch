@@ -1,0 +1,15 @@
+diff --git a/Xi/xichangecursor.h b/Xi/xichangecursor.h
+index dc6ccb1..1447777 100644
+--- a/Xi/xichangecursor.h
++++ b/Xi/xichangecursor.h
+@@ -30,7 +30,7 @@
+ #ifndef CHDEVCUR_H
+ #define CHDEVCUR_H 1
+ 
+-int SProcXIChangeCursor(ClientPtr /* client */);
+-int ProcXIChangeCursor(ClientPtr /* client */);
++int SProcXIChangeCursor(ClientPtr /* client */ );
++int ProcXIChangeCursor(ClientPtr /* client */ );
+ 
+-#endif /* CHDEVCUR_H */
++#endif                          /* CHDEVCUR_H */

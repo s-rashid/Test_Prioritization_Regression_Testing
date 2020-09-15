@@ -1,0 +1,15 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 58d318f..4c67e3d 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -530,10 +530,8 @@ typedef struct _DeviceIntRec {
+     PrivateRec		*devPrivates;
+     DeviceUnwrapProc    unwrapProc;
+     SpriteInfoPtr       spriteInfo;
+-    union {
+         DeviceIntPtr        master;     /* master device */
+         DeviceIntPtr        lastSlave;  /* last slave device used */
+-    } u;
+ 
+     /* last valuator values recorded, not posted to client;
+      * for slave devices, valuators is in device coordinates

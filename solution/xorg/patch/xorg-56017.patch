@@ -1,0 +1,22 @@
+diff --git a/mi/mizerarc.h b/mi/mizerarc.h
+index 1612a52..165e281 100644
+--- a/mi/mizerarc.h
++++ b/mi/mizerarc.h
+@@ -24,7 +24,6 @@ in this Software without prior written authorization from The Open Group.
+ 
+ ********************************************************/
+ 
+-
+ typedef struct {
+     int x;
+     int y;
+@@ -119,8 +118,7 @@ typedef struct {
+ 
+ /* mizerarc.c */
+ 
+-extern _X_EXPORT Bool miZeroArcSetup(
+-    xArc * /*arc*/,
++extern _X_EXPORT Bool miZeroArcSetup(xArc * /*arc */ ,
+     miZeroArcRec * /*info*/,
+     Bool /*ok360*/
+ );

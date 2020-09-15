@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 53f763a..15fdbc3 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -825,6 +825,7 @@ void
+ CloseInput (void)
+ {
+     config_fini();
++    mieqFini();
+ }
+ 
+ /*

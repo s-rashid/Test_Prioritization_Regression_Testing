@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 6d5e92f..fee1ae7 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -44,7 +44,9 @@
+ #include "X11/Xatom.h"
+ #include "picturestr.h"
+ 
++#ifdef XV
+ #include "xf86xv.h"
++#endif
+ 
+ #define NO_OUTPUT_DEFAULT_WIDTH 1024
+ #define NO_OUTPUT_DEFAULT_HEIGHT 768

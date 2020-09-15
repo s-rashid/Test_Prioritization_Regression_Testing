@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index e612cf0..73ef7f2 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -156,13 +156,13 @@ ProcDRI2Authenticate(ClientPtr client)
+ }
+ 
+ static void
+-DRI2InvalidateBuffersEvent(DrawablePtr pDraw, void *priv)
++DRI2InvalidateBuffersEvent(DrawablePtr pDraw, void *priv, XID id)
+ {
+     xDRI2InvalidateBuffers event;
+     ClientPtr client = priv;
+ 
+     event.type = DRI2EventBase + DRI2_InvalidateBuffers;
+-    event.drawable = pDraw->id;
++    event.drawable = id;
+ 
+     WriteEventsToClient(client, 1, (xEvent *)&event);
+ }

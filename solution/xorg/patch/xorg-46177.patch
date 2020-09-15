@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86cmap.c b/hw/xfree86/common/xf86cmap.c
+index 7990c74..36e6f96 100644
+--- a/hw/xfree86/common/xf86cmap.c
++++ b/hw/xfree86/common/xf86cmap.c
+@@ -52,8 +52,7 @@
+ #include "xf86Crtc.h"
+ 
+ #ifdef XFreeXDGA
+-#define _XF86DGA_SERVER_
+-#include <X11/extensions/xf86dgastr.h>
++#include <X11/extensions/xf86dgaproto.h>
+ #include "dgaproc.h"
+ #endif
+ 

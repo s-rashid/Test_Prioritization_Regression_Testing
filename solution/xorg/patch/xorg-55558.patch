@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/os-support/bsd/memrange.h b/hw/xfree86/os-support/bsd/memrange.h
+index 03c4791..bacd4aa 100644
+--- a/hw/xfree86/os-support/bsd/memrange.h
++++ b/hw/xfree86/os-support/bsd/memrange.h
+@@ -40,6 +40,7 @@ struct mem_range_op {
+ #define MEMRANGE_SET_REMOVE	1
+ 	/* XXX want a flag that says "set and undo when I exit" */
+ };
++
+ #define MEMRANGE_GET	_IOWR('m', 50, struct mem_range_op)
+ #define MEMRANGE_SET	_IOW('m', 51, struct mem_range_op)
+ 
+@@ -48,7 +49,9 @@ struct mem_range_op {
+ struct mem_range_softc;
+ struct mem_range_ops {
+ 	void    (*init) __P((struct mem_range_softc * sc));
+-	int     (*set) __P((struct mem_range_softc * sc, struct mem_range_desc * mrd, int *arg));
++    int (*set)
++        __P((struct mem_range_softc * sc, struct mem_range_desc * mrd,
++             int *arg));
+ 	void    (*initAP) __P((struct mem_range_softc * sc));
+ };
+ 

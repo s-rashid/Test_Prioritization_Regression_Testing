@@ -1,0 +1,14 @@
+diff --git a/xkb/ddxLoad.c b/xkb/ddxLoad.c
+index ba8d50b..72aff2a 100644
+--- a/xkb/ddxLoad.c
++++ b/xkb/ddxLoad.c
+@@ -28,9 +28,7 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include <dix-config.h>
+ #endif
+ 
+-#ifdef HAVE_XKB_CONFIG_H
+ #include <xkb-config.h>
+-#endif
+ 
+ #include <stdio.h>
+ #include <ctype.h>

@@ -1,0 +1,17 @@
+diff --git a/render/picture.c b/render/picture.c
+index 7fda6b9..896eaa7 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -1391,11 +1391,8 @@ SetPictureTransform (PicturePtr	    pPicture,
+     }
+     else
+     {
+-	if (pPicture->transform)
+-	{
+ 	    free(pPicture->transform);
+-	    pPicture->transform = 0;
+-	}
++	pPicture->transform = NULL;
+     }
+     pPicture->serialNumber |= GC_CHANGE_SERIAL_BIT;
+ 

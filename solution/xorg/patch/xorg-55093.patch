@@ -1,0 +1,362 @@
+diff --git a/dix/property.c b/dix/property.c
+index d933d5c..b1b8312 100644
+--- a/dix/property.c
++++ b/dix/property.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -76,8 +75,7 @@ PrintPropertys(WindowPtr pWin)
+     int j;
+ 
+     pProp = pWin->userProps;
+-    while (pProp)
+-    {
++    while (pProp) {
+         ErrorF("[dix] %x %x\n", pProp->propertyName, pProp->type);
+         ErrorF("[dix] property format: %d\n", pProp->format);
+         ErrorF("[dix] property data: \n");
+@@ -94,6 +92,7 @@ dixLookupProperty(PropertyPtr *result, WindowPtr pWin, Atom propertyName,
+ {
+     PropertyPtr pProp;
+     int rc = BadMatch;
++
+     client->errorValue = propertyName;
+ 
+     for (pProp = wUserProps(pWin); pProp; pProp = pProp->next)
+@@ -124,6 +123,7 @@ int
+ ProcRotateProperties(ClientPtr client)
+ {
+     int     i, j, delta, rc;
++
+     REQUEST(xRotatePropertiesReq);
+     WindowPtr pWin;
+     Atom * atoms;
+@@ -144,16 +144,14 @@ ProcRotateProperties(ClientPtr client)
+ 	goto out;
+     }
+ 
+-    for (i = 0; i < stuff->nAtoms; i++)
+-    {
++    for (i = 0; i < stuff->nAtoms; i++) {
+         if (!ValidAtom(atoms[i])) {
+ 	    rc = BadAtom;
+ 	    client->errorValue = atoms[i];
+ 	    goto out;
+         }
+         for (j = i + 1; j < stuff->nAtoms; j++)
+-            if (atoms[j] == atoms[i])
+-            {
++            if (atoms[j] == atoms[i]) {
+ 		rc = BadMatch;
+ 		goto out;
+             }
+@@ -171,12 +169,10 @@ ProcRotateProperties(ClientPtr client)
+     /* If the rotation is a complete 360 degrees, then moving the properties
+ 	around and generating PropertyNotify events should be skipped. */
+ 
+-    if (abs(delta) % stuff->nAtoms)
+-    {
++    if (abs(delta) % stuff->nAtoms) {
+ 	while (delta < 0)                  /* faster if abs value is small */
+             delta += stuff->nAtoms;
+-    	for (i = 0; i < stuff->nAtoms; i++)
+- 	{
++        for (i = 0; i < stuff->nAtoms; i++) {
+ 	    j = (i + delta) % stuff->nAtoms;
+ 	    deliverPropertyNotifyEvent(pWin, PropertyNewValue, atoms[i]);
+ 
+@@ -200,6 +196,7 @@ ProcChangeProperty(ClientPtr client)
+     char format, mode;
+     unsigned long len;
+     int sizeInBytes, totalSize, err;
++
+     REQUEST(xChangePropertyReq);
+ 
+     REQUEST_AT_LEAST_SIZE(xChangePropertyReq);
+@@ -207,13 +204,11 @@ ProcChangeProperty(ClientPtr client)
+     format = stuff->format;
+     mode = stuff->mode;
+     if ((mode != PropModeReplace) && (mode != PropModeAppend) &&
+-	(mode != PropModePrepend))
+-    {
++        (mode != PropModePrepend)) {
+ 	client->errorValue = mode;
+ 	return BadValue;
+     }
+-    if ((format != 8) && (format != 16) && (format != 32))
+-    {
++    if ((format != 8) && (format != 16) && (format != 32)) {
+ 	client->errorValue = format;
+         return BadValue;
+     }
+@@ -227,13 +222,11 @@ ProcChangeProperty(ClientPtr client)
+     err = dixLookupWindow(&pWin, stuff->window, client, DixSetPropAccess);
+     if (err != Success)
+ 	return err;
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }
+-    if (!ValidAtom(stuff->type))
+-    {
++    if (!ValidAtom(stuff->type)) {
+ 	client->errorValue = stuff->type;
+ 	return BadAtom;
+     }
+@@ -265,16 +258,14 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+     /* first see if property already exists */
+     rc = dixLookupProperty(&pProp, pWin, property, pClient, access_mode);
+ 
+-    if (rc == BadMatch)   /* just add to list */
+-    {
++    if (rc == BadMatch) {       /* just add to list */
+ 	if (!pWin->optional && !MakeWindowOptional (pWin))
+ 	    return BadAlloc;
+ 	pProp = dixAllocateObjectWithPrivates(PropertyRec, PRIVATE_PROPERTY);
+ 	if (!pProp)
+ 	    return BadAlloc;
+         data = malloc(totalSize);
+-	if (!data && len)
+-	{
++        if (!data && len) {
+ 	    dixFreeObjectWithPrivates(pProp, PRIVATE_PROPERTY);
+ 	    return BadAlloc;
+ 	}
+@@ -295,8 +286,7 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+         pProp->next = pWin->optional->userProps;
+         pWin->optional->userProps = pProp;
+     }
+-    else if (rc == Success)
+-    {
++    else if (rc == Success) {
+ 	/* To append or prepend to a property the request format and type
+ 		must match those of the already defined property.  The
+ 		existing format and type are irrelevant when using the mode
+@@ -310,8 +300,7 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+ 	/* save the old values for later */
+ 	savedProp = *pProp;
+ 
+-        if (mode == PropModeReplace)
+-        {
++        if (mode == PropModeReplace) {
+ 	    data = malloc(totalSize);
+ 	    if (!data && len)
+ 		return BadAlloc;
+@@ -321,12 +310,10 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+     	    pProp->type = type;
+ 	    pProp->format = format;
+ 	}
+-	else if (len == 0)
+-	{
++        else if (len == 0) {
+ 	    /* do nothing */
+ 	}
+-        else if (mode == PropModeAppend)
+-        {
++        else if (mode == PropModeAppend) {
+ 	    data = malloc((pProp->size + len) * sizeInBytes);
+ 	    if (!data)
+ 		return BadAlloc;
+@@ -335,8 +322,7 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+             pProp->data = data;
+             pProp->size += len;
+ 	}
+-        else if (mode == PropModePrepend)
+-        {
++        else if (mode == PropModePrepend) {
+             data = malloc(sizeInBytes * (len + pProp->size));
+ 	    if (!data)
+ 		return BadAlloc;
+@@ -349,13 +335,11 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+ 	/* Allow security modules to check the new content */
+ 	access_mode |= DixPostAccess;
+ 	rc = XaceHookPropertyAccess(pClient, pWin, &pProp, access_mode);
+-	if (rc == Success)
+-	{
++        if (rc == Success) {
+ 	    if (savedProp.data != pProp->data)
+ 		free(savedProp.data);
+ 	}
+-	else
+-	{
++        else {
+ 	    if (savedProp.data != pProp->data)
+ 		free(pProp->data);
+ 	    *pProp = savedProp;
+@@ -373,8 +357,7 @@ dixChangeWindowProperty(ClientPtr pClient, WindowPtr pWin, Atom property,
+ 
+ int
+ ChangeWindowProperty(WindowPtr pWin, Atom property, Atom type, int format, 
+-		     int mode, unsigned long len, pointer value, 
+-		     Bool sendevent)
++                     int mode, unsigned long len, pointer value, Bool sendevent)
+ {
+     return dixChangeWindowProperty(serverClient, pWin, property, type, format,
+ 				   mode, len, value, sendevent);
+@@ -395,7 +378,8 @@ DeleteProperty(ClientPtr client, WindowPtr pWin, Atom propName)
+ 	    /* Takes care of head */
+             if (!(pWin->optional->userProps = pProp->next))
+ 		CheckWindowOptionalNeed (pWin);
+-	} else {
++        }
++        else {
+ 	    /* Need to traverse to find the previous element */
+ 	    prevProp = pWin->optional->userProps;
+ 	    while (prevProp->next != pProp)
+@@ -416,8 +400,7 @@ DeleteAllWindowProperties(WindowPtr pWin)
+     PropertyPtr pProp, pNextProp;
+ 
+     pProp = wUserProps (pWin);
+-    while (pProp)
+-    {
++    while (pProp) {
+ 	deliverPropertyNotifyEvent(pWin, PropertyDelete, pProp->propertyName);
+ 	pNextProp = pProp->next;
+         free(pProp->data);
+@@ -430,11 +413,8 @@ DeleteAllWindowProperties(WindowPtr pWin)
+ }
+ 
+ static int
+-NullPropertyReply(
+-    ClientPtr client,
+-    ATOM propertyType,
+-    int format,
+-    xGetPropertyReply *reply)
++NullPropertyReply(ClientPtr client,
++                  ATOM propertyType, int format, xGetPropertyReply * reply)
+ {
+     reply->nItems = 0;
+     reply->length = 0;
+@@ -464,6 +444,7 @@ ProcGetProperty(ClientPtr client)
+     WindowPtr pWin;
+     xGetPropertyReply reply;
+     Mask win_mode = DixGetPropAccess, prop_mode = DixReadAccess;
++
+     REQUEST(xGetPropertyReq);
+ 
+     REQUEST_SIZE_MATCH(xGetPropertyReq);
+@@ -476,18 +457,15 @@ ProcGetProperty(ClientPtr client)
+     if (rc != Success)
+ 	return rc;
+ 
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }
+-    if ((stuff->delete != xTrue) && (stuff->delete != xFalse))
+-    {
++    if ((stuff->delete != xTrue) && (stuff->delete != xFalse)) {
+ 	client->errorValue = stuff->delete;
+ 	return BadValue;
+     }
+-    if ((stuff->type != AnyPropertyType) && !ValidAtom(stuff->type))
+-    {
++    if ((stuff->type != AnyPropertyType) && !ValidAtom(stuff->type)) {
+ 	client->errorValue = stuff->type;
+ 	return BadAtom;
+     }
+@@ -505,10 +483,8 @@ ProcGetProperty(ClientPtr client)
+     /* If the request type and actual type don't match. Return the
+     property information, but not the data. */
+ 
+-    if (((stuff->type != pProp->type) &&
+-	 (stuff->type != AnyPropertyType))
+-       )
+-    {
++    if (((stuff->type != pProp->type) && (stuff->type != AnyPropertyType))
++        ) {
+ 	reply.bytesAfter = pProp->size;
+ 	reply.format = pProp->format;
+ 	reply.length = 0;
+@@ -527,8 +503,7 @@ ProcGetProperty(ClientPtr client)
+    /* If longOffset is invalid such that it causes "len" to
+ 	    be negative, it's a value error. */
+ 
+-    if (n < ind)
+-    {
++    if (n < ind) {
+ 	client->errorValue = stuff->longOffset;
+ 	return BadValue;
+     }
+@@ -545,15 +520,19 @@ ProcGetProperty(ClientPtr client)
+ 	deliverPropertyNotifyEvent(pWin, PropertyDelete, pProp->propertyName);
+ 
+     WriteReplyToClient(client, sizeof(xGenericReply), &reply);
+-    if (len)
+-    {
++    if (len) {
+ 	switch (reply.format) {
+-	case 32: client->pSwapReplyFunc = (ReplySwapPtr)CopySwap32Write; break;
+-	case 16: client->pSwapReplyFunc = (ReplySwapPtr)CopySwap16Write; break;
+-	default: client->pSwapReplyFunc = (ReplySwapPtr)WriteToClient; break;
++        case 32:
++            client->pSwapReplyFunc = (ReplySwapPtr) CopySwap32Write;
++            break;
++        case 16:
++            client->pSwapReplyFunc = (ReplySwapPtr) CopySwap16Write;
++            break;
++        default:
++            client->pSwapReplyFunc = (ReplySwapPtr) WriteToClient;
++            break;
+ 	}
+-	WriteSwappedDataToClient(client, len,
+-				 (char *)pProp->data + ind);
++        WriteSwappedDataToClient(client, len, (char *) pProp->data + ind);
+     }
+ 
+     if (stuff->delete && (reply.bytesAfter == 0)) {
+@@ -562,7 +541,8 @@ ProcGetProperty(ClientPtr client)
+ 	    /* Takes care of head */
+             if (!(pWin->optional->userProps = pProp->next))
+ 		CheckWindowOptionalNeed (pWin);
+-	} else {
++        }
++        else {
+ 	    /* Need to traverse to find the previous element */
+ 	    prevProp = pWin->optional->userProps;
+ 	    while (prevProp->next != pProp)
+@@ -584,6 +564,7 @@ ProcListProperties(ClientPtr client)
+     int	rc, numProps = 0;
+     WindowPtr pWin;
+     PropertyPtr pProp, realProp;
++
+     REQUEST(xResourceReq);
+ 
+     REQUEST_SIZE_MATCH(xResourceReq);
+@@ -613,8 +594,7 @@ ProcListProperties(ClientPtr client)
+     xlpr.length = bytes_to_int32(numProps * sizeof(Atom));
+     xlpr.sequenceNumber = client->sequence;
+     WriteReplyToClient(client, sizeof(xGenericReply), &xlpr);
+-    if (numProps)
+-    {
++    if (numProps) {
+         client->pSwapReplyFunc = (ReplySwapPtr)Swap32Write;
+         WriteSwappedDataToClient(client, numProps * sizeof(Atom), pAtoms);
+     }
+@@ -626,6 +606,7 @@ int
+ ProcDeleteProperty(ClientPtr client)
+ {
+     WindowPtr pWin;
++
+     REQUEST(xDeletePropertyReq);
+     int result;
+               
+@@ -634,8 +615,7 @@ ProcDeleteProperty(ClientPtr client)
+     result = dixLookupWindow(&pWin, stuff->window, client, DixSetPropAccess);
+     if (result != Success)
+         return result;
+-    if (!ValidAtom(stuff->property))
+-    {
++    if (!ValidAtom(stuff->property)) {
+ 	client->errorValue = stuff->property;
+ 	return BadAtom;
+     }

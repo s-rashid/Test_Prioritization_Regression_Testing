@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index 97ef5da..c674465 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -73,7 +73,7 @@
+ 
+ /* Render */
+ #define SERVER_RENDER_MAJOR_VERSION		0
+-#define SERVER_RENDER_MINOR_VERSION		10
++#define SERVER_RENDER_MINOR_VERSION		11
+ 
+ /* RandR Xinerama */
+ #define SERVER_RRXINERAMA_MAJOR_VERSION		1

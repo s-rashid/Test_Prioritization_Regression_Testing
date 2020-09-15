@@ -1,0 +1,13 @@
+diff --git a/mi/mioverlay.c b/mi/mioverlay.c
+index df43196..1a3ac41 100644
+--- a/mi/mioverlay.c
++++ b/mi/mioverlay.c
+@@ -1741,7 +1741,7 @@ miOverlayComputeCompositeClip(GCPtr pGC, WindowPtr pWin)
+ 	pregWin = REGION_CREATE(pScreen, NullBox, 1);
+ 	freeTmpClip = TRUE;
+ 	if (pWin->parent || (screenIsSaved != SCREEN_SAVER_ON) ||
+-		!HasSaverWindow (pScreen->myNum))
++		!HasSaverWindow (pScreen))
+ 	{
+             REGION_INTERSECT(pScreen,pregWin,&pTree->borderClip,&pWin->winSize);
+ 	}

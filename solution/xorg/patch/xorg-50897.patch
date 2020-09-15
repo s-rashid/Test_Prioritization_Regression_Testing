@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index dea3c9b..e3b2831 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -2210,7 +2210,6 @@ configDevice(GDevPtr devicep, XF86ConfDevicePtr conf_device, Bool active)
+ static void
+ configDRI(XF86ConfDRIPtr drip)
+ {
+-    int                i;
+     struct group       *grp;
+ 
+     xf86ConfigDRI.group      = -1;

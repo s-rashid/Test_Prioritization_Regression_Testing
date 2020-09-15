@@ -1,0 +1,653 @@
+diff --git a/hw/dmx/config/dmxparse.c b/hw/dmx/config/dmxparse.c
+index 35f1c21..cf51084 100644
+--- a/hw/dmx/config/dmxparse.c
++++ b/hw/dmx/config/dmxparse.c
+@@ -52,7 +52,8 @@
+ 
+ /** A general error logging routine that does not depend on the dmxLog
+  * functions. */
+-void dmxConfigLog(const char *format, ...)
++void
++dmxConfigLog(const char *format, ...)
+ {
+     va_list args;
+     
+@@ -63,9 +64,11 @@ void dmxConfigLog(const char *format, ...)
+     va_end(args);
+ }
+ 
+-void *dmxConfigAlloc(unsigned long bytes)
++void *
++dmxConfigAlloc(unsigned long bytes)
+ {
+     void *area = calloc(1, bytes);
++
+     if (!area) {
+         dmxConfigLog("dmxConfigAlloc: out of memory\n");
+         return NULL;
+@@ -73,10 +76,11 @@ void *dmxConfigAlloc(unsigned long bytes)
+     return area;
+ }
+ 
+-void *dmxConfigRealloc(void *orig, unsigned long orig_bytes,
+-                       unsigned long bytes)
++void *
++dmxConfigRealloc(void *orig, unsigned long orig_bytes, unsigned long bytes)
+ {
+     unsigned char *area = realloc(orig, bytes);
++
+     if (!area) {
+         dmxConfigLog("dmxConfigRealloc: out of memory\n");
+         return NULL;
+@@ -85,42 +89,49 @@ void *dmxConfigRealloc(void *orig, unsigned long orig_bytes,
+     return area;
+ }
+ 
+-const char *dmxConfigCopyString(const char *string, int length)
++const char *
++dmxConfigCopyString(const char *string, int length)
+ {
+     char *copy;
+     
+-    if (!length) length = strlen(string);
++    if (!length)
++        length = strlen(string);
+     copy = dmxConfigAlloc(length + 1);
+-    if (length) strncpy(copy, string, length);
++    if (length)
++        strncpy(copy, string, length);
+     copy[length] = '\0';
+     return copy;
+ }
+ 
+-void dmxConfigFree(void *area)
++void
++dmxConfigFree(void *area)
+ {
+     free(area);
+ }
+ 
+-DMXConfigTokenPtr dmxConfigCreateToken(int token, int line,
+-                                       const char *comment)
++DMXConfigTokenPtr
++dmxConfigCreateToken(int token, int line, const char *comment)
+ {
+     DMXConfigTokenPtr pToken = dmxConfigAlloc(sizeof(*pToken));
++
+     pToken->token   = token;
+     pToken->line    = line;
+     pToken->comment = comment;
+     return pToken;
+ }
+ 
+-void dmxConfigFreeToken(DMXConfigTokenPtr p)
++void
++dmxConfigFreeToken(DMXConfigTokenPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFree((void *)p->comment);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigStringPtr dmxConfigCreateString(int token, int line,
+-                                         const char *comment,
+-                                         const char *string)
++DMXConfigStringPtr
++dmxConfigCreateString(int token, int line,
++                      const char *comment, const char *string)
+ {
+     DMXConfigStringPtr pString = dmxConfigAlloc(sizeof(*pString));
+ 
+@@ -131,11 +142,13 @@ DMXConfigStringPtr dmxConfigCreateString(int token, int line,
+     return pString;
+ }
+ 
+-void dmxConfigFreeString(DMXConfigStringPtr p)
++void
++dmxConfigFreeString(DMXConfigStringPtr p)
+ {
+     DMXConfigStringPtr next;
+ 
+-    if (!p) return;
++    if (!p)
++        return;
+     do {
+         next = p->next;
+         dmxConfigFree((void *)p->comment);
+@@ -144,9 +157,8 @@ void dmxConfigFreeString(DMXConfigStringPtr p)
+     } while ((p = next));
+ }
+  
+-DMXConfigNumberPtr dmxConfigCreateNumber(int token, int line,
+-                                         const char *comment,
+-                                         int number)
++DMXConfigNumberPtr
++dmxConfigCreateNumber(int token, int line, const char *comment, int number)
+ {
+     DMXConfigNumberPtr pNumber = dmxConfigAlloc(sizeof(*pNumber));
+ 
+@@ -157,17 +169,18 @@ DMXConfigNumberPtr dmxConfigCreateNumber(int token, int line,
+     return pNumber;
+ }
+ 
+-void dmxConfigFreeNumber(DMXConfigNumberPtr p)
++void
++dmxConfigFreeNumber(DMXConfigNumberPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFree((void *)p->comment);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigPairPtr dmxConfigCreatePair(int token, int line,
+-                                     const char *comment,
+-                                     int x, int y,
+-                                     int xsign, int ysign)
++DMXConfigPairPtr
++dmxConfigCreatePair(int token, int line,
++                    const char *comment, int x, int y, int xsign, int ysign)
+ {
+     DMXConfigPairPtr pPair = dmxConfigAlloc(sizeof(*pPair));
+ 
+@@ -181,15 +194,17 @@ DMXConfigPairPtr dmxConfigCreatePair(int token, int line,
+     return pPair;
+ }
+ 
+-void dmxConfigFreePair(DMXConfigPairPtr p)
++void
++dmxConfigFreePair(DMXConfigPairPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFree((void *)p->comment);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigCommentPtr dmxConfigCreateComment(int token, int line,
+-                                           const char *comment)
++DMXConfigCommentPtr
++dmxConfigCreateComment(int token, int line, const char *comment)
+ {
+     DMXConfigCommentPtr pComment = dmxConfigAlloc(sizeof(*pComment));
+ 
+@@ -199,52 +214,60 @@ DMXConfigCommentPtr dmxConfigCreateComment(int token, int line,
+     return pComment;
+ }
+ 
+-void dmxConfigFreeComment(DMXConfigCommentPtr p)
++void
++dmxConfigFreeComment(DMXConfigCommentPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFree((void *)p->comment);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigPartDimPtr dmxConfigCreatePartDim(DMXConfigPairPtr pDim,
+-                                           DMXConfigPairPtr pOffset)
++DMXConfigPartDimPtr
++dmxConfigCreatePartDim(DMXConfigPairPtr pDim, DMXConfigPairPtr pOffset)
+ {
+     DMXConfigPartDimPtr pPart = dmxConfigAlloc(sizeof(*pPart));
++
+     pPart->dim    = pDim;
+     pPart->offset = pOffset;
+     return pPart;
+ }
+ 
+-void dmxConfigFreePartDim(DMXConfigPartDimPtr p)
++void
++dmxConfigFreePartDim(DMXConfigPartDimPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFreePair(p->dim);
+     dmxConfigFreePair(p->offset);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigFullDimPtr dmxConfigCreateFullDim(DMXConfigPartDimPtr pScrn,
+-                                           DMXConfigPartDimPtr pRoot)
++DMXConfigFullDimPtr
++dmxConfigCreateFullDim(DMXConfigPartDimPtr pScrn, DMXConfigPartDimPtr pRoot)
+ {
+     DMXConfigFullDimPtr pFull = dmxConfigAlloc(sizeof(*pFull));
++
+     pFull->scrn = pScrn;
+     pFull->root = pRoot;
+     return pFull;
+ }
+ 
+-void dmxConfigFreeFullDim(DMXConfigFullDimPtr p)
++void
++dmxConfigFreeFullDim(DMXConfigFullDimPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFreePartDim(p->scrn);
+     dmxConfigFreePartDim(p->root);
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigDisplayPtr dmxConfigCreateDisplay(DMXConfigTokenPtr pStart,
++DMXConfigDisplayPtr
++dmxConfigCreateDisplay(DMXConfigTokenPtr pStart,
+                                            DMXConfigStringPtr pName,
+                                            DMXConfigFullDimPtr pDim,
+-                                           DMXConfigPairPtr pOrigin,
+-                                           DMXConfigTokenPtr pEnd)
++                       DMXConfigPairPtr pOrigin, DMXConfigTokenPtr pEnd)
+ {
+     DMXConfigDisplayPtr pDisplay = dmxConfigAlloc(sizeof(*pDisplay));
+ 
+@@ -280,7 +303,8 @@ DMXConfigDisplayPtr dmxConfigCreateDisplay(DMXConfigTokenPtr pStart,
+             pDisplay->rootXSign  = pDim->root->offset->xsign;
+             pDisplay->rootYSign  = pDim->root->offset->ysign;
+         }
+-    } else {                    /* If no root specification, copy width
++    }
++    else {                      /* If no root specification, copy width
+                                  * and height from scrn -- leave offset
+                                  * as zero, since it is relative to
+                                  * scrn. */
+@@ -288,13 +312,14 @@ DMXConfigDisplayPtr dmxConfigCreateDisplay(DMXConfigTokenPtr pStart,
+         pDisplay->rootHeight = pDisplay->scrnHeight;
+     }
+ 
+-
+     return pDisplay;
+ }
+ 
+-void dmxConfigFreeDisplay(DMXConfigDisplayPtr p)
++void
++dmxConfigFreeDisplay(DMXConfigDisplayPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFreeToken(p->start);
+     dmxConfigFreeString(p->dname);
+     dmxConfigFreeFullDim(p->dim);
+@@ -302,11 +327,11 @@ void dmxConfigFreeDisplay(DMXConfigDisplayPtr p)
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigWallPtr dmxConfigCreateWall(DMXConfigTokenPtr pStart,
++DMXConfigWallPtr
++dmxConfigCreateWall(DMXConfigTokenPtr pStart,
+                                      DMXConfigPairPtr pWallDim,
+                                      DMXConfigPairPtr pDisplayDim,
+-                                     DMXConfigStringPtr pNameList,
+-                                     DMXConfigTokenPtr pEnd)
++                    DMXConfigStringPtr pNameList, DMXConfigTokenPtr pEnd)
+ {
+     DMXConfigWallPtr pWall = dmxConfigAlloc(sizeof(*pWall));
+ 
+@@ -324,9 +349,11 @@ DMXConfigWallPtr dmxConfigCreateWall(DMXConfigTokenPtr pStart,
+     return pWall;
+ }
+ 
+-void dmxConfigFreeWall(DMXConfigWallPtr p)
++void
++dmxConfigFreeWall(DMXConfigWallPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     dmxConfigFreeToken(p->start);
+     dmxConfigFreePair(p->wallDim);
+     dmxConfigFreePair(p->displayDim);
+@@ -335,9 +362,9 @@ void dmxConfigFreeWall(DMXConfigWallPtr p)
+     dmxConfigFree(p);
+ }
+ 
+-DMXConfigOptionPtr dmxConfigCreateOption(DMXConfigTokenPtr pStart,
+-                                         DMXConfigStringPtr pOption,
+-                                         DMXConfigTokenPtr pEnd)
++DMXConfigOptionPtr
++dmxConfigCreateOption(DMXConfigTokenPtr pStart,
++                      DMXConfigStringPtr pOption, DMXConfigTokenPtr pEnd)
+ {
+     int                length = 0;
+     int                offset = 0;
+@@ -345,7 +372,8 @@ DMXConfigOptionPtr dmxConfigCreateOption(DMXConfigTokenPtr pStart,
+     DMXConfigOptionPtr option = dmxConfigAlloc(sizeof(*option));
+ 
+     for (p = pOption; p; p = p->next) {
+-        if (p->string) length += strlen(p->string) + 1;
++        if (p->string)
++            length += strlen(p->string) + 1;
+     }
+ 
+     option->string = dmxConfigAlloc(length + 1);
+@@ -353,9 +381,11 @@ DMXConfigOptionPtr dmxConfigCreateOption(DMXConfigTokenPtr pStart,
+     for (p = pOption; p; p = p->next) {
+         if (p->string) {
+             int len = strlen(p->string);
++
+             strncpy(option->string + offset, p->string, len);
+             offset += len;
+-            if (p->next) option->string[offset++] = ' ';
++            if (p->next)
++                option->string[offset++] = ' ';
+         }
+     }
+     option->string[offset] = '\0';
+@@ -367,9 +397,11 @@ DMXConfigOptionPtr dmxConfigCreateOption(DMXConfigTokenPtr pStart,
+     return option;
+ }
+ 
+-void dmxConfigFreeOption(DMXConfigOptionPtr p)
++void
++dmxConfigFreeOption(DMXConfigOptionPtr p)
+ {
+-    if (!p) return;
++    if (!p)
++        return;
+     free(p->string);
+     dmxConfigFreeToken(p->start);
+     dmxConfigFreeString(p->option);
+@@ -377,8 +409,8 @@ void dmxConfigFreeOption(DMXConfigOptionPtr p)
+     dmxConfigFree(p);
+ }
+ 
+-const char **dmxConfigLookupParam(DMXConfigParamPtr p, const char *key,
+-                                  int *argc)
++const char **
++dmxConfigLookupParam(DMXConfigParamPtr p, const char *key, int *argc)
+ {
+     DMXConfigParamPtr pt;
+ 
+@@ -392,11 +424,11 @@ const char **dmxConfigLookupParam(DMXConfigParamPtr p, const char *key,
+     return NULL;
+ }
+ 
+-DMXConfigParamPtr dmxConfigCreateParam(DMXConfigTokenPtr pStart,
++DMXConfigParamPtr
++dmxConfigCreateParam(DMXConfigTokenPtr pStart,
+                                        DMXConfigTokenPtr pOpen,
+                                        DMXConfigStringPtr pParam,
+-                                       DMXConfigTokenPtr pClose,
+-                                       DMXConfigTokenPtr pEnd)
++                     DMXConfigTokenPtr pClose, DMXConfigTokenPtr pEnd)
+ {
+     DMXConfigParamPtr  param = dmxConfigAlloc(sizeof(*param));
+     DMXConfigStringPtr pt;
+@@ -411,7 +443,8 @@ DMXConfigParamPtr dmxConfigCreateParam(DMXConfigTokenPtr pStart,
+             ++param->argc;
+         }
+     }
+-    if (param->argv) param->argv[param->argc] = NULL;
++    if (param->argv)
++        param->argv[param->argc] = NULL;
+ 
+     param->start = pStart;
+     param->open  = pOpen;
+@@ -422,11 +455,13 @@ DMXConfigParamPtr dmxConfigCreateParam(DMXConfigTokenPtr pStart,
+     return param;
+ }
+ 
+-void dmxConfigFreeParam(DMXConfigParamPtr p)
++void
++dmxConfigFreeParam(DMXConfigParamPtr p)
+ {
+     DMXConfigParamPtr next;
+ 
+-    if (!p) return;
++    if (!p)
++        return;
+     do {
+         next = p->next;
+         dmxConfigFreeToken(p->start);
+@@ -439,37 +474,61 @@ void dmxConfigFreeParam(DMXConfigParamPtr p)
+     } while ((p = next));
+ }
+ 
+-DMXConfigSubPtr dmxConfigCreateSub(DMXConfigType type,
++DMXConfigSubPtr
++dmxConfigCreateSub(DMXConfigType type,
+                                    DMXConfigCommentPtr comment,
+                                    DMXConfigDisplayPtr display,
+                                    DMXConfigWallPtr wall,
+-                                   DMXConfigOptionPtr option,
+-                                   DMXConfigParamPtr param)
++                   DMXConfigOptionPtr option, DMXConfigParamPtr param)
+ {
+     DMXConfigSubPtr pSub = dmxConfigAlloc(sizeof(*pSub));
++
+     pSub->type = type;
+     switch (type) {
+-    case dmxConfigComment: pSub->comment = comment;                     break;
+-    case dmxConfigDisplay: pSub->display = display;                     break;
+-    case dmxConfigWall:    pSub->wall    = wall;                        break;
+-    case dmxConfigOption:  pSub->option  = option;                      break;
+-    case dmxConfigParam:   pSub->param   = param;                       break;
+-    default: dmxConfigLog("Type %d not supported in subentry\n", type); break;
++    case dmxConfigComment:
++        pSub->comment = comment;
++        break;
++    case dmxConfigDisplay:
++        pSub->display = display;
++        break;
++    case dmxConfigWall:
++        pSub->wall = wall;
++        break;
++    case dmxConfigOption:
++        pSub->option = option;
++        break;
++    case dmxConfigParam:
++        pSub->param = param;
++        break;
++    default:
++        dmxConfigLog("Type %d not supported in subentry\n", type);
++        break;
+     }
+     return pSub;
+ }
+ 
+-void dmxConfigFreeSub(DMXConfigSubPtr sub)
++void
++dmxConfigFreeSub(DMXConfigSubPtr sub)
+ {
+     DMXConfigSubPtr pt;
+ 
+     for (pt = sub; pt; pt = pt->next) {
+         switch (pt->type) {
+-        case dmxConfigComment: dmxConfigFreeComment(pt->comment); break;
+-        case dmxConfigDisplay: dmxConfigFreeDisplay(pt->display); break;
+-        case dmxConfigWall:    dmxConfigFreeWall(pt->wall);       break;
+-        case dmxConfigOption:  dmxConfigFreeOption(pt->option);   break;
+-        case dmxConfigParam:   dmxConfigFreeParam(pt->param);     break;
++        case dmxConfigComment:
++            dmxConfigFreeComment(pt->comment);
++            break;
++        case dmxConfigDisplay:
++            dmxConfigFreeDisplay(pt->display);
++            break;
++        case dmxConfigWall:
++            dmxConfigFreeWall(pt->wall);
++            break;
++        case dmxConfigOption:
++            dmxConfigFreeOption(pt->option);
++            break;
++        case dmxConfigParam:
++            dmxConfigFreeParam(pt->param);
++            break;
+         default:
+             dmxConfigLog("Type %d not supported in subentry\n", pt->type);
+             break;
+@@ -478,50 +537,56 @@ void dmxConfigFreeSub(DMXConfigSubPtr sub)
+     dmxConfigFree(sub);
+ }
+ 
+-DMXConfigSubPtr dmxConfigSubComment(DMXConfigCommentPtr comment)
++DMXConfigSubPtr
++dmxConfigSubComment(DMXConfigCommentPtr comment)
+ {
+     return dmxConfigCreateSub(dmxConfigComment, comment, NULL, NULL, NULL,
+                               NULL);
+ }
+ 
+-DMXConfigSubPtr dmxConfigSubDisplay(DMXConfigDisplayPtr display)
++DMXConfigSubPtr
++dmxConfigSubDisplay(DMXConfigDisplayPtr display)
+ {
+     return dmxConfigCreateSub(dmxConfigDisplay, NULL, display, NULL, NULL,
+                               NULL);
+ }
+ 
+-DMXConfigSubPtr dmxConfigSubWall(DMXConfigWallPtr wall)
++DMXConfigSubPtr
++dmxConfigSubWall(DMXConfigWallPtr wall)
+ {
+     return dmxConfigCreateSub(dmxConfigWall, NULL, NULL, wall, NULL, NULL);
+ }
+ 
+-DMXConfigSubPtr dmxConfigSubOption(DMXConfigOptionPtr option)
++DMXConfigSubPtr
++dmxConfigSubOption(DMXConfigOptionPtr option)
+ {
+     return dmxConfigCreateSub(dmxConfigOption, NULL, NULL, NULL, option, NULL);
+ }
+ 
+-DMXConfigSubPtr dmxConfigSubParam(DMXConfigParamPtr param)
++DMXConfigSubPtr
++dmxConfigSubParam(DMXConfigParamPtr param)
+ {
+     return dmxConfigCreateSub(dmxConfigParam, NULL, NULL, NULL, NULL, param);
+ }
+ 
+-extern DMXConfigSubPtr dmxConfigAddSub(DMXConfigSubPtr head,
+-                                       DMXConfigSubPtr sub)
++extern DMXConfigSubPtr
++dmxConfigAddSub(DMXConfigSubPtr head, DMXConfigSubPtr sub)
+ {
+     DMXConfigSubPtr pt;
+     
+-    if (!head) return sub;
++    if (!head)
++        return sub;
+     for (pt = head; pt->next; pt = pt->next);
+     pt->next = sub;
+     return head;
+ }
+ 
+-DMXConfigVirtualPtr dmxConfigCreateVirtual(DMXConfigTokenPtr pStart,
++DMXConfigVirtualPtr
++dmxConfigCreateVirtual(DMXConfigTokenPtr pStart,
+                                            DMXConfigStringPtr pName,
+                                            DMXConfigPairPtr pDim,
+                                            DMXConfigTokenPtr pOpen,
+-                                           DMXConfigSubPtr pSubentry,
+-                                           DMXConfigTokenPtr pClose)
++                       DMXConfigSubPtr pSubentry, DMXConfigTokenPtr pClose)
+ {
+     DMXConfigVirtualPtr pVirtual = dmxConfigAlloc(sizeof(*pVirtual));
+ 
+@@ -539,7 +604,8 @@ DMXConfigVirtualPtr dmxConfigCreateVirtual(DMXConfigTokenPtr pStart,
+     return pVirtual;
+ }
+ 
+-void dmxConfigFreeVirtual(DMXConfigVirtualPtr virtual)
++void
++dmxConfigFreeVirtual(DMXConfigVirtualPtr virtual)
+ {
+     dmxConfigFreeToken(virtual->start);
+     dmxConfigFreeString(virtual->vname);
+@@ -550,28 +616,40 @@ void dmxConfigFreeVirtual(DMXConfigVirtualPtr virtual)
+     dmxConfigFree(virtual);
+ }
+ 
+-DMXConfigEntryPtr dmxConfigCreateEntry(DMXConfigType type,
+-                                       DMXConfigCommentPtr comment,
+-                                       DMXConfigVirtualPtr virtual)
++DMXConfigEntryPtr
++dmxConfigCreateEntry(DMXConfigType type,
++                     DMXConfigCommentPtr comment, DMXConfigVirtualPtr virtual)
+ {
+     DMXConfigEntryPtr pEntry = dmxConfigAlloc(sizeof(*pEntry));
++
+     pEntry->type = type;
+     switch (type) {
+-    case dmxConfigComment: pEntry->comment = comment;                break;
+-    case dmxConfigVirtual: pEntry->virtual = virtual;                break;
+-    default: dmxConfigLog("Type %d not supported in entry\n", type); break;
++    case dmxConfigComment:
++        pEntry->comment = comment;
++        break;
++    case dmxConfigVirtual:
++        pEntry->virtual = virtual;
++        break;
++    default:
++        dmxConfigLog("Type %d not supported in entry\n", type);
++        break;
+     }
+     return pEntry;
+ }
+ 
+-void dmxConfigFreeEntry(DMXConfigEntryPtr entry)
++void
++dmxConfigFreeEntry(DMXConfigEntryPtr entry)
+ {
+     DMXConfigEntryPtr pt;
+ 
+     for (pt = entry; pt; pt = pt->next) {
+         switch (pt->type) {
+-        case dmxConfigComment: dmxConfigFreeComment(pt->comment); break;
+-        case dmxConfigVirtual: dmxConfigFreeVirtual(pt->virtual); break;
++        case dmxConfigComment:
++            dmxConfigFreeComment(pt->comment);
++            break;
++        case dmxConfigVirtual:
++            dmxConfigFreeVirtual(pt->virtual);
++            break;
+         default:
+             dmxConfigLog("Type %d not supported in entry\n", pt->type);
+             break;
+@@ -580,15 +658,16 @@ void dmxConfigFreeEntry(DMXConfigEntryPtr entry)
+     dmxConfigFree(entry);
+ }
+ 
+-DMXConfigEntryPtr dmxConfigAddEntry(DMXConfigEntryPtr head,
++DMXConfigEntryPtr
++dmxConfigAddEntry(DMXConfigEntryPtr head,
+                                     DMXConfigType type,
+-                                    DMXConfigCommentPtr comment,
+-                                    DMXConfigVirtualPtr virtual)
++                  DMXConfigCommentPtr comment, DMXConfigVirtualPtr virtual)
+ {
+     DMXConfigEntryPtr child = dmxConfigCreateEntry(type, comment, virtual);
+     DMXConfigEntryPtr pt;
+ 
+-    if (!head) return child;
++    if (!head)
++        return child;
+ 
+     for (pt = head; pt->next; pt = pt->next);
+     pt->next = child;
+@@ -596,12 +675,14 @@ DMXConfigEntryPtr dmxConfigAddEntry(DMXConfigEntryPtr head,
+     return head;
+ }
+ 
+-DMXConfigEntryPtr dmxConfigEntryComment(DMXConfigCommentPtr comment)
++DMXConfigEntryPtr
++dmxConfigEntryComment(DMXConfigCommentPtr comment)
+ {
+     return dmxConfigCreateEntry(dmxConfigComment, comment, NULL);
+ }
+ 
+-DMXConfigEntryPtr dmxConfigEntryVirtual(DMXConfigVirtualPtr virtual)
++DMXConfigEntryPtr
++dmxConfigEntryVirtual(DMXConfigVirtualPtr virtual)
+ {
+     return dmxConfigCreateEntry(dmxConfigVirtual, NULL, virtual);
+ }

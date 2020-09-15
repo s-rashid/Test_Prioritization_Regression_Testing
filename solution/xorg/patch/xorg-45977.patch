@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/common/xf86Helper.c b/hw/xfree86/common/xf86Helper.c
+index 4f659a1..f70b4e8 100644
+--- a/hw/xfree86/common/xf86Helper.c
++++ b/hw/xfree86/common/xf86Helper.c
+@@ -53,7 +53,6 @@
+ #include "xf86Priv.h"
+ #include "xf86_OSlib.h"
+ #include "micmap.h"
+-#include "xf86PciInfo.h"
+ #include "xf86DDC.h"
+ #include "xf86Xinput.h"
+ #include "xf86InPriv.h"

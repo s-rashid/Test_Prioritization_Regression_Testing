@@ -1,0 +1,13 @@
+diff --git a/hw/xnest/Keyboard.c b/hw/xnest/Keyboard.c
+index f94e260..191bec7 100644
+--- a/hw/xnest/Keyboard.c
++++ b/hw/xnest/Keyboard.c
+@@ -191,7 +191,7 @@ XkbError:
+           (char *)values.auto_repeats,
+           sizeof(values.auto_repeats));
+ 
+-  InitKeyboardDeviceStruct(&pDev->public, &keySyms,
++  InitKeyboardDeviceStruct(pDev, NULL,
+                            xnestBell, xnestChangeKeyboardControl);
+   xfree(keymap);
+   return Success;

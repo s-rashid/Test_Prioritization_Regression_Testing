@@ -1,0 +1,140 @@
+diff --git a/hw/xwin/winkeyhook.c b/hw/xwin/winkeyhook.c
+index cbee7cb..1241508 100644
+--- a/hw/xwin/winkeyhook.c
++++ b/hw/xwin/winkeyhook.c
+@@ -33,10 +33,8 @@
+ #endif
+ #include "win.h"
+ 
+-
+ static HHOOK g_hhookKeyboardLL = NULL;
+ 
+-
+ /*
+  * Function prototypes
+  */
+@@ -44,7 +42,6 @@ static HHOOK g_hhookKeyboardLL = NULL;
+ static LRESULT CALLBACK
+ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam);
+ 
+-
+ #ifndef LLKHF_EXTENDED
+ # define LLKHF_EXTENDED  0x00000001
+ #endif
+@@ -52,7 +49,6 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam);
+ # define LLKHF_UP  0x00000080
+ #endif
+ 
+-
+ /*
+  * KeyboardMessageHook
+  */
+@@ -64,6 +60,7 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+   BOOL			fPassAltTab = TRUE;
+   PKBDLLHOOKSTRUCT	p = (PKBDLLHOOKSTRUCT) lParam;
+   HWND			hwnd = GetActiveWindow(); 
++
+ #ifdef XWIN_MULTIWINDOW
+   WindowPtr		pWin = NULL;
+   winPrivWinPtr	        pWinPriv = NULL;
+@@ -71,8 +68,7 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+   winScreenInfo		*pScreenInfo = NULL;
+ 
+   /* Check if the Windows window property for our X window pointer is valid */
+-  if ((pWin = GetProp (hwnd, WIN_WINDOW_PROP)) != NULL)
+-    {
++    if ((pWin = GetProp(hwnd, WIN_WINDOW_PROP)) != NULL) {
+       /* Get a pointer to our window privates */
+       pWinPriv		= winGetWindowPriv(pWin);
+ 
+@@ -86,19 +82,19 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+ #endif
+ 
+   /* Pass keystrokes on to our main message loop */
+-  if (iCode == HC_ACTION)
+-    {
+-      winDebug("winKeyboardMessageHook: vkCode: %08x scanCode: %08x\n", p->vkCode, p->scanCode);
+-
+-      switch (wParam)
+-	{
+-	case WM_KEYDOWN:  case WM_SYSKEYDOWN:
+-	case WM_KEYUP:    case WM_SYSKEYUP: 
++    if (iCode == HC_ACTION) {
++        winDebug("winKeyboardMessageHook: vkCode: %08x scanCode: %08x\n",
++                 p->vkCode, p->scanCode);
++
++        switch (wParam) {
++        case WM_KEYDOWN:
++        case WM_SYSKEYDOWN:
++        case WM_KEYUP:
++        case WM_SYSKEYUP:
+ 	  fPassKeystroke = 
+ 	    (fPassAltTab && 
+                 (p->vkCode == VK_TAB) && ((p->flags & LLKHF_ALTDOWN) != 0))
+-	    || (p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN)
+-	    ;
++                || (p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN);
+ 	  break;
+ 	}
+     }
+@@ -108,8 +104,7 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+    * We process this immediately with SendMessage so that the keystroke
+    * appears in, hopefully, the correct order.
+    */
+-  if (fPassKeystroke)
+-    {
++    if (fPassKeystroke) {
+       LPARAM		lParamKey = 0x0;
+ 
+       /* Construct the lParam from KBDLLHOOKSTRUCT */
+@@ -118,15 +113,11 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+       lParamKey = lParamKey
+ 	| (0x01000000 & ((p->flags & LLKHF_EXTENDED) << 23));
+       lParamKey = lParamKey
+-	| (0x20000000
+-	   & ((p->flags & LLKHF_ALTDOWN) << 24));
++            | (0x20000000 & ((p->flags & LLKHF_ALTDOWN) << 24));
+       lParamKey = lParamKey | (0x80000000 & ((p->flags & LLKHF_UP) << 24));
+ 
+       /* Send message to our main window that has the keyboard focus */
+-      PostMessage (hwnd,
+-		   (UINT) wParam,
+-		   (WPARAM) p->vkCode,
+-		   lParamKey);
++        PostMessage(hwnd, (UINT) wParam, (WPARAM) p->vkCode, lParamKey);
+ 
+       return 1;
+     }
+@@ -135,7 +126,6 @@ winKeyboardMessageHookLL (int iCode, WPARAM wParam, LPARAM lParam)
+   return CallNextHookEx (NULL, iCode, wParam, lParam);
+ }
+ 
+-
+ /*
+  * Attempt to install the keyboard hook, return FALSE if it was not installed
+  */
+@@ -150,8 +140,7 @@ winInstallKeyboardHookLL (void)
+   GetVersionEx (&osvi);
+ 
+   /* Branch on platform ID */
+-  switch (osvi.dwPlatformId)
+-    {
++    switch (osvi.dwPlatformId) {
+     case VER_PLATFORM_WIN32_NT:
+       /* Low-level is supported on NT 4.0 SP3+ only */
+       /* TODO: Return FALSE on NT 4.0 with no SP, SP1, or SP2 */
+@@ -166,13 +155,11 @@ winInstallKeyboardHookLL (void)
+   if (!g_hhookKeyboardLL)
+     g_hhookKeyboardLL = SetWindowsHookEx (WH_KEYBOARD_LL,
+ 					  winKeyboardMessageHookLL,
+-					  g_hInstance,
+-					  0);
++                                             g_hInstance, 0);
+ 
+   return TRUE;
+ }
+ 
+-
+ /*
+  * Remove the keyboard hook if it is installed
+  */

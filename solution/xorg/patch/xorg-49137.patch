@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ddc/ddcProperty.c b/hw/xfree86/ddc/ddcProperty.c
+index 329a639..d2d90ba 100644
+--- a/hw/xfree86/ddc/ddcProperty.c
++++ b/hw/xfree86/ddc/ddcProperty.c
+@@ -42,7 +42,7 @@ edidMakeAtom(int i, const char *name, CARD8 *data, int size)
+     Atom atom;
+     unsigned char *atom_data;
+ 
+-    if (!(atom_data = xalloc(size*sizeof(CARD8))))
++    if (!(atom_data = malloc(size*sizeof(CARD8))))
+ 	return;
+ 
+     atom = MakeAtom(name, strlen(name), TRUE);

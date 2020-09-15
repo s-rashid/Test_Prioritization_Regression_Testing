@@ -1,0 +1,22 @@
+diff --git a/dix/window.c b/dix/window.c
+index 116c1e5..32eb801 100644
+--- a/dix/window.c
++++ b/dix/window.c
+@@ -3028,7 +3028,7 @@ HandleSaveSet(ClientPtr client)
+ 	    {
+ #ifdef XFIXES
+ 		/* unmap first so that ReparentWindow doesn't remap */
+-		if (!SaveSetRemap (client->saveSet[j]))
++		if (!SaveSetMap (client->saveSet[j]))
+ 		    UnmapWindow(pWin, FALSE);
+ #endif
+ 		ReparentWindow(pWin, pParent,
+@@ -3039,7 +3039,7 @@ HandleSaveSet(ClientPtr client)
+ 		    pWin->mapped = FALSE;
+ 	    }
+ #ifdef XFIXES
+-	    if (SaveSetRemap (client->saveSet[j]))
++	    if (SaveSetMap (client->saveSet[j]))
+ #endif
+ 		MapWindow(pWin, client);
+ 	}

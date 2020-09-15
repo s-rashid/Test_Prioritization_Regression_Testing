@@ -1,0 +1,12 @@
+diff --git a/hw/kdrive/src/kinput.c b/hw/kdrive/src/kinput.c
+index 5e7ff53..318d233 100644
+--- a/hw/kdrive/src/kinput.c
++++ b/hw/kdrive/src/kinput.c
+@@ -46,6 +46,7 @@
+ #include "exevents.h"
+ #include "extinit.h"
+ #include "exglobals.h"
++#include "eventstr.h"
+ #include "xserver-properties.h"
+ 
+ #define AtomFromName(x) MakeAtom(x, strlen(x), 1)

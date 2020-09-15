@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxcmap.c b/hw/dmx/dmxcmap.c
+index e3d2fdc..ca9ef1f 100644
+--- a/hw/dmx/dmxcmap.c
++++ b/hw/dmx/dmxcmap.c
+@@ -75,7 +75,7 @@ Bool dmxBECreateColormap(ColormapPtr pColormap)
+                                          visual,
+                                          (pVisual->class & DynamicClass ?
+                                           AllocAll : AllocNone));
+-       return (pCmapPriv->cmap != 0);
++       return pCmapPriv->cmap != 0;
+     }
+     else {
+        dmxLog(dmxWarning, "dmxBECreateColormap: No visual found\n");

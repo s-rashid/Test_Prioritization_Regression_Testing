@@ -1,0 +1,29 @@
+diff --git a/xfixes/select.c b/xfixes/select.c
+index 5a00ea8..5ba7896 100644
+--- a/xfixes/select.c
++++ b/xfixes/select.c
+@@ -26,7 +26,6 @@
+ 
+ #include "xfixesint.h"
+ #include "xace.h"
+-#include "registry.h"
+ 
+ static RESTYPE		SelectionClientType, SelectionWindowType;
+ static Bool		SelectionCallbackRegistered = FALSE;
+@@ -285,12 +284,9 @@ SelectionFreeWindow (pointer data, XID id)
+ Bool
+ XFixesSelectionInit (void)
+ {
+-    SelectionClientType = CreateNewResourceType(SelectionFreeClient);
+-    if (SelectionClientType)
+-	RegisterResourceName(SelectionClientType, "XFixesSelectionClient");
+-    SelectionWindowType = CreateNewResourceType(SelectionFreeWindow);
+-    if (SelectionWindowType)
+-	RegisterResourceName(SelectionWindowType, "XFixesSelectionWindow");
+-
++    SelectionClientType = CreateNewResourceType(SelectionFreeClient,
++						"XFixesSelectionClient");
++    SelectionWindowType = CreateNewResourceType(SelectionFreeWindow,
++						"XFixesSelectionWindow");
+     return SelectionClientType && SelectionWindowType;
+ }

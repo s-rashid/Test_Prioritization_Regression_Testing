@@ -1,0 +1,13 @@
+diff --git a/fb/fbfill.c b/fb/fbfill.c
+index 831b1ce..801a0d0 100644
+--- a/fb/fbfill.c
++++ b/fb/fbfill.c
+@@ -185,7 +185,7 @@ fbSolidBoxClipped (DrawablePtr	pDrawable,
+ 
+     fbGetDrawable (pDrawable, dst, dstStride, dstBpp, dstXoff, dstYoff);
+     
+-    for (nbox = REGION_NUM_RECTS(pClip), pbox = REGION_RECTS(pClip); 
++    for (nbox = RegionNumRects(pClip), pbox = RegionRects(pClip);
+ 	 nbox--; 
+ 	 pbox++)
+     {

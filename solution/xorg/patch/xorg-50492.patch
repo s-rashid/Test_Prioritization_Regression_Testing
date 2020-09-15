@@ -1,0 +1,40 @@
+diff --git a/hw/xfree86/loader/loader.c b/hw/xfree86/loader/loader.c
+index 878cb39..baadbc4 100644
+--- a/hw/xfree86/loader/loader.c
++++ b/hw/xfree86/loader/loader.c
+@@ -174,7 +174,7 @@ LoaderInit(void)
+ 	    path = uwcrtpath; /* fallback: try to get libcrt.a from the uccs */
+ 	else
+ 	    path = xcrtpath; /* get the libcrt.a we compiled with */
+-	LoaderOpen (path, 0, &errmaj, &errmin, &wasLoaded);
++	LoaderOpen (path, &errmaj, &errmin, &wasLoaded, 0);
+     }
+ #endif
+ }
+@@ -203,8 +203,8 @@ do_dlopen(loaderPtr modrec, int flags)
+ /* Public Interface to the loader. */
+ 
+ int
+-LoaderOpen(const char *module, int handle,
+-	   int *errmaj, int *errmin, int *wasLoaded, int flags)
++LoaderOpen(const char *module, int *errmaj, int *errmin, int *wasLoaded,
++           int flags)
+ {
+     loaderPtr tmp;
+     int new_handle;
+@@ -214,7 +214,6 @@ LoaderOpen(const char *module, int handle,
+ #endif
+ 
+     /* Is the module already loaded? */
+-    if (handle >= 0) {
+ 	tmp = listHead;
+ 	while (tmp) {
+ #ifdef DEBUGLIST
+@@ -230,7 +229,6 @@ LoaderOpen(const char *module, int handle,
+ 	    }
+ 	    tmp = tmp->next;
+ 	}
+-    }
+ 
+     /*
+      * OK, it's a new one. Add it.

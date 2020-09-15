@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/xaa/xaaTEText.c b/hw/xfree86/xaa/xaaTEText.c
+index fc44572..b182283 100644
+--- a/hw/xfree86/xaa/xaaTEText.c
++++ b/hw/xfree86/xaa/xaaTEText.c
+@@ -273,7 +273,7 @@ XAAGlyphBltTEColorExpansion(
+ 			    
+ 			    if (!fallbackBits) {
+ 				int fontHeight = Bottom - Top + 1;
+-				fallbackBits = xcalloc (glyphWidth * fontHeight, 1);
++				fallbackBits = calloc(glyphWidth * fontHeight, 1);
+ 				if (!fallbackBits)
+ 				    return;
+ 			    }
+@@ -300,7 +300,7 @@ XAAGlyphBltTEColorExpansion(
+ 		fg, bg, rop, planemask);
+ 
+ 	    if (fallbackBits)
+-		xfree (fallbackBits);
++		free(fallbackBits);
+ 	}
+ 
+ 	nbox--; pbox++;

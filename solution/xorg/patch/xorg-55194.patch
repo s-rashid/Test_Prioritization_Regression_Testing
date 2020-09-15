@@ -1,0 +1,40 @@
+diff --git a/glx/indirect_util.h b/glx/indirect_util.h
+index b00727a..0e65075 100644
+--- a/glx/indirect_util.h
++++ b/glx/indirect_util.h
+@@ -29,25 +29,25 @@
+ extern GLint __glGetBooleanv_variable_size( GLenum e );
+ 
+ extern void * __glXGetAnswerBuffer( __GLXclientState * cl,
+-    size_t required_size, void * local_buffer, size_t local_size,
+-    unsigned alignment );
++                                  size_t required_size, void *local_buffer,
++                                  size_t local_size, unsigned alignment);
+ 
+ extern void __glXSendReply( ClientPtr client, const void * data,
+-    size_t elements, size_t element_size, GLboolean always_array,
+-    CARD32 retval );
++                           size_t elements, size_t element_size,
++                           GLboolean always_array, CARD32 retval);
+ 
+ extern void __glXSendReplySwap( ClientPtr client, const void * data,
+-    size_t elements, size_t element_size, GLboolean always_array,
+-    CARD32 retval );
++                               size_t elements, size_t element_size,
++                               GLboolean always_array, CARD32 retval);
+ 
+ struct __glXDispatchInfo;
+ 
+-extern void *__glXGetProtocolDecodeFunction(
+-    const struct __glXDispatchInfo *dispatch_info, int opcode,
++extern void *__glXGetProtocolDecodeFunction(const struct __glXDispatchInfo
++                                            *dispatch_info, int opcode,
+     int swapped_version);
+ 
+-extern int __glXGetProtocolSizeData(
+-    const struct __glXDispatchInfo *dispatch_info, int opcode,
++extern int __glXGetProtocolSizeData(const struct __glXDispatchInfo
++                                    *dispatch_info, int opcode,
+     __GLXrenderSizeData *data);
+ 
+ #endif /* __GLX_INDIRECT_UTIL_H__ */

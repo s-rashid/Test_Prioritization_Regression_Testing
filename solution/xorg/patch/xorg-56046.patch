@@ -1,0 +1,31 @@
+diff --git a/miext/sync/misync.h b/miext/sync/misync.h
+index 1c82ea5..deebb82 100644
+--- a/miext/sync/misync.h
++++ b/miext/sync/misync.h
+@@ -43,6 +43,7 @@ typedef struct _syncScreenFuncs {
+ } SyncScreenFuncsRec, *SyncScreenFuncsPtr;
+ 
+ extern _X_EXPORT void
++
+ miSyncScreenCreateFence(ScreenPtr pScreen, SyncFence* pFence,
+ 			Bool initially_triggered);
+ extern _X_EXPORT void
+@@ -63,14 +64,15 @@ typedef struct _syncFenceFuncs {
+ } SyncFenceFuncsRec, *SyncFenceFuncsPtr;
+ 
+ extern _X_EXPORT void
+-miSyncInitFence(ScreenPtr pScreen, SyncFence* pFence, Bool initially_triggered);
++
++miSyncInitFence(ScreenPtr pScreen, SyncFence * pFence,
++                Bool initially_triggered);
+ extern _X_EXPORT void
+ miSyncDestroyFence(SyncFence* pFence);
+ extern _X_EXPORT void
+ miSyncTriggerFence(SyncFence* pFence);
+ 
+-extern _X_EXPORT SyncScreenFuncsPtr
+-miSyncGetScreenFuncs(ScreenPtr pScreen);
++extern _X_EXPORT SyncScreenFuncsPtr miSyncGetScreenFuncs(ScreenPtr pScreen);
+ extern _X_EXPORT Bool
+ miSyncSetup(ScreenPtr pScreen);
+ 

@@ -1,0 +1,12 @@
+diff --git a/Xi/grabdevb.c b/Xi/grabdevb.c
+index 0d1eb63..7cd5cc4 100644
+--- a/Xi/grabdevb.c
++++ b/Xi/grabdevb.c
+@@ -139,6 +139,7 @@ ProcXGrabDeviceButton(ClientPtr client)
+ 	return ret;
+ 
+     memset(&param, 0, sizeof(param));
++    param.grabtype = GRABTYPE_XI;
+     param.ownerEvents = stuff->ownerEvents;
+     param.this_device_mode = stuff->this_device_mode;
+     param.other_devices_mode = stuff->other_devices_mode;

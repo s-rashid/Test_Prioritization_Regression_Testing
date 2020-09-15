@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/loader/loader.h b/hw/xfree86/loader/loader.h
+index 9dfc307..4bb571e 100644
+--- a/hw/xfree86/loader/loader.h
++++ b/hw/xfree86/loader/loader.h
+@@ -86,7 +86,7 @@ extern const ModuleVersions LoaderVersionInfo;
+ extern unsigned long LoaderOptions;
+ 
+ /* Internal Functions */
+-int LoaderOpen(const char *, int, int *, int *, int *, int);
++int LoaderOpen(const char *, int *, int *, int *, int);
+ int LoaderHandleOpen(int);
+ 
+ #endif /* _LOADER_H */

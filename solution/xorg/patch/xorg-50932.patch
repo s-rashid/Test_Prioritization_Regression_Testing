@@ -1,0 +1,23 @@
+diff --git a/render/miindex.c b/render/miindex.c
+index 5e2e06c..4603136 100644
+--- a/render/miindex.c
++++ b/render/miindex.c
+@@ -322,16 +322,10 @@ void
+ miCloseIndexed (ScreenPtr	pScreen,
+ 		PictFormatPtr	pFormat)
+ {
+-    if (pFormat->index.devPrivate)
+-    {
+ 	free(pFormat->index.devPrivate);
+-	pFormat->index.devPrivate = 0;
+-    }
+-    if (pFormat->index.pValues)
+-    {
++    pFormat->index.devPrivate = NULL;
+ 	free(pFormat->index.pValues);
+-	pFormat->index.pValues = 0;
+-    }
++    pFormat->index.pValues = NULL;
+ }
+ 
+ void

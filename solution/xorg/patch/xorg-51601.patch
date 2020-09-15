@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 3c706c4..8b7b699 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -395,8 +395,6 @@ typedef struct
+   DWORD			dwUserHeight;
+   DWORD			dwWidth;
+   DWORD			dwHeight;
+-  DWORD			dwWidth_mm;
+-  DWORD			dwHeight_mm;
+   DWORD			dwPaddedWidth;
+ 
+   /* Did the user specify a screen position? */

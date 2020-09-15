@@ -1,0 +1,13 @@
+diff --git a/Xi/extinit.c b/Xi/extinit.c
+index 82df7eb..46d3459 100644
+--- a/Xi/extinit.c
++++ b/Xi/extinit.c
+@@ -358,7 +358,7 @@ int ChangeDeviceNotify;
+ int DevicePresenceNotify;
+ int DevicePropertyNotify;
+ 
+-int RT_INPUTCLIENT;
++RESTYPE RT_INPUTCLIENT;
+ 
+ /*****************************************************************
+  *

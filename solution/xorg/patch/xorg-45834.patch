@@ -1,0 +1,22 @@
+diff --git a/hw/dmx/input/dmxinputinit.c b/hw/dmx/input/dmxinputinit.c
+index 29895c7..478196e 100644
+--- a/hw/dmx/input/dmxinputinit.c
++++ b/hw/dmx/input/dmxinputinit.c
+@@ -1189,7 +1189,7 @@ int dmxInputDetach(DMXInputInfo *dmxInput)
+                     : (dmxLocal->sendsCore
+                        ? " [sends core events]"
+                        : ""));
+-        DisableDevice(dmxLocal->pDevice);
++        DisableDevice(dmxLocal->pDevice, TRUE);
+     }
+     dmxInput->detached = True;
+     dmxInputLogDevices();
+@@ -1257,7 +1257,7 @@ static int dmxInputAttachOld(DMXInputInfo *dmxInput, int *id)
+                     : (dmxLocal->sendsCore
+                        ? " [sends core events]"
+                        : ""));
+-        EnableDevice(dmxLocal->pDevice);
++        EnableDevice(dmxLocal->pDevice, TRUE);
+     }
+     dmxInputLogDevices();
+     return 0;

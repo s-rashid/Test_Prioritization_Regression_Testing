@@ -1,0 +1,26 @@
+diff --git a/hw/xfree86/common/xf86VGAarbiterPriv.h b/hw/xfree86/common/xf86VGAarbiterPriv.h
+index badac55..df38d6b 100644
+--- a/hw/xfree86/common/xf86VGAarbiterPriv.h
++++ b/hw/xfree86/common/xf86VGAarbiterPriv.h
+@@ -103,21 +103,10 @@ VGAGet(ScreenPtr pScreen) {
+ }
+ 
+ static inline void
+-VGAGet_GC(GC *pGC) {
+-    pci_device_vgaarb_set_target(xf86Screens[pGC->pScreen->myNum]->vgaDev);
+-    pci_device_vgaarb_lock();
+-}
+-
+-static inline void
+ VGAPut(void) {
+     pci_device_vgaarb_unlock();
+ }
+ 
+-static inline void
+-VGAPut_GC(void) {
+-    pci_device_vgaarb_unlock();
+-}
+-
+ typedef struct _VGAarbiterScreen {
+     CreateGCProcPtr             CreateGC;
+     CloseScreenProcPtr          CloseScreen;

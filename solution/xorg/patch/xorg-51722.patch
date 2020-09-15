@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index 3cded85..c4b2d7d 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -250,8 +250,9 @@ DGACloseScreen(int i, ScreenPtr pScreen)
+ {
+    DGAScreenPtr pScreenPriv = DGA_GET_SCREEN_PRIV(pScreen);
+ 
+-   if (XDGAEventBase) {
++   if (mieq_installed) {
+        mieqSetHandler(ET_DGAEvent, NULL);
++       mieq_installed = 0;
+     }
+ 
+    FreeMarkedVisuals(pScreen);

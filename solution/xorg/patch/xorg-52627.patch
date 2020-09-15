@@ -1,0 +1,13 @@
+diff --git a/include/dix.h b/include/dix.h
+index c201e3a..fb9be43 100644
+--- a/include/dix.h
++++ b/include/dix.h
+@@ -375,7 +375,7 @@ extern void ReleaseActiveGrabs(
+ extern GrabPtr CheckPassiveGrabsOnWindow(
+     WindowPtr /* pWin */,
+     DeviceIntPtr /* device */,
+-    DeviceEvent * /* event */,
++    InternalEvent * /* event */,
+     BOOL /* checkCore */,
+     BOOL /* activate */);
+ 

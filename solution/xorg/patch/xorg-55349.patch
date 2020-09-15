@@ -1,0 +1,64 @@
+diff --git a/hw/dmx/input/usb-mouse.c b/hw/dmx/input/usb-mouse.c
+index efa9d00..644342e 100644
+--- a/hw/dmx/input/usb-mouse.c
++++ b/hw/dmx/input/usb-mouse.c
+@@ -66,41 +66,48 @@
+ /*****************************************************************************/
+ 
+ /** Read the USB device using #usbRead. */
+-void mouUSBRead(DevicePtr pDev,
++void
++mouUSBRead(DevicePtr pDev,
+                 MOTIONPROC motion,
+-                ENQUEUEPROC enqueue,
+-                CHECKPROC checkspecial,
+-                BLOCK block)
++           ENQUEUEPROC enqueue, CHECKPROC checkspecial, BLOCK block)
+ {
+     usbRead(pDev, motion, enqueue, BTN_MISC, block);
+ }
+ 
+ /** Initialize \a pDev using #usbInit. */
+-void mouUSBInit(DevicePtr pDev)
++void
++mouUSBInit(DevicePtr pDev)
+ {
+     usbInit(pDev, usbMouse);
+ }
+ 
+ /** Turn \a pDev on (i.e., take input from \a pDev). */
+-int mouUSBOn(DevicePtr pDev)
++int
++mouUSBOn(DevicePtr pDev)
+ {
+     GETPRIV;
+ 
+-    if (priv->fd < 0) mouUSBInit(pDev);
++    if (priv->fd < 0)
++        mouUSBInit(pDev);
+     return priv->fd;
+ }
+ 
+-static void mouUSBGetMap(DevicePtr pDev, unsigned char *map, int *nButtons)
++static void
++mouUSBGetMap(DevicePtr pDev, unsigned char *map, int *nButtons)
+ {
+     int i;
+     
+-    if (nButtons) *nButtons = 5;
+-    if (map) for (i = 0; i <= *nButtons; i++) map[i] = i;
++    if (nButtons)
++        *nButtons = 5;
++    if (map)
++        for (i = 0; i <= *nButtons; i++)
++            map[i] = i;
+ }
+ 
+ /** Fill the \a info structure with information needed to initialize \a
+  * pDev. */ 
+-void mouUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
++void
++mouUSBGetInfo(DevicePtr pDev, DMXLocalInitInfoPtr info)
+ {
+     static KeySym keyboard_mapping = NoSymbol;
+ 

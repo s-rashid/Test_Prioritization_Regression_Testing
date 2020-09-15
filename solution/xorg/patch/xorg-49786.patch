@@ -1,0 +1,12 @@
+diff --git a/mi/mipolypnt.c b/mi/mipolypnt.c
+index 12771ee..3c6ed4e 100644
+--- a/mi/mipolypnt.c
++++ b/mi/mipolypnt.c
+@@ -120,6 +120,6 @@ miPolyPoint(
+ 	DoChangeGC(pGC, GCFillStyle, &fsOld, 0);
+ 	ValidateGC(pDrawable, pGC);
+     }
+-    xfree(pwidthInit);
++    free(pwidthInit);
+ }
+ 

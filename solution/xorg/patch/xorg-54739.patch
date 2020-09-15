@@ -1,0 +1,13 @@
+diff --git a/include/os.h b/include/os.h
+index dd06a85..166c60c 100644
+--- a/include/os.h
++++ b/include/os.h
+@@ -321,7 +321,7 @@ extern _X_EXPORT void
+ OsCleanup(Bool);
+ 
+ extern _X_EXPORT void
+-OsVendorFatalError(void);
++OsVendorFatalError(const char *f, va_list args);
+ 
+ extern _X_EXPORT void
+ OsVendorInit(void);

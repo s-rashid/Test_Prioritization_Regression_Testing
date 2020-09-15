@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/parser/read.c b/hw/xfree86/parser/read.c
+index 1091be5..4e42b24 100644
+--- a/hw/xfree86/parser/read.c
++++ b/hw/xfree86/parser/read.c
+@@ -219,15 +219,15 @@ xf86readConfigFile (void)
+ 			}
+ 			else
+ 			{
+-				Error (INVALID_SECTION_MSG, xf86tokenString ());
+ 				free(val.str);
+ 				val.str = NULL;
++				Error (INVALID_SECTION_MSG, xf86tokenString ());
+ 			}
+ 			break;
+ 		default:
+-			Error (INVALID_KEYWORD_MSG, xf86tokenString ());
+ 			free(val.str);
+ 			val.str = NULL;
++			Error (INVALID_KEYWORD_MSG, xf86tokenString ());
+ 		}
+ 	}
+ 

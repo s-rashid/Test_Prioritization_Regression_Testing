@@ -1,0 +1,340 @@
+diff --git a/record/set.c b/record/set.c
+index a9a6a44..34faa61 100644
+--- a/record/set.c
++++ b/record/set.c
+@@ -59,8 +59,8 @@ maxMemberInInterval(RecordSetInterval *pIntervals, int nIntervals)
+ {
+     int i;
+     int maxMember = -1;
+-    for (i = 0; i < nIntervals; i++)
+-    {
++
++    for (i = 0; i < nIntervals; i++) {
+ 	if (maxMember < (int)pIntervals[i].last)
+ 	    maxMember = pIntervals[i].last;
+     }
+@@ -96,12 +96,13 @@ BitVectorIsMemberOfSet(RecordSetPtr pSet, int pm)
+     BitVectorSetPtr pbvs = (BitVectorSetPtr)pSet;
+     unsigned long *pbitvec;
+ 
+-    if ((int)pm > pbvs->maxMember) return FALSE;
++    if ((int) pm > pbvs->maxMember)
++        return FALSE;
+     pbitvec = (unsigned long *)(&pbvs[1]);
+-    return (pbitvec[pm / BITS_PER_LONG] & ((unsigned long)1 << (pm % BITS_PER_LONG)));
++    return (pbitvec[pm / BITS_PER_LONG] &
++            ((unsigned long) 1 << (pm % BITS_PER_LONG)));
+ }
+ 
+-
+ static int
+ BitVectorFindBit(RecordSetPtr pSet, int iterbit, Bool bitval)
+ {
+@@ -121,33 +122,32 @@ BitVectorFindBit(RecordSetPtr pSet, int iterbit, Bool bitval)
+     skipval = bitval ? 0L : ~0L;
+     maxMember = pbvs->maxMember;
+ 
+-
+-    if (startbit > maxMember) return -1;
++    if (startbit > maxMember)
++        return -1;
+     bits = *pbitvec;
+     usefulbits = ~(((unsigned long)1 << (iterbit - startbit)) - 1);
+-    if ( (bits & usefulbits) == (skipval & usefulbits) )
+-    {
++    if ((bits & usefulbits) == (skipval & usefulbits)) {
+ 	pbitvec++;
+ 	startbit += BITS_PER_LONG;
+ 
+-	while (startbit <= maxMember && *pbitvec == skipval)
+-	{
++        while (startbit <= maxMember && *pbitvec == skipval) {
+ 	    pbitvec++;
+ 	    startbit += BITS_PER_LONG;
+ 	}
+-	if (startbit > maxMember) return -1;
++        if (startbit > maxMember)
++            return -1;
+     }
+ 
+     walkbit = (startbit < iterbit) ? iterbit - startbit : 0;
+ 
+     bits = *pbitvec;
+-    while (walkbit < BITS_PER_LONG && ((!(bits & ((unsigned long)1 << walkbit))) == bitval))
++    while (walkbit < BITS_PER_LONG &&
++           ((!(bits & ((unsigned long) 1 << walkbit))) == bitval))
+ 	walkbit++;
+ 
+     return startbit + walkbit;
+ }
+ 
+-
+ static RecordSetIteratePtr
+ BitVectorIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+ 		    RecordSetInterval *pInterval)
+@@ -156,7 +156,8 @@ BitVectorIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+     int b;
+ 
+     b = BitVectorFindBit(pSet, iterbit, TRUE);
+-    if (b == -1) return (RecordSetIteratePtr)0;
++    if (b == -1)
++        return (RecordSetIteratePtr) 0;
+     pInterval->first = b;
+ 
+     b = BitVectorFindBit(pSet, b, FALSE);
+@@ -165,10 +166,12 @@ BitVectorIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+ }
+ 
+ static RecordSetOperations BitVectorSetOperations = {
+-    BitVectorDestroySet, BitVectorIsMemberOfSet, BitVectorIterateSet };
++    BitVectorDestroySet, BitVectorIsMemberOfSet, BitVectorIterateSet
++};
+ 
+ static RecordSetOperations BitVectorNoFreeOperations = {
+-    NoopDestroySet, BitVectorIsMemberOfSet, BitVectorIterateSet };
++    NoopDestroySet, BitVectorIsMemberOfSet, BitVectorIterateSet
++};
+ 
+ static int
+ BitVectorSetMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals,
+@@ -191,16 +194,15 @@ BitVectorCreateSet(RecordSetInterval *pIntervals, int nIntervals,
+ 
+     /* allocate all storage needed by this set in one chunk */
+ 
+-    if (pMem)
+-    {
++    if (pMem) {
+ 	memset(pMem, 0, memsize);
+ 	pbvs = (BitVectorSetPtr)pMem;
+ 	pbvs->baseSet.ops = &BitVectorNoFreeOperations;
+     }
+-    else
+-    {
++    else {
+ 	pbvs = (BitVectorSetPtr)calloc(1, memsize);
+-	if (!pbvs) return NULL;
++        if (!pbvs)
++            return NULL;
+ 	pbvs->baseSet.ops = &BitVectorSetOperations;
+     }
+ 
+@@ -209,17 +211,15 @@ BitVectorCreateSet(RecordSetInterval *pIntervals, int nIntervals,
+     /* fill in the set */
+ 
+     pbitvec = (unsigned long *)(&pbvs[1]);
+-    for (i = 0; i < nIntervals; i++)
+-    {
+-	for (j = pIntervals[i].first; j <= (int)pIntervals[i].last; j++)
+-	{
+-	    pbitvec[j/BITS_PER_LONG] |= ((unsigned long)1 << (j % BITS_PER_LONG));
++    for (i = 0; i < nIntervals; i++) {
++        for (j = pIntervals[i].first; j <= (int) pIntervals[i].last; j++) {
++            pbitvec[j / BITS_PER_LONG] |=
++                ((unsigned long) 1 << (j % BITS_PER_LONG));
+ 	}
+     }
+     return (RecordSetPtr)pbvs;
+ }
+ 
+-
+ /***************************************************************************/
+ 
+ /* set operations for interval list representation */
+@@ -244,18 +244,20 @@ IntervalListIsMemberOfSet(RecordSetPtr pSet, int pm)
+     int hi, lo, probe;
+ 
+     /* binary search */
+-    lo = 0; hi = prls->nIntervals - 1;
+-    while (lo <= hi)
+-    {
++    lo = 0;
++    hi = prls->nIntervals - 1;
++    while (lo <= hi) {
+ 	probe = (hi + lo) / 2;
+-	if (pm >= pInterval[probe].first && pm <= pInterval[probe].last) return 1;
+-	else if (pm < pInterval[probe].first) hi = probe - 1;
+-	else				   lo = probe + 1;
++        if (pm >= pInterval[probe].first && pm <= pInterval[probe].last)
++            return 1;
++        else if (pm < pInterval[probe].first)
++            hi = probe - 1;
++        else
++            lo = probe + 1;
+     }
+     return 0;
+ }
+ 
+-
+ static RecordSetIteratePtr
+ IntervalListIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+ 		       RecordSetInterval *pIntervalReturn)
+@@ -263,13 +265,11 @@ IntervalListIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+     RecordSetInterval *pInterval = (RecordSetInterval *)pIter;
+     IntervalListSetPtr prls = (IntervalListSetPtr)pSet;
+ 
+-    if (pInterval == NULL)
+-    {
++    if (pInterval == NULL) {
+ 	pInterval = (RecordSetInterval *)(&prls[1]);
+     }
+ 
+-    if ( (pInterval - (RecordSetInterval *)(&prls[1])) < prls->nIntervals )
+-    {
++    if ((pInterval - (RecordSetInterval *) (&prls[1])) < prls->nIntervals) {
+ 	*pIntervalReturn = *pInterval;
+ 	return (RecordSetIteratePtr)(++pInterval);
+     }
+@@ -278,10 +278,12 @@ IntervalListIterateSet(RecordSetPtr pSet, RecordSetIteratePtr pIter,
+ }
+ 
+ static RecordSetOperations IntervalListSetOperations = {
+-    IntervalListDestroySet, IntervalListIsMemberOfSet, IntervalListIterateSet };
++    IntervalListDestroySet, IntervalListIsMemberOfSet, IntervalListIterateSet
++};
+ 
+ static RecordSetOperations IntervalListNoFreeOperations = {
+-    NoopDestroySet, IntervalListIsMemberOfSet, IntervalListIterateSet };
++    NoopDestroySet, IntervalListIsMemberOfSet, IntervalListIterateSet
++};
+ 
+ static int
+ IntervalListMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals,
+@@ -300,24 +302,22 @@ IntervalListCreateSet(RecordSetInterval *pIntervals, int nIntervals,
+     RecordSetInterval *stackIntervals = NULL;
+     CARD16 first;
+ 
+-    if (nIntervals > 0)
+-    {
+-	stackIntervals = (RecordSetInterval *)malloc(
+-				sizeof(RecordSetInterval) * nIntervals);
+-	if (!stackIntervals) return NULL;
++    if (nIntervals > 0) {
++        stackIntervals =
++            (RecordSetInterval *) malloc(sizeof(RecordSetInterval) *
++                                         nIntervals);
++        if (!stackIntervals)
++            return NULL;
+ 
+ 	/* sort intervals, store in stackIntervals (insertion sort) */
+ 
+-	for (i = 0; i < nIntervals; i++)
+-	{
++        for (i = 0; i < nIntervals; i++) {
+ 	    first = pIntervals[i].first;
+-	    for (j = 0; j < i; j++)
+-	    {
++            for (j = 0; j < i; j++) {
+ 		if (first < stackIntervals[j].first)
+ 		    break;
+ 	    }
+-	    for (k = i; k > j; k--)
+-	    {
++            for (k = i; k > j; k--) {
+ 		stackIntervals[k] = stackIntervals[k-1];
+ 	    }
+ 	    stackIntervals[j] = pIntervals[i];
+@@ -325,15 +325,12 @@ IntervalListCreateSet(RecordSetInterval *pIntervals, int nIntervals,
+ 
+ 	/* merge abutting/overlapping intervals */
+ 
+-	for (i = 0; i < nIntervals - 1; )
+-	{
++        for (i = 0; i < nIntervals - 1;) {
+ 	    if ( (stackIntervals[i].last + (unsigned int)1) <
+-		  stackIntervals[i + 1].first)
+-	    {
++                stackIntervals[i + 1].first) {
+ 		i++; /* disjoint intervals */
+ 	    }
+-	    else
+-	    {
++            else {
+ 		stackIntervals[i].last = max(stackIntervals[i].last,
+ 					  stackIntervals[i + 1].last);
+ 		nIntervals--;
+@@ -345,16 +342,16 @@ IntervalListCreateSet(RecordSetInterval *pIntervals, int nIntervals,
+ 
+     /* allocate and fill in set structure */
+ 
+-    if (pMem)
+-    {
++    if (pMem) {
+ 	prls = (IntervalListSetPtr)pMem;
+ 	prls->baseSet.ops = &IntervalListNoFreeOperations;
+     }
+-    else
+-    {
++    else {
+ 	prls = (IntervalListSetPtr)
+-	    malloc(sizeof(IntervalListSet) + nIntervals * sizeof(RecordSetInterval));
+-	if (!prls) goto bailout;
++            malloc(sizeof(IntervalListSet) +
++                   nIntervals * sizeof(RecordSetInterval));
++        if (!prls)
++            goto bailout;
+ 	prls->baseSet.ops = &IntervalListSetOperations;
+     }
+     memcpy(&prls[1], stackIntervals, nIntervals * sizeof(RecordSetInterval));
+@@ -364,12 +361,9 @@ bailout:
+     return (RecordSetPtr)prls;
+ }
+ 
+-typedef RecordSetPtr (*RecordCreateSetProcPtr)(
+-    RecordSetInterval *pIntervals,
++typedef RecordSetPtr(*RecordCreateSetProcPtr) (RecordSetInterval * pIntervals,
+     int nIntervals,
+-    void *pMem,
+-    int memsize
+-);
++                                               void *pMem, int memsize);
+ 
+ static int
+ _RecordSetMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals,
+@@ -387,14 +381,12 @@ _RecordSetMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals,
+     rlsize = IntervalListMemoryRequirements(pIntervals, nIntervals, maxMember,
+ 					    &rla);
+     if ( ( (nIntervals > 1) && (maxMember <= 255) )
+-	|| (bmsize < rlsize) )
+-    {
++        || (bmsize < rlsize)) {
+ 	*alignment = bma;
+ 	*ppCreateSet = BitVectorCreateSet;
+ 	return bmsize;
+     }
+-    else
+-    {
++    else {
+ 	*alignment = rla;
+ 	*ppCreateSet = IntervalListCreateSet;
+ 	return rlsize;
+@@ -406,15 +398,18 @@ _RecordSetMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals,
+ /* user-visible functions */
+ 
+ int
+-RecordSetMemoryRequirements(RecordSetInterval *pIntervals, int nIntervals, int *alignment)
++RecordSetMemoryRequirements(RecordSetInterval * pIntervals, int nIntervals,
++                            int *alignment)
+ {
+     RecordCreateSetProcPtr pCreateSet;
++
+     return _RecordSetMemoryRequirements(pIntervals, nIntervals, alignment,
+ 					&pCreateSet);
+ }
+ 
+ RecordSetPtr
+-RecordCreateSet(RecordSetInterval *pIntervals, int nIntervals, void *pMem, int memsize)
++RecordCreateSet(RecordSetInterval * pIntervals, int nIntervals, void *pMem,
++                int memsize)
+ {
+     RecordCreateSetProcPtr pCreateSet;
+     int alignment;
+@@ -422,8 +417,7 @@ RecordCreateSet(RecordSetInterval *pIntervals, int nIntervals, void *pMem, int m
+ 
+     size = _RecordSetMemoryRequirements(pIntervals, nIntervals, &alignment,
+ 					&pCreateSet);
+-    if (pMem)
+-    {
++    if (pMem) {
+ 	if ( ((long)pMem & (alignment-1) ) || memsize < size)
+ 	    return NULL;
+     }

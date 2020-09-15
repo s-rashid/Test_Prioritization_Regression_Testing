@@ -1,0 +1,14 @@
+diff --git a/dix/events.c b/dix/events.c
+index 0c4255c..04d7fb5 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3723,7 +3723,8 @@ ActivatePassiveGrab(DeviceIntPtr device, GrabPtr grab, InternalEvent *event,
+         }
+     }
+ 
+-    (*grabinfo->ActivateGrab)(device, grab, currentTime, TRUE);
++    (*grabinfo->ActivateGrab)(device, grab,
++                              ClientTimeToServerTime(event->any.time), TRUE);
+ 
+     if (xE)
+     {

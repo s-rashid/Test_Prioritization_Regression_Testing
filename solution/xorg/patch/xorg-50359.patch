@@ -1,0 +1,16 @@
+diff --git a/hw/dmx/glxProxy/glxsingle.c b/hw/dmx/glxProxy/glxsingle.c
+index a7ed574..4c473ff 100644
+--- a/hw/dmx/glxProxy/glxsingle.c
++++ b/hw/dmx/glxProxy/glxsingle.c
+@@ -39,11 +39,6 @@
+ #include "dmxfont.h"
+ #include "dmxcb.h"
+ 
+-#undef Xmalloc
+-#undef Xcalloc
+-#undef Xrealloc
+-#undef Xfree
+-
+ #include "glxserver.h"
+ #include "glxext.h"
+ #include "g_disptab.h"

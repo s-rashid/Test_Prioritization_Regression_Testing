@@ -1,0 +1,26 @@
+diff --git a/hw/xwin/InitInput.c b/hw/xwin/InitInput.c
+index 0ffa940..e9a9b11 100644
+--- a/hw/xwin/InitInput.c
++++ b/hw/xwin/InitInput.c
+@@ -52,21 +52,6 @@ int winProcSetSelectionOwner(ClientPtr /* client */);
+ DeviceIntPtr g_pwinPointer;
+ DeviceIntPtr g_pwinKeyboard;
+ 
+-
+-/*
+- * References to external symbols
+- */
+-
+-#ifdef HAS_DEVWINDOWS
+-extern int			g_fdMessageQueue;
+-#endif
+-extern Bool			g_fXdmcpEnabled;
+-#ifdef XWIN_CLIPBOARD
+-extern winDispatchProcPtr	winProcEstablishConnectionOrig;
+-extern winDispatchProcPtr	winProcQueryTreeOrig;
+-#endif
+-
+-
+ /* Called from dix/devices.c */
+ /*
+  * All of our keys generate up and down transition notifications,

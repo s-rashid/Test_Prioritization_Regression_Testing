@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartzKeyboard.c b/hw/xquartz/quartzKeyboard.c
+index 96b5fa5..3b4eac3 100644
+--- a/hw/xquartz/quartzKeyboard.c
++++ b/hw/xquartz/quartzKeyboard.c
+@@ -368,7 +368,7 @@ void DarwinKeyboardReloadHandler(void) {
+     KeySymsRec keySyms;
+     CFIndex initialKeyRepeatValue, keyRepeatValue;
+     BOOL ok;
+-    DeviceIntPtr pDev = darwinKeyboard;
++    DeviceIntPtr pDev;
+     const char *xmodmap = PROJECTROOT "/bin/xmodmap";
+     const char *sysmodmap = PROJECTROOT "/lib/X11/xinit/.Xmodmap";
+     const char *homedir = getenv("HOME");

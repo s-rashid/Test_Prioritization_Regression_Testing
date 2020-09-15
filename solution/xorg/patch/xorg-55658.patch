@@ -1,0 +1,67 @@
+diff --git a/hw/xfree86/vgahw/vgaHW.h b/hw/xfree86/vgahw/vgaHW.h
+index d1ba9da..937a8a5 100644
+--- a/hw/xfree86/vgahw/vgaHW.h
++++ b/hw/xfree86/vgahw/vgaHW.h
+@@ -1,5 +1,4 @@
+ 
+-
+ /*
+  * Copyright (c) 1997,1998 The XFree86 Project, Inc.
+  *
+@@ -100,7 +99,6 @@ typedef void (*vgaHWWriteProcPtr)(vgaHWPtr hwp, CARD8 value);
+ typedef CARD8 (*vgaHWReadProcPtr)(vgaHWPtr hwp);
+ typedef void (*vgaHWMiscProcPtr)(vgaHWPtr hwp);
+ 
+-
+ /*
+  * vgaHWRec contains per-screen information required by the vgahw module.
+  *
+@@ -191,17 +189,22 @@ extern _X_EXPORT Bool vgaHWSaveScreen(ScreenPtr pScreen, int mode);
+ extern _X_EXPORT void vgaHWBlankScreen(ScrnInfoPtr pScrn, Bool on);
+ extern _X_EXPORT vgaHWBlankScreenProc *vgaHWBlankScreenWeak(void);
+ extern _X_EXPORT void vgaHWSeqReset(vgaHWPtr hwp, Bool start);
+-extern _X_EXPORT void vgaHWRestoreFonts(ScrnInfoPtr scrninfp, vgaRegPtr restore);
++extern _X_EXPORT void vgaHWRestoreFonts(ScrnInfoPtr scrninfp,
++                                        vgaRegPtr restore);
+ extern _X_EXPORT void vgaHWRestoreMode(ScrnInfoPtr scrninfp, vgaRegPtr restore);
+-extern _X_EXPORT void vgaHWRestoreColormap(ScrnInfoPtr scrninfp, vgaRegPtr restore);
+-extern _X_EXPORT void vgaHWRestore(ScrnInfoPtr scrninfp, vgaRegPtr restore, int flags);
++extern _X_EXPORT void vgaHWRestoreColormap(ScrnInfoPtr scrninfp,
++                                           vgaRegPtr restore);
++extern _X_EXPORT void vgaHWRestore(ScrnInfoPtr scrninfp, vgaRegPtr restore,
++                                   int flags);
+ extern _X_EXPORT void vgaHWSaveFonts(ScrnInfoPtr scrninfp, vgaRegPtr save);
+ extern _X_EXPORT void vgaHWSaveMode(ScrnInfoPtr scrninfp, vgaRegPtr save);
+ extern _X_EXPORT void vgaHWSaveColormap(ScrnInfoPtr scrninfp, vgaRegPtr save);
+-extern _X_EXPORT void vgaHWSave(ScrnInfoPtr scrninfp, vgaRegPtr save, int flags);
++extern _X_EXPORT void vgaHWSave(ScrnInfoPtr scrninfp, vgaRegPtr save,
++                                int flags);
+ extern _X_EXPORT Bool vgaHWInit(ScrnInfoPtr scrnp, DisplayModePtr mode);
+-extern _X_EXPORT Bool vgaHWSetRegCounts(ScrnInfoPtr scrp, int numCRTC, int numSequencer,
+-                  	int numGraphics, int numAttribute);
++extern _X_EXPORT Bool vgaHWSetRegCounts(ScrnInfoPtr scrp, int numCRTC,
++                                        int numSequencer, int numGraphics,
++                                        int numAttribute);
+ extern _X_EXPORT Bool vgaHWCopyReg(vgaRegPtr dst, vgaRegPtr src);
+ extern _X_EXPORT Bool vgaHWGetHWRec(ScrnInfoPtr scrp);
+ extern _X_EXPORT void vgaHWFreeHWRec(ScrnInfoPtr scrp);
+@@ -212,13 +215,14 @@ extern _X_EXPORT void vgaHWLock(vgaHWPtr hwp);
+ extern _X_EXPORT void vgaHWUnlock(vgaHWPtr hwp);
+ extern _X_EXPORT void vgaHWEnable(vgaHWPtr hwp);
+ extern _X_EXPORT void vgaHWDisable(vgaHWPtr hwp);
+-extern _X_EXPORT void vgaHWDPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode, int flags);
++extern _X_EXPORT void vgaHWDPMSSet(ScrnInfoPtr pScrn, int PowerManagementMode,
++                                   int flags);
+ extern _X_EXPORT Bool vgaHWHandleColormaps(ScreenPtr pScreen);
+ extern _X_EXPORT void vgaHWddc1SetSpeed(ScrnInfoPtr pScrn, xf86ddcSpeed speed);
+-extern _X_EXPORT CARD32 vgaHWHBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+-	       unsigned int Flags);
+-extern _X_EXPORT CARD32 vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp, int nBits,
+-	       unsigned int Flags);
++extern _X_EXPORT CARD32 vgaHWHBlankKGA(DisplayModePtr mode, vgaRegPtr regp,
++                                       int nBits, unsigned int Flags);
++extern _X_EXPORT CARD32 vgaHWVBlankKGA(DisplayModePtr mode, vgaRegPtr regp,
++                                       int nBits, unsigned int Flags);
+ extern _X_EXPORT Bool vgaHWAllocDefaultRegs(vgaRegPtr regp);
+ 
+ extern _X_EXPORT DDC1SetSpeedProc vgaHWddc1SetSpeedWeak(void);

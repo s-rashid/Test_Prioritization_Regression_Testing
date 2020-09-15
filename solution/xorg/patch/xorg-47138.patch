@@ -1,0 +1,15 @@
+diff --git a/hw/dmx/glxProxy/glxext.c b/hw/dmx/glxProxy/glxext.c
+index b30d144..0c39068 100644
+--- a/hw/dmx/glxProxy/glxext.c
++++ b/hw/dmx/glxProxy/glxext.c
+@@ -299,6 +299,10 @@ void GlxExtensionInit(void)
+     __glXWindowRes = CreateNewResourceType((DeleteType)WindowGone);
+     __glXPbufferRes = CreateNewResourceType((DeleteType)PbufferGone);
+ 
++    if (!__glXContextRes || !__glXClientRes || !__glXPixmapRes ||
++	!__glXWindowRes || !__glXPbufferRes)
++	return;
++
+     /*
+     ** Add extension to server extensions.
+     */

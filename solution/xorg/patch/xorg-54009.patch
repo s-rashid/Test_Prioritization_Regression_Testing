@@ -1,0 +1,13 @@
+diff --git a/os/osinit.c b/os/osinit.c
+index 45d202d..acea682 100644
+--- a/os/osinit.c
++++ b/os/osinit.c
+@@ -213,7 +213,7 @@ OsInit(void)
+ 	    FILE *err;
+ 
+ 	    if (strlen (display) + strlen (ADMPATH) + 1 < sizeof fname)
+-		sprintf (fname, ADMPATH, display);
++		snprintf (fname, sizeof(fname), ADMPATH, display);
+ 	    else
+ 		strcpy (fname, devnull);
+ 	    /*

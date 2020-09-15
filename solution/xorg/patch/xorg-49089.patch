@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/xaa/xaaOverlayDF.c b/hw/xfree86/xaa/xaaOverlayDF.c
+index 3b848ac..b186cb5 100644
+--- a/hw/xfree86/xaa/xaaOverlayDF.c
++++ b/hw/xfree86/xaa/xaaOverlayDF.c
+@@ -324,7 +324,7 @@ XAAOverCopyWindow(
+     RegionRec rgnDst;
+     BoxPtr pbox;
+     int i, nbox, dx, dy;
+-    WindowPtr pRoot = WindowTable[pScreen->myNum];
++    WindowPtr pRoot = pScreen->root;
+ 
+ 
+     if (!pScrn->vtSema || !infoRec->ScreenToScreenBitBlt) { 

@@ -1,0 +1,17 @@
+diff --git a/hw/xwin/InitInput.c b/hw/xwin/InitInput.c
+index 705e618..0ffa940 100644
+--- a/hw/xwin/InitInput.c
++++ b/hw/xwin/InitInput.c
+@@ -39,9 +39,9 @@
+  */
+ 
+ #ifdef XWIN_CLIPBOARD
+-DISPATCH_PROC(winProcEstablishConnection);
+-DISPATCH_PROC(winProcQueryTree);
+-DISPATCH_PROC(winProcSetSelectionOwner);
++int winProcEstablishConnection(ClientPtr /* client */);
++int winProcQueryTree(ClientPtr /* client */);
++int winProcSetSelectionOwner(ClientPtr /* client */);
+ #endif
+ 
+ 

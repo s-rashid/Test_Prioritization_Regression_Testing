@@ -1,0 +1,110 @@
+diff --git a/miext/cw/cw.c b/miext/cw/cw.c
+index 3da3bc3..87ced2f 100644
+--- a/miext/cw/cw.c
++++ b/miext/cw/cw.c
+@@ -87,12 +87,12 @@ cwGetBackingDrawable(DrawablePtr pDrawable, int *x_off, int *y_off)
+     PixmapPtr	pPixmap;
+     
+     if (pDrawable->type == DRAWABLE_WINDOW && 
+-	(pPixmap = getCwPixmap ((WindowPtr) pDrawable)))
+-    {
++        (pPixmap = getCwPixmap((WindowPtr) pDrawable))) {
+ 	*x_off = pDrawable->x - pPixmap->screen_x;
+ 	*y_off = pDrawable->y - pPixmap->screen_y;
+ 	return &pPixmap->drawable;
+-    } else {
++    }
++    else {
+ 	*x_off = *y_off = 0;
+ 	return pDrawable;
+     }
+@@ -110,7 +110,6 @@ cwGetBackingDrawable(DrawablePtr pDrawable, int *x_off, int *y_off)
+     (pGC)->ops = &cwGCOps;						\
+ } while (0)
+ 
+-
+ static Bool
+ cwCreateBackingGC(GCPtr pGC, DrawablePtr pDrawable)
+ {
+@@ -165,7 +164,8 @@ cwValidateGC(GCPtr pGC, unsigned long stateChanges, DrawablePtr pDrawable)
+ 	cwDestroyBackingGC(pGC);
+ 	FUNC_EPILOGUE(pGC, pPriv);
+ 	return;
+-    } else {
++    }
++    else {
+ 	if (!pPriv->pBackingGC && !cwCreateBackingGC(pGC, pDrawable)) {
+ 	    FUNC_EPILOGUE(pGC, pPriv);
+ 	    return;
+@@ -183,8 +183,7 @@ cwValidateGC(GCPtr pGC, unsigned long stateChanges, DrawablePtr pDrawable)
+      * the client clip data
+      */
+     if (pDrawable->serialNumber != pPriv->serialNumber ||
+-	(pPriv->stateChanges & (GCClipXOrigin|GCClipYOrigin|GCClipMask)))
+-    {
++        (pPriv->stateChanges & (GCClipXOrigin | GCClipYOrigin | GCClipMask))) {
+ 	ChangeGCVal vals[2];
+ 	RegionPtr   pCompositeClip;
+ 
+@@ -201,8 +200,7 @@ cwValidateGC(GCPtr pGC, unsigned long stateChanges, DrawablePtr pDrawable)
+ 	
+ 	vals[0].val = x_off - pDrawable->x;
+ 	vals[1].val = y_off - pDrawable->y;
+-	ChangeGC(NullClient, pBackingGC,
+-		    (GCClipXOrigin | GCClipYOrigin), vals);
++        ChangeGC(NullClient, pBackingGC, (GCClipXOrigin | GCClipYOrigin), vals);
+ 
+ 	pPriv->serialNumber = pDrawable->serialNumber;
+ 	/*
+@@ -218,9 +216,9 @@ cwValidateGC(GCPtr pGC, unsigned long stateChanges, DrawablePtr pDrawable)
+     }
+ 
+     if ((pGC->patOrg.x + x_off) != pBackingGC->patOrg.x ||
+-	(pGC->patOrg.y + y_off) != pBackingGC->patOrg.y)
+-    {
++        (pGC->patOrg.y + y_off) != pBackingGC->patOrg.y) {
+ 	ChangeGCVal vals[2];
++
+ 	vals[0].val = pGC->patOrg.x + x_off;
+ 	vals[1].val = pGC->patOrg.y + y_off;
+ 	ChangeGC(NullClient, pBackingGC,
+@@ -377,7 +375,6 @@ cwGetSpans(DrawablePtr pSrc, int wMax, DDXPointPtr ppt, int *pwidth,
+     SCREEN_EPILOGUE(pScreen, GetSpans, cwGetSpans);
+ }
+ 
+-
+ static void
+ cwCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ {
+@@ -387,7 +384,8 @@ cwCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ 
+     if (!cwDrawableIsRedirWindow((DrawablePtr)pWin)) {
+ 	(*pScreen->CopyWindow)(pWin, ptOldOrg, prgnSrc);
+-    } else {
++    }
++    else {
+ 	GCPtr	    pGC;
+ 	BoxPtr	    pExtents;
+ 	int	    x_off, y_off;
+@@ -421,8 +419,7 @@ cwCopyWindow(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
+ 	pClip = RegionCreate(NULL, 0);
+ 	RegionIntersect(pClip, &pWin->borderClip, prgnSrc);
+ 	RegionTranslate(pClip,
+-			 -pBackingPixmap->screen_x,
+-			 -pBackingPixmap->screen_y);
++                        -pBackingPixmap->screen_x, -pBackingPixmap->screen_y);
+ 	
+ 	(*pGC->funcs->ChangeClip) (pGC, CT_REGION, pClip, 0);
+ 
+@@ -445,9 +442,9 @@ cwGetWindowPixmap (WindowPtr pWin)
+ {
+     PixmapPtr	pPixmap = getCwPixmap (pWin);
+ 
+-    if (!pPixmap)
+-    {
++    if (!pPixmap) {
+ 	ScreenPtr   pScreen = pWin->drawable.pScreen;
++
+ 	SCREEN_PROLOGUE(pScreen, GetWindowPixmap);
+ 	if (pScreen->GetWindowPixmap)
+ 	    pPixmap = (*pScreen->GetWindowPixmap) (pWin);

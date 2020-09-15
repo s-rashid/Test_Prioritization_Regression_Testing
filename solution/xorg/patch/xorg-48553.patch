@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/dmxfont.c b/hw/dmx/dmxfont.c
+index b6b2e31..7a418c8 100644
+--- a/hw/dmx/dmxfont.c
++++ b/hw/dmx/dmxfont.c
+@@ -208,8 +208,6 @@ static int dmxProcSetFontPath(ClientPtr client)
+ 	    /* Restore old fontpath in the DMX server */
+ 	    SetFontPath(client, nOldPaths, oldFontPath);
+ 	    client->errorValue = error;
+-	} else {
+-	    result = client->noClientException;
+ 	}
+     }
+ 

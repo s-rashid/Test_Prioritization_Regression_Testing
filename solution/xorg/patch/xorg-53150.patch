@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/XNGC.h b/hw/xnest/XNGC.h
+index 9f10456..c4a6cef 100644
+--- a/hw/xnest/XNGC.h
++++ b/hw/xnest/XNGC.h
+@@ -19,7 +19,6 @@ is" without express or implied warranty.
+ 
+ typedef struct {
+   XlibGC gc;
+-  int nClipRects;
+ } xnestPrivGC;
+ 
+ extern DevPrivateKeyRec xnestGCPrivateKeyRec;

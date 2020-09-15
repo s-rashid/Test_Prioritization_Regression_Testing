@@ -1,0 +1,156 @@
+diff --git a/mi/miglblt.c b/mi/miglblt.c
+index 9edb500..1a70911 100644
+--- a/mi/miglblt.c
++++ b/mi/miglblt.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -45,7 +44,6 @@ SOFTWARE.
+ 
+ ******************************************************************/
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -82,13 +80,7 @@ with the sample server.
+ */
+ 
+ void
+-miPolyGlyphBlt(
+-    DrawablePtr pDrawable,
+-    GC		*pGC,
+-    int		x,
+-    int		y,
+-    unsigned int nglyph,
+-    CharInfoPtr *ppci,		/* array of character info */
++miPolyGlyphBlt(DrawablePtr pDrawable, GC * pGC, int x, int y, unsigned int nglyph, CharInfoPtr * ppci,  /* array of character info */
+     pointer      pglyphBase	/* start of array of glyphs */
+     )
+ {
+@@ -109,8 +101,7 @@ miPolyGlyphBlt(
+ 
+     ChangeGCVal gcvals[3];
+ 
+-    if (pGC->miTranslate)
+-    {
++    if (pGC->miTranslate) {
+ 	x += pDrawable->x;
+ 	y += pDrawable->y;
+     }
+@@ -118,8 +109,7 @@ miPolyGlyphBlt(
+     pfont = pGC->font;
+     width = FONTMAXBOUNDS(pfont,rightSideBearing) - 
+ 	    FONTMINBOUNDS(pfont,leftSideBearing);
+-    height = FONTMAXBOUNDS(pfont,ascent) +
+-	     FONTMAXBOUNDS(pfont,descent);
++    height = FONTMAXBOUNDS(pfont, ascent) + FONTMAXBOUNDS(pfont, descent);
+ 
+     pPixmap = (*pDrawable->pScreen->CreatePixmap)(pDrawable->pScreen,
+ 						  width, height, 1,
+@@ -128,8 +118,7 @@ miPolyGlyphBlt(
+ 	return;
+ 
+     pGCtmp = GetScratchGC(1, pDrawable->pScreen);
+-    if (!pGCtmp)
+-    {
++    if (!pGCtmp) {
+ 	(*pDrawable->pScreen->DestroyPixmap)(pPixmap);
+ 	return;
+     }
+@@ -138,24 +127,22 @@ miPolyGlyphBlt(
+     gcvals[1].val = 1;
+     gcvals[2].val = 0;
+ 
+-    ChangeGC(NullClient, pGCtmp, GCFunction|GCForeground|GCBackground, gcvals);
++    ChangeGC(NullClient, pGCtmp, GCFunction | GCForeground | GCBackground,
++             gcvals);
+ 
+     nbyLine = BitmapBytePad(width);
+     pbits = malloc(height*nbyLine);
+-    if (!pbits)
+-    {
++    if (!pbits) {
+ 	(*pDrawable->pScreen->DestroyPixmap)(pPixmap);
+ 	FreeScratchGC(pGCtmp);
+         return;
+     }
+-    while(nglyph--)
+-    {
++    while (nglyph--) {
+ 	pci = *ppci++;
+ 	pglyph = FONTGLYPHBITS(pglyphBase, pci);
+ 	gWidth = GLYPHWIDTHPIXELS(pci);
+ 	gHeight = GLYPHHEIGHTPIXELS(pci);
+-	if (gWidth && gHeight)
+-	{
++        if (gWidth && gHeight) {
+ 	    nbyGlyphWidth = GLYPHWIDTHBYTESPADDED(pci);
+ 	    nbyPadGlyph = BitmapBytePad(gWidth);
+ 
+@@ -163,13 +150,12 @@ miPolyGlyphBlt(
+ #if GLYPHPADBYTES != 4
+ 	        && (((int) pglyph) & 3) == 0
+ #endif
+-		)
+-	    {
++                ) {
+ 		pb = pglyph;
+ 	    }
+-	    else
+-	    {
+-		for (i=0, pb = pbits; i<gHeight; i++, pb = pbits+(i*nbyPadGlyph))
++            else {
++                for (i = 0, pb = pbits; i < gHeight;
++                     i++, pb = pbits + (i * nbyPadGlyph))
+ 		    for (j = 0; j < nbyGlyphWidth; j++)
+ 			*pb++ = *pglyph++;
+ 		pb = pbits;
+@@ -194,15 +180,8 @@ miPolyGlyphBlt(
+     FreeScratchGC(pGCtmp);
+ }
+ 
+-
+ void
+-miImageGlyphBlt(
+-    DrawablePtr pDrawable,
+-    GC		*pGC,
+-    int		 x,
+-    int		 y,
+-    unsigned int nglyph,
+-    CharInfoPtr *ppci,		/* array of character info */
++miImageGlyphBlt(DrawablePtr pDrawable, GC * pGC, int x, int y, unsigned int nglyph, CharInfoPtr * ppci, /* array of character info */
+     pointer      pglyphBase	/* start of array of glyphs */
+     )
+ {
+@@ -214,13 +193,11 @@ miImageGlyphBlt(
+ 
+     QueryGlyphExtents(pGC->font, ppci, (unsigned long)nglyph, &info);
+ 
+-    if (info.overallWidth >= 0)
+-    {
++    if (info.overallWidth >= 0) {
+     	backrect.x = x;
+     	backrect.width = info.overallWidth;
+     }
+-    else
+-    {
++    else {
+ 	backrect.x = x + info.overallWidth;
+ 	backrect.width = -info.overallWidth;
+     }
+@@ -243,8 +220,7 @@ miImageGlyphBlt(
+     gcvals[0].val = oldFG;
+     ChangeGC(NullClient, pGC, GCForeground, gcvals);
+     ValidateGC(pDrawable, pGC);
+-    (*pGC->ops->PolyGlyphBlt)(pDrawable, pGC, x, y, nglyph, ppci,
+-			      pglyphBase);
++    (*pGC->ops->PolyGlyphBlt) (pDrawable, pGC, x, y, nglyph, ppci, pglyphBase);
+ 
+     /* put all the toys away when done playing */
+     gcvals[0].val = oldAlu;

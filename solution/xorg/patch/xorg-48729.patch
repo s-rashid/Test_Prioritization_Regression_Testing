@@ -1,0 +1,13 @@
+diff --git a/fb/fballpriv.c b/fb/fballpriv.c
+index c40796c..569391b 100644
+--- a/fb/fballpriv.c
++++ b/fb/fballpriv.c
+@@ -61,7 +61,7 @@ fbAllocatePrivates(ScreenPtr pScreen, DevPrivateKey *pGCKey)
+     {
+ 	FbScreenPrivPtr	pScreenPriv;
+ 
+-	pScreenPriv = (FbScreenPrivPtr) xalloc (sizeof (FbScreenPrivRec));
++	pScreenPriv = (FbScreenPrivPtr) malloc(sizeof (FbScreenPrivRec));
+ 	if (!pScreenPriv)
+ 	    return FALSE;
+ 	dixSetPrivate(&pScreen->devPrivates, fbScreenPrivateKey, pScreenPriv);

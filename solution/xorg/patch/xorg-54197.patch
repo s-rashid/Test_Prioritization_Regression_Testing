@@ -1,0 +1,13 @@
+diff --git a/Xi/exevents.c b/Xi/exevents.c
+index ad9c3d6..1e16b74 100644
+--- a/Xi/exevents.c
++++ b/Xi/exevents.c
+@@ -492,6 +492,8 @@ DeepCopyKeyboardClasses(DeviceIntPtr from, DeviceIntPtr to)
+ 
+ }
+ 
++/* FIXME: this should really be shared with the InitValuatorAxisClassRec and
++ * similar */
+ static void
+ DeepCopyPointerClasses(DeviceIntPtr from, DeviceIntPtr to)
+ {

@@ -1,0 +1,11 @@
+diff --git a/Xi/closedev.c b/Xi/closedev.c
+index e319c73..1064be6 100644
+--- a/Xi/closedev.c
++++ b/Xi/closedev.c
+@@ -162,6 +162,5 @@ ProcXCloseDevice(ClientPtr client)
+ 	DeleteEventsFromChildren(d, p1, client);
+     }
+ 
+-    CloseInputDevice(d, client);
+     return Success;
+ }

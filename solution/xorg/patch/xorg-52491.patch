@@ -1,0 +1,13 @@
+diff --git a/render/picture.c b/render/picture.c
+index e7e1f2b..1877bfc 100644
+--- a/render/picture.c
++++ b/render/picture.c
+@@ -158,7 +158,7 @@ addFormat (FormatInitRec    formats[256],
+     return ++nformat;
+ }
+ 
+-#define Mask(n)	((n) == 32 ? 0xffffffff : ((1 << (n))-1))
++#define Mask(n) ((1 << (n)) - 1)
+ 
+ PictFormatPtr
+ PictureCreateDefaultFormats (ScreenPtr pScreen, int *nformatp)

@@ -1,0 +1,14 @@
+diff --git a/dix/events.c b/dix/events.c
+index 8dff299..2b54969 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -2978,6 +2978,9 @@ CheckMotion(DeviceEvent *ev, DeviceIntPtr pDev)
+             case ET_ButtonPress:
+             case ET_ButtonRelease:
+             case ET_Motion:
++            case ET_TouchBegin:
++            case ET_TouchUpdate:
++            case ET_TouchEnd:
+                 break;
+             default:
+                 /* all other events return FALSE */

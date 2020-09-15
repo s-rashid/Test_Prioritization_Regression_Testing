@@ -1,0 +1,13 @@
+diff --git a/Xext/panoramiXprocs.c b/Xext/panoramiXprocs.c
+index 3e68d0a..4eb9a13 100644
+--- a/Xext/panoramiXprocs.c
++++ b/Xext/panoramiXprocs.c
+@@ -2186,7 +2186,7 @@ PanoramiXCopyColormapAndFree(ClientPtr client)
+     newCmap->type = XRT_COLORMAP;
+     panoramix_setup_ids(newCmap, client, stuff->mid);
+ 
+-    FOR_NSCREENS_BACKWARD(j){
++    FOR_NSCREENS_BACKWARD(j) {
+         stuff->srcCmap = cmap->info[j].id;
+ 	stuff->mid = newCmap->info[j].id;
+         result = (* SavedProcVector[X_CopyColormapAndFree])(client);

@@ -1,0 +1,29 @@
+diff --git a/composite/compext.c b/composite/compext.c
+index 608f29a..56b4f27 100644
+--- a/composite/compext.c
++++ b/composite/compext.c
+@@ -569,9 +569,14 @@ CompositeExtensionInit (void)
+     if (!dixRequestPrivate(CompositeClientPrivateKey,
+ 			   sizeof(CompositeClientRec)))
+ 	return;
++
+     if (!AddCallback (&ClientStateCallback, CompositeClientCallback, 0))
+ 	return;
+ 
++    for (s = 0; s < screenInfo.numScreens; s++)
++	if (!compScreenInit (screenInfo.screens[s]))
++	    return;
++
+     extEntry = AddExtension (COMPOSITE_NAME, 0, 0,
+ 			     ProcCompositeDispatch, SProcCompositeDispatch,
+ 			     NULL, StandardMinorOpcode);
+@@ -579,9 +584,6 @@ CompositeExtensionInit (void)
+ 	return;
+     CompositeReqCode = (CARD8) extEntry->base;
+ 
+-    for (s = 0; s < screenInfo.numScreens; s++)
+-	if (!compScreenInit (screenInfo.screens[s]))
+-	    return;
+     miRegisterRedirectBorderClipProc (compSetRedirectBorderClip,
+ 				      compGetRedirectBorderClip);
+ 

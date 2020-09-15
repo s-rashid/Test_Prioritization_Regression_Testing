@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/ramdac/xf86RamDacCmap.c b/hw/xfree86/ramdac/xf86RamDacCmap.c
+index 600fe3f..c6dc831 100644
+--- a/hw/xfree86/ramdac/xf86RamDacCmap.c
++++ b/hw/xfree86/ramdac/xf86RamDacCmap.c
+@@ -39,9 +39,6 @@
+ #include "colormapst.h"
+ #include "xf86RamDacPriv.h"
+ 
+-#include "xf86PciInfo.h"
+-#include "xf86Pci.h"
+-
+ void
+ RamDacLoadPalette(ScrnInfoPtr pScrn, int numColors, int *indices, LOCO *colors,
+ 		 VisualPtr pVisual)

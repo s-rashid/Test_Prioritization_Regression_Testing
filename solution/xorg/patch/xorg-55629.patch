@@ -1,0 +1,38 @@
+diff --git a/hw/xfree86/ramdac/BT.c b/hw/xfree86/ramdac/BT.c
+index 5aa27a1..5333445 100644
+--- a/hw/xfree86/ramdac/BT.c
++++ b/hw/xfree86/ramdac/BT.c
+@@ -66,7 +66,8 @@ BTramdacSave(ScrnInfoPtr pScrn, RamDacRecPtr ramdacPtr,
+ }
+ 
+ RamDacHelperRecPtr
+-BTramdacProbe(ScrnInfoPtr pScrn, RamDacSupportedInfoRecPtr ramdacs/*, RamDacRecPtr ramdacPtr*/)
++BTramdacProbe(ScrnInfoPtr pScrn,
++              RamDacSupportedInfoRecPtr ramdacs /*, RamDacRecPtr ramdacPtr */ )
+ {
+     RamDacRecPtr ramdacPtr = RAMDACSCRPTR(pScrn);
+     Bool RamDacIsSupported = FALSE;
+@@ -89,8 +90,7 @@ BTramdacProbe(ScrnInfoPtr pScrn, RamDacSupportedInfoRecPtr ramdacs/*, RamDacRecP
+ 		break;
+ 	default:
+ 		xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
+-			   "Unknown BT RAMDAC type (0x%x), assuming BT485\n",
+-			   status);
++                   "Unknown BT RAMDAC type (0x%x), assuming BT485\n", status);
+ 	case 0x80:
+ 	case 0x90:
+ 	case 0xA0:
+@@ -107,9 +107,11 @@ BTramdacProbe(ScrnInfoPtr pScrn, RamDacSupportedInfoRecPtr ramdacs/*, RamDacRecP
+         xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
+ 		"Cannot determine BT RAMDAC type, aborting\n");
+ 	return NULL;
+-    } else {
++    }
++    else {
+         xf86DrvMsg(pScrn->scrnIndex, X_PROBED, 
+-		"Attached RAMDAC is %s\n", BTramdacDeviceInfo[BTramdac_ID&0xFFFF].DeviceName);
++                   "Attached RAMDAC is %s\n",
++                   BTramdacDeviceInfo[BTramdac_ID & 0xFFFF].DeviceName);
+     }
+ 
+     for (i=0;ramdacs[i].token != -1;i++) {

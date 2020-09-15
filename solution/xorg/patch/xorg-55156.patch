@@ -1,0 +1,49 @@
+diff --git a/glx/extension_string.c b/glx/extension_string.c
+index 7721cb0..866f8bf 100644
+--- a/glx/extension_string.c
++++ b/glx/extension_string.c
+@@ -86,7 +86,6 @@ static const struct extension_info known_glx_extensions[] = {
+    { NULL }
+ };
+ 
+-
+ /**
+  * Create a GLX extension string for a set of enable bits.
+  *
+@@ -111,7 +110,6 @@ __glXGetExtensionString(const unsigned char *enable_bits, char *buffer)
+     unsigned i;
+     int length = 0;
+ 
+-
+     for (i = 0; known_glx_extensions[i].name != NULL; i++) {
+ 	const unsigned bit = known_glx_extensions[i].bit;
+ 	const size_t len = known_glx_extensions[i].name_len;
+@@ -132,14 +130,12 @@ __glXGetExtensionString(const unsigned char *enable_bits, char *buffer)
+     return length + 1;
+ }
+ 
+-
+ void
+ __glXEnableExtension(unsigned char *enable_bits, const char *ext)
+ {
+     const size_t ext_name_len = strlen(ext);
+     unsigned i;
+ 
+-
+     for (i = 0; known_glx_extensions[i].name != NULL; i++) {
+ 	if ((ext_name_len == known_glx_extensions[i].name_len)
+ 	    && (memcmp(ext, known_glx_extensions[i].name, ext_name_len) == 0)) {
+@@ -149,13 +145,11 @@ __glXEnableExtension(unsigned char *enable_bits, const char *ext)
+     }
+ }
+ 
+-
+ void
+ __glXInitExtensionEnableBits(unsigned char *enable_bits)
+ {
+     unsigned i;
+ 
+-
+     (void) memset(enable_bits, 0, __GLX_EXT_BYTES);
+ 
+     for (i = 0; known_glx_extensions[i].name != NULL; i++) {

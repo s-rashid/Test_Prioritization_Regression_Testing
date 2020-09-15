@@ -1,0 +1,18 @@
+diff --git a/hw/xwin/winglobals.c b/hw/xwin/winglobals.c
+index 2909f37..631f12e 100644
+--- a/hw/xwin/winglobals.c
++++ b/hw/xwin/winglobals.c
+@@ -78,13 +78,6 @@ Bool		g_fSoftwareCursor = FALSE;
+ Bool		g_fSilentDupError = FALSE;
+ Bool            g_fNativeGl = FALSE;
+ 
+-/*
+- * Global variables for dynamically loaded libraries and
+- * their function pointers
+- */
+-
+-FARPROC		g_fpTrackMouseEvent = (FARPROC) (void (*)(void))NoopDDA;
+-
+ 
+ #ifdef XWIN_CLIPBOARD
+ /*

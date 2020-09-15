@@ -1,0 +1,43 @@
+diff --git a/os/rpcauth.c b/os/rpcauth.c
+index 63b97b6..bd219ac 100644
+--- a/os/rpcauth.c
++++ b/os/rpcauth.c
+@@ -31,7 +31,6 @@ from The Open Group.
+  * Author:  Mayank Choudhary, Sun Microsystems
+  */
+ 
+-
+ #ifdef HAVE_DIX_CONFIG_H
+ #include <dix-config.h>
+ #endif
+@@ -114,11 +113,7 @@ bad1:
+ static XID  rpc_id = (XID) ~0L;
+ 
+ static Bool
+-CheckNetName (
+-    unsigned char    *addr,
+-    short	    len,
+-    pointer	    closure
+-)
++CheckNetName(unsigned char *addr, short len, pointer closure)
+ {
+     return (len == strlen ((char *) closure) &&
+ 	    strncmp ((char *) addr, (char *) closure, len) == 0);
+@@ -134,13 +129,15 @@ SecureRPCCheck (unsigned short data_length, const char *data,
+     
+     if (rpc_id == (XID) ~0L) {
+ 	*reason = "Secure RPC authorization not initialized";
+-    } else {
++    }
++    else {
+ 	fullname = authdes_ezdecode(data, data_length);
+ 	if (fullname == (char *)0) {
+ 	    snprintf(rpc_error, sizeof(rpc_error),
+ 		     "Unable to authenticate secure RPC client (why=%d)", why);
+ 	    *reason = rpc_error;
+-	} else {
++        }
++        else {
+ 	    if (ForEachHostInFamily (FamilyNetname, CheckNetName, fullname))
+ 		return rpc_id;
+ 	    snprintf(rpc_error, sizeof(rpc_error),

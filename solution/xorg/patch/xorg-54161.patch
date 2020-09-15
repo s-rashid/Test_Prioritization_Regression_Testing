@@ -1,0 +1,13 @@
+diff --git a/include/input.h b/include/input.h
+index de2a75d..cbfaba7 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -548,6 +548,8 @@ void FixUpEventFromWindow(SpritePtr pSprite,
+ extern WindowPtr XYToWindow(SpritePtr pSprite, int x, int y);
+ extern int EventIsDeliverable(DeviceIntPtr dev, InternalEvent* event,
+                               WindowPtr win);
++extern Bool ActivatePassiveGrab(DeviceIntPtr dev, GrabPtr grab,
++                                InternalEvent *ev);
+ /**
+  * Masks specifying the type of event to deliver for an InternalEvent; used
+  * by EventIsDeliverable.

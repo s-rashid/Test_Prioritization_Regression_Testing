@@ -1,0 +1,21 @@
+diff --git a/Xi/getfctl.c b/Xi/getfctl.c
+index 607765e..9563d63 100644
+--- a/Xi/getfctl.c
++++ b/Xi/getfctl.c
+@@ -340,7 +340,7 @@ ProcXGetFeedbackControl(ClientPtr client)
+     if (total_length == 0)
+ 	return BadMatch;
+ 
+-    buf = (char *)xalloc(total_length);
++    buf = (char *)malloc(total_length);
+     if (!buf)
+ 	return BadAlloc;
+     savbuf = buf;
+@@ -361,6 +361,6 @@ ProcXGetFeedbackControl(ClientPtr client)
+     rep.length = bytes_to_int32(total_length);
+     WriteReplyToClient(client, sizeof(xGetFeedbackControlReply), &rep);
+     WriteToClient(client, total_length, savbuf);
+-    xfree(savbuf);
++    free(savbuf);
+     return Success;
+ }

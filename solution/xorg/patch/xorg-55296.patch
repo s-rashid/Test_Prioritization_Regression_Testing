@@ -1,0 +1,35 @@
+diff --git a/hw/dmx/glxProxy/glxext.h b/hw/dmx/glxProxy/glxext.h
+index 361bcac..881152d 100644
+--- a/hw/dmx/glxProxy/glxext.h
++++ b/hw/dmx/glxProxy/glxext.h
+@@ -37,21 +37,15 @@
+ typedef struct {
+     int type;
+     void (*resetExtension)(void);
+-    Bool (*initVisuals)(
+-        VisualPtr *       visualp,
++    Bool (*initVisuals) (VisualPtr * visualp,
+         DepthPtr *        depthp,
+         int *             nvisualp,
+         int *             ndepthp,
+         int *             rootDepthp,
+         VisualID *        defaultVisp,
+-        unsigned long     sizes,
+-        int               bitsPerRGB
+-        );
+-    void (*setVisualConfigs)(
+-        int                nconfigs,
+-        __GLXvisualConfig *configs,
+-        void              **privates
+-        );
++                         unsigned long sizes, int bitsPerRGB);
++    void (*setVisualConfigs) (int nconfigs,
++                              __GLXvisualConfig * configs, void **privates);
+ } __GLXextensionInfo;
+ 
+ extern GLboolean __glXFreeContext(__GLXcontext *glxc);
+@@ -75,4 +69,3 @@ extern void GlxExtensionInit(void);
+ extern Bool __glXCoreType(void);
+ 
+ #endif /* _glxext_h_ */
+-

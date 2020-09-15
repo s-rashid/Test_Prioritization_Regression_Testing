@@ -1,0 +1,28 @@
+diff --git a/include/scrnintstr.h b/include/scrnintstr.h
+index a4ca0c6..3a77e0c 100644
+--- a/include/scrnintstr.h
++++ b/include/scrnintstr.h
+@@ -168,14 +168,6 @@ typedef    void (* WindowExposuresProcPtr)(
+ 	RegionPtr /*prgn*/,
+ 	RegionPtr /*other_exposed*/);
+ 
+-typedef    void (* PaintWindowProcPtr)(
+-	WindowPtr /*pWindow*/,
+-	RegionPtr /*pRegion*/,
+-	int /*what*/);
+-
+-typedef PaintWindowProcPtr PaintWindowBackgroundProcPtr;
+-typedef PaintWindowProcPtr PaintWindowBorderProcPtr;
+-
+ typedef    void (* CopyWindowProcPtr)(
+ 	WindowPtr /*pWindow*/,
+ 	DDXPointRec /*ptOldOrg*/,
+@@ -497,8 +489,6 @@ typedef struct _Screen {
+     ValidateTreeProcPtr		ValidateTree;
+     PostValidateTreeProcPtr	PostValidateTree;
+     WindowExposuresProcPtr	WindowExposures;
+-    PaintWindowBackgroundProcPtr PaintWindowBackground; /** unused */
+-    PaintWindowBorderProcPtr	PaintWindowBorder; /** unused */
+     CopyWindowProcPtr		CopyWindow;
+     ClearToBackgroundProcPtr	ClearToBackground;
+     ClipNotifyProcPtr		ClipNotify;

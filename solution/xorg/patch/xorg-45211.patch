@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/common/xf86Bus.c b/hw/xfree86/common/xf86Bus.c
+index 8382d91..0d732d0 100644
+--- a/hw/xfree86/common/xf86Bus.c
++++ b/hw/xfree86/common/xf86Bus.c
+@@ -428,6 +428,9 @@ xf86GetEntityInfo(int entityIndex)
+     EntityInfoPtr pEnt;
+     int i;
+     
++    if (entityIndex == -1)
++	return NULL;
++
+     if (entityIndex >= xf86NumEntities)
+ 	return NULL;
+     

@@ -1,0 +1,107 @@
+diff --git a/hw/xquartz/X11Controller.h b/hw/xquartz/X11Controller.h
+index e7fcd45..1e60270 100644
+--- a/hw/xquartz/X11Controller.h
++++ b/hw/xquartz/X11Controller.h
+@@ -1,31 +1,32 @@
+ /* X11Controller.h -- connect the IB ui
+-
+-   Copyright (c) 2002 Apple Computer, Inc. All rights reserved.
+-
+-   Permission is hereby granted, free of charge, to any person
+-   obtaining a copy of this software and associated documentation files
+-   (the "Software"), to deal in the Software without restriction,
+-   including without limitation the rights to use, copy, modify, merge,
+-   publish, distribute, sublicense, and/or sell copies of the Software,
+-   and to permit persons to whom the Software is furnished to do so,
+-   subject to the following conditions:
+-
+-   The above copyright notice and this permission notice shall be
+-   included in all copies or substantial portions of the Software.
+-
+-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-   NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
+-   HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+-   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+-   DEALINGS IN THE SOFTWARE.
+-
+-   Except as contained in this notice, the name(s) of the above
+-   copyright holders shall not be used in advertising or otherwise to
+-   promote the sale, use or other dealings in this Software without
+-   prior written authorization. */
++ *
++ * Copyright (c) 2002-2012 Apple Inc. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
++ * HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ * DEALINGS IN THE SOFTWARE.
++ *
++ * Except as contained in this notice, the name(s) of the above
++ * copyright holders shall not be used in advertising or otherwise to
++ * promote the sale, use or other dealings in this Software without
++ * prior written authorization.
++ */
+ 
+ #ifndef X11CONTROLLER_H
+ #define X11CONTROLLER_H 1
+@@ -85,7 +86,6 @@ typedef unsigned int NSUInteger;
+     IBOutlet NSPopUpButton *depth;
+ 
+     IBOutlet NSMenuItem *window_separator;
+-
+     // window_separator is DEPRECATED due to this radar:
+     // <rdar://problem/7088335> NSApplication releases the separator in the Windows menu even though it's an IBOutlet
+     // It is kept around for localization compatability and is subject to removal "eventually"
+@@ -95,7 +95,6 @@ typedef unsigned int NSUInteger;
+     IBOutlet NSMenuItem *dock_window_separator;
+     IBOutlet NSMenuItem *apps_separator;
+     IBOutlet NSMenuItem *toggle_fullscreen_item;
+-
+ #ifdef XQUARTZ_SPARKLE
+     NSMenuItem *check_for_updates_item; // Programatically enabled
+ #endif
+@@ -123,13 +122,12 @@ typedef unsigned int NSUInteger;
+  -(void) set_apps_menu:(NSArray *) list;
+ #ifdef XQUARTZ_SPARKLE
+ -(void) setup_sparkle;
+- -(void) updater:(SUUpdater *)
+-updater willInstallUpdate:(SUAppcastItem *) update;
++- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)
++   update;
+ #endif
+  -(void) set_can_quit:(OSX_BOOL) state;
+ -(void) server_ready;
+- -(OSX_BOOL) application:(NSApplication *)
+-app openFile:(NSString *) filename;
++- (OSX_BOOL)application:(NSApplication *)app openFile:(NSString *)filename;
+ 
+  -(IBAction) apps_table_show:(id) sender;
+  -(IBAction) apps_table_done:(id) sender;
+@@ -150,7 +148,9 @@ app openFile:(NSString *) filename;
+  -(IBAction) x11_help:(id) sender;
+ 
+ @end
++
+ #endif                          /* __OBJC__ */
++
+ void
+ X11ControllerMain(int argc, char **argv, char **envp);
+ 

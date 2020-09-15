@@ -1,0 +1,14 @@
+diff --git a/Xi/setmode.c b/Xi/setmode.c
+index 80ee764..a7bf1ea 100644
+--- a/Xi/setmode.c
++++ b/Xi/setmode.c
+@@ -109,8 +109,7 @@ ProcXSetDeviceMode(ClientPtr client)
+ 
+     if (rep.status == Success)
+         valuator_set_mode(dev, VALUATOR_MODE_ALL_AXES, stuff->mode);
+-    else if (rep.status != AlreadyGrabbed)
+-    {
++    else if (rep.status != AlreadyGrabbed) {
+ 	switch(rep.status) {
+ 	    case BadMatch:
+ 	    case BadImplementation:

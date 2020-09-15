@@ -1,0 +1,20 @@
+diff --git a/include/inputstr.h b/include/inputstr.h
+index 23c34a5..b284ea4 100644
+--- a/include/inputstr.h
++++ b/include/inputstr.h
+@@ -215,6 +215,7 @@ typedef struct _AxisInfo {
+     int		max_resolution;
+     int		min_value;
+     int		max_value;
++    Atom	label;
+ } AxisInfo, *AxisInfoPtr;
+ 
+ typedef struct _ValuatorAccelerationRec {
+@@ -254,6 +255,7 @@ typedef struct _ButtonClassRec {
+     CARD8		postdown[DOWN_LENGTH];
+     CARD8		map[MAP_LENGTH];
+     union _XkbAction    *xkb_acts;
++    Atom		labels[MAX_BUTTONS];
+ } ButtonClassRec, *ButtonClassPtr;
+ 
+ typedef struct _FocusClassRec {

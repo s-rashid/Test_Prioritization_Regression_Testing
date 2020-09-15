@@ -1,0 +1,16 @@
+diff --git a/mi/mipointer.c b/mi/mipointer.c
+index 7680ca1..670f63b 100644
+--- a/mi/mipointer.c
++++ b/mi/mipointer.c
+@@ -569,9 +569,9 @@ miPointerMoveNoEvent (DeviceIntPtr pDev, ScreenPtr pScreen,
+  *
+  * @param pDev The device to move
+  * @param mode Movement mode (Absolute or Relative)
+- * @param[in,out] x The x coordiante in screen coordinates (in regards to total
++ * @param[in,out] x The x coordinate in screen coordinates (in regards to total
+  * desktop size)
+- * @param[in,out] y The y coordiante in screen coordinates (in regards to total
++ * @param[in,out] y The y coordinate in screen coordinates (in regards to total
+  * desktop size)
+  */
+ void

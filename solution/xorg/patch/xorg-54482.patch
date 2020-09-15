@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winclipboardthread.c b/hw/xwin/winclipboardthread.c
+index e7df452..908dfce 100644
+--- a/hw/xwin/winclipboardthread.c
++++ b/hw/xwin/winclipboardthread.c
+@@ -32,6 +32,8 @@
+ 
+ #ifdef HAVE_XWIN_CONFIG_H
+ #include <xwin-config.h>
++#else
++#define HAS_WINSOCK 1
+ #endif
+ #include <sys/types.h>
+ #include "winclipboard.h"

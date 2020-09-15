@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/glxProxy/glxcmds.c b/hw/dmx/glxProxy/glxcmds.c
+index a76201d..fb4bce8 100644
+--- a/hw/dmx/glxProxy/glxcmds.c
++++ b/hw/dmx/glxProxy/glxcmds.c
+@@ -52,6 +52,8 @@
+ #include "glxvisuals.h"
+ #include "glxswap.h"
+ 
++#include "glxcmds.h"
++
+ #ifdef PANORAMIX
+ #include "panoramiXsrv.h"
+ #endif

@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/lnx-ms.c b/hw/dmx/input/lnx-ms.c
+index 549df46..ee18707 100644
+--- a/hw/dmx/input/lnx-ms.c
++++ b/hw/dmx/input/lnx-ms.c
+@@ -301,7 +301,7 @@ pointer msLinuxCreatePrivate(DeviceIntPtr pMouse)
+ /** Destroy a private structure. */
+ void msLinuxDestroyPrivate(pointer priv)
+ {
+-    if (priv) free(priv);
++    free(priv);
+ }
+ 
+ /** Fill the \a info structure with information needed to initialize \a

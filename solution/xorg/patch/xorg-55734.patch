@@ -1,0 +1,14 @@
+diff --git a/hw/xnest/Handlers.h b/hw/xnest/Handlers.h
+index 16228a0..7160bdd 100644
+--- a/hw/xnest/Handlers.h
++++ b/hw/xnest/Handlers.h
+@@ -16,7 +16,7 @@ is" without express or implied warranty.
+ #define XNESTHANDLERS_H
+ 
+ void xnestBlockHandler(pointer blockData, OSTimePtr pTimeout,
+-		       pointer pReadMask);
++                       pointer pReadMask);
+ void xnestWakeupHandler(pointer blockData, int result, pointer pReadMask);
+ 
+-#endif /* XNESTHANDLERS_H */
++#endif                          /* XNESTHANDLERS_H */

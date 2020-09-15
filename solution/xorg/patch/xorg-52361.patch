@@ -1,0 +1,25 @@
+diff --git a/render/render.c b/render/render.c
+index c5da6d7..ebb1d63 100644
+--- a/render/render.c
++++ b/render/render.c
+@@ -1705,11 +1705,17 @@ ProcRenderCreateCursor (ClientPtr client)
+ 			 GetColor(twocolor[1], 0),
+ 			 &pCursor, client, stuff->cid);
+     if (rc != Success)
+-	return rc;
+-    if (!AddResource(stuff->cid, RT_CURSOR, (pointer)pCursor))
+-	return BadAlloc;
++	goto bail;
++    if (!AddResource(stuff->cid, RT_CURSOR, (pointer)pCursor)) {
++	rc = BadAlloc;
++	goto bail;
++    }
+ 
+     return Success;
++bail:
++    free(srcbits);
++    free(mskbits);
++    return rc;
+ }
+ 
+ static int

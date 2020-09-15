@@ -1,0 +1,55 @@
+diff --git a/hw/dmx/input/dmxinputinit.h b/hw/dmx/input/dmxinputinit.h
+index 5a4a410..94ec101 100644
+--- a/hw/dmx/input/dmxinputinit.h
++++ b/hw/dmx/input/dmxinputinit.h
+@@ -41,7 +41,6 @@
+ #include "dmxinput.h"
+ #include "dmxlog.h"
+ 
+-
+ #define DMX_LOCAL_DEFAULT_KEYBOARD "kbd"
+ #define DMX_LOCAL_DEFAULT_POINTER  "ps2"
+ #define DMX_MAX_BUTTONS            256
+@@ -149,8 +148,7 @@ typedef void    (*dmxMotionProcPtr)(DevicePtr,
+                                     int *valuators,
+                                     int firstAxis,
+                                     int axesCount,
+-                                    DMXMotionType type,
+-                                    DMXBlockType block);
++                                  DMXMotionType type, DMXBlockType block);
+ typedef void    (*dmxEnqueueProcPtr)(DevicePtr, int type, int detail,
+                                      KeySym keySym, XEvent *e,
+                                      DMXBlockType block);
+@@ -158,8 +156,7 @@ typedef int     (*dmxCheckSpecialProcPtr)(DevicePtr, KeySym keySym);
+ typedef void    (*dmxCollectEventsProcPtr)(DevicePtr,
+                                            dmxMotionProcPtr,
+                                            dmxEnqueueProcPtr,
+-                                           dmxCheckSpecialProcPtr,
+-                                           DMXBlockType);
++                                         dmxCheckSpecialProcPtr, DMXBlockType);
+ typedef void    (*dmxProcessInputProcPtr)(pointer);
+ typedef void    (*dmxUpdateInfoProcPtr)(pointer, DMXUpdateType, WindowPtr);
+ typedef int     (*dmxFunctionsProcPtr)(pointer, DMXFunctionType);
+@@ -248,9 +245,7 @@ typedef struct _DMXLocalInputInfo {
+                                 /* for XInput ChangePointerDevice */
+     int                      (*savedMotionProc)(DeviceIntPtr,
+                                                 xTimecoord *,
+-                                                unsigned long,
+-                                                unsigned long,
+-                                                ScreenPtr);
++                            unsigned long, unsigned long, ScreenPtr);
+     int                      savedMotionEvents; /**< Saved motion events */
+     int                      savedSendsCore;    /**< Saved sends-core flag */
+ 
+@@ -283,9 +278,7 @@ extern int          dmxInputDetach(DMXInputInfo *dmxInput);
+ extern void         dmxInputDetachAll(DMXScreenInfo *dmxScreen);
+ extern int          dmxInputDetachId(int id);
+ extern DMXInputInfo *dmxInputLocateId(int id);
+-extern int          dmxInputAttachConsole(const char *name, int isCore,
+-                                          int *id);
+-extern int          dmxInputAttachBackend(int physicalScreen, int isCore,
+-                                          int *id);
++extern int dmxInputAttachConsole(const char *name, int isCore, int *id);
++extern int dmxInputAttachBackend(int physicalScreen, int isCore, int *id);
+ 
+ #endif

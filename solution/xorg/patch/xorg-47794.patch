@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Configure.c b/hw/xfree86/common/xf86Configure.c
+index d74d90b..67bf08b 100644
+--- a/hw/xfree86/common/xf86Configure.c
++++ b/hw/xfree86/common/xf86Configure.c
+@@ -612,7 +612,7 @@ configureDDCMonitorSection (int screennum)
+ 	  len = 0;
+ 	}
+ 	if ((ptr->mon_comment =
+-	     realloc(ptr->mon_comment, len+strlen(displaySize_string)))) {
++	     realloc(ptr->mon_comment, len + strlen(displaySize_string) + 1))) {
+ 	  strcpy(ptr->mon_comment + len, displaySize_string);
+ 	}
+       }

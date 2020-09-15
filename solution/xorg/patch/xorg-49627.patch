@@ -1,0 +1,12 @@
+diff --git a/hw/xfree86/parser/xf86tokens.h b/hw/xfree86/parser/xf86tokens.h
+index fd13d6d..aa33935 100644
+--- a/hw/xfree86/parser/xf86tokens.h
++++ b/hw/xfree86/parser/xf86tokens.h
+@@ -280,6 +280,7 @@ typedef enum {
+     MATCH_VENDOR,
+     MATCH_DEVICE_PATH,
+     MATCH_OS,
++    MATCH_PNPID,
+     MATCH_TAG,
+     MATCH_IS_KEYBOARD,
+     MATCH_IS_POINTER,

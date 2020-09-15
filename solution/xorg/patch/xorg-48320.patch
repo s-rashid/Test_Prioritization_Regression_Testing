@@ -1,0 +1,13 @@
+diff --git a/dix/gc.c b/dix/gc.c
+index a7b335c..c9b704a 100644
+--- a/dix/gc.c
++++ b/dix/gc.c
+@@ -574,7 +574,7 @@ CreateGC(DrawablePtr pDrawable, BITS32 mask, XID *pval, int *pStatus,
+     if (!(*pGC->pScreen->CreateGC)(pGC))
+ 	*pStatus = BadAlloc;
+     else if (mask)
+-        *pStatus = dixChangeGC(NullClient, pGC, mask, pval, NULL);
++        *pStatus = dixChangeGC(client, pGC, mask, pval, NULL);
+     else
+ 	*pStatus = Success;
+ 

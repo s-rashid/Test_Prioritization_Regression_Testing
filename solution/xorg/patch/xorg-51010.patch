@@ -1,0 +1,28 @@
+diff --git a/dix/getevents.c b/dix/getevents.c
+index 0d59290..f09d31c 100644
+--- a/dix/getevents.c
++++ b/dix/getevents.c
+@@ -115,9 +115,9 @@ button_is_down(DeviceIntPtr pDev, int button, int type)
+     int ret = 0;
+ 
+     if (type & BUTTON_PROCESSED)
+-        ret |= !!BitIsOn(pDev->button->down, button);
++        ret |= BitIsOn(pDev->button->down, button);
+     if (type & BUTTON_POSTED)
+-        ret |= !!BitIsOn(pDev->button->postdown, button);
++        ret |= BitIsOn(pDev->button->postdown, button);
+ 
+     return ret;
+ }
+@@ -146,9 +146,9 @@ key_is_down(DeviceIntPtr pDev, int key_code, int type)
+     int ret = 0;
+ 
+     if (type & KEY_PROCESSED)
+-        ret |= !!BitIsOn(pDev->key->down, key_code);
++        ret |= BitIsOn(pDev->key->down, key_code);
+     if (type & KEY_POSTED)
+-        ret |= !!BitIsOn(pDev->key->postdown, key_code);
++        ret |= BitIsOn(pDev->key->postdown, key_code);
+ 
+     return ret;
+ }

@@ -1,0 +1,26 @@
+diff --git a/glx/glxdricommon.h b/glx/glxdricommon.h
+index 2c55e60..f4fcf00 100644
+--- a/glx/glxdricommon.h
++++ b/glx/glxdricommon.h
+@@ -32,15 +32,15 @@ struct __GLXDRIconfig {
+     const __DRIconfig *driConfig;
+ };
+ 
+-__GLXconfig *
+-glxConvertConfigs(const __DRIcoreExtension *core,
+-		  const __DRIconfig **configs, unsigned int drawableType);
++__GLXconfig *glxConvertConfigs(const __DRIcoreExtension * core,
++                               const __DRIconfig ** configs,
++                               unsigned int drawableType);
+ 
+ extern const __DRIsystemTimeExtension systemTimeExtension;
+ 
+-void *
+-glxProbeDriver(const char *name,
++void *glxProbeDriver(const char *name,
+ 	       void **coreExt, const char *coreName, int coreVersion,
+-	       void **renderExt, const char *renderName, int renderVersion);
++                     void **renderExt, const char *renderName,
++                     int renderVersion);
+ 
+ #endif

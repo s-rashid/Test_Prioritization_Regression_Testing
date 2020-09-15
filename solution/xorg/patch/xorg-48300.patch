@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 17df130..58eaa10 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -167,7 +167,7 @@ ProcDRI2CreateDrawable(ClientPtr client)
+ 		       &pDrawable, &status))
+ 	return status;
+ 
+-    status = DRI2CreateDrawable(pDrawable);
++    status = DRI2CreateDrawable(client, pDrawable, stuff->drawable);
+     if (status != Success)
+ 	return status;
+ 

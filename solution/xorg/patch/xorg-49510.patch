@@ -1,0 +1,13 @@
+diff --git a/config/hal.c b/config/hal.c
+index b5a350f..e0ff842 100644
+--- a/config/hal.c
++++ b/config/hal.c
+@@ -622,7 +622,7 @@ config_hal_init(void)
+     }
+ 
+     /* verbose message */
+-    LogMessageVerb(X_INFO,7,"config/hal: initialized");
++    LogMessageVerb(X_INFO,7,"config/hal: initialized\n");
+ 
+     return 1;
+ }

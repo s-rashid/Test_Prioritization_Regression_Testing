@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/InitInput.c b/hw/xwin/InitInput.c
+index 1e9bcad..705e618 100644
+--- a/hw/xwin/InitInput.c
++++ b/hw/xwin/InitInput.c
+@@ -171,3 +171,8 @@ InitInput (int argc, char *argv[])
+   winDebug ("InitInput - returning\n");
+ #endif
+ }
++
++void
++CloseInput (void)
++{
++}

@@ -1,0 +1,10 @@
+diff --git a/Xi/xiquerydevice.h b/Xi/xiquerydevice.h
+index 9db6aa2..632c42e 100644
+--- a/Xi/xiquerydevice.h
++++ b/Xi/xiquerydevice.h
+@@ -45,4 +45,5 @@ int ListKeyInfo(DeviceIntPtr dev, xXIKeyInfo* info);
+ int ListValuatorInfo(DeviceIntPtr dev, xXIValuatorInfo* info,
+ 		     int axisnumber, Bool reportState);
+ int ListScrollInfo(DeviceIntPtr dev, xXIScrollInfo* info, int axisnumber);
++int ListTouchInfo(DeviceIntPtr dev, xXITouchInfo* info);
+ #endif /* QUERYDEV_H */

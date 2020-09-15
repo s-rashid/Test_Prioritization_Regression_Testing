@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/usb-keyboard.c b/hw/dmx/input/usb-keyboard.c
+index c4667a3..dc575fe 100644
+--- a/hw/dmx/input/usb-keyboard.c
++++ b/hw/dmx/input/usb-keyboard.c
+@@ -398,7 +398,7 @@ static void kbdUSBGetMap(DevicePtr pDev, KeySymsPtr pKeySyms, CARD8 *pModMap)
+     KeySym        *k, *mapCopy;
+     int           i;
+ 
+-    mapCopy = xalloc(sizeof(map));
++    mapCopy = malloc(sizeof(map));
+     memcpy(mapCopy, map, sizeof(map));
+ 
+     /* compute the modifier map */

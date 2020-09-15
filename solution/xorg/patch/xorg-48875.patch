@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86AutoConfig.c b/hw/xfree86/common/xf86AutoConfig.c
+index 8947a4f..5b236af 100644
+--- a/hw/xfree86/common/xf86AutoConfig.c
++++ b/hw/xfree86/common/xf86AutoConfig.c
+@@ -257,7 +257,7 @@ listPossibleVideoDrivers(char *matches[], int nmatches)
+     }
+ #endif
+ 
+-    xf86PciMatchDriver(matches, nmatches);
++    i = xf86PciMatchDriver(matches, nmatches);
+ 
+     /* Fallback to platform default hardware */
+     if (i < (nmatches - 1)) {

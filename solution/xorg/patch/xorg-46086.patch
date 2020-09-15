@@ -1,0 +1,17 @@
+diff --git a/hw/xfree86/common/compiler.h b/hw/xfree86/common/compiler.h
+index bb3e935..114c812 100644
+--- a/hw/xfree86/common/compiler.h
++++ b/hw/xfree86/common/compiler.h
+@@ -150,10 +150,8 @@ extern unsigned short ldw_brx(volatile unsigned char *, int);
+ 
+ #   elif defined __amd64__
+ 
+-#    define mem_barrier() \
+-       __asm__ __volatile__ ("lock; addl $0,0(%%rsp)" : : : "memory")
+-#    define write_mem_barrier() \
+-       __asm__ __volatile__ ("" : : : "memory")
++#    define mem_barrier() __asm__ __volatile__ ("mfence" : : : "memory")
++#    define write_mem_barrier() __asm__ __volatile__ ("sfence" : : : "memory")
+ 
+ #   elif defined __ia64__
+ 

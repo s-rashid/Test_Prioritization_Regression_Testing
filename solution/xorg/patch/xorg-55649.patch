@@ -1,0 +1,99 @@
+diff --git a/hw/xfree86/utils/cvt/cvt.c b/hw/xfree86/utils/cvt/cvt.c
+index 0de5ffe..9483964 100644
+--- a/hw/xfree86/utils/cvt/cvt.c
++++ b/hw/xfree86/utils/cvt/cvt.c
+@@ -30,6 +30,7 @@ void
+ FatalError(const char *f, ...)
+ {
+     va_list args;
++
+     va_start(args, f);
+     vfprintf(stderr, f, args);
+     va_end(args);
+@@ -77,8 +78,7 @@ CVTCheckStandard(int HDisplay, int VDisplay, float VRefresh, Bool Reduced,
+         (!(VDisplay % 9) && ((VDisplay * 16 / 9) == HDisplay)) ||
+         (!(VDisplay % 10) && ((VDisplay * 16 / 10) == HDisplay)) ||
+         (!(VDisplay % 4) && ((VDisplay * 5 / 4) == HDisplay)) ||
+-        (!(VDisplay % 9) && ((VDisplay * 15 / 9) == HDisplay)))
+-        ;
++        (!(VDisplay % 9) && ((VDisplay * 15 / 9) == HDisplay)));
+     else {
+         if (Verbose)
+             fprintf(stderr, "Warning: Aspect Ratio is not CVT standard.\n");
+@@ -96,7 +96,6 @@ CVTCheckStandard(int HDisplay, int VDisplay, float VRefresh, Bool Reduced,
+     return IsCVT;
+ }
+ 
+-
+ /*
+  * I'm not documenting --interlaced for obvious reasons, even though I did
+  * implement it. I also can't deny having looked at gtf here.
+@@ -113,15 +112,16 @@ PrintUsage(char *Name)
+             "(default: normal blanking).\n");
+     fprintf(stderr, "            X : Desired horizontal resolution "
+             "(multiple of 8, required).\n");
+-    fprintf(stderr, "            Y : Desired vertical resolution (required).\n");
+-    fprintf(stderr, "      refresh : Desired refresh rate (default: 60.0Hz).\n");
++    fprintf(stderr,
++            "            Y : Desired vertical resolution (required).\n");
++    fprintf(stderr,
++            "      refresh : Desired refresh rate (default: 60.0Hz).\n");
+     fprintf(stderr, "\n");
+ 
+     fprintf(stderr, "Calculates VESA CVT (Coordinated Video Timing) modelines"
+ 	    " for use with X.\n");
+ }
+ 
+-
+ /*
+  *
+  */
+@@ -154,7 +154,8 @@ PrintComment(DisplayModeRec *Mode, Bool CVT, Bool Reduced)
+             printf("-R");
+ 
+         printf(") ");
+-    } else
++    }
++    else
+         printf("(CVT) ");
+ 
+     printf("hsync: %.2f kHz; ", Mode->HSync);
+@@ -163,7 +164,6 @@ PrintComment(DisplayModeRec *Mode, Bool CVT, Bool Reduced)
+     printf("\n");
+ }
+ 
+-
+ /*
+  * Originally grabbed from xf86Mode.c.
+  *
+@@ -179,9 +179,9 @@ PrintModeline(DisplayModePtr Mode, int HDisplay, int VDisplay, float VRefresh,
+     else
+         printf("Modeline \"%dx%d_%.2f\"  ", HDisplay, VDisplay, VRefresh);
+ 
+-    printf("%6.2f  %i %i %i %i  %i %i %i %i", Mode->Clock/1000., Mode->HDisplay,
+-           Mode->HSyncStart, Mode->HSyncEnd, Mode->HTotal, Mode->VDisplay,
+-           Mode->VSyncStart, Mode->VSyncEnd, Mode->VTotal);
++    printf("%6.2f  %i %i %i %i  %i %i %i %i", Mode->Clock / 1000.,
++           Mode->HDisplay, Mode->HSyncStart, Mode->HSyncEnd, Mode->HTotal,
++           Mode->VDisplay, Mode->VSyncStart, Mode->VSyncEnd, Mode->VTotal);
+ 
+     if (Mode->Flags & V_INTERLACE)
+         printf(" interlace");
+@@ -197,7 +197,6 @@ PrintModeline(DisplayModePtr Mode, int HDisplay, int VDisplay, float VRefresh,
+     printf("\n");
+ }
+ 
+-
+ /*
+  *
+  */
+@@ -230,7 +229,8 @@ main (int argc, char *argv[])
+         else if (!strcmp(argv[n], "-h") || !strcmp(argv[n], "--help")) {
+             PrintUsage(argv[0]);
+             return 0;
+-        } else if (!HDisplay) {
++        }
++        else if (!HDisplay) {
+             HDisplay = atoi(argv[n]);
+ 	    if (!HDisplay) {
+ 		PrintUsage(argv[0]);

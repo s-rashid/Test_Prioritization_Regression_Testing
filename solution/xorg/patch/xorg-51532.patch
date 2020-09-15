@@ -1,0 +1,14 @@
+diff --git a/render/mipict.c b/render/mipict.c
+index b5b8970..de5eea6 100644
+--- a/render/mipict.c
++++ b/render/mipict.c
+@@ -386,7 +386,8 @@ miCompositeSourceValidate (PicturePtr	pPicture,
+ 	}
+         x += pPicture->pDrawable->x;
+         y += pPicture->pDrawable->y;
+-	(*pScreen->SourceValidate) (pDrawable, x, y, width, height);
++	(*pScreen->SourceValidate) (pDrawable, x, y, width, height,
++				    pPicture->subWindowMode);
+     }
+ }
+ 

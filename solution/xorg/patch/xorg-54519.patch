@@ -1,0 +1,22 @@
+diff --git a/hw/xwin/winwindowswm.c b/hw/xwin/winwindowswm.c
+index f43834d..577614d 100644
+--- a/hw/xwin/winwindowswm.c
++++ b/hw/xwin/winwindowswm.c
+@@ -548,7 +548,7 @@ ProcWindowsWMDispatch (ClientPtr client)
+       return ProcWindowsWMQueryVersion(client);
+     }
+ 
+-  if (!client->local)
++  if (!LocalClient(client))
+     return WMErrorBase + WindowsWMClientNotLocal;
+ 
+   switch (stuff->data)
+@@ -598,7 +598,7 @@ SProcWindowsWMDispatch (ClientPtr client)
+   REQUEST(xReq);
+ 
+   /* It is bound to be non-local when there is byte swapping */
+-  if (!client->local)
++  if (!LocalClient(client))
+     return WMErrorBase + WindowsWMClientNotLocal;
+ 
+   /* only local clients are allowed WM access */

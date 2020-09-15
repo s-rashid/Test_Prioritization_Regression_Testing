@@ -1,0 +1,30 @@
+diff --git a/hw/dmx/dmxwindow.h b/hw/dmx/dmxwindow.h
+index f93121e..c6b2efe 100644
+--- a/hw/dmx/dmxwindow.h
++++ b/hw/dmx/dmxwindow.h
+@@ -58,14 +58,12 @@ typedef struct _dmxWinPriv {
+ #endif
+ } dmxWinPrivRec, *dmxWinPrivPtr;
+ 
+-
+ extern Bool dmxInitWindow(ScreenPtr pScreen);
+ 
+ extern Window dmxCreateRootWindow(WindowPtr pWindow);
+ 
+ extern void dmxGetDefaultWindowAttributes(WindowPtr pWindow,
+-					  Colormap *cmap,
+-					  Visual **visual);
++                                          Colormap * cmap, Visual ** visual);
+ extern void dmxCreateAndRealizeWindow(WindowPtr pWindow, Bool doSync);
+ 
+ extern Bool dmxCreateWindow(WindowPtr pWindow);
+@@ -88,8 +86,7 @@ extern void dmxChangeBorderWidth(WindowPtr pWindow, unsigned int width);
+ 
+ extern void dmxResizeScreenWindow(ScreenPtr pScreen,
+ 				  int x, int y, int w, int h);
+-extern void dmxResizeRootWindow(WindowPtr pRoot,
+-				int x, int y, int w, int h);
++extern void dmxResizeRootWindow(WindowPtr pRoot, int x, int y, int w, int h);
+ 
+ extern Bool dmxBEDestroyWindow(WindowPtr pWindow);
+ 

@@ -1,0 +1,28 @@
+diff --git a/hw/xwin/InitInput.c b/hw/xwin/InitInput.c
+index 76c1715..2eaa024 100644
+--- a/hw/xwin/InitInput.c
++++ b/hw/xwin/InitInput.c
+@@ -48,7 +48,6 @@ DISPATCH_PROC(winProcSetSelectionOwner);
+  * Local global declarations
+  */
+ 
+-CARD32				g_c32LastInputEventTime = 0;
+ DeviceIntPtr g_pwinPointer;
+ DeviceIntPtr g_pwinKeyboard;
+ 
+@@ -110,15 +109,6 @@ void DDXRingBell(int volume, int pitch, int duration)
+ }
+ 
+ 
+-int
+-TimeSinceLastInputEvent ()
+-{
+-  if (g_c32LastInputEventTime == 0)
+-    g_c32LastInputEventTime = GetTickCount ();
+-  return GetTickCount () - g_c32LastInputEventTime;
+-}
+-
+-
+ /* See Porting Layer Definition - p. 17 */
+ void
+ InitInput (int argc, char *argv[])

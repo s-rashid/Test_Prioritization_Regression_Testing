@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/parser/scan.c b/hw/xfree86/parser/scan.c
+index 99b3257..8470789 100644
+--- a/hw/xfree86/parser/scan.c
++++ b/hw/xfree86/parser/scan.c
+@@ -281,8 +281,10 @@ again:
+ 				if (builtinConfig[builtinIndex] == NULL)
+ 					ret = NULL;
+ 				else {
+-					ret = strncpy(configBuf, builtinConfig[builtinIndex],
++					strlcpy(configBuf,
++						builtinConfig[builtinIndex],
+ 							CONFIG_BUF_LEN);
++					ret = configBuf;
+ 					builtinIndex++;
+ 				}
+ 			}

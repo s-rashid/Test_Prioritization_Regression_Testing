@@ -1,0 +1,15 @@
+diff --git a/composite/compint.h b/composite/compint.h
+index 1c19ccd..fd2fea1 100644
+--- a/composite/compint.h
++++ b/composite/compint.h
+@@ -225,10 +225,6 @@ CompositeExtensionInit (void);
+  */
+ 
+ Bool
+-CompositeRegisterAlternateVisuals (ScreenPtr pScreen,
+-				   VisualID *vids, int nVisuals);
+-
+-Bool
+ compScreenInit (ScreenPtr pScreen);
+ 
+ /*

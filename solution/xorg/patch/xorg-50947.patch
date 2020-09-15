@@ -1,0 +1,18 @@
+diff --git a/hw/xfree86/common/xf86Globals.c b/hw/xfree86/common/xf86Globals.c
+index dbe2a1d..2c10005 100644
+--- a/hw/xfree86/common/xf86Globals.c
++++ b/hw/xfree86/common/xf86Globals.c
+@@ -128,11 +128,11 @@ xf86InfoRec xf86Info = {
+     .disableRandR               = FALSE,
+     .randRFrom                  = X_DEFAULT,
+ #if defined(CONFIG_HAL) || defined(CONFIG_UDEV)
+-    .allowEmptyInput            = TRUE,
++    .forceInputDevices          = FALSE,
+     .autoAddDevices             = TRUE,
+     .autoEnableDevices          = TRUE
+ #else
+-    .allowEmptyInput            = FALSE,
++    .forceInputDevices          = TRUE,
+     .autoAddDevices             = FALSE,
+     .autoEnableDevices          = FALSE
+ #endif

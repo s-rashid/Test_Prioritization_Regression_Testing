@@ -1,0 +1,88 @@
+diff --git a/hw/kdrive/linux/tslib.c b/hw/kdrive/linux/tslib.c
+index 1f30cca..1403c79 100644
+--- a/hw/kdrive/linux/tslib.c
++++ b/hw/kdrive/linux/tslib.c
+@@ -30,7 +30,6 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-
+ #ifdef HAVE_KDRIVE_CONFIG_H
+ #include <kdrive-config.h>
+ #endif
+@@ -55,7 +54,6 @@ struct TslibPrivate {
+     int phys_screen;
+ };
+ 
+-
+ static void
+ TsRead (int fd, void *closure)
+ {
+@@ -84,19 +82,22 @@ TsRead (int fd, void *closure)
+             if (KdCurScreen == private->phys_screen) {
+                 x = event.x;
+                 y = event.y;
+-            } else {
++            }
++            else {
+                 flags |= KD_MOUSE_DELTA;
+                 if ((private->lastx == 0) || (private->lasty == 0)) {
+                     x = event.x;
+                     y = event.y;
+-                } else {
++                }
++                else {
+                     x = event.x - private->lastx;
+                     y = event.y - private->lasty;
+ 	    	}
+             }
+             private->lastx = event.x;
+             private->lasty = event.y;
+-        } else {
++        }
++        else {
+             flags = 0;
+             x = private->lastx;
+             y = private->lasty;
+@@ -115,7 +116,8 @@ TslibEnable (KdPointerInfo *pi)
+     private->raw_event_closure = NULL;
+     if (!pi->path) {
+         pi->path = strdup("/dev/input/touchscreen0");
+-        ErrorF("[tslib/TslibEnable] no device path given, trying %s\n", pi->path);
++        ErrorF("[tslib/TslibEnable] no device path given, trying %s\n",
++               pi->path);
+     }
+ 
+     private->tsDev = ts_open(pi->path, 0);
+@@ -138,7 +140,6 @@ TslibEnable (KdPointerInfo *pi)
+     return Success;
+ }
+ 
+-
+ static void
+ TslibDisable (KdPointerInfo *pi)
+ {
+@@ -154,7 +155,6 @@ TslibDisable (KdPointerInfo *pi)
+     private->tsDev = NULL;
+ }
+ 
+-
+ static Status
+ TslibInit (KdPointerInfo *pi)
+ {
+@@ -178,7 +178,6 @@ TslibInit (KdPointerInfo *pi)
+     return Success;
+ }
+ 
+-
+ static void
+ TslibFini (KdPointerInfo *pi)
+ {
+@@ -186,7 +185,6 @@ TslibFini (KdPointerInfo *pi)
+     pi->driverPrivate = NULL;
+ }
+ 
+-
+ KdPointerDriver TsDriver = {
+     "tslib",
+     TslibInit,

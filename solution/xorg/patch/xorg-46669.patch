@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/common/xf86Xinput.c b/hw/xfree86/common/xf86Xinput.c
+index fd07c2a..6887f55 100644
+--- a/hw/xfree86/common/xf86Xinput.c
++++ b/hw/xfree86/common/xf86Xinput.c
+@@ -726,12 +726,15 @@ xf86PostMotionEventP(DeviceIntPtr	device,
+                     int			*valuators)
+ {
+     int i = 0, nevents = 0;
+-    int dx = 0, dy = 0;
+     Bool drag = xf86SendDragEvents(device);
+     DeviceEvent *event;
+-    int index;
+     int flags = 0;
+ 
++#if XFreeXDGA
++    int index;
++    int dx = 0, dy = 0;
++#endif
++
+     XI_VERIFY_VALUATORS(num_valuators);
+ 
+     if (is_absolute)
+@@ -856,9 +859,12 @@ xf86PostButtonEventP(DeviceIntPtr	device,
+                      int		*valuators)
+ {
+     int i = 0, nevents = 0;
+-    int index;
+     int flags = 0;
+ 
++#if XFreeXDGA
++    int index;
++#endif
++
+     XI_VERIFY_VALUATORS(num_valuators);
+ 
+     if (is_absolute)

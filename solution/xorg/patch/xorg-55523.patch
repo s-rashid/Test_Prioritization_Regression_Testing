@@ -1,0 +1,159 @@
+diff --git a/hw/xfree86/int10/xf86int10.c b/hw/xfree86/int10/xf86int10.c
+index dd00e54..df347d4 100644
+--- a/hw/xfree86/int10/xf86int10.c
++++ b/hw/xfree86/int10/xf86int10.c
+@@ -20,6 +20,7 @@
+ xf86Int10InfoPtr Int10Current = NULL;
+ 
+ static int int1A_handler(xf86Int10InfoPtr pInt);
++
+ #ifndef _PC
+ static int int42_handler(xf86Int10InfoPtr pInt);
+ #endif
+@@ -56,8 +57,7 @@ int_handler(xf86Int10InfoPtr pInt)
+ 	ret = run_bios_int(num, pInt);
+ 
+     if (!ret) {
+-	xf86DrvMsg(pInt->scrnIndex, X_ERROR,
+-	    "Halting on int 0x%2.2x!\n", num);
++        xf86DrvMsg(pInt->scrnIndex, X_ERROR, "Halting on int 0x%2.2x!\n", num);
+ 	dump_registers(pInt);
+ 	stack_trace(pInt);
+     }
+@@ -258,7 +258,8 @@ int42_handler(xf86Int10InfoPtr pInt)
+ 	/* Not Implemented                                    */
+ 	{                                         /* Localise */
+ 	    xf86DrvMsgVerb(pInt->scrnIndex, X_NOT_IMPLEMENTED, 2,
+-		"int 0x%2.2x(AH=0x04) -- Get Light Pen Position\n", pInt->num);
++                       "int 0x%2.2x(AH=0x04) -- Get Light Pen Position\n",
++                       pInt->num);
+ 	    if (xf86GetVerbosity() > 3) {
+ 		dump_registers(pInt);
+ 		stack_trace(pInt);
+@@ -429,7 +430,8 @@ int42_handler(xf86Int10InfoPtr pInt)
+ 	    if (X86_BH) {
+ 		cgacolour &= 0xDF;
+ 		cgacolour |= (X86_BL & 0x01) << 5;
+-	    } else {
++        }
++        else {
+ 		cgacolour &= 0xE0;
+ 		cgacolour |= X86_BL & 0x1F;
+ 	    }
+@@ -449,7 +451,8 @@ int42_handler(xf86Int10InfoPtr pInt)
+ 	/* Not Implemented                                    */
+ 	{                                         /* Localise */
+ 	    xf86DrvMsgVerb(pInt->scrnIndex, X_NOT_IMPLEMENTED, 2,
+-		"int 0x%2.2x(AH=0x0C) -- Write Graphics Pixel\n", pInt->num);
++                       "int 0x%2.2x(AH=0x0C) -- Write Graphics Pixel\n",
++                       pInt->num);
+ 	    xf86DrvMsgVerb(pInt->scrnIndex, X_NOT_IMPLEMENTED, 3,
+ 		"AL=0x%2.2x, BH=0x%2.2x, CX=0x%4.4x, DX=0x%4.4x\n",
+ 		X86_AL, X86_BH, X86_CX, X86_DX);
+@@ -469,10 +472,11 @@ int42_handler(xf86Int10InfoPtr pInt)
+ 	/* Not Implemented                                    */
+ 	{                                         /* Localise */
+ 	    xf86DrvMsgVerb(pInt->scrnIndex, X_NOT_IMPLEMENTED, 2,
+-		"int 0x%2.2x(AH=0x0D) -- Read Graphics Pixel\n", pInt->num);
++                       "int 0x%2.2x(AH=0x0D) -- Read Graphics Pixel\n",
++                       pInt->num);
+ 	    xf86DrvMsgVerb(pInt->scrnIndex, X_NOT_IMPLEMENTED, 3,
+-		"BH=0x%2.2x, CX=0x%4.4x, DX=0x%4.4x\n",
+-		X86_BH, X86_CX, X86_DX);
++                       "BH=0x%2.2x, CX=0x%4.4x, DX=0x%4.4x\n", X86_BH, X86_CX,
++                       X86_DX);
+ 	    if (xf86GetVerbosity() > 3) {
+ 		dump_registers(pInt);
+ 		stack_trace(pInt);
+@@ -617,7 +621,6 @@ do_find(const struct pci_id_match *m, char n, const struct pci_device * exclude)
+     return dev;
+ }
+ 
+-
+ static struct pci_device *
+ find_pci_device_vendor(CARD16 vendorID, CARD16 deviceID,
+ 			char n, const struct pci_device * exclude)
+@@ -660,10 +663,12 @@ static int
+ int1A_last_bus_number(struct pci_device *dev)
+ {
+     struct pci_device *d;
++
+     struct pci_slot_match m = { dev->domain,
+ 				PCI_MATCH_ANY,
+ 				PCI_MATCH_ANY,
+-				PCI_MATCH_ANY };
++        PCI_MATCH_ANY
++    };
+     struct pci_device_iterator *iter;
+     int i = 0;
+ 
+@@ -713,8 +718,7 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    X86_EBX = pciSlotBX(pvp);
+ 	}
+ #ifdef SHOW_ALL_DEVICES
+-	else
+-	if ((dev = find_pci_device_vendor(X86_EDX, X86_ECX, X86_ESI, pvp))) {
++        else if ((dev = find_pci_device_vendor(X86_EDX, X86_ECX, X86_ESI, pvp))) {
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+ 	    X86_EBX = pciSlotBX(dev);
+@@ -756,7 +760,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_read_u8(dev, & X86_CL, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}
+@@ -769,7 +774,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_read_u16(dev, & X86_CX, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}
+@@ -782,7 +788,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_read_u32(dev, & X86_ECX, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}
+@@ -795,7 +802,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_write_u8(dev, X86_CL, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}
+@@ -808,7 +816,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_write_u16(dev, X86_CX, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}
+@@ -821,7 +830,8 @@ int1A_handler(xf86Int10InfoPtr pInt)
+ 	    pci_device_cfg_write_u32(dev, X86_ECX, X86_DI);
+ 	    X86_EAX = X86_AL | (SUCCESSFUL << 8);
+ 	    X86_EFLAGS &= ~((unsigned long)0x01); /* clear carry flag */
+-	} else {
++        }
++        else {
+ 	    X86_EAX = X86_AL | (BAD_REGISTER_NUMBER << 8);
+ 	    X86_EFLAGS |= ((unsigned long)0x01); /* set carry flag */
+ 	}

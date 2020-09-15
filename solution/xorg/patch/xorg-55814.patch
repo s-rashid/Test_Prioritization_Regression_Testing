@@ -1,0 +1,81 @@
+diff --git a/hw/xquartz/xpr/xprAppleWM.c b/hw/xquartz/xpr/xprAppleWM.c
+index b6b9a5f..77b9fa3 100644
+--- a/hw/xquartz/xpr/xprAppleWM.c
++++ b/hw/xquartz/xpr/xprAppleWM.c
+@@ -43,9 +43,8 @@
+ #include "quartz.h"
+ #include "x-hash.h"
+ 
+-static int xprSetWindowLevel(
+-    WindowPtr pWin,
+-    int level)
++static int
++xprSetWindowLevel(WindowPtr pWin, int level)
+ {
+     xp_window_id wid;
+     xp_window_changes wc;
+@@ -84,7 +83,9 @@ static int xprSetWindowLevel(
+ }
+ 
+ #if defined(XPLUGIN_VERSION) && XPLUGIN_VERSION >= 3
+-static int xprAttachTransient(WindowPtr pWinChild, WindowPtr pWinParent) {
++static int
++xprAttachTransient(WindowPtr pWinChild, WindowPtr pWinParent)
++{
+     xp_window_id child_wid, parent_wid; 
+     xp_window_changes wc;
+ 
+@@ -93,10 +94,12 @@ static int xprAttachTransient(WindowPtr pWinChild, WindowPtr pWinParent) {
+         return BadWindow;
+ 
+     if(pWinParent) {
+-        parent_wid = x_cvt_vptr_to_uint(RootlessFrameForWindow(pWinParent, TRUE));
++        parent_wid =
++            x_cvt_vptr_to_uint(RootlessFrameForWindow(pWinParent, TRUE));
+         if (parent_wid == 0)
+             return BadWindow;
+-    } else {
++    }
++    else {
+         parent_wid = 0;
+     }
+      
+@@ -112,14 +115,13 @@ static int xprAttachTransient(WindowPtr pWinChild, WindowPtr pWinParent) {
+ }
+ #endif
+ 
+-static int xprFrameDraw(
+-    WindowPtr pWin,
++static int
++xprFrameDraw(WindowPtr pWin,
+     xp_frame_class class,
+     xp_frame_attr attr,
+     const BoxRec *outer,
+     const BoxRec *inner,
+-    unsigned int title_len,
+-    const unsigned char *title_bytes)
++             unsigned int title_len, const unsigned char *title_bytes)
+ {
+     xp_window_id wid;
+ 
+@@ -128,8 +130,7 @@ static int xprFrameDraw(
+         return BadWindow;
+ 
+     if (xp_frame_draw (wid, class, attr, outer, inner,
+-                       title_len, title_bytes) != Success)
+-    {
++                      title_len, title_bytes) != Success) {
+         return BadValue;
+     }
+ 
+@@ -155,8 +156,8 @@ static AppleWMProcsRec xprAppleWMProcs = {
+ #endif
+ };
+ 
+-
+-void xprAppleWMInit(void)
++void
++xprAppleWMInit(void)
+ {
+     AppleWMExtensionInit(&xprAppleWMProcs);
+ }

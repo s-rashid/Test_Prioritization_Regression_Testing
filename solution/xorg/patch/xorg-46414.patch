@@ -1,0 +1,23 @@
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 72f9a44..6c14578 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -45,6 +45,7 @@
+ #include "xf86drm.h"
+ #include "xfixes.h"
+ #include "dri2.h"
++#include "protocol-versions.h"
+ 
+ /* The only xf86 include */
+ #include "xf86Module.h"
+@@ -79,8 +80,8 @@ ProcDRI2QueryVersion(ClientPtr client)
+     rep.type = X_Reply;
+     rep.length = 0;
+     rep.sequenceNumber = client->sequence;
+-    rep.majorVersion = 1;
+-    rep.minorVersion = 1;
++    rep.majorVersion = SERVER_DRI2_MAJOR_VERSION;
++    rep.minorVersion = SERVER_DRI2_MAJOR_VERSION;
+ 
+     if (client->swapped) {
+     	swaps(&rep.sequenceNumber, n);

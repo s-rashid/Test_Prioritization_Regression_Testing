@@ -1,0 +1,15 @@
+diff --git a/miext/shadow/shrotpack.h b/miext/shadow/shrotpack.h
+index 015a985..2d1a87c 100644
+--- a/miext/shadow/shrotpack.h
++++ b/miext/shadow/shrotpack.h
+@@ -99,8 +99,8 @@ FUNC (ScreenPtr	    pScreen,
+ {
+     RegionPtr	damage = shadowDamage (pBuf);
+     PixmapPtr	pShadow = pBuf->pPixmap;
+-    int		nbox = REGION_NUM_RECTS (damage);
+-    BoxPtr	pbox = REGION_RECTS (damage);
++    int		nbox = RegionNumRects (damage);
++    BoxPtr	pbox = RegionRects (damage);
+     FbBits	*shaBits;
+     Data	*shaBase, *shaLine, *sha;
+     FbStride	shaStride;

@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/modes/xf86Crtc.c b/hw/xfree86/modes/xf86Crtc.c
+index 0ab2f3d..b40e096 100644
+--- a/hw/xfree86/modes/xf86Crtc.c
++++ b/hw/xfree86/modes/xf86Crtc.c
+@@ -3140,6 +3140,9 @@ xf86_crtc_supports_gamma(ScrnInfoPtr pScrn)
+ 	xf86CrtcConfigPtr xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
+ 	xf86CrtcPtr crtc;
+ 
++	/* for multiple drivers loaded we need this */
++	if (!xf86_config)
++		return FALSE;
+ 	if (xf86_config->num_crtc == 0)
+ 	    return FALSE;
+ 	crtc = xf86_config->crtc[0];

@@ -1,0 +1,40 @@
+diff --git a/Xext/shape.c b/Xext/shape.c
+index 33c0cb3..ac95328 100644
+--- a/Xext/shape.c
++++ b/Xext/shape.c
+@@ -363,7 +363,7 @@ ProcPanoramiXShapeRectangles(
+ 	result = ProcShapeRectangles (client);
+ 	if (result != Success) break;
+     }
+-    return (result);
++    return result;
+ }
+ #endif
+ 
+@@ -472,7 +472,7 @@ ProcPanoramiXShapeMask(
+ 	result = ProcShapeMask (client);
+ 	if (result != Success) break;
+     }
+-    return (result);
++    return result;
+ }
+ #endif
+ 
+@@ -596,7 +596,7 @@ ProcPanoramiXShapeCombine(
+ 	result = ProcShapeCombine (client);
+ 	if (result != Success) break;
+     }
+-    return (result);
++    return result;
+ }
+ #endif
+ 
+@@ -662,7 +662,7 @@ ProcPanoramiXShapeOffset(
+ 	result = ProcShapeOffset (client);
+ 	if(result != Success) break;
+     }
+-    return (result);
++    return result;
+ }
+ #endif
+ 

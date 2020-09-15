@@ -1,0 +1,77 @@
+diff --git a/hw/xfree86/xaa/xaaOverlay.c b/hw/xfree86/xaa/xaaOverlay.c
+index 4b52bf6..25d18da 100644
+--- a/hw/xfree86/xaa/xaaOverlay.c
++++ b/hw/xfree86/xaa/xaaOverlay.c
+@@ -24,26 +24,21 @@
+ #endif
+ 
+ static void
+-XAACopyWindow8_32(
+-    WindowPtr pWin,
+-    DDXPointRec ptOldOrg,
+-    RegionPtr prgnSrc
+-){
++XAACopyWindow8_32(WindowPtr pWin, DDXPointRec ptOldOrg, RegionPtr prgnSrc)
++{
+     DDXPointPtr pptSrc, ppt;
+     RegionRec rgnDst;
+     BoxPtr pbox;
+     int dx, dy, nbox;
+     WindowPtr pwinRoot;
+     ScreenPtr pScreen = pWin->drawable.pScreen;
+-    XAAInfoRecPtr infoRec = 
+-	GET_XAAINFORECPTR_FROM_DRAWABLE((&pWin->drawable));
++    XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_DRAWABLE((&pWin->drawable));
+     Bool doUnderlay = miOverlayCopyUnderlay(pScreen);
+     RegionPtr borderClip = &pWin->borderClip;
+     Bool freeReg = FALSE;
+ 
+     if (!infoRec->pScrn->vtSema || !infoRec->ScreenToScreenBitBlt ||
+-	(infoRec->ScreenToScreenBitBltFlags & NO_PLANEMASK)) 
+-    { 
++        (infoRec->ScreenToScreenBitBltFlags & NO_PLANEMASK)) {
+ 	XAA_SCREEN_PROLOGUE (pScreen, CopyWindow);
+ 	if(infoRec->pScrn->vtSema && infoRec->NeedToSync) {
+ 	    (*infoRec->Sync)(infoRec->pScrn);
+@@ -68,8 +63,7 @@ XAACopyWindow8_32(
+ 
+     pbox = RegionRects(&rgnDst);
+     nbox = RegionNumRects(&rgnDst);
+-    if(!nbox || 
+-      !(pptSrc = (DDXPointPtr )malloc(nbox * sizeof(DDXPointRec)))) {
++    if (!nbox || !(pptSrc = (DDXPointPtr) malloc(nbox * sizeof(DDXPointRec)))) {
+ 	RegionUninit(&rgnDst);
+ 	return;
+     }
+@@ -78,7 +72,8 @@ XAACopyWindow8_32(
+     while(nbox--) {
+ 	ppt->x = pbox->x1 + dx;
+ 	ppt->y = pbox->y1 + dy;
+-	ppt++; pbox++;
++        ppt++;
++        pbox++;
+     }
+     
+     infoRec->ScratchGC.planemask = doUnderlay ? 0x00ffffff : 0xff000000;
+@@ -94,17 +89,15 @@ XAACopyWindow8_32(
+ }
+ 
+ static void
+-XAASetColorKey8_32(
+-    ScreenPtr pScreen,
+-    int nbox,
+-    BoxPtr pbox
+-){
++XAASetColorKey8_32(ScreenPtr pScreen, int nbox, BoxPtr pbox)
++{
+     XAAInfoRecPtr infoRec = GET_XAAINFORECPTR_FROM_SCREEN(pScreen);
+     ScrnInfoPtr pScrn = infoRec->pScrn;
+ 
+     /* I'm counting on writes being clipped away while switched away.
+        If this isn't going to be true then I need to be wrapping instead. */
+-    if(!infoRec->pScrn->vtSema) return;
++    if (!infoRec->pScrn->vtSema)
++        return;
+ 
+     (*infoRec->FillSolidRects)(pScrn, pScrn->colorKey << 24, GXcopy, 
+ 					0xff000000, nbox, pbox);

@@ -1,0 +1,22 @@
+diff --git a/fb/fbtrap.c b/fb/fbtrap.c
+index 830603a..b1e1eff 100644
+--- a/fb/fbtrap.c
++++ b/fb/fbtrap.c
+@@ -40,7 +40,7 @@ fbAddTraps (PicturePtr	pPicture,
+ 	    int		ntrap,
+ 	    xTrap	*traps)
+ {
+-    pixman_image_t *image = image_from_pict (pPicture, FALSE);
++    pixman_image_t *image = image_from_pict (pPicture, FALSE, FALSE);
+ 
+     if (!image)
+ 	return;
+@@ -56,7 +56,7 @@ fbRasterizeTrapezoid (PicturePtr    pPicture,
+ 		      int	    x_off,
+ 		      int	    y_off)
+ {
+-    pixman_image_t *image = image_from_pict (pPicture, FALSE);
++    pixman_image_t *image = image_from_pict (pPicture, FALSE, FALSE);
+ 
+     if (!image)
+ 	return;

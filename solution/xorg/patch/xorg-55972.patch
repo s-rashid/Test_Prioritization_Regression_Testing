@@ -1,0 +1,10 @@
+diff --git a/mi/micoord.h b/mi/micoord.h
+index e6d814f..481e418 100644
+--- a/mi/micoord.h
++++ b/mi/micoord.h
+@@ -66,4 +66,4 @@
+ #define intToY(i)	(GetHighWord(i))
+ #endif
+ 
+-#endif /* _MICOORD_H_ */
++#endif                          /* _MICOORD_H_ */

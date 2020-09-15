@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/ephyr/ephyrdriext.c b/hw/kdrive/ephyr/ephyrdriext.c
+index 8874a43..6945f5b 100644
+--- a/hw/kdrive/ephyr/ephyrdriext.c
++++ b/hw/kdrive/ephyr/ephyrdriext.c
+@@ -398,7 +398,7 @@ EphyrDuplicateVisual (unsigned int a_screen,
+     int i=0 ;
+ 
+     EPHYR_LOG ("enter\n") ; 
+-    if (a_screen > screenInfo.numScreens) {
++    if (a_screen >= screenInfo.numScreens) {
+         EPHYR_LOG_ERROR ("bad screen number\n") ;
+         goto out;
+     }

@@ -1,0 +1,162 @@
+diff --git a/hw/xquartz/xpr/dri.c b/hw/xquartz/xpr/dri.c
+index 0ce1d07..002ec94 100644
+--- a/hw/xquartz/xpr/dri.c
++++ b/hw/xquartz/xpr/dri.c
+@@ -2,7 +2,7 @@
+ 
+ Copyright 1998-1999 Precision Insight, Inc., Cedar Park, Texas.
+ Copyright 2000 VA Linux Systems, Inc.
+-Copyright (c) 2002, 2009 Apple Computer, Inc.
++   Copyright (c) 2002-2012 Apple Computer, Inc.
+ All Rights Reserved.
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a
+@@ -31,7 +31,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  * Authors:
+  *   Jens Owen <jens@valinux.com>
+  *   Rickard E. (Rik) Faith <faith@valinux.com>
+- *
++ *   Jeremy Huddleston <jeremyhu@apple.com>
+  */
+ 
+ #ifdef HAVE_DIX_CONFIG_H
+@@ -75,23 +75,20 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #include <AvailabilityMacros.h>
+ 
+ static DevPrivateKeyRec DRIScreenPrivKeyRec;
+-
+ #define DRIScreenPrivKey (&DRIScreenPrivKeyRec)
+ static DevPrivateKeyRec DRIWindowPrivKeyRec;
+-
+ #define DRIWindowPrivKey (&DRIWindowPrivKeyRec)
+ static DevPrivateKeyRec DRIPixmapPrivKeyRec;
+-
+ #define DRIPixmapPrivKey (&DRIPixmapPrivKeyRec)
+ static DevPrivateKeyRec DRIPixmapBufferPrivKeyRec;
+-
+ #define DRIPixmapBufferPrivKey (&DRIPixmapBufferPrivKeyRec)
+ 
+ static RESTYPE DRIDrawablePrivResType;
+ 
+ static x_hash_table *surface_hash;      /* maps surface ids -> drawablePrivs */
+ 
+-static Bool DRIFreePixmapImp(DrawablePtr pDrawable);
++static Bool
++DRIFreePixmapImp(DrawablePtr pDrawable);
+ 
+ typedef struct {
+     DrawablePtr pDrawable;
+@@ -217,8 +214,7 @@ DRIAuthConnection(ScreenPtr pScreen, unsigned int magic)
+ 
+     DRIScreenPrivPtr pDRIPriv = DRI_SCREEN_PRIV(pScreen);
+ 
+-    if (drmAuthMagic(pDRIPriv->drmFD, magic))
+-        return FALSE;
++    if (drmAuthMagic(pDRIPriv->drmFD, magic)) return FALSE;
+ #endif
+     return TRUE;
+ }
+@@ -271,7 +267,8 @@ DRIUpdateSurface(DRIDrawablePrivPtr pDRIDrawablePriv, DrawablePtr pDraw)
+ 
+ /* Return NULL if an error occurs. */
+ static DRIDrawablePrivPtr
+-CreateSurfaceForWindow(ScreenPtr pScreen, WindowPtr pWin, xp_window_id * widPtr)
++CreateSurfaceForWindow(ScreenPtr pScreen, WindowPtr pWin,
++                       xp_window_id *widPtr)
+ {
+     DRIDrawablePrivPtr pDRIDrawablePriv;
+     xp_window_id wid = 0;
+@@ -323,7 +320,8 @@ CreateSurfaceForWindow(ScreenPtr pScreen, WindowPtr pWin, xp_window_id * widPtr)
+         }
+ 
+         /* save private off of preallocated index */
+-        dixSetPrivate(&pWin->devPrivates, DRIWindowPrivKey, pDRIDrawablePriv);
++        dixSetPrivate(&pWin->devPrivates, DRIWindowPrivKey,
++                      pDRIDrawablePriv);
+     }
+ 
+     *widPtr = wid;
+@@ -368,7 +366,8 @@ CreateSurfaceForPixmap(ScreenPtr pScreen, PixmapPtr pPix)
+          */
+ 
+         /* save private off of preallocated index */
+-        dixSetPrivate(&pPix->devPrivates, DRIPixmapPrivKey, pDRIDrawablePriv);
++        dixSetPrivate(&pPix->devPrivates, DRIPixmapPrivKey,
++                      pDRIDrawablePriv);
+     }
+ 
+     return pDRIDrawablePriv;
+@@ -416,7 +415,8 @@ DRICreateSurface(ScreenPtr pScreen, Drawable id,
+              * Xplugin accepts a 0 wid if the surface id is offscreen, such 
+              * as for a pixmap.
+              */
+-            err = xp_export_surface(wid, pDRIDrawablePriv->sid, client_id, key);
++            err = xp_export_surface(wid, pDRIDrawablePriv->sid,
++                                    client_id, key);
+             if (err != Success) {
+                 xp_destroy_surface(pDRIDrawablePriv->sid);
+                 free(pDRIDrawablePriv);
+@@ -449,8 +449,8 @@ DRICreateSurface(ScreenPtr pScreen, Drawable id,
+         if (surface_hash == NULL)
+             surface_hash = x_hash_table_new(NULL, NULL, NULL, NULL);
+         x_hash_table_insert(surface_hash,
+-                            x_cvt_uint_to_vptr(pDRIDrawablePriv->sid),
+-                            pDRIDrawablePriv);
++                            x_cvt_uint_to_vptr(
++                                pDRIDrawablePriv->sid), pDRIDrawablePriv);
+ 
+         /* track this in case this window is destroyed */
+         AddResource(id, DRIDrawablePrivResType, (pointer) pDrawable);
+@@ -498,8 +498,9 @@ DRIDestroySurface(ScreenPtr pScreen, Drawable id, DrawablePtr pDrawable,
+          */
+ 
+         if (notify != NULL) {
+-            pDRIDrawablePriv->notifiers =
+-                x_hook_remove(pDRIDrawablePriv->notifiers, notify, notify_data);
++            pDRIDrawablePriv->notifiers = x_hook_remove(
++                pDRIDrawablePriv->notifiers,
++                notify, notify_data);
+         }
+ 
+         --pDRIDrawablePriv->refCount;
+@@ -558,7 +559,8 @@ DRIDrawablePrivDelete(pointer pResource, XID id)
+     }
+ 
+     if (pDRIDrawablePriv->sid != 0) {
+-        DRISurfaceNotify(pDRIDrawablePriv->sid, AppleDRISurfaceNotifyDestroyed);
++        DRISurfaceNotify(pDRIDrawablePriv->sid,
++                         AppleDRISurfaceNotifyDestroyed);
+     }
+ 
+     if (pDRIDrawablePriv->notifiers != NULL)
+@@ -696,7 +698,9 @@ DRIGetWrappedFuncs(ScreenPtr pScreen)
+ }
+ 
+ void
+-DRIQueryVersion(int *majorVersion, int *minorVersion, int *patchVersion)
++DRIQueryVersion(int *majorVersion,
++                int *minorVersion,
++                int *patchVersion)
+ {
+     *majorVersion = APPLE_DRI_MAJOR_VERSION;
+     *minorVersion = APPLE_DRI_MINOR_VERSION;
+@@ -753,7 +757,8 @@ DRISurfaceNotify(xp_surface_id id, int kind)
+  */
+ Bool
+ DRICreatePixmap(ScreenPtr pScreen, Drawable id,
+-                DrawablePtr pDrawable, char *path, size_t pathmax)
++                DrawablePtr pDrawable, char *path,
++                size_t pathmax)
+ {
+     DRIPixmapBufferPtr shared;
+     PixmapPtr pPix;
+@@ -782,7 +787,8 @@ DRICreatePixmap(ScreenPtr pScreen, Drawable id,
+     shared->height = pDrawable->height;
+ 
+     if (-1 == snprintf(shared->shmPath, sizeof(shared->shmPath),
+-                       "%d_0x%lx", getpid(), (unsigned long) id)) {
++                       "%d_0x%lx", getpid(),
++                       (unsigned long)id)) {
+         FatalError("buffer overflow in %s\n", __func__);
+     }
+ 

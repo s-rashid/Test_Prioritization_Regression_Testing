@@ -1,0 +1,13 @@
+diff --git a/Xext/shape.c b/Xext/shape.c
+index cd75658..10437f4 100644
+--- a/Xext/shape.c
++++ b/Xext/shape.c
+@@ -941,8 +941,6 @@ SendShapeNotify (WindowPtr pWin, int which)
+     }
+     for (pShapeEvent = *pHead; pShapeEvent; pShapeEvent = pShapeEvent->next) {
+ 	client = pShapeEvent->client;
+-	if (client == serverClient || client->clientGone)
+-	    continue;
+ 	se.type = ShapeNotify + ShapeEventBase;
+ 	se.kind = which;
+ 	se.window = pWin->drawable.id;

@@ -1,0 +1,37 @@
+diff --git a/dbe/dbe.c b/dbe/dbe.c
+index ef4b596..b4b7466 100644
+--- a/dbe/dbe.c
++++ b/dbe/dbe.c
+@@ -693,10 +693,7 @@ ProcDbeGetVisualInfo(ClientPtr client)
+     if (!(pScrVisInfo = (XdbeScreenVisualInfo *)malloc(count *
+                         sizeof(XdbeScreenVisualInfo))))
+     {
+-        if (pDrawables)
+-        {
+             free(pDrawables);
+-        }
+ 
+         return(BadAlloc);
+     }
+@@ -722,10 +719,7 @@ ProcDbeGetVisualInfo(ClientPtr client)
+             }
+ 
+             /* Free pDrawables if we needed to allocate it above. */
+-            if (pDrawables)
+-            {
+                 free(pDrawables);
+-            }
+ 
+             return (rc == Success) ? BadAlloc : rc;
+         }
+@@ -803,10 +797,7 @@ ProcDbeGetVisualInfo(ClientPtr client)
+     }
+     free(pScrVisInfo);
+ 
+-    if (pDrawables)
+-    {
+         free(pDrawables);
+-    }
+ 
+     return Success;
+ 

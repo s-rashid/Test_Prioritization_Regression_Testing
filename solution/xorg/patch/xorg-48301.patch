@@ -1,0 +1,13 @@
+diff --git a/dix/dixfonts.c b/dix/dixfonts.c
+index cc58b89..aaa992b 100644
+--- a/dix/dixfonts.c
++++ b/dix/dixfonts.c
+@@ -1836,7 +1836,7 @@ SetDefaultFontPath(char *path)
+     if (!start) {
+ 	temp_path = Xprintf("%s%sbuilt-ins", path, *path ? "," : "");
+     } else {
+-	temp_path = Xstrdup(path);
++	temp_path = xstrdup(path);
+     }
+     if (!temp_path)
+         return BadAlloc;

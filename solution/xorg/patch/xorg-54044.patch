@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/ramdac/IBMPriv.h b/hw/xfree86/ramdac/IBMPriv.h
+index a33da91..309a193 100644
+--- a/hw/xfree86/ramdac/IBMPriv.h
++++ b/hw/xfree86/ramdac/IBMPriv.h
+@@ -6,7 +6,7 @@
+ #include "IBM.h"
+ 
+ typedef struct {
+-	char *DeviceName;
++	const char *DeviceName;
+ } xf86IBMramdacInfo;
+ 
+ extern xf86IBMramdacInfo IBMramdacDeviceInfo[];

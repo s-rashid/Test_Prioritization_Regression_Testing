@@ -1,0 +1,395 @@
+diff --git a/hw/xquartz/mach-startup/bundle-main.c b/hw/xquartz/mach-startup/bundle-main.c
+index 7a53803..d1ad6f7 100644
+--- a/hw/xquartz/mach-startup/bundle-main.c
++++ b/hw/xquartz/mach-startup/bundle-main.c
+@@ -1,32 +1,32 @@
+ /* main.c -- X application launcher
+- 
+- Copyright (c) 2007 Jeremy Huddleston
+- Copyright (c) 2007 Apple Inc
+- 
+- Permission is hereby granted, free of charge, to any person
+- obtaining a copy of this software and associated documentation files
+- (the "Software"), to deal in the Software without restriction,
+- including without limitation the rights to use, copy, modify, merge,
+- publish, distribute, sublicense, and/or sell copies of the Software,
+- and to permit persons to whom the Software is furnished to do so,
+- subject to the following conditions:
+- 
+- The above copyright notice and this permission notice shall be
+- included in all copies or substantial portions of the Software.
+- 
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
+- HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+- DEALINGS IN THE SOFTWARE.
+- 
+- Except as contained in this notice, the name(s) of the above
+- copyright holders shall not be used in advertising or otherwise to
+- promote the sale, use or other dealings in this Software without
+- prior written authorization. */
++ * Copyright (c) 2007 Jeremy Huddleston
++ * Copyright (c) 2007-2012 Apple Inc. All rights reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT.  IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT
++ * HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ * DEALINGS IN THE SOFTWARE.
++ *
++ * Except as contained in this notice, the name(s) of the above
++ * copyright holders shall not be used in advertising or otherwise to
++ * promote the sale, use or other dealings in this Software without
++ * prior written authorization.
++ */
+ 
+ #include <CoreFoundation/CoreFoundation.h>
+ #include <AvailabilityMacros.h>
+@@ -64,18 +64,16 @@
+ #include "console_redirect.h"
+ 
+ /* From darwinEvents.c ... but don't want to pull in all the server cruft */
+-void DarwinListenOnOpenFD(int fd);
++void
++DarwinListenOnOpenFD(int fd);
+ 
+ extern aslclient aslc;
+ 
+ /* Ditto, from os/log.c */
+ extern void
+-ErrorF(const char *f, ...)
+-_X_ATTRIBUTE_PRINTF(1, 2);
++ErrorF(const char *f, ...) _X_ATTRIBUTE_PRINTF(1, 2);
+ extern void
+-FatalError(const char *f, ...)
+-_X_ATTRIBUTE_PRINTF(1, 2)
+-    _X_NORETURN;
++FatalError(const char *f, ...) _X_ATTRIBUTE_PRINTF(1, 2) _X_NORETURN;
+ 
+ extern int noPanoramiXExtension;
+ 
+@@ -91,7 +89,6 @@ extern int noPanoramiXExtension;
+ #endif
+ 
+ static char __crashreporter_info_buff__[4096] = { 0 };
+-
+ static const char *__crashreporter_info__ __attribute__ ((__used__)) =
+     &__crashreporter_info_buff__[0];
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+@@ -110,10 +107,13 @@ static char *server_bootstrap_name = NULL;
+ #define DEBUG 1
+ 
+ /* This is in quartzStartup.c */
+-int server_main(int argc, char **argv, char **envp);
++int
++server_main(int argc, char **argv, char **envp);
+ 
+-static int execute(const char *command);
+-static char *command_from_prefs(const char *key, const char *default_value);
++static int
++execute(const char *command);
++static char *
++command_from_prefs(const char *key, const char *default_value);
+ 
+ static char *pref_app_to_run;
+ static char *pref_login_shell;
+@@ -162,8 +162,8 @@ checkin_or_register(char *bname)
+         exit(EXIT_FAILURE);
+     }
+ 
+-    kr = mach_port_insert_right(mach_task_self(), mp, mp,
+-                                MACH_MSG_TYPE_MAKE_SEND);
++    kr = mach_port_insert_right(
++        mach_task_self(), mp, mp, MACH_MSG_TYPE_MAKE_SEND);
+     if (kr != KERN_SUCCESS) {
+         ErrorF("mach_port_insert_right(): %s\n", mach_error_string(kr));
+         exit(EXIT_FAILURE);
+@@ -224,8 +224,8 @@ accept_fd_handoff(int connected_fd)
+     *((int *) CMSG_DATA(cmsg)) = -1;
+ 
+     if (recvmsg(connected_fd, &msg, 0) < 0) {
+-        ErrorF
+-            ("X11.app: Error receiving $DISPLAY file descriptor.  recvmsg() error: %s\n",
++        ErrorF(
++            "X11.app: Error receiving $DISPLAY file descriptor.  recvmsg() error: %s\n",
+              strerror(errno));
+         return -1;
+     }
+@@ -263,8 +263,8 @@ socket_handoff_thread(void *arg)
+     while (launchd_fd == -1) {
+         connected_fd = accept(handoff_data->fd, NULL, NULL);
+         if (connected_fd == -1) {
+-            ErrorF
+-                ("X11.app: Failed to accept incoming connection on socket (fd=%d): %s\n",
++            ErrorF(
++                "X11.app: Failed to accept incoming connection on socket (fd=%d): %s\n",
+                  handoff_data->fd, strerror(errno));
+             sleep(2);
+             continue;
+@@ -272,8 +272,8 @@ socket_handoff_thread(void *arg)
+ 
+         launchd_fd = accept_fd_handoff(connected_fd);
+         if (launchd_fd == -1)
+-            ErrorF
+-                ("X11.app: Error receiving $DISPLAY file descriptor, no descriptor received?  Waiting for another connection.\n");
++            ErrorF(
++                "X11.app: Error receiving $DISPLAY file descriptor, no descriptor received?  Waiting for another connection.\n");
+ 
+         close(connected_fd);
+     }
+@@ -282,8 +282,8 @@ socket_handoff_thread(void *arg)
+     unlink(handoff_data->filename);
+     free(handoff_data);
+ 
+-    ErrorF
+-        ("X11.app Handing off fd to server thread via DarwinListenOnOpenFD(%d)\n",
++    ErrorF(
++        "X11.app Handing off fd to server thread via DarwinListenOnOpenFD(%d)\n",
+          launchd_fd);
+     DarwinListenOnOpenFD(launchd_fd);
+ 
+@@ -311,34 +311,37 @@ create_socket(char *filename_out)
+                 sizeof(servaddr_un.sun_path));
+ 
+         servaddr = (struct sockaddr *) &servaddr_un;
+-        servaddr_len =
+-            sizeof(struct sockaddr_un) - sizeof(servaddr_un.sun_path) +
+-            strlen(filename_out);
++        servaddr_len = sizeof(struct sockaddr_un) -
++                       sizeof(servaddr_un.sun_path) + strlen(filename_out);
+ 
+         ret_fd = socket(PF_UNIX, SOCK_STREAM, 0);
+         if (ret_fd == -1) {
+-            ErrorF("X11.app: Failed to create socket (try %d / %d): %s - %s\n",
++            ErrorF(
++                "X11.app: Failed to create socket (try %d / %d): %s - %s\n",
+                    (int) try + 1, (int) try_max, filename_out, strerror(errno));
+             continue;
+         }
+ 
+         if (bind(ret_fd, servaddr, servaddr_len) != 0) {
+             ErrorF("X11.app: Failed to bind socket: %d - %s\n", errno,
+-                   strerror(errno));
++                   strerror(
++                       errno));
+             close(ret_fd);
+             return 0;
+         }
+ 
+         if (listen(ret_fd, 10) != 0) {
+             ErrorF("X11.app: Failed to listen to socket: %s - %d - %s\n",
+-                   filename_out, errno, strerror(errno));
++                   filename_out, errno, strerror(
++                       errno));
+             close(ret_fd);
+             return 0;
+         }
+ 
+ #ifdef DEBUG
+         ErrorF("X11.app: Listening on socket for fd handoff:  (%d) %s\n",
+-               ret_fd, filename_out);
++               ret_fd,
++               filename_out);
+ #endif
+ 
+         return ret_fd;
+@@ -371,17 +374,17 @@ do_request_fd_handoff_socket(mach_port_t port, string_t filename)
+     strlcpy(filename, handoff_data->filename, STRING_T_SIZE);
+ 
+ #ifdef HAVE_LIBDISPATCH
+-    dispatch_async(dispatch_get_global_queue
+-                   (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^ {
+-                   socket_handoff(handoff_data);}
+-    );
++    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,
++                                             0), ^ {
++                       socket_handoff(handoff_data);
++                   });
+ #else
+     create_thread(socket_handoff_thread, handoff_data);
+ #endif
+ 
+ #ifdef DEBUG
+-    ErrorF
+-        ("X11.app: Thread created for handoff.  Returning success to tell caller to connect and push the fd.\n");
++    ErrorF(
++        "X11.app: Thread created for handoff.  Returning success to tell caller to connect and push the fd.\n");
+ #endif
+ 
+     return KERN_SUCCESS;
+@@ -398,7 +401,8 @@ do_request_pid(mach_port_t port, int *my_pid)
+ kern_return_t
+ do_start_x11_server(mach_port_t port, string_array_t argv,
+                     mach_msg_type_number_t argvCnt,
+-                    string_array_t envp, mach_msg_type_number_t envpCnt)
++                    string_array_t envp,
++                    mach_msg_type_number_t envpCnt)
+ {
+     /* And now back to char ** */
+     char **_argv = alloca((argvCnt + 1) * sizeof(char *));
+@@ -451,7 +455,6 @@ startup_trigger(int argc, char **argv, char **envp)
+ 
+         /* We need to count envp */
+         int envpc;
+-
+         for (envpc = 0; envp[envpc]; envpc++);
+ 
+         /* We have fixed-size string lengths due to limitations in IPC,
+@@ -476,7 +479,8 @@ startup_trigger(int argc, char **argv, char **envp)
+         if (kr != KERN_SUCCESS) {
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+             ErrorF("bootstrap_look_up(%s): %s\n", server_bootstrap_name,
+-                   bootstrap_strerror(kr));
++                   bootstrap_strerror(
++                       kr));
+ #else
+             ErrorF("bootstrap_look_up(%s): %ul\n", server_bootstrap_name,
+                    (unsigned long) kr);
+@@ -508,14 +512,14 @@ startup_trigger(int argc, char **argv, char **envp)
+ 
+     /* Start the server */
+     if ((s = getenv("DISPLAY"))) {
+-        ErrorF
+-            ("X11.app: Could not connect to server (DISPLAY=\"%s\", unsetting).  Starting X server.\n",
++        ErrorF(
++            "X11.app: Could not connect to server (DISPLAY=\"%s\", unsetting).  Starting X server.\n",
+              s);
+         unsetenv("DISPLAY");
+     }
+     else {
+-        ErrorF
+-            ("X11.app: Could not connect to server (DISPLAY is not set).  Starting X server.\n");
++        ErrorF(
++            "X11.app: Could not connect to server (DISPLAY is not set).  Starting X server.\n");
+     }
+     return execute(pref_startx_script);
+ }
+@@ -530,7 +534,8 @@ ensure_path(const char *dir)
+     temp = getenv("PATH");
+     if (temp == NULL || temp[0] == 0) {
+         snprintf(buf, sizeof(buf),
+-                 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:%s", dir);
++                 "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:%s",
++                 dir);
+         setenv("PATH", buf, TRUE);
+     }
+     else if (strnstr(temp, X11BINDIR, sizeof(temp)) == NULL) {
+@@ -574,10 +579,8 @@ setup_env(void)
+      * quartz-wm and the Xquartz stub's MachIPC)
+      */
+     CFBundleRef bundle = CFBundleGetMainBundle();
+-
+     if (bundle) {
+         CFStringRef pd = CFBundleGetIdentifier(bundle);
+-
+         if (pd) {
+             pds = CFStringGetCStringPtr(pd, 0);
+         }
+@@ -609,22 +612,22 @@ setup_env(void)
+     if (disp) {
+         /* s = basename(disp) */
+         const char *d, *s;
+-
+         for (s = NULL, d = disp; *d; d++) {
+             if (*d == '/')
+                 s = d + 1;
+         }
+ 
+         if (s && *s) {
+-            if (strcmp(bundle_id_prefix, "org.x") == 0 && strcmp(s, ":0") == 0) {
+-                ErrorF
+-                    ("X11.app: Detected old style launchd DISPLAY, please update xinit.\n");
++            if (strcmp(bundle_id_prefix,
++                       "org.x") == 0 && strcmp(s, ":0") == 0) {
++                ErrorF(
++                    "X11.app: Detected old style launchd DISPLAY, please update xinit.\n");
+             }
+             else {
+                 temp = (char *) malloc(sizeof(char) * len);
+                 if (!temp) {
+-                    ErrorF
+-                        ("X11.app: Memory allocation error creating space for socket name test.\n");
++                    ErrorF(
++                        "X11.app: Memory allocation error creating space for socket name test.\n");
+                     exit(1);
+                 }
+                 strlcpy(temp, bundle_id_prefix, len);
+@@ -632,8 +635,8 @@ setup_env(void)
+ 
+                 if (strcmp(temp, s) != 0) {
+                     /* If we don't have a match, unset it. */
+-                    ErrorF
+-                        ("X11.app: DISPLAY (\"%s\") does not match our id (\"%s\"), unsetting.\n",
++                    ErrorF(
++                        "X11.app: DISPLAY (\"%s\") does not match our id (\"%s\"), unsetting.\n",
+                          disp, bundle_id_prefix);
+                     unsetenv("DISPLAY");
+                 }
+@@ -642,8 +645,8 @@ setup_env(void)
+         }
+         else {
+             /* The DISPLAY environment variable is not formatted like a launchd socket, so reset. */
+-            ErrorF
+-                ("X11.app: DISPLAY does not look like a launchd set variable, unsetting.\n");
++            ErrorF(
++                "X11.app: DISPLAY does not look like a launchd set variable, unsetting.\n");
+             unsetenv("DISPLAY");
+         }
+     }
+@@ -704,8 +707,8 @@ main(int argc, char **argv, char **envp)
+         pref_login_shell = command_from_prefs("login_shell", DEFAULT_SHELL);
+         assert(pref_login_shell);
+ 
+-        pref_startx_script =
+-            command_from_prefs("startx_script", DEFAULT_STARTX);
++        pref_startx_script = command_from_prefs("startx_script",
++                                                DEFAULT_STARTX);
+         assert(pref_startx_script);
+ 
+         /* Do the fork-twice trick to avoid having to reap zombies */
+@@ -797,13 +800,13 @@ command_from_prefs(const char *key, const char *default_value)
+     if (!cfKey)
+         return NULL;
+ 
+-    PlistRef =
+-        CFPreferencesCopyAppValue(cfKey, kCFPreferencesCurrentApplication);
++    PlistRef = CFPreferencesCopyAppValue(cfKey,
++                                         kCFPreferencesCurrentApplication);
+ 
+-    if ((PlistRef == NULL) || (CFGetTypeID(PlistRef) != CFStringGetTypeID())) {
+-        CFStringRef cfDefaultValue =
+-            CFStringCreateWithCString(NULL, default_value,
+-                                      kCFStringEncodingASCII);
++    if ((PlistRef == NULL) ||
++        (CFGetTypeID(PlistRef) != CFStringGetTypeID())) {
++        CFStringRef cfDefaultValue = CFStringCreateWithCString(
++            NULL, default_value, kCFStringEncodingASCII);
+         int len = strlen(default_value) + 1;
+ 
+         if (!cfDefaultValue)
+@@ -821,7 +824,6 @@ command_from_prefs(const char *key, const char *default_value)
+     }
+     else {
+         int len = CFStringGetLength((CFStringRef) PlistRef) + 1;
+-
+         command = (char *) malloc(len * sizeof(char));
+         if (!command)
+             goto command_from_prefs_out;

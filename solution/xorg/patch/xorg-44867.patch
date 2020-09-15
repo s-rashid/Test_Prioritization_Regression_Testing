@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/vgahw/vgaCmap.c b/hw/xfree86/vgahw/vgaCmap.c
+index 44043c6..095e480 100644
+--- a/hw/xfree86/vgahw/vgaCmap.c
++++ b/hw/xfree86/vgahw/vgaCmap.c
+@@ -277,8 +277,8 @@ vgaUninstallColormap(pmap)
+   if ( pmap != miInstalledMaps[pmap->pScreen->myNum] )
+     return;
+ 
+-  defColormap = (ColormapPtr) LookupIDByType( pmap->pScreen->defColormap,
+-					      RT_COLORMAP);
++  dixLookupResourceByType((pointer *)&defColormap, pmap->pScreen->defColormap,
++			  RT_COLORMAP, serverClient, DixInstallAccess);
+ 
+   if (defColormap == miInstalledMaps[pmap->pScreen->myNum])
+     return;

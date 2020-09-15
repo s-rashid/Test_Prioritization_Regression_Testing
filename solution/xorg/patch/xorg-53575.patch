@@ -1,0 +1,14 @@
+diff --git a/hw/xfree86/vgahw/vgaHW.c b/hw/xfree86/vgahw/vgaHW.c
+index 911bf07..9e934f6 100644
+--- a/hw/xfree86/vgahw/vgaHW.c
++++ b/hw/xfree86/vgahw/vgaHW.c
+@@ -1706,9 +1706,6 @@ vgaHWGetHWRec(ScrnInfoPtr scrp)
+     hwp->MapSize = 0;
+     hwp->pScrn = scrp;
+ 
+-    /* Initialise the function pointers with the standard VGA versions */
+-    vgaHWSetStdFuncs(hwp);
+-
+     hwp->dev = xf86GetPciInfoForEntity(scrp->entityList[0]);
+ 
+     return TRUE;

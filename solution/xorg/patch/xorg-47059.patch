@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86Init.c b/hw/xfree86/common/xf86Init.c
+index 502341c..3b25c89 100644
+--- a/hw/xfree86/common/xf86Init.c
++++ b/hw/xfree86/common/xf86Init.c
+@@ -1448,7 +1448,7 @@ ddxProcessArgument(int argc, char **argv, int i)
+   }
+   if (!strcmp(argv[i],"-quiet"))
+   {
+-    xf86SetVerbosity(0);
++    xf86SetVerbosity(-1);
+     return 1;
+   }
+   if (!strcmp(argv[i],"-showconfig") || !strcmp(argv[i],"-version"))

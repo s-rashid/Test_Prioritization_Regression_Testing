@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/ephyr/ephyrhostvideo.c b/hw/kdrive/ephyr/ephyrhostvideo.c
+index f4a1b9d..53cd12e 100644
+--- a/hw/kdrive/ephyr/ephyrhostvideo.c
++++ b/hw/kdrive/ephyr/ephyrhostvideo.c
+@@ -485,10 +485,10 @@ ephyrHostEncodingsDelete (EphyrHostEncoding *a_encodings,
+     if (!a_encodings)
+         return ;
+     for (i=0; i < a_num_encodings; i++) {
+-        xfree (a_encodings[i].name) ;
++        free(a_encodings[i].name) ;
+         a_encodings[i].name = NULL ;
+     }
+-    xfree (a_encodings) ;
++    free(a_encodings) ;
+ }
+ 
+ void

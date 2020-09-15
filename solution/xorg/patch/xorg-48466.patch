@@ -1,0 +1,31 @@
+diff --git a/Xext/xcmisc.c b/Xext/xcmisc.c
+index 1c8e3f2..986c870 100644
+--- a/Xext/xcmisc.c
++++ b/Xext/xcmisc.c
+@@ -83,7 +83,7 @@ ProcXCMiscGetVersion(ClientPtr client)
+ 	swaps(&rep.minorVersion, n);
+     }
+     WriteToClient(client, sizeof(xXCMiscGetVersionReply), (char *)&rep);
+-    return(client->noClientException);
++    return Success;
+ }
+ 
+ static int
+@@ -106,7 +106,7 @@ ProcXCMiscGetXIDRange(ClientPtr client)
+ 	swapl(&rep.count, n);
+     }
+     WriteToClient(client, sizeof(xXCMiscGetXIDRangeReply), (char *)&rep);
+-    return(client->noClientException);
++    return Success;
+ }
+ 
+ static int
+@@ -145,7 +145,7 @@ ProcXCMiscGetXIDList(ClientPtr client)
+ 	WriteSwappedDataToClient(client, count * sizeof(XID), pids);
+     }
+     free(pids);
+-    return(client->noClientException);
++    return Success;
+ }
+ 
+ static int

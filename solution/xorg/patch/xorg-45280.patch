@@ -1,0 +1,15 @@
+diff --git a/Xext/xselinux.c b/Xext/xselinux.c
+index 9898b29..8054230 100644
+--- a/Xext/xselinux.c
++++ b/Xext/xselinux.c
+@@ -913,6 +913,10 @@ SELinuxProperty(CallbackListPtr *pcbl, pointer unused, pointer calldata)
+     security_id_t tsid;
+     int rc;
+ 
++    /* Don't care about the new content check */
++    if (rec->access_mode & DixPostAccess)
++	return;
++
+     subj = dixLookupPrivate(&rec->client->devPrivates, subjectKey);
+     obj = dixLookupPrivate(&pProp->devPrivates, objectKey);
+ 

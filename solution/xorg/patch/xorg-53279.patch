@@ -1,0 +1,19 @@
+diff --git a/config/udev.c b/config/udev.c
+index b11c81d..1f431c1 100644
+--- a/config/udev.c
++++ b/config/udev.c
+@@ -93,13 +93,7 @@ device_added(struct udev_device *udev_device)
+         return;
+     }
+ 
+-    options = calloc(sizeof(*options), 1);
+-    if (!options)
+-        return;
+-
+-    options->key = strdup("_source");
+-    options->value = strdup("server/udev");
+-    if (!options->key || !options->value)
++    if (!add_option(&options, "_source", "server/udev"))
+         goto unwind;
+ 
+     parent = udev_device_get_parent(udev_device);

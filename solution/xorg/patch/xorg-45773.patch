@@ -1,0 +1,13 @@
+diff --git a/hw/xfree86/common/xf86DGA.c b/hw/xfree86/common/xf86DGA.c
+index 5716989..4509541 100644
+--- a/hw/xfree86/common/xf86DGA.c
++++ b/hw/xfree86/common/xf86DGA.c
+@@ -46,7 +46,7 @@
+ #include "xf86Xinput.h"
+ #include "exglobals.h"
+ #include "exevents.h"
+-#include "events.h"
++#include "eventstr.h"
+ #include "eventconvert.h"
+ 
+ #include "mi.h"

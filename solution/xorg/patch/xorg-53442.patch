@@ -1,0 +1,13 @@
+diff --git a/include/exevents.h b/include/exevents.h
+index 2b22698..731f31e 100644
+--- a/include/exevents.h
++++ b/include/exevents.h
+@@ -40,7 +40,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ extern _X_EXPORT int InitProximityClassDeviceStruct(
+ 	DeviceIntPtr           /* dev */);
+ 
+-extern _X_EXPORT void InitValuatorAxisStruct(
++extern _X_EXPORT Bool InitValuatorAxisStruct(
+ 	DeviceIntPtr           /* dev */,
+ 	int                    /* axnum */,
+ 	Atom                   /* label */,

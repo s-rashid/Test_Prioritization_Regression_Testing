@@ -1,0 +1,33 @@
+diff --git a/glx/renderpixswap.c b/glx/renderpixswap.c
+index 9cd5741..0655b74 100644
+--- a/glx/renderpixswap.c
++++ b/glx/renderpixswap.c
+@@ -40,11 +40,13 @@
+ #include "glthread.h"
+ #include "dispatch.h"
+ 
+-void __glXDispSwap_SeparableFilter2D(GLbyte *pc)
++void
++__glXDispSwap_SeparableFilter2D(GLbyte * pc)
+ {
+     __GLXdispatchConvolutionFilterHeader *hdr =
+ 				(__GLXdispatchConvolutionFilterHeader *) pc;
+     GLint hdrlen, image1len;
++
+     __GLX_DECLARE_SWAP_VARIABLES;
+ 
+     hdrlen = __GLX_PAD(__GLX_CONV_FILT_CMD_HDR_SIZE);
+@@ -80,8 +82,10 @@ void __glXDispSwap_SeparableFilter2D(GLbyte *pc)
+ 			       hdr->alignment);
+     image1len = __GLX_PAD(image1len);
+ 
+-
+     CALL_SeparableFilter2D( GET_DISPATCH(), (hdr->target, hdr->internalformat,
+-		 hdr->width, hdr->height, hdr->format, hdr->type,
+-		 ((GLubyte *)hdr+hdrlen), ((GLubyte *)hdr+hdrlen+image1len)) );
++                                            hdr->width, hdr->height,
++                                            hdr->format, hdr->type,
++                                            ((GLubyte *) hdr + hdrlen),
++                                            ((GLubyte *) hdr + hdrlen +
++                                             image1len)));
+ }

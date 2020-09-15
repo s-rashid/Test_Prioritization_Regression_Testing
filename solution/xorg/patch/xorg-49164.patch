@@ -1,0 +1,75 @@
+diff --git a/dix/events.c b/dix/events.c
+index 4c53b55..3ea639e 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -887,7 +887,6 @@ CheckVirtualMotion(
+ static void
+ ConfineCursorToWindow(DeviceIntPtr pDev, WindowPtr pWin, Bool generateEvents, Bool confineToScreen)
+ {
+-    ScreenPtr pScreen = pWin->drawable.pScreen;
+     SpritePtr pSprite = pDev->spriteInfo->sprite;
+ 
+     if (syncEvents.playingEvents)
+@@ -907,7 +906,7 @@ ConfineCursorToWindow(DeviceIntPtr pDev, WindowPtr pWin, Bool generateEvents, Bo
+ 	pSprite->hotShape = wBoundingShape(pWin) ? &pWin->borderSize
+ 					       : NullRegion;
+         CheckPhysLimits(pDev, pSprite->current, generateEvents,
+-                        confineToScreen, pScreen);
++                        confineToScreen, pWin->drawable.pScreen);
+     }
+ }
+ 
+@@ -2562,8 +2561,7 @@ PointInBorderSize(WindowPtr pWin, int x, int y)
+ 	int i;
+ 
+ 	for(i = 1; i < PanoramiXNumScreens; i++) {
+-	   if(RegionContainsPoint(
+-			&pSprite->windows[i]->borderSize,
++	   if(RegionContainsPoint(&pSprite->windows[i]->borderSize,
+ 			x + screenInfo.screens[0]->x - screenInfo.screens[i]->x,
+ 			y + screenInfo.screens[0]->y - screenInfo.screens[i]->y,
+ 			&box))
+@@ -2610,8 +2608,7 @@ XYToWindow(DeviceIntPtr pDev, int x, int y)
+ 	     */
+ 	    && (!wBoundingShape(pWin) || PointInBorderSize(pWin, x, y))
+ 	    && (!wInputShape(pWin) ||
+-		RegionContainsPoint(
+-				wInputShape(pWin),
++		RegionContainsPoint(wInputShape(pWin),
+ 				x - pWin->drawable.x,
+ 				y - pWin->drawable.y, &box))
+ #ifdef ROOTLESS
+@@ -3151,7 +3148,6 @@ XineramaPointInWindowIsVisible(
+     int y
+ )
+ {
+-    ScreenPtr pScreen = pWin->drawable.pScreen;
+     BoxRec box;
+     int i, xoff, yoff;
+ 
+@@ -3167,14 +3163,12 @@ XineramaPointInWindowIsVisible(
+ 
+     for(i = 1; i < PanoramiXNumScreens; i++) {
+ 	pWin = inputInfo.pointer->spriteInfo->sprite->windows[i];
+-	pScreen = pWin->drawable.pScreen;
+ 	x = xoff - screenInfo.screens[i]->x;
+ 	y = yoff - screenInfo.screens[i]->y;
+ 
+ 	if(RegionContainsPoint(&pWin->borderClip, x, y, &box)
+ 	   && (!wInputShape(pWin) ||
+-	       RegionContainsPoint(
+-			       wInputShape(pWin),
++	       RegionContainsPoint(wInputShape(pWin),
+ 			       x - pWin->drawable.x,
+ 			       y - pWin->drawable.y, &box)))
+             return TRUE;
+@@ -3375,8 +3369,7 @@ BorderSizeNotEmpty(DeviceIntPtr pDev, WindowPtr pWin)
+ 	int i;
+ 
+ 	for(i = 1; i < PanoramiXNumScreens; i++) {
+-	    if(RegionNotEmpty(
+-                        &pDev->spriteInfo->sprite->windows[i]->borderSize))
++	    if(RegionNotEmpty(&pDev->spriteInfo->sprite->windows[i]->borderSize))
+ 		return TRUE;
+ 	}
+      }

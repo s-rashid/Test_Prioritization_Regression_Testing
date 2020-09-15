@@ -1,0 +1,12 @@
+diff --git a/hw/xnest/Screen.c b/hw/xnest/Screen.c
+index 8c1c244..62255b8 100644
+--- a/hw/xnest/Screen.c
++++ b/hw/xnest/Screen.c
+@@ -260,7 +260,6 @@ xnestOpenScreen(int index, ScreenPtr pScreen, int argc, char *argv[])
+   pScreen->SaveScreen = xnestSaveScreen;
+   pScreen->GetImage = xnestGetImage;
+   pScreen->GetSpans = xnestGetSpans;
+-  pScreen->PointerNonInterestBox = NULL;
+   pScreen->SourceValidate = NULL;
+ 
+   /* Window Procedures */

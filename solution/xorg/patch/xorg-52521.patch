@@ -1,0 +1,51 @@
+diff --git a/hw/xquartz/quartzKeyboard.c b/hw/xquartz/quartzKeyboard.c
+index 3ab5d52..af12de4 100644
+--- a/hw/xquartz/quartzKeyboard.c
++++ b/hw/xquartz/quartzKeyboard.c
+@@ -684,6 +684,11 @@ static Bool QuartzReadSystemKeymap(darwinKeyboardInfo *info) {
+     }
+ #endif
+ 
++#ifdef __clang__
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations" // KLGetCurrentKeyboardLayout, KLGetKeyboardLayoutProperty
++#endif
++
+ #if !defined(__LP64__) || MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+     if (chr_data == NULL) {
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+@@ -717,6 +722,10 @@ static Bool QuartzReadSystemKeymap(darwinKeyboardInfo *info) {
+     }
+ #endif
+ 
++#ifdef __clang__
++#pragma clang diagnostic pop
++#endif
++
+ #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+     if(currentKeyLayoutRef)
+         CFRelease(currentKeyLayoutRef);
+@@ -777,6 +786,12 @@ static Bool QuartzReadSystemKeymap(darwinKeyboardInfo *info) {
+                 UInt16 code;
+ 
+                 code = i | mods[j];
++
++#ifdef __clang__
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations" // KeyTranslate
++#endif
++
+                 c = KeyTranslate (chr_data, code, &state);
+ 
+                 /* Dead keys are only processed on key-down, so ask
+@@ -787,6 +802,10 @@ static Bool QuartzReadSystemKeymap(darwinKeyboardInfo *info) {
+                 if (state != 0)
+                     c = KeyTranslate (chr_data, code | 128, &state2);
+ 
++#ifdef __clang__
++#pragma clang diagnostic pop
++#endif
++
+                 /* Characters seem to be in MacRoman encoding. */
+ 
+                 if (c != 0 && c != 0x0010) {

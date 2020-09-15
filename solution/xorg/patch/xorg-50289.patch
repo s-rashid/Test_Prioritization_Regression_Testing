@@ -1,0 +1,20 @@
+diff --git a/hw/xfree86/parser/scan.c b/hw/xfree86/parser/scan.c
+index 5312143..4163a3a 100644
+--- a/hw/xfree86/parser/scan.c
++++ b/hw/xfree86/parser/scan.c
+@@ -819,6 +819,7 @@ OpenConfigFile(const char *path, const char *cmdline, const char *projroot,
+ 		}
+ 	}
+ 
++	free(pathcopy);
+ 	if (file) {
+ 		configFiles[numFiles].file = file;
+ 		configFiles[numFiles].path = strdup(filepath);
+@@ -927,6 +928,7 @@ OpenConfigDir(const char *path, const char *cmdline, const char *projroot,
+ 		}
+ 	}
+ 
++	free(pathcopy);
+ 	return dirpath;
+ }
+ 

@@ -1,0 +1,13 @@
+diff --git a/hw/xwin/winprocarg.c b/hw/xwin/winprocarg.c
+index 2b6949e..6553e72 100644
+--- a/hw/xwin/winprocarg.c
++++ b/hw/xwin/winprocarg.c
+@@ -1209,7 +1209,7 @@ winLogCommandLine (int argc, char *argv[])
+ 
+ 
+ /*
+- * winLogVersionInfo - Log Cygwin/X version information
++ * winLogVersionInfo - Log version information
+  */
+ 
+ void

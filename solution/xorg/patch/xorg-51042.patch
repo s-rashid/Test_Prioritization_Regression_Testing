@@ -1,0 +1,12 @@
+diff --git a/glx/glxcmdsswap.c b/glx/glxcmdsswap.c
+index c414dc8..ce4d69a 100644
+--- a/glx/glxcmdsswap.c
++++ b/glx/glxcmdsswap.c
+@@ -37,7 +37,6 @@
+ #include "glxutil.h"
+ #include <GL/glxtokens.h>
+ #include <unpack.h>
+-#include "g_disptab.h"
+ #include <pixmapstr.h>
+ #include <windowstr.h>
+ #include "glxext.h"

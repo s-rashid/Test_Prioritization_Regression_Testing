@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86DPMS.c b/hw/xfree86/common/xf86DPMS.c
+index cd025dc..613c7cf 100644
+--- a/hw/xfree86/common/xf86DPMS.c
++++ b/hw/xfree86/common/xf86DPMS.c
+@@ -42,8 +42,9 @@
+ #include <X11/extensions/dpmsconst.h>
+ #include "dpmsproc.h"
+ #endif
++#ifdef XSERVER_LIBPCIACCESS
+ #include "xf86VGAarbiter.h"
+-
++#endif
+ 
+ #ifdef DPMSExtension
+ static DevPrivateKeyRec DPMSKeyRec;

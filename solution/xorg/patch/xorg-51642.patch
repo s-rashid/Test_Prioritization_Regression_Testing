@@ -1,0 +1,15 @@
+diff --git a/hw/xwin/winscrinit.c b/hw/xwin/winscrinit.c
+index 74ca115..e0686e2 100644
+--- a/hw/xwin/winscrinit.c
++++ b/hw/xwin/winscrinit.c
+@@ -69,10 +69,6 @@ winMWExtWMProcs = {
+  * Prototypes
+  */
+ 
+-Bool
+-winRandRInit (ScreenPtr pScreen);
+-
+-
+ /*
+  * Local functions
+  */

@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/dixmods/extmod/xf86vmode.c b/hw/xfree86/dixmods/extmod/xf86vmode.c
+index 46ff3bf..6d3d5fc 100644
+--- a/hw/xfree86/dixmods/extmod/xf86vmode.c
++++ b/hw/xfree86/dixmods/extmod/xf86vmode.c
+@@ -464,7 +464,7 @@ ProcXF86VidModeGetAllModeLines(ClientPtr client)
+ 	    swaps(&mdinf.hsyncstart);
+ 	    swaps(&mdinf.hsyncend);
+ 	    swaps(&mdinf.htotal);
+-	    swaps(&mdinf.hskew);
++	    swapl(&mdinf.hskew);
+ 	    swaps(&mdinf.vdisplay);
+ 	    swaps(&mdinf.vsyncstart);
+ 	    swaps(&mdinf.vsyncend);
+@@ -1846,7 +1846,7 @@ SProcXF86VidModeSwitchToMode(ClientPtr client)
+     REQUEST(xXF86VidModeSwitchToModeReq);
+     swaps(&stuff->length);
+     REQUEST_SIZE_MATCH(xXF86VidModeSwitchToModeReq);
+-    swaps(&stuff->screen);
++    swapl(&stuff->screen);
+     return ProcXF86VidModeSwitchToMode(client);
+ }
+ 

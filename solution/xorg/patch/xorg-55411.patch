@@ -1,0 +1,54 @@
+diff --git a/hw/xfree86/common/xf86AutoConfig.c b/hw/xfree86/common/xf86AutoConfig.c
+index 0c46568..43c746b 100644
+--- a/hw/xfree86/common/xf86AutoConfig.c
++++ b/hw/xfree86/common/xf86AutoConfig.c
+@@ -222,7 +222,8 @@ listPossibleVideoDrivers(char *matches[], int nmatches)
+ 	    xf86Msg(X_WARNING,
+ 		    "could not get frame buffer identifier from %s\n",
+ 		    xf86SolarisFbDev);
+-	} else {
++        }
++        else {
+ 	    xf86Msg(X_PROBED, "console driver: %s\n", visid.name);
+ 
+ 	    /* Special case from before the general case was set */
+@@ -239,6 +240,7 @@ listPossibleVideoDrivers(char *matches[], int nmatches)
+ 		if ((cp != visid.name) && (*cp != '\0')) {
+ 		    char *driverName = xnfstrdup(cp);
+ 		    char *vendorName = xnfstrdup(visid.name);
++
+ 		    vendorName[cp - visid.name] = '\0';
+ 
+ 		    matches[i++] = vendorName;
+@@ -251,6 +253,7 @@ listPossibleVideoDrivers(char *matches[], int nmatches)
+ #ifdef __sparc__
+     {
+ 	char *sbusDriver = sparcDriverName();
++
+ 	if (sbusDriver)
+ 	    matches[i++] = xnfstrdup(sbusDriver);
+     }
+@@ -331,7 +334,8 @@ autoConfigDevice(GDevPtr preconf_device)
+     /* If there's a configured section with no driver chosen, use it */
+     if (preconf_device) {
+         ptr = preconf_device;
+-    } else {
++    }
++    else {
+         ptr = calloc(1, sizeof(GDevRec));
+         if (!ptr) {
+             return NULL;
+@@ -386,9 +390,11 @@ autoConfigDevice(GDevPtr preconf_device)
+             for (i = 1; i < num_screens; i++) {
+                 xf86ConfigLayout.screens[i+num_matches] = slp[i];
+             }
+-            xf86ConfigLayout.screens[num_screens+num_matches-1].screen = NULL;
++            xf86ConfigLayout.screens[num_screens + num_matches - 1].screen =
++                NULL;
+             free(slp);
+-        } else {
++        }
++        else {
+             /* layout does not have any screens, not much to do */
+             ptr->driver = matches[0];
+             for (i = 1; matches[i] ; i++) {

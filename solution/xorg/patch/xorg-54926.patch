@@ -1,0 +1,9 @@
+diff --git a/Xext/syncsdk.h b/Xext/syncsdk.h
+index a72c585..f1b99d0 100644
+--- a/Xext/syncsdk.h
++++ b/Xext/syncsdk.h
+@@ -44,4 +44,3 @@ SyncVerifyFence(SyncFence **ppFence, XID fid, ClientPtr client, Mask mode);
+     } while (0)
+ 
+ #endif /* _SYNCSDK_H_ */
+-

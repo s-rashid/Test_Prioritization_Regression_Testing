@@ -1,0 +1,13 @@
+diff --git a/hw/dmx/input/lnx-keyboard.c b/hw/dmx/input/lnx-keyboard.c
+index 050c80e..5bfb881 100644
+--- a/hw/dmx/input/lnx-keyboard.c
++++ b/hw/dmx/input/lnx-keyboard.c
+@@ -368,7 +368,7 @@ pointer kbdLinuxCreatePrivate(DeviceIntPtr pKeyboard)
+ /** Destroy a private structure. */
+ void kbdLinuxDestroyPrivate(pointer priv)
+ {
+-    if (priv) free(priv);
++    free(priv);
+ }
+ 
+ /** Ring the bell.

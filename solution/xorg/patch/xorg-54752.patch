@@ -1,0 +1,49 @@
+diff --git a/hw/xquartz/GL/capabilities.c b/hw/xquartz/GL/capabilities.c
+index 4624fd4..4702595 100644
+--- a/hw/xquartz/GL/capabilities.c
++++ b/hw/xquartz/GL/capabilities.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (c) 2008 Apple Inc.
++ * Copyright (c) 2008-2012 Apple Inc.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),
+@@ -318,7 +318,6 @@ static void
+ handleDepthModes(struct glCapabilitiesConfig *c, GLint dmodes)
+ {
+     int offset = 0;
+-
+ #define DEPTH(flag,value) do { \
+ 	if(dmodes & flag) { \
+ 	    c->depth_buffers[offset++] = value; \
+@@ -483,7 +482,8 @@ initConfig(struct glCapabilitiesConfig *c)
+ 
+     for (i = 0; i < GLCAPS_COLOR_BUFFERS; ++i) {
+         c->color_buffers[i].r = c->color_buffers[i].g =
+-            c->color_buffers[i].b = c->color_buffers[i].a =
++                                    c->color_buffers[i].b =
++                                        c->color_buffers[i].a =
+             GLCAPS_COLOR_BUF_INVALID_VALUE;
+         c->color_buffers[i].is_argb = false;
+     }
+@@ -492,7 +492,8 @@ initConfig(struct glCapabilitiesConfig *c)
+ 
+     for (i = 0; i < GLCAPS_COLOR_BUFFERS; ++i) {
+         c->accum_buffers[i].r = c->accum_buffers[i].g =
+-            c->accum_buffers[i].b = c->accum_buffers[i].a =
++                                    c->accum_buffers[i].b =
++                                        c->accum_buffers[i].a =
+             GLCAPS_COLOR_BUF_INVALID_VALUE;
+         c->accum_buffers[i].is_argb = false;
+     }
+@@ -540,7 +541,8 @@ getGlCapabilities(struct glCapabilities *cap)
+         err = handleRendererDescriptions(info, r, &tmpconf);
+         if (err) {
+             ErrorF("handleRendererDescriptions returned error: %s\n",
+-                   CGLErrorString(err));
++                   CGLErrorString(
++                       err));
+             ErrorF("trying to continue...\n");
+             continue;
+         }

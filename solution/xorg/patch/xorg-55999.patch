@@ -1,0 +1,92 @@
+diff --git a/mi/mipolyrect.c b/mi/mipolyrect.c
+index 9b0edc1..a0e88d2 100644
+--- a/mi/mipolyrect.c
++++ b/mi/mipolyrect.c
+@@ -22,7 +22,6 @@ Except as contained in this notice, the name of The Open Group shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings
+ in this Software without prior written authorization from The Open Group.
+ 
+-
+ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
+ 
+                         All Rights Reserved
+@@ -79,8 +78,7 @@ miPolyRectangle(DrawablePtr pDraw, GCPtr pGC, int nrects, xRectangle *pRects)
+ 				dst = bound_tmp;
+ 
+     if (pGC->lineStyle == LineSolid && pGC->joinStyle == JoinMiter &&
+-	pGC->lineWidth != 0)
+-    {
++        pGC->lineWidth != 0) {
+ 	xRectangle  *tmp, *t;
+ 	int	    ntmp;
+ 	int	    offset1, offset2, offset3;
+@@ -94,47 +92,39 @@ miPolyRectangle(DrawablePtr pDraw, GCPtr pGC, int nrects, xRectangle *pRects)
+ 	if (!tmp)
+ 	    return;
+ 	t = tmp;
+-	for (i = 0; i < nrects; i++)
+-	{
++        for (i = 0; i < nrects; i++) {
+ 	    x = pR->x;
+ 	    y = pR->y;
+ 	    width = pR->width;
+ 	    height = pR->height;
+ 	    pR++;
+-	    if (width == 0 && height == 0)
+-	    {
++            if (width == 0 && height == 0) {
+ 		rect[0].x = x;
+ 		rect[0].y = y;
+ 		rect[1].x = x;
+ 		rect[1].y = y;
+ 		(*pGC->ops->Polylines)(pDraw, pGC, CoordModeOrigin, 2, rect);
+ 	    }
+-	    else if (height < offset2 || width < offset1)
+-	    {
+-		if (height == 0)
+-		{
++            else if (height < offset2 || width < offset1) {
++                if (height == 0) {
+ 		    t->x = x;
+ 		    t->width = width;
+ 		}
+-		else
+-		{
++                else {
+ 		    MINBOUND (t->x, x - offset1)
+ 		    MAXUBOUND (t->width, width + offset2)
+ 		}
+-		if (width == 0)
+-		{
++                if (width == 0) {
+ 		    t->y = y;
+ 		    t->height = height;
+ 		}
+-		else
+-		{
++                else {
+ 		    MINBOUND (t->y, y - offset1)
+ 		    MAXUBOUND (t->height, height + offset2)
+ 		}
+ 		t++;
+ 	    }
+-	    else
+-	    {
++            else {
+ 		MINBOUND(t->x, x - offset1)
+ 		MINBOUND(t->y, y - offset1)
+ 		MAXUBOUND(t->width, width + offset2)
+@@ -160,11 +150,9 @@ miPolyRectangle(DrawablePtr pDraw, GCPtr pGC, int nrects, xRectangle *pRects)
+ 	(*pGC->ops->PolyFillRect) (pDraw, pGC, t - tmp, tmp);
+ 	free((pointer) tmp);
+     }
+-    else
+-    {
++    else {
+ 
+-    	for (i=0; i<nrects; i++)
+-    	{
++        for (i = 0; i < nrects; i++) {
+ 	    rect[0].x = pR->x;
+ 	    rect[0].y = pR->y;
+     

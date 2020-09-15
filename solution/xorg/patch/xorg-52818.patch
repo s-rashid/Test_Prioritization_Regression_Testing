@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index 8692ded..7b7a9f5 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -122,7 +122,7 @@
+ #define SERVER_XF86VIDMODE_MINOR_VERSION	2
+ 
+ /* Fixes */
+-#define SERVER_XFIXES_MAJOR_VERSION		4
++#define SERVER_XFIXES_MAJOR_VERSION		5
+ #define SERVER_XFIXES_MINOR_VERSION		0
+ 
+ /* X Input */

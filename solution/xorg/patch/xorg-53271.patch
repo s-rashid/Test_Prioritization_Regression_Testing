@@ -1,0 +1,13 @@
+diff --git a/dix/events.c b/dix/events.c
+index 8a4c6b9..25ff899 100644
+--- a/dix/events.c
++++ b/dix/events.c
+@@ -3678,7 +3678,7 @@ CheckPassiveGrabsOnWindow(
+             if (tempGrab.type < GenericEvent)
+             {
+                 grab->device = device;
+-                grab->modifierDevice = GetPairedDevice(device);
++                grab->modifierDevice = GetMaster(device, MASTER_KEYBOARD);
+             }
+ 
+             for (other = inputInfo.devices; other; other = other->next)

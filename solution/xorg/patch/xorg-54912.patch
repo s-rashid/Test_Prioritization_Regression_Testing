@@ -1,0 +1,12 @@
+diff --git a/Xext/panoramiX.h b/Xext/panoramiX.h
+index 71651e5..6578dfa 100644
+--- a/Xext/panoramiX.h
++++ b/Xext/panoramiX.h
+@@ -26,7 +26,6 @@ Equipment Corporation.
+ 
+ ******************************************************************/
+ 
+-
+ /* THIS IS NOT AN X PROJECT TEAM SPECIFICATION */
+ 
+ /*  

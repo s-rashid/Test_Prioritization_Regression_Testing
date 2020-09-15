@@ -1,0 +1,96 @@
+diff --git a/exa/exa_mixed.c b/exa/exa_mixed.c
+index 0b1a4a4..0681731 100644
+--- a/exa/exa_mixed.c
++++ b/exa/exa_mixed.c
+@@ -53,6 +53,7 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+     ExaPixmapPrivPtr	pExaPixmap;
+     int bpp;
+     size_t paddedWidth;
++
+     ExaScreenPriv(pScreen);
+ 
+     if (w > 32767 || h > 32767)
+@@ -84,17 +85,16 @@ exaCreatePixmap_mixed(ScreenPtr pScreen, int w, int h, int depth,
+     pExaPixmap->pDamage = NULL;
+ 
+     exaSetFbPitch(pExaScr, pExaPixmap, w, h, bpp);
+-    exaSetAccelBlock(pExaScr, pExaPixmap,
+-	w, h, bpp);
++    exaSetAccelBlock(pExaScr, pExaPixmap, w, h, bpp);
+ 
+-    (*pScreen->ModifyPixmapHeader)(pPixmap, w, h, 0, 0,
+-				    paddedWidth, NULL);
++    (*pScreen->ModifyPixmapHeader) (pPixmap, w, h, 0, 0, paddedWidth, NULL);
+ 
+     /* A scratch pixmap will become a driver pixmap right away. */
+     if (!w || !h) {
+ 	exaCreateDriverPixmap_mixed(pPixmap);
+ 	pExaPixmap->use_gpu_copy = exaPixmapHasGpuCopy(pPixmap);
+-    } else {
++    }
++    else {
+ 	pExaPixmap->use_gpu_copy = FALSE;
+ 
+ 	if (w == 1 && h == 1) {
+@@ -180,8 +180,7 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+ 	    else
+ 		exaSetFbPitch(pExaScr, pExaPixmap, width, height, bitsPerPixel);
+ 
+-            exaSetAccelBlock(pExaScr, pExaPixmap,
+-                             width, height, bitsPerPixel);
++            exaSetAccelBlock(pExaScr, pExaPixmap, width, height, bitsPerPixel);
+             RegionEmpty(&pExaPixmap->validFB);
+         }
+ 
+@@ -206,7 +205,8 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+     if (has_gpu_copy) {
+ 	pPixmap->devPrivate.ptr = pExaPixmap->fb_ptr;
+ 	pPixmap->devKind = pExaPixmap->fb_pitch;
+-    } else {
++    }
++    else {
+ 	pPixmap->devPrivate.ptr = pExaPixmap->sys_ptr;
+ 	pPixmap->devKind = pExaPixmap->sys_pitch;
+     }
+@@ -214,7 +214,8 @@ exaModifyPixmapHeader_mixed(PixmapPtr pPixmap, int width, int height, int depth,
+     /* Only pass driver pixmaps to the driver. */
+     if (pExaScr->info->ModifyPixmapHeader && pExaPixmap->driverPriv) {
+ 	ret = pExaScr->info->ModifyPixmapHeader(pPixmap, width, height, depth,
+-						bitsPerPixel, devKind, pPixData);
++                                                bitsPerPixel, devKind,
++                                                pPixData);
+ 	if (ret == TRUE)
+ 	    goto out;
+     }
+@@ -228,7 +229,8 @@ out:
+     if (has_gpu_copy) {
+ 	pExaPixmap->fb_ptr = pPixmap->devPrivate.ptr;
+ 	pExaPixmap->fb_pitch = pPixmap->devKind;
+-    } else {
++    }
++    else {
+ 	pExaPixmap->sys_ptr = pPixmap->devPrivate.ptr;
+ 	pExaPixmap->sys_pitch = pPixmap->devKind;
+     }
+@@ -242,11 +244,11 @@ Bool
+ exaDestroyPixmap_mixed(PixmapPtr pPixmap)
+ {
+     ScreenPtr	pScreen = pPixmap->drawable.pScreen;
++
+     ExaScreenPriv(pScreen);
+     Bool ret;
+ 
+-    if (pPixmap->refcnt == 1)
+-    {
++    if (pPixmap->refcnt == 1) {
+ 	ExaPixmapPriv (pPixmap);
+ 
+ 	exaDestroyPixmap(pPixmap);
+@@ -276,6 +278,7 @@ Bool
+ exaPixmapHasGpuCopy_mixed(PixmapPtr pPixmap)
+ {
+     ScreenPtr pScreen = pPixmap->drawable.pScreen;
++
+     ExaScreenPriv(pScreen);
+     ExaPixmapPriv(pPixmap);
+     pointer saved_ptr;

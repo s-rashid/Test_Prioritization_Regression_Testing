@@ -1,0 +1,13 @@
+diff --git a/Xi/chgkmap.c b/Xi/chgkmap.c
+index daa7616..49660f9 100644
+--- a/Xi/chgkmap.c
++++ b/Xi/chgkmap.c
+@@ -110,7 +110,7 @@ ProcXChangeDeviceKeyMapping(ClientPtr client)
+ 
+     ret = ChangeKeyMapping(client, dev, len, DeviceMappingNotify,
+                            stuff->firstKeyCode, stuff->keyCodes,
+-                           stuff->keySymsPerKeyCode, (KeySym *) & stuff[1]);
++                           stuff->keySymsPerKeyCode, (KeySym *) &stuff[1]);
+ 
+     return ret;
+ }

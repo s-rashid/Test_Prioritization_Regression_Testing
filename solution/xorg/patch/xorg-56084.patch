@@ -1,0 +1,35 @@
+diff --git a/randr/rrtransform.h b/randr/rrtransform.h
+index 561762d..efce7e0 100644
+--- a/randr/rrtransform.h
++++ b/randr/rrtransform.h
+@@ -49,27 +49,24 @@ extern _X_EXPORT Bool
+ RRTransformEqual (RRTransformPtr a, RRTransformPtr b);
+ 
+ extern _X_EXPORT Bool
++
+ RRTransformSetFilter (RRTransformPtr	dst,
+ 		      PictFilterPtr	filter,
+-		      xFixed		*params,
+-		      int		nparams,
+-		      int		width,
+-		      int		height);
++                     xFixed * params, int nparams, int width, int height);
+ 
+ extern _X_EXPORT Bool
+ RRTransformCopy (RRTransformPtr dst, RRTransformPtr src);
+ 
+ extern _X_EXPORT Bool
++
+ RRTransformCompute (int			    x,
+ 		    int			    y,
+ 		    int			    width,
+ 		    int			    height,
+ 		    Rotation		    rotation,
+ 		    RRTransformPtr	    rr_transform,
+-
+ 		    PictTransformPtr	    transform,
+ 		    struct pict_f_transform *f_transform,
+ 		    struct pict_f_transform *f_inverse);
+ 
+-
+ #endif /* _RRTRANSFORM_H_ */

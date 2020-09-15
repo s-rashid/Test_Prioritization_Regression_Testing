@@ -1,0 +1,90 @@
+diff --git a/dix/privates.c b/dix/privates.c
+index 27694cb..4a8a186 100644
+--- a/dix/privates.c
++++ b/dix/privates.c
+@@ -47,8 +47,6 @@ struct _Private {
+ typedef struct _PrivateDesc {
+     DevPrivateKey key;
+     unsigned size;
+-    CallbackListPtr initfuncs;
+-    CallbackListPtr deletefuncs;
+ } PrivateDescRec;
+ 
+ #define PRIV_MAX 256
+@@ -102,7 +100,6 @@ pointer *
+ dixAllocatePrivate(PrivateRec **privates, const DevPrivateKey key)
+ {
+     PrivateDescRec *item = findItem(key);
+-    PrivateCallbackRec calldata;
+     PrivateRec *ptr;
+     pointer value;
+     int oldsize, newsize;
+@@ -144,10 +141,6 @@ dixAllocatePrivate(PrivateRec **privates, const DevPrivateKey key)
+ 	ptr->value = value;
+     }
+ 
+-    calldata.key = key;
+-    calldata.value = &ptr->value;
+-    CallCallbacks(&item->initfuncs, &calldata);
+-
+     return &ptr->value;
+ }
+ 
+@@ -202,16 +195,10 @@ void
+ dixFreePrivates(PrivateRec *privates)
+ {
+     int i;
+-    PrivateCallbackRec calldata;
+ 
+     if (privates)
+ 	for (i = 1; i < privates->state; i++)
+ 	    if (privates[i].state) {
+-		/* call the delete callbacks */
+-		calldata.key = items[i].key;
+-		calldata.value = &privates[i].value;
+-		CallCallbacks(&items[i].deletefuncs, &calldata);
+-
+ 		/* free pre-allocated memory */
+ 		if (items[i].size)
+ 		    free(privates[i].value);
+@@ -220,31 +207,6 @@ dixFreePrivates(PrivateRec *privates)
+     free(privates);
+ }
+ 
+-/*
+- * Callback registration
+- */
+-int
+-dixRegisterPrivateInitFunc(const DevPrivateKey key,
+-			   CallbackProcPtr callback, pointer data)
+-{
+-    PrivateDescRec *item = findItem(key);
+-    if (!item)
+-	return FALSE;
+-
+-    return AddCallback(&item->initfuncs, callback, data);
+-}
+-
+-int
+-dixRegisterPrivateDeleteFunc(const DevPrivateKey key,
+-			     CallbackProcPtr callback, pointer data)
+-{
+-    PrivateDescRec *item = findItem(key);
+-    if (!item)
+-	return FALSE;
+-
+-    return AddCallback(&item->deletefuncs, callback, data);
+-}
+-
+ /* Table of devPrivates offsets */
+ static const int offsetDefaults[] = {
+     -1,					/* RT_NONE */
+@@ -304,8 +266,6 @@ dixResetPrivates(void)
+     for (i = 1; i < nextPriv; i++) {
+ 	*items[i].key = 0;
+ 	items[i].size = 0;
+-	DeleteCallbackList(&items[i].initfuncs);
+-	DeleteCallbackList(&items[i].deletefuncs);
+     }
+     nextPriv = 1;
+ 

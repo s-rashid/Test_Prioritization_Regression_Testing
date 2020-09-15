@@ -1,0 +1,13 @@
+diff --git a/randr/rrmode.c b/randr/rrmode.c
+index 5ffa400..d7560dc 100644
+--- a/randr/rrmode.c
++++ b/randr/rrmode.c
+@@ -288,7 +288,7 @@ int
+ ProcRRCreateMode (ClientPtr client)
+ {
+     REQUEST(xRRCreateModeReq);
+-    xRRCreateModeReply	rep;
++    xRRCreateModeReply	rep = {0};
+     WindowPtr		pWin;
+     ScreenPtr		pScreen;
+     rrScrPrivPtr	pScrPriv;

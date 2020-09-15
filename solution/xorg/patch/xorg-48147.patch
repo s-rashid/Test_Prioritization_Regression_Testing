@@ -1,0 +1,12 @@
+diff --git a/dix/main.c b/dix/main.c
+index f023536..e5667a6 100644
+--- a/dix/main.c
++++ b/dix/main.c
+@@ -190,7 +190,6 @@ int main(int argc, char *argv[], char *envp[])
+ 	    FatalError("couldn't init server resources");
+ 
+ 	SetInputCheck(&alwaysCheckForInput[0], &alwaysCheckForInput[1]);
+-	screenInfo.arraySize = MAXSCREENS;
+ 	screenInfo.numScreens = 0;
+ 
+ 	InitAtoms();

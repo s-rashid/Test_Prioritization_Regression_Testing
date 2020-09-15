@@ -1,0 +1,13 @@
+diff --git a/test/ddxstubs.c b/test/ddxstubs.c
+index a214b96..3647dc5 100644
+--- a/test/ddxstubs.c
++++ b/test/ddxstubs.c
+@@ -50,7 +50,7 @@ OsVendorInit(void)
+ }
+ 
+ void
+-OsVendorFatalError(void)
++OsVendorFatalError(const char *f, va_list args)
+ {
+ }
+ 

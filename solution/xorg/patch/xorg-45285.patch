@@ -1,0 +1,13 @@
+diff --git a/Xi/stubs.c b/Xi/stubs.c
+index 229394b..400e937 100644
+--- a/Xi/stubs.c
++++ b/Xi/stubs.c
+@@ -153,7 +153,7 @@ AddOtherInputDevices(void)
+ void
+ OpenInputDevice(DeviceIntPtr dev, ClientPtr client, int *status)
+ {
+-    *status = XaceHook(XACE_DEVICE_ACCESS, client, dev, DixReadAccess);
++    *status = XaceHook(XACE_DEVICE_ACCESS, client, dev, DixUseAccess);
+ }
+ 
+ /****************************************************************************

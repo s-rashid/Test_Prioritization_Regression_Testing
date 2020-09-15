@@ -1,0 +1,24 @@
+diff --git a/hw/xwin/InitOutput.c b/hw/xwin/InitOutput.c
+index 63fca3a..ae1d415 100644
+--- a/hw/xwin/InitOutput.c
++++ b/hw/xwin/InitOutput.c
+@@ -90,13 +90,18 @@ extern HWND			g_hwndClipboard;
+ extern Bool			g_fClipboard;
+ #endif
+ 
+-extern HMODULE			g_hmodCommonControls;
++
+ extern FARPROC			g_fpTrackMouseEvent;
+ extern Bool			g_fNoHelpMessageBox;                     
+ extern Bool			g_fSilentDupError;                     
+ extern Bool                     g_fNativeGl;
+ 
+ /*
++  module handle for dynamically loaded comctl32 library
++*/
++static HMODULE g_hmodCommonControls = NULL;
++
++/*
+  * Function prototypes
+  */
+ 

@@ -1,0 +1,15 @@
+diff --git a/miext/rootless/rootlessCommon.c b/miext/rootless/rootlessCommon.c
+index b0476d7..a9cd72a 100644
+--- a/miext/rootless/rootlessCommon.c
++++ b/miext/rootless/rootlessCommon.c
+@@ -43,10 +43,8 @@ unsigned int rootless_CopyBytes_threshold = 0;
+ unsigned int rootless_FillBytes_threshold = 0;
+ unsigned int rootless_CompositePixels_threshold = 0;
+ unsigned int rootless_CopyWindow_threshold = 0;
+-#ifdef ROOTLESS_GLOBAL_COORDS
+ int rootlessGlobalOffsetX = 0;
+ int rootlessGlobalOffsetY = 0;
+-#endif
+ 
+ RegionRec rootlessHugeRoot = {{-32767, -32767, 32767, 32767}, NULL};
+ 

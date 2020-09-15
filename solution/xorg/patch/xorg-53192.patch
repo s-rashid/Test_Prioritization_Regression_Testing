@@ -1,0 +1,16 @@
+diff --git a/include/dixstruct.h b/include/dixstruct.h
+index 443e8b0..90e617b 100644
+--- a/include/dixstruct.h
++++ b/include/dixstruct.h
+@@ -60,9 +60,8 @@ typedef enum {ClientStateInitial,
+ 	      ClientStateAuthenticating,
+ 	      ClientStateRunning,
+ 	      ClientStateRetained,
+-	      ClientStateGone,
+-	      ClientStateCheckingSecurity,
+-	      ClientStateCheckedSecurity} ClientState;
++	      ClientStateGone
++} ClientState;
+ 
+ #ifdef XFIXES
+ typedef struct _saveSet {

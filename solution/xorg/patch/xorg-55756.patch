@@ -1,0 +1,87 @@
+diff --git a/hw/xquartz/GL/glcontextmodes.c b/hw/xquartz/GL/glcontextmodes.c
+index eee7103..79fadf8 100644
+--- a/hw/xquartz/GL/glcontextmodes.c
++++ b/hw/xquartz/GL/glcontextmodes.c
+@@ -90,7 +90,6 @@ _gl_convert_from_x_visual_type( int visualType )
+ 	? glx_visual_types[ visualType ] : GLX_NONE;
+ }
+ 
+-
+ /**
+  * Convert a GLX visual type to an X visual type.
+  * 
+@@ -112,7 +111,6 @@ _gl_convert_to_x_visual_type( int visualType )
+ 	? x_visual_types[ visualType - GLX_TRUE_COLOR ] : -1;
+ }
+ 
+-
+ /**
+  * Copy a GLX visual config structure to a GL context mode structure.  All
+  * of the fields in \c config are copied to \c mode.  Additional fields in
+@@ -200,7 +198,6 @@ _gl_copy_visual_to_context_mode( __GLcontextModes * mode,
+     mode->yInverted = GL_FALSE;
+ }
+ 
+-
+ /**
+  * Get data from a GL context mode.
+  * 
+@@ -357,7 +354,6 @@ _gl_get_context_mode_data(const __GLcontextModes *mode, int attribute,
+ }
+ #endif /* !defined(IN_MINI_GLX) */
+ 
+-
+ /**
+  * Allocate a linked list of \c __GLcontextModes structures.  The fields of
+  * each structure will be initialized to "reasonable" default values.  In
+@@ -427,7 +423,6 @@ _gl_context_modes_create( unsigned count, size_t minimum_size )
+    return base;
+ }
+ 
+-
+ /**
+  * Destroy a linked list of \c __GLcontextModes structures created by
+  * \c _gl_context_modes_create.
+@@ -446,7 +441,6 @@ _gl_context_modes_destroy( __GLcontextModes * modes )
+    }
+ }
+ 
+-
+ /**
+  * Find a context mode matching a Visual ID.
+  *
+@@ -500,13 +494,11 @@ _gl_context_modes_are_same( const __GLcontextModes * a,
+ 	    (a->stereoMode == b->stereoMode) &&
+ 	    (a->redBits == b->redBits) &&
+ 	    (a->greenBits == b->greenBits) &&
+-	    (a->blueBits == b->blueBits) &&
+-	    (a->alphaBits == b->alphaBits) &&
++            (a->blueBits == b->blueBits) && (a->alphaBits == b->alphaBits) &&
+ #if 0 /* For some reason these don't get set on the client-side in libGL. */
+ 	    (a->redMask == b->redMask) &&
+ 	    (a->greenMask == b->greenMask) &&
+-	    (a->blueMask == b->blueMask) &&
+-	    (a->alphaMask == b->alphaMask) &&
++            (a->blueMask == b->blueMask) && (a->alphaMask == b->alphaMask) &&
+ #endif
+ 	    (a->rgbBits == b->rgbBits) &&
+ 	    (a->indexBits == b->indexBits) &&
+@@ -520,18 +512,14 @@ _gl_context_modes_are_same( const __GLcontextModes * a,
+ 	    (a->level == b->level) &&
+ 	    (a->pixmapMode == b->pixmapMode) &&
+ 	    (a->visualRating == b->visualRating) &&
+-
+ 	    (a->transparentPixel == b->transparentPixel) &&
+-
+ 	    ((a->transparentPixel != GLX_TRANSPARENT_RGB) ||
+ 	     ((a->transparentRed == b->transparentRed) &&
+ 	      (a->transparentGreen == b->transparentGreen) &&
+ 	      (a->transparentBlue == b->transparentBlue) &&
+ 	      (a->transparentAlpha == b->transparentAlpha))) &&
+-
+ 	    ((a->transparentPixel != GLX_TRANSPARENT_INDEX) || 
+ 	     (a->transparentIndex == b->transparentIndex)) &&
+-
+ 	    (a->sampleBuffers == b->sampleBuffers) &&
+ 	    (a->samples == b->samples) &&
+ 	    ((a->drawableType & b->drawableType) != 0) &&

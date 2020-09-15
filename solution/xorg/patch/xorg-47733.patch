@@ -1,0 +1,13 @@
+diff --git a/hw/kdrive/src/kdrive.c b/hw/kdrive/src/kdrive.c
+index 7675c1e..1902ab8 100644
+--- a/hw/kdrive/src/kdrive.c
++++ b/hw/kdrive/src/kdrive.c
+@@ -335,7 +335,7 @@ AbortDDX(void)
+     }
+ 
+     if (kdCaughtSignal)
+-        abort();
++        OsAbort();
+ }
+ 
+ void

@@ -1,0 +1,13 @@
+diff --git a/xkb/xkb.c b/xkb/xkb.c
+index 2241753..1583159 100644
+--- a/xkb/xkb.c
++++ b/xkb/xkb.c
+@@ -5885,7 +5885,7 @@ ProcXkbGetKbdByName(ClientPtr client)
+ 
+ 	if (!IsMaster(dev)) {
+ 	    DeviceIntPtr master = GetMaster(dev, MASTER_KEYBOARD);
+-	    if (master && master->u.lastSlave == dev) {
++	    if (master && master->lastSlave == dev) {
+ 		XkbCopyDeviceKeymap(master, dev);
+ 		XkbSendNewKeyboardNotify(dev,&nkn);
+ 	    }

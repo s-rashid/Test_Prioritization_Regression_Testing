@@ -1,0 +1,13 @@
+diff --git a/dix/cursor.c b/dix/cursor.c
+index f29cb11..6bff447 100644
+--- a/dix/cursor.c
++++ b/dix/cursor.c
+@@ -152,7 +152,7 @@ CheckForEmptyMask(CursorBitsPtr bits)
+     if (bits->argb)
+     {
+ 	CARD32 *argb = bits->argb;
+-	int n = bits->width * bits->height;
++	n = bits->width * bits->height;
+ 	while (n--)
+ 	    if (*argb++ & 0xff000000) return;
+     }

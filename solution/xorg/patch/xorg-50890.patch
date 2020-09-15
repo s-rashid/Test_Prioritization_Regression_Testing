@@ -1,0 +1,12 @@
+diff --git a/fb/wfbrename.h b/fb/wfbrename.h
+index c8e98c8..f3beed8 100644
+--- a/fb/wfbrename.h
++++ b/fb/wfbrename.h
+@@ -179,7 +179,6 @@
+ #define fbUnmapWindow wfbUnmapWindow
+ #define fbUnrealizeFont wfbUnrealizeFont
+ #define fbValidateGC wfbValidateGC
+-#define fbWalkCompositeRegion wfbWalkCompositeRegion
+ #define fbWinPrivateKeyRec wfbWinPrivateKeyRec
+ #define fbZeroLine wfbZeroLine
+ #define fbZeroSegment wfbZeroSegment

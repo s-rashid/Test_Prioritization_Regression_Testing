@@ -1,0 +1,10 @@
+diff --git a/hw/xfree86/x86emu/x86emu/debug.h b/hw/xfree86/x86emu/x86emu/debug.h
+index 5f78d05..385b804 100644
+--- a/hw/xfree86/x86emu/x86emu/debug.h
++++ b/hw/xfree86/x86emu/x86emu/debug.h
+@@ -206,5 +206,4 @@ extern void x86emu_check_data_access (uint s, uint o);
+ #ifdef  __cplusplus
+ }                       			/* End of "C" linkage for C++   	*/
+ #endif
+-
+ #endif /* __X86EMU_DEBUG_H */

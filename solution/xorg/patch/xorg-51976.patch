@@ -1,0 +1,16 @@
+diff --git a/include/input.h b/include/input.h
+index 0dc725a..643866f 100644
+--- a/include/input.h
++++ b/include/input.h
+@@ -150,6 +150,11 @@ typedef void (*PointerAccelSchemeProc)(
+ typedef void (*DeviceCallbackProc)(
+               DeviceIntPtr /*pDev*/);
+ 
++struct _ValuatorAccelerationRec;
++typedef Bool (*PointerAccelSchemeInitProc)(
++              DeviceIntPtr /*dev*/,
++              struct _ValuatorAccelerationRec* /*protoScheme*/);
++
+ typedef struct _DeviceRec {
+     pointer	devicePrivate;
+     ProcessInputProc processInputProc;	/* current */

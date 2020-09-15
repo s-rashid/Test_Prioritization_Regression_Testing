@@ -1,0 +1,45 @@
+diff --git a/hw/xfree86/os-support/misc/SlowBcopy.c b/hw/xfree86/os-support/misc/SlowBcopy.c
+index 0021b55..254748f 100644
+--- a/hw/xfree86/os-support/misc/SlowBcopy.c
++++ b/hw/xfree86/os-support/misc/SlowBcopy.c
+@@ -31,10 +31,10 @@ xf86SetReallySlowBcopy(void)
+ }
+ 
+ #if defined(__i386__) || defined(__amd64__)
+-static void xf86_really_slow_bcopy(unsigned char *src, unsigned char *dst, int len)
+-{
+-    while(len--)
++static void
++xf86_really_slow_bcopy(unsigned char *src, unsigned char *dst, int len)
+     {
++    while (len--) {
+ 	*dst++ = *src++;
+ 	outb(0x80, 0x00);
+     }
+@@ -76,8 +76,7 @@ unsigned long _bus_base(void);
+ void
+ xf86SlowBCopyFromBus(unsigned char *src, unsigned char *dst, int count)
+ {
+-	if (useSparse())
+-	{
++    if (useSparse()) {
+ 		unsigned long addr;
+ 		long result;
+ 
+@@ -98,13 +97,13 @@ xf86SlowBCopyFromBus(unsigned char *src, unsigned char *dst, int count)
+ void
+ xf86SlowBCopyToBus(unsigned char *src, unsigned char *dst, int count)
+ {
+-	if (useSparse())
+-	{
++    if (useSparse()) {
+ 		unsigned long addr;
+ 
+ 		addr = (unsigned long) dst;
+ 		while (count) {
+-			*(volatile unsigned int *) addr = (unsigned short)(*src) * 0x01010101;
++            *(volatile unsigned int *) addr =
++                (unsigned short) (*src) * 0x01010101;
+ 			src++;
+ 			addr += 1<<SPARSE;
+ 			count--;

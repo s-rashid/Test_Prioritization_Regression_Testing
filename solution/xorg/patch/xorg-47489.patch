@@ -1,0 +1,17 @@
+diff --git a/hw/kdrive/fbdev/fbdev.h b/hw/kdrive/fbdev/fbdev.h
+index 3da8e47..4d4f7a9 100644
+--- a/hw/kdrive/fbdev/fbdev.h
++++ b/hw/kdrive/fbdev/fbdev.h
+@@ -94,10 +94,10 @@ void
+ fbdevCardFini (KdCardInfo *card);
+ 
+ void
+-fbdevGetColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++fbdevGetColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ void
+-fbdevPutColors (ScreenPtr pScreen, int fb, int n, xColorItem *pdefs);
++fbdevPutColors (ScreenPtr pScreen, int n, xColorItem *pdefs);
+ 
+ Bool
+ fbdevMapFramebuffer (KdScreenInfo *screen);

@@ -1,0 +1,14 @@
+diff --git a/mi/mieq.c b/mi/mieq.c
+index 06c3d8e..8335289 100644
+--- a/mi/mieq.c
++++ b/mi/mieq.c
+@@ -384,6 +384,9 @@ ChangeDeviceID(DeviceIntPtr dev, InternalEvent* event)
+         case ET_RawButtonPress:
+         case ET_RawButtonRelease:
+         case ET_RawMotion:
++        case ET_RawTouchBegin:
++        case ET_RawTouchEnd:
++        case ET_RawTouchUpdate:
+             event->raw_event.deviceid = dev->id;
+             break;
+         default:

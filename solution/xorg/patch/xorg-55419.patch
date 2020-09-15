@@ -1,0 +1,36 @@
+diff --git a/hw/xfree86/common/xf86DPMS.c b/hw/xfree86/common/xf86DPMS.c
+index 613c7cf..75f0342 100644
+--- a/hw/xfree86/common/xf86DPMS.c
++++ b/hw/xfree86/common/xf86DPMS.c
+@@ -53,7 +53,6 @@ static Bool DPMSClose(int i, ScreenPtr pScreen);
+ static int DPMSCount = 0;
+ #endif
+ 
+-
+ Bool
+ xf86DPMSInit(ScreenPtr pScreen, DPMSSetProcPtr set, int flags)
+ {
+@@ -97,7 +96,6 @@ xf86DPMSInit(ScreenPtr pScreen, DPMSSetProcPtr set, int flags)
+ #endif
+ }
+ 
+-
+ #ifdef DPMSExtension
+ 
+ static Bool
+@@ -132,7 +130,6 @@ DPMSClose(int i, ScreenPtr pScreen)
+     return pScreen->CloseScreen(i, pScreen);
+ }
+ 
+-
+ /*
+  * DPMSSet --
+  *	Device dependent DPMS mode setting hook.  This is called whenever
+@@ -169,7 +166,6 @@ DPMSSet(ClientPtr client, int level)
+     return Success;
+ }
+ 
+-
+ /*
+  * DPMSSupported --
+  *	Return TRUE if any screen supports DPMS.

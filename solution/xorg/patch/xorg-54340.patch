@@ -1,0 +1,29 @@
+diff --git a/xkb/xkbActions.c b/xkb/xkbActions.c
+index 1e94d26..33864e1 100644
+--- a/xkb/xkbActions.c
++++ b/xkb/xkbActions.c
+@@ -951,13 +951,13 @@ _XkbFilterDeviceBtn(	XkbSrvInfoPtr	xkbi,
+ 			unsigned	keycode,
+ 			XkbAction *	pAction)
+ {
+-DeviceIntPtr	dev;
+-int		button;
+-
+     if (xkbi->device == inputInfo.keyboard)
+         return 0;
+ 
+     if (filter->keycode==0) {		/* initial press */
++	DeviceIntPtr	dev;
++	int		button;
++
+ 	_XkbLookupButtonDevice(&dev, pAction->devbtn.device, serverClient,
+ 			       DixUnknownAccess, &button);
+ 	if (!dev || !dev->public.on)
+@@ -996,6 +996,7 @@ int		button;
+ 	}
+     }
+     else if (filter->keycode==keycode) {
++	DeviceIntPtr	dev;
+ 	int	button;
+ 
+ 	filter->active= 0;

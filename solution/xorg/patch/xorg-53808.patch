@@ -1,0 +1,16 @@
+diff --git a/hw/xfree86/os-support/bsd/ppc_video.c b/hw/xfree86/os-support/bsd/ppc_video.c
+index 920a002..e5d832e 100644
+--- a/hw/xfree86/os-support/bsd/ppc_video.c
++++ b/hw/xfree86/os-support/bsd/ppc_video.c
+@@ -36,11 +36,6 @@
+ 
+ #include "bus/Pci.h"
+ 
+-#ifndef MAP_FAILED
+-#define MAP_FAILED ((caddr_t)-1)
+-#endif
+-
+-
+ /***************************************************************************/
+ /* Video Memory Mapping section                                            */
+ /***************************************************************************/

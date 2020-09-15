@@ -1,0 +1,13 @@
+diff --git a/include/protocol-versions.h b/include/protocol-versions.h
+index 479ac2f..cb8e213 100644
+--- a/include/protocol-versions.h
++++ b/include/protocol-versions.h
+@@ -135,7 +135,7 @@
+ 
+ /* Resource */
+ #define SERVER_XRES_MAJOR_VERSION		1
+-#define SERVER_XRES_MINOR_VERSION		0
++#define SERVER_XRES_MINOR_VERSION		2
+ 
+ /* XvMC */
+ #define SERVER_XVMC_MAJOR_VERSION		1

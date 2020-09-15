@@ -1,0 +1,16 @@
+diff --git a/xkb/ddxList.c b/xkb/ddxList.c
+index 9623cb6..3d301d8 100644
+--- a/xkb/ddxList.c
++++ b/xkb/ddxList.c
+@@ -222,8 +222,10 @@ char	tmpname[PATH_MAX];
+     list->nFound[what]= 0;
+     free(buf);
+     buf = malloc(PATH_MAX * sizeof(char));
+-    if (!buf)
++    if (!buf) {
++        fclose(in);
+         return BadAlloc;
++    }
+     while ((status==Success)&&((tmp=fgets(buf,PATH_MAX,in))!=NULL)) {
+ 	unsigned flags;
+ 	register unsigned int i;

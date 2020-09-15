@@ -1,0 +1,9 @@
+diff --git a/hw/xfree86/dixmods/recordmod.c b/hw/xfree86/dixmods/recordmod.c
+index 63d340e..b75cc3f 100644
+--- a/hw/xfree86/dixmods/recordmod.c
++++ b/hw/xfree86/dixmods/recordmod.c
+@@ -41,4 +41,3 @@ recordSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     /* Need a non-NULL return value to indicate success */
+     return (pointer)1;
+ }
+-

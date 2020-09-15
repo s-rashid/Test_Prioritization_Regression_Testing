@@ -1,0 +1,47 @@
+diff --git a/hw/xfree86/os-support/solaris/sun_VTsw.c b/hw/xfree86/os-support/solaris/sun_VTsw.c
+index ded2f27..7f4e08e 100644
+--- a/hw/xfree86/os-support/solaris/sun_VTsw.c
++++ b/hw/xfree86/os-support/solaris/sun_VTsw.c
+@@ -38,17 +38,27 @@
+  * Handle the VT-switching interface for Solaris/OpenSolaris
+  */
+ 
++static int xf86VTPruneDoor = 0;
++
+ void
+-xf86VTRequest(int sig)
++xf86VTRelease(int sig)
+ {
+-	if (xf86Info.vtPendingNum != -1)
++	if (xf86Info.vtPendingNum == -1)
+ 	{
++		xf86VTPruneDoor = 1;
++		xf86Info.vtRequestsPending = TRUE;
++		return;
++	}
++
+ 		ioctl(xf86Info.consoleFd, VT_RELDISP, 1);
+ 		xf86Info.vtPendingNum = -1;
+ 
+ 		return;
+ 	}
+ 
++void
++xf86VTAcquire(int sig)
++{
+ 	xf86Info.vtRequestsPending = TRUE;
+ 	return;
+ }
+@@ -68,6 +78,12 @@ xf86VTSwitchAway(void)
+ 
+ 	xf86Info.vtRequestsPending = FALSE;
+ 
++	if (xf86VTPruneDoor) {
++		xf86VTPruneDoor = 0;
++		ioctl(xf86Info.consoleFd, VT_RELDISP, 1);
++		return (TRUE);
++	}
++
+ 	vt_door_arg.vt_ev = VT_EV_HOTKEYS;
+ 	vt_door_arg.vt_num = xf86Info.vtPendingNum;
+ 	door_arg.data_ptr = (char *)&vt_door_arg;

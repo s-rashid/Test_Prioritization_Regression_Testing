@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/quartzRandR.h b/hw/xquartz/quartzRandR.h
+index 8ee2818..4a7990e 100644
+--- a/hw/xquartz/quartzRandR.h
++++ b/hw/xquartz/quartzRandR.h
+@@ -34,7 +34,7 @@
+ typedef struct {
+     size_t width, height;
+     int refresh;
+-    const void *ref;
++    void *ref; /* CGDisplayModeRef or CFDictionaryRef */
+ } QuartzModeInfo, *QuartzModeInfoPtr;
+ 
+ // Quartz specific per screen storage structure

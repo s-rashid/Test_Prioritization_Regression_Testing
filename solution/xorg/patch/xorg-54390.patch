@@ -1,0 +1,12 @@
+diff --git a/glx/swap_interval.c b/glx/swap_interval.c
+index 0bae324..699f137 100644
+--- a/glx/swap_interval.c
++++ b/glx/swap_interval.c
+@@ -37,7 +37,6 @@
+ #include "glapi.h"
+ #include "glthread.h"
+ #include "dispatch.h"
+-#include "glapioffsets.h"
+ #include "glxbyteorder.h"
+ 
+ static int DoSwapInterval(__GLXclientState *cl, GLbyte *pc, int do_swap);

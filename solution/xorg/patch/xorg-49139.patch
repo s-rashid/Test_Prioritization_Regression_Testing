@@ -1,0 +1,25 @@
+diff --git a/Xext/xtest.c b/Xext/xtest.c
+index 263d0c1..0a6b1c5 100644
+--- a/Xext/xtest.c
++++ b/Xext/xtest.c
+@@ -63,8 +63,8 @@ extern int DeviceValuator;
+ static EventListPtr xtest_evlist;
+ 
+ /* Used to store if a device is an XTest Virtual device */
+-static int XTestDevicePrivateKeyIndex;
+-DevPrivateKey XTestDevicePrivateKey = &XTestDevicePrivateKeyIndex;
++static DevPrivateKeyRec XTestDevicePrivateKeyRec;
++#define XTestDevicePrivateKey (&XTestDevicePrivateKeyRec)
+ 
+ /**
+  * xtestpointer
+@@ -102,6 +102,9 @@ static DISPATCH_PROC(SProcXTestGrabControl);
+ void
+ XTestExtensionInit(INITARGS)
+ {
++    if (!dixRegisterPrivateKey(&XTestDevicePrivateKeyRec, PRIVATE_DEVICE, 0))
++	return;
++
+     AddExtension(XTestExtensionName, 0, 0,
+             ProcXTestDispatch, SProcXTestDispatch,
+             NULL, StandardMinorOpcode);

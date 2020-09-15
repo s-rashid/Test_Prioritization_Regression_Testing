@@ -1,0 +1,13 @@
+diff --git a/hw/xquartz/xpr/dri.c b/hw/xquartz/xpr/dri.c
+index 72a7ecf..dc78003 100644
+--- a/hw/xquartz/xpr/dri.c
++++ b/hw/xquartz/xpr/dri.c
+@@ -289,7 +289,7 @@ DRIExtensionInit(void)
+     DRIDrawablePrivResType = CreateNewResourceType(DRIDrawablePrivDelete,
+ 						   "DRIDrawable");
+ 
+-    return (DRIDrawablePrivResType != 0);
++    return DRIDrawablePrivResType != 0;
+ }
+ 
+ void

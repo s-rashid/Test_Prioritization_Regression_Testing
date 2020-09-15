@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Mode.c b/hw/xfree86/common/xf86Mode.c
+index 5d30a78..7bdf79a 100644
+--- a/hw/xfree86/common/xf86Mode.c
++++ b/hw/xfree86/common/xf86Mode.c
+@@ -1918,8 +1918,8 @@ xf86DeleteMode(DisplayModePtr *modeList, DisplayModePtr mode)
+ 	    mode->next->prev = mode->prev;
+     }
+ 
+-    xfree(mode->name);
+-    xfree(mode);
++    free(mode->name);
++    free(mode);
+ }
+ 
+ /*

@@ -1,0 +1,22 @@
+diff --git a/xkb/xkbAccessX.c b/xkb/xkbAccessX.c
+index 47023c0..fd30a1c 100644
+--- a/xkb/xkbAccessX.c
++++ b/xkb/xkbAccessX.c
+@@ -524,6 +524,9 @@ KeySym *	sym = XkbKeySymsPtr(xkbi->desc,key);
+ 	    if (BitIsOn(keybd->kbdfeed->ctrl.autoRepeats,key)) {
+ 		if (xkbDebugFlags&0x10)
+ 		    DebugF("Starting software autorepeat...\n");
++		if (xkbi->repeatKey == key)
++		    ignoreKeyEvent = TRUE;
++		else {
+ 		xkbi->repeatKey = key;
+ 		xkbi->repeatKeyTimer= TimerSet(xkbi->repeatKeyTimer,
+ 					0, ctrls->repeat_delay,
+@@ -531,6 +534,7 @@ KeySym *	sym = XkbKeySymsPtr(xkbi->desc,key);
+ 	    }
+ 	}
+     }
++    }
+     
+     /* Check for two keys being pressed at the same time.  This section
+      * essentially says the following:

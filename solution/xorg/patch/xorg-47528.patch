@@ -1,0 +1,13 @@
+diff --git a/glx/glxdrawable.h b/glx/glxdrawable.h
+index 3f165ed..2a365c5 100644
+--- a/glx/glxdrawable.h
++++ b/glx/glxdrawable.h
+@@ -45,7 +45,7 @@ enum {
+ 
+ struct __GLXdrawable {
+     void (*destroy)(__GLXdrawable *private);
+-    GLboolean (*swapBuffers)(__GLXdrawable *);
++    GLboolean (*swapBuffers)(ClientPtr client, __GLXdrawable *);
+     void      (*copySubBuffer)(__GLXdrawable *drawable,
+ 			       int x, int y, int w, int h);
+     void      (*waitX)(__GLXdrawable *);

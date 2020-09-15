@@ -1,0 +1,16 @@
+diff --git a/os/client.c b/os/client.c
+index 1311855..b534977 100644
+--- a/os/client.c
++++ b/os/client.c
+@@ -140,10 +140,9 @@ void DetermineClientCmd(pid_t pid, const char **cmdname, const char **cmdargs)
+     /* Read the contents of /proc/pid/cmdline. It should contain the
+      * process name and arguments. */
+     totsize = read(fd, path, sizeof(path));
++    close(fd);
+     if (totsize <= 0)
+         return;
+-    if (close(fd) < 0)
+-        return;
+     path[totsize - 1] = '\0';
+ 
+     /* Contruct the process name without arguments. */

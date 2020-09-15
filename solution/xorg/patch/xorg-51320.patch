@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index f22a2d5..4430781 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -221,9 +221,10 @@ if (fDebugProcMsg) \
+ { \
+   char *pszTemp; \
+   int iLength; \
+-  pszTemp = Xprintf (str, ##__VA_ARGS__); \
++  if (asprintf (&pszTemp, str, ##__VA_ARGS__) != -1) { \
+   MessageBox (NULL, pszTemp, szFunctionName, MB_OK); \
+   free(pszTemp); \
++  } \
+ }
+ #else
+ #define DEBUG_MSG(str,...)

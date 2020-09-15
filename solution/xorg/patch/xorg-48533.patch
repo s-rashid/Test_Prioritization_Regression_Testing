@@ -1,0 +1,12 @@
+diff --git a/Xext/shm.c b/Xext/shm.c
+index 25043fa..b2c4208 100644
+--- a/Xext/shm.c
++++ b/Xext/shm.c
+@@ -943,7 +943,6 @@ ProcShmPutImage(ClientPtr client)
+ 
+ 	ev.type = ShmCompletionCode;
+ 	ev.drawable = stuff->drawable;
+-	ev.sequenceNumber = client->sequence;
+ 	ev.minorEvent = X_ShmPutImage;
+ 	ev.majorEvent = ShmReqCode;
+ 	ev.shmseg = stuff->shmseg;

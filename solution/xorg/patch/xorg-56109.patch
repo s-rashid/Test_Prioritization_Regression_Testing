@@ -1,0 +1,30 @@
+diff --git a/test/string.c b/test/string.c
+index e3a5adb..93867e0 100644
+--- a/test/string.c
++++ b/test/string.c
+@@ -37,12 +37,12 @@
+ #include <string.h>
+ #undef strndup
+ #define strndup my_strndup
+-char *
+-strndup(const char *str, size_t n);
++char *strndup(const char *str, size_t n);
+ 
+ #include "../os/strndup.c"
+ 
+-static void strndup_checks(void)
++static void
++strndup_checks(void)
+ {
+     const char *sample="0123456789abcdef";
+     char *allofit;
+@@ -61,7 +61,8 @@ static void strndup_checks(void)
+     free(allofit);
+ }
+ 
+-int main(int argc, char** argv)
++int
++main(int argc, char **argv)
+ {
+     strndup_checks();
+ 

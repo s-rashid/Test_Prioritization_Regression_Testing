@@ -1,0 +1,30 @@
+diff --git a/hw/xquartz/xpr/xprCursor.c b/hw/xquartz/xpr/xprCursor.c
+index fdb8563..c268c2c 100644
+--- a/hw/xquartz/xpr/xprCursor.c
++++ b/hw/xquartz/xpr/xprCursor.c
+@@ -57,13 +57,12 @@ typedef struct {
+     miPointerSpriteFuncPtr  spriteFuncs;
+ } QuartzCursorScreenRec, *QuartzCursorScreenPtr;
+ 
+-static int darwinCursorScreenKeyIndex;
+-static DevPrivateKey darwinCursorScreenKey = &darwinCursorScreenKeyIndex;
++static DevPrivateKeyRec darwinCursorScreenKeyRec;
++#define darwinCursorScreenKey (&darwinCursorScreenKey)
+ 
+ #define CURSOR_PRIV(pScreen) ((QuartzCursorScreenPtr) \
+     dixLookupPrivate(&pScreen->devPrivates, darwinCursorScreenKey))
+ 
+-
+ static Bool
+ load_cursor(CursorPtr src, int screen)
+ {
+@@ -360,6 +359,9 @@ QuartzInitCursor(ScreenPtr pScreen)
+     if (!miDCInitialize(pScreen, &quartzScreenFuncsRec))
+         return FALSE;
+ 
++    if (!dixRegisterPrivate(&darwinCursorScreenKeyRec, PRIVATE_SCREEN, 0))
++	return FALSE;
++
+     ScreenPriv = calloc(1, sizeof(QuartzCursorScreenRec));
+     if (ScreenPriv == NULL)
+         return FALSE;

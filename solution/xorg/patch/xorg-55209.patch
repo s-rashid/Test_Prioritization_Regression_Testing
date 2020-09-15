@@ -1,0 +1,95 @@
+diff --git a/hw/dmx/config/Canvas.c b/hw/dmx/config/Canvas.c
+index c2eba87..34a47a2 100644
+--- a/hw/dmx/config/Canvas.c
++++ b/hw/dmx/config/Canvas.c
+@@ -60,12 +60,13 @@
+ #include <X11/StringDefs.h>
+ #include "CanvasP.h"
+ 
+-static void CanvasInitialize(Widget request, Widget w,
+-                             ArgList args, Cardinal *num_args)
++static void
++CanvasInitialize(Widget request, Widget w, ArgList args, Cardinal * num_args)
+ {
+ }
+ 
+-static void CanvasExpose(Widget w, XEvent *event, Region region)
++static void
++CanvasExpose(Widget w, XEvent * event, Region region)
+ {
+     CanvasExposeDataRec data;
+ 
+@@ -73,18 +74,21 @@ static void CanvasExpose(Widget w, XEvent *event, Region region)
+     data.event  = event;
+     data.region = region;
+     
+-    if (!XtIsRealized(w)) return;
++    if (!XtIsRealized(w))
++        return;
+     XtCallCallbacks(w, XtNcanvasExposeCallback, (XtPointer)&data);
+ }
+ 
+-static void CanvasResize(Widget w)
++static void
++CanvasResize(Widget w)
+ {
+-    if (!XtIsRealized(w)) return;
++    if (!XtIsRealized(w))
++        return;
+     XtCallCallbacks(w, XtNcanvasResizeCallback, (XtPointer)w);
+ }
+ 
+-static void CanvasAction(Widget w, XEvent *event,
+-                         String *params, Cardinal *num_params)
++static void
++CanvasAction(Widget w, XEvent * event, String * params, Cardinal * num_params)
+ {
+     XtCallCallbacks(w, XtNcallback, (XtPointer)event);
+ }
+@@ -92,26 +96,27 @@ static void CanvasAction(Widget w, XEvent *event,
+ #define offset(field) XtOffsetOf(CanvasRec, canvas.field)
+ static XtResource resources[] = {
+     { XtNcallback, XtCCallback, XtRCallback,
+-      sizeof(XtCallbackList), offset(input_callback), XtRCallback, NULL },
++     sizeof(XtCallbackList), offset(input_callback), XtRCallback, NULL}
++    ,
+     { XtNcanvasExposeCallback, XtCcanvasExposeCallback, XtRCallback,
+-      sizeof(XtCallbackList), offset(expose_callback), XtRCallback, NULL },
++     sizeof(XtCallbackList), offset(expose_callback), XtRCallback, NULL}
++    ,
+     { XtNcanvasResizeCallback, XtCcanvasResizeCallback, XtRCallback,
+-      sizeof(XtCallbackList), offset(resize_callback), XtRCallback, NULL },
++     sizeof(XtCallbackList), offset(resize_callback), XtRCallback, NULL}
++    ,
+ };
++
+ #undef offset
+ 
+-static XtActionsRec actions[] =
+-{
++static XtActionsRec actions[] = {
+     {"canvas",	CanvasAction},
+ };
+ 
+-static char translations[] =
+-"<Key>:    canvas()\n\
++static char translations[] = "<Key>:    canvas()\n\
+ <Motion>:  canvas()\n\
+ <BtnDown>: canvas()\n\
+ <BtnUp>: canvas()\n\
+-"
+-;
++";
+ 
+ #define Superclass	(&widgetClassRec)
+ CanvasClassRec canvasClassRec = {
+@@ -149,7 +154,8 @@ CanvasClassRec canvasClassRec = {
+         XtInheritQueryGeometry,		/* query_geometry */
+         XtInheritDisplayAccelerator,	/* display_accelerator */
+         NULL,				/* extension */
+-    },
++     }
++    ,
+     /* canvas */
+     {
+         NULL,				/* extension */

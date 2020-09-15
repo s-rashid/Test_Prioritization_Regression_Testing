@@ -1,0 +1,22 @@
+diff --git a/hw/xfree86/os-support/bsd/bsd_axp.c b/hw/xfree86/os-support/bsd/bsd_axp.c
+index cb10a9d..77c87ce 100644
+--- a/hw/xfree86/os-support/bsd/bsd_axp.c
++++ b/hw/xfree86/os-support/bsd/bsd_axp.c
+@@ -36,7 +36,7 @@ static _AXP axpList[] = {
+ 	{"lca",LCA},
+ 	{"t2",T2},
+ 	{"tsunami",TSUNAMI},
+-	{NULL,NONE}
++	{NULL,SYS_NONE}
+ };
+ 
+ axpDevice
+@@ -65,7 +65,7 @@ bsdGetAXP(void)
+ #endif
+ 	for (i=0;;i++) {
+ 		if (axpList[i].name == NULL)
+-			return NONE;
++			return SYS_NONE;
+ 		if (!strcmp(sysname, axpList[i].name))
+ 			return axpList[i].type;
+ 	}

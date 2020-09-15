@@ -1,0 +1,15 @@
+diff --git a/hw/xfree86/common/xf86Config.c b/hw/xfree86/common/xf86Config.c
+index e1283f9..a6d66f3 100644
+--- a/hw/xfree86/common/xf86Config.c
++++ b/hw/xfree86/common/xf86Config.c
+@@ -249,7 +249,9 @@ xf86ModulelistFromConfig(pointer **optlist)
+ {
+     int count = 0, i = 0;
+     char **modulearray;
+-    char *ignore[] = { "GLcore", "speedo", "bitmap", "drm", NULL };
++    char *ignore[] = { "GLcore", "speedo", "bitmap", "drm",
++		       "freetype", "type1",
++		       NULL };
+     pointer *optarray;
+     XF86LoadPtr modp;
+     Bool found;

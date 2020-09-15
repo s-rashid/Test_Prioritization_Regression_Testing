@@ -1,0 +1,16 @@
+diff --git a/hw/xwin/win.h b/hw/xwin/win.h
+index 9009df2..9ab8ed9 100644
+--- a/hw/xwin/win.h
++++ b/hw/xwin/win.h
+@@ -766,10 +766,9 @@ winAllocateCmapPrivates (ColormapPtr pCmap);
+  */
+ 
+ #if defined(XWIN_CLIPBOARD) || defined(XWIN_MULTIWINDOW)
+-# if defined(XCSECURITY)  
+ Bool
+ winGenerateAuthorization (void);
+-# endif
++void winSetAuthorization(void);
+ #endif
+ 
+ 

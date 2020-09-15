@@ -1,0 +1,14 @@
+diff --git a/Xi/ungrdevb.c b/Xi/ungrdevb.c
+index 0ba395c..c4632fa 100644
+--- a/Xi/ungrdevb.c
++++ b/Xi/ungrdevb.c
+@@ -115,7 +115,8 @@ ProcXUngrabDeviceButton(ClientPtr client)
+ 	    return BadDevice;
+ 	if (mdev->key == NULL)
+ 	    return BadMatch;
+-    } else
++    }
++    else
+ 	mdev = PickKeyboard(client);
+ 
+     rc = dixLookupWindow(&pWin, stuff->grabWindow, client, DixSetAttrAccess);

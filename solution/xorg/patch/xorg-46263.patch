@@ -1,0 +1,12 @@
+diff --git a/hw/dmx/input/dmxevents.c b/hw/dmx/input/dmxevents.c
+index 0b0813a..992c32e 100644
+--- a/hw/dmx/input/dmxevents.c
++++ b/hw/dmx/input/dmxevents.c
+@@ -47,7 +47,6 @@
+ #include "dmxcommon.h"
+ #include "dmxcursor.h"
+ #include "dmxmotion.h"
+-#include "dmxeq.h"
+ #include "dmxsigio.h"
+ #include "dmxmap.h"
+ 

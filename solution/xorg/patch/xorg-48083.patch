@@ -1,0 +1,26 @@
+diff --git a/hw/dmx/dmxinit.c b/hw/dmx/dmxinit.c
+index f481cf5..cc9ea0b 100644
+--- a/hw/dmx/dmxinit.c
++++ b/hw/dmx/dmxinit.c
+@@ -53,9 +53,7 @@
+ #include "dmxcb.h"
+ #include "dmxprop.h"
+ #include "dmxstat.h"
+-#ifdef RENDER
+ #include "dmxpict.h"
+-#endif
+ 
+ #include <X11/Xos.h>                /* For gettimeofday */
+ #include "dixstruct.h"
+@@ -795,11 +793,9 @@ void InitOutput(ScreenInfo *pScreenInfo, int argc, char *argv[])
+      */
+     dmxInitFonts();
+ 
+-#ifdef RENDER
+     /* Initialize the render extension */
+     if (!noRenderExtension)
+ 	dmxInitRender();
+-#endif
+ 
+     /* Initialized things that need timer hooks */
+     dmxStatInit();
